@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 枚举值校验 -->
+  <!-- Enumeration value verification -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-row :gutter="20">
       <el-col :span="8">
@@ -51,7 +51,7 @@
       </el-col>
     </el-row>
 
-    <!-- 👇 当选择了“关联代码表”为“是”时展示 -->
+    <!-- 👇 Displayed when "Associated Code Table" is selected as "Yes" -->
     <el-row v-if="form.useCodeTable == '1'" :gutter="20">
       <el-col :span="8">
         <el-form-item
@@ -202,7 +202,7 @@ function handleDelete(row, index) {
   form.codeList.splice(Number(index) - 1, 1);
 }
 function opencodeDialog() {
-  // 新增一行空数据
+  // Add a new row of empty data
   form.codeList.push({
     codeValue: "",
     codeName: "",

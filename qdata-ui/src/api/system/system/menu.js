@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js';
 
-// 查询菜单列表
+// Query menu list
 export function listMenu(query) {
     return request({
         url: '/system/menu/list',
@@ -27,7 +27,7 @@ export function listMenu(query) {
     });
 }
 
-// 查询菜单详细
+// Query menu details
 export function getMenu(menuId) {
     return request({
         url: '/system/menu/' + menuId,
@@ -35,7 +35,7 @@ export function getMenu(menuId) {
     });
 }
 
-// 查询菜单下拉树结构
+// Query menu drop-down tree structure
 export function treeselect() {
     return request({
         url: '/system/menu/treeselect',
@@ -43,7 +43,7 @@ export function treeselect() {
     });
 }
 
-// 根据角色ID查询菜单下拉树结构
+// Query menu drop-down tree structure based on role ID
 export function roleMenuTreeselect(roleId) {
     return request({
         url: '/system/menu/roleMenuTreeselect/' + roleId,
@@ -51,7 +51,7 @@ export function roleMenuTreeselect(roleId) {
     });
 }
 
-// 查询菜单下拉树结构(只限于数据研发模块)
+// Query menu drop-down tree structure (limited to data research and development module)
 export function treeselectDpp() {
     return request({
         url: '/system/menu/treeselectDpp',
@@ -59,7 +59,7 @@ export function treeselectDpp() {
     });
 }
 
-// 根据角色ID查询菜单下拉树结构(只限于数据研发模块)
+// Query the menu drop-down tree structure based on the role ID (only in the data research and development module)
 export function roleMenuTreeselectDpp(roleId) {
     return request({
         url: '/system/menu/roleMenuTreeselectDpp/' + roleId,
@@ -67,7 +67,7 @@ export function roleMenuTreeselectDpp(roleId) {
     });
 }
 
-// 查询菜单下拉树结构(排除数据研发模块)
+// Query menu drop-down tree structure (excluding data research and development module)
 export function treeselectNoDpp() {
     return request({
         url: '/system/menu/treeselectNoDpp',
@@ -75,7 +75,7 @@ export function treeselectNoDpp() {
     });
 }
 
-// 根据角色ID查询菜单下拉树结构(排除数据研发模块)
+// Query the menu drop-down tree structure based on the role ID (excluding the data research and development module)
 export function roleMenuTreeselectNoDpp(roleId) {
     return request({
         url: '/system/menu/roleMenuTreeselectNoDpp/' + roleId,
@@ -83,7 +83,7 @@ export function roleMenuTreeselectNoDpp(roleId) {
     });
 }
 
-// 新增菜单
+// New menu
 export function addMenu(data) {
     return request({
         url: '/system/menu',
@@ -92,7 +92,7 @@ export function addMenu(data) {
     });
 }
 
-// 修改菜单
+// Modify menu
 export function updateMenu(data) {
     return request({
         url: '/system/menu',
@@ -101,7 +101,7 @@ export function updateMenu(data) {
     });
 }
 
-// 删除菜单
+// delete menu
 export function delMenu(menuId) {
     return request({
         url: '/system/menu/' + menuId,

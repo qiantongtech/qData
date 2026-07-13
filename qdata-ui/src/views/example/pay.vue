@@ -37,7 +37,7 @@
         <select v-model="paymentType" id="paymentType" required>
           <option value="ALIPAY">支付宝</option>
           <option value="WECHAT">微信支付</option>
-          <!-- 如果将来有其他支付方式，可以在这里添加 -->
+          <!-- If there are other payment methods in the future, they can be added here -->
         </select>
       </div>
       <button type="submit">提交支付</button>
@@ -52,10 +52,10 @@ import {pay} from "@/api/example/pay.js";
 export default {
   data() {
     return {
-      orderId: '',          // 订单ID
-      amount: 0,            // 支付金额
-      description: '',      // 商品描述
-      paymentType: 'ALIPAY' // 默认支付方式为支付宝
+      orderId: '',          // Order ID
+      amount: 0,            // Payment amount
+      description: '',      // Product description
+      paymentType: 'ALIPAY' // The default payment method is Alipay
     };
   },
   methods: {
@@ -65,17 +65,17 @@ export default {
           orderId: this.orderId,
           amount: this.amount * 100,
           description: this.description,
-          paymentType: this.paymentType, // 将用户选择的支付类型传递到后端
+          paymentType: this.paymentType, // Pass user selected payment type to backend
         };
 
-        // 发送支付请求到后端
+        // Send payment request to backend
         pay(paymentRequest).then(response => {
           if (response.status === 'ALIPAY_SUCCESS') {
-            // 将返回的支付表单插入到页面并提交
+            // Insert the returned payment form into the page and submit it
             const formContainer = document.createElement('div');
             formContainer.innerHTML = response.paymentUrl;
             document.body.appendChild(formContainer);
-            formContainer.querySelector('form').submit(); // 自动提交表单
+            formContainer.querySelector('form').submit(); // Automatically submit a form
           } else if (response.status === 'WECHAT_SUCCESS') {
             alert('腾讯太坑，没有沙箱环境');
           } else {
@@ -83,7 +83,7 @@ export default {
           }
         })
       } catch (error) {
-        console.error('支付请求异常:', error);
+        console.error("Payment request error:", error);
         alert('支付请求异常，请重试！');
       }
     },

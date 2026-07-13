@@ -18,7 +18,7 @@
 
 import request from '@/utils/request';
 
-// 查询API服务列表
+// Query API service list
 export function listDsApi(query) {
     return request({
         url: '/ds/api/list',
@@ -27,7 +27,7 @@ export function listDsApi(query) {
     });
 }
 
-// 查询API服务详细
+// Query API service details
 export function getDsApi(ID) {
     return request({
         url: '/ds/api/' + ID,
@@ -35,7 +35,7 @@ export function getDsApi(ID) {
     });
 }
 
-// 新增API服务
+// Add new API service
 export function repeatFlag(data) {
     return request({
         url: '/ds/api/repeatFlag',
@@ -44,7 +44,7 @@ export function repeatFlag(data) {
     });
 }
 
-// 新增API服务
+// Add new API service
 export function addDsApi(data) {
     return request({
         url: '/ds/api',
@@ -53,7 +53,7 @@ export function addDsApi(data) {
     });
 }
 
-// sql解析
+// sql parsing
 export function sqlParse(data) {
     return request({
         url: '/ds/api/sqlParse',
@@ -62,7 +62,7 @@ export function sqlParse(data) {
     });
 }
 
-// sql解析
+// sql parsing
 export function serviceTesting(data) {
     if (data.headerJson !== null && typeof data.headerJson === 'object') {
         data.headerJson = JSON.stringify(data.headerJson)
@@ -74,7 +74,7 @@ export function serviceTesting(data) {
     });
 }
 
-// sql解析
+// sql parsing
 export function addDataApi(data) {
     return request({
         url: '/ds/api',
@@ -91,7 +91,7 @@ export function updateDataApi(data) {
     });
 }
 
-// 修改API服务
+// Modify API service
 export function updateDsApi(data) {
     return request({
         url: '/ds/api',
@@ -100,7 +100,7 @@ export function updateDsApi(data) {
     });
 }
 
-// 删除API服务
+// Delete API service
 export function delDsApi(ID) {
     return request({
         url: '/ds/api/' + ID,
@@ -108,7 +108,7 @@ export function delDsApi(ID) {
     });
 }
 
-// 删除API服务
+// Delete API service
 export function listDataTable(ID) {
     return request({
         url: '/ds/api/listDataTable' + ID,
@@ -116,7 +116,7 @@ export function listDataTable(ID) {
     });
 }
 
-// 启用API服务
+// Enable API service
 export function releaseDataApi(ID) {
     return request({
         url: '/ds/api/release/' + ID,
@@ -124,7 +124,7 @@ export function releaseDataApi(ID) {
     });
 }
 
-// 停用API服务
+// Disable API service
 export function cancelDataApi(ID) {
     return request({
         url: '/ds/api/cancel/' + ID,

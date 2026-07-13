@@ -118,7 +118,7 @@ const props = defineProps({
 
 const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
 
-// day.js与java的日期格式不兼容，需要处理
+// day.js is not compatible with the date format of java and needs to be processed
 const dateIncrementConfig_dateFormat2 = computed(() => {
   return props.dateIncrementConfig_dateFormat
       .replace(/yyyy/g, 'YYYY')
@@ -141,7 +141,7 @@ const form = ref({
 let daDiscoveryTaskRef = ref();
 let editorRef = ref("");
 
-// 运算符
+// operator
 const operators = ref([
   { label: ">", value: ">" },
   { label: ">=", value: ">=" },
@@ -149,14 +149,14 @@ const operators = ref([
   { label: "<=", value: "<=" },
 ]);
 
-// 基准类型
+// Base type
 const benchmarkTypes = ref([
   { label: td("dpp.integration.fixedValue", "固定值"), value: "1" },
   { label: td("dpp.integration.timeRange", "时间范围"), value: "2" },
   { label: td("dpp.integration.sqlExpression", "SQL表达式"), value: "3" },
 ]);
 
-// 动态基准值规则
+// Dynamic base value rules
 const dataRules = computed(() => {
   if (form.value.type === "1" || form.value.type === "3") {
     return [{ required: true, message: td("dpp.integration.benchmarkValueRequired", "请输入基准值"), trigger: "change" }];
@@ -164,7 +164,7 @@ const dataRules = computed(() => {
   return [];
 });
 
-// 监听 visible 弹窗打开时初始化表单
+// Initialize the form when listening to the visible pop-up window.
 watch(
     () => props.visible,
     (newVal) => {
@@ -176,7 +176,7 @@ watch(
     }
 );
 
-// 默认选择字段名称
+// Field name selected by default
 watch(
     () => props.ColumnByAssettab,
     (newVal) => {
@@ -187,17 +187,17 @@ watch(
     { immediate: true, deep: true }
 );
 
-// 监听类型变化重置 data
+// Monitoring type changes reset data
 watch(() => form.value.type, (newType) => {
   form.value.data = "";
 });
 
-// SQL 编辑器 change 回调
+// SQL editor change callback
 function changeTextarea(val) {
   form.value.data = val;
 }
 
-// 显示/隐藏 dialog
+// Show/hide dialog
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -207,19 +207,19 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭弹窗
+// Close pop-up window
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// 保存逻辑
+// save logic
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };

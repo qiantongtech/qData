@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据分类列表
+// Query data classification list
 export function listDataCategory(query) {
   return request({
     url: '/dg/dataCategory/list',
@@ -36,7 +36,7 @@ export function listDataCategoryAll(query) {
 }
 
 
-// 查询数据分类详细
+// Query data classification details
 export function getDataCategory(id) {
   return request({
     url: '/dg/dataCategory/' + id,
@@ -44,7 +44,7 @@ export function getDataCategory(id) {
   })
 }
 
-// 查询数据分类树
+// Query data classification tree
 export function selectTreeDataCategory(query) {
   return request({
     url: '/dg/dataCategory/selectTree',
@@ -53,7 +53,7 @@ export function selectTreeDataCategory(query) {
   })
 }
 
-// 新增数据分类
+// Add new data classification
 export function addDataCategory(data) {
   return request({
     url: '/dg/dataCategory',
@@ -62,7 +62,7 @@ export function addDataCategory(data) {
   })
 }
 
-// 修改数据分类
+// Modify data classification
 export function updateDataCategory(data) {
   return request({
     url: '/dg/dataCategory',
@@ -71,7 +71,7 @@ export function updateDataCategory(data) {
   })
 }
 
-// 删除数据分类
+// Delete data classification
 export function delDataCategory(id) {
   return request({
     url: '/dg/dataCategory/' + id,
@@ -79,7 +79,7 @@ export function delDataCategory(id) {
   })
 }
 
-// 批量定级
+// Batch grading
 export function batchDataLevel(data) {
   return request({
     url: '/dg/dataCategory/batchDataLevel',

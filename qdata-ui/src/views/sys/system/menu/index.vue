@@ -119,7 +119,7 @@
          </el-table>
       </div>
 
-      <!-- 添加或修改菜单对话框 -->
+      <!-- Add or modify menu dialog box -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -361,7 +361,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询菜单列表 */
+/** Query menu list */
 function getList() {
   loading.value = true;
   listMenu(queryParams.value).then(response => {
@@ -370,7 +370,7 @@ function getList() {
   });
 }
 
-/** 查询菜单下拉树结构 */
+/** Query menu drop-down tree structure */
 function getTreeselect() {
   menuOptions.value = [];
   listMenu().then(response => {
@@ -380,13 +380,13 @@ function getTreeselect() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     menuId: undefined,
@@ -403,28 +403,28 @@ function reset() {
   proxy.resetForm("menuRef");
 }
 
-/** 展示下拉图标 */
+/** Show dropdown icon */
 function showSelectIcon() {
   iconSelectRef.value.reset();
 }
 
-/** 选择图标 */
+/** Select icon */
 function selected(name) {
   form.value.icon = name;
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   getTreeselect();
@@ -437,7 +437,7 @@ function handleAdd(row) {
   title.value = td('sys.system.menu.addTitle');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -446,7 +446,7 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   await getTreeselect();
@@ -457,7 +457,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["menuRef"].validate(valid => {
     if (valid) {
@@ -478,7 +478,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal.confirm(td('sys.system.menu.confirmDelete', { name: row.menuName })).then(function() {
     return delMenu(row.menuId);

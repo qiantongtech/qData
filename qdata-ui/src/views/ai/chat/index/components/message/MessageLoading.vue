@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- message 加载页面 -->
+<!-- Message loading page -->
 <template>
   <div class="message-loading">
     <el-skeleton animated />

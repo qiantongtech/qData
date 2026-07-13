@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询服务资源门户岗位列表
+// Query service resource portal job list
 export function listRpPost(query) {
   return request({
     url: '/rp/rpPost/list',
@@ -27,7 +27,7 @@ export function listRpPost(query) {
   })
 }
 
-// 查询服务资源门户岗位详细
+// Query service resource portal position details
 export function getRpPost(postId) {
   return request({
     url: '/rp/rpPost/' + postId,
@@ -35,7 +35,7 @@ export function getRpPost(postId) {
   })
 }
 
-// 新增服务资源门户岗位
+// New service resource portal positions added
 export function addRpPost(data) {
   return request({
     url: '/rp/rpPost',
@@ -44,7 +44,7 @@ export function addRpPost(data) {
   })
 }
 
-// 修改服务资源门户岗位
+// Modify service resource portal position
 export function updateRpPost(data) {
   return request({
     url: '/rp/rpPost',
@@ -53,7 +53,7 @@ export function updateRpPost(data) {
   })
 }
 
-// 删除服务资源门户岗位
+// Delete service resource portal position
 export function delRpPost(postId) {
   return request({
     url: '/rp/rpPost/' + postId,

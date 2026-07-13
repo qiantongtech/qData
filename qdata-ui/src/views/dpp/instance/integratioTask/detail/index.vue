@@ -22,11 +22,11 @@
       <div class="infotop">
         <div class="infotop-title mb15">
           <div class="task-item">
-            <!-- 正方形编号 -->
+            <!-- square number -->
             <div class="task-id" style=" aspect-ratio: auto !important">
               {{ dppEtlTaskDetail.id || '-' }}
             </div>
-            <!-- 名称 -->
+            <!-- Name -->
             <div class="task-name">
               {{ dppEtlTaskDetail.names || '' }}
             </div>
@@ -220,7 +220,7 @@ watch(
   { immediate: true }
 );
 
-// 清理函数
+// Cleanup function
 const clearPolling = () => {
   polling.value = false;
   if (timer) {

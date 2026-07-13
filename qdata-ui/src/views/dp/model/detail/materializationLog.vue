@@ -51,7 +51,7 @@
     </qt-table>
   </qt-wrap>
 
-  <!-- 新增或修改发布模型记录对话框 -->
+  <!-- Add or modify the publish model record dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -168,7 +168,7 @@
     </template>
   </el-dialog>
 
-  <!-- 发布模型记录详情对话框 -->
+  <!-- Publish model record details dialog box -->
   <el-dialog
     :title="title"
     v-model="openDetail"
@@ -435,19 +435,19 @@ watch(
 );
 const Materialization = ref(false);
 
-/** 查询发布模型记录列表 */
+/** Query the release model record list */
 function getList() {
   tableRef.value?.getList();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -475,28 +475,28 @@ function reset() {
   proxy.resetForm("dpModelMaterializedRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   tableStore.params.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   tableStore.params.pageNum = 1;
   getList();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-// 排序由 qt-table 内部处理并写入 params
+// Sorting is handled internally by qt-table and written to params
 let modelIds = [];
-/** 发布按钮操作 */
+/** Post button action */
 function handleMaterialization() {
   Materialization.value = true;
   title.value = td('dp.materializedModel.publishModelTitle');
@@ -505,7 +505,7 @@ function handleMaterialization() {
   modelIds = [modelId.value];
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -516,7 +516,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -527,7 +527,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dpModelMaterializedRef"].validate((valid) => {
     if (valid) {
@@ -552,7 +552,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -567,7 +567,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "dp/model/export",

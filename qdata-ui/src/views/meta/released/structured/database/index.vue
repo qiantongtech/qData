@@ -81,7 +81,7 @@ const store = reactive({
   treeDomains: [],
 });
 
-// 列表
+// list
 const tableRef = ref(null);
 const tableStroe = reactive({
   config: {
@@ -202,7 +202,7 @@ const tableStroe = reactive({
   },
 });
 
-// 搜索项
+// search terms
 const searchStore = reactive({
   items: [
     {
@@ -236,7 +236,7 @@ const searchStore = reactive({
   ],
 });
 
-// 获取业务域路径
+// Get business domain path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -249,7 +249,7 @@ const getDomainPath = computed(() => {
   };
 });
 
-// 获取业务域列表
+// Get business domain list
 function getDomains() {
   listDomain().then((res) => {
     store.domains = [...res.data];
@@ -264,7 +264,7 @@ function getDomains() {
   });
 }
 
-// 点击详情
+// Click for details
 function handleDetailClick(row, tab) {
   router.push({
     path: BASE_URL + "/detail",

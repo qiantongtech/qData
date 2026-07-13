@@ -30,13 +30,13 @@ import { i18n } from '@/plugins/vueI18n'
 
 NProgress.configure({ showSpinner: false });
 
-// 认证模式
+// Authentication mode
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
-// 应用ID
+// Application ID
 const clientId = import.meta.env.VITE_APP_CLIENTID;
-// 服务端地址
+// Server address
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
-// 当前APP地址
+// Current APP address
 const appUrl = import.meta.env.VITE_APP_THIS_APP_URL;
 
 const whiteList = ["/login", "/register", "/sso/login", "/sso",];

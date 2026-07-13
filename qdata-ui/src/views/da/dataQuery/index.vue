@@ -27,7 +27,7 @@
       </div>
       <div class="head-btns">
         <div class="head-select">
-          <!-- 标题后附加下拉选择框 -->
+          <!-- Append drop-down selection box after title -->
           <el-select v-model="queryParams.id" :placeholder="td('da.dataQuery.datasourcePlaceholder')" class="head-select-el" style="width: 300px;">
             <el-option v-for="item in TablesByDataSource" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
@@ -39,12 +39,12 @@
       </div>
     </div>
     <el-container style="90%">
-      <!-- 树：数据源->表->字段 -->
+      <!-- Tree: Data source->Table->Field -->
       <DeptTree :deptOptions="TablesByDataSource" :leftWidth="leftWidth" :placeholder="td('da.dataQuery.datasourceSearchPlaceholder')" ref="DeptTreeRef"
         @node-click="handleTreeNodeClick" @nodeload-click="loadTreeData" :loading="loading" />
       <el-main style="padding: 0;">
         <div class="pagecont-bottom" style="padding: 0;">
-          <!-- SQL 编辑器 -->
+          <!-- SQL editor -->
           <Editor ref="editorRef" :model-value="queryParams.sqlText" @update:model-value="handleChange"
             @query="handleQuery" />
         </div>
@@ -85,16 +85,16 @@ const queryParams = ref({
   pageNum: 1,
   pageSize: 20,
   sqlText: "",
-  id: "", // 选中数据源 id，用于查询
+  id: "", // Select the data source id for query
   datasourceType: '',
 });
 let spl = ref('')
 
-const TablesByDataSource = ref([]); // 树顶级为数据源节点
+const TablesByDataSource = ref([]); // The top level of the tree is the data source node
 
 const editorRef = ref(null);
 const nodeData = ref({ name: "", taskConfig: {} });
-// 1. 获取数据源列表，构造树根节点（数据源）
+// 1. Obtain the data source list and construct the tree root node (data source)
 const getDatasourcesTree = async () => {
   loading.value = true;
   try {
@@ -122,7 +122,7 @@ const getDatasourcesTree = async () => {
   }
 };
 
-// 2. 懒加载表或字段
+// 2. Lazy loading of tables or fields
 const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   console.log("🚀 ~ loadTreeData ~ node:", node)
   if (!node) {
@@ -173,7 +173,7 @@ const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   }
 };
 
-// 3. 点击树节点插入SQL
+// 3. Click the tree node to insert SQL
 function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
   queryParams.value.id = expandedRootId;
   if (type === 'node') {
@@ -184,7 +184,7 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
       return;
     }
 
-    // 点击表或字段插入对应名字
+    // Click on the table or field to insert the corresponding name
     const currentSql = queryParams.value.sqlText || "";
     const suffix = currentSql.endsWith(" ") || currentSql === "" ? "" : " ";
     queryParams.value.sqlText = currentSql + suffix + data.name;
@@ -199,14 +199,14 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
     queryParams.value.sqlText = currentSql + suffix + payload;
   }
 }
-// 4. 编辑器内容变化
+// 4. Editor content changes
 function handleChange(val) {
   queryParams.value.sqlText = val;
 }
 let DeptTreeRef = ref()
 let loadings = ref()
 
-// 5. 查询按钮
+// 5. Query button
 async function handleQuery() {
   spl.value = editorRef.value?.getEditorSelectedOrAll();
   console.log("🚀 ~ handleQuery ~ spl:", spl)
@@ -216,7 +216,7 @@ async function handleQuery() {
     errors.push(td('da.dataQuery.sqlRequired'));
   }
 
-  // 校验数据源 id
+  // Verify data source id
   if (!queryParams.value.id) {
     errors.push(td('da.dataQuery.datasourceRequired'));
   }
@@ -224,7 +224,7 @@ async function handleQuery() {
     ElMessage.warning(errors.join("，"));
     return;
   }
-  // 执行 SQL 查询
+  // Execute SQL query
   dialogVisible.value = false;
   try {
     loadings.value = true;
@@ -243,7 +243,7 @@ async function handleQuery() {
   }
 }
 
-// 6. 清空编辑器
+// 6. Clear the editor
 function handleClear() {
   queryParams.value.sqlText = "";
 }

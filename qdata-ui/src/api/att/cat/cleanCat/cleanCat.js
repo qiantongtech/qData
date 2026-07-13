@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询清洗规则类目列表
+// Query the cleaning rule category list
 export function listAttCleanCat(query) {
   return request({
     url: '/att/cleanCat/list',
@@ -27,7 +27,7 @@ export function listAttCleanCat(query) {
   })
 }
 
-// 查询清洗规则类目详细
+// Query cleaning rule category details
 export function getAttCleanCat(ID) {
   return request({
     url: '/att/cleanCat/' + ID,
@@ -35,7 +35,7 @@ export function getAttCleanCat(ID) {
   })
 }
 
-// 新增清洗规则类目
+// Added cleaning rule category
 export function addAttCleanCat(data) {
   return request({
     url: '/att/cleanCat',
@@ -44,7 +44,7 @@ export function addAttCleanCat(data) {
   })
 }
 
-// 修改清洗规则类目
+// Modify cleaning rule category
 export function updateAttCleanCat(data) {
   return request({
     url: '/att/cleanCat',
@@ -53,7 +53,7 @@ export function updateAttCleanCat(data) {
   })
 }
 
-// 删除清洗规则类目
+// Delete cleaning rule category
 export function delAttCleanCat(ID) {
   return request({
     url: '/att/cleanCat/' + ID,

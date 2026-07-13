@@ -64,7 +64,7 @@
                     <div class="dp-main--h3">监测预警</div>
                     <div class="tables-wrap">
                         <dp-table :table="tableOptions" :fn="getTableDataA" :column="tableColumnA">
-                            <!-- 自定义插槽 -->
+                            <!-- Custom slot -->
                             <template #warning="scope">
                                 <el-tag>{{ scope.row.rz }}</el-tag>
                             </template>
@@ -219,7 +219,7 @@ const params = ref({
     getChartData();
 
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             dpChartARef.value.resize();
         }, 300);

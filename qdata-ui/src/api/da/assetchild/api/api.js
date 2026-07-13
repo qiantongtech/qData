@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-外部API列表
+// Query data assets-external API list
 export function listApi(query) {
   return request({
     url: '/da/api/list',
@@ -27,7 +27,7 @@ export function listApi(query) {
   })
 }
 
-// 查询数据资产-外部API详细
+// Query data assets-external API details
 export function getApi(id) {
   return request({
     url: '/da/api/' + id,
@@ -35,7 +35,7 @@ export function getApi(id) {
   })
 }
 
-// 新增数据资产-外部API
+// New data assets-external API
 export function addApi(data) {
   return request({
     url: '/da/api',
@@ -44,7 +44,7 @@ export function addApi(data) {
   })
 }
 
-// 修改数据资产-外部API
+// Modify data assets - external API
 export function updateApi(data) {
   return request({
     url: '/da/api',
@@ -53,7 +53,7 @@ export function updateApi(data) {
   })
 }
 
-// 删除数据资产-外部API
+// Deleting Data Assets - External API
 export function delApi(id) {
   return request({
     url: '/da/api/' + id,

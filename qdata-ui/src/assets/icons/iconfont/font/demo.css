@@ -1,4 +1,4 @@
-/* Logo 字体 */
+/* Logo font */
 @font-face {
   font-family: "iconfont logo";
   src: url('https://at.alicdn.com/t/font_985780_km7mi63cihi.eot?t=1545807318834');
@@ -58,7 +58,7 @@
   display: none;
 }
 
-/* 页面布局 */
+/* Page layout */
 .main {
   padding: 30px 100px;
   width: 960px;
@@ -129,14 +129,14 @@
 }
 
 .icon_lists .svg-icon {
-  /* 通过设置 font-size 来改变图标大小 */
+  /* Change the icon size by setting font-size */
   width: 1em;
-  /* 图标和文字相邻时，垂直对齐 */
+  /* When the icon and text are adjacent, align them vertically */
   vertical-align: -0.15em;
-  /* 通过设置 color 来改变 SVG 的颜色/fill */
+  /* Change the color/fill of SVG by setting color */
   fill: currentColor;
-  /* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
-      normalize.css 中也包含这行 */
+  /* The path and stroke overflow viewBox parts will be displayed under IE
+      normalize.css also contains this line */
   overflow: hidden;
 }
 
@@ -145,7 +145,7 @@
   color: #666;
 }
 
-/* markdown 样式 */
+/* markdown style */
 .markdown {
   color: #666;
   font-size: 14px;
@@ -391,7 +391,7 @@
   text-decoration: underline;
 }
 
-/* 代码高亮 */
+/* code highlighting */
 /* PrismJS 1.15.0
 https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
 /**

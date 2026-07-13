@@ -314,7 +314,7 @@
       >
       </crontab>
     </el-dialog>
-    <!-- 新增 -->
+    <!-- New -->
     <add
       :visible="taskConfigDialogVisible"
       :title="td('dpp.cleanRule.addTask', '新增任务')"
@@ -556,14 +556,14 @@ function resetQuery() {
   handleQuery();
 }
 
-// 部门树
+// department tree
 const leftWidth = ref(300);
 const DeptTreeRef = ref(null);
 function handleNodeClick(data) {
   tableStore.params.catCode = data.code;
   handleQuery();
 }
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 let nodeData = ref({ taskConfig: {}, name: null });
 

@@ -243,7 +243,7 @@
     />
   </div>
 
-  <!-- 新增或修改项目与用户关联关系对话框 -->
+  <!-- Add or modify project-user association dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -373,7 +373,7 @@
         {{ td("dpp.setting.projectUserRel.userSelect") }}
       </span>
     </template>
-    <!--用户数据-->
+    <!--User data-->
     <el-form
       class="btn-style"
       :model="queryParamsUser"
@@ -540,7 +540,7 @@ const size = (ref < "default") | "large" | ("small" > "default");
 const value1 = ref("");
 const value2 = ref("");
 const activeName = ref("first");
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('dpp.setting.projectUserRel.id'), visible: true },
   { key: 2, label: td('dpp.setting.projectUserRel.userId'), visible: true },
@@ -549,9 +549,9 @@ const columns = ref([
 const userList = ref([]);
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 const userStore = useUserStore();
@@ -572,19 +572,19 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const roleList = ref([]);
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/AttProjectUserRel/importData",
 });
 const createTime = ref(null);
@@ -632,7 +632,7 @@ const data = reactive({
 
 const { queryParams, queryParamsUser, form, rules } = toRefs(data);
 let addUserAdnProject = ref(false);
-// 监听 userStore 中的 projectId 变化
+// Monitor projectId changes in userStore
 watch(
   () => userStore.projectId,
   (newValue, oldValue) => {
@@ -650,7 +650,7 @@ function handleDateChange(value) {
   queryParams.value.startTime = value[0];
   queryParams.value.endTime = value[1];
 }
-/** 查询项目与用户关联关系列表 */
+/** Query the list of relationships between projects and users */
 function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
@@ -674,7 +674,7 @@ function getListUser() {
     loadingUser.value = false;
     console.log(userList.value, "userList");
 
-    // 在表格加载完成后，设置之前选中的用户
+    // After the table is loaded, set the previously selected user
     nextTick(() => {
       userList.value.forEach((user) => {
         if (form.value.userIdList.includes(user.userId)) {
@@ -684,12 +684,12 @@ function getListUser() {
     });
   });
 }
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQueryUser() {
   queryParamsUser.value.pageNum = 1;
   getListUser();
 }
-/** 重置按钮操作 */
+/** reset button action */
 function resetQueryUser() {
   queryParamsUser.value = {
     pageNum: 1,
@@ -702,13 +702,13 @@ function resetQueryUser() {
   };
   handleQueryUser();
 }
-/** 提交按钮操作 */
+/** Submit button action */
 function submitFormUser() {
   form.value.userIdList = idsUser.value;
   form.value.userNameList = userName.value;
   openTwo.value = false;
 }
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChangeUser(selection) {
   idsUser.value = selection.map((item) => item.userId);
   userName.value = selection.map((item) => item.nickName);
@@ -721,14 +721,14 @@ function getRoleList() {
     });
   }
 }
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -751,13 +751,13 @@ function reset() {
   proxy.resetForm("AttProjectUserRelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   createTime.value = null;
   queryParams.value = {
@@ -773,21 +773,21 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   getRoleList();
   reset();
@@ -795,7 +795,7 @@ function handleAdd() {
   title.value = td("dpp.setting.projectUserRel.addMember", "新增项目成员");
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -808,7 +808,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -822,7 +822,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["AttProjectUserRelRef"].validate((valid) => {
     if (valid) {
@@ -835,7 +835,7 @@ function submitForm() {
           })
           .catch((error) => {});
       } else {
-        // 新增时增加额外验证
+        // Add additional verification when adding
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
           proxy.$modal.msgWarning(
             td(
@@ -858,7 +858,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   const _userId =
@@ -883,7 +883,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/AttProjectUserRel/export",
@@ -894,14 +894,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('dpp.setting.projectUserRel.memberImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -910,17 +910,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -999,7 +999,7 @@ function routeTo(link, row) {
 .checkbox-vertical {
   display: flex;
   flex-direction: column;
-  /* 竖排 */
+  /* Vertical */
   margin-top: 8px;
 }
 

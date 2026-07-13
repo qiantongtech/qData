@@ -38,7 +38,7 @@
                                 class="el-form-input-width" />
                         </el-form-item>
                     </template>
-                    <!-- 更多/收起按钮 -->
+                    <!-- More/Collapse button -->
                     <el-form-item v-if="columnFields.length > 3" :label-position="labelPosition">
                         <el-button type="text" @click="toggleMore">
                             {{ showMoreFields ? td('da.qualityTaskLog.problemData.collapse') : td('da.qualityTaskLog.problemData.more') }}
@@ -49,7 +49,7 @@
                         </el-button>
                     </el-form-item>
 
-                    <!-- 查询/重置按钮 -->
+                    <!-- Query/reset button -->
                     <el-form-item :label-position="labelPosition">
                         <el-button plain type="primary" @click="handleQuery" @mousedown.prevent>
                             <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
@@ -89,7 +89,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <!-- 评测字段列 -->
+            <!-- Comment field column -->
             <el-table-column :label="td('da.qualityTaskLog.problemData.evaluationField')" align="center" :show-overflow-tooltip="{effect: 'light'}" width="300">
                 <template #default="scope">
                     <div v-for="(item, index) in getLabelAndValueFromStr(obj.columnName, obj.rule, scope.row.dataJsonStr)"
@@ -194,7 +194,7 @@ const { quality_warning_status, quality_log_data_repair } = proxy.useDict(
     'quality_warning_status',
     'quality_log_data_repair'
 )
-// 解析 columnName 为数组
+// Parse columnName as an array
 const columnFields = computed(() => {
     return obj.value.columnName
         ? obj.value.columnName.split(',').map(name => name.trim())
@@ -253,7 +253,7 @@ const filters = ref({
 })
 const tableData = ref([])
 
-// 查询参数
+// query parameters
 let queryParams = ref({
     pageNum: 1,
     pageSize: 10,
@@ -261,7 +261,7 @@ let queryParams = ref({
     keyWordData: '',
 })
 
-// 搜索和重置
+// Search and reset
 function handleQuery() {
     queryParams.value.pageNum = 1
     getList()
@@ -272,7 +272,7 @@ function resetQuery() {
     handleQuery()
 }
 
-// 获取列表数据
+// Get list data
 async function getList() {
     loading.value = true
     try {
@@ -287,12 +287,12 @@ async function getList() {
     }
 }
 
-// selection 变化
+// selection change
 function handleSelectionChange(val) {
     selectedRows.value = val.map(item => item.id)
 }
 
-// 忽略数据
+// Ignore data
 async function addIgnore(row) {
     let errorDataId = row?.id ? [row.id] : selectedRows.value
     const isBatch = errorDataId.length > 1
@@ -311,7 +311,7 @@ async function addIgnore(row) {
     })
 }
 
-// 添加备注
+// Add notes
 function addComment(obj) {
     row.value = obj
     commentForm.value.comment = obj.remark
@@ -334,7 +334,7 @@ async function submitComment() {
     commentDialogVisible.value = false
 }
 
-// 保存数据
+// save data
 async function onSave(updatedData, oldData, keyWordData) {
     await handleUpdateErrorData({
         keyWordData,
@@ -347,7 +347,7 @@ async function onSave(updatedData, oldData, keyWordData) {
     })
 }
 
-// 打开详情弹窗
+// Open details popup window
 async function openDetails(row) {
     detailDialogRef.value?.open(row, obj.value.rule)
 }
@@ -356,13 +356,13 @@ async function openupDetails(row) {
     updateDialogRef.value?.open(row, obj.value.rule, obj.value.columnName)
 }
 
-// 高级筛选
+// Advanced filtering
 const toggleAdvanced = () => {
     advancedVisible.value = !advancedVisible.value
 }
 
 const applyAdvancedFilters = () => {
-    console.log('应用高级筛选条件：', filters.value)
+    console.log("Applying advanced filter conditions:", filters.value)
 }
 
 const resetFilters = () => {
@@ -372,7 +372,7 @@ const resetFilters = () => {
     }
 }
 
-// 展示字段格式化
+// Display field formatting
 function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
     if (!columnName || !rule || !dataJsonStr) return ['-']
 
@@ -380,7 +380,7 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
     try {
         jsonData = JSON.parse(dataJsonStr)
     } catch (e) {
-        console.warn('dataJsonStr 解析失败：', e)
+        console.warn("Failed to parse dataJsonStr:", e)
         return ['-']
     }
 
@@ -390,7 +390,7 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
             ? rule.evaColumns
             : Object.values(rule.evaColumns || {})
     } catch (err) {
-        console.warn('rule.evaColumns 解析失败', err)
+        console.warn("Failed to parse rule.evaColumns", err)
         return ['-']
     }
 
@@ -406,13 +406,13 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
     })
 }
 
-// 展开主弹窗
+// Expand main popup window
 async function open(row) {
     obj.value = {
         ...row,
         rule: typeof row.rule === 'string' ? JSON.parse(row.rule) : row.rule,
     }
-    // 初始化 keyWordData 中字段
+    // Initialize fields in keyWordData
     const fieldNames = obj.value.columnName?.split(',') || []
     const keyWordData = {}
     fieldNames.forEach(name => {
@@ -440,7 +440,7 @@ const filteredData = computed(() => {
     })
 })
 
-// 对外暴露方法
+// External exposure method
 defineExpose({ open, close })
 </script>
 

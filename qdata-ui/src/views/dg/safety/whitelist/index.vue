@@ -1279,7 +1279,7 @@ function submitForm() {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+    .confirm('Are you sure to delete the data item numbered "' + _ids + '"?')
     .then(async () => {
       await delDesensitizeWhitelist(_ids);
       tableRef.value.getList();
@@ -1296,7 +1296,7 @@ function handleDelete(row) {
     message.value=td('dg.whitelist.confirmDeleteId', '', { id: row.id })
   }else {
     store.rows.forEach(item => {
-      // 当 validFlag 为 false 时，记录 id
+      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }

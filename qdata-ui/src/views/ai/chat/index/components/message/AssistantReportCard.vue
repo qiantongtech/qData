@@ -169,7 +169,7 @@ const activeTab = ref(
     ""
 );
 
-// 分页相关
+// Pagination related
 const currentPage = ref(1);
 const pageSize = ref(10);
 
@@ -189,21 +189,21 @@ const handleSizeChange = (val) => {
   currentPage.value = 1;
 };
 
-// 监听数据变化
+// Monitor data changes
 watch(
   () => props.data,
   (newData) => {
     if (newData?.tabs?.length > 0) {
       const exists = newData.tabs.some((t) => t.key == activeTab.value);
       if (!exists || !activeTab.value) {
-        // 优先选择可视化或 Text2SQL 标签
+        // Prefer Visualization or Text2SQL tags
         const priorityTab =
           newData.tabs.find((t) => t.key === "viz") ||
           newData.tabs.find((t) => t.key === "sql");
         activeTab.value = priorityTab ? priorityTab.key : newData.tabs[0].key;
       }
     }
-    // 只在非加载状态下尝试渲染
+    // Only try rendering in non-loading state
     if (!newData?.isLoading) {
       nextTick(() => {
         renderChart();
@@ -213,7 +213,7 @@ watch(
   { deep: true, immediate: true }
 );
 
-// 监听标签页切换，重置分页并渲染图表
+// Monitor tab switching, reset pagination and render charts
 watch(activeTab, (newTab, oldTab) => {
   if (newTab !== oldTab) {
     currentPage.value = 1;
@@ -227,7 +227,7 @@ const chartEl = ref(null);
 let chart;
 
 const buildOption = (chartData) => {
-  // 过滤无效的 xAxis 数据，确保 label 不为 null
+  // Filter invalid xAxis data and ensure label is not null
   const xAxis = (chartData?.xAxis || []).map((x) =>
     x == null || x == undefined ? "" : x
   );
@@ -239,7 +239,7 @@ const buildOption = (chartData) => {
   if (type == "bar") {
     const seriesList = chartData?.series || [];
 
-    // 如果只有一组数据，使用带背景槽的样式
+    // If there is only one set of data, use a style with background slots
     if (seriesList.length == 1) {
       const yData = (seriesList[0].data || []).map((v) =>
         v == null || v == undefined ? 0 : v
@@ -275,7 +275,7 @@ const buildOption = (chartData) => {
         data: yData,
       });
     } else {
-      // 多组数据正常展示
+      // Multiple sets of data are displayed normally
       seriesList.forEach((s) => {
         series.push({
           name: s.name,
@@ -385,9 +385,9 @@ const buildOption = (chartData) => {
 const getChartDom = () => {
   const el = chartEl.value;
   if (Array.isArray(el)) {
-    // 找到当前活跃标签页下的图表容器
+    // Find the chart container under the currently active tab
     return el.find((dom) => {
-      // 检查 dom 是否在当前活跃的标签内容中
+      // Check if dom is in the currently active tag content
       return dom && dom.offsetParent !== null;
     });
   }
@@ -396,7 +396,7 @@ const getChartDom = () => {
 
 const renderChart = async () => {
   await nextTick();
-  // 再次等待以确保 DOM 渲染完成（特别是在切换标签时）
+  // Wait again to ensure DOM rendering is complete (especially when switching tabs)
   await new Promise((resolve) => setTimeout(resolve, 50));
 
   const tab = (props.data?.tabs || []).find((t) => t.key == activeTab.value);
@@ -414,7 +414,7 @@ const renderChart = async () => {
   }
 
   chart.setOption(buildOption(tab.chart), true);
-  // 确保在渲染后立即调整大小以适应新容器
+  // Make sure to resize to fit the new container immediately after rendering
   chart.resize();
 };
 
@@ -426,7 +426,7 @@ const handleCopySql = async () => {
   message?.msgSuccess?.(td('ai.chat.copySuccess'));
 };
 
-/** 下载图表 */
+/** Download chart */
 const handleDownloadChart = () => {
   if (!chart) return;
   const url = chart.getDataURL({
@@ -440,7 +440,7 @@ const handleDownloadChart = () => {
   link.click();
 };
 
-/** 导出明细 */
+/** Export details */
 const handleExport = async () => {
   const { conversationId, messageId } = props.data;
   if (!conversationId || !messageId) return;

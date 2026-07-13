@@ -99,11 +99,11 @@
             alt=""
           />{{ td('dpp.integratioTask.taskCheck', '任务检查') }}
         </el-button>
-        <!-- <el-button type="primary" size="small" @click="selectTab('log')">执行一下</el-button> -->
+        <!-- <el-button type="primary" size="small" @click="selectTab('log')">Execute it</el-button> -->
       </div>
     </div>
     <div class="flex-container">
-      <!-- 左侧树 -->
+      <!-- tree on left -->
       <div class="left-pane" v-if="!route.query.info">
         <div class="left-tree">
           <el-tree
@@ -152,7 +152,7 @@
           </el-tree>
         </div>
       </div>
-      <!-- 右侧主内容 -->
+      <!-- Main content on the right -->
       <div class="right-pane" v-loading="loading">
         <div
           id="graphContainer"
@@ -225,24 +225,24 @@ import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import FieldPreviewDialog from "@/views/dpp/task/integratioTask/components/fieldPreview.vue";
-// 输入组件
+// input component
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
 
-// 转换组件
+// Transform component
 import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
 import AddConstants from "@/views/dpp/task/integratioTask/components/transform/addConstants.vue";
 import FieldSelectAndmodificat from "@/views/dpp/task/integratioTask/components/transform/fieldSelectAndmodificat.vue";
 import ValueMapping from "@/views/dpp/task/integratioTask/components/transform/valueMapping.vue";
 
-// 清洗组件
+// Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
-// 排序组件
+// sorting component
 import OrderConfig from "@/views/dpp/task/integratioTask/components/transform/orderConfig.vue";
-// 字段派生期
+// Field derivation period
 import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/fieldBuilder.vue";
-// 输出表组件
+// Output table component
 import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
 
 import add from "../add//add.vue";
@@ -288,11 +288,11 @@ const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
 let id = route.query.id || 1;
-// "edit"：编辑，"input"：只看输入字段，"output"：只看输出字段
-// tooltip 显示内容
+// "edit": edit, "input": only look at input fields, "output": only look at output fields
+// tooltip display content
 const taskType = ref("");
 
-//获取执行引擎
+//Get execution engine
 const getTaskType = (json) => {
   if (!json) {
     return "SPARK";
@@ -301,7 +301,7 @@ const getTaskType = (json) => {
   return type;
 };
 
-// 图标
+// icon
 const getDatasourceIcon = (json) => {
   let type = json && JSON.parse(json).taskType;
   taskType.value = type;
@@ -316,7 +316,7 @@ const getDatasourceIcon = (json) => {
       return null;
   }
 };
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
@@ -326,20 +326,20 @@ watch(
     }
   }
 );
-// 跳转判断
+// Jump judgment
 let hasUnsavedChanges = ref(false);
 let nodeData = ref({ taskConfig: {}, name: null });
-// 全局的Graph
+// Global Graph
 let graph = null;
-// 全局的dnd
+// global dnd
 let dnd = null;
-// 抽屉
+// drawer
 const drawer = ref(false);
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
-// 存储当前组件的信息
+// Store information about the current component
 const currentNode = ref({});
-// 当前组件的上级组件的信息
+// Information about the parent component of the current component
 const sourceNode = ref({});
 const currentFormComponent = computed(() => {
   if (!drawer.value || !currentNode.value) return null;
@@ -406,11 +406,11 @@ const currentFormComponent = computed(() => {
       return null;
   }
 });
-//左侧组件数据
+//Left component data
 const treeData = ref([]);
-// 撤销按钮
+// Undo button
 const undoDisabled = ref(null);
-// 导出的数据
+// Exported data
 const exportData2 = ref("");
 let loading = ref(false);
 function getList() {
@@ -452,10 +452,10 @@ function getDeptTree() {
 if (route.query.id) {
   getList();
 }
-// 保存 没有code
+// Save without code
 const closeDialog = () => {
   if (!currentNode.value.data.code) {
-    graph.removeNode(currentNode.value.id); // 根据组件 ID 删除组件
+    graph.removeNode(currentNode.value.id); // Remove component based on component ID
   }
   drawer.value = false;
 };
@@ -466,7 +466,7 @@ watch(
     getDeptTree();
   }
 );
-// 弹窗保存
+// Pop-up window to save
 const handleFormSubmit = async (nodeData = {}) => {
   if (!currentNode?.value?.id) return;
   const node = graph.getCellById(currentNode.value.id);
@@ -476,7 +476,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   const parent = getParentNode(currentNode.value, graph);
   const childNodes = getAllChildNodes(node, graph) || [];
 
-  // 判断节点名称是否重复
+  // Determine whether the node name is repeated
   if (shouldAbortByName(graph, nodeData)) {
     drawer.value = true;
     proxy.$message.warning(
@@ -503,7 +503,7 @@ const handleFormSubmit = async (nodeData = {}) => {
     }));
     outputFields = inputFields;
   } else if (type == 2) {
-    // type 2：有输入和独立输出
+    // type 2: with input and independent output
     if (parent?.data?.taskParams?.outputFields) {
       inputFields = parent.data.taskParams.outputFields || [];
       outputFields = (taskParams.outputFields || []).map((field) => ({
@@ -512,14 +512,14 @@ const handleFormSubmit = async (nodeData = {}) => {
       }));
     }
   } else {
-    // 其他类型，通用处理
+    // Other types, general processing
     if (parent?.data?.taskParams?.outputFields) {
       inputFields = parent.data.taskParams.outputFields || [];
       outputFields = taskParams.outputFields || [];
     }
   }
 
-  // 如果节点名称修改了，替换 inputFields/outputFields 中的 source
+  // If the node name is modified, replace source in inputFields/outputFields
   if (nameChanged) {
     const replaceSourceName = (fields) =>
       fields.map((f) => ({
@@ -534,7 +534,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   const oldOutputs = oldData.taskParams?.outputFields || [];
   const outputsChanged = !areFieldNamesEqual(outputFields, oldOutputs);
 
-  // 合并更新当前节点数据
+  // Merge and update current node data
   const newData = {
     ...oldData,
     ...nodeData,
@@ -564,7 +564,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   const newInputFields = outputFields;
 
   if (outputsChanged) {
-    // 只有输出字段实际变化，才清空子节点
+    // Only when the output field actually changes will the child nodes be cleared.
     childNodes.forEach((n) => {
       if (!n?.data?.taskParams || typeof n.setProp !== "function") return;
       const defaultParams = getDefaultTaskParams(n.data);
@@ -578,7 +578,7 @@ const handleFormSubmit = async (nodeData = {}) => {
       });
     });
   } else if (nameChanged) {
-    // 仅名称变化，更新 inputFields 的 source，但不清空子节点 tableFields
+    // Only the name changes, the source of inputFields is updated, but the child node tableFields is not cleared.
     childNodes.forEach((n) => {
       if (!n?.getProp || !n.getProp) return;
       const childData = n.getProp("data") || {};
@@ -602,7 +602,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   drawer.value = false;
 };
 
-// 运行实例保存
+// Run instance save
 const handletaskConfig = (form) => {
   delete form.draftJson;
   console.log("🚀 ~ handletaskConfig ~ form:", form);
@@ -611,25 +611,25 @@ const handletaskConfig = (form) => {
     draftJson: JSON.stringify(form),
   };
 };
-// 大保存
+// Great save
 const handleExportData = async (localSave) => {
   loading.value = true;
   try {
-    // 检查
+    // Check
     if (!localSave) {
       const { isValid } = validateGraph(graph);
       if (!isValid) {
         return;
       }
     }
-    // 检查是否有任务配置
+    // Check if there is a task configuration
     if (!hasTaskConfig(nodeData.value)) {
       taskConfigDialogVisible.value = true;
       return;
     }
-    // 转换节点数据
+    // Convert node data
     exportData2.value = await transNodeData(graph);
-    // 将任务相关的配置整合到 exportData2 中
+    // Integrate task-related configuration into exportData2
     exportData2.value = {
       ...exportData2.value,
       taskRelationJson: JSON.stringify(exportData2.value.taskRelationJson),
@@ -638,7 +638,7 @@ const handleExportData = async (localSave) => {
       projectId: userStore.projectId,
       ...nodeData.value?.taskConfig,
     };
-    // 判断是更新还是创建
+    // Determine whether to update or create
     const res =
       localSave || nodeData.value?.dsId > 0
         ? await updateProcessDefinitions(
@@ -652,7 +652,7 @@ const handleExportData = async (localSave) => {
             ...exportData2.value,
             id: nodeData.value.id,
           });
-    // 成功后处理
+    // Processing after success
     if (res.code == "200") {
       handleSuccess();
     } else {
@@ -662,11 +662,11 @@ const handleExportData = async (localSave) => {
     loading.value = false;
   }
 };
-// 判断是否有任务配置
+// Determine whether there is a task configuration
 const hasTaskConfig = (nodeData) => {
   return nodeData?.taskConfig && Object.keys(nodeData.taskConfig).length > 0;
 };
-// 页面跳转
+// Page jump
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
@@ -675,13 +675,13 @@ const handleSuccess = () => {
   proxy.$modal.msgSuccess(message);
 };
 
-// 任务配置弹窗
+// Task configuration pop-up window
 const openTaskConfigDialog = () => {
   taskConfigDialogVisible.value = true;
 };
 useHtmlNode();
 const startDrag = (e, treeNode, data) => {
-  // 获取图形中的所有节点
+  // Get all nodes in the graph
   const nodes = graph.getCells().filter((cell) => {
     return cell.isNode();
   });
@@ -700,11 +700,11 @@ const openDialog = (node, data, title) => {
   fieldPreviewDialog.value.show(node, data, title);
 };
 /**
- * 组件右键删除
+ * Right click on component to delete
  * @param {*}
  */
 let selectedEdge = ref();
-// 定义方法来清空当前选中边的颜色
+// Define a method to clear the color of the currently selected edge
 function clearSelectedEdge() {
   if (selectedEdge.value) {
     selectedEdge.value.prop("attrs/line/stroke", "#2666FB");
@@ -728,13 +728,13 @@ function initializeGraph() {
     container: proxy.$refs.graphContainer,
     width: "100%",
     height: "60%",
-    grid: false, //网格
+    grid: false, //grid
     background: { color: "#ff0000" },
-    autoResize: true, //画布自适应
-    panning: true, //画布拖动
+    autoResize: true, //Canvas adaptive
+    panning: true, //Canvas drag
     interactive: true,
     ...baseConfig,
-    //画布缩放
+    //Canvas zoom
     mousewheel: {
       enabled: true,
       zoomAtMousePosition: true,
@@ -743,7 +743,7 @@ function initializeGraph() {
     },
     selecting: {
       enabled: true,
-      className: "my-selecting", // 自定义选中样式类名
+      className: "my-selecting", // Customize selected style class name
     },
   });
 
@@ -763,16 +763,16 @@ function initializeGraph() {
   );
   graph.use(new Export());
 
-  // 插件
+  // plug-in
   bindShortcuts(graph);
   usePlugins(graph);
 
   undoDisabled.value = graph.canUndo();
 }
 
-// 绑定事件
+// Binding events
 function bindGraphEvents() {
-  // 监听边的点击事件
+  // Listen for side click events
   graph.on("edge:click", handleEdgeClick);
 
   graph.on("blank:click", clearSelectedEdge);
@@ -781,13 +781,13 @@ function bindGraphEvents() {
 
   graph.on("node:mouseenter", () => togglePortsVisibility(true));
 
-  // 节点鼠标离开事件
+  // Node mouse leave event
   graph.on("node:mouseleave", () => togglePortsVisibility(false));
   if (!route.query.info) {
     graph.on("node:contextmenu", handleNodeContextMenu);
   }
 
-  // 连接边事件
+  // Connect edge events
   graph.on("edge:connected", handleEdgeConnected);
 
   graph.on("edge:contextmenu", handleEdgeContextMenu);
@@ -797,13 +797,13 @@ function bindGraphEvents() {
     graph.getPlugin("keyboard")?.disable();
   }
   if (!route.query.info) {
-    // 移除 panning 插件或解绑拖动事件
-    graph.off("blank:mousedown"); // 解绑空白区域拖动事件
+    // Remove the panning plug-in or unbind the drag event
+    graph.off("blank:mousedown"); // Unbind the drag event of the blank area
     graph.off("blank:mousemove");
     graph.off("blank:mouseup");
   }
 }
-// 处理边的点击事件
+// Handling edge click events
 function handleEdgeClick({ cell }) {
   const currentColor = cell.prop("attrs/line/stroke");
   clearSelectedEdge();
@@ -814,7 +814,7 @@ function handleEdgeClick({ cell }) {
   selectedEdge.value = cell;
 }
 
-// / 处理节点添加事件
+// / Handle node addition event
 async function handleNodeAdded({ node }) {
   if (!node.data.code) {
     node.data.code = await fetchNodeUniqueKey();
@@ -846,7 +846,7 @@ async function handleNodeAdded({ node }) {
   }
 }
 
-// 处理已有节点的情况
+// Handle the situation of existing nodes
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
     proxy.$message.warning(td('dpp.integratioTask.onlyOneOutputComponent', '只能有一个输出组件！'));
@@ -855,26 +855,26 @@ function handleExistingNode(node) {
   }
   graph.removeNode(node.id);
 }
-// 处理非输入节点
+// Handle non-input nodes
 function handleNonInputNode(node) {
   const edges = graph.getEdges();
   edges.forEach((edge) => {
     if (edge.getTargetNode() == node) {
-      sourceNode.value = edge.getSourceNode(); // 获取上级组件的数据
-      // drawer.value = true; // 控制抽屉显示
+      sourceNode.value = edge.getSourceNode(); // Get data from superior components
+      // drawer.value = true; //Control drawer display
     }
   });
-  // drawer.value = true; // 控制抽屉显示
+  // drawer.value = true; //Control drawer display
 }
 
-// 切换端口的显示状态
+// Switch the display status of a port
 function togglePortsVisibility(visible) {
   const container = document.getElementById("graphContainer");
   const ports = container.querySelectorAll(".x6-port-body");
   showPorts(ports, visible);
 }
 /**
- * 统一处理删除节点或连接线的逻辑
+ * Unify the logic of deleting nodes or connecting lines
  */
 function handleDeleteCells(graph, cells, menuController) {
   if (!cells || cells.length === 0) {
@@ -911,7 +911,7 @@ function handleDeleteCells(graph, cells, menuController) {
     type: "warning",
   })
     .then(() => {
-      // 重置子节点配置（无论节点还是边）
+      // Reset child node configuration (no matter node or edge)
       if (sourceNode) {
         const childNodes = getAllChildNodes(sourceNode, graph);
         childNodes.forEach((n) => {
@@ -925,7 +925,7 @@ function handleDeleteCells(graph, cells, menuController) {
         });
       }
 
-      // 执行删除操作
+      // Perform delete operation
       cells.forEach((cell) => {
         if (cell.isNode?.()) {
           graph.removeNode(cell);
@@ -941,7 +941,7 @@ function handleDeleteCells(graph, cells, menuController) {
     });
 }
 
-// 处理节点右键菜单事件
+// Handling node right-click menu events
 function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   e.preventDefault();
 
@@ -954,7 +954,7 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
     {
       label: td('dpp.integratioTask.deleteNode', '删除节点'),
       action: () => {
-        // 这里传入单个节点或边的数组，menuController 传进去供关闭菜单用
+        // Here, an array of a single node or edge is passed in, and the menuController is passed in for closing the menu.
         handleDeleteCells(graph, [type === 0 ? node : edge], menuController);
       },
     },
@@ -1003,44 +1003,44 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   });
 }
 
-// 处理连接边事件
+// Handle connection edge events
 function handleEdgeConnected({ edge }) {
   if (!loading.value) {
     hasUnsavedChanges.value = true;
     const source = edge.getSourceCell();
     const target = edge.getTargetCell();
-    // 检查源节点和目标节点是否相同
+    // Check if the source node and target node are the same
     if (source === target) {
-      graph.removeEdge(edge); // 移除边
+      graph.removeEdge(edge); // remove edge
       proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorSelf', '连接错误，节点不能连接到自己'));
       return;
     }
 
-    // 获取源节点和目标节点的 taskParams.type
+    // Get the taskParams.type of the source node and target node
     const sourceType = source.data?.taskParams?.type;
     const targetType = target.data?.taskParams?.type;
 
-    // 类型 1 不能作为目标节点
+    // Type 1 cannot be used as a target node
     if (targetType == 1) {
-      graph.removeEdge(edge); // 移除边
+      graph.removeEdge(edge); // remove edge
       proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorInput', '连接错误，输入组件不能被连接'));
       return;
     }
 
-    // 类型 2 不能作为输入节点（源节点）
+    // Type 2 cannot be used as an input node (source node)
     if (sourceType == 2) {
-      graph.removeEdge(edge); // 移除边
+      graph.removeEdge(edge); // remove edge
       proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutput', '连接错误，输出组件不能连接到其他组件'));
       return;
     }
 
-    // 类型 2 节点只能作为输出节点连接一次
+    // Type 2 nodes can only be connected once as output nodes
     if (targetType == 2) {
       const targetEdges = graph
         .getEdges()
         .filter((e) => e.getTargetCell() === target);
       if (targetEdges.length > 1) {
-        graph.removeEdge(edge); // 移除边
+        graph.removeEdge(edge); // remove edge
         proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutputOnce', '连接错误，目标节点只能作为输出连接一次'));
         return;
       }
@@ -1049,11 +1049,11 @@ function handleEdgeConnected({ edge }) {
     updateTargetNodeData(source, target, edge);
   }
 }
-// 更新目标节点的数据
+// Update the data of the target node
 function updateTargetNodeData(source, target, edge) {
   const childNodes = getAllChildNodes(source, graph);
 
-  // 更新子节点的数据
+  // Update the data of child nodes
   childNodes.forEach((childNode) => {
     if (childNode.data?.taskParams) {
       childNode.data.taskParams.inputFields =
@@ -1082,13 +1082,13 @@ function updateTargetNodeData(source, target, edge) {
       }
     )
       .then(() => {
-        // 调用方法生成规则配置
+        // Call method to generate rule configuration
         const result = renameRuleToRuleConfig(
           target.data.taskParams.inputFields
         );
         console.log("🚀 ~ updateTargetNodeData ~ result:", result);
         proxy.$message.success(td('dpp.integratioTask.cleanRuleAdded', '添加清洗规则') + ` ${result?.length || 0} ` + td('dpp.integratioTask.cleanRuleAddedSuffix', '条'));
-        // 给目标节点赋值
+        // Assign a value to the target node
         if (target.data?.taskParams) {
           target.data.taskParams.tableFields = result;
           target.data = { ...target.data };
@@ -1098,7 +1098,7 @@ function updateTargetNodeData(source, target, edge) {
   }
 }
 
-// 处理边右键菜单事件
+// Handling side right-click menu events
 function handleEdgeContextMenu(event) {
   const edge = event.edge;
   const { x, y } = event;
@@ -1127,12 +1127,12 @@ function handleNodeDblClick({ node }, type = "edit") {
   currentNode.value = node;
   drawer.value = true;
 }
-// 重置操作逻辑
+// Reset operation logic
 const handleCancel = () => {
   proxy.$modal
     .confirm(td('dpp.integratioTask.resetWarning', '点击重置将清除所有未保存的更改，您确定要继续吗？'))
     .then(() => {
-      // 刷新当前页签
+      // Refresh the current tab
       proxy.$tab.refreshPage(route);
     });
 };
@@ -1173,7 +1173,7 @@ const toolbarClick = (item) => {
     }
   }
 };
-// 初始化函数
+// initialization function
 onMounted(async () => {
   if (userStore.projectId) {
     getDeptTree();
@@ -1184,17 +1184,17 @@ onMounted(async () => {
     getList();
   }
 });
-// 离开页面时提示
+// Prompt when leaving the page
 onBeforeRouteLeave((to, from, next) => {
-  // 检查是否有未保存的更改
+  // Check for unsaved changes
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
-      td('dpp.integratioTask.discardWarning', '您已经编辑部分任务内容，是否放弃已编辑内容？'), // 提示信息
-      td('common.message.prompt', '提示'), // 标题
+      td('dpp.integratioTask.discardWarning', '您已经编辑部分任务内容，是否放弃已编辑内容？'), // Prompt message
+      td('common.message.prompt', '提示'), // Title
       {
-        confirmButtonText: td('common.button.save', '保存'), // 确认按钮文本
-        cancelButtonText: td('dpp.integratioTask.discard', '放弃'), // 取消按钮文本
-        type: "warning", // 弹窗类型
+        confirmButtonText: td('common.button.save', '保存'), // Confirm button text
+        cancelButtonText: td('dpp.integratioTask.discard', '放弃'), // Cancel button text
+        type: "warning", // Popup type
       }
     )
       .then(() => {
@@ -1232,13 +1232,13 @@ function routeTo(link, row) {
     }
   }
 }
-// 用于控制当前选中的标签
+// Used to control the currently selected tag
 const activeTab = ref("checkMessage");
 const tabs = ref([
   { name: "checkMessage", label: td('dpp.integratioTask.checkMessage', '检查消息'), content: td('dpp.integratioTask.checkMessageContent', '检查消息内容') },
-  // { name: "log", label: "日志", content: "日志内容" },
+  // { name: "log", label: "log", content: "log content" },
 ]);
-// 用于设置标签区域的样式
+// Used to style the label area
 const tabAreaStyle = ref({
   position: "absolute",
   height: "300px",
@@ -1248,10 +1248,10 @@ const tabAreaStyle = ref({
   "background-color": "rgb(255, 255, 255)",
   "margin-left": "15px",
 });
-// 任务检查
+// task check
 const minimizeAction = () => {
   tabAreaStyle.value.bottom = "-9999px";
-}; // 切换到任务检查标签
+}; // Switch to task inspection tab
 const selectTab = (tabName) => {
   activeTab.value = tabName;
   if (activeTab.value == "checkMessage") {

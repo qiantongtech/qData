@@ -1,12 +1,12 @@
-// DPP 模块语言包
+// DPP module language pack
 export default {
   datasource: {
-    // 页面标题
+    // Page title
     title: '数据源管理',
-    // 搜索表单标签
+    // Search form tags
     datasourceName: '数据连接名称',
     datasourceType: '数据连接类型',
-    // 按钮文本
+    // button text
     add: '新增',
     query: '查询',
     reset: '重置',
@@ -21,7 +21,7 @@ export default {
     confirm: '确定',
     import: '导入',
     export: '导出',
-    // 表格列
+    // Table columns
     number: '编号',
     description: '描述',
     createBy: '创建人',
@@ -29,13 +29,13 @@ export default {
     status: '状态',
     remark: '备注',
     operation: '操作',
-    // 弹窗标题
+    // Pop-up window title
     addDatasource: '新增数据源',
     editDatasource: '修改数据源',
     datasourceDetail: '数据源详情',
     projectSelect: '项目选择',
     datasourceImport: '数据源导入',
-    // 表单标签
+    // form tag
     ip: 'IP',
     port: '端口号',
     username: '账号',
@@ -52,7 +52,7 @@ export default {
     projectNameList: '所属项目',
     manager: '负责人',
     managerPhone: '联系方式',
-    // placeholder 文本
+    // placeholder text
     inputDatasourceName: '请输入数据连接名称',
     selectDatasourceType: '请选择数据连接类型',
     inputIp: '请输入IP',
@@ -71,7 +71,7 @@ export default {
     inputProjectName: '请输入项目名称',
     selectManager: '请选择',
     selectProject: '请选择项目',
-    // 验证消息
+    // Verification message
     datasourceNameRequired: '数据连接名称不能为空',
     datasourceTypeRequired: '数据连接类型不能为空',
     datasourceConfigRequired: '数据源配置(json字符串)不能为空',
@@ -89,18 +89,18 @@ export default {
     sidRequired: '模式不能为空',
     descriptionRequired: '描述不能为空',
     jsonFormatError: '不是一个正确的JSON格式',
-    // 确认消息
+    // Confirm message
     confirmDelete: '是否确认删除数据源编号为"{ids}"的数据项？',
-    // 成功消息
+    // success message
     addSuccess: '新增成功',
     editSuccess: '修改成功',
     deleteSuccess: '删除成功',
     testSuccess: '测试成功',
     importResult: '导入结果',
-    // 配置示例
+    // Configuration example
     kafkaConfigExample: '例如: {"security.protocol":"SASL_PLAINTEXT"}',
     hdfsConfigExample: '例如: {"kerberosKeytabFilePath":"/path/to/keytab/file"}',
-    // 操作提示
+    // Operation tips
     noPermission: '暂无权限'
   },
   setting: {
@@ -159,7 +159,7 @@ export default {
     projectUserRel: {
       projectMember: '项目成员',
       projectRole: '项目角色',
-      // 用户相关
+      // User related
       userName: '用户姓名',
       phoneNumber: '手机号码',
       inputUserName: '请输入用户姓名',
@@ -185,7 +185,7 @@ export default {
       userManagement: '用户管理',
       updateExistData: '是否更新已经存在的项目成员数据',
       downloadTemplate: '下载模板',
-      // 角色相关
+      // Role related
       roleName: '角色名称',
       inputRoleName: '请输入角色名称',
       roleKey: '权限字符',
@@ -200,7 +200,7 @@ export default {
       roleNameRequired: '角色名称不能为空',
       roleKeyRequired: '权限字符不能为空',
       roleSortRequired: '角色顺序不能为空',
-      // 数据权限范围
+      // Data permission scope
       allDataScope: '全部数据权限',
       customDataScope: '自定数据权限',
       deptDataScope: '本部门数据权限',
@@ -220,7 +220,7 @@ export default {
       confirmChangeRoleStatus: '确认要"{status}""{name}"角色吗？'
     }
   },
-  // 资产详情
+  // Asset details
   asset: {
     dataType: '数据类型',
     dataTag: '数据标签',
@@ -769,14 +769,14 @@ export default {
       dataIntegrationCategory: '数据集成类目',
       executionTime: '执行时间',
       resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？',
-      // 日志相关
+      // Log related
       viewLog: '查看日志',
       close: '关 闭',
       addLogTitle: '新增数据集成任务-日志',
       editLogTitle: '修改数据集成任务-日志',
       logDetailTitle: '数据集成任务-日志详情',
       confirmDeleteLog: '是否确认删除数据集成任务-日志编号为"{id}"的数据项？',
-      // 流程节点相关
+      // Process node related
       onlyOneOutput: '只能有一个输出组件！',
       onlyOneInput: '只能有一个输入组件！',
     },
@@ -840,7 +840,7 @@ export default {
     oracle: 'Oracle',
     mysql: 'MySQL',
     kingbase: 'Kingbase',
-    // 日志相关
+    // Log related
     addLogTitle: '新增数据集成任务-日志',
     editLogTitle: '修改数据集成任务-日志',
     logDetailTitle: '数据集成任务-日志详情',

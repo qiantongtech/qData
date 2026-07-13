@@ -120,7 +120,7 @@ const sideTheme = ref(settingsStore.sideTheme);
 const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#2666FB", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
 
-/** 是否需要topnav */
+/** Do you need topnav? */
 function topNavChange(val) {
   if (!val) {
     appStore.toggleSideBarHide(false);

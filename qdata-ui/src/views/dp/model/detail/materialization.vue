@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  逻辑发布的弹窗  -->
+  <!--  Logic publishing pop-up window  -->
   <el-dialog
     v-model="localVisible"
     :title="effectiveTitle"
@@ -26,9 +26,9 @@
     destroy-on-close
   >
     <!-- <div class="centered-text">
-      您将对选择的{{
+      You will select {{
         ids?.length
-      }}个逻辑模型进行逻辑发布，请选择数据资产的数据连接
+      }} logical model for logical publishing, please select the data connection of the data asset
     </div> -->
     <el-form
       ref="dpModelRefs"
@@ -160,7 +160,7 @@ const props = defineProps({
 });
 const effectiveTitle = computed(() => props.title || td('dp.model.materialization.publishModel'));
 let createTypeList = ref();
-// 监听 `visible` 的变化
+// Listen for changes in `visible`
 watch(
   () => props.visible,
   (newVal) => {
@@ -175,13 +175,13 @@ const getDaDatasourceListList = async () => {
     const response = await getDatasourceData();
     createTypeList.value = getAvailableDatasource(response, "dpModel");
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 
 const emit = defineEmits(["update:dialogFormVisible", "confirm"]);
 
-// 处理弹窗显示状态
+// Handle pop-up window display status
 const localVisible = computed({
   get() {
     return props.visible;
@@ -271,19 +271,19 @@ const confirmDialog = async () => {
       }
       loading.value = true;
       try {
-        // 创建发布表格
+        // Create release form
         const response = await createMaterializedTable({
           modelId: props.ids,
           ...form.value,
         });
         console.log(response);
 
-        // 提交数据
+        // Submit data
         emit("confirm", form.value);
 
-        // 关闭对话框
+        // Close dialog
         closeDialog();
-        // 提示成功
+        // Prompt success
         proxy.$modal.msgSuccess(response.msg);
       } catch (error) {
         console.error(error);

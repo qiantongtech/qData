@@ -19,13 +19,13 @@
 import { parseTime } from './anivia.js'
 import { i18n } from "@/plugins/vueI18n";
 
-// 判断数组中是否有重复
+// Determine whether there are duplicates in the array
 export function hasDuplicateObjects(arr, key) {
   if (arr.length <= 1) return false;
-  const seen = new Set(); // 记录已出现的键值
+  const seen = new Set(); // Record the key values that have appeared
   for (const item of arr) {
     const value = item[key];
-    // 若当前键值已存在于Set中，说明有重复
+    // If the current key value already exists in the Set, it means there is a duplicate.
     if (seen.has(value)) {
       return true;
     }
@@ -35,7 +35,7 @@ export function hasDuplicateObjects(arr, key) {
 }
 
 /**
- * 表格时间格式化
+ * Table time formatting
  */
 export function formatDate(cellValue) {
   if (cellValue == null || cellValue == "") return "";
@@ -253,15 +253,15 @@ export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
   const later = function() {
-    // 据上一次触发时间间隔
+    // According to the last trigger time interval
     const last = +new Date() - timestamp
 
-    // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
+    // The time interval between the last time the wrapped function was called last is less than the set time interval wait
     if (last < wait && last > 0) {
       timeout = setTimeout(later, wait - last)
     } else {
       timeout = null
-      // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
+      // If set to immediate===true, there is no need to call here because the starting boundary has already been called.
       if (!immediate) {
         result = func.apply(context, args)
         if (!timeout) context = args = null
@@ -273,7 +273,7 @@ export function debounce(func, wait, immediate) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
-    // 如果延时不存在，重新设定延时
+    // If the delay does not exist, reset the delay
     if (!timeout) timeout = setTimeout(later, wait)
     if (callNow) {
       result = func.apply(context, args)
@@ -408,12 +408,12 @@ export const beautifierConf = {
   }
 }
 
-// 首字母大小
+// initial letter size
 export function titleCase(str) {
   return str.replace(/( |^)[a-z]/g, L => L.toUpperCase())
 }
 
-// 下划转驼峰
+// Hump down stroke
 export function camelCase(str) {
   return str.replace(/_[a-z]/g, str1 => str1.substr(-1).toUpperCase())
 }

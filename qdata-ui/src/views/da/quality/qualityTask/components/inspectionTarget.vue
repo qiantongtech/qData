@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 稽查对象信息 新增修改弹窗 第二步 -->
+    <!-- Audit object information Added modification pop-up window Step 2 -->
     <el-dialog v-model="dialogVisible" draggable class="dialog" :title="dialogTitle" destroy-on-close width="800px"
         :append-to="$refs['app-container']">
         <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent :label-position="labelPosition">
@@ -139,7 +139,7 @@ const loadDatasourceOptions = async () => {
         const res = await getDaDatasourceList()
         datasourceOptions.value = res.data
     } catch (error) {
-        console.error('获取数据源失败:', error)
+        console.error("Failed to fetch data source:", error)
     }
 }
 
@@ -163,7 +163,7 @@ const onDatasourceChange = async (id) => {
 const onTableChange = async (val) => {
     const selectedTable = tableOptions.value.find(item => item.tableName == val);
     if (selectedTable) {
-        form.value.columnComment = selectedTable?.tableComment; // 保存中文名
+        form.value.columnComment = selectedTable?.tableComment; // Save Chinese name
         if (!form.value.name) {
             form.value.name = selectedTable?.tableComment;
         }

@@ -18,7 +18,7 @@
 
 <template>
     <div class="node-component">
-        <!-- 上半部分 -->
+        <!-- upper part -->
         <div class="node-top">
             <img :src="iconWhite" class="node-icon" alt="icon" />
             <div class="node-status-wrapper">
@@ -26,7 +26,7 @@
                 <div class="status-info">{{ statusTip }}</div>
             </div>
         </div>
-        <!-- 下半部分 -->
+        <!-- lower part -->
         <div class="node-bottom" @click.stop="emitClick">{{ nodeData.name }}</div>
     </div>
 </template>
@@ -43,16 +43,16 @@ let props = defineProps({
     styletype: Number,
 });
 if (!node) {
-    console.warn("NodeView: 没有获取到节点实例")
+    console.warn("NodeView: node instance not found")
 }
 
-// 响应式节点数据
+// Responsive node data
 const nodeData = ref(node ? node.getData() : {})
 
-// 监听数据变化
+// Monitor data changes
 const handleChangeData = ({ current }) => {
     nodeData.value = { ...current }
-    console.log("节点数据更新:", nodeData.value)
+    console.log("Node data updated:", nodeData.value)
 }
 
 if (node) {
@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
     if (node) node.off("change:data", handleChangeData)
 })
 
-// 图标处理
+// Icon handling
 const icon = computed(() => nodeData.value.taskParams?.icon || nodeData.value.icon || "/img/icon-default.png")
 
 const iconWhite = computed(() => {
@@ -80,7 +80,7 @@ const iconWhite = computed(() => {
     return newIcon
 })
 
-// 状态配置
+// Status configuration
 const toolbar = [
     { id: "1", icon: "icon-zzzx", tip: td('dpp.node.statusExecuting', '正在执行') },
     { id: "5", icon: "icon-tz", tip: td('dpp.node.statusStopped', '停止') },

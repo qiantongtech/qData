@@ -80,9 +80,9 @@
     import * as echarts from 'echarts';
     const chartRef = ref(null);
     /**
-     * xf_relate 相反关联
-     * xt_relate 相同关联
-     * ya_relate y轴关联
+     * xf_relate opposite association
+     * xt_relate same association
+     * ya_relate y-axis correlation
      */
     const chartRules = {
         库水位: {
@@ -176,14 +176,14 @@
                 }
             },
             formatter: function (params) {
-                // params 是一个数组，数组中包含每个系列的数据信息
+                // params is an array that contains data information for each series
                 let result = params[0]?.name + '<br />';
                 let unit = '';
                 params.forEach(function (item) {
-                    // item 是每一个系列的数据
-                    const seriesName = item.seriesName; // 系列名称
-                    const value = item.value == null ? '-' : item.value; // 数据值
-                    const marker = item.marker; // 标志图形
+                    // item is the data of each series
+                    const seriesName = item.seriesName; // Series name
+                    const value = item.value == null ? '-' : item.value; // data value
+                    const marker = item.marker; // logo graphic
                     switch (seriesName) {
                         case '库水位':
                         case '蓄水量':

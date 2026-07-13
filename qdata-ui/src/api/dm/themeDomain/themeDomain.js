@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询主题域管理列表
+// Query the subject domain management list
 export function listThemeDomain(query) {
   return request({
     url: '/dm/themeDomain/list',
@@ -27,7 +27,7 @@ export function listThemeDomain(query) {
   })
 }
 
-// 查询主题域管理详细
+// Query subject domain management details
 export function getThemeDomain(id) {
   return request({
     url: '/dm/themeDomain/' + id,
@@ -35,7 +35,7 @@ export function getThemeDomain(id) {
   })
 }
 
-// 新增主题域管理
+// Added subject domain management
 export function addThemeDomain(data) {
   return request({
     url: '/dm/themeDomain',
@@ -44,7 +44,7 @@ export function addThemeDomain(data) {
   })
 }
 
-// 修改主题域管理
+// Modify subject area management
 export function updateThemeDomain(data) {
   return request({
     url: '/dm/themeDomain',
@@ -53,7 +53,7 @@ export function updateThemeDomain(data) {
   })
 }
 
-// 删除主题域管理
+// Delete subject domain management
 export function delThemeDomain(id) {
   return request({
     url: '/dm/themeDomain/' + id,

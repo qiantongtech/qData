@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询采集任务实例-日志列表
+// Query collection task instance-log list
 export function listTaskInstanceLog(query) {
   return request({
     url: '/mc/taskInstanceLog/list',
@@ -9,7 +9,7 @@ export function listTaskInstanceLog(query) {
   })
 }
 
-// 查询采集任务实例-日志详细
+// Query collection task instance-log details
 export function getTaskInstanceLog(taskInstanceId) {
   return request({
     url: '/mc/taskInstanceLog/' + taskInstanceId,
@@ -17,7 +17,7 @@ export function getTaskInstanceLog(taskInstanceId) {
   })
 }
 
-// 新增采集任务实例-日志
+// Added new collection task instance-log
 export function addTaskInstanceLog(data) {
   return request({
     url: '/mc/taskInstanceLog',
@@ -26,7 +26,7 @@ export function addTaskInstanceLog(data) {
   })
 }
 
-// 修改采集任务实例-日志
+// Modify the collection task instance-log
 export function updateTaskInstanceLog(data) {
   return request({
     url: '/mc/taskInstanceLog',
@@ -35,7 +35,7 @@ export function updateTaskInstanceLog(data) {
   })
 }
 
-// 删除采集任务实例-日志
+// Delete collection task instance-log
 export function delTaskInstanceLog(taskInstanceId) {
   return request({
     url: '/mc/taskInstanceLog/' + taskInstanceId,

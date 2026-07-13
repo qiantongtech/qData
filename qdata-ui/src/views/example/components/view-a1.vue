@@ -123,7 +123,7 @@
 
     const viewA1ChartRef = ref(null);
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             viewA1ChartRef.value.resize();
         }, 300);

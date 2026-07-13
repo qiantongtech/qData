@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询消息列表
+// Query message list
 export function listMessage(query) {
   return request({
     url: '/system/message/list',
@@ -27,7 +27,7 @@ export function listMessage(query) {
   })
 }
 
-// 查询消息详细
+// Query message details
 export function getMessage(id) {
   return request({
     url: '/system/message/' + id,
@@ -43,7 +43,7 @@ export function getNum(query) {
   })
 }
 
-// 新增消息
+// Add new message
 export function addMessage(data) {
   return request({
     url: '/system/message',
@@ -52,7 +52,7 @@ export function addMessage(data) {
   })
 }
 
-// 修改消息
+// Modify message
 export function updateMessage(data) {
   return request({
     url: '/system/message',
@@ -61,7 +61,7 @@ export function updateMessage(data) {
   })
 }
 
-// 删除消息
+// Delete message
 export function delMessage(id) {
   return request({
     url: '/system/message/' + id,
@@ -69,7 +69,7 @@ export function delMessage(id) {
   })
 }
 
-// 已读消息
+// read message
 export function read(id) {
   return request({
     url: '/system/message/read?id=' + id,
@@ -77,7 +77,7 @@ export function read(id) {
   })
 }
 
-// 全部已读
+// All read
 export function readAll() {
   return request({
     url: '/system/message/readAll',

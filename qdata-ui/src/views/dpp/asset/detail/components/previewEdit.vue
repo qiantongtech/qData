@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 数据预览的修改弹窗 -->
+    <!-- Data preview modification pop-up window -->
     <el-dialog v-model="visible" class="dialog" draggable destroy-on-close>
         <template #header="{ close, titleId, titleClass }">
             <span role="heading" aria-level="2" class="el-dialog__title">
@@ -64,7 +64,7 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
-    maxWidth: { type: Number, default: 300 }, // 默认 300
+    maxWidth: { type: Number, default: 300 }, // Default 300
 });
 
 const emit = defineEmits(["ok"]);
@@ -100,16 +100,16 @@ watch(
     { immediate: true }
 );
 
-// -------- label 拼接和 tooltip 判断 ----------
+// -------- Label splicing and tooltip judgment ----------
 function formatLabel(item) {
     return item.cn ? `${item.en} (${item.cn})` : item.en;
 }
 
 function isLongLabel(item) {
-    return formatLabel(item).length > 16; // 超过 16 个字符才显示 tooltip
+    return formatLabel(item).length > 16; // Display tooltip only if it exceeds 16 characters
 }
 
-// 特殊字符校验
+// Special character check
 function noSpecialCharacters(rule, value, callback) {
     const datePattern = /^(19|20)\d{2}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])$/;
     const isValidInput = /^[a-zA-Z0-9\s]+$/.test(value);

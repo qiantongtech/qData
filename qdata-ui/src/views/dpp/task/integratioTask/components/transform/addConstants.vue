@@ -296,7 +296,7 @@ const props = defineProps({
 });
 
 function handleAddField() {
-  // 如果有任意一个已有字段 columnName 为空，阻止新增
+  // If any existing field columnName is empty, prevent new additions
   const lastEmpty = tableFields.value.find((item) => !item.columnName);
   if (lastEmpty) {
     proxy.$message.warning(
@@ -307,7 +307,7 @@ function handleAddField() {
     );
     return;
   }
-  // 最后一行名称
+  // last line name
   let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
   if (isRepeat) {
     proxy.$message.warning(
@@ -331,10 +331,10 @@ function onResolveFields(payload) {
   if (!payload) return;
   switch (payload.action) {
     case "addNewOnly":
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
       break;
     case "addAll":
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       break;
     case "clearAndAddAll":
       tableFields.value = deepCopy(originalTableFieldsBackup.value);
@@ -342,10 +342,10 @@ function onResolveFields(payload) {
         "🚀 ~ onResolveFields ~  tableFields.value:",
         tableFields.value
       );
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
       break;
     case "cancel":
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
   }
 }
@@ -372,7 +372,7 @@ let dpModelRefs = ref();
 let form = ref({});
 
 function handleDelete(row) {
-  // 从 tableFields 中删除对应字段
+  // Delete the corresponding field from tableFields
   const idxTable = tableFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -384,7 +384,7 @@ function handleDelete(row) {
     );
   }
 
-  // 恢复 inputFields 中被删除字段的原始状态（如果有）
+  // Restore the original state of deleted fields in inputFields (if any)
   const originalField = originalTableFieldsBackup.value.find(
     (item) => item.columnName === row.columnName
   );
@@ -400,7 +400,7 @@ function handleDelete(row) {
   }
 }
 
-// 提交弹窗规则数据
+// Submit pop-up rule data
 const submitForm = (value) => {
   if (!value || !Array.isArray(value)) return;
 
@@ -411,7 +411,7 @@ const submitForm = (value) => {
     try {
       parsedConfig = JSON.parse(ruleItem.ruleConfig);
     } catch (e) {
-      console.warn("无法解析 ruleConfig:", e, ruleItem.ruleConfig);
+      console.warn("Unable to parse ruleConfig:", e, ruleItem.ruleConfig);
       return;
     }
     const sourceField = parsedConfig?.fieldMerge?.sourceField;
@@ -454,7 +454,7 @@ const saveData = async () => {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
 
-    // 校验 tableFields 不为空
+    // Verify tableFields is not empty
     if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
       proxy.$message.warning(
         td("dpp.integration.atLeastOneFieldValue", "请至少一个字段值")
@@ -477,7 +477,7 @@ const saveData = async () => {
       }
     }
 
-    // 最后一行名称
+    // last line name
     let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
     if (isRepeat) {
       proxy.$message.warning(
@@ -511,11 +511,11 @@ const saveData = async () => {
     }));
     taskParams.mainArgs = taskParams.mainArgs || { cleanRuleList: [] };
     form.value.taskParams = taskParams;
-    console.log("保存数据 - outputFields:", taskParams.outputFields);
+    console.log("Save data - outputFields:", taskParams.outputFields);
     emit("confirm", form.value);
     // closeDialog();
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };

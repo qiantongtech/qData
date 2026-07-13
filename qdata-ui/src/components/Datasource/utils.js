@@ -1,7 +1,7 @@
 import { DatasourceTypes, config } from './config';
 import { listDaDatasource } from '@/api/da/dataSource/dataSource';
 
-// 根据flag获取数据源类型
+// Get the data source type based on flag
 export function getDatasourceTypes(flag) {
     if (!flag || !config[flag]) return Object.values(DatasourceTypes);
     const rules = config[flag];
@@ -18,14 +18,14 @@ export function getDatasourceTypes(flag) {
         });
 }
 
-// 获取全部数据数据源
+// Get all data sources
 export function getDatasourceData(params) {
     return listDaDatasource(params).then((res) => {
         return res.data.rows
     });
 }
 
-// 根据flag获取可用数据源
+// Get available data sources based on flag
 export function getAvailableDatasource(data, flag) {
     if (!data) return [];
     if (!flag || !config[flag]) return data;

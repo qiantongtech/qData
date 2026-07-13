@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js';
 
-// 查询敏感等级列表
+// Query sensitivity level list
 export function listDaSensitiveLevel(query) {
     return request({
         url: '/da/sensitiveLevel/list',
@@ -27,7 +27,7 @@ export function listDaSensitiveLevel(query) {
     });
 }
 
-// 查询敏感等级详细
+// Query sensitivity level details
 export function getDaSensitiveLevel(id) {
     return request({
         url: '/da/sensitiveLevel/' + id,
@@ -35,7 +35,7 @@ export function getDaSensitiveLevel(id) {
     });
 }
 
-// 新增敏感等级
+// Add sensitivity level
 export function addDaSensitiveLevel(data) {
     return request({
         url: '/da/sensitiveLevel',
@@ -44,7 +44,7 @@ export function addDaSensitiveLevel(data) {
     });
 }
 
-// 修改状态 上线/下线
+// Modify status online/offline
 export function updateStatus(id, status) {
     return request({
         url: `/da/sensitiveLevel/updateStatus/${id}/${status}`,
@@ -52,7 +52,7 @@ export function updateStatus(id, status) {
     });
 }
 
-// 修改敏感等级
+// Modify sensitivity level
 export function updateDaSensitiveLevel(data) {
     return request({
         url: '/da/sensitiveLevel',
@@ -61,7 +61,7 @@ export function updateDaSensitiveLevel(data) {
     });
 }
 
-// 删除敏感等级
+// Delete sensitivity level
 export function delDaSensitiveLevel(id) {
     return request({
         url: '/da/sensitiveLevel/' + id,

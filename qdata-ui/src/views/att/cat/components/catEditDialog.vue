@@ -114,32 +114,32 @@
 import { useI18n } from 'vue-i18n'
 
 /**
- * CatEditDialog 组件使用说明
+ * CatEditDialog component usage instructions
  *
- * 该组件用于类目（Category）的编辑和新增操作。
- * 不再使用 props 传递数据，而是通过 expose 出的 open 方法进行调用。
+ * This component is used for editing and adding operations to categories.
+ * No longer use props to pass data, but call it through the exposed open method.
  *
- * 使用方法：
- * 1. 在父组件中引入并放置组件：
+ * How to use:
+ * 1. Introduce and place the component in the parent component:
  *    <CatEditDialog ref="catEditDialogRef" @submit="handleDialogSubmit" />
  *
- * 2. 在 script 中定义 ref：
+ * 2. Define ref in script:
  *    const catEditDialogRef = ref();
  *
- * 3. 调用 open 方法打开弹窗：
+ * 3. Call the open method to open the pop-up window:
  *    catEditDialogRef.value.open({
- *      title: "新增类目",          // 弹窗标题
- *      nameLabel: "类目名称",      // 名称字段的 label
- *      treeOptions: [...],        // 上级类目树形数据
- *      form: { ... },             // 表单初始数据（如果是修改，传入当前行数据；如果是新增，传入默认值或部分预设值）
- *      rules: { ... }             // (可选) 表单校验规则，如果不传则使用默认规则
+ * title: "New Category", // Pop-up window title
+ * nameLabel: "Category name", // label of the name field
+ * treeOptions: [...], // Parent category tree data
+ * form: { ... }, // Initial data of the form (if it is modified, pass in the current row data; if it is added, pass in the default value or part of the preset value)
+ * rules: { ... } // (optional) form validation rules, if not passed, the default rules will be used
  *    });
  *
- * 4. 监听 @submit 事件获取结果：
+ * 4. Listen to the @submit event to get the results:
  *    const handleDialogSubmit = (formData) => {
- *      // 调用接口保存 formData
- *      // 保存成功后无需手动关闭弹窗，弹窗会在点击确定且校验通过后自动关闭（或者根据业务需求调整）
- *      // 注意：目前的实现是校验通过后自动关闭弹窗并 emit submit。
+ * // Call the interface to save formData
+ * // There is no need to manually close the pop-up window after successful saving. The pop-up window will automatically close after clicking OK and passing the verification (or adjust according to business needs)
+ * // Note: The current implementation is to automatically close the pop-up window and emit submit after the verification is passed.
  *    };
  */
 
@@ -154,14 +154,14 @@ const visible = ref(false);
 const loading = ref(false);
 const formRef = ref();
 
-// 组件内部状态
+// Component internal state
 const title = ref("");
 const nameLabel = ref(td('att.common.categoryName'));
 const treeOptions = ref([]);
 const customRules = ref(null);
 const dialogType = ref("");
 
-// 默认表单数据
+// Default form data
 const defaultForm = {
   parentId: undefined,
   name: "",
@@ -177,19 +177,19 @@ const effectiveNameLabel = computed(() => nameLabel.value);
 const effectiveNamePlaceholder = computed(() => td('att.common.namePlaceholder'));
 const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
-// 默认校验规则
+// Default validation rules
 const defaultRules = {
   name: [{ required: true, message: td('common.form.nameRequired'), trigger: "blur" }],
   parentId: [{ required: true, message: td('att.common.parentCatRequired'), trigger: "blur" }],
   code: [{ required: true, message: td('att.common.codeRequired'), trigger: "blur" }],
 };
 
-// 计算最终使用的规则，优先使用传入的 customRules
+// Calculate the final rules used, giving priority to the passed customRules
 const currentRules = computed(() => {
   if (customRules.value) {
     return customRules.value;
   }
-  // 动态更新默认规则中的 message
+  // Dynamically update the message in the default rule
   const rules = JSON.parse(JSON.stringify(defaultRules));
   if (rules.name && rules.name[0]) {
     rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
@@ -198,8 +198,8 @@ const currentRules = computed(() => {
 });
 
 /**
- * 打开弹窗的方法
- * @param {Object} options 配置项
+ * How to open a pop-up window
+ * @param {Object} options configuration items
  */
 const open = (options = {}) => {
   title.value = options.title || td('att.common.edit');
@@ -208,9 +208,9 @@ const open = (options = {}) => {
   customRules.value = options.rules || null;
   dialogType.value = options.type || "";
 
-  // 初始化表单数据
-  // 如果传入了 form，则合并到 defaultForm 中（深拷贝避免引用问题）
-  // 注意：这里假设 options.form 包含了需要回显的数据
+  // Initialize form data
+  // If form is passed in, it will be merged into defaultForm (deep copy to avoid reference problems)
+  // Note: This assumes that options.form contains the data that needs to be echoed
   if (options.form) {
     form.value = JSON.parse(
       JSON.stringify({ ...defaultForm, ...options.form })
@@ -221,7 +221,7 @@ const open = (options = {}) => {
 
   visible.value = true;
 
-  // 重置校验状态
+  // Reset verification status
   nextTick(() => {
     formRef.value?.clearValidate();
   });
@@ -250,7 +250,7 @@ const stopLoading = () => {
   loading.value = false;
 };
 
-// 暴露 open 方法给父组件
+// Expose the open method to the parent component
 defineExpose({
   open,
   close,

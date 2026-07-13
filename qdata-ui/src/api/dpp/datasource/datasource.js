@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-/** 查询数据源列表 */
+/** Query data source list */
 export function listDppDatasource(query) {
   return request({
     url: '/dpp/datasource/list',
@@ -27,7 +27,7 @@ export function listDppDatasource(query) {
   })
 }
 
-/** 查询数据源详情 */
+/** Query data source details */
 export function getDppDatasource(id) {
   return request({
     url: '/dpp/datasource/' + id,
@@ -35,7 +35,7 @@ export function getDppDatasource(id) {
   })
 }
 
-/** 新增数据源 */
+/** Add new data source */
 export function addDppDatasource(data) {
   return request({
     url: '/dpp/datasource',
@@ -44,7 +44,7 @@ export function addDppDatasource(data) {
   })
 }
 
-/** 修改数据源 */
+/** Modify data source */
 export function updateDppDatasource(data) {
   return request({
     url: '/dpp/datasource',
@@ -53,7 +53,7 @@ export function updateDppDatasource(data) {
   })
 }
 
-/** 删除数据源（删除前后端校验是否被数据资产或元数据采集任务引用） */
+/** Delete the data source (check whether the deletion front-end and back-end are referenced by data assets or metadata collection tasks) */
 export function delDppDatasource(id) {
   return request({
     url: '/dpp/datasource/' + id,
@@ -61,7 +61,7 @@ export function delDppDatasource(id) {
   })
 }
 
-/** 连接测试 */
+/** Connection test */
 export function testDppDatasource(id) {
   return request({
     url: '/dpp/datasource/test/' + id,
@@ -69,7 +69,7 @@ export function testDppDatasource(id) {
   })
 }
 
-/** 连接测试（未保存时传表单参数） */
+/** Connection test (passing form parameters when not saved) */
 export function testDppDatasourceForm(data) {
   return request({
     url: '/dpp/datasource/test',
@@ -78,7 +78,7 @@ export function testDppDatasourceForm(data) {
   })
 }
 
-/** 启用/禁用数据源 */
+/** Enable/disable data source */
 export function toggleDppDatasourceStatus(id) {
   return request({
     url: '/dpp/datasource/status/' + id,

@@ -18,7 +18,7 @@
 
 import request from "@/utils/request";
 
-// 查询在线单数据列表
+// Query online single data list
 export function listdata(query) {
   return request({
     url: "/dpp/data/list",
@@ -27,7 +27,7 @@ export function listdata(query) {
   });
 }
 
-// 查询在线单数据详细
+// Query detailed online order data
 export function getdata(id) {
   return request({
     url: "/dpp/data/" + id,
@@ -35,7 +35,7 @@ export function getdata(id) {
   });
 }
 
-// 新增在线单数据
+// Add online order data
 export function adddata(data) {
   return request({
     url: "/dpp/data",
@@ -44,7 +44,7 @@ export function adddata(data) {
   });
 }
 
-// 修改在线单数据
+// Modify online order data
 export function updatedata(data) {
   return request({
     url: "/dpp/data",
@@ -53,7 +53,7 @@ export function updatedata(data) {
   });
 }
 
-// 删除在线单数据
+// Delete online order data
 export function deldata(data) {
   return request({
     url: "/dpp/data/deleted",

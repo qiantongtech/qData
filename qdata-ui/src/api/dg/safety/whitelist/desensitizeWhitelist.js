@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询脱敏白名单列表
+// Query desensitization whitelist list
 export function listDesensitizeWhitelist(query) {
   return request({
     url: '/dg/desensitizeWhitelist/list',
@@ -27,7 +27,7 @@ export function listDesensitizeWhitelist(query) {
   })
 }
 
-// 查询脱敏白名单详细
+// Check the desensitization whitelist details
 export function getDesensitizeWhitelist(id) {
   return request({
     url: '/dg/desensitizeWhitelist/' + id,
@@ -35,7 +35,7 @@ export function getDesensitizeWhitelist(id) {
   })
 }
 
-// 新增脱敏白名单
+// Added desensitization whitelist
 export function addDesensitizeWhitelist(data) {
   return request({
     url: '/dg/desensitizeWhitelist',
@@ -44,7 +44,7 @@ export function addDesensitizeWhitelist(data) {
   })
 }
 
-// 修改脱敏白名单
+// Modify desensitization whitelist
 export function updateDesensitizeWhitelist(data) {
   return request({
     url: '/dg/desensitizeWhitelist',
@@ -53,7 +53,7 @@ export function updateDesensitizeWhitelist(data) {
   })
 }
 
-// 删除脱敏白名单
+// Delete desensitization whitelist
 export function delDesensitizeWhitelist(id) {
   return request({
     url: '/dg/desensitizeWhitelist/' + id,

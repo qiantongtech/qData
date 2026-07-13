@@ -48,7 +48,7 @@
             >
               <el-button type="primary" plain>
                 <el-icon><Plus /></el-icon>
-                <span>创建表</span>
+                <span>Create table</span>
                 <div class="divider"></div>
                 <el-icon
                   class="arrow-icon el-icon--right"
@@ -61,19 +61,19 @@
                 <el-dropdown-menu class="create-table-dropdown-menu">
                   <el-dropdown-item command="1">
                     <svg-icon iconClass="btn-model-detail-table" />
-                    <span>明细表</span>
+                    <span>Details list</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="2">
                     <svg-icon iconClass="btn-model-summary-table" />
-                    <span>汇总表</span>
+                    <span>Summary table</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="3">
                     <svg-icon iconClass="btn-model-dimension-table" />
-                    <span>维度表</span>
+                    <span>Dimension table</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="4">
                     <svg-icon iconClass="btn-model-progress-table" />
-                    <span>应用表</span>
+                    <span>Application table</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -247,7 +247,7 @@ const DeptTreeRef = ref(null);
 
 let Materialization = ref(false);
 
-/** 查询数仓分层树结构 */
+/** Query the hierarchical tree structure of the data warehouse */
 function getDataLayerTree() {
   treeDataLayer().then((res) => {
     const tree = res.data || res.rows || [];
@@ -269,13 +269,13 @@ function getDataLayerTree() {
   });
 }
 
-/** 查询部门下拉树结构 */
+/** Query department drop-down tree structure */
 function getDeptTree() {
   getDataLayerTree();
   projectStore.getModelDeptTree().then((data) => {
     deptOptions.value = data;
   });
-  // 部门
+  // Department
   deptTreeSelectNoPermi().then((response) => {
     deptList.value = response.data;
   });
@@ -295,23 +295,23 @@ const title = ref("");
 const router = useRouter();
 const selectedType = ref("");
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dp/model/importData",
 });
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
@@ -473,7 +473,7 @@ const searchStore = reactive({
       component: { is: "select", options: table_type },
     },
     // {
-    //   label: "命名大小写",
+    //   label: "Name case",
     //   prop: "tableCase",
     //   type: "select",
     //   component: { is: "select", options: dp_model_table_case },
@@ -510,14 +510,14 @@ function handleNodeClick(data) {
   handleQuery();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     ID: null,
@@ -543,12 +543,12 @@ function reset() {
   proxy.resetForm("dpModelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   tableRef.value && tableRef.value.getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -562,7 +562,7 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   console.log("selection", selection);
   ids.value = selection.map((item) => item.id);
@@ -571,7 +571,7 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(type) {
   selectedType.value = typeof type === "string" ? type : "1";
   dataList.value = {};
@@ -580,7 +580,7 @@ function handleAdd(type) {
   title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   console.log("row", row);
   reset();
@@ -593,26 +593,26 @@ function handleUpdate(row) {
   });
 }
 
-/** 发布模型按钮操作 */
+/** Publish model button action */
 function handleMaterialization() {
   const _ID = ids.value;
   Materialization.value = true;
   title.value = td('dp.materializedModel.publishModelTitle');
 }
 
-/** 发布/重新发布按钮操作 */
+/** Publish/republish button actions */
 function handleRelease(row) {
   ids.value = [row.id];
   Materialization.value = true;
   title.value = row.releaseStatus == 1 ? td('dp.materializedModel.publishModelTitle') : td('dp.materializedModel.reReleaseModelTitle');
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   routeTo("/dm/model/materializedModel/detail", row);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm(obj) {
   console.log("obj", obj);
   if (obj.form.id != null) {
@@ -642,12 +642,12 @@ function submitForm(obj) {
           .catch((dpModelColumnError) => {});
       })
       .catch((error) => {
-        console.error("新增失败:", error);
+        console.error("Failed to add:", error);
       });
   }
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
@@ -681,7 +681,7 @@ function routeTo(link, row) {
   }
 }
 
-/** 解析已发布数据源列表 */
+/** Parse a list of published data sources */
 function parseReleaseDatabaseList(json) {
   try {
     const list = JSON.parse(json);

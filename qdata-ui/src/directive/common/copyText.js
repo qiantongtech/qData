@@ -17,7 +17,7 @@
  */
 
 /**
-* v-copyText 复制文本内容
+* v-copyText copies text content
 * Copyright (c) 2022 qdata
 */
 

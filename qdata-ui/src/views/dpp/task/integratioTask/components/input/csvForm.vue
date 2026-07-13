@@ -148,7 +148,7 @@
               @click="parseExcel"
               v-hasPermi="['dpp:etl:etltask:add']"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i> 解析Excel
+              <i class="iconfont-mini icon-xincheng mr5"></i> Parse Excel
             </el-button>
           </el-col>
         </el-row>
@@ -266,20 +266,20 @@ const visibleDialog = computed({
     emit("update", newValue);
   },
 });
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref();
-const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传文件服务器地址
-/*** 用户导入参数 */
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // Upload file server address
+/*** User import parameters */
 const upload = reactive({
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
 });
-// 修改
+// Modify
 const open = ref(false);
 let row = ref({});
 const openDialog = (obj) => {
@@ -287,24 +287,24 @@ const openDialog = (obj) => {
   open.value = true;
 };
 const handletaskConfig = (form) => {
-  // 找到对应的 id 并更新 ColumnByAssettab 中的相应项
+  // Find the corresponding id and update the corresponding item in ColumnByAssettab
   ColumnByAssettab.value = ColumnByAssettab.value.map((column) => {
     if (column.id == form.id) {
-      // 更新匹配 id 的项
-      return { ...column, ...form }; // 或者根据需要做其他的合并方式
+      // Update item matching id
+      return { ...column, ...form }; // Or do other merging methods as needed
     }
-    return column; // 对于不匹配的项，保持不变
+    return column; // For unmatched items, leave unchanged
   });
 };
 
 let dpModelRefs = ref();
 let form = ref({});
-const tableFields = ref([]); // 来源表格
-// 计算属性：判断按钮是否禁用
+const tableFields = ref([]); // Source form
+// Computed property: determine whether the button is disabled
 const isButtonDisabled = computed(() => {
   return !form.value.taskParams.file;
 });
-// 获取列数据
+// Get column data
 const parseExcel = async (id) => {
   if (!form.value.taskParams.file) {
     ElMessage.warning(
@@ -346,15 +346,15 @@ const parseExcel = async (id) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
-    // 异步验证表单
+    // Asynchronous validation form
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
     if (
@@ -365,15 +365,15 @@ const saveData = async () => {
         td("dpp.integration.validateFailedSelectFields")
       );
     }
-    // 如果没有 code，就调用接口获取唯一的 code
+    // If there is no code, call the interface to get the unique code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
         projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false; // 结束加载状态
-      form.value.code = response.data; // 设置唯一的 code
+      loading.value = false; // end loading state
+      form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = ColumnByAssettab.value;
@@ -393,40 +393,40 @@ const saveData = async () => {
     });
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
-    loading.value = false; // 确保错误发生时也结束加载状态
+    console.error("Failed to save data:", error);
+    loading.value = false; // Make sure the loading state is also ended when an error occurs
   }
 };
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (props.visible) {
-    // 数据源
+    // data source
     form.value = deepCopy(props.currentNode.data);
     ColumnByAssettab.value = props.currentNode?.data.taskParams.tableFields;
   } else {
     off();
   }
 });
-// 上传前校验文件类型
+// Verify file type before uploading
 function handleBeforeUpload(file) {
-  // 校检文件类型
+  // Proof file type
   let fileType = ["csv"];
   const fileName = file.name.split(".");
   const fileExt = fileName[fileName.length - 1];
@@ -440,8 +440,8 @@ function handleBeforeUpload(file) {
     );
     return false;
   }
-  // 校验文件大小
-  const maxSize = 50; // 最大文件大小，单位MB
+  // Check file size
+  const maxSize = 50; // Maximum file size in MB
   const fileSize = file.size / 1024 / 1024;
   if (fileSize > maxSize) {
     proxy.$modal.msgWarning(td('dpp.integration.fileSizeExceeded', '', { maxSize }));
@@ -450,7 +450,7 @@ function handleBeforeUpload(file) {
   return true;
 }
 
-// 文件删除
+// File deletion
 function handleRemove() {
   ColumnByAssettab.value = [];
   form.value.taskParams.file = undefined;

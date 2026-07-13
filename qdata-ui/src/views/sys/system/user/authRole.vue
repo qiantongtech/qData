@@ -88,28 +88,28 @@ const form = ref({
   userId: undefined,
 });
 
-/** 单击选中行数据 */
+/** Click to select row data */
 function clickRow(row) {
   proxy.$refs["roleRef"].toggleRowSelection(row);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   roleIds.value = selection.map((item) => item.roleId);
 }
 
-/** 保存选中的数据编号 */
+/** Save selected data number */
 function getRowKey(row) {
   return row.roleId;
 }
 
-/** 关闭按钮 */
+/** close button */
 function close() {
   const obj = { path: "/system/user" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   const userId = form.value.userId;
   const rIds = roleIds.value.join(",");

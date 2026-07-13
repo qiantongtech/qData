@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  数值边界调整  -->
+  <!--  Numerical boundary adjustment  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">

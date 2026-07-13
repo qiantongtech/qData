@@ -121,7 +121,7 @@
       />
     </div>
 
-    <!-- 添加或修改证书对话框 -->
+    <!-- Add or modify certificate dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
@@ -190,27 +190,27 @@ export default {
   },
   data() {
     return {
-      // 遮罩层
+      // mask layer
       loading: true,
-      // 选中数组
+      // Select array
       ids: [],
-      // 非单个禁用
+      // Not individually disabled
       single: true,
-      // 非多个禁用
+      // Not multiple disabled
       multiple: true,
-      // 显示搜索条件
+      // Show search criteria
       showSearch: true,
-      // 总条数
+      // Total number of items
       total: 0,
-      // 主体列表
+      // Subject list
       subjectList: [],
-      // 证书表格数据
+      // Certificate form data
       certList: [],
-      // 弹出层标题
+      // Popup layer title
       title: "",
-      // 是否显示弹出层
+      // Whether to display popup layer
       open: false,
-      // 查询参数
+      // query parameters
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -225,9 +225,9 @@ export default {
         validFlag: null,
         creatorId: null,
       },
-      // 表单参数
+      // form parameters
       form: {},
-      // 表单校验
+      // form validation
       rules: {
         name: [
           { required: true, message: td('common.texts.name'), trigger: "blur" }
@@ -255,7 +255,7 @@ export default {
     this.getSubjectList();
   },
   methods: {
-    /** 查询证书列表 */
+    /** Query certificate list */
     getList() {
       this.loading = true;
       listCert(this.queryParams).then(response => {
@@ -264,7 +264,7 @@ export default {
         this.loading = false;
       });
     },
-    /** 查询主题列表 */
+    /** Query topic list */
     getSubjectList() {
       listSubject({
         pageNum: 1,
@@ -281,12 +281,12 @@ export default {
         }
       });
     },
-    // 取消按钮
+    // Cancel button
     cancel() {
       this.open = false;
       this.reset();
     },
-    // 表单重置
+    // form reset
     reset() {
       this.form = {
         id: null,
@@ -309,29 +309,29 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    /** Search button action */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
+    /** reset button action */
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
+    // Multiple selection box selected data
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
+    /** Add button operation */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = this.td('sys.cert.addTitle');
     },
-    /** 修改按钮操作 */
+    /** Modify button actions */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
@@ -341,7 +341,7 @@ export default {
         this.title = this.td('sys.cert.editTitle');
       });
     },
-    /** 提交按钮 */
+    /** submit button */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -361,7 +361,7 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    /** Delete button action */
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm(this.td('sys.cert.confirmDelete', { id: ids })).then(function() {
@@ -380,7 +380,7 @@ export default {
         const response = await fetch(fileUrl);
         const blob = await response.blob();
 
-        // 自动获取文件名
+        // Automatically get file name
         const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
         zip.file(fileName, blob);
       }
@@ -389,7 +389,7 @@ export default {
         saveAs(content, row.name + "_数字证书" + '.zip');
       });
     },
-    /** 导出按钮操作 */
+    /** Export button action */
     handleExport() {
       this.download('ca/cert/export', {
         ...this.queryParams

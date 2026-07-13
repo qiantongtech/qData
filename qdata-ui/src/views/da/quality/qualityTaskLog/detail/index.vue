@@ -18,9 +18,9 @@
 
 <template>
     <div class="app-container stagingIndex" v-loading="loading">
-        <!-- 顶部区域：评分 + 折线图 -->
+        <!-- Top area: Rating + Line Chart -->
         <el-row gutter="20" class="top-section">
-            <!-- 左侧评分 -->
+            <!-- Rating on the left -->
             <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -72,7 +72,7 @@
                 </div>
             </el-col>
 
-            <!-- 右侧折线图 -->
+            <!-- Line chart on the right -->
             <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -90,7 +90,7 @@
             </el-col>
         </el-row>
 
-        <!-- 规则列表 -->
+        <!-- Rule list -->
         <el-row>
             <div class="module-8 border-item" style="width: 100%">
                 <div class="border-item-head">
@@ -147,7 +147,7 @@
             </div>
         </el-row>
 
-        <!-- 问题数据弹窗 -->
+        <!-- Question data pop-up window -->
         <ProblemDialog ref="problemDialogRef" />
     </div>
 </template>
@@ -224,7 +224,7 @@ function getLabelsByColumnName(row, columnName) {
             ? ruleObj.evaColumns
             : Object.values(ruleObj.evaColumns || {});
     } catch (err) {
-        console.warn('规则字段解析失败', err);
+        console.warn("Failed to parse rule fields", err);
         return '-';
     }
 
@@ -327,14 +327,14 @@ const loadChartWithData = (data = []) => {
 };
 
 
-// 评分和质量维度汇总
-// 评分和质量维度汇总
+// Summary of ratings and quality dimensions
+// Summary of ratings and quality dimensions
 const loadScoreAndSummary = async (id) => {
     try {
         const res = await statisticsEvaluateOne(id);
         const result = res?.data || [];
 
-        // 构造一个维度映射，用于快速查找
+        // Construct a dimensional map for quick search
         const resultMap = result.reduce((map, item) => {
             map[item.dimensionType] = item;
             return map;
@@ -349,10 +349,10 @@ const loadScoreAndSummary = async (id) => {
             };
         });
     } catch (err) {
-        console.warn('评分/维度汇总失败', err);
+        console.warn("Failed to aggregate scores and dimensions", err);
     }
 };
-// 规则列表
+// Rule list
 const loadRuleTable = async (id) => {
     try {
         const res = await statisticsEvaluateTable(id);
@@ -367,12 +367,12 @@ const loadRuleTable = async (id) => {
             ruleList.value = [];
         }
     } catch (err) {
-        console.warn('规则列表失败', err);
+        console.warn("Failed to load rule list", err);
     } finally {
     }
 };
 
-// 折线图数据
+// Line chart data
 const loadTrendChart = async (id) => {
     try {
         const range = Number(selectedRange.value);
@@ -384,11 +384,11 @@ const loadTrendChart = async (id) => {
 
         loadChartWithData(res?.data || []);
     } catch (err) {
-        console.warn('折线图数据失败', err);
+        console.warn("Failed to load line chart data", err);
     }
 };
 
-// 监听语言变化，重新渲染图表
+// Monitor language changes and re-render charts
 watch(locale, () => {
     if (chartInstance) {
         chartInstance.dispose();

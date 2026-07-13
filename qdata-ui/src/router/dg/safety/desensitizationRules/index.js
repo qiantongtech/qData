@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 示例模块动公共路由
+// Example module moving public routing
 export default [
     {
         path: '/dg/safety/desensitizationRules/detail',
@@ -27,7 +27,7 @@ export default [
         hidden: true,
         children: [
             {
-                path: '', // 使用动态路由参数
+                path: '', // Use dynamic routing parameters
                 component: () => import('@/views/dg/safety/desensitizationRules/detail/index.vue'),
                 name: 'DataElemCodeDetail',
                 meta: {

@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 资产字段 tab -->
+  <!-- Asset fields tab -->
 
   <qt-wrap
     :columns="tableStore.columns"
@@ -75,7 +75,7 @@
     </qt-table>
   </qt-wrap>
 
-  <!-- 新增或修改数据资产对话框 -->
+  <!-- Add or modify data assets dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -490,7 +490,7 @@
     </template>
   </el-dialog>
 
-  <!-- 数据资产详情对话框 -->
+  <!-- Data Asset Details Dialog -->
   <el-dialog
     :title="title"
     v-model="openDetail"
@@ -638,8 +638,8 @@ const { dp_model_status } = proxy.useDict("dp_model_status");
 const tableRef = ref(null);
 const daAssetColumnList = ref([]);
 const categoryList = ref([]);
-const codeTableList = ref([]); //代码表
-const elementList = ref([]); //数据元
+const codeTableList = ref([]); //code table
+const elementList = ref([]); //data element
 const defaultSort = ref({ prop: "createTime", order: "descending" });
 const termDialogVisible = ref(false);
 const termFormRef = ref(null);
@@ -691,20 +691,20 @@ const data = reactive({
     createTime: null,
   },
   rules: {
-    // columnComment: [{ required: true, message: '请输入中文名称', trigger: 'blur' }],
-    // columnName: [{ required: true, message: '请输入英文名称', trigger: 'blur' }],
+    // columnComment: [{ required: true, message: 'Please enter the Chinese name', trigger: 'blur' }],
+    // columnName: [{ required: true, message: 'Please enter an English name', trigger: 'blur' }],
     dataElemCodeId: [
       { required: false, message: td('dpp.column.selectCodeTable', '请选择代码表'), trigger: "blur" },
     ],
     elementId: [{ required: false, message: td('dpp.column.selectDataElem', '请选择数据元'), trigger: "blur" }],
-    // pkFlag: [{ required: true, message: '请选择是否主键', trigger: 'blur' }],
-    // nullableFlag: [{ required: true, message: '请选择是是否必填', trigger: 'blur' }],
-    // dataElemCodeFlag: [{ required: true, message: '请选择是是否必填', trigger: 'blur' }],
+    // pkFlag: [{ required: true, message: 'Please select whether it is a primary key', trigger: 'blur' }],
+    // nullableFlag: [{ required: true, message: 'Please select whether it is required', trigger: 'blur' }],
+    // dataElemCodeFlag: [{ required: true, message: 'Please select whether it is required', trigger: 'blur' }],
     // relDataElmeFlag: [
-    //     { required: true, message: '请选择是是否关联数据元', trigger: 'blur' }
+    //     { required: true, message: 'Please choose whether to associate data elements', trigger: 'blur' }
     // ],
     // relCleanFlag: [
-    //     { required: true, message: '请选择是是否关联清洗规则', trigger: 'blur' }
+    //     { required: true, message: 'Please select whether to associate cleaning rules', trigger: 'blur' }
     // ],
     relAuditFlag: [
       { required: true, message: td('dpp.column.selectAuditRule'), trigger: "blur" },
@@ -724,7 +724,7 @@ watch(
   { immediate: true }
 );
 
-/** 查询数据资产列表 */
+/** Query data asset list */
 function getList() {
   queryParams.value.assetId = assetId;
   if (tableRef.value) {
@@ -732,25 +732,25 @@ function getList() {
   }
 }
 
-/** 获取敏感等级列表 */
+/** Get a list of sensitivity levels */
 function getDaSensitiveLevelList() {
   listDataCategoryAll().then((response) => {
     categoryList.value = response.data;
-    //将id转换为String类型
+    //Convert id to String type
     categoryList.value.forEach((item) => {
       item.id = item.id.toString();
     });
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -777,36 +777,36 @@ function reset() {
   proxy.resetForm("daAssetRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件（由 qt-table 内部处理，此处保留占位） */
+/** Sorting trigger event (handled internally by qt-table, placeholder reserved here) */
 function handleSortChange() {}
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('dpp.column.addDataAsset');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -817,7 +817,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -828,7 +828,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["daAssetRef"].validate((valid) => {
     if (valid) {
@@ -855,7 +855,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -870,7 +870,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "da/asset/export",
@@ -881,13 +881,13 @@ function handleExport() {
   );
 }
 
-/** 获取数据元列表 */
+/** Get a list of data elements */
 function getElementList() {
   listDpDataElem({ type: 1 }).then((response) => {
     elementList.value = response.data.rows;
   });
 }
-/** 获取代码表列表 */
+/** Get a list of code tables */
 function getCodeTableList() {
   listDpDataElem({ type: 2 }).then((response) => {
     codeTableList.value = response.data.rows;
@@ -903,10 +903,10 @@ function openBindTerm(row) {
   // currentColumnId.value = row.id;
   // Promise.all([getDaAssetColumn(row.id), getTermList()]).then(([detailRes]) => {
   //   const detail = detailRes?.data || {};
-  //   let termId = ""; // 单选用单个值
+  //   let termId = ""; // Use a single value for single selection
   //
   //   if (Array.isArray(detail.termIds)) {
-  //     termId = detail.termIds[0] || ""; // 取第一个
+  //     termId = detail.termIds[0] || ""; // Take the first one
   //   } else if (typeof detail.termIds === "string") {
   //     termId = detail.termIds.split(",")[0] || "";
   //   } else if (Array.isArray(row.termIds)) {
@@ -915,7 +915,7 @@ function openBindTerm(row) {
   //     termId = row.termIds.split(",")[0] || "";
   //   }
   //
-  //   termForm.termIds = termId; // 直接赋值单个值
+  //   termForm.termIds = termId; // Directly assign a single value
   //   termDialogVisible.value = true;
   // });
 }
@@ -934,14 +934,14 @@ function submitBindTerm() {
   termFormRef.value.validate((valid) => {
     if (!valid) return;
 
-    // 单选判断
+    // Single choice judgment
     if (!termForm.termIds) {
       proxy?.$message?.warning(td('dpp.column.selectTerm', '请选择术语'));
       return;
     }
 
     const payload = {
-      termIds: [termForm.termIds], // 后端如果要数组就包一层，不要就直接传 termForm.termIds
+      termIds: [termForm.termIds], // If the backend requires an array, wrap it in one layer. If not, just pass termForm.termIds directly.
       columnId: currentColumnId.value + "",
     };
 
@@ -1009,7 +1009,7 @@ function submitAddTerm() {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           termAddOpen.value = false;
           resetAddTerm();
-          // 新增后仅刷新术语列表，不自动选择
+          // After adding, only the term list will be refreshed and no automatic selection will be made.
           return getTermList();
         })
         .finally(() => {
@@ -1022,7 +1022,7 @@ getElementList();
 getCodeTableList();
 getDaSensitiveLevelList();
 
-// qt-table 配置
+// qt-table configuration
 const tableStore = reactive({
   config: {
     sort: true,
@@ -1145,7 +1145,7 @@ const tableStore = reactive({
     formatParams(params) {
       if (params.isAsc === "descending") params.isAsc = "desc";
       if (params.isAsc === "ascending") params.isAsc = "asc";
-      // 默认排序键兼容
+      // Default sort key compatible
       if (params.orderByColumn === "createTime")
         params.orderByColumn = "create_time";
       params.assetId = assetId;

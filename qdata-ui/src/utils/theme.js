@@ -16,7 +16,7 @@
  * See the LICENSE file in the project root for full license information.
  */
 
-// 处理主题样式
+// Handling theme styles
 export function handleThemeStyle(theme) {
 	document.documentElement.style.setProperty('--el-color-primary', theme)
 	for (let i = 1; i <= 9; i++) {
@@ -27,7 +27,7 @@ export function handleThemeStyle(theme) {
 	}
 }
 
-// hex颜色转rgb颜色
+// hex color to rgb color
 export function hexToRgb(str) {
 	str = str.replace('#', '')
 	let hexs = str.match(/../g)
@@ -37,7 +37,7 @@ export function hexToRgb(str) {
 	return hexs
 }
 
-// rgb颜色转Hex颜色
+// rgb color to hex color
 export function rgbToHex(r, g, b) {
 	let hexs = [r.toString(16), g.toString(16), b.toString(16)]
 	for (let i = 0; i < 3; i++) {
@@ -48,7 +48,7 @@ export function rgbToHex(r, g, b) {
 	return `#${hexs.join('')}`
 }
 
-// 变浅颜色值
+// Lighten color value
 export function getLightColor(color, level) {
 	let rgb = hexToRgb(color)
 	for (let i = 0; i < 3; i++) {
@@ -57,7 +57,7 @@ export function getLightColor(color, level) {
 	return rgbToHex(rgb[0], rgb[1], rgb[2])
 }
 
-// 变深颜色值
+// Darken color value
 export function getDarkColor(color, level) {
 	let rgb = hexToRgb(color)
 	for (let i = 0; i < 3; i++) {

@@ -46,7 +46,7 @@ import moment from "moment";
 
 const route = useRoute();
 const notice = ref({});
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
@@ -59,7 +59,7 @@ watch(
 function getViewById(noticeId) {
   getNoticeOne(noticeId).then((res) => {
     notice.value = res.data;
-    /** 展示的日期 */
+    /** Display date */
     let format = moment(notice.value.createTime).format("YYYY-MM-DD");
     notice.value.createTime = format;
   });
@@ -142,7 +142,7 @@ p {
   }
 
   ::v-deep img {
-    display: block; // 避免下方空白间隙
+    display: block; // Avoid white space below
     width: 100%;
     height: auto;
     margin: 1em 0;
@@ -161,7 +161,7 @@ p {
     padding: 12px;
     border-radius: 2px;
     overflow-x: auto;
-    white-space: pre-wrap; // 更友好的换行支持
+    white-space: pre-wrap; // Friendly newline support
     word-wrap: break-word;
   }
 

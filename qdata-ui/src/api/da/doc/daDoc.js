@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询文档数据管理列表
+// Query document data management list
 export function listDaDoc(query) {
   return request({
     url: '/da/daDoc/list',
@@ -27,7 +27,7 @@ export function listDaDoc(query) {
   })
 }
 
-// 查询文档数据管理详细
+// Query document data management details
 export function getDaDoc(id) {
   return request({
     url: '/da/daDoc/' + id,
@@ -35,7 +35,7 @@ export function getDaDoc(id) {
   })
 }
 
-// 新增文档数据管理
+// Added document data management
 export function addDaDoc(data) {
   return request({
     url: '/da/daDoc',
@@ -44,7 +44,7 @@ export function addDaDoc(data) {
   })
 }
 
-// 修改文档数据管理
+// Modify document data management
 export function updateDaDoc(data) {
   return request({
     url: '/da/daDoc',
@@ -53,7 +53,7 @@ export function updateDaDoc(data) {
   })
 }
 
-// 删除文档数据管理
+// Delete document data management
 export function delDaDoc(id) {
   return request({
     url: '/da/daDoc/' + id,

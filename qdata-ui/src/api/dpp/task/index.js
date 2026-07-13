@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据集成任务列表
+// Query the data integration task list
 export function listDppEtlTask(query) {
     return request({
         url: '/dpp/etlTask/getDppEtlTaskPage',
@@ -27,7 +27,7 @@ export function listDppEtlTask(query) {
     })
 }
 
-// 查询数据集成任务详细
+// Query data integration task details
 export function getDppEtlTask(id) {
     return request({
         url: '/dpp/etlTask/' + id,
@@ -35,7 +35,7 @@ export function getDppEtlTask(id) {
     })
 }
 
-// 新增数据集成任务
+// Add new data integration task
 export function addDppEtlTask(data) {
     return request({
         url: '/dpp/etlTask',
@@ -44,7 +44,7 @@ export function addDppEtlTask(data) {
     })
 }
 
-// 修改数据集成任务
+// Modify data integration tasks
 export function updateDppEtlTask(data) {
     return request({
         url: '/dpp/etlTask',
@@ -53,7 +53,7 @@ export function updateDppEtlTask(data) {
     })
 }
 
-// 删除数据集成任务
+// Delete data integration tasks
 export function delDppEtlTask(id) {
     console.log("🚀 ~ delDppEtlTask ~ id:", id)
     return request({
@@ -61,7 +61,7 @@ export function delDppEtlTask(id) {
         method: 'delete'
     })
 }
-// 表列表
+// table list
 // export function getTablesByDataSourceId(query) {
 //   return request({
 //     url: '/da/daAsset/getTablesByDataSourceId',
@@ -76,7 +76,7 @@ export function getTablesByDataSourceId(ID) {
         method: 'get'
     });
 }
-// 表字段
+// table fields
 export function getColumnByAssetId(data) {
     return request({
         url: `/da/dataSource/columnsAsAssetColumnList`,
@@ -84,7 +84,7 @@ export function getColumnByAssetId(data) {
         data: data
     });
 }
-// 表字段
+// table fields
 // export function getColumnByAssetId(query) {
 //   return request({
 //     url: '/da/daAssetColumn/getColumnByAssetId',
@@ -92,7 +92,7 @@ export function getColumnByAssetId(data) {
 //     params: query
 //   })
 // }
-// code获取
+// code acquisition
 export function getNodeUniqueKey(query) {
     return request({
         url: '/dpp/etlTask/getNodeUniqueKey',
@@ -100,7 +100,7 @@ export function getNodeUniqueKey(query) {
         params: query
     })
 }
-// code获取
+// code acquisition
 export function getCleaningRuleTree(query) {
     return request({
         url: '/att/cleanRule/getCleaningRuleTree',
@@ -108,7 +108,7 @@ export function getCleaningRuleTree(query) {
         params: query
     })
 }
-// code获取
+// code acquisition
 export function createTaskTempTable(data) {
     return request({
         url: '/da/dataSource/createTaskTempTable',
@@ -116,7 +116,7 @@ export function createTaskTempTable(data) {
         data: data
     })
 }
-// 新增接口 dag
+// Add interface dag
 export function createProcessDefinition(data) {
     return request({
         url: '/dpp/etlTask/createProcessDefinitionEx',
@@ -124,7 +124,7 @@ export function createProcessDefinition(data) {
         data: data
     })
 }
-// 新增接口 数据集成dag
+// New interface data integration dag
 export function createProcessDefinitions(data) {
     return request({
         // url: '/dpp/etlTask/createProcessDefinitionEx',
@@ -133,7 +133,7 @@ export function createProcessDefinitions(data) {
         data: data
     })
 }
-// 新增接口 数据集成dag
+// New interface data integration dag
 export function createEtlTaskFrontPostposition(data) {
     return request({
         url: '/dpp/etlTask/createEtlTaskFrontPostposition',
@@ -141,7 +141,7 @@ export function createEtlTaskFrontPostposition(data) {
         data: data
     })
 }
-// 上线下线
+// Online and offline
 export function updateReleaseTask(data) {
     return request({
         url: '/dpp/etlTask/updateReleaseTask',
@@ -149,7 +149,7 @@ export function updateReleaseTask(data) {
         data: data
     })
 }
-// 上线下线 調度
+// Online and offline scheduling
 export function updateReleaseSchedule(data) {
     return request({
         url: '/dpp/etlTask/updateReleaseSchedule',
@@ -157,7 +157,7 @@ export function updateReleaseSchedule(data) {
         data: data
     })
 }
-// 上线下线 任務
+// Online and offline tasks
 export function updateReleaseJobTask(data) {
     return request({
         url: '/dpp/etlTask/updateReleaseJobTask',
@@ -166,7 +166,7 @@ export function updateReleaseJobTask(data) {
     })
 }
 
-// 详情
+// Details
 export function etlTask(id) {
     return request({
         url: '/dpp/etlTask/updateQuery/' + id,
@@ -175,7 +175,7 @@ export function etlTask(id) {
     })
 }
 
-// 修改
+// Modify
 export function updateProcessDefinition(data) {
     return request({
         url: '/dpp/etlTask/updateProcessDefinition',
@@ -183,7 +183,7 @@ export function updateProcessDefinition(data) {
         data: data
     })
 }
-// 数据集成修改
+// Data integration modifications
 export function updateProcessDefinitions(data, query) {
     return request({
         // url: '/dpp/etlTask/updateProcessDefinition',
@@ -193,7 +193,7 @@ export function updateProcessDefinitions(data, query) {
         params: query
     })
 }
-// 修改调度
+// Modify schedule
 export function releaseTaskCrontab(data) {
     return request({
         url: '/dpp/etlTask/releaseTaskCrontab',
@@ -202,7 +202,7 @@ export function releaseTaskCrontab(data) {
     })
 }
 
-// 查询作业任务 树形
+// Query job task tree
 export function getDppEtlTaskListTree(query) {
     return request({
         url: '/dpp/etlTask/getDppEtlTaskListTree',
@@ -211,7 +211,7 @@ export function getDppEtlTaskListTree(query) {
     })
 }
 
-// 解析exel
+// Parse exel
 export function getExcelColumn(data) {
     return request({
         url: '/common/getExcelColumn ',
@@ -221,7 +221,7 @@ export function getExcelColumn(data) {
 }
 //
 
-// 表code获取
+// Table code acquisition
 export function createTaskTempTableByExcel(data) {
     return request({
         url: '/da/dataSource/createTaskTempTableByExcel',
@@ -254,7 +254,7 @@ export function getCsvColumn(data) {
     })
 }
 
-// 数据研发 执行一次
+// Data R&D Execute once
 export function startDppEtlTask(data) {
     return request({
         url: '/dpp/etlTask/startDppEtlTask/' + data,
@@ -262,7 +262,7 @@ export function startDppEtlTask(data) {
     })
 }
 
-// 新增任务
+// Add new task
 export function createEtlTaskFront(data) {
     return request({
         url: '/dpp/etlTask/createEtlTaskFront',
@@ -271,7 +271,7 @@ export function createEtlTaskFront(data) {
     })
 }
 
-// 使用模板
+// Use templates
 export function dppEtlSqlTemp(query) {
     return request({
         url: '/dpp/etlSqlTemp/list',
@@ -280,7 +280,7 @@ export function dppEtlSqlTemp(query) {
     })
 }
 
-// 获取实例id
+// Get instance id
 export function getRunTaskInstance(query) {
     return request({
         url: '/dpp/etlTaskInstance/getRunTaskInstance',
@@ -289,7 +289,7 @@ export function getRunTaskInstance(query) {
     })
 }
 
-// 获取控制台日志
+// Get console log
 export function getLogByTaskInstanceId(query) {
     return request({
         url: '/dpp/etlTaskInstance/getLogByTaskInstanceId',
@@ -300,7 +300,7 @@ export function getLogByTaskInstanceId(query) {
 
 
 
-// api输入组件-从结果JSON中自动分析
+// api input component - automatic parsing from resulting JSON
 export function getResponseColumnReqVO(data) {
     return request({
         url: '/common/getResponseColumnReqVO',
@@ -308,14 +308,14 @@ export function getResponseColumnReqVO(data) {
         data: data
     })
 }
-// 日志获取节点详情
+// Log gets node details
 export function getTaskInfo(query) {
     return request({
         url: '/dpp/etlTaskInstance/getTaskInfo/' + query,
         method: 'get',
     })
 }
-// 克隆任务
+// Clone task
 export function copyCreateEtl(data) {
     return request({
         url: '/dpp/etlTask/copyCreateEtl',
@@ -323,7 +323,7 @@ export function copyCreateEtl(data) {
         data: data
     })
 }
-// 执行命令
+// execute command
 export function execute(taskInstanceId, executeType) {
     return request({
         url: `/dpp/etlExecutors/execute/${taskInstanceId}/${executeType}`,

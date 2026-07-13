@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 上次登录用户登录页面登录页面样式二 -->
+    <!-- Last logged in user login page login page style 2 -->
     <div class="app-container login-two sysInfo sysInfo-wrap" ref="app-container">
         <div class="left-content">
             <div class="swiper leftSwiper">
@@ -189,7 +189,7 @@
 
                     <div class="record" @click="goKtPage()">
                         <img src="https://www.asktempo.com/statics/images/an.png" alt="" />
-                        <!--            &nbsp;&nbsp; 苏ICP备2022008519号-1-->
+                        <!--            Su ICP No. 2022008519-1-->
                         &nbsp;&nbsp;
                         {{
                             contentDetail && contentDetail.recordNumber
@@ -351,7 +351,7 @@ const fetchContent = async () => {
     }
 };
 
-// 切换语言：更新 store + 加载语言包 + 刷新页面
+// Switch language: update store + load language pack + refresh page
 async function handleLangClick(lang) {
   langOpen.value = false;
   if (lang === localeStore.getCurrentLocale.lang) return;
@@ -388,18 +388,18 @@ function handleLogin() {
     proxy.$refs.loginRef.validate((valid) => {
         if (valid) {
             loading.value = true;
-            // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
+            // Check the Require to remember password setting and set it in cookies to remember username and password.
             if (loginForm.value.rememberMe) {
                 Cookies.set('username', loginForm.value.username, { expires: 30 });
                 Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
                 Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
             } else {
-                // 否则移除
+                // Otherwise remove
                 Cookies.remove('username');
                 Cookies.remove('password');
                 Cookies.remove('rememberMe');
             }
-            // 调用action的登录方法
+            // Call the login method of action
             userStore
                 .login(loginForm.value)
                 .then(() => {
@@ -407,7 +407,7 @@ function handleLogin() {
                 })
                 .catch(() => {
                     loading.value = false;
-                    // 重新获取验证码
+                    // Get verification code again
                     if (captchaEnabled.value) {
                         getCode();
                     }
@@ -430,10 +430,10 @@ function handleFPCodeClick() {
         }
     }, 1000);
 }
-//点击备案号调整工信部
+//Click on the registration number to adjust the Ministry of Industry and Information Technology
 function goKtPage() {
-    // 在新窗口打开链接
-    window.open('https://beian.miit.gov.cn/#/Integrated/index', '_blank'); // 在新窗口打开链接
+    // Open link in new window
+    window.open('https://beian.miit.gov.cn/#/Integrated/index', '_blank'); // Open link in new window
 }
 </script>
 

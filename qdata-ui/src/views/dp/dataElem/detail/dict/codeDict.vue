@@ -75,7 +75,7 @@
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <!-- 新增或修改数据元代码对话框 -->
+    <!-- Add or modify data element code dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
         <el-form ref="dpDataElemCodeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -158,18 +158,18 @@ const data = reactive({
 let id = route.query.id;
 
 const { queryParams, form, dpDataElemCodeDetail, rules } = toRefs(data);
-// 监听 id 变化
+// Monitor id changes
 watch(
     () => route.query.id,
     (newId) => {
-        id = newId || -1; // 如果 id 为空，使用默认值 1
+        id = newId || -1; // If id is empty, the default value 1 is used
         getList();
     },
-    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 function validatorCodeValue(rule, value, callback) {
     if (value !== null && value !== undefined) {
-        //调用接口判断是否存在重复的值
+        //Call the interface to determine whether there are duplicate values
         var params = {
             id: form.value.id || null,
             dataElemId: id,
@@ -187,7 +187,7 @@ function validatorCodeValue(rule, value, callback) {
     }
 }
 
-/** 查询数据元代码列表 */
+/** Query the data element code list */
 function getList() {
     if (id == -1) {
         return;
@@ -201,14 +201,14 @@ function getList() {
     });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     openDetail.value = false;
     reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         id: null,
@@ -228,40 +228,40 @@ function reset() {
     proxy.resetForm('dpDataElemCodeRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
     ids.value = selection.map((item) => item.id);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
     queryParams.value.orderByColumn = column.prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
     reset();
     open.value = true;
     title.value = td('dp.dataElem.addCodeTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
     reset();
     const _id = row.id || ids.value;
@@ -272,7 +272,7 @@ function handleUpdate(row) {
     });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
     proxy.$refs['dpDataElemCodeRef'].validate((valid) => {
         console.log(dpDataElemCodeDetail.value);
@@ -284,7 +284,7 @@ function submitForm() {
                         proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.updateSuccess'));
                         open.value = false;
                         getList();
-                        //事件推送
+                        //event push
                         proxy.$bus.emit('data_elem_code_change');
                     })
                     .catch((error) => { });
@@ -294,7 +294,7 @@ function submitForm() {
                         proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.addSuccess'));
                         open.value = false;
                         getList();
-                        //事件推送
+                        //event push
                         proxy.$bus.emit('data_elem_code_change');
                     })
                     .catch((error) => { });
@@ -303,7 +303,7 @@ function submitForm() {
     });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
@@ -313,7 +313,7 @@ function handleDelete(row) {
         })
         .then(() => {
             getList();
-            //事件推送
+            //event push
             proxy.$bus.emit('data_elem_code_change');
             proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.deleteSuccess'));
         })

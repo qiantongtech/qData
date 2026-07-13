@@ -25,7 +25,7 @@
 import { ref, computed, nextTick, watch } from "vue";
 import Codemirror from "codemirror-editor-vue3";
 
-// 引入核心样式与插件
+// Introducing core styles and plug-ins
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/idea.css";
 import "codemirror/mode/sql/sql.js";
@@ -34,7 +34,7 @@ import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/sql-hint";
 import "codemirror/addon/display/placeholder.js";
 
-// 接收 props
+// receive props
 const props = defineProps({
   modelValue: {
     type: String,
@@ -58,13 +58,13 @@ const props = defineProps({
   },
 });
 
-// 发射事件
+// launch event
 const emit = defineEmits(["update:modelValue", "changeTextarea"]);
 
-// 本地绑定变量
+// local bind variable
 const code = ref(props.modelValue);
 
-// 监听外部传入的 v-model 值变化，更新内部 code
+// Monitor changes in the v-model value passed in from the outside and update the internal code
 watch(
   () => props.modelValue,
   (val) => {
@@ -74,17 +74,17 @@ watch(
   }
 );
 
-// 监听内部 code 的变化，同步更新 v-model
+// Monitor changes in internal code and update v-model synchronously
 watch(code, (val) => {
   emit("update:modelValue", val);
 });
 
-// 代码变化时的处理
+// Handling when code changes
 const onInput = () => {
   emit("changeTextarea", code.value);
 };
 
-// Codemirror 配置项
+// Codemirror configuration items
 const cmOptions = computed(() => ({
   mode: "text/x-sql",
   theme: "default",
@@ -104,7 +104,7 @@ const cmOptions = computed(() => ({
   },
 }));
 
-// 初始化提示
+// Initialization prompt
 const onReady = (editor) => {
   editor.on("inputRead", (cm, location) => {
     if (/[a-zA-Z]/.test(location.text[0])) {
@@ -116,7 +116,7 @@ const onReady = (editor) => {
   });
 };
 
-// 提供方法供父组件调用
+// Provide methods for parent components to call
 const clear = () => {
   code.value = "";
   emit("changeTextarea", "");

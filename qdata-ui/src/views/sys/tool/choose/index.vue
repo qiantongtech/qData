@@ -40,9 +40,9 @@
       </template>
     </el-input>
 
-    <!-- 单选  字典管理 -->
+    <!-- Single choice dictionary management -->
     <Current ref="dictRef1" @confirm="radioSubmit" />
-    <!-- 多选  字典管理 -->
+    <!-- Multiple selection dictionary management -->
     <Selection ref="dictRef2" @confirm="checkSubmit" />
   </div>
 </template>
@@ -58,7 +58,7 @@ const input2 = ref("");
 const radioVal = ref(null);
 const checkVal = ref([]);
 
-// 单选
+// Single choice
 function radioShow() {
   dictRef1.value.open(radioVal.value);
 }
@@ -68,7 +68,7 @@ function radioSubmit(val) {
   input1.value = val.dictName;
 }
 
-// 多选
+// Multiple choice
 function checkShow() {
   dictRef2.value.open(checkVal.value);
 }

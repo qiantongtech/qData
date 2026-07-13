@@ -179,7 +179,7 @@ const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "loginTime", order: "descending" });
 
-// 查询参数
+// query parameters
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
@@ -190,7 +190,7 @@ const queryParams = ref({
   isAsc: undefined
 });
 
-/** 查询登录日志列表 */
+/** Query login log list */
 function getList() {
   loading.value = true;
   list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -200,13 +200,13 @@ function getList() {
   });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
@@ -214,7 +214,7 @@ function resetQuery() {
   proxy.$refs["logininforRef"].sort(defaultSort.value.prop, defaultSort.value.order);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.infoId);
   multiple.value = !selection.length;
@@ -222,14 +222,14 @@ function handleSelectionChange(selection) {
   selectName.value = selection.map(item => item.userName);
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const infoIds = row.infoId || ids.value;
   proxy.$modal.confirm(td('logininfor.confirmDelete', { ids: infoIds })).then(function () {
@@ -240,7 +240,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 清空按钮操作 */
+/** Clear button action */
 function handleClean() {
   proxy.$modal.confirm(td('logininfor.confirmClearAll')).then(function () {
     return cleanLogininfor();
@@ -250,7 +250,7 @@ function handleClean() {
   }).catch(() => {});
 }
 
-/** 解锁按钮操作 */
+/** Unlock button operation */
 function handleUnlock() {
   const username = selectName.value;
   proxy.$modal.confirm(td('logininfor.confirmUnlock', { name: username })).then(function () {
@@ -260,7 +260,7 @@ function handleUnlock() {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("monitor/logininfor/export", {
     ...queryParams.value,

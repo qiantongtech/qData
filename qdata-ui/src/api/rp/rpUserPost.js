@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询服务资源门户用户与岗位关联列表
+// Query the service resource portal user and position association list
 export function listRpUserPost(query) {
   return request({
     url: '/rp/rpUserPost/list',
@@ -27,7 +27,7 @@ export function listRpUserPost(query) {
   })
 }
 
-// 查询服务资源门户用户与岗位关联详细
+// Query the details of the relationship between service resource portal users and positions
 export function getRpUserPost(userId) {
   return request({
     url: '/rp/rpUserPost/' + userId,
@@ -35,7 +35,7 @@ export function getRpUserPost(userId) {
   })
 }
 
-// 新增服务资源门户用户与岗位关联
+// Added service resource portal user and position association
 export function addRpUserPost(data) {
   return request({
     url: '/rp/rpUserPost',
@@ -44,7 +44,7 @@ export function addRpUserPost(data) {
   })
 }
 
-// 修改服务资源门户用户与岗位关联
+// Modify the relationship between service resource portal users and positions
 export function updateRpUserPost(data) {
   return request({
     url: '/rp/rpUserPost',
@@ -53,7 +53,7 @@ export function updateRpUserPost(data) {
   })
 }
 
-// 删除服务资源门户用户与岗位关联
+// Delete service resource portal user and position association
 export function delRpUserPost(userId) {
   return request({
     url: '/rp/rpUserPost/' + userId,

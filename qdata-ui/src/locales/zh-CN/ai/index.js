@@ -1,6 +1,6 @@
 export default {
   chat: {
-    // === ConversationList 对话列表 ===
+    // === ConversationList Conversation List ===
     newConversation: '新建对话',
     searchHistory: '搜索历史记录',
     pinTop: '置顶',
@@ -19,7 +19,7 @@ export default {
     sevenDaysAgo: '七天前',
     thirtyDaysAgo: '三十天前',
 
-    // === DataScopeConfig 数据范围配置 ===
+    // === DataScopeConfig data scope configuration ===
     newChat: '新对话',
     dimensionTablesCount: '+ {count}张维表',
     dataScope: '数据范围',
@@ -46,7 +46,7 @@ export default {
     setAtLeastOneAssociation: '请至少设置一个关联关系',
     setAssociationSuccess: '设置关联关系成功',
 
-    // === Message 消息相关 ===
+    // === Message message related ===
     insight: '智能洞察',
     analyzing: '问题分析中...',
     suggestedAsk: '试着问问',
@@ -67,7 +67,7 @@ export default {
     detailFile: '明细数据_{time}',
     confirmDeleteMessage: '是否确认删除？',
 
-    // === MessageListEmpty / 空状态 ===
+    // === MessageListEmpty / Empty state ===
     welcomeGreeting: 'Hello，我是 qData 智能问数，很高兴见到你!',
     welcomeSubheading: '化繁为简，让数据分析更高效。',
     inputPlaceholder: '问问 qData 智能问数...（Shift+Enter 换行，按下 Enter 发送）',
@@ -76,13 +76,13 @@ export default {
     disclaimer: '本功能由 qData 智能问数生成，其回答未必正确无误。',
     configureDataScopeFirst: '请先配置当前数据范围！',
 
-    // === MessageListEmpty2 空状态2 ===
+    // === MessageListEmpty2 Empty state 2 ===
     lingtongAI: '灵桐 AI',
 
-    // === MessageNewConversation 新建对话 ===
+    // === MessageNewConversation New conversation ===
     startConversation: '点击下方按钮，开始你的对话吧',
 
-    // === Chat Index 主页 ===
+    // === Chat Index Home Page ===
     clearSession: '清空会话',
     navDown: '下',
     navUp: '上',
@@ -94,7 +94,7 @@ export default {
     sendFailedEmpty: '发送失败，原因：内容为空！',
     selectAnswerType: '请先选择回答方式（智能问答或智能图表）！',
 
-    // === AssistantReportCard 报表卡片 ===
+    // === AssistantReportCard report card ===
     quantity: '数量',
 
     // === MessageListEmpty2 prompt ===

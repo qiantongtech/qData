@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 正则表达式替换   -->
+  <!-- Regular expression replacement   -->
   <el-form
     ref="formRef"
     :model="form"
@@ -89,7 +89,7 @@ const emit = defineEmits(["update:form"]);
 
 const formRef = ref(null);
 const form = reactive({ ...props.form });
-// 表单校验规则
+// Form validation rules
 const rules = {
   regex: [
     {

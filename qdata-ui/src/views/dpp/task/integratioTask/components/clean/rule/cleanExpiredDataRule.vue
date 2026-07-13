@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 清理过期数据 -->
+  <!-- Clean up expired data -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
@@ -225,7 +225,7 @@ const handleColumnsText = computed(() => {
   return f ? f.label : form.handleColumns || "-";
 });
 
-// 用change事件监听dataRange变化，切换时如果dataRangeValue为空则赋默认值
+// Use the change event to monitor dataRange changes. If dataRangeValue is empty during switching, a default value will be assigned.
 function handleDataRangeChange(newVal) {
   if (newVal === "0") {
     form.dataRangeValue = 30;
@@ -234,13 +234,13 @@ function handleDataRangeChange(newVal) {
   }
 }
 
-// 验证并返回清洗后的有效数据
+// Verify and return valid data after cleaning
 function validate() {
   return new Promise((resolve) => {
     formRef.value.validate((valid) => {
       if (!valid) return resolve({ valid: false });
 
-      // 只保存当前页面实际有的字段
+      // Only save the fields that are actually present on the current page
       const cleanedData = {
         dataRange: form.dataRange,
         dataRangeValue: form.dataRangeValue,
@@ -249,10 +249,10 @@ function validate() {
       };
 
       if (form.dataRange === "0") {
-        // 最近时间范围，dataRangeValue 是数字
+        // Recent time range, dataRangeValue is a number
         cleanedData.dataRangeValue = form.dataRangeValue;
       } else if (form.dataRange === "1") {
-        // 具体日期，dataRangeValue 是日期字符串
+        // Specific date, dataRangeValue is a date string
         cleanedData.dataRangeValue = form.dataRangeValue;
       }
 

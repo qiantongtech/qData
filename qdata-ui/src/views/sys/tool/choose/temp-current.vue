@@ -193,23 +193,23 @@ const { queryParams, form } = toRefs(data);
 
 // -------------------------------------------
 const visible = ref(false);
-// 定义单选数据
+// Define radio data
 const single = ref();
-// 当前界面table
+// Current interface table
 const tableRef = ref();
 
 const emit = defineEmits(["open", "confim", "cancel"]);
 
-/** 单选选中事件 */
+/** radio selected event */
 function handleCurrentChange(selection) {
   if (selection) {
     single.value = selection;
   }
 }
 /**
- * 设置当前行
- * @param {Object} row 行对象
- * @returns 更改选中对象
+ * Set current row
+ * @param {Object} row row object
+ * @returns changes the selected object
  */
 function setCurrentRow(row) {
   if (row) {
@@ -218,8 +218,8 @@ function setCurrentRow(row) {
   }
 }
 /**
- * 打开选择框
- * @param {Array} val 选中的对象数组
+ * Open selection box
+ * @param {Array} val array of selected objects
  */
 function open(val) {
   visible.value = true;
@@ -227,8 +227,8 @@ function open(val) {
   getList();
 }
 /**
- * 取消按钮
- * @description 取消按钮时，重置所有状态
+ * Cancel button
+ * @description When canceling the button, reset all states
  */
 function cancel() {
   queryParams.value.pageNum = 1;
@@ -236,8 +236,8 @@ function cancel() {
   visible.value = false;
 }
 /**
- * 确定按钮
- * @description 确定按钮时，emit confirm 事件，以便父组件接收到选中的数据
+ * OK button
+ * @description When confirming the button, emit the confirm event so that the parent component receives the selected data
  */
 function confirm() {
   if (!single.value) {
@@ -248,7 +248,7 @@ function confirm() {
   visible.value = false;
 }
 
-/** 查询字典类型列表 */
+/** Query dictionary type list */
 function getList() {
   loading.value = true;
   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(
@@ -256,18 +256,18 @@ function getList() {
       dataList.value = response.rows;
       total.value = response.total;
       loading.value = false;
-      // 初始化及分页切换选中逻辑
+      // Initialization and paging switching selection logic
       await nextTick();
       setCurrentRow(single.value);
     }
   );
 }
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   dateRange.value = []

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询标签管理类目管理列表
+// Query tag management category management list
 export function listAttTagCat(query) {
     return request({
         url: '/att/tagCat/list',
@@ -27,7 +27,7 @@ export function listAttTagCat(query) {
     })
 }
 
-// 查询标签管理类目管理详细
+// Query tag management category management details
 export function getAttTagCat(id) {
     return request({
         url: '/att/tagCat/' + id,
@@ -35,7 +35,7 @@ export function getAttTagCat(id) {
     })
 }
 
-// 新增标签管理类目管理
+// Added tag management category management
 export function addAttTagCat(data) {
     return request({
         url: '/att/tagCat',
@@ -44,7 +44,7 @@ export function addAttTagCat(data) {
     })
 }
 
-// 修改标签管理类目管理
+// Modify tag management category management
 export function updateAttTagCat(data) {
     return request({
         url: '/att/tagCat',
@@ -53,7 +53,7 @@ export function updateAttTagCat(data) {
     })
 }
 
-// 删除标签管理类目管理
+// Delete tag management category management
 export function delAttTagCat(id) {
     return request({
         url: '/att/tagCat/' + id,

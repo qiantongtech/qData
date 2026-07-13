@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 数值字段范围校验 -->
+  <!-- Numeric field range check -->
   <el-form ref="formRef" :model="form" :disabled="false">
     <el-row :gutter="20">
       <el-col :span="12">
@@ -86,7 +86,7 @@ const includeBoundaryText = computed(() =>
     : "-"
 );
 const columnList = ref([]);
-// 评测对象改变时，更新相关字段和字段列表
+// When the evaluation object changes, update the relevant fields and field list
 async function handleTargetObjectChange(selectedName, falg) {
   const selected = props.auditTargets.find(
     (item) => item.datasourceName == selectedName
@@ -161,7 +161,7 @@ onMounted(() => {
   if (form.targetObject) {
     fetchColumns();
   }
-  console.log("子组件 mounted hook");
+  console.log("Child component mounted hook");
 });
 
 defineExpose({ validate });

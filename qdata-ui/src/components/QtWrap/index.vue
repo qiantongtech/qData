@@ -133,12 +133,12 @@ const store = reactive({
   search: true,
 });
 
-// 刷新
+// Refresh
 function handleRefreshClick() {
   props.tableRef.getList();
 }
 
-// 显隐列
+// Display and hide columns
 function handleCheckboxChange(checked, item) {
   item.hide = !checked;
 }

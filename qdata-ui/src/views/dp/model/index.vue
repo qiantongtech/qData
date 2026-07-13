@@ -92,7 +92,7 @@
                   'icon-disabled': single,
                   'icon-normal': !single,
                 }"
-              />发布
+              />Publish
             </el-button> -->
             <el-button
               type="danger"
@@ -156,7 +156,7 @@
       </el-main>
     </el-container>
 
-    <!-- 逻辑模型详情对话框 -->
+    <!-- Logical Model Details Dialog Box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -323,7 +323,7 @@ const DeptTreeRef = ref(null);
 
 let Materialization = ref(false);
 
-/** 查询数仓分层树结构 */
+/** Query the hierarchical tree structure of the data warehouse */
 function getDataLayerTree() {
   treeDataLayer().then((res) => {
     const tree = res.data || res.rows || [];
@@ -345,13 +345,13 @@ function getDataLayerTree() {
   });
 }
 
-/** 查询部门下拉树结构 */
+/** Query department drop-down tree structure */
 function getDeptTree() {
   getDataLayerTree();
   projectStore.getModelDeptTree().then((data) => {
     deptOptions.value = data;
   });
-  // 部门
+  // Department
   deptTreeSelectNoPermi().then((response) => {
     deptList.value = response.data;
   });
@@ -371,23 +371,23 @@ const title = ref("");
 const router = useRouter();
 const selectedType = ref("");
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dp/model/importData",
 });
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
@@ -539,7 +539,7 @@ const searchStore = reactive({
       component: { is: "select", options: table_type },
     },
     // {
-    //   label: "命名大小写",
+    //   label: "Name case",
     //   prop: "tableCase",
     //   type: "select",
     //   component: { is: "select", options: dp_model_table_case },
@@ -576,14 +576,14 @@ function handleNodeClick(data) {
   handleQuery();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     ID: null,
@@ -609,12 +609,12 @@ function reset() {
   proxy.resetForm("dpModelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   tableRef.value && tableRef.value.getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -627,7 +627,7 @@ function resetQuery() {
   tableStore.params.dataLayerId = null;
   handleQuery();
 }
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   console.log("selection", selection);
   ids.value = selection.map((item) => item.id);
@@ -636,7 +636,7 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(type) {
   selectedType.value = typeof type === "string" ? type : "1";
   dataList.value = {};
@@ -645,7 +645,7 @@ function handleAdd(type) {
   title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   console.log("row", row);
   reset();
@@ -658,7 +658,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 发布按钮操作 */
+/** Post button action */
 function handleMaterialization() {
   const _ID = ids.value;
   // getDpModel(_ID).then(response => {
@@ -668,12 +668,12 @@ function handleMaterialization() {
   Materialization.value = true;
   title.value = td('dp.model.publishTitle');
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   routeTo("/dm/model/detail", row);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm(obj) {
   console.log("obj", obj);
   if (obj.form.id != null) {
@@ -703,12 +703,12 @@ function submitForm(obj) {
           .catch((dpModelColumnError) => {});
       })
       .catch((error) => {
-        console.error("新增失败:", error);
+        console.error("Failed to add:", error);
       });
   }
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   batchDeleteCheck(_IDs).then((res) => {

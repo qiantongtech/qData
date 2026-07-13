@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据开发类目管理列表
+// Query the data development category management list
 export function listAttDataDevCat(query) {
   return request({
     url: '/att/dataDevCat/list',
@@ -27,7 +27,7 @@ export function listAttDataDevCat(query) {
   })
 }
 
-// 查询数据开发类目管理详细
+// Query data development category management details
 export function getAttDataDevCat(id) {
   return request({
     url: '/att/dataDevCat/' + id,
@@ -35,7 +35,7 @@ export function getAttDataDevCat(id) {
   })
 }
 
-// 新增数据开发类目管理
+// Added new data development category management
 export function addAttDataDevCat(data) {
   return request({
     url: '/att/dataDevCat',
@@ -44,7 +44,7 @@ export function addAttDataDevCat(data) {
   })
 }
 
-// 修改数据开发类目管理
+// Modify data development category management
 export function updateAttDataDevCat(data) {
   return request({
     url: '/att/dataDevCat',
@@ -53,7 +53,7 @@ export function updateAttDataDevCat(data) {
   })
 }
 
-// 删除数据开发类目管理
+// Delete data development category management
 export function delAttDataDevCat(id) {
   return request({
     url: '/att/dataDevCat/' + id,

@@ -1,11 +1,11 @@
 import { onActivated } from "vue";
 
 /**
- * 页面自动刷新 Hook
- * 用于处理从详情页/新增页返回列表页时的自动刷新逻辑
- * @param {string} key - 唯一的标识符，用于区分不同页面的刷新标记
- * @param {Function} [callback] - 列表页的刷新回调函数。传入此参数时，Hook 会自动在 onActivated 中检查并执行刷新。
- * @returns {Object} 返回包含 setRefreshNeeded 的对象
+ * Page automatic refresh Hook
+ * Used to handle the automatic refresh logic when returning to the list page from the details page/new page
+ * @param {string} key - a unique identifier used to distinguish the refresh tags of different pages
+ * @param {Function} [callback] - The refresh callback function of the list page. When this parameter is passed in, Hook will automatically check and perform refresh in onActivated.
+ * @returns {Object} returns an object containing setRefreshNeeded
  */
 export function usePageRefresh(key, callback) {
   if (!key) {
@@ -14,7 +14,7 @@ export function usePageRefresh(key, callback) {
 
   const storageKey = `page_refresh_${key}`;
 
-  // 如果传入了回调函数，说明是在列表页使用，自动注册 onActivated
+  // If the callback function is passed in, it means that it is used on the list page and is automatically registered onActivated
   if (typeof callback === "function") {
     onActivated(() => {
       const needRefresh = sessionStorage.getItem(storageKey);
@@ -26,8 +26,8 @@ export function usePageRefresh(key, callback) {
   }
 
   /**
-   * 设置刷新标记
-   * 通常在详情页/新增页保存成功后调用
+   * Set refresh flag
+   * Usually called after the details page/new page is successfully saved.
    */
   const setRefreshNeeded = () => {
     sessionStorage.setItem(storageKey, "true");

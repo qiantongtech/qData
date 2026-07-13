@@ -179,7 +179,7 @@
       </el-main>
     </el-container>
 
-    <!-- 新增或详情数据分类对话框 -->
+    <!-- New or detailed data classification dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -509,7 +509,7 @@ const { dg_data_priority, dg_replace_rule } = proxy.useDict(
 );
 
 const deptOptions = ref([]);
-const leftWidth = ref(300); // 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
 const store = reactive({
   rows: [],
 });
@@ -648,11 +648,11 @@ const searchStore = reactive({
       },
     },
     // {
-    //   label: "优先级",
+    //   label: "priority",
     //   prop: "priority",
     //   component: {
     //     is: "select",
-    //     placeholder: "请选择优先级",
+    //     placeholder: "Please select priority",
     //     options: dg_data_priority,
     //   },
     // },
@@ -671,7 +671,7 @@ const searchStore = reactive({
   ],
 });
 
-// 新的 handleNodeClick 函数
+// New handleNodeClick function
 function handleNodeClick(data) {
   if (!data || String(data.id) === "0") {
     tableStore.params.catCode = null;
@@ -694,7 +694,7 @@ function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e ? td('dg.dataCategory.enabledLabel') : td('dg.dataCategory.disabledLabel');
   let dataForm = {
@@ -740,14 +740,14 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -782,13 +782,13 @@ function handleCatChange(code) {
   }
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
-  // 如果左侧树选中了节点，预填所属类目
+  // If a node is selected in the left tree, prefill the category it belongs to.
   if (tableStore.params.catCode) {
     form.value.catCode = tableStore.params.catCode;
-    // 需要找到对应的 catId，这里可能需要从 deptOptions 中查找
+    // You need to find the corresponding catId. You may need to find it from deptOptions.
     const findNode = (nodes, code) => {
       for (const node of nodes) {
         if (node.code === code) return node;
@@ -808,7 +808,7 @@ function handleAdd() {
   title.value = td('dg.dataCategory.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id;
@@ -818,7 +818,7 @@ function handleUpdate(row) {
     title.value = td('dg.dataCategory.editTitle');
   });
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row?.id;
@@ -830,7 +830,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["DataCategoryRef"].validate((valid) => {
     if (valid) {
@@ -851,7 +851,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   let _ids = null;
   if (row?.id) {

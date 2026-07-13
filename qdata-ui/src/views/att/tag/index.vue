@@ -104,7 +104,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改标签管理对话框 -->
+    <!-- Add or modify the tag management dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -234,7 +234,7 @@ const { dp_model_status } = proxy.useDict("dp_model_status");
 const router = useRouter();
 
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
 const store = reactive({
   rows: [],
 });
@@ -380,7 +380,7 @@ function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('att.common.enable') : td('att.common.disable');
   let dataForm = {
@@ -414,13 +414,13 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -436,14 +436,14 @@ function reset() {
   proxy.resetForm("AttTagRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('att.common.addTag');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id;
@@ -471,12 +471,12 @@ function routeTo(link, row) {
     }
   }
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   routeTo("/da/tag/detail", row);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["AttTagRef"].validate((valid) => {
     if (valid) {
@@ -498,7 +498,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   let _ids = null;
   if (row?.id) {
@@ -520,7 +520,7 @@ function handleDelete(row) {
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
-      // 用户取消删除操作
+      // User cancels deletion operation
     });
 }
 

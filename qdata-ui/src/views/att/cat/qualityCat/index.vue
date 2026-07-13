@@ -127,7 +127,7 @@
         @pagination="getList" />
     </div>
 
-    <!-- 新增或修改数据质量类目管理对话框 -->
+    <!-- Add or modify the data quality category management dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="attAssetCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -137,9 +137,9 @@
               <el-input v-model="form.name" :placeholder="td('att.common.qualityCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
-          <!--            <el-form-item label="类别排序" prop="sortOrder" :label-position="labelPosition">-->
-          <!--&lt;!&ndash;              <el-input v-model="form.sortOrder" placeholder="请输入类别排序" />&ndash;&gt;-->
-          <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="请输入类别排序" />-->
+          <!--            <el-form-item label="category sorting" prop="sortOrder" :label-position="labelPosition">-->
+          <!--<!– <el-input v-model="form.sortOrder" placeholder="Please enter the category to sort" />–>-->
+          <!--              <el-input-number v-model="form.sortOrder" steps="1" :min="0" placeholder="Please enter the category to sort" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
             <el-form-item :label="td('att.common.parentCat')" prop="parentId" :label-position="labelPosition">
@@ -227,7 +227,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询数据质量类目管理列表 */
+/** Query the data quality category management list */
 function getList() {
   loading.value = true;
 
@@ -238,15 +238,15 @@ function getList() {
   });
 }
 
-/** 查询数据质量类目管理下拉树结构1 */
+/** Query data quality category management drop-down tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -268,11 +268,11 @@ function reset() {
   proxy.resetForm('attAssetCatRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -290,13 +290,13 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm('queryRef');
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -315,7 +315,7 @@ function handleAdd(row) {
   title.value = td('att.qualityCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -332,15 +332,15 @@ function getDataTree() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttQualityCat();
   attAssetCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };
@@ -350,7 +350,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttQualityCat(row.id).then((response) => {
-    //把createTime过滤掉
+    //Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -359,7 +359,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs['attAssetCatRef'].validate((valid) => {
     if (valid) {
@@ -380,7 +380,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal
     .confirm(td('att.qualityCat.messages.confirmDelete').replace('<name>', row.name))

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询应用和用户关联列表
+// Query application and user association list
 export function listUser(query) {
   return request({
     url: '/auth/user/list',
@@ -27,7 +27,7 @@ export function listUser(query) {
   })
 }
 
-// 查询应用和用户关联详细
+// Query application and user association details
 export function getUser(clientId) {
   return request({
     url: '/auth/user/' + clientId,
@@ -35,7 +35,7 @@ export function getUser(clientId) {
   })
 }
 
-// 新增应用和用户关联
+// Add new application and user association
 export function addUser(data) {
   return request({
     url: '/auth/user',
@@ -44,7 +44,7 @@ export function addUser(data) {
   })
 }
 
-// 修改应用和用户关联
+// Modify application and user associations
 export function updateUser(data) {
   return request({
     url: '/auth/user',
@@ -53,7 +53,7 @@ export function updateUser(data) {
   })
 }
 
-// 删除应用和用户关联
+// Delete app and user associations
 export function delUser(clientId) {
   return request({
     url: '/auth/user/' + clientId,

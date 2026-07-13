@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询业务分类列表
+// Query business classification list
 export function listBusinessCategory(query) {
   return request({
     url: '/dm/businessCategory/list',
@@ -27,7 +27,7 @@ export function listBusinessCategory(query) {
   })
 }
 
-// 查询业务分类详细
+// Query business classification details
 export function getBusinessCategory(id) {
   return request({
     url: '/dm/businessCategory/' + id,
@@ -35,7 +35,7 @@ export function getBusinessCategory(id) {
   })
 }
 
-// 新增业务分类
+// Add new business category
 export function addBusinessCategory(data) {
   return request({
     url: '/dm/businessCategory',
@@ -44,7 +44,7 @@ export function addBusinessCategory(data) {
   })
 }
 
-// 修改业务分类
+// Modify business classification
 export function updateBusinessCategory(data) {
   return request({
     url: '/dm/businessCategory',
@@ -53,7 +53,7 @@ export function updateBusinessCategory(data) {
   })
 }
 
-// 删除业务分类
+// Delete business category
 export function delBusinessCategory(id) {
   return request({
     url: '/dm/businessCategory/' + id,

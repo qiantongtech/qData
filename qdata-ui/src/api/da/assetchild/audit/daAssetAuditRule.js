@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产质量结果记录列表
+// Query data asset quality result record list
 export function listDaAssetAuditRule(query) {
   return request({
     url: '/da/daAssetAuditRule/list',
@@ -27,7 +27,7 @@ export function listDaAssetAuditRule(query) {
   })
 }
 
-// 查询数据资产质量结果记录详细
+// Query data asset quality result record details
 export function getDaAssetAuditRule(id) {
   return request({
     url: '/da/daAssetAuditRule/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetAuditRule(id) {
   })
 }
 
-// 新增数据资产质量结果记录
+// Added new data asset quality result record
 export function addDaAssetAuditRule(data) {
   return request({
     url: '/da/daAssetAuditRule',
@@ -44,7 +44,7 @@ export function addDaAssetAuditRule(data) {
   })
 }
 
-// 修改数据资产质量结果记录
+// Modify data asset quality result records
 export function updateDaAssetAuditRule(data) {
   return request({
     url: '/da/daAssetAuditRule',
@@ -53,7 +53,7 @@ export function updateDaAssetAuditRule(data) {
   })
 }
 
-// 删除数据资产质量结果记录
+// Delete data asset quality result records
 export function delDaAssetAuditRule(id) {
   return request({
     url: '/da/daAssetAuditRule/' + id,

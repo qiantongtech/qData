@@ -28,7 +28,7 @@ defineProps({
   columnList: Array,
 });
 
-// 占位组件校验，始终返回通过
+// Placeholder component verification always returns passed
 const validate = async () => {
   return { valid: true, data: {} };
 };

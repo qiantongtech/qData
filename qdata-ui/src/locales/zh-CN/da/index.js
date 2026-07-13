@@ -155,7 +155,7 @@ export default {
       status: '状态',
       remark: '备注'
     },
-    // 质量规则注册中心
+    // Quality Rules Registration Center
     ruleRegistry: {
       DECIMAL_PRECISION_VALIDATION: '数值精度校验',
       CHARACTER_VALIDATION: '字符串类型校验',
@@ -165,7 +165,7 @@ export default {
       GROUP_FIELD_COMPLETENESS: '字段组完整性校验',
       TIME_ORDER_VALIDATION: '时间字段先后顺序校验'
     },
-    // 数据查询结果组件
+    // Data query result component
     dataQuery: {
       queryResult: {
         export: '导出',
@@ -181,7 +181,7 @@ export default {
         }
       }
     },
-    // 数据源管理
+    // Data source management
     datasource: {
       columnVisibility: {
         id: '编号',
@@ -195,7 +195,7 @@ export default {
       },
       belongProject: '所属项目'
     },
-    // 资产申请
+    // Asset application
     assetApply: {
       columnVisibility: {
         assetName: '资产名称',
@@ -208,7 +208,7 @@ export default {
         auditStatus: '审核状态'
       }
     },
-    // 资产列表
+    // Asset list
     asset: {
       columnVisibility: {
         id: '编号',

@@ -244,11 +244,11 @@ const {td} = useDefaultLang();
         return !(hideComponent.value && hideComponent.value.includes(key));
     }
     function resolveExp() {
-        // 反解析 表达式
+        // Anti-parse expression
         if (expression.value) {
             const arr = expression.value.split(/\s+/);
             if (arr.length >= 6) {
-                //6 位以上是合法表达式
+                //More than 6 digits are legal expressions
                 let obj = {
                     second: arr[0],
                     min: arr[1],
@@ -263,23 +263,23 @@ const {td} = useDefaultLang();
                 };
             }
         } else {
-            // 没有传入的表达式 则还原
+            // If no expression is passed in, restore
             clearCron();
         }
     }
-    // tab切换值
+    // tab switching value
     function tabCheck(index) {
         tabActive.value = index;
     }
-    // 由子组件触发，更改表达式组成的字段值
+    // Triggered by child components, changing the field value composed of expressions
     function updateCrontabValue(name, value, from) {
         console.log(value);
 
         crontabValueObj.value[name] = value;
     }
-    // 表单选项的子组件校验数字格式（通过-props传递）
+    // Subcomponent check number format for form options (passed via -props)
     function checkNumber(value, minLimit, maxLimit) {
-        // 检查必须为整数
+        // Check must be an integer
         value = Math.floor(value);
         if (value < minLimit) {
             value = minLimit;
@@ -288,11 +288,11 @@ const {td} = useDefaultLang();
         }
         return value;
     }
-    // 隐藏弹窗
+    // Hide pop-up window
     function hidePopup() {
         emit('hide');
     }
-    // 填充表达式
+    // fill expression
     function submitFill() {
         if (crontabValueString.value.split(' ')[0] == '*') {
             proxy.$message.error(td('common.crontab.noSecondConfigurable'));
@@ -302,7 +302,7 @@ const {td} = useDefaultLang();
         hidePopup();
     }
     function clearCron() {
-        // 还原选择项
+        // Restore selections
         crontabValueObj.value = {
             second: '*',
             min: '*',

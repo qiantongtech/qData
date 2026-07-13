@@ -118,7 +118,7 @@
         @pagination="getList" />
     </div>
 
-    <!-- 新增或修改清洗规则类目管理对话框 -->
+    <!-- Add or modify the cleaning rule category management dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="attCleanCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -128,9 +128,9 @@
               <el-input v-model="form.name" :placeholder="td('att.common.cleanCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
-          <!--            <el-form-item label="类别排序" prop="sortOrder" :label-position="labelPosition">-->
-          <!--&lt;!&ndash;              <el-input v-model="form.sortOrder" placeholder="请输入类别排序" />&ndash;&gt;-->
-          <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="请输入类别排序" />-->
+          <!--            <el-form-item label="category sorting" prop="sortOrder" :label-position="labelPosition">-->
+          <!--<!– <el-input v-model="form.sortOrder" placeholder="Please enter the category to sort" />–>-->
+          <!--              <el-input-number v-model="form.sortOrder" steps="1" :min="0" placeholder="Please enter the category to sort" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
             <el-form-item :label="td('att.common.parentCat')" prop="parentId" :label-position="labelPosition">
@@ -190,7 +190,7 @@ const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const AttCleanCatList = ref([]);
 const attAssetCatOptions = ref([]);
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 1, label: td('att.cleanCat.texts.name'), visible: true },
   { key: 2, label: td('att.common.parentCat'), visible: true },
@@ -204,9 +204,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find(col => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -224,19 +224,19 @@ const router = useRouter();
 const refreshTable = ref(true);
 const isExpandAll = ref(false);
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/attCleanCat/importData"
 });
 
@@ -260,7 +260,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询清洗规则类目列表 */
+/** Query the cleaning rule category list */
 function getList() {
   loading.value = true;
   listAttCleanCat(queryParams.value).then(response => {
@@ -270,14 +270,14 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -299,26 +299,26 @@ function reset() {
   proxy.resetForm("attCleanCatRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.ID);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -336,7 +336,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -345,14 +345,14 @@ function toggleExpandAll() {
   });
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   listAttCleanCat().then((response) => {
@@ -379,14 +379,14 @@ function getDataTree() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   const response = await listAttCleanCat();
   attAssetCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };
@@ -402,7 +402,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _ID = row.ID || ids.value
@@ -413,7 +413,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["attCleanCatRef"].validate(valid => {
     if (valid) {
@@ -436,7 +436,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal.confirm(td('att.cleanCat.messages.confirmDelete').replace('<ids>', _ids)).then(function () {
@@ -447,37 +447,37 @@ function handleDelete(row) {
   }).catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download('att/attCleanCat/export', {
     ...queryParams.value
   }, `AttCleanCat_${new Date().getTime()}.xlsx`)
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('att.cleanCat.importTitle');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download("system/user/importTemplate", {
   }, `AttCleanCat_template_${new Date().getTime()}.xlsx`)
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

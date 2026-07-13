@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询服务资源门户区域字典列表
+// Query service resource portal area dictionary list
 export function listRpDict(query) {
   return request({
     url: '/rp/rpDict/list',
@@ -27,7 +27,7 @@ export function listRpDict(query) {
   })
 }
 
-// 查询服务资源门户区域字典详细
+// Query service resource portal area dictionary details
 export function getRpDict(ID) {
   return request({
     url: '/rp/rpDict/' + ID,
@@ -35,7 +35,7 @@ export function getRpDict(ID) {
   })
 }
 
-// 新增服务资源门户区域字典
+// Added service resource portal area dictionary
 export function addRpDict(data) {
   return request({
     url: '/rp/rpDict',
@@ -44,7 +44,7 @@ export function addRpDict(data) {
   })
 }
 
-// 修改服务资源门户区域字典
+// Modify the service resource portal area dictionary
 export function updateRpDict(data) {
   return request({
     url: '/rp/rpDict',
@@ -53,7 +53,7 @@ export function updateRpDict(data) {
   })
 }
 
-// 删除服务资源门户区域字典
+// Delete Service Resource Portal Zone Dictionary
 export function delRpDict(ID) {
   return request({
     url: '/rp/rpDict/' + ID,
@@ -61,7 +61,7 @@ export function delRpDict(ID) {
   })
 }
 
-// 查询服务资源门户区域字典列表
+// Query service resource portal area dictionary list
 export function dictTreeSelect(query) {
   return request({
     url: '/rp/rpDict/deptTree',

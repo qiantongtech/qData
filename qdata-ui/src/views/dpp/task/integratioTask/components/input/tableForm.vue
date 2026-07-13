@@ -200,15 +200,15 @@
             <template v-if="form.taskParams.readModeType == 3">
                 <el-row :gutter="20">
 <!--                    <el-col :span="12">-->
-<!--                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[-- :label-position="labelPosition">
+<!--                        <el-form-item label="Logical Connector" prop="taskParams.dateIncrementConfig.logic" :rules="[-- :label-position="labelPosition">
 <!--                            {-->
 <!--                                required: true,-->
-<!--                                message: '请选择逻辑连接符',-->
+<!--                                message: 'Please select a logical connector',-->
 <!--                                trigger: 'change'-->
 <!--                            }-->
 <!--                        ]">-->
 <!--                            <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.logic" filterable-->
-<!--                                placeholder="下拉选择 and/or，默认 and" @change="handleChange">-->
+<!--                                placeholder="drop-down selection and/or, default and" @change="handleChange">-->
 <!--                                <el-option label="and" value="and" />-->
 <!--                                <el-option label="or" value="or" />-->
 <!--                            </el-select>-->
@@ -379,16 +379,16 @@ const visibleDialog = computed({
     }
 });
 
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref([]);
 let dpModelRefs = ref();
 let form = ref({});
-const tableFields = ref([]); // 来源表格
-const createTypeList = ref([]); // 数据源列表
-// 修改 时间范围增
+const tableFields = ref([]); // Source form
+const createTypeList = ref([]); // Data source list
+// Modify the time range to increase
 const open = ref(false);
 let row = ref({});
 const openDialog = (obj) => {
@@ -402,8 +402,8 @@ const dateFormatOptions = [
 
 const handlereadModeTypeChange = (val) => {
     form.value.taskParams.idIncrementConfig = {
-        incrementColumn: "", // 增量字段
-        incrementStart: "", // 开始值
+        incrementColumn: "", // Increment field
+        incrementStart: "", // start value
     };
     form.value.taskParams.dateIncrementConfig = {
         logic: "and",
@@ -431,7 +431,7 @@ const checkInteger = (rule, value, callback) => {
 
     callback()
 }
-// 获取数据源列表
+// Get a list of data sources
 const getDatasourceList = async () => {
     try {
         loading.value = true;
@@ -447,7 +447,7 @@ const getDatasourceList = async () => {
     }
 };
 let loadingTables = ref(false);
-// 获取表列表
+// Get table list
 const getTablesByDatasourceId = async (id) => {
     TablesByDataSource.value = await fetchData(
         getTablesByDataSourceId,
@@ -455,7 +455,7 @@ const getTablesByDatasourceId = async (id) => {
         loadingTables
     );
 };
-// 获取列数据
+// Get column data
 const getColumnByAssetIdList = async (id, data) => {
     ColumnByAssettab.value = await fetchData(
         getColumnByAssetId,
@@ -470,7 +470,7 @@ const getColumnByAssetIdList = async (id, data) => {
     form.value.taskParams.idIncrementConfig.incrementColumn = null;
     form.value.taskParams.inputFields = ColumnByAssettab.value;
 };
-// 通用的获取数据的函数
+// General functions for obtaining data
 const fetchData = async (requestFn, params, loadingState) => {
     try {
         loadingState.value = true;
@@ -481,7 +481,7 @@ const fetchData = async (requestFn, params, loadingState) => {
     }
 };
 
-// 处理数据源变化
+// Handle data source changes
 const resetAndFetchTables = async (selectedDatasource) => {
     TablesByDataSource.value = [];
     ColumnByAssettab.value = [];
@@ -502,7 +502,7 @@ const resetAndFetchTables = async (selectedDatasource) => {
     await getTablesByDatasourceId(id);
 };
 
-// 处理数据源变化
+// Handle data source changes
 const handleDatasourceChange = (value) => {
     const selectedDatasource = createTypeList.value.find((item) => item.id == value);
     if (selectedDatasource) {
@@ -510,7 +510,7 @@ const handleDatasourceChange = (value) => {
     }
 };
 
-// 处理表变化
+// Handle table changes
 const setTableName = (selectedDatasource) => {
     form.value.taskParams.table_name = selectedDatasource.tableName;
 };
@@ -554,7 +554,7 @@ const getdppNoPageListList = async (id) => {
     });
 };
 
-// 连接方式切换
+// Connection mode switch
 const handleReleaseStateChange = (value) => {
     if (value == 1) {
         getdppNoPageListList();
@@ -578,7 +578,7 @@ const handleDelete = (row) => {
         type: 'warning'
     })
         .then(() => {
-            // 删除操作
+            // Delete operation
             const index = form.value.taskParams.dateIncrementConfig.column.indexOf(row);
             if (index !== -1) {
                 form.value.taskParams.dateIncrementConfig.column.splice(index, 1);
@@ -590,17 +590,17 @@ const handleDelete = (row) => {
         });
 };
 const handleAssetTableChange = (value) => {
-    // 找到对应的选中项
+    // Find the corresponding selected item
     const selectedItem = dppNoPageListList.value.find((item) => item.id == value);
 
     form.value.taskParams.asset_id = selectedItem.tableName;
     form.value.taskParams.table_name = selectedItem.tableName;
 
-    // 调用 API 获取数据源信息
+    // Call API to obtain data source information
     getDaDatasource(selectedItem.datasourceId).then((response) => {
         let { datasourceType, datasourceConfig, ip, port, id } = response.data;
         let code = JSON.parse(datasourceConfig);
-        // 更新 readerDatasource
+        // Update readerDatasource
         form.value.taskParams.readerDatasource = {
             datasourceType,
             datasourceConfig,
@@ -611,7 +611,7 @@ const handleAssetTableChange = (value) => {
             datasourceId: id
         };
         // setTableName(response.data);
-        // 获取列数据
+        // Get column data
         ColumnByAssettab.value = [];
         getColumnByAssetIdList(id, value);
     });
@@ -619,15 +619,15 @@ const handleAssetTableChange = (value) => {
 
 const off = () => {
     proxy.resetForm('dpModelRefs');
-    // 清空表格字段数据
+    // Clear table field data
     ColumnByAssettab.value = [];
     TablesByDataSource.value = [];
     tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
     try {
-        // 异步验证表单
+        // Asynchronous validation form
         const valid = await dpModelRefs.value.validate();
         if (!valid) return;
         if (
@@ -636,7 +636,7 @@ const saveData = async () => {
         ) {
             return proxy.$message.warning(td('dpp.integration.validateFailedSelectFields', '校验未通过，请选择属性字段'));
         }
-        // 如果没有 code，就调用接口获取唯一的 code
+        // If there is no code, call the interface to get the unique code
         if (!form.value.code) {
             loading.value = true;
             const response = await getNodeUniqueKey({
@@ -659,25 +659,25 @@ const saveData = async () => {
         emit("confirm", form.value);
 
     } catch (error) {
-        console.error('保存数据失败:', error);
+        console.error("Failed to save data:", error);
         loading.value = false;
     }
 };
 const closeDialog = () => {
     off();
-    // 关闭对话框
+    // Close dialog
     emit('update', false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
     if (data === undefined || data === null) {
-        return {}; // 或者返回一个默认值
+        return {}; // Or return a default value
     }
     try {
         return JSON.parse(JSON.stringify(data));
     } catch (e) {
-        return {}; // 或者返回一个默认值
+        return {}; // Or return a default value
     }
 }
 function sqlParseFunction() {
@@ -695,10 +695,10 @@ function sqlParseFunction() {
 function changeTextarea(val) {
     form.value.taskParams.querySql = val;
 }
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
     if (props.visible) {
-        // 数据源
+        // data source
         if (props.currentNode.data.taskParams.clmt == 1) {
             getdppNoPageListList();
         } else {

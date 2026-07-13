@@ -92,11 +92,11 @@
             "
           />
         </el-form-item>
-        <!-- <el-form-item label="安全等级" prop="safetyLevelId" :label-position="labelPosition">
+        <!-- <el-form-item label="Safety Level" prop="safetyLevelId" :label-position="labelPosition">
           <el-select
             clearable
             v-model="dialog.form.safetyLevelId"
-            placeholder="请选择安全等级"
+            placeholder="Please select security level"
           >
             <el-option
               v-for="item in store.sensitiveLevels"
@@ -638,21 +638,21 @@ const dialog = reactive({
   form: {},
 });
 
-// 获取安全等级
+// Get security level
 function getSensitiveLevel() {
   listDgSensitiveLevel({ pageSize: 1000 }).then((res) => {
     store.sensitiveLevels = res.data.rows;
   });
 }
 
-// // 获取标准数据元
+// // Get standard data elements
 // function getDataElem() {
 //   getDgDataElemList().then((res) => {
 //     store.dataElemList = res.data;
 //   });
 // }
 
-// 打开修改弹窗
+// Open the modification pop-up window
 function handleEditClick(row) {
   dialog.type = "Edit";
   dialog.title =
@@ -675,14 +675,14 @@ function handleEditClick(row) {
   });
 }
 
-// 关闭修改弹窗
+// Close the modification pop-up window
 function handleCancelClick() {
   formRef.value.resetFields();
   dialog.form = {};
   dialog.open = false;
 }
 
-// 确认新增/修改
+// Confirm addition/modification
 async function handleConfirmClick() {
   dialog.loading = true;
   const valid = await formRef.value.validate();
@@ -706,7 +706,7 @@ async function handleConfirmClick() {
   tableRef.value.getList();
 }
 
-// 详情页面
+// Details page
 function handleDetailPageClick(row) {
   router.push({
     path: BASE_URL + "/detail",
@@ -716,7 +716,7 @@ function handleDetailPageClick(row) {
   });
 }
 
-// 详情
+// Details
 function handleDetailClick(row) {
   handleEditClick(row);
   dialog.type = "Detail";
@@ -726,7 +726,7 @@ function handleDetailClick(row) {
     td("common.texts.detail");
 }
 
-// 删除
+// Delete
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
     `${td("common.message.confirmDelete")}${row.id}${td(
@@ -748,7 +748,7 @@ function handleDeleteClick(row) {
     });
 }
 
-// 切换状态
+// Switch status
 function handleStatusChange(row, status) {
   ElMessageBox.confirm(
     `${td("common.message.confirm")}${

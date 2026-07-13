@@ -92,7 +92,7 @@
       </qt-table>
     </qt-wrap>
 
-    <!-- 添加或修改模型对话框 -->
+    <!-- Add or modify model dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -173,7 +173,7 @@
       </template>
     </el-dialog>
 
-    <!-- 模型详情对话框 -->
+    <!-- Model Details Dialog -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -257,7 +257,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
@@ -380,7 +380,7 @@ const tableStore = reactive({
       showOverflowTooltip: true,
     },
     // {
-    //   label: "API秘钥",
+    //   label: "API key",
     //   prop: "apiKey",
     //   align: "left",
     //   width: 200,
@@ -448,19 +448,19 @@ const open = ref(false);
 const openDetail = ref(false);
 const title = ref("");
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/ai/model/importData",
 });
 
@@ -500,10 +500,10 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 添加 old_apiKey 变量用于跟踪原始API秘钥
+// Add old_apiKey variable to track original API key
 let old_apiKey = null;
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('common.texts.enable') : td('common.texts.disable');
   proxy.$modal
@@ -518,24 +518,24 @@ function handleStatusChange(row) {
       row.validFlag = !row.validFlag;
     });
 }
-// 点击查询
+// Click to query
 function handleQueryClick() {
   tableRef.value.getList();
 }
 
-// 重置查询
+// Reset query
 function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -559,26 +559,26 @@ function reset() {
   proxy.resetForm("modelRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('ai.model.addModel');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id;
   getModel(_id).then((response) => {
     form.value = response.data;
-    old_apiKey = response.data.apiKey; // 保存原始API秘钥
+    old_apiKey = response.data.apiKey; // Save original API key
     open.value = true;
     title.value = td('ai.model.editModel');
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id;
@@ -589,15 +589,15 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["modelRef"].validate((valid) => {
     if (valid) {
       const submitData = { ...form.value };
 
-      // 处理API秘钥加密逻辑
+      // Handle API key encryption logic
       if (submitData.id != null) {
-        // 修改时检查API秘钥是否需要重新加密
+        // Check whether the API key needs to be re-encrypted when modifying it
         if (
           old_apiKey !== submitData.apiKey ||
           !isDecrypted(submitData.apiKey)
@@ -605,7 +605,7 @@ function submitForm() {
           submitData.apiKey = encrypt(submitData.apiKey);
         }
       } else {
-        // 新增时直接加密API秘钥
+        // Directly encrypt the API key when adding it
         if (submitData.apiKey) {
           submitData.apiKey = encrypt(submitData.apiKey);
         }
@@ -634,7 +634,7 @@ function submitForm() {
 
 let deleteConfirmDialog = ref(null);
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   let _ids = null;
   if (row?.id) {
@@ -655,11 +655,11 @@ function handleDelete(row) {
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
-      // 用户取消删除操作
+      // User cancels deletion operation
     });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "ai/model/export",
@@ -670,14 +670,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('ai.model.modelImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "ai/model/importTemplate",
@@ -686,17 +686,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 系统模块公共路由
+// System module public routing
 export default [
     {
         path: '/redirect',

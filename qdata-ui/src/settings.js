@@ -18,46 +18,46 @@
 
 export default {
   /**
-   * 网页标题
+   * Web page title
    */
   title: import.meta.env.VITE_APP_TITLE,
   /**
-   * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
+   * Sidebar theme dark theme theme-dark, light theme theme-light
    */
   sideTheme: 'theme-dark',
   /**
-   * 是否系统布局配置
+   * Whether the system layout configuration
    */
   showSettings: true,
 
   /**
-   * 是否显示顶部导航
+   * Whether to display top navigation
    */
   topNav: false,
 
   /**
-   * 是否显示 tagsView
+   * Whether to display tagsView
    */
   tagsView: true,
 
   /**
-   * 是否固定头部
+   * Whether to fix the head
    */
   fixedHeader: true,
 
   /**
-   * 是否显示logo
+   * Whether to display logo
    */
   sidebarLogo: true,
 
   /**
-   * 是否显示动态标题
+   * Whether to display dynamic titles
    */
   dynamicTitle: true,
 
   /**
-   * 导航栏中需要显示 Logo 的路由路径
-   * 当访问这些路径时，会在导航栏左侧动态插入 Logo（占用 200px 宽度）
+   * The routing path of the logo needs to be displayed in the navigation bar
+   * When accessing these paths, the logo will be dynamically inserted on the left side of the navigation bar (occupying 200px width)
    */
   navbarLogoRoutes: ['/ai',],
 

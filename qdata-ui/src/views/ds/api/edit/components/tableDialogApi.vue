@@ -115,12 +115,12 @@ function confirm() {
     proxy.$emit("confirm", AddListRows.value);
 }
 
-// 处理选择变化事件，更新 AddListRows
+// Handle selection change events and update AddListRows
 function handleSelectionChange(selectedRows) {
     AddListRows.value = selectedRows;
 }
 
-// 回显选中行
+// echo selected rows
 function echoSelected() {
     proxy.$nextTick(() => {
         proxy.$refs.multipleTable.clearSelection();
@@ -134,7 +134,7 @@ function echoSelected() {
 }
 
 function checkSelectable(row) {
-    return row.parentId === null; // 仅第一级可以选择
+    return row.parentId === null; // Only the first level can be selected
 }
 </script>
 

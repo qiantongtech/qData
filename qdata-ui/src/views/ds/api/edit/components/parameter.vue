@@ -77,7 +77,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <!-- SQL 编辑器 -->
+      <!-- SQL editor -->
       <el-row v-if="form2.apiServiceType === '2'" class="sql-editor-container">
         <el-col :span="24">
           <sql-editor ref="sqleditor" :value="form2.sqlText" class="sql-editor"
@@ -90,7 +90,7 @@
       <!--      <div class="clearfix header-text">-->
       <!--          <div class="header-left">-->
       <!--              <div class="blue-bar"></div>-->
-      <!--              参数配置-->
+      <!--              Parameter configuration-->
       <!--          </div>-->
       <!--      </div>-->
       <div class="header-container">
@@ -100,7 +100,7 @@
         </div>
       </div>
       <div v-if="form2.apiServiceType == '3'">
-        <!--入参字段（type == 1） -->
+        <!--Input parameter field (type == 1) -->
         <el-form :model="props.form2.reqParams" :rules="rules" ref="inputForm" label-width="0">
           <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
@@ -122,7 +122,7 @@
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].name`"
                     :rules="rules.name">
-                    <!-- <el-input v-model="row.name" placeholder="请输入参数名称" /> -->
+                    <!-- <el-input v-model="row.name" placeholder="Please enter the parameter name" /> -->
                     {{ row.name }}
                   </el-form-item>
                 </template>
@@ -154,7 +154,7 @@
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].columnType`"
                     :rules="rules.columnType">
-                    <el-select v-model="row.columnType" placeholder="请选择字段类型">
+                    <el-select v-model="row.columnType" placeholder="Please select field type">
                       <el-option v-for="dict in da_asset_api_column_type" :key="dict.value" :label="dict.label"
                         :value="dict.value" :disabled="hasChildren(row) && !['Object', 'Array'].includes(dict.value)" />
                     </el-select> -->
@@ -168,7 +168,7 @@
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.reqParams[${findPosi(props.form2.reqParams, row.id)}].exampleValue`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.fieldDefault" placeholder="请输入示例值" />
+                    <el-input v-model="row.fieldDefault" placeholder="Please enter a sample value" />
                   </el-form-item> -->
                   {{ row.exampleValue }}
                 </template>
@@ -195,13 +195,13 @@
           </el-row>
 
         </el-form>
-        <!-- 出参字段（type == 2） -->
+        <!-- Output parameter field (type == 2) -->
         <el-form :model="props.form2.resParams" :rules="rules" ref="outputForm" label-width="0">
           <el-row :gutter="24" class="mb8" style="margin-left: 0px;!important;margin-right: 0px;!important;">
             <div class="header-text">
               {{ td('ds.apiEdit.parameter.returnParams') }}
               <!-- <el-link type="primary" class="add-link" icon="el-icon-circle-plus-outline" @click="handleAdd(2)">
-                新增参数
+                New parameters
               </el-link> -->
             </div>
             <!-- Replace form2.resParams with props.form2.resParams -->
@@ -219,7 +219,7 @@
                 <template #default="{ row, $index }">
                   <!-- <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].name`"
                     :rules="rules.name">
-                    <el-input v-model="row.name" placeholder="请输入参数名称" />
+                    <el-input v-model="row.name" placeholder="Please enter the parameter name" />
                   </el-form-item> -->
                   {{ row.name }}
                 </template>
@@ -238,7 +238,7 @@
               <el-table-column :label="td('ds.apiEdit.parameter.dataType')" fixed="left" align="center" prop="columnType"
                 :show-overflow-tooltip="{ effect: 'light' }">
                 <template #default="{ row, $index }">
-                  <!-- <el-select v-model="row.columnType" placeholder="请选择数据类型">
+                  <!-- <el-select v-model="row.columnType" placeholder="Please select data type">
                     <el-option v-for="dict in da_asset_api_column_type" :key="dict.value" :label="dict.label"
                       :value="dict.value" :disabled="hasChildren(row) && !['Object', 'Array'].includes(dict.value)" />
                   </el-select> -->
@@ -486,7 +486,7 @@ const props = defineProps({
 });
 let loading = ref(false);
 const data = reactive({
-  lastSqlText: "", // 存储上次的 SQL 文本，用于检测是否发生变化
+  lastSqlText: "", // Stores the last SQL text to detect whether changes have occurred
   firstDialogVisible: false,
   secondDialogVisible: false,
   sortDialogVisible: false,
@@ -540,7 +540,7 @@ const hasChildren = (row) => {
     }
     return true;
   }
-  // 如果没有子节点，且 columnType 是 Object 或 Array，则重置为 string
+  // If there are no child nodes and columnType is Object or Array, reset to string
   if (["Object", "Array"].includes(row.columnType)) {
     row.columnType = "string";
   }
@@ -556,20 +556,20 @@ const rules = {
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item.id === targetId) {
-      return path + i; // 返回当前节点的索引作为路径
+      return path + i; // Returns the index of the current node as a path
     }
     if (item.daAssetApiParamList && item.daAssetApiParamList.length > 0) {
-      // 递归查找子节点
+      // Find child nodes recursively
       const childPath = `${path}${i}.daAssetApiParamList.`;
       const result = findPosi(item.daAssetApiParamList, targetId, childPath);
       if (result !== null) {
-        return result; // 找到则返回路径
+        return result; // If found, return the path
       }
     }
   }
-  return null; // 没找到返回 null
+  return null; // Not found returns null
 };
-//监听form2.sourceId发生变化查询表格信息
+//Listen for changes in form2.sourceId and query form information
 watch(
   () => props.form2?.sourceId,
   (newValue) => {
@@ -804,7 +804,7 @@ function tableSelectChanged(item) {
   //     } else {
   //         this.$notify({
   //             title: t('common.message.prompt'),
-  //             dangerouslyUseHTMLString: true, // 启用 HTML 字符串解析
+  //             dangerouslyUseHTMLString: true, // Enable HTML string parsing
   //             message: response.msg,
   //             type: "error",
   //             duration: 2000
@@ -992,7 +992,7 @@ if (props?.form2?.transmitType && props?.form2?.apiServiceType == '3') {
 
 .allowDrag {
   cursor: pointer;
-  /* 鼠标悬停时显示小手光标 */
+  /* Show small hand cursor on mouseover */
 }
 
 .sql-editor-container {

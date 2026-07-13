@@ -18,7 +18,7 @@
 
 import request from '@/utils/rpRequest';
 
-// 左侧树
+// tree on left
 export function catApiList(query) {
     return request({
         url: '/rp/attApi/catApi/list',
@@ -27,7 +27,7 @@ export function catApiList(query) {
     });
 }
 
-// 列表
+// list
 export function dsApiList(query) {
     return request({
         url: '/rp/dsApi/list',
@@ -36,7 +36,7 @@ export function dsApiList(query) {
     });
 }
 
-// 列表详情
+// List details
 export function dsApiView(id) {
     return request({
         url: '/rp/dsApi/' + id,
@@ -44,7 +44,7 @@ export function dsApiView(id) {
     });
 }
 
-// 查询个人中心我的申请统计项
+// Check my application statistics in Personal Center
 export function applyCount() {
     return request({
         url: '/rp/dsApi/applyCount',
@@ -52,7 +52,7 @@ export function applyCount() {
     });
 }
 
-// 可申请的API列表
+// List of APIs that can be applied for
 export function areaDict(data) {
     return request({
         url: '/rp/rpDict/areaDict',
@@ -77,7 +77,7 @@ export function applyEdit(data) {
     });
 }
 
-// 查询API申请服务详细
+// Query API application service details
 export function getDsApiApply(id) {
     return request({
         url: '/da/apply/' + id,
@@ -85,7 +85,7 @@ export function getDsApiApply(id) {
     });
 }
 
-// 删除API申请服务
+// Delete API application service
 export function applyDel(id) {
     return request({
         url: '/da/apply/' + id,

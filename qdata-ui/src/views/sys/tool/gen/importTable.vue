@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 导入表 -->
+  <!-- Import table -->
   <el-dialog :title="td('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
     <el-form :model="queryParams" ref="queryRef" :inline="true" :label-position="labelPosition">
       <el-form-item :label="td('sys.tool.genImport.tableName')" prop="tableName" :label-position="labelPosition">
@@ -30,7 +30,7 @@
         />
       </el-form-item>
       <el-form-item :label-position="labelPosition">
-        <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <!-- <el-button type="primary" icon="Search" @click="handleQuery">Search</el-button>
         <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button> -->
         <el-button plain type="primary" @click="handleQuery">
             <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
@@ -83,23 +83,23 @@ const queryParams = reactive({
 
 const emit = defineEmits(["ok"]);
 
-/** 查询参数列表 */
+/** Query parameter list */
 function show() {
   getList();
   visible.value = true;
 }
 
-/** 单击选择行 */
+/** Click to select row */
 function clickRow(row) {
   proxy.$refs.table.toggleRowSelection(row);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   tables.value = selection.map(item => item.tableName);
 }
 
-/** 查询表数据 */
+/** Query table data */
 function getList() {
   listDbTable(queryParams).then(res => {
     dbTableList.value = res.rows;
@@ -107,19 +107,19 @@ function getList() {
   });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 导入按钮操作 */
+/** Import button actions */
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {

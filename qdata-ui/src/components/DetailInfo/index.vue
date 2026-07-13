@@ -17,16 +17,16 @@
 -->
 
 <template>
-  <!-- 通用详情页头部组件：标题/头部 + 栅格化信息行 -->
+  <!-- Universal detail page header component: title/header + rasterized information row -->
   <div class="pagecont-top pb15" v-show="show">
     <div class="infotop">
-      <!-- 标题/头部区域 -->
+      <!-- title/header area -->
       <div class="infotop-title mb15" :class="headerClasses">
-        <!-- 默认标题（未传 header 时展示） -->
+        <!-- Default title (displayed when no header is passed) -->
         <template v-if="!header">
           {{ title || "-" }}
         </template>
-        <!-- 固定头部：编号方块 + 名称 + 状态字典 + 右侧按钮/插槽 -->
+        <!-- Fixed header: numbered square + name + status dictionary + right button/slot -->
         <template v-else>
           <div class="task-item">
             <div class="task-id">
@@ -58,7 +58,7 @@
           <slot name="header-right" />
         </template>
       </div>
-      <!-- 信息栅格：默认一行 3 个（span=8），可按项覆盖 -->
+      <!-- Information grid: 3 per row by default (span=8), can be covered by item -->
       <el-row :gutter="merged.gutter">
         <el-col
           v-for="(item, idx) in displayItems"
@@ -105,7 +105,7 @@
               <span v-else-if="item.type === 'image'">
                 {{ merged.placeholder }}
               </span>
-              <!-- 时间展示（示例：{{ parseTime(dppEtlTaskDetail.createTime, "{y}-{m}-{d} {h}:{i}") }}） -->
+              <!-- Time display (example: {{ parseTime(dppEtlTaskDetail.createTime, "{y}-{m}-{d} {h}:{i}") }}) -->
               <span
                 v-else-if="isTimeItem(item)"
                 :class="item.ellipsisClass || 'ellipsis'"
@@ -113,7 +113,7 @@
               >
                 {{ formatTime(resolveValue(item)) || merged.placeholder }}
               </span>
-              <!-- 格式化函数展示 -->
+              <!-- Format function display -->
               <span
                 v-else-if="item.formatter"
                 :class="item.ellipsisClass || 'ellipsis'"
@@ -121,7 +121,7 @@
               >
                 {{ stringify(resolveFormatted(item)) || merged.placeholder }}
               </span>
-              <!-- 普通文本展示（支持嵌套 key） -->
+              <!-- Ordinary text display (supports nested keys) -->
               <span
                 v-else
                 :class="item.ellipsisClass || 'ellipsis'"
@@ -135,17 +135,17 @@
       </el-row>
     </div>
   </div>
-  <!-- 使用示例：
+  <!-- Usage example:
     <DetailInfo
       :title="data.name"
       :data="data"
       :items="[
-        { label: '编号', key: 'id' },
-        { label: '状态', key: 'status', dictOptions: sys_disable },
-        { label: '描述', key: 'description', span: 12, ellipsisClass: 'ellipsis-2' },
-        { label: '备注', key: 'remark', span: 12, ellipsisClass: 'ellipsis' },
-        { label: '创建时间', formatter: (d) => proxy.parseTime(d.createTime, '{y}-{m}-{d} {h}:{i}') },
-        { label: 'API请求地址', formatter: (d) => `/services/${d.apiVersion}${d.apiUrl}` },
+        { label: 'number', key: 'id' },
+        { label: 'status', key: 'status', dictOptions: sys_disable },
+        { label: 'description', key: 'description', span: 12, ellipsisClass: 'ellipsis-2' },
+        { label: 'remark', key: 'remark', span: 12, ellipsisClass: 'ellipsis' },
+        { label: 'Creation Time', formatter: (d) => proxy.parseTime(d.createTime, '{y}-{m}-{d} {h}:{i}') },
+        { label: 'API request address', formatter: (d) => `/services/${d.apiVersion}${d.apiUrl}` },
       ]"
       :defaultSpan="8"
       :gutter="2"
@@ -158,43 +158,43 @@ import { useRouter } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
-// 设计说明：
-// - 通用详情页头部展示组件，系统内各模块统一使用；
-// - 默认每行 3 项（span=8），通过 items[i].span 调整为 12（每行 2 项）或 24（独占一行）；
-// - 支持四种展示方式：slot 插槽、字典组件、formatter 函数、普通文本；
-// - 普通文本支持嵌套 key（如 'a.b.c'），为空时展示占位符；
-// - 描述、备注这类字段建议设置 span=12，使其在一行展示 2 个；
+// Design description:
+// - Universal detail page header display component, used uniformly by all modules in the system;
+// - The default is 3 items per line (span=8), which can be adjusted to 12 (2 items per line) or 24 (exclusively one line) through items[i].span;
+// - Supports four display methods: slot slot, dictionary component, formatter function, and ordinary text;
+// - Ordinary text supports nested keys (such as 'a.b.c'), and displays placeholders when empty;
+// - It is recommended to set span=12 for fields such as description and remarks, so that 2 fields can be displayed in one line;
 
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
-  // 标题文本
+  // title text
   title: { type: String, default: "-" },
-  // 是否显示
+  // Whether to display
   show: { type: Boolean, default: true },
-  // 头部配置（可展示：编号、名称、状态、返回按钮）
+  // Header configuration (can display: number, name, status, return button)
   header: {
     type: Object,
     default: null, // { idKey?, nameKey, statusKey, statusOptions, backText?, backIcon?, className? }
   },
-  // 行间距
+  // line spacing
   gutter: { type: Number, default: 2 },
-  // 默认每项 span（不传则一行 3 个）
+  // Default span for each item (if not passed, 3 per line)
   defaultSpan: { type: Number, default: 8 },
-  // 详情数据源对象
+  // Details data source object
   data: { type: Object, default: () => ({}) },
-  // 配置项列表
+  // Configuration item list
   items: {
     type: Array,
     default: () => [],
   },
-  // 空值占位符
+  // null placeholder
   placeholder: { type: String, default: "-" },
-  // 时间类型默认格式
+  // Time type default format
   timeFormat: { type: String, default: "{y}-{m}-{d} {h}:{i}" },
-  // 展示模式：'default' 使用固定布局；'free' 使用传入 items 布局
+  // Display mode: 'default' uses fixed layout; 'free' uses passed items layout
   mode: { type: String, default: "default" },
-  // 可选配置对象，便于一次性设置不常改的参数
+  // Optional configuration object to facilitate one-time setting of parameters that are not frequently changed
   config: {
     type: Object,
     default: () => ({}), // { gutter, defaultSpan, placeholder, timeFormat, mode }
@@ -212,7 +212,7 @@ const headerClasses = computed(() => {
   return isLong ? [cls, "no-square-id"] : cls;
 });
 
-// 合并配置：config 优先，其次使用单独 props，最后使用默认
+// Merge configuration: config first, then use separate props, and finally use default
 const merged = computed(() => ({
   gutter: props.config.gutter ?? props.gutter,
   defaultSpan: props.config.defaultSpan ?? props.defaultSpan,
@@ -221,14 +221,14 @@ const merged = computed(() => ({
   mode: props.config.mode ?? props.mode,
 }));
 
-// 解析嵌套 key：支持 'a.b.c' 访问
+// Parse nested keys: support 'a.b.c' access
 function getByPath(obj, path) {
   if (!obj || !path) return undefined;
   if (typeof path !== "string") return obj[path];
   return path.split(".").reduce((acc, k) => (acc ? acc[k] : undefined), obj);
 }
 
-// 将任意值转为字符串（避免 [object Object]）
+// Convert any value to a string (avoid [object Object])
 function stringify(val) {
   if (val === null || val === undefined) return "";
   if (typeof val === "object") {
@@ -241,15 +241,15 @@ function stringify(val) {
   return String(val);
 }
 
-// 普通/字典项取值
+// Ordinary/dictionary item value
 function resolveValue(item) {
-  // key 优先，其次直接读取 item.value，最后整个 data
+  // Key takes priority, then item.value is read directly, and finally the entire data
   if (item.key) return getByPath(props.data, item.key);
   if (typeof item.value !== "undefined") return item.value;
   return props.data;
 }
 
-// 判断是否为时间项（type='time' 或 key 以 'time' 结尾）
+// Determine whether it is a time item (type='time' or key ends with 'time')
 function isTimeItem(item) {
   return (
     item?.type === "time" ||
@@ -257,14 +257,14 @@ function isTimeItem(item) {
   );
 }
 
-// 时间格式化（模板中直接调用，简单直观）
+// Time formatting (directly called in the template, simple and intuitive)
 function formatTime(val) {
   return val === null || val === undefined
     ? ""
     : proxy.parseTime?.(val, merged.value.timeFormat) ?? val;
 }
 
-// formatter 格式化取值
+// formatter format value
 function resolveFormatted(item) {
   try {
     const val = resolveValue(item);

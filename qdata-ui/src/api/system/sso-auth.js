@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 使用 code 登录
+// Log in using code
 export function codeLogin(code) {
     return request({
         url: '/oauth2/codeLogin?code=' + code,
@@ -29,7 +29,7 @@ export function codeLogin(code) {
     })
 }
 
-// 退出登录
+// Log out
 export function loginOut(userId) {
     return request({
         url: '/oauth2/sso/logout?userId=' + userId,

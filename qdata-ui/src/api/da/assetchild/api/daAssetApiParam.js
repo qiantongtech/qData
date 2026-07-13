@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-外部API-参数列表
+// Query data assets-external API-parameter list
 export function listDaAssetApiParam(query) {
   return request({
     url: '/da/daAssetApiParam/list',
@@ -27,7 +27,7 @@ export function listDaAssetApiParam(query) {
   })
 }
 
-// 查询数据资产-外部API-参数详细
+// Query data assets-external API-parameter details
 export function getDaAssetApiParam(id) {
   return request({
     url: '/da/daAssetApiParam/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetApiParam(id) {
   })
 }
 
-// 新增数据资产-外部API-参数
+// New data assets-external API-parameters
 export function addDaAssetApiParam(data) {
   return request({
     url: '/da/daAssetApiParam',
@@ -44,7 +44,7 @@ export function addDaAssetApiParam(data) {
   })
 }
 
-// 修改数据资产-外部API-参数
+// Modify data assets-external API-parameters
 export function updateDaAssetApiParam(data) {
   return request({
     url: '/da/daAssetApiParam',
@@ -53,7 +53,7 @@ export function updateDaAssetApiParam(data) {
   })
 }
 
-// 删除数据资产-外部API-参数
+// Delete Data Asset-External API-Parameter
 export function delDaAssetApiParam(id) {
   return request({
     url: '/da/daAssetApiParam/' + id,

@@ -197,7 +197,7 @@
     @pagination="getList"
   />
 
-  <!-- 逻辑模型详情对话框 -->
+  <!-- Logical Model Details Dialog Box -->
   <el-dialog
     :title="title"
     v-model="openDetail"
@@ -343,9 +343,9 @@ const deptList = ref([]);
 const userList = ref([]);
 const deptOptions = ref(undefined);
 
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed // Initial left width
 let Materialization = ref(false);
 const startResize = (event) => {
   isResizing.value = true;
@@ -360,10 +360,10 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => {});
   }
 };
@@ -371,7 +371,7 @@ const selectable = (row) => {
   return row.status != 0;
 };
 
-/** 查询部门下拉树结构 */
+/** Query department drop-down tree structure */
 function getDeptTree() {
   listAttModelCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
@@ -384,7 +384,7 @@ function getDeptTree() {
       },
     ];
   });
-  // 部门
+  // Department
   deptTreeSelectNoPermi().then((response) => {
     deptList.value = response.data;
   });
@@ -393,7 +393,7 @@ function getDeptTree() {
     console.log("userList", userList.value);
   });
 }
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('dp.model.englishName'), visible: true },
@@ -407,9 +407,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -425,23 +425,23 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dp/model/importData",
 });
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
@@ -487,7 +487,7 @@ function handleNodeClick(data) {
   queryParams.value.pageNum = 1;
   handleQuery();
 }
-/** 查询逻辑模型列表 */
+/** Query logical model list */
 function getList() {
   if (!queryParams.value.documentId) {
     queryParams.value.documentId = route.query.id;
@@ -500,14 +500,14 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     ID: null,
@@ -534,13 +534,13 @@ function reset() {
   proxy.resetForm("dpModelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -552,7 +552,7 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   console.log("selection", selection);
   ids.value = selection.map((item) => item.id);
@@ -561,14 +561,14 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   dataList.value = {};
   reset();
@@ -576,7 +576,7 @@ function handleAdd() {
   title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   console.log("row", row);
   reset();
@@ -588,7 +588,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 物化按钮操作 */
+/** Materialized button actions */
 function handleMaterialization() {
   const _ID = ids.value;
   // getDpModel(_ID).then(response => {
@@ -598,12 +598,12 @@ function handleMaterialization() {
   Materialization.value = true;
   title.value = td('dp.model.logicMaterialization');
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   routeTo("/dm/model/detail", row);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm(obj) {
   console.log("obj", obj);
   if (obj.form.id != null) {
@@ -633,12 +633,12 @@ function submitForm(obj) {
           .catch((dpModelColumnError) => {});
       })
       .catch((error) => {
-        console.error("新增失败:", error);
+        console.error("Failed to add:", error);
       });
   }
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal

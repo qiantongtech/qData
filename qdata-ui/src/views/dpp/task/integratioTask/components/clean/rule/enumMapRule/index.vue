@@ -124,7 +124,7 @@ function showDialog() {
 }
 
 function handleConfirm(row, list) {
-  console.log("选中行：", row);
+  console.log("Selected row:", row);
   dpDataElemstringValue.value = [];
 
   loadCodeItemsByTableId(row.id);
@@ -166,7 +166,7 @@ function opencodeDialog() {
     form.stringValue = [];
   }
 
-  // 新增一行空数据
+  // Add a new row of empty data
   form.stringValue.push({
     value: "",
     name: "",

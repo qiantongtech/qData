@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询标准信息登记列表
+// Query standard information registration list
 export function listDpDocument(query) {
     return request({
         url: '/dp/document/list',
@@ -27,7 +27,7 @@ export function listDpDocument(query) {
     })
 }
 
-// 查询标准信息登记详细
+// Query standard information registration details
 export function getDpDocument(ID) {
     return request({
         url: '/dp/document/' + ID,
@@ -35,7 +35,7 @@ export function getDpDocument(ID) {
     })
 }
 
-// 新增标准信息登记
+// Add new standard information registration
 export function addDpDocument(data) {
     return request({
         url: '/dp/document',
@@ -44,7 +44,7 @@ export function addDpDocument(data) {
     })
 }
 
-// 修改标准信息登记
+// Modify standard information registration
 export function updateDpDocument(data) {
     return request({
         url: '/dp/document',
@@ -53,7 +53,7 @@ export function updateDpDocument(data) {
     })
 }
 
-// 删除标准信息登记
+// Delete standard information registration
 export function delDpDocument(ID) {
     return request({
         url: '/dp/document/' + ID,

@@ -458,7 +458,7 @@ function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === true ? td('dg.sensitiveList.enabled') : td('dg.sensitiveList.disabled');
   proxy.$modal
@@ -486,14 +486,14 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -519,7 +519,7 @@ function reset() {
   proxy.resetForm("sensitiveRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   initDataCategoryOptions();
@@ -527,7 +527,7 @@ function handleAdd() {
   title.value = td('dg.sensitiveList.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   initDataCategoryOptions();
@@ -538,7 +538,7 @@ function handleUpdate(row) {
     title.value = td('dg.sensitiveList.editTitle');
   });
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   initDataCategoryOptions();
@@ -550,7 +550,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["sensitiveRef"].validate((valid) => {
     if (valid) {
@@ -571,7 +571,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 /*function handleDelete(row) {
   let _ids = null;
   if (row?.id) {
@@ -583,7 +583,7 @@ function submitForm() {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm('是否确认删除编号为"' + _ids + '"的数据项？')
+    .confirm('Are you sure to delete the data item numbered "' + _ids + '"?')
     .then(() => {
       delDgDesensitizeList(_ids).then(() => {
         tableRef.value.getList();
@@ -591,7 +591,7 @@ function submitForm() {
       });
     })
     .catch(() => {
-      // 用户取消删除操作
+      //User cancels deletion operation
     });
 }*/
 function handleDelete(row) {
@@ -602,7 +602,7 @@ function handleDelete(row) {
     message.value=td('dg.sensitiveList.confirmDeleteId', '是否确认删除编号为{id}的数据项？', { id: row.id })
   }else {
     store.rows.forEach(item => {
-      // 当 validFlag 为 false 时，记录 id
+      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }
@@ -618,7 +618,7 @@ function handleDelete(row) {
         });
       })
       .catch(() => {
-        // 用户取消删除操作
+        // User cancels deletion operation
       });
 }
 

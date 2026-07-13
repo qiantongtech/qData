@@ -21,7 +21,7 @@
         :statusOptions="statusOptions" v-if="form1.apiServiceType != '3'" />
     <testapi ref="test" :isChange="false" :data="form1" :resTypeOptions="resTypeOptions"
         v-if="form1.apiServiceType == '3'" :whetherOptions="whetherOptions" :statusOptions="statusOptions" />
-    <!-- 添加或修改详情对话框 -->
+    <!-- Add or modify details dialog box -->
 
 </template>
 
@@ -67,7 +67,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询详情列表 */
+/** Query details list */
 function getList() {
     loading.value = true;
     let responseData = [
@@ -108,16 +108,16 @@ function getList() {
     loading.value = false;
 }
 
-/** 查询详情下拉树结构 */
+/** Query details drop-down tree structure */
 function getTreeselect() { }
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         id: null,
@@ -138,18 +138,18 @@ function reset() {
     proxy.resetForm('bidDetailsRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
     getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
     reset();
     getTreeselect();
@@ -162,7 +162,7 @@ function handleAdd(row) {
     title.value = td('ds.api.apiDetail.simulation.addContent');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
     refreshTable.value = false;
     isExpandAll.value = !isExpandAll.value;

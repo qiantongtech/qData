@@ -17,7 +17,7 @@
  */
 
  /**
- * v-hasPermi 操作权限处理
+ * v-hasPermi operation permission processing
  * Copyright (c) 2019 qdata
  */
 

@@ -202,7 +202,7 @@ const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
     "dp_model_column_nullable_flag"
   );
 
-// 接收父组件传递的属性
+// Receive properties passed by parent component
 const props = defineProps({
   visible: { type: Boolean, default: true },
   deptOptions: { type: Array, default: () => [] },
@@ -220,33 +220,33 @@ watch(
     if (newVal) {
       getDpDataElem();
       if (props.row && props.row.index !== undefined) {
-        // 编辑状态
+        // Edit status
         title.value = td('dp.modelForm.editColumnTitle');
         Object.assign(form.value, props.row);
         form.value.authorityDept = Number(form.value.authorityDept);
       } else {
-        // 新增状态
+        // Add status
         title.value = td('dp.modelForm.addColumnTitle');
-        // 重置表单
+        // Reset form
         form.value = {
           id: "",
           dataElemId: "",
-          cnName: "", // 使用可选链操作符
+          cnName: "", // Use optional chaining operator
           engName: "",
           columnType: "",
           columnLength: "",
-          pkFlag: "0", // 设置默认值
+          pkFlag: "0", // Set default value
           authorityDept: null,
           modelComment: "",
-          nullableFlag: "0", // 设置默认值
+          nullableFlag: "0", // Set default value
           defaultValue: "",
           columnScale: "",
-          modelId: props.data?.id, // 保存模型ID
+          modelId: props.data?.id, // Save model ID
         };
       }
     }
   },
-  { immediate: true } // 新增immediate属性，确保组件挂载时就执行一次
+  { immediate: true } // Add an immediate attribute to ensure that it is executed once when the component is mounted.
 );
 let DpData = ref([]);
 const handlePkFlagChange = (value) => {
@@ -260,7 +260,7 @@ const getDpDataElem = async () => {
     DpData.value = response.data;
     console.log("DpData", DpData.value);
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 const handleDatasourceChange = (value) => {
@@ -272,10 +272,10 @@ const handleDatasourceChange = (value) => {
     form.value.columnType = selectedDatasource.columnType;
   }
 };
-// 定义向父组件发送事件的接口
+// Define the interface for sending events to the parent component
 const emit = defineEmits(["update:dialogFormVisible", "confirm"]);
 
-// 处理弹窗显示状态
+// Handle pop-up window display status
 const localVisible = computed({
   get() {
     return props.visible;
@@ -285,7 +285,7 @@ const localVisible = computed({
   },
 });
 
-// 表单数据和验证规则
+// Form data and validation rules
 const form = ref({
   id: "",
   dataElemId: "",
@@ -322,19 +322,19 @@ const rules = ref({
           return;
         }
 
-        // 去除首尾的单引号后再计算长度
+        // Remove the leading and trailing single quotes and then calculate the length.
         let actualValue = value;
         if (value.startsWith("'") && value.endsWith("'")) {
           actualValue = value.slice(1, -1);
         }
 
-        // 对于数值类型，检查数值长度
+        // For numeric types, check the numeric length
         if (
           ["NUMBER", "DECIMAL", "NUMERIC", "FLOAT", "DOUBLE"].includes(
             form.value.columnType
           )
         ) {
-          const numStr = actualValue.toString().replace(".", ""); // 移除小数点再计算长度
+          const numStr = actualValue.toString().replace(".", ""); // Remove the decimal point and calculate the length
           if (numStr.length > form.value.columnLength) {
             callback(
               new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
@@ -342,7 +342,7 @@ const rules = ref({
             return;
           }
         }
-        // 对于字符类型，直接检查字符串长度
+        // For character types, check the string length directly
         else if (actualValue.length > form.value.columnLength) {
           callback(
             new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
@@ -356,18 +356,18 @@ const rules = ref({
   ],
 });
 
-// 添加对属性长度改变的监听
+// Add a listener for attribute length changes
 watch(
   () => form.value.columnLength,
   (newVal) => {
-    // 当属性长度改变时，触发默认值的校验
+    // When the attribute length changes, trigger the verification of the default value
     if (form.value.defaultValue) {
       proxy.$refs["dpModelRefs"]?.validateField("defaultValue");
     }
   }
 );
 
-// 关闭对话框
+// Close dialog
 const closeDialog = () => {
   proxy.resetForm("dpModelRefs");
   localVisible.value = false;
@@ -386,7 +386,7 @@ const closeDialog = () => {
     columnScale: "",
   };
 };
-// 转换输入值为大写
+// Convert input value to uppercase
 const convertToUpperCase = (key, value) => {
   const uppercasedValue = value.replace(/[a-z]/g, (char) => char.toUpperCase());
 
@@ -395,14 +395,14 @@ const convertToUpperCase = (key, value) => {
   console.log("🚀 ~ convertToUpperCase ~ form.value[key]:", form.value[key]);
 };
 
-// 确认操作
+// Confirm action
 const confirmDialog = () => {
   proxy.$refs["dpModelRefs"].validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       closeDialog();
     } else {
-      console.log("表单验证失败");
+      console.log("Form validation failed");
     }
   });
 };

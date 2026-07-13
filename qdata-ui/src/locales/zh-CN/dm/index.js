@@ -1,7 +1,7 @@
-// 数据模型模块翻译
+// Data model module translation
 export default {
   businessCategory: {
-    // 业务分类
+    // Business classification
     name: '业务分类名称',
     namePlaceholder: '请输入业务分类名称',
     nameRequired: '业务分类名称不能为空',
@@ -40,7 +40,7 @@ export default {
     detailInfo: '详细信息'
   },
   dataDomain: {
-    // 数据分域
+    // Data domain
     name: '数据分域名称',
     namePlaceholder: '请输入数据分域名称',
     nameRequired: '数据分域名称不能为空',
@@ -76,7 +76,7 @@ export default {
     confirmDeleteByName: '是否确认删除数据域名称为"<name>"的数据项？'
   },
   dataLayer: {
-    // 数仓分层
+    // Data warehouse stratification
     name: '数仓分层名称',
     namePlaceholder: '请输入数仓分层名称',
     nameRequired: '数仓分层名称不能为空',
@@ -123,7 +123,7 @@ export default {
     tablePrefixFixed: '表名前缀固定为'
   },
   themeDomain: {
-    // 主题域
+    // subject area
     name: '主题域名称',
     namePlaceholder: '请输入主题域名称',
     nameRequired: '主题域名称不能为空',

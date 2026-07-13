@@ -18,7 +18,7 @@
 
 <template>
     <div class="app-container">
-        <!-- 头部区域 -->
+        <!-- head area -->
         <div slot="header" class="header-container">
             <div class="header-left">
                 <div class="blue-bar"></div>
@@ -30,7 +30,7 @@
             </el-button>
         </div>
 
-        <!-- 正文区域 -->
+        <!-- text area -->
         <div class="body-wrapper">
             <el-form v-if="isChange" ref="data" :model="data" label-width="100px" :disabled="true">
                 <el-row>
@@ -67,7 +67,7 @@
                     </el-col>
                 </el-row>
             </el-form>
-            <!-- 请求数据部分 -->
+            <!-- Request data part -->
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
@@ -146,7 +146,7 @@
                     </el-col>
                 </el-row>
             </el-form>
-            <!-- 返回结果部分 -->
+            <!-- Return result part -->
             <div class="header-container">
                 <div class="header-left">
                     <div class="blue-bar"></div>
@@ -167,19 +167,19 @@
                                 <el-table-column :prop="column" :label="column" align="center" :show-overflow-tooltip="{effect: 'light'}" />
                             </template>
                         </el-table>
-                        <!-- 分页 -->
+                        <!-- Pagination -->
                         <el-pagination :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
                             :current-page.sync="callData.pageNum" :page-size.sync="callData.pageSize"
                             :total="callData.dataTotal" @size-change="handleSizeChange"
                             @current-change="handleCurrentChange" />
                     </div>
-                    <!-- 返回数据为 HTML 格式 -->
+                    <!-- Return data in HTML format -->
                     <div v-if="apiExecuting2" class="html-container">
                         <VAceEditor v-if="jsonFlag" ref="aceRef" v-model:value="htmlData" class="editor-content"
                             placeholder="" :options="aceOptions" lang="json" readonly theme="github" />
                         <iframe class="html-iframe" v-if="!jsonFlag" :srcdoc="htmlData"></iframe>
                     </div>
-                    <!-- 没有返回数据时显示提示 -->
+                    <!-- Display prompt when no data is returned -->
                     <div v-else>{{td('common.noData')}}</div>
                 </el-col>
             </el-row>
@@ -240,31 +240,31 @@ const aceOptions = ref({
     displayIndentGuides: false,
     useWorker: true,
     showPrintMargin: false,
-    useSoftTabs: true, // 使用空格替代 Tab
-    highlightActiveLine: true, // 高亮当前行
+    useSoftTabs: true, // Use spaces instead of tabs
+    highlightActiveLine: true, // Highlight current line
     enableMultiselect: true,
     readOnly: true,
     wrap: true,
     showLineNumbers: false,
     showGutter: false,
 });
-// 定义响应式数据
-const title = ref(td('ds.apiEdit.testApi.dataApiCall'));  // 标题
-const form = reactive({});  // 表单数据
-const treeData1 = ref([]);  // 请求头数据
-const treeData2 = ref([]);  // 请求参数数据
-const activeTabName = ref('table0');  // 当前激活的 Tab
-const bashUrl = ref(null);  // 调用路径
-const apiExecuting = ref(false);  // 是否正在调用API
-const apiExecuting2 = ref(false);  // 是否返回HTML数据
-const htmlData = ref(null);  // 返回的HTML数据
-const jsonFlag = ref(false);  // 是否为JSON格式
+// Define responsive data
+const title = ref(td('ds.apiEdit.testApi.dataApiCall'));  // Title
+const form = reactive({});  // form data
+const treeData1 = ref([]);  // Request header data
+const treeData2 = ref([]);  // Request parameter data
+const activeTabName = ref('table0');  // Currently active Tab
+const bashUrl = ref(null);  // Call path
+const apiExecuting = ref(false);  // Whether the API is being called
+const apiExecuting2 = ref(false);  // Whether to return HTML data
+const htmlData = ref(null);  // Returned HTML data
+const jsonFlag = ref(false);  // Is it in JSON format?
 const callData = reactive({
-    dataList: [],  // 接口返回的数据列表
-    columnList: [],  // 数据的列名列表
-    pageNum: 1,  // 当前页码
-    pageSize: 20,  // 每页数据量
-    dataTotal: 0  // 数据总数
+    dataList: [],  // Data list returned by the interface
+    columnList: [],  // List of column names of data
+    pageNum: 1,  // Current page number
+    pageSize: 20,  // Amount of data per page
+    dataTotal: 0  // Total data
 });
 
 
@@ -277,20 +277,20 @@ const findPosi = (array, targetId, path = '') => {
     for (let i = 0; i < array.length; i++) {
         const item = array[i];
         if (item.id === targetId) {
-            return path + i; // 返回当前节点的索引作为路径
+            return path + i; // Returns the index of the current node as a path
         }
         if (item.daAssetApiParamList && item.daAssetApiParamList.length > 0) {
-            // 递归查找子节点
+            // Find child nodes recursively
             const childPath = `${path}${i}.daAssetApiParamList.`;
             const result = findPosi(item.daAssetApiParamList, targetId, childPath);
             if (result !== null) {
-                return result; // 找到则返回路径
+                return result; // If found, return the path
             }
         }
     }
-    return null; // 没找到返回 null
+    return null; // Not found returns null
 }
-// 获取YAPI配置
+// Get YAPI configuration
 const getYApiConfig = (id) => {
     queryServiceForwarding(id).then((response) => {
         console.log("🚀 ~ queryServiceForwarding ~ response:", response)
@@ -304,13 +304,13 @@ const getYApiConfig = (id) => {
     });
 };
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-// 获取数据API配置
+// Get data API configuration
 const getDataApi = async () => {
     getYApiConfig(props.data?.daAssetApi.id);
 };
 // console.log("🚀 ~ getDataApi ~ props.data ?.daAssetApi.id:", props.data ?.daAssetApi.id)
 
-// 组件挂载时获取数据
+// Get data when component is mounted
 onMounted(() => {
     // getDataApi();
 });
@@ -331,7 +331,7 @@ function buildParamsTree(paramList) {
                 : param.defaultValue;
         }
 
-        // 有子节点，递归构建
+        // There are child nodes and are constructed recursively.
         if (Array.isArray(param.daAssetApiParamList) && param.daAssetApiParamList.length > 0) {
             result[param.name] = buildParamsTree(param.daAssetApiParamList);
         } else {
@@ -359,7 +359,7 @@ const showErrorNotify = (msg) => {
     });
 };
 
-// 调用接口
+// Call interface
 const handleCall = () => {
     const isParamInvalid = (param) => {
         const hasChildren = Array.isArray(param.daAssetApiParamList) && param.daAssetApiParamList.length > 0;
@@ -376,11 +376,11 @@ const handleCall = () => {
             }
         }
 
-        // 判断是否为标准 JSON 对象
+        // Determine whether it is a standard JSON object
         return Object.prototype.toString.call(obj) === '[object Object]';
     };
 
-    // 参数校验
+    // Parameter verification
     const isNull = props.data.reqParams.some(param => {
         if (isParamInvalid(param)) {
             proxy.$message.warning(td('ds.apiEdit.testApi.nullableWarning') + `‘${param.name}’` + td('ds.apiEdit.testApi.cannotBeEmpty'));
@@ -389,7 +389,7 @@ const handleCall = () => {
         return false;
     });
     if (isNull) return;
-    // 构造请求体
+    // Construct request body
     const data = {
         ...props.data,
         id: props.data.apiId,
@@ -403,10 +403,10 @@ const handleCall = () => {
     };
     console.log("🚀 ~ queryServiceForwarding ~ data:", data)
 
-    // 请求接口
+    // Request interface
     queryServiceForwarding(data).then((response) => {
         if (response.code == 200) {
-            // proxy.$message.msgSuccess('接口调用成功');
+            // proxy.$message.msgSuccess('Interface call successful');
             const dataList = response.data?.data || [];
             const columnList = dataList.length > 0 ? Object.keys(dataList[0]) : [];
             callData.dataList = dataList;
@@ -421,13 +421,13 @@ const handleCall = () => {
             }
             apiExecuting2.value = true;
         } else {
-            // proxy.$message.error(response.msg || '接口调用失败');
+            // proxy.$message.error(response.msg || 'Interface call failed');
         }
     });
 };
 
 
-// 处理API响应
+// Handling API responses
 const handleApiResponse = (response) => {
     apiExecuting.value = true;
     apiExecuting2.value = false;

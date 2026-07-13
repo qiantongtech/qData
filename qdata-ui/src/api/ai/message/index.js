@@ -19,9 +19,9 @@
 import request from '@/utils/requestAi.js';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { getToken } from '@/utils/auth';
-// AI chat 聊天
+// AI chat chat
 export const ChatMessageApi = {
-    // 消息列表
+    // Message list
     getChatMessageListByConversationId: (conversationId) => {
         return request({
             url: `/chat/message/list-by-conversation-id?conversationId=${conversationId}`
@@ -35,7 +35,7 @@ export const ChatMessageApi = {
         });
     },
 
-    // 导出明细列表
+    // Export detailed list
     exportDetailData: (params) => {
         return request({
             url: `/chat/message/exportDetailData`,
@@ -45,8 +45,8 @@ export const ChatMessageApi = {
         });
     },
 
-    // 发送 Stream 消息
-    // 为什么不用 axios 呢？因为它不支持 SSE 调用
+    // Send Stream message
+    // Why not use axios? Because it does not support SSE calls
     sendChatMessageStream: async (
         conversationId,
         content,
@@ -79,7 +79,7 @@ export const ChatMessageApi = {
             signal: ctrl.signal
         });
     },
-    // 合规性检查
+    // Compliance check
     ruleWriting: async (
         writingId,
         writingTitle,
@@ -117,7 +117,7 @@ export const ChatMessageApi = {
             }
         );
     },
-    // 删除消息
+    // Delete message
     deleteChatMessage: (id) => {
         return request({
             url: `/chat/message/` + id,
@@ -125,7 +125,7 @@ export const ChatMessageApi = {
         });
     },
 
-    // 删除指定对话的消息
+    // Delete messages from a specified conversation
     deleteByConversationId: (conversationId) => {
         return request({
             url: `/chat/message/deleteByConversationId?conversationId=${conversationId}`,

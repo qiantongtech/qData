@@ -19,7 +19,7 @@
 import request from '@/utils/request'
 import {parseStrEmpty} from "@/utils/anivia.js";
 
-// 查询服务资源门户用户列表
+// Query service resource portal user list
 export function listRpUser(query) {
   return request({
     url: '/rp/rpUser/list',
@@ -28,7 +28,7 @@ export function listRpUser(query) {
   })
 }
 
-// 查询服务资源门户用户详细
+// Query service resource portal user details
 export function getRpUser(userId) {
   return request({
     url: '/rp/rpUser/' + parseStrEmpty(userId),
@@ -36,7 +36,7 @@ export function getRpUser(userId) {
   })
 }
 
-// 新增服务资源门户用户
+// Add new service resource portal user
 export function addRpUser(data) {
   return request({
     url: '/rp/rpUser',
@@ -45,7 +45,7 @@ export function addRpUser(data) {
   })
 }
 
-// 修改服务资源门户用户
+// Modify Service Resource Portal User
 export function updateRpUser(data) {
   return request({
     url: '/rp/rpUser',
@@ -54,7 +54,7 @@ export function updateRpUser(data) {
   })
 }
 
-// 删除服务资源门户用户
+// Delete Service Resource Portal User
 export function delRpUser(userId) {
   return request({
     url: '/rp/rpUser/' + userId,
@@ -62,7 +62,7 @@ export function delRpUser(userId) {
   })
 }
 
-// 查询部门下拉树结构
+// Query department drop-down tree structure
 export function deptTreeSelect() {
   return request({
     url: '/rp/rpUser/deptTree',

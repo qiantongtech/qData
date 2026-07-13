@@ -17,10 +17,10 @@
 -->
 
 <template>
-    <!-- 鉴权参数 -->
+    <!-- Authentication parameters -->
     <div class="app-container">
         <div class="body-wrapper">
-            <!-- 请求数据部分 -->
+            <!-- Request data part -->
             <div class="clearfix header-text" style="margin: 12px 0 0 0">
                 <div class="header-left">
                     <div class="blue-bar"></div>
@@ -40,7 +40,7 @@
                         <template #default="{ row, $index }">
                             <!-- <el-form-item :prop="`headerList[${findPosi(headerList, row.id)}].name`"
                                                     :rules="rules.name">
-                                                    <el-input v-model="row.name" placeholder="请输入键名" />
+                                                    <el-input v-model="row.name" placeholder="Please enter the key name" />
                                                 </el-form-item> -->
                             {{ row.name || "-" }}
 
@@ -76,7 +76,7 @@
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang"
 
-// 引入 Vue 和必要的 API 方法
+// Introduce Vue and necessary API methods
 import { ref, reactive, onMounted } from 'vue';
 // import { getApiCall, postApiCall } from "@/api/market/apimapping";
 // import { getYApiConfig } from "@/api/market/yapiConfig";
@@ -96,23 +96,23 @@ const { td } = useDefaultLang();
 const hasChildren = (row) => {
     return Array.isArray(row.daAssetApiParamList) && row.daAssetApiParamList.length > 0;
 };
-// 定义响应式数据
-const title = ref('');  // 标题
-const form = reactive({});  // 表单数据
-const treeData1 = ref([]);  // 请求头数据
-const treeData2 = ref([]);  // 请求参数数据
-const activeTabName = ref('table0');  // 当前激活的 Tab
-const bashUrl = ref(null);  // 调用路径
-const apiExecuting = ref(false);  // 是否正在调用API
-const apiExecuting2 = ref(false);  // 是否返回HTML数据
-const htmlData = ref(null);  // 返回的HTML数据
-const jsonFlag = ref(false);  // 是否为JSON格式
+// Define responsive data
+const title = ref('');  // Title
+const form = reactive({});  // form data
+const treeData1 = ref([]);  // Request header data
+const treeData2 = ref([]);  // Request parameter data
+const activeTabName = ref('table0');  // Currently active Tab
+const bashUrl = ref(null);  // Call path
+const apiExecuting = ref(false);  // Whether the API is being called
+const apiExecuting2 = ref(false);  // Whether to return HTML data
+const htmlData = ref(null);  // Returned HTML data
+const jsonFlag = ref(false);  // Is it in JSON format?
 const callData = reactive({
-    dataList: [],  // 接口返回的数据列表
-    columnList: [],  // 数据的列名列表
-    pageNum: 1,  // 当前页码
-    pageSize: 20,  // 每页数据量
-    dataTotal: 0  // 数据总数
+    dataList: [],  // Data list returned by the interface
+    columnList: [],  // List of column names of data
+    pageNum: 1,  // Current page number
+    pageSize: 20,  // Amount of data per page
+    dataTotal: 0  // Total data
 });
 const inputList = computed(() => {
     return props.form1?.daAssetApiParamList?.filter(item => Number(item.type) == 1) || [];
@@ -129,20 +129,20 @@ const findPosi = (array, targetId, path = '') => {
     for (let i = 0; i < array.length; i++) {
         const item = array[i];
         if (item.id === targetId) {
-            return path + i; // 返回当前节点的索引作为路径
+            return path + i; // Returns the index of the current node as a path
         }
         if (item.daAssetApiParamList && item.daAssetApiParamList.length > 0) {
-            // 递归查找子节点
+            // Find child nodes recursively
             const childPath = `${path}${i}.daAssetApiParamList.`;
             const result = findPosi(item.daAssetApiParamList, targetId, childPath);
             if (result !== null) {
-                return result; // 找到则返回路径
+                return result; // If found, return the path
             }
         }
     }
-    return null; // 没找到返回 null
+    return null; // Not found returns null
 }
-// 获取YAPI配置
+// Get YAPI configuration
 const getYApiConfig = (id) => {
     queryServiceForwarding(id).then((response) => {
         console.log("🚀 ~ queryServiceForwarding ~ response:", response)
@@ -156,13 +156,13 @@ const getYApiConfig = (id) => {
     });
 };
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-// 获取数据API配置
+// Get data API configuration
 const getDataApi = async () => {
     getYApiConfig(props.form1?.daAssetApi.id);
 };
 // console.log("🚀 ~ getDataApi ~ props.form1?.daAssetApi.id:", props.form1?.daAssetApi.id)
 
-// 组件挂载时获取数据
+// Get data when component is mounted
 onMounted(() => {
     // getDataApi();
 });
@@ -183,7 +183,7 @@ function buildParamsTree(paramList) {
                 : param.defaultValue;
         }
 
-        // 有子节点，递归构建
+        // There are child nodes and are constructed recursively.
         if (Array.isArray(param.daAssetApiParamList) && param.daAssetApiParamList.length > 0) {
             result[param.name] = buildParamsTree(param.daAssetApiParamList);
         } else {
@@ -211,7 +211,7 @@ const showErrorNotify = (msg) => {
     });
 };
 
-// 调用接口
+// Call interface
 const handleCall = () => {
     const isParamInvalid = (param) => {
         const hasChildren = Array.isArray(param.daAssetApiParamList) && param.daAssetApiParamList.length > 0;
@@ -221,7 +221,7 @@ const handleCall = () => {
     const isJSON = (obj) => {
         return Object.prototype.toString.call(obj) === '[object Object]';
     }
-    // 参数校验
+    // Parameter verification
     const isNull = inputList.value.some(param => {
         if (isParamInvalid(param)) {
             proxy.$message.warning(`${td('dpp.asset.detail.api.paramRequired')}${param.name}${td('dpp.asset.detail.api.paramRequiredEnd')}`);
@@ -231,7 +231,7 @@ const handleCall = () => {
     });
     if (isNull) return;
 
-    // 构造请求体
+    // Construct request body
     const data = {
         id: props.form1?.daAssetApi.id,
         queryParams: {
@@ -243,11 +243,11 @@ const handleCall = () => {
         }
     };
 
-    // 请求接口
+    // Request interface
     queryServiceForwarding(data).then((response) => {
         console.log("🚀 ~ queryServiceForwarding ~ response:", response);
         if (response.code == 200) {
-            // proxy.$message.msgSuccess('接口调用成功');
+            // proxy.$message.msgSuccess('Interface call successful');
             const dataList = response.data?.data || [];
             const columnList = dataList.length > 0 ? Object.keys(dataList[0]) : [];
             callData.dataList = dataList;
@@ -255,18 +255,18 @@ const handleCall = () => {
             callData.dataTotal = response.data.total;
             apiExecuting.value = true;
         } else if (response && response.code == null) {
-            // proxy.$message.msgSuccess('接口调用成功');
+            // proxy.$message.msgSuccess('Interface call successful');
             htmlData.value = response;
             jsonFlag.value = isJSON(response);
             console.log("🚀 ~ queryServiceForwarding ~ response:", response)
             apiExecuting2.value = true;
         } else {
-            // proxy.$message.error(response.msg || '接口调用失败');
+            // proxy.$message.error(response.msg || 'Interface call failed');
         }
     });
 };
 
-// 处理API响应
+// Handling API responses
 const handleApiResponse = (response) => {
     apiExecuting.value = true;
     apiExecuting2.value = false;
@@ -312,10 +312,10 @@ const handleApiResponse = (response) => {
     }
 
     .blue-bar {
-        background-color: #2666FB; // 蓝条颜色
-        width: 5px; // 宽度5px
-        height: 20px; // 高度20px
-        margin-right: 10px; // 图片与文字之间的间距
+        background-color: #2666FB; // Blue bar color
+        width: 5px; // Width 5px
+        height: 20px; // Height 20px
+        margin-right: 10px; // Space between image and text
     }
 
     .header-container {

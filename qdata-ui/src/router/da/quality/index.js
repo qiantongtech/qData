@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue'
 
-// 数据质量模块动公共路由
+// Data quality module activates public routing
 export default [
     {
         path: '/da/quality/qualityTask/add',

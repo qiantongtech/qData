@@ -149,7 +149,7 @@
             radioValue.value = 7;
         }
     }
-    // 单选按钮值变化时
+    // When the radio button value changes
     function onRadioChange() {
         if (radioValue.value === 2 && props.cron.week === '?') {
             emit('update', 'week', '*', 'day');

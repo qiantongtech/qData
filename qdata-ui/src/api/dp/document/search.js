@@ -18,7 +18,7 @@
 
 import request from "@/utils/request";
 
-// 查询数据元代码映射列表
+// Query the data element code mapping list
 export function dpDocumentList(query) {
   return request({
     url: "/dp/document/search",

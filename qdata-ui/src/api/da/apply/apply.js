@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询API服务-申请列表
+// Query API service-application list
 export function listApply(query) {
   return request({
     url: '/da/apply/list',
@@ -27,7 +27,7 @@ export function listApply(query) {
   })
 }
 
-// 查询API服务-申请详细
+// Query API service-application details
 export function getApply(id) {
   return request({
     url: '/da/apply/' + id,
@@ -35,7 +35,7 @@ export function getApply(id) {
   })
 }
 
-// 新增API服务-申请
+// New API service-application
 export function addApply(data) {
   return request({
     url: '/da/apply',
@@ -44,7 +44,7 @@ export function addApply(data) {
   })
 }
 
-// 修改API服务-申请
+// Modify API service-application
 export function updateApply(data) {
   return request({
     url: '/da/apply',
@@ -53,7 +53,7 @@ export function updateApply(data) {
   })
 }
 
-// 删除API服务-申请
+// Delete API Service-Application
 export function delApply(id) {
   return request({
     url: '/da/apply/' + id,

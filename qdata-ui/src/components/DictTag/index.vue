@@ -77,14 +77,14 @@
 import { getDatasourceIcon } from "@/utils/datasource";
 
 const props = defineProps({
-  // 数据
+  // data
   options: {
     type: Array,
     default: null,
   },
-  // 当前的值
+  // current value
   value: [Number, String, Array],
-  // 当未找到匹配的数据时，显示value
+  // When no matching data is found, value is displayed
   showValue: {
     type: Boolean,
     default: true,
@@ -93,21 +93,21 @@ const props = defineProps({
     type: String,
     default: ",",
   },
-  // 标签尺寸
+  // label size
   size: {
     type: String,
     default: "default",
   },
-  // 标签类型 (用于直接使用 slot 或无 options 时)
+  // Tag type (used when using slot directly or without options)
   type: {
     type: String,
     default: "",
   },
-  // 图标地址 (用于直接使用 slot 或无 options 时)
+  // Icon address (used when using slot directly or without options)
   icon: String,
-  // 数据源类型 (用于直接使用 slot 或无 options 时获取图标)
+  // Data source type (used to get the icon when using slot directly or without options)
   datasourceType: String,
-  // 自定义类名 (用于直接使用 slot 或无 options 时)
+  // Custom class name (for when using slot directly or without options)
   className: String,
 });
 
@@ -123,11 +123,11 @@ const values = computed(() => {
       : String(props.value).split(props.separator);
 });
 
-/** 需要渲染的项目列表 */
+/** List of items that need to be rendered */
 const renderedItems = computed(() => {
   const items = [];
   if (props.options && props.options.length > 0) {
-    // 1. 处理有 options 的情况
+    // 1. Handle the situation with options
     values.value.forEach((val) => {
       const option = props.options.find(
           (opt) => String(opt.value) === String(val)
@@ -145,7 +145,7 @@ const renderedItems = computed(() => {
               (option.elTagClass == "" || option.elTagClass == null),
         });
       } else if (props.showValue) {
-        // 未匹配且开启显示原值
+        // Unmatched and enabled to display original value
         items.push({
           key: val,
           label: val,
@@ -163,7 +163,7 @@ const renderedItems = computed(() => {
       }
     });
   } else {
-    // 2. 处理无 options 的情况 (直接展示 value)
+    // 2. Handle the situation without options (display value directly)
     values.value.forEach((val) => {
       items.push({
         key: val,
@@ -182,14 +182,14 @@ const renderedItems = computed(() => {
   return items;
 });
 
-/** 直接使用 slot 时的图标地址 */
+/** Icon address when using slot directly */
 const currentIconUrl = computed(() => {
   if (props.icon) return props.icon;
   if (props.datasourceType) return getDatasourceIcon(props.datasourceType);
   return "";
 });
 
-/** 获取图标地址 */
+/** Get icon address */
 function getIconUrl(item) {
   if (item.icon) return item.icon;
   if (item.datasourceType) return getDatasourceIcon(item.datasourceType);
@@ -241,7 +241,7 @@ function getIconUrl(item) {
   color: #999;
 }
 
-/* 针对 small 尺寸进行深度压缩 */
+/* Deep compression for small sizes */
 :deep(.el-tag--small) {
   height: 20px;
   padding: 3px 6px;

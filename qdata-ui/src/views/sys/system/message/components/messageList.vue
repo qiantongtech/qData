@@ -36,8 +36,8 @@ import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 // import Item from "@/views/sys/system/message/components/item.vue";
 import { ref, nextTick, onMounted, onBeforeUnmount, watch } from 'vue';
-import WebSocketService from '@/api/system/system/message/websocketService'; // 导入服务
-import { getToken } from '../../../../../utils/auth'; // 引入token获取工具
+import WebSocketService from '@/api/system/system/message/websocketService'; // Import services
+import { getToken } from '../../../../../utils/auth'; // Introduce token acquisition tool
 
 const messages = ref([
   {
@@ -48,14 +48,14 @@ const messages = ref([
     title: td('sys.system.message.newMessage'),
     time: 'test'
   },
-]); // 用于保存接收到的站内信
+]); // Used to save received site messages
 
-// 获取当前用户的 token
+// Get the current user's token
 const userId = ref('test11111111111');
 const token = ref(getToken());
 let message = ref('');
 
-// 组件挂载时初始化 WebSocket 连接
+// Initialize the WebSocket connection when the component is mounted
 onMounted(() => {
   // messages.value.push({
   //   title: '11111111111111',
@@ -67,31 +67,31 @@ onMounted(() => {
   initWebSocket();
 });
 // const { proxy } = getCurrentInstance();
-// 消息类型
+// Message type
 // const props = defineProps(['msgCategory'])
-// console.log('---------消息列表----------',props.msgCategory)
+// console.log('---------Message list----------',props.msgCategory)
 
 
 
-const webSocketService = ref(null); // WebSocket 服务实例
+const webSocketService = ref(null); // WebSocket service instance
 
-// 获取父组件传递的用户ID
+// Get the user ID passed by the parent component
 // const props = defineProps({
 //   userId: String,
 //   token: String,
 // });
 
-// 初始化 WebSocket
+// Initialize WebSockets
 const initWebSocket = () => {
   webSocketService.value = new WebSocketService(userId.value, token.value);
 
   if (userId.value) {
-    // 初始化 WebSocket 并监听消息
+    // Initialize WebSocket and listen for messages
     webSocketService.value.init();
     webSocketService.value.socket.onmessage = (event) => {
       const messageData = JSON.parse(event.data);
-      // console.log('-----------监听消息 messageData----------', messageData);
-      console.log('-----------原始数据 messages.value----------', messages.value);
+      // console.log('-----------Listen to messages messageData----------', messageData);
+      console.log("-----------Original data messages.value----------", messages.value);
       if (messageData) {
         messages.value.push({
           title: '11111111111111',
@@ -103,19 +103,19 @@ const initWebSocket = () => {
         //     time: '11111111111'
         //   },
         // ]
-        // 在 WebSocket 数据更新后，强制视图更新
+        // Force view update after WebSocket data is updated
         nextTick(() => {
           console.log(messages.value, '===messages.value')
         });
       }
-      console.log('-----------数据更新 messages.value----------', messages.value);
+      console.log("-----------Updated data messages.value----------", messages.value);
     };
   }
 };
 
 
 // messageData.time = messageData.createTime;
-// 用新数组替换原数组，触发 Vue 的视图更新
+// Replace the original array with the new array to trigger Vue's view update
 // messages.value = [...messages.value, {
 //   title: messageData.title,
 //   time: messageData.createTime

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-主题关联关系列表
+// Query data assets-topic association list
 export function listDaAssetThemeRel(query) {
   return request({
     url: '/da/daAssetThemeRel/list',
@@ -27,7 +27,7 @@ export function listDaAssetThemeRel(query) {
   })
 }
 
-// 查询数据资产-主题关联关系详细
+// Query data assets-topic association details
 export function getDaAssetThemeRel(id) {
   return request({
     url: '/da/daAssetThemeRel/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetThemeRel(id) {
   })
 }
 
-// 新增数据资产-主题关联关系
+// Added new data asset-theme association relationship
 export function addDaAssetThemeRel(data) {
   return request({
     url: '/da/daAssetThemeRel',
@@ -44,7 +44,7 @@ export function addDaAssetThemeRel(data) {
   })
 }
 
-// 修改数据资产-主题关联关系
+// Modify the data asset-topic association relationship
 export function updateDaAssetThemeRel(data) {
   return request({
     url: '/da/daAssetThemeRel',
@@ -53,7 +53,7 @@ export function updateDaAssetThemeRel(data) {
   })
 }
 
-// 删除数据资产-主题关联关系
+// Delete data asset-topic association relationship
 export function delDaAssetThemeRel(id) {
   return request({
     url: '/da/daAssetThemeRel/' + id,

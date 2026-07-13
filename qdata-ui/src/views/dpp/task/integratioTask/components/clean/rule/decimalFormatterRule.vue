@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 小数位统一 -->
+  <!-- Uniform decimal places -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12" class="hasMsg">

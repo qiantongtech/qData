@@ -289,22 +289,22 @@ const closeCurrDialog = () => {
   emits("close");
 };
 
-// #region curr弹框拖拽
-const currWidth = ref(340); // 初始左侧宽度
-const isCurrResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置
+// #region currDrag and drop the pop-up box
+const currWidth = ref(340); // Initial left width
+const isCurrResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed
 const resizeCurrDialog = (event) => {
   isCurrResizing.value = true;
   startX = event.clientX;
-  // 使用 requestAnimationFrame 减少重绘频率
+  // Use requestAnimationFrame to reduce redraw frequency
   document.addEventListener("mousemove", updateCurrResize);
   document.addEventListener("mouseup", stopCurrResize);
 };
 const updateCurrResize = (event) => {
   if (isCurrResizing.value) {
-    const delta = startX - event.clientX; // 计算鼠标移动距离
-    currWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
+    const delta = startX - event.clientX; // Calculate mouse movement distance
+    currWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
     if (currWidth.value > 650) {
       currWidth.value = 650;
       return;
@@ -312,7 +312,7 @@ const updateCurrResize = (event) => {
       currWidth.value = 300;
       return;
     }
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
@@ -325,33 +325,33 @@ const stopCurrResize = () => {
 
 const data = reactive({
   form: {
-    // 基础配置
+    // Basic configuration
     taskPriority: "MEDIUM",
     workerGroup: "default",
     failRetryTimes: "0",
     failRetryInterval: "1",
     delayTime: "0",
-    // Fink配置
+    // Fink configuration
     jobManagerMemory: "1G",
     taskManagerMemory: "2G",
     slot: 1,
     taskManager: 2,
     parallelism: 1,
     yarnQueue: "",
-    // Spark配置
+    // Spark configuration
     driverCores: 1,
     driverMemory: "512M",
     numExecutors: 1,
     executorMemory: "1G",
     executorCores: 1,
-    // 其他配置
+    // Other configurations
     typaCode: "",
     datasourceId: "",
     sqlType: "0",
     taskType: "",
     segm: "",
     componentType: "",
-    // 参数配置
+    // Parameter configuration
     localParams: [],
   },
   rules: {
@@ -372,11 +372,11 @@ watch(
         ...taskParams,
         typaCode: val.data.draftJson ? JSON.parse(val.data.draftJson).typaCode : "",
       };
-      // 执行时间默认为1分钟
+      // Execution time defaults to 1 minute
       if (isShowWithTypeName("DM,Oracle,MYSQL,Kingbase") && form.value.delayTime == 0) {
         form.value.delayTime = 1;
       }
-      // Flink特殊字段
+      // Flink special fields
       form.value.executeMode = form.value.typaCode == "FlinkBatch" ? "BATCH" : form.value.typaCode == "FlinkStream" ? "STREAM" : "";
       let obj;
       if (form.value.typaCode == "SparkSql") {
@@ -388,7 +388,7 @@ watch(
       }
       form.value.taskType = obj?.taskType;
       form.value.componentType = obj?.componentType;
-      // 获取： 数据源连接
+      // Get: data source connection
       getDaDatasource();
       console.log("🚀 ~ form.value:", form.value);
     }

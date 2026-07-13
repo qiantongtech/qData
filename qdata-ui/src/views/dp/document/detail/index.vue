@@ -87,7 +87,7 @@
           </el-col> -->
           <!-- <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">标准名称</div>
+              <div class="infotop-row-lable">Standard name</div>
               <div class="infotop-row-value">
                 {{ dpDocumentDetail.name || '-' }}
               </div>
@@ -157,7 +157,7 @@ const data = reactive({
 
 const { dpDocumentDetail, rules } = toRefs(data);
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDpDocumentDetailById() {
   const _ID = id;
   getDpDocument(_ID).then(response => {

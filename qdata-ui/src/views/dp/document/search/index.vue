@@ -283,7 +283,7 @@ const getFileIcon = (fileUrl) => {
         .href;
   }
 };
-/** 查询应用API服务关联列表 */
+/** Query application API service association list */
 function getList() {
   loading.value = true;
   dpDocumentList(queryParams.value)
@@ -296,13 +296,13 @@ function getList() {
     });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
@@ -490,12 +490,12 @@ getList();
 .page-list {
   height: 69.8vh;
   height: auto;
-  /* 或者直接删掉这行 */
+  /* Or just delete this line */
   max-height: none;
-  /* 保证不被限制高度 */
+  /* Guaranteed not to be restricted in height */
   overflow: visible;
 
-  /* 不产生内部滚动条 */
+  /* Do not generate internal scroll bars */
   &::-webkit-scrollbar {
     width: 2px;
   }

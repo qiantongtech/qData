@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据域管理列表
+// Query the data domain management list
 export function listDataDomain(query) {
   return request({
     url: '/dm/dataDomain/list',
@@ -27,7 +27,7 @@ export function listDataDomain(query) {
   })
 }
 
-// 查询数据域管理详细
+// Query data domain management details
 export function getDataDomain(id) {
   return request({
     url: '/dm/dataDomain/' + id,
@@ -35,7 +35,7 @@ export function getDataDomain(id) {
   })
 }
 
-// 新增数据域管理
+// Added data domain management
 export function addDataDomain(data) {
   return request({
     url: '/dm/dataDomain',
@@ -44,7 +44,7 @@ export function addDataDomain(data) {
   })
 }
 
-// 修改数据域管理
+// Modify data domain management
 export function updateDataDomain(data) {
   return request({
     url: '/dm/dataDomain',
@@ -53,7 +53,7 @@ export function updateDataDomain(data) {
   })
 }
 
-// 删除数据域管理
+// Delete data domain management
 export function delDataDomain(id) {
   return request({
     url: '/dm/dataDomain/' + id,
@@ -61,7 +61,7 @@ export function delDataDomain(id) {
   })
 }
 
-// 查询业务分类
+// Query business classification
 export function listDataDomainlist(query) {
   return request({
     url: '/dm/dataDomain/listByCategoryId',
@@ -70,7 +70,7 @@ export function listDataDomainlist(query) {
   })
 }
 
-// 批量删除数据域管理 业务分层绑定的
+// Batch deletion of data domain management and business hierarchical binding
 export function getDeletebyDomainId(query) {
   return request({
     url: '/dm/BusinessDomainRel/deletebyDomainId/' + query.domainId + '/' + query.businessCategoryId,

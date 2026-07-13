@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 表输出 -->
+  <!-- table output -->
   <el-dialog
     v-model="visibleDialog"
     :draggable="true"
@@ -485,7 +485,7 @@ const visibleDialog = computed({
   },
 });
 
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let opens = ref(false);
@@ -513,11 +513,11 @@ const submitForm = (value) => {
   });
 };
 
-const childComponent = ref(null); // 表字段
-const tableFields = ref([]); // 来源表格
-const createTypeList = ref([]); // 数据源列表
+const childComponent = ref(null); // table fields
+const tableFields = ref([]); // Source form
+const createTypeList = ref([]); // Data source list
 
-// 获取数据源列表
+// Get a list of data sources
 const getDatasourceList = async () => {
   try {
     loading.value = true;
@@ -534,7 +534,7 @@ const getDatasourceList = async () => {
   }
 };
 
-// 获取表列表
+// Get table list
 const getTablesByDatasourceId = async (id) => {
   TablesByDataSource.value = await fetchData(
     getTablesByDataSourceId,
@@ -543,7 +543,7 @@ const getTablesByDatasourceId = async (id) => {
   );
 };
 
-// 获取列数据
+// Get column data
 const getColumnByAssetIdList = async (id) => {
   ColumnByAssettab.value = await fetchData(
     getColumnByAssetId,
@@ -555,12 +555,12 @@ const getColumnByAssetIdList = async (id) => {
   );
 };
 
-// 获取列数据
+// Get column data
 const getColumns = () => {
   return childComponent.value?.getColumns();
 };
 
-// 通用的获取数据的函数
+// General functions for obtaining data
 const fetchData = async (requestFn, params, loadingState) => {
   try {
     loadingState.value = true;
@@ -571,7 +571,7 @@ const fetchData = async (requestFn, params, loadingState) => {
   }
 };
 
-// 处理数据源变化
+// Handle data source changes
 const resetAndFetchTables = async (selectedDatasource) => {
   TablesByDataSource.value = [];
   ColumnByAssettab.value = [];
@@ -591,7 +591,7 @@ const resetAndFetchTables = async (selectedDatasource) => {
   await getTablesByDatasourceId(id);
 };
 
-// 处理数据源变化
+// Handle data source changes
 const handleDatasourceChange = (value) => {
   const selectedDatasource = createTypeList.value.find(
     (item) => item.id == value
@@ -601,7 +601,7 @@ const handleDatasourceChange = (value) => {
   }
 };
 
-// 处理表变化
+// Handle table changes
 const setTableName = (selectedDatasource) => {
   form.value.taskParams.target_table_name = selectedDatasource.tableName;
 };
@@ -619,18 +619,18 @@ const handleChange = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
     const valid = await dpModelRefs.value?.validate();
     if (!valid) return;
 
-    // 没有 code 时生成唯一 code
+    // Generate unique code when there is no code
     if (!form.value.code) {
       loading.value = true;
       try {
@@ -670,40 +670,40 @@ const saveData = async () => {
     form.value.taskParams = { ...form.value.taskParams, ...taskParams };
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
 
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
 
-// 处理数据源和列操作的共用函数
+// Common functions that handle data source and column operations
 const handleDatasource = (datasource, assetId) => {
   if (datasource?.datasourceId) {
     getTablesByDatasourceId(datasource.datasourceId);
-    // 如果需要处理 assetId，可以在此调用
+    // If you need to process assetId, you can call it here
     // getColumnByAssetIdList(assetId);
   } else {
-    console.warn("无效的数据源信息", datasource);
+    console.warn("Invalid data source information", datasource);
   }
 };
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (!props.visible) {
     off();

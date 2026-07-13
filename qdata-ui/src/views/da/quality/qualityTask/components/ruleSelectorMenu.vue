@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--稽查规则信息 第一步的内容 是清洗规则的卡片  -->
+  <!--The first step of auditing rule information is to clean the rule cards  -->
   <el-row>
     <el-col :span="5">
       <DeptTree
@@ -90,7 +90,7 @@ const { att_rule_audit_q_dimension } = proxy.useDict(
 const loading = ref(false);
 const contentWrapper = ref(null);
 const selectedCard = ref(null);
-const leftWidth = ref(250); // 初始左侧宽度
+const leftWidth = ref(250); // Initial left width
 const emit = defineEmits(["card-click"]);
 const props = defineProps({
   type: {
@@ -195,7 +195,7 @@ onMounted(() => {
   position: relative;
 }
 
-/* 右侧内容 */
+/* Right content */
 .content-col {
   height: 75vh;
   overflow: hidden;
@@ -304,7 +304,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 
-  /* 文字样式 */
+  /* text style */
   font-size: 16px;
   color: #999;
   user-select: none;

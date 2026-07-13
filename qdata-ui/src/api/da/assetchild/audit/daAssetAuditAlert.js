@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-质量预警列表
+// Query data assets-quality warning list
 export function listDaAssetAuditAlert(query) {
   return request({
     url: '/da/daAssetAuditAlert/list',
@@ -27,7 +27,7 @@ export function listDaAssetAuditAlert(query) {
   })
 }
 
-// 查询数据资产-质量预警详细
+// Query data assets-quality warning details
 export function getDaAssetAuditAlert(id) {
   return request({
     url: '/da/daAssetAuditAlert/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetAuditAlert(id) {
   })
 }
 
-// 新增数据资产-质量预警
+// New data assets-quality warning
 export function addDaAssetAuditAlert(data) {
   return request({
     url: '/da/daAssetAuditAlert',
@@ -44,7 +44,7 @@ export function addDaAssetAuditAlert(data) {
   })
 }
 
-// 修改数据资产-质量预警
+// Modify data assets-quality warning
 export function updateDaAssetAuditAlert(data) {
   return request({
     url: '/da/daAssetAuditAlert',
@@ -53,7 +53,7 @@ export function updateDaAssetAuditAlert(data) {
   })
 }
 
-// 删除数据资产-质量预警
+// Deleting data assets-quality warning
 export function delDaAssetAuditAlert(id) {
   return request({
     url: '/da/daAssetAuditAlert/' + id,

@@ -76,10 +76,10 @@
 
                 <!-- <el-form-item>
           <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>查询
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i>Query
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>重置
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i>Reset
           </el-button>
         </el-form-item> -->
             </div>
@@ -291,7 +291,7 @@
             </el-tabs>
         </div>
 
-        <!-- 添加或修改用户类型对话框 -->
+        <!-- Add or modify user type dialog box -->
         <el-dialog
             :title="title"
             v-model="open"
@@ -366,7 +366,7 @@
         console.log(tab, event);
     };
 
-    // 列显隐信息
+    // Show hidden information
     const columns = ref([
         { key: 0, label: 'ID', visible: true },
         { key: 1, label: '类型名称', visible: true },
@@ -422,7 +422,7 @@
 
     const { queryParams, form, userform, rules } = toRefs(data);
 
-    /** 查询用户类型列表 */
+    /** Query user type list */
     function getList() {
         loading.value = true;
         // listUserType(queryParams.value).then(response => {
@@ -472,13 +472,13 @@
         // });
     }
 
-    // 取消按钮
+    // Cancel button
     function cancel() {
         open.value = false;
         reset();
     }
 
-    // 表单重置
+    // form reset
     function reset() {
         form.value = {
             id: null,
@@ -496,33 +496,33 @@
         proxy.resetForm('userTypeRef');
     }
 
-    /** 搜索按钮操作 */
+    /** Search button action */
     function handleQuery() {
         queryParams.value.pageNum = 1;
         getList();
     }
 
-    /** 重置按钮操作 */
+    /** reset button action */
     function resetQuery() {
         proxy.resetForm('queryRef');
         handleQuery();
     }
 
-    // 多选框选中数据
+    // Multiple selection box selected data
     function handleSelectionChange(selection) {
         ids.value = selection.map((item) => item.id);
         single.value = selection.length != 1;
         multiple.value = !selection.length;
     }
 
-    /** 新增按钮操作 */
+    /** Add button operation */
     function handleAdd() {
         reset();
         open.value = true;
         title.value = '新增用户类型';
     }
 
-    /** 修改按钮操作 */
+    /** Modify button actions */
     function handleUpdate(row) {
         reset();
         const _id = row.id || ids.value;
@@ -533,7 +533,7 @@
         });
     }
 
-    /** 提交按钮 */
+    /** submit button */
     function submitForm() {
         proxy.$refs['userTypeRef'].validate((valid) => {
             if (valid) {
@@ -554,7 +554,7 @@
         });
     }
 
-    /** 删除按钮操作 */
+    /** Delete button action */
     function handleDelete(row) {
         const _ids = row.id || ids.value;
         proxy.$modal
@@ -569,7 +569,7 @@
             .catch(() => {});
     }
 
-    /** 导出按钮操作 */
+    /** Export button action */
     function handleExport() {
         proxy.download(
             'example/userType/export',

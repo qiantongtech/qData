@@ -27,7 +27,7 @@
     draggable
   >
     <div class="confirm-content">
-      <!-- 警告信息 -->
+      <!-- warning message -->
       <div class="warning-message">
         <svg-icon iconClass="warning" class="tip-icon" /> {{ t('components.deleteConfirmDialog.warning') }}{{
           deleTitle
@@ -82,43 +82,43 @@ const { t } = useI18n();
 const dialogVisible = ref(false);
 const inputValue = ref("");
 const inputError = ref("");
-const deleteId = ref(null); // 接收id
-const deleTitle = ref(); // 接收title
-const repoName = ref(""); // 验证名称
+const deleteId = ref(null); // receive id
+const deleTitle = ref(); // receive title
+const repoName = ref(""); // Verify name
 
-// 计算验证文本，如果没有传入name则默认为"立即删除"
-// 去除repoName中的空格
+// Calculate the verification text. If no name is passed in, the default is "Delete immediately"
+// Remove spaces in repoName
 const verificationText = computed(() => {
   const cleanRepoName = (repoName.value || t('components.deleteConfirmDialog.defaultVerifyText')).replace(/\s/g, "");
-  // 如果有deleteId，则在验证文本中加入编号信息
+  // If there is deleteId, add numbering information to the verification text
   return deleteId.value
     ? `${cleanRepoName}编号 ${deleteId.value} 的数据项`
     : cleanRepoName;
 });
 
-// 计算输入是否有效
+// Calculate whether the input is valid
 const isInputValid = computed(() => {
   return inputValue.value && inputValue.value === verificationText.value;
 });
-// 打开对话框
+// Open dialog
 /**
- * 打开删除确认对话框
- * @param {string|number} id - 要删除的项目的ID
- * @param {string} title - 删除标题，显示在对话框标题和警告信息中
- * @param {string} [name] - 验证文本名称，用于确认删除操作的关键词，默认为"立即删除"
+ * Open delete confirmation dialog
+ * @param {string|number} id - ID of the item to delete
+ * @param {string} title - Remove the title, displayed in the dialog title and warning message
+ * @param {string} [name] - Verification text name, keyword used to confirm the deletion operation, the default is "Delete immediately"
  */
-// 打开对话框
+// Open dialog
 const open = (id, title, name) => {
   dialogVisible.value = true;
   inputValue.value = "";
   inputError.value = "";
   deleTitle.value = title;
-  deleteId.value = id; // 设置id
-  // 去除传入的name参数中的空格
+  deleteId.value = id; // set id
+  // Remove spaces from the name parameter passed in
   repoName.value = (name || "").replace(/\s/g, "");
 };
 
-// 关闭对话框
+// Close dialog
 const handleClose = () => {
   inputValue.value = "";
   inputError.value = "";
@@ -126,21 +126,21 @@ const handleClose = () => {
   repoName.value = "";
 };
 
-// 输入变化时的处理
+// Handling when input changes
 const handleInput = () => {
   if (inputValue.value === verificationText.value) {
     inputError.value = "";
   }
 };
 
-// 确认删除
+// Confirm deletion
 const confirmDelete = () => {
   if (inputValue.value !== verificationText.value) {
     inputError.value = t('components.deleteConfirmDialog.inputError', { verificationText: verificationText.value });
     return;
   }
 
-  // 触发确认事件并传递id
+  // Trigger the confirmation event and pass the id
   emit("confirm-delete", deleteId.value);
   dialogVisible.value = false;
   inputValue.value = "";
@@ -149,7 +149,7 @@ const confirmDelete = () => {
   repoName.value = "";
 };
 
-// 暴露方法给父组件使用
+// Expose methods for parent components to use
 const emit = defineEmits(["confirm-delete"]);
 defineExpose({ open });
 </script>

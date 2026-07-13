@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据质量任务列表
+// Query data quality task list
 export function listDppQualityTask(query) {
   return request({
     url: '/dpp/qualityTask/list',
@@ -27,7 +27,7 @@ export function listDppQualityTask(query) {
   })
 }
 
-// 查询数据质量任务详细
+// Query data quality task details
 export function getDppQualityTask(id) {
   return request({
     url: '/dpp/qualityTask/' + id,
@@ -35,7 +35,7 @@ export function getDppQualityTask(id) {
   })
 }
 
-// 新增数据质量任务
+// Add new data quality tasks
 export function addDppQualityTask(data) {
   return request({
     url: '/dpp/qualityTask',
@@ -44,7 +44,7 @@ export function addDppQualityTask(data) {
   })
 }
 
-// 修改数据质量任务
+// Modify data quality tasks
 export function updateDppQualityTask(data) {
   return request({
     url: '/dpp/qualityTask',
@@ -53,7 +53,7 @@ export function updateDppQualityTask(data) {
   })
 }
 
-// 删除数据质量任务
+// Delete data quality tasks
 export function delDppQualityTask(id) {
   return request({
     url: '/dpp/qualityTask/' + id,
@@ -62,7 +62,7 @@ export function delDppQualityTask(id) {
 }
 
 
-//检验接口
+//Check interface
 export function verifyInterfaceValue(query) {
   return request({
     url: '/dpp/qualityTaskEvaluate/verifyInterfaceValue',
@@ -70,7 +70,7 @@ export function verifyInterfaceValue(query) {
     params: query
   })
 }
-//错误抽查功能
+//Error spot check function
 export function validationErrorDataSql(data) {
   return request({
     url: '/dpp/qualityTaskEvaluate/validationErrorDataSql',
@@ -78,7 +78,7 @@ export function validationErrorDataSql(data) {
     data: data
   })
 }
-// 成功抽查功能
+// Successful spot check function
 export function validationValidDataSql(data) {
   return request({
     url: '/dpp/qualityTaskEvaluate/validationValidDataSql',
@@ -86,14 +86,14 @@ export function validationValidDataSql(data) {
     data: data
   })
 }
-//执行一次
+//Execute once
 export function startDppQualityTask(id) {
   return request({
     url: `/dpp/qualityTask//startDppQualityTask/${id}`,
     method: 'put',
   })
 }
-// 任务开关
+// task switch
 export function updateDppQualityTaskStatus(query) {
   return request({
     url: '/dpp/qualityTask/updateDppQualityTaskStatus',
@@ -102,7 +102,7 @@ export function updateDppQualityTaskStatus(query) {
   })
 }
 
-// 调度周期
+// Scheduling cycle
 
 export function updateDaDiscoveryTaskCronExpression(query) {
   return request({
@@ -110,7 +110,7 @@ export function updateDaDiscoveryTaskCronExpression(query) {
     method: 'post',
     data: query
   })
-}// 数据质量 查询资产质量详情
+}// Data Quality Query asset quality details
 
 export function getQualityTaskAsset(query) {
   return request({
@@ -119,7 +119,7 @@ export function getQualityTaskAsset(query) {
     params: query
   });
 }
-// 数据质量 日志数据质量维度统计
+// Data quality Log data quality dimension statistics
 
 export function statisticsEvaluateAssetOne(query) {
   return request({
@@ -128,7 +128,7 @@ export function statisticsEvaluateAssetOne(query) {
     params: query
   });
 }
-// 查看日志
+// View log
 
 export function qualityLogLogDetailCat(query) {
   return request({

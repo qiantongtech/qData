@@ -270,7 +270,7 @@ const props = defineProps({
   }
 });
 
-// 表单校验
+// form validation
 const rules = ref({
   tplCategory: [{ required: true, message: td('sys.tool.genInfo.genTemplateRequired'), trigger: "blur" }],
   packageName: [{ required: true, message: td('sys.tool.genInfo.genPackagePathRequired'), trigger: "blur" }],
@@ -300,7 +300,7 @@ function setSubTableColumns(value) {
   }
 }
 
-/** 查询菜单下拉树结构 */
+/** Query menu drop-down tree structure */
 function getMenuTreeselect() {
   listMenu().then(response => {
     menuOptions.value = proxy.handleTree(response.data, "menuId");

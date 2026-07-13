@@ -260,7 +260,7 @@
         >
           <template #default="scope">
             <!-- <el-button link type="primary" icon="view"
-              @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
+              @click="openRuleDialog(scope.row, scope.$index + 1, true)">View</el-button> -->
             <el-button
               link
               type="primary"
@@ -347,7 +347,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -362,7 +362,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.name)
         );
       },
@@ -394,7 +394,7 @@ const renameRuleToRule = () => {
   };
 
   result.forEach((newItem) => {
-    // 找到是否存在相同 ruleName 且 columns 一样的旧数据
+    // Find whether there is old data with the same ruleName and the same columns
     const existingIndex = tableFields.value.findIndex(
       (oldItem) =>
         norm(oldItem.ruleName) === norm(newItem.ruleName) &&
@@ -402,11 +402,11 @@ const renameRuleToRule = () => {
     );
 
     if (existingIndex > -1) {
-      // 覆盖
+      // Cover
       tableFields.value[existingIndex] = newItem;
       coverCount++;
     } else {
-      // 追加
+      // Append
       tableFields.value.push(newItem);
       addCount++;
     }
@@ -446,7 +446,7 @@ function handleRuleDelete(index) {
   tableFields.value.splice(Number(index) - 1, 1);
   setSort();
 }
-// 输入字段
+// input field
 let inputFields = ref([]);
 const emit = defineEmits(["update", "confirm"]);
 const visibleDialog = computed({
@@ -458,7 +458,7 @@ const visibleDialog = computed({
   },
 });
 let tableFields = ref([]);
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let opens = ref(false);
@@ -487,56 +487,56 @@ const submitForm = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
 
-    // 如果没有 code，就调用接口获取唯一的 code
+    // If there is no code, call the interface to get the unique code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
         projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false; // 结束加载状态
-      form.value.code = response.data; // 设置唯一的 code
+      loading.value = false; // end loading state
+      form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = tableFields.value;
     taskParams.outputFields = inputFields.value;
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
 let nodeOptions = ref([]);
 
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (!props.visible) {
     off();

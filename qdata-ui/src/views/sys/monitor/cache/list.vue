@@ -189,7 +189,7 @@ const subLoading = ref(false);
 const nowCacheName = ref("");
 const tableHeight = ref(window.innerHeight - 200);
 
-/** 查询缓存名称列表 */
+/** Query cache name list */
 function getCacheNames() {
   loading.value = true;
   listCacheName().then(response => {
@@ -198,13 +198,13 @@ function getCacheNames() {
   });
 }
 
-/** 刷新缓存名称列表 */
+/** Refresh the cached name list */
 function refreshCacheNames() {
   getCacheNames();
   proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshSuccess'));
 }
 
-/** 清理指定名称缓存 */
+/** Clear cache of specified name */
 function handleClearCacheName(row) {
   clearCacheName(row.cacheName).then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearNameSuccess', { name: row.cacheName }));
@@ -212,7 +212,7 @@ function handleClearCacheName(row) {
   });
 }
 
-/** 查询缓存键名列表 */
+/** Query the cache key list */
 function getCacheKeys(row) {
   const cacheName = row !== undefined ? row.cacheName : nowCacheName.value;
   if (cacheName === "") {
@@ -226,13 +226,13 @@ function getCacheKeys(row) {
   });
 }
 
-/** 刷新缓存键名列表 */
+/** Refresh the cache key list */
 function refreshCacheKeys() {
   getCacheKeys();
   proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshKeySuccess'));
 }
 
-/** 清理指定键名缓存 */
+/** Clear cache of specified key name */
 function handleClearCacheKey(cacheKey) {
   clearCacheKey(cacheKey).then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearKeySuccess', { key: cacheKey }));
@@ -240,24 +240,24 @@ function handleClearCacheKey(cacheKey) {
   });
 }
 
-/** 列表前缀去除 */
+/** List prefix removal */
 function nameFormatter(row) {
   return row.cacheName.replace(":", "");
 }
 
-/** 键名前缀去除 */
+/** Key name prefix removal */
 function keyFormatter(cacheKey) {
   return cacheKey.replace(nowCacheName.value, "");
 }
 
-/** 查询缓存内容详细 */
+/** Query cache content details */
 function handleCacheValue(cacheKey) {
   getCacheValue(nowCacheName.value, cacheKey).then(response => {
     cacheForm.value = response.data;
   });
 }
 
-/** 清理全部缓存 */
+/** Clear all cache */
 function handleClearCacheAll() {
   clearCacheAll().then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearAllSuccess'));

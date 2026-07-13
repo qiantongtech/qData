@@ -55,7 +55,7 @@ const { td } = useDefaultLang();
 const visible = ref(false);
 const notice = ref({});
 
-/** 显示弹框 */
+/** Show popup */
 function show(row) {
   visible.value = true;
   notice.value = row;

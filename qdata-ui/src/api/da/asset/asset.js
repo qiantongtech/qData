@@ -18,7 +18,7 @@
 
 import request from '@/utils/request';
 
-// 查询数据资产列表
+// Query data asset list
 export function listDaAsset(query) {
     return request({
         url: '/da/asset/list',
@@ -27,7 +27,7 @@ export function listDaAsset(query) {
     });
 }
 
-// 查询数据资产列表
+// Query data asset list
 export function listDppAsset(query) {
     return request({
         url: '/da/asset/dpp/list',
@@ -36,7 +36,7 @@ export function listDppAsset(query) {
     });
 }
 
-// 查询数据资产列表
+// Query data asset list
 export function dppNoPageList(query) {
     return request({
         url: '/da/asset/dpp/noPage/list',
@@ -52,7 +52,7 @@ export function pageListByIds(query) {
     });
 }
 
-// 查询数据资产详细
+// Query data asset details
 export function getDaAsset(id) {
     return request({
         url: '/da/asset/' + id,
@@ -60,7 +60,7 @@ export function getDaAsset(id) {
     });
 }
 
-// 新增数据资产
+// Add new data assets
 export function addDaAsset(data) {
     return request({
         url: '/da/asset',
@@ -69,7 +69,7 @@ export function addDaAsset(data) {
     });
 }
 
-// 新增数据资产
+// Add new data assets
 export function bindResources(data) {
     return request({
         url: '/da/asset/bindResources',
@@ -77,7 +77,7 @@ export function bindResources(data) {
         data: data
     });
 }
-// 修改数据资产
+// Modify data assets
 export function updateDaAsset(data) {
     return request({
         url: '/da/asset',
@@ -86,7 +86,7 @@ export function updateDaAsset(data) {
     });
 }
 
-// 删除数据资产
+// Delete data assets
 export function delDaAsset(id) {
     return request({
         url: '/da/asset/' + id,
@@ -94,7 +94,7 @@ export function delDaAsset(id) {
     });
 }
 
-// 更新数据接口
+// Update data interface
 export function startDaDiscoveryTask(data) {
     return request({
         url: `/da/asset/startDaDiscoveryTask`,
@@ -103,7 +103,7 @@ export function startDaDiscoveryTask(data) {
     });
 }
 
-// 文件列表
+// file list
 export function getFileList(query) {
     return request({
         url: '/da/dataSource/fileList',
@@ -112,7 +112,7 @@ export function getFileList(query) {
     });
 }
 
-// 文件列表
+// file list
 export function uploadFile(query) {
     return request({
         url: '/da/dataSource/file',
@@ -121,7 +121,7 @@ export function uploadFile(query) {
     });
 }
 
-// 数据血缘
+// Data lineage
 export function dataLineage(id) {
     return request({
         url: '/da/asset/dataLineage/' + id,
@@ -129,7 +129,7 @@ export function dataLineage(id) {
     });
 }
 
-// 获取树结构
+// Get tree structure
 export function getTreeData(query) {
     return request({
         url: '/da/asset/getTreeData',
@@ -138,7 +138,7 @@ export function getTreeData(query) {
     });
 }
 
-// 批量发布
+// Batch publishing
 export function batchPublish(data) {
     return request({
         url: '/da/asset/batchPublish',

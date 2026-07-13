@@ -25,7 +25,7 @@
       <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
         v-show="showSearch" @submit.prevent>
         <!-- <el-form-item :label="td('ds.client.details.id')" prop="id" :label-position="labelPosition">
-          <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="请输入编号" clearable
+          <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="Please enter the number" clearable
             @keyup.enter="handleQuery" />
         </el-form-item> -->
         <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
@@ -66,25 +66,25 @@
           <!--         <el-col :span="1.5">
            <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['att:client:edit']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改
+             <i class="iconfont-mini icon-xiugai--copy mr5"></i>Modify
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['att:client:remove']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除
+             <i class="iconfont-mini icon-shanchu-huise mr5"></i>Delete
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="info" plain  @click="handleImport" v-hasPermi="['att:client:export']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>导入
+             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>Import
            </el-button>
          </el-col>
          <el-col :span="1.5">
            <el-button type="warning" plain @click="handleExport" v-hasPermi="['att:client:export']"
                       @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-download-line mr5"></i>导出
+             <i class="iconfont-mini icon-download-line mr5"></i>Export
            </el-button>
          </el-col>-->
         </el-row>
@@ -128,17 +128,17 @@
             <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
           </template>
         </el-table-column>
-        <!--       <el-table-column v-if="getColumnVisibility(5)" label="允许授权的url" align="center" prop="allowUrl">
+        <!--       <el-table-column v-if="getColumnVisibility(5)" label="Allow authorized url" align="center" prop="allowUrl">
          <template #default="scope">
            {{ scope.row.allowUrl || '-' }}
          </template>
        </el-table-column>-->
-        <!--       <el-table-column v-if="getColumnVisibility(6)" label="同步地址" align="center" prop="syncUrl">
+        <!--       <el-table-column v-if="getColumnVisibility(6)" label="Sync address" align="center" prop="syncUrl">
          <template #default="scope">
            {{ scope.row.syncUrl || '-' }}
          </template>
        </el-table-column>-->
-        <!--       <el-table-column v-if="getColumnVisibility(7)" label="应用图标" align="center" prop="logo" width="100">
+        <!--       <el-table-column v-if="getColumnVisibility(7)" label="App icon" align="center" prop="logo" width="100">
          <template #default="scope">
            <image-preview :src="scope.row.logo" :width="50" :height="50"/>
          </template>
@@ -192,7 +192,7 @@
         v-model:limit="queryParams.pageSize" @pagination="getList" />
     </div>
 
-    <!-- 新增或修改应用对话框 -->
+    <!-- Add or modify application dialog box -->
     <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -226,12 +226,12 @@
         <!-- <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
-              <el-input v-model="form.homepageUrl" placeholder="请输入主页地址" />
+              <el-input v-model="form.homepageUrl" placeholder="Please enter the homepage address" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
-              <el-input v-model="form.syncUrl" placeholder="请输入同步地址" />
+              <el-input v-model="form.syncUrl" placeholder="Please enter the synchronization address" />
             </el-form-item>
           </el-col>
         </el-row> -->
@@ -266,7 +266,7 @@
         </div>
       </template>
     </el-dialog>
-    <!-- 应用详情对话框 -->
+    <!-- Application details dialog -->
     <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -342,7 +342,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -392,7 +392,7 @@ const { auth_public, auth_app_type } = proxy.useDict(
 const noDataImg = new URL('../../../assets/system/images/D.png', import.meta.url).href
 const clientList = ref([]);
 
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('ds.client.appName'), visible: true },
@@ -407,9 +407,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -425,19 +425,19 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/client/importData",
 });
 
@@ -466,7 +466,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询应用列表 */
+/** Query application list */
 function getList() {
   loading.value = true;
   listClient(queryParams.value).then((response) => {
@@ -476,14 +476,14 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -509,33 +509,33 @@ function reset() {
   proxy.resetForm("clientRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
@@ -544,7 +544,7 @@ function handleAdd() {
   data.form.publicFlag = "1";
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -555,7 +555,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 重置秘钥按钮操作 */
+/** Reset key button operation */
 function handleReset(row) {
   const _id = row.id || ids.value;
 
@@ -569,19 +569,19 @@ function handleReset(row) {
     });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   // reset();
   // const _id = row.id || ids.value;
   // getClient(_id).then((response) => {
   //   form.value = response.data;
   //   openDetail.value = true;
-  //   title.value = "应用详情";
+  //   title.value = "Application Details";
   // });
   routeTo("/ds/client/clientDetail", row);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["clientRef"].validate((valid) => {
     if (valid) {
@@ -606,7 +606,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -621,7 +621,7 @@ function handleDelete(row) {
     .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/client/export",
@@ -632,14 +632,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('ds.client.importTitle');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -648,17 +648,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 复杂详情路由模板
+<!-- Complex detail route template
     {
         path: '/dp/dataElem',
         component: Layout,
@@ -27,7 +27,7 @@
                 path: 'dpDataElemDetail',
                 component: () => import('@/views/dp/dataElem/detail/user.vue'),
                 name: 'tree',
-                meta: { title: '数据元详情', activeMenu: '/dp/dpDataElem'  }
+                meta: { title: 'Data Element Details', activeMenu: '/dp/dpDataElem'  }
             }
         ]
     }
@@ -166,14 +166,14 @@ const handleClick = (tab, event) => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
     () => route.query.id,
     (newId) => {
-        id = newId || -1; // 如果 id 为空，使用默认值 1
+        id = newId || -1; // If id is empty, the default value 1 is used
         getDpDataElemDetailById();
     },
-    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
     dpDataElemDetail: {},
@@ -182,7 +182,7 @@ const data = reactive({
 
 const { dpDataElemDetail, form } = toRefs(data);
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDpDataElemDetailById() {
     const _id = id;
     if (!id || id == -1) return;
@@ -192,7 +192,7 @@ function getDpDataElemDetailById() {
         console.log(dpDataElemDetail.value);
     });
 }
-// 页面加载时获取数据
+// Get data when page loads
 onMounted(() => {
     getDpDataElemDetailById();
 });

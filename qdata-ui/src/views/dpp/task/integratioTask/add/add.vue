@@ -578,7 +578,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:visible", "confirm", "save"]);
 
-// 定义表单验证规则
+// Define form validation rules
 const rules = {
   name: [
     {
@@ -611,7 +611,7 @@ const rules = {
       trigger: "change",
     },
   ],
-  // releaseState: [{ required: true, message: "任务状态不能为空", trigger: "change" }],
+  // releaseState: [{ required: true, message: "Task status cannot be empty", trigger: "change" }],
   engine: [
     {
       required: true,
@@ -633,27 +633,27 @@ const rules = {
 const form = ref({
   catId: "",
   name: "",
-  catCode: "", // 可以初始化为空，也可以设为默认值
-  executionType: "PARALLEL", // 初始化为空或默认值
+  catCode: "", // Can be initialized to empty or set to default value
+  executionType: "PARALLEL", // Initialized to empty or default value
   crontab: "",
   releaseState: "0",
   description: "",
   contactNumber: "",
   personCharge: "",
-  // 新添加
+  // Newly added
   taskPriority: "",
   workerGroup: "default",
   failRetryTimes: "",
   failRetryInterval: "",
   delayTime: "",
   taskType: "SPARK",
-  // Fink配置
+  // Fink configuration
   jobManagerMemory: "1G",
   taskManagerMemory: "2G",
   slot: 1,
   taskManager: 2,
   parallelism: 1,
-  // Spark配置
+  // Spark configuration
   driverCores: 1,
   driverMemory: "512m",
   numExecutors: 1,
@@ -667,27 +667,27 @@ const reset = () => {
   form.value = {
     name: "",
     catId: "",
-    catCode: "", // 可以初始化为空，也可以设为默认值
-    executionType: "PARALLEL", // 初始化为空或默认值
+    catCode: "", // Can be initialized to empty or set to default value
+    executionType: "PARALLEL", // Initialized to empty or default value
     crontab: "",
     releaseState: "0",
     description: "",
     contactNumber: "",
     personCharge: "",
-    // 新添加
+    // Newly added
     taskPriority: "",
     workerGroup: "default",
     failRetryTimes: "",
     failRetryInterval: "",
     delayTime: "",
     taskType: "SPARK",
-    // Fink配置
+    // Fink configuration
     jobManagerMemory: "1G",
     taskManagerMemory: "2G",
     slot: 1,
     taskManager: 2,
     parallelism: 1,
-    // Spark配置
+    // Spark configuration
     driverCores: 1,
     driverMemory: "512m",
     numExecutors: 1,
@@ -716,10 +716,10 @@ watch(
   }
 );
 const handleNodeClick = (val) => {
-  console.log("任务类目改变了，当前值：", val);
+  console.log("Task category changed; current value:", val);
   form.value.catId = val.id;
 };
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -738,30 +738,30 @@ const saveClose = () => {
       emit("save", form.value);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };
-// 保存数据的方法
+// How to save data
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };
 
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 function handleShowCron() {
   expression.value = form.value.crontab;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   form.value.crontab = value;
 }

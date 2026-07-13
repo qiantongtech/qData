@@ -358,10 +358,10 @@ let dragTable = ref(null);
 
 function hasDuplicateObjects(arr, key) {
   if (arr.length <= 1) return false;
-  const seen = new Set(); // 记录已出现的键值
+  const seen = new Set(); // Record the key values that have appeared
   for (const item of arr) {
     const value = item[key];
-    // 若当前键值已存在于Set中，说明有重复
+    // If the current key value already exists in the Set, it means there is a duplicate.
     if (seen.has(value)) {
       return true;
     }
@@ -374,11 +374,11 @@ function handleAddField() {
     proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
-  // 已添加的字段名
+  // Added field name
   const tableUsedNames = tableFields.value.map((item) => item.columnName);
   const removeUsedNames = removeFields.value.map((item) => item.columnName);
   const usedNames = [...tableUsedNames, ...removeUsedNames];
-  // 找到未使用的字段
+  // Unused fields found
   const nextField = inputFields.value.find(
     (item) => !usedNames.includes(item.columnName)
   );
@@ -418,11 +418,11 @@ function handleAddField2() {
     proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
-  // 已添加的字段名
+  // Added field name
   const tableUsedNames = tableFields.value.map((item) => item.columnName);
   const removeUsedNames = removeFields.value.map((item) => item.columnName);
   const usedNames = [...tableUsedNames, ...removeUsedNames];
-  // 找到未使用的字段
+  // Unused fields found
   const nextField = inputFields.value.find(
     (item) => !usedNames.includes(item.columnName)
   );
@@ -453,17 +453,17 @@ function onResolveFields(payload) {
     tableNames.every((name, idx) => name === inputNames[idx]);
   switch (payload.action) {
     case "addNewOnly": {
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
 
-      // 计算已有字段名称
+      // Calculate existing field names
       const tableUsedNames = tableFields.value.map((item) => item.columnName);
       const removeUsedNames = removeFields.value.map((item) => item.columnName);
       const existingNames = [...tableUsedNames, ...removeUsedNames];
-      // 找到新字段中不在已有字段中的字段
+      // Find fields in the new field that are not among the existing fields
       const newUniqueFields = inputFields.value.filter(
         (f) => !existingNames.includes(f.columnName)
       );
-      // 加入到 tableFields 中
+      // Add to tableFields
       tableFields.value = tableFields.value.concat(deepCopy(newUniqueFields));
       break;
     }
@@ -476,33 +476,33 @@ function onResolveFields(payload) {
       if (isEqual) {
         proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
       }
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       tableFields.value = [];
       removeFields.value = [];
-      // 这里先清空，再加全部字段，避免重复
+      // Clear it here first and then add all the fields to avoid duplication.
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "clearAndAddAll": {
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
       removeFields.value = [];
-      // 恢复原始备份字段
+      // Restore original backup fields
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "cancel": {
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
     }
   }
 }
 
 const isOptionDisabled = (optionValue) => {
-  // 已添加的字段名
+  // Added field name
   const tableUsedNames = tableFields.value.map((item) => item.columnName);
   const removeUsedNames = removeFields.value.map((item) => item.columnName);
   const usedNames = [...tableUsedNames, ...removeUsedNames];
@@ -532,7 +532,7 @@ let dpModelRefs = ref();
 let form = ref({});
 
 function handleDelete(row) {
-  // 1. 从 tableFields 中删除对应项
+  // 1. Delete the corresponding item from tableFields
   const idxTable = tableFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -554,7 +554,7 @@ function handleDelete(row) {
   }
 }
 function handleDelete2(row) {
-  // 1. 从 tableFields 中删除对应项
+  // 1. Delete the corresponding item from tableFields
   const idxTable = removeFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -562,7 +562,7 @@ function handleDelete2(row) {
     removeFields.value.splice(idxTable, 1);
   }
 }
-// 提交弹窗规则数据
+// Submit pop-up rule data
 const submitForm = (value) => {
   if (!value || !Array.isArray(value)) return;
 
@@ -573,7 +573,7 @@ const submitForm = (value) => {
     try {
       parsedConfig = JSON.parse(ruleItem.ruleConfig);
     } catch (e) {
-      console.warn("无法解析 ruleConfig:", e, ruleItem.ruleConfig);
+      console.warn("Unable to parse ruleConfig:", e, ruleItem.ruleConfig);
       return;
     }
     const sourceField = parsedConfig?.fieldMerge?.sourceField;
@@ -614,7 +614,7 @@ const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
-    // 判断表格是否为空
+    // Determine whether the table is empty
     if (!tableFields.value || tableFields.value.length === 0) {
       proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
       return;
@@ -651,7 +651,7 @@ const saveData = async () => {
     taskParams.removeFields = removeFields.value;
     taskParams.mainArgs = taskParams.mainArgs || {};
 
-    // 构造 outputFields = inputFields + tableFields 的增强值
+    // Construct outputFields = inputFields + enhanced value of tableFields
     let outputFields = inputFields.value.map((input) => {
       const matched = tableFields.value.find(
         (item) => item.columnName === input.columnName
@@ -664,7 +664,7 @@ const saveData = async () => {
           }
         : { ...input };
     });
-    // 过滤掉 removeFields 中的值
+    // Filter out values in removeFields
     taskParams.outputFields = outputFields.filter(
       (item) =>
         removeFields.value.findIndex(
@@ -672,10 +672,10 @@ const saveData = async () => {
         ) === -1
     );
 
-    console.log("保存数据 - outputFields:", taskParams.outputFields);
+    console.log("Save data - outputFields:", taskParams.outputFields);
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };

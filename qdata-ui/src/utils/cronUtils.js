@@ -25,10 +25,10 @@ import "cronstrue/locales/ja";
 import { i18n } from '@/plugins/vueI18n'
 
 /**
- * 获取翻译值
- * @param {string} key - 翻译键
- * @param {string} fallback - 默认值
- * @returns {string} - 翻译后的字符串
+ * Get translation value
+ * @param {string} key - translation key
+ * @param {string} fallback - default value
+ * @returns {string} - the translated string
  */
 function getTranslation(key, fallback) {
   if (i18n && i18n.global && i18n.global.t) {
@@ -43,9 +43,9 @@ function getTranslation(key, fallback) {
 }
 
 /**
- * 将 Cron 表达式转换为对应语言的描述
- * @param {string} cron - Cron 表达式
- * @returns {string} - 转换后的描述
+ * Convert Cron expressions into descriptions in the corresponding language
+ * @param {string} cron - Cron expression
+ * @returns {string} - converted description
  */
 export function cronToZh(cron) {
   if (!cron) return "";

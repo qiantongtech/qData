@@ -182,7 +182,7 @@ function handleViewClick(row) {
   });
 }
 
-// 下载日志
+// Download log
 function handleDownloadClick(row) {
   store.loading = true;
   getTaskInstanceLog(row.id).then((res) => {

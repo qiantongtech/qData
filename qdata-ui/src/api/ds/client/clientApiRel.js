@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询应用API服务关联列表
+// Query application API service association list
 export function listClientApiRel(query) {
   return request({
     url: '/att/clientApiRel/list',
@@ -27,7 +27,7 @@ export function listClientApiRel(query) {
   })
 }
 
-// 查询应用API服务关联详细
+// Query application API service association details
 export function getClientApiRel(id) {
   return request({
     url: '/att/clientApiRel/' + id,
@@ -35,7 +35,7 @@ export function getClientApiRel(id) {
   })
 }
 
-// 新增应用API服务关联
+// Added application API service association
 export function addClientApiRel(data) {
   return request({
     url: '/att/clientApiRel',
@@ -44,7 +44,7 @@ export function addClientApiRel(data) {
   })
 }
 
-// 修改应用API服务关联
+// Modify application API service association
 export function updateClientApiRel(data) {
   return request({
     url: '/att/clientApiRel',
@@ -53,7 +53,7 @@ export function updateClientApiRel(data) {
   })
 }
 
-// 删除应用API服务关联
+// Delete application API service association
 export function delClientApiRel(id) {
   return request({
     url: '/att/clientApiRel/' + id,

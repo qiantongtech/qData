@@ -1,6 +1,6 @@
-/* 表格样式优化 - table-style-optimized.scss */
+/* Table style optimization - table-style-optimized.scss */
 
-// 任务标题行布局
+// Task title row layout
 .task-title-row {
     display: flex;
     align-items: center;
@@ -10,7 +10,7 @@
     flex-wrap: nowrap;
 }
 
-// 任务名称省略
+// Task name omitted
 .task-name-ellipsis {
     flex: 0 1 auto;
     min-width: 0;
@@ -25,7 +25,7 @@
     }
 }
 
-// 任务分类标签
+// Task classification label
 .task-cat-ellipsis {
     flex: 0 1 auto;
     min-width: 0;
@@ -44,12 +44,12 @@
     }
 }
 
-// 名称容器整体
+// Name container as a whole
 .name-label.task-title {
     width: 100%;
 }
 
-// 描述文本
+// description text
 .desc-text {
     color: #999;
     font-size: 12px;
@@ -58,7 +58,7 @@
     text-overflow: ellipsis;
 }
 
-// Cron 表达式容器
+// Cron expression container
 .cron-text {
     display: inline-block;
     max-width: 190px;
@@ -67,7 +67,7 @@
     text-overflow: ellipsis;
 }
 
-// 责任人信息
+// Responsible person information
 .person-charge-ellipsis {
     display: inline-block;
     max-width: 100px;
@@ -76,12 +76,12 @@
     text-overflow: ellipsis;
 }
 
-// 最近执行列
+// Recently executed column
 .last-execute-col {
     align-items: flex-start;
 }
 
-// 数据源图标
+// Data source icon
 .datasource-icon {
     width: 20px;
     height: 20px;
@@ -94,7 +94,7 @@
     font-weight: normal;
 }
 
-// 操作区域 - 更多下拉按钮列表
+// Action area - list of more drop-down buttons
 .butgdlist {
     display: flex;
     flex-direction: column;

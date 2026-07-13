@@ -17,7 +17,7 @@
  */
 
 /**
- * 存放一些节点操作的公共方法
+ * Store public methods for some node operations
  */
 import { DataUri, Shape } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
@@ -35,7 +35,7 @@ import sxPng from '@/assets/images/common/dpp/img-sx.png';
 import xxPng from '@/assets/images/common/dpp/img-xx.png';
 
 /**
- * 插件使用
+ * Plug-in usage
  */
 export const usePlugins = graph => {
   graph
@@ -54,7 +54,7 @@ export const usePlugins = graph => {
     .use(new Export());
 };
 /**
- * 画布缩放比例
+ * Canvas scaling
  * @param {*} graph
  * @returns
  */
@@ -65,7 +65,7 @@ export const getCanvasScale = graph => {
 };
 
 /**
- * 显示节点上的连接桩
+ * Show connection stubs on nodes
  * @param {*} ports
  * @param {*} show
  */
@@ -75,7 +75,7 @@ export const showPorts = (ports, show) => {
   }
 };
 /**
- * 画布清空
+ * Canvas clear
  */
 export const handleRmNodes = graph => {
   graph.clearCells();
@@ -83,7 +83,7 @@ export const handleRmNodes = graph => {
 
 
 /**
- * 使用 graph.fromJSON 还原transNodeData处理过的数据流程图画布
+ * Use graph.fromJSON to restore the data flow graph canvas processed by transNodeData
  */
 export const renderGraph = (graph, savedData, width) => {
   graph.clearCells();
@@ -91,7 +91,7 @@ export const renderGraph = (graph, savedData, width) => {
     const nodeData = savedData.taskDefinitionList.find(item => item.code == location.taskCode);
     if (nodeData) {
       const node = graph.addNode({
-        id: location.taskCode, // 使用保存的 ID
+        id: location.taskCode, // Use saved ID
         shape: 'cu-data-node',
         x: location.x,
         y: location.y,
@@ -109,7 +109,7 @@ export const renderGraph = (graph, savedData, width) => {
     }
   });
 
-  // 还原边
+  // restore edge
   savedData.taskRelationJson.forEach((relation) => {
     if (relation.postNodeCode) {
       if (relation.preNodeCode != 0) {
@@ -128,7 +128,7 @@ export const renderGraph = (graph, savedData, width) => {
           },
           attrs: {
             line: {
-              stroke: '#2666FB',  // 边的颜色
+              stroke: '#2666FB',  // edge color
               strokeWidth: 1,
               targetMarker: { name: 'block', width: 12, height: 8 },
             }
@@ -147,10 +147,10 @@ export const fetchNodeUniqueKey = async () => {
     if (response.code == '200') {
       return response.data;
     }
-    return null; // 如果没有数据，返回 null
+    return null; // If there is no data, return null
   } catch (error) {
     console.error("Error fetching node unique key:", error);
-    return null; // 发生错误时返回 null
+    return null; // Returns null on error
   }
 };
 
@@ -173,7 +173,7 @@ Promise.all([convertToBase64(sxPng), convertToBase64(xxPng)])
   });
 
 /**
- * 自定义html节点
+ * Custom html node
  */
 export const useHtmlNode = (node) => {
   Shape.HTML.register({
@@ -185,20 +185,20 @@ export const useHtmlNode = (node) => {
 
       const htmlContainer = document.createElement('div');
       htmlContainer.setAttribute('class', 'cu_html_container');
-      htmlContainer.style.position = 'relative'; // 绝对定位基准
+      htmlContainer.style.position = 'relative'; // Absolute positioning reference
 
       const htmlTop = document.createElement('img');
       htmlTop.setAttribute('class', 'cu_html_top');
 
       let iconSrc = taskParams.icon || icon;
 
-      // 处理 icon，如果是 base64 直接用，否则转 base64
+      // Process the icon, if it is base64, use it directly, otherwise convert to base64
       if (iconSrc && iconSrc.startsWith('data:image')) {
         htmlTop.src = iconSrc;
       } else if (iconSrc) {
         DataUri.imageToDataUri(iconSrc, (nu, url) => {
           htmlTop.src = url;
-          // 更新 taskParams.icon
+          // Update taskParams.icon
           cell.setData({
             ...cell.getData(),
             taskParams: { ...taskParams, icon: url },
@@ -214,7 +214,7 @@ export const useHtmlNode = (node) => {
         tagImage.setAttribute('class', 'cu_html_tag_image');
         const isOffline = releaseState == '-2' || releaseState == '0';
 
-        // 直接用提前转换好的 base64 图标，保证导出时图片显示
+        // Directly use the base64 icon converted in advance to ensure that the image is displayed when exporting
         tagImage.src = isOffline ? xxBase64 : sxBase64;
         tagImage.style.position = 'absolute';
         tagImage.style.right = '-3px';
@@ -237,7 +237,7 @@ export const useHtmlNode = (node) => {
 };
 
 /**
- * 更新上下线状态
+ * Update online and offline status
  */
 export const updateNodeImage = (cell, releaseState) => {
   const currentData = cell.getData();
@@ -284,7 +284,7 @@ export const exportGraphAsPNG = async (
   } = {}
 ) => {
   if (!graph) {
-    console.warn("exportGraphAsPNG: graph 实例不存在");
+    console.warn("exportGraphAsPNG: graph instance not found");
     return;
   }
   const container = graph.container;

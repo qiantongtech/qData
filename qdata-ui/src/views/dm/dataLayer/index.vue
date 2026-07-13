@@ -20,7 +20,7 @@
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="dm/dataLayer.list" />
     <el-container>
-      <!-- 左侧树 -->
+      <!-- tree on left -->
       <DeptTree
         :deptOptions="layerTreeOptions"
         :leftWidth="leftWidth"
@@ -31,9 +31,9 @@
       >
       </DeptTree>
 
-      <!-- 右侧列表 -->
+      <!-- Right list -->
       <el-main class="main-content">
-        <!-- 顶部信息卡片 -->
+        <!-- Top information card -->
         <layerInfoCard v-if="currentLayer" class="mb15" :layer="currentLayer" />
 
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
@@ -102,7 +102,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改规范对话框 -->
+    <!-- Add or modify specification dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -203,7 +203,7 @@
       </template>
     </el-dialog>
 
-    <!-- 规范详情对话框 -->
+    <!-- Specification Details Dialog Box -->
     <el-dialog
       :title="td('dm.dataLayer.specificationDetail', '规范详情')"
       v-model="openDetail"
@@ -304,13 +304,13 @@ import {
   toRefs,
 } from "vue";
 
-// 导入必要的图标组件
+// Import necessary icon components
 import { FolderOpened, Folder, Tickets } from "@element-plus/icons-vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
-const leftWidth = ref(300); // 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
 const layerTreeOptions = ref([]);
 const currentLayer = ref(null);
 const layerTreeRef = ref(null);
@@ -328,7 +328,7 @@ function handleOwnerChange(val) {
   const selected = managerOptions.value.find((item) => item.userId === val);
   if (selected) {
     form.value.ownerUserName = selected.nickName;
-    // 更新负责人电话
+    // Update the phone number of the person in charge
     form.value.ownerUserPhoneNumber = selected.phonenumber || "";
   }
 }
@@ -469,7 +469,7 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-/** 查询树 */
+/** query tree */
 function getTree() {
   treeDataLayer().then((response) => {
     layerTreeOptions.value = response.data;
@@ -506,7 +506,7 @@ function getTree() {
   });
 }
 
-/** 节点单击事件 */
+/** Node click event */
 function handleNodeClick(data) {
   if (data.parentId != 0) {
     currentLayer.value = data;
@@ -514,9 +514,9 @@ function handleNodeClick(data) {
   }
 }
 
-// 处理树节点点击
+// Handling tree node clicks
 function handleTreeNodeClick(node) {
-  // 如果是一级节点，只展开/折叠，不触发选中
+  // If it is a first-level node, it will only expand/collapse and will not trigger selection.
   if (node.level === 1) {
     if (node.expanded) {
       node.collapse();
@@ -524,24 +524,24 @@ function handleTreeNodeClick(node) {
       node.expand();
     }
   } else {
-    // 如果不是一级节点，执行正常的节点点击逻辑
+    // If it is not a first-level node, execute normal node click logic.
     currentLayer.value = node.data;
     tableRef.value?.getList();
   }
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 关闭详情
+// Close details
 function cancelDetail() {
   openDetail.value = false;
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -557,7 +557,7 @@ function reset() {
   proxy.resetForm("specificationRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   if (!currentLayer.value) {
@@ -568,7 +568,7 @@ function handleAdd() {
   title.value = td('dm.dataLayer.addSpecification', '添加规范');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row?.id || ids.value[0];
@@ -587,7 +587,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row?.id || ids.value[0];
@@ -597,7 +597,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["specificationRef"].validate((valid) => {
     if (valid) {
@@ -618,7 +618,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
@@ -633,7 +633,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 状态修改 */
+/** Status modification */
 function handleStatusChange(row) {
   let text = row.status === "0" ? td('dm.dataLayer.enableText', '启用') : td('dm.dataLayer.disableText', '禁用');
   proxy.$modal
@@ -645,7 +645,7 @@ function handleStatusChange(row) {
       proxy.$modal.msgSuccess(td('common.message.operationSuccess', '操作成功'));
     })
     .catch(function () {
-      // 恢复switch状态
+      // Restore switch state
       row.status = row.status === "0" ? "1" : "0";
     });
 }

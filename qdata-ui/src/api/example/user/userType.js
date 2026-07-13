@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询用户类型列表
+// Query user type list
 export function listUserType(query) {
   return request({
     url: '/example/userType/list',
@@ -27,7 +27,7 @@ export function listUserType(query) {
   })
 }
 
-// 查询用户类型详细
+// Query user type details
 export function getUserType(id) {
   return request({
     url: '/example/userType/' + id,
@@ -35,7 +35,7 @@ export function getUserType(id) {
   })
 }
 
-// 新增用户类型
+// Add new user type
 export function addUserType(data) {
   return request({
     url: '/example/userType',
@@ -44,7 +44,7 @@ export function addUserType(data) {
   })
 }
 
-// 修改用户类型
+// Modify user type
 export function updateUserType(data) {
   return request({
     url: '/example/userType',
@@ -53,7 +53,7 @@ export function updateUserType(data) {
   })
 }
 
-// 删除用户类型
+// Delete user type
 export function delUserType(id) {
   return request({
     url: '/example/userType/' + id,

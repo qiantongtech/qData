@@ -539,7 +539,7 @@ function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dg.desensWhitelist.enabled') : td('dg.desensWhitelist.disabled');
   proxy.$modal
@@ -577,14 +577,14 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -604,7 +604,7 @@ function reset() {
   proxy.resetForm("whitelistRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   initDataCategoryOptions();
@@ -612,7 +612,7 @@ function handleAdd() {
   title.value = td('dg.desensWhitelist.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   initDataCategoryOptions();
@@ -621,7 +621,7 @@ function handleUpdate(row) {
   open.value = true;
   title.value = td('dg.desensWhitelist.editTitle');
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   initDataCategoryOptions();
@@ -631,7 +631,7 @@ function handleDetail(row) {
   title.value = td('dg.desensWhitelist.detailTitle');
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["whitelistRef"].validate((valid) => {
     if (valid) {
@@ -650,7 +650,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   let _ids = null;
   if (row?.id) {
@@ -668,7 +668,7 @@ function handleDelete(row) {
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
-      // 用户取消删除操作
+      // User cancels deletion operation
     });
 }
 </script>

@@ -62,7 +62,7 @@ const props = defineProps({
     },
 });
 
-// 确保 `total` 是有效的数字，避免 NaN
+// Make sure `total` is a valid number, avoid NaN
 const total = computed(() => {
     const validCompleted = Number(props.completed) || 0;
     const validInProgress = Number(props.inProgress) || 0;

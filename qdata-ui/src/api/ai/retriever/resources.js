@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询检索的资源列表
+// Query the retrieved resource list
 export function listRetriever(query) {
   return request({
     url: '/app/retriever/list',
@@ -35,7 +35,7 @@ export function listByMessage(query) {
   })
 }
 
-// 查询检索的资源详细
+// Query the retrieved resource details
 export function getRetriever(id) {
   return request({
     url: '/app/retriever/' + id,
@@ -43,7 +43,7 @@ export function getRetriever(id) {
   })
 }
 
-// 新增检索的资源
+// Add new retrieved resources
 export function addRetriever(data) {
   return request({
     url: '/app/retriever',
@@ -52,7 +52,7 @@ export function addRetriever(data) {
   })
 }
 
-// 修改检索的资源
+// Modify retrieved resources
 export function updateRetriever(data) {
   return request({
     url: '/app/retriever',
@@ -61,7 +61,7 @@ export function updateRetriever(data) {
   })
 }
 
-// 删除检索的资源
+// Delete retrieved resources
 export function delRetriever(id) {
   return request({
     url: '/app/retriever/' + id,

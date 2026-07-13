@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 字段组完整性校验 -->
+  <!-- Field group integrity check -->
   <el-form ref="formRef" :model="form" :disabled="false">
     <el-row :gutter="20">
       <el-col :span="24">

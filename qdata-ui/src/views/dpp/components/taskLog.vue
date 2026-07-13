@@ -19,12 +19,12 @@
 <template>
     <el-dialog v-model="visible" :title="td('dpp.taskLog.taskExecutionLog', '任务执行日志')" :draggable="true" class="medium-dialog" @close="handleClose">
         <div class="graph-log-container" ref="containerRef" v-loading="loading">
-            <!-- 上方 X6 图 -->
+            <!-- X6 picture above -->
             <div class="graph-container" ref="graphRef" :style="{ height: graphHeight + 'px' }"></div>
             <TeleportContainer />
-            <!-- 分隔条 -->
+            <!-- separator strip -->
             <div class="divider" @mousedown="startDrag"></div>
-            <!-- 下方日志 -->
+            <!-- Log below -->
             <div class="log-container" :style="{ height: logHeight + 'px' }">
                 <el-scrollbar :style="{ height: logHeight + 'px' }">
                     <pre class="log-text">{{ logContent }}</pre>
@@ -53,7 +53,7 @@ import { DagreLayout } from '@antv/layout';
 const { td } = useDefaultLang();
 const TeleportContainer = defineComponent(getTeleport());
 
-// 状态变量
+// state variables
 const visible = ref(false);
 const containerRef = ref(null);
 const graphRef = ref(null);
@@ -63,7 +63,7 @@ const graphHeight = ref(450);
 const logHeight = ref(300);
 let graph = null;
 
-// 拖拽调整高度
+// Drag to adjust height
 let startY = 0;
 let startGraphHeight = 0;
 
@@ -91,7 +91,7 @@ const stopDrag = () => {
     document.removeEventListener("mouseup", stopDrag);
 };
 
-// 调整 graph 高度
+// Adjust graph height
 const resizeGraphHeight = () => {
     nextTick(() => {
         if (graph && graphRef.value) {
@@ -100,7 +100,7 @@ const resizeGraphHeight = () => {
     });
 };
 
-// 初始化 X6 图
+// Initialize X6 graph
 const initGraph = () => {
     if (!graph) {
         register({
@@ -135,15 +135,15 @@ const renderGraph = (graph, savedData) => {
         ? savedData.taskRelationJson
         : [];
 
-    // 节点
+    // node
     const layoutNodes = taskList.map((task) => ({
-        id: String(task.code), // 强制转成字符串
+        id: String(task.code), // Force conversion to string
         width: 36,
         height: 40,
         data: task,
     }));
 
-    // 边，过滤条件改为严格判断 null/undefined
+    // Edge, the filter condition is changed to strictly judge null/undefined
     const layoutEdges = relations
         .filter(
             (rel) =>
@@ -157,7 +157,7 @@ const renderGraph = (graph, savedData) => {
             target: String(rel.postNodeCode),
         }));
 
-    // Dagre 布局
+    // Dagre layout
     const dagreLayout = new DagreLayout({
         type: 'dagre',
         rankdir: 'LR',
@@ -170,7 +170,7 @@ const renderGraph = (graph, savedData) => {
         edges: layoutEdges,
     });
 
-    // 添加节点
+    // Add node
     layoutNodes.forEach((n) => {
         graph.addNode({
             id: n.id,
@@ -194,9 +194,9 @@ const renderGraph = (graph, savedData) => {
         });
     });
 
-    // 添加边
+    // Add edge
     layoutEdges.forEach((e) => {
-        // 先确认节点存在再添加
+        // Make sure the node exists before adding it
         const sourceNode = graph.getCellById(e.source);
         const targetNode = graph.getCellById(e.target);
         if (!sourceNode || !targetNode) return;
@@ -215,7 +215,7 @@ const renderGraph = (graph, savedData) => {
     });
 };
 
-// 更新节点状态
+// Update node status
 const updateGraphNodes = (graph, nodeInstanceList) => {
     if (!graph || !Array.isArray(nodeInstanceList)) return;
     const codeNodeMap = {};
@@ -232,14 +232,14 @@ const updateGraphNodes = (graph, nodeInstanceList) => {
     });
 };
 
-// 获取任务数据
+// Get task data
 const getTask = async (taskId) => {
     const res = await getTaskInfo(taskId);
     renderGraph(graph, res.data);
     return res.data;
 };
 
-// 轮询日志
+// Polling log
 const fetchLog = async (taskId) => {
     if (!polling.value) return;
     const res = await getLogByTaskInstanceId({ taskInstanceId: taskId });
@@ -254,7 +254,7 @@ const fetchLog = async (taskId) => {
     if (polling.value) setTimeout(() => fetchLog(taskId), 3000);
 };
 let loading = ref(false)
-// 打开弹窗
+// Open pop-up window
 const open = async (taskId) => {
     loading.value = true;
     visible.value = true;
@@ -268,7 +268,7 @@ const open = async (taskId) => {
 
 };
 
-// 关闭弹窗
+// Close pop-up window
 const handleClose = () => {
     visible.value = false;
     polling.value = false;
@@ -279,7 +279,7 @@ const handleClose = () => {
     }
 };
 
-// 窗口 resize
+// window resize
 const handleResize = () => {
     if (!graph || !graphRef.value || !containerRef.value) return;
     const containerHeight = containerRef.value.clientHeight;

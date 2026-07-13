@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产操作记录列表
+// Query the list of data asset operation records
 export function listDaAssetOperateLog(query) {
   return request({
     url: '/da/assetOperateLog/list',
@@ -27,7 +27,7 @@ export function listDaAssetOperateLog(query) {
   })
 }
 
-// 查询数据资产操作记录详细
+// Query detailed data asset operation records
 export function getDaAssetOperateLog(id) {
   return request({
     url: '/da/assetOperateLog/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetOperateLog(id) {
   })
 }
 
-// 新增数据资产操作记录
+// Add new data asset operation records
 export function addDaAssetOperateLog(data) {
   return request({
     url: '/da/assetOperateLog',
@@ -44,7 +44,7 @@ export function addDaAssetOperateLog(data) {
   })
 }
 
-// 修改数据资产操作记录
+// Modify data asset operation records
 export function updateDaAssetOperateLog(data) {
   return request({
     url: '/da/assetOperateLog',
@@ -53,14 +53,14 @@ export function updateDaAssetOperateLog(data) {
   })
 }
 
-// 删除数据资产操作记录
+// Delete data asset operation records
 export function delDaAssetOperateLog(id) {
   return request({
     url: '/da/assetOperateLog/' + id,
     method: 'delete'
   })
 }
-// 回滚
+// rollback
 export function rollBack(id) {
   return request({
     url: `/da/assetOperateLog/rollBack/${id}`,
@@ -69,7 +69,7 @@ export function rollBack(id) {
 }
 
 
-// 修改记录
+// Modify records
 export function getDaAssetList(query) {
   return request({
     url: '/da/assetOperateLog/queryDaAssetOperateLogPage',
@@ -77,7 +77,7 @@ export function getDaAssetList(query) {
     params: query
   })
 }
-// // 回滚
+// // rollback
 // export function rollBack(id) {
 //   return request({
 //     url: `/da/assetOperateLog/rollBack/${id}`,

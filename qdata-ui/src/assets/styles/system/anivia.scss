@@ -4,17 +4,17 @@
   background-color: #f0f2f5;
   // min-height: 86vh;
   min-height: calc(87vh - 7px);
-  // 字体颜色
+  // Font color
   --el-text-color-regular: #333;
   --el-text-color-primary: #333;
 
-  //-----------------页面筛选条件和列表分离  开始----------------------
+  //------------------Separation of page filter conditions and lists Start----------------------
   .el-main {
     display: flex;
     flex-direction: column;
   }
 
-  //页面顶部筛选条件
+  //Filters at the top of the page
   .pagecont-top {
     padding: 15px 15px 1px 15px;
     background-color: #ffffff;
@@ -39,7 +39,7 @@
     }
   }
 
-  //页面底部
+  //bottom of page
   .pagecont-bottom {
     flex: 1;
     min-height: calc(100vh - 205px);
@@ -50,12 +50,12 @@
     box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   }
 
-  //页面底部
+  //bottom of page
   .pagecont-bottoms {
     min-height: calc(100vh - 250px);
   }
 
-  // 左侧树表
+  // left tree table
   .left-tree {
     box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   }
@@ -73,7 +73,7 @@
     padding: 15px 15px 2px 15px;
   }
 
-  //-----------------页面筛选条件和列表分离  结束-----------------------
+  //------------------Separation of page filter conditions and lists End----------------------
   .emptyBg {
     display: flex;
     align-content: center;
@@ -124,18 +124,18 @@
   //   font-size: 14px;
   //  }
 
-  //  //分页居左显示
+  //  //Pagination is displayed on the left
   //  .pagination-container .el-pagination {
   //     left: 0;
   //     position: absolute;
   //   }
 
-  // //删除按钮文字颜色
+  // //delete button text color
   // .deletebut{
   //   color: #ED6F6F!important;
   // }
 
-  // 类似定时任务添加任务 全局修改圆角，和input保持一致
+  // Add a task similar to a scheduled task and globally modify the rounded corners to be consistent with the input
   .el-radio-button:first-child .el-radio-button__inner {
     border-radius: 2px 0 0 2px;
   }
@@ -144,12 +144,12 @@
     border-radius: 0 2.5px 2.5px 0;
   }
 
-  //操作栏表头居中
+  //Center the action bar header
   .tableheader {
     text-align: center;
   }
 
-  /* 合计行整体样式修改开始 */
+  /* The overall style modification of the total row begins */
   .el-table .el-table__footer-wrapper tbody td {
     height: 50px;
   }
@@ -161,7 +161,7 @@
     padding: 0 10px !important;
   }
 
-  // 表格内容超过2行...
+  // The table content exceeds 2 lines...
   // .el-table td .cell {
   //   max-width: 300px;
   //   white-space: normal;
@@ -173,7 +173,7 @@
   //   word-break: break-word;
   // }
 
-  //一级标题
+  //first level title
   .firsttitle {
     display: flex;
     align-items: center;
@@ -223,7 +223,7 @@
     }
   }
 
-  // input后面按钮间距调整
+  // Adjust button spacing behind input
   .el-input-group__append {
     border-radius: 2px !important;
     padding: 0px 15px !important;
@@ -231,7 +231,7 @@
     text-align: center !important;
   }
 
-  // 取消input的上下箭头
+  // Cancel the up and down arrows of input
   input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
   }
@@ -240,7 +240,7 @@
     -webkit-appearance: none !important;
   }
 
-  //  按钮间距调整及中间线设置  操作按钮图标调整
+  //  Button spacing adjustment and center line setting Operation button icon adjustment
   .small-padding {
     .icont-mini {
       font-size: 14px;
@@ -268,13 +268,13 @@
     }
   }
 
-  //筛选条件与内容列表高度
+  //Filter conditions and content list height
   .el-form-item--mini.el-form-item,
   .el-form-item--small.el-form-item {
     margin-bottom: 6px !important;
   }
 
-  //提示框样式调整
+  //Tip box style adjustment
   .el-tooltip__popper.is-dark {
     // background: #ffffff!important;
     // color: #666666!important;
@@ -303,9 +303,9 @@
   //     border-top-color: #ffffff!important;
   // }
 
-  // 鼠标点击后移开，恢复本身样式
+  // Move the mouse after clicking it to restore its original style
 
-  //筛选条件按钮样式调整
+  //Filter button style adjustment
   .btn-style {
     .top-right-btn {
       margin-left: 10px;
@@ -329,8 +329,8 @@
       }
     }
 
-    //查询条件按钮颜色设置
-    //查询 添加  修改
+    //Query condition button color setting
+    //Query Add Modify
     // .el-button--primary.is-plain {
     //   background: #E6F4FF!important;
     //   border-radius: 2px 2px 2px 2px;
@@ -346,7 +346,7 @@
     //   background: #5185FC!important;
     //   border: 1px solid #5185FC!important;
     // }
-    // //添加
+    // //Add
     // .el-button--primary {
     //   background: #2666FB;
     //   border-radius: 2px 2px 2px 2px;
@@ -357,7 +357,7 @@
     //   border-radius: 2px 2px 2px 2px;
     //   border: 1px solid #5185FC!important;
     // }
-    //删除
+    //Delete
     .el-button--danger {
       background: #ffeded !important;
       border-radius: 2px 2px 2px 2px;
@@ -377,7 +377,7 @@
       color: #ffffff !important;
     }
 
-    //导出
+    //Export
     // .el-button--warning {
     //   background: #ffedd7 !important;
     //   border-radius: 2px 2px 2px 2px;
@@ -397,7 +397,7 @@
     //   border: 1px solid #efbe4b !important;
     //   color: #ffffff;
     // }
-    //修改
+    //Modify
     .el-button--success {
       background: #f0f8ec !important;
       border-radius: 2px 2px 2px 2px;
@@ -467,7 +467,7 @@
     //   font-size: 14px;
     //   color: #B2B2B2;
     // }
-    //查询条件按钮间距设置
+    //Query condition button spacing setting
     // .el-button+.el-button {
     //   margin-left: 10px!important;
     // }
@@ -484,7 +484,7 @@
     // }
   }
 
-  // //筛选条件及按钮位置调整
+  // //Filter conditions and button position adjustment
   // .screeningcont{
   //   margin-top: 15px;
   //   display: flex;
@@ -524,7 +524,7 @@
   //   }
   // }
 
-  // // 查询条件 input样式调整
+  // // Query condition input style adjustment
   // .el-input--small .el-input__inner {
   //   border-radius: 2px 2px 2px 2px;
   //   padding: 3px 9px !important;
@@ -540,7 +540,7 @@
   //   border-radius: 2px 2px 2px 2px;
   // }
 
-  // //筛选条件  每个筛选条件的间距
+  // //Filter conditions Spacing between each filter condition
   .seachlist {
     width: 100%;
     display: flex;
@@ -567,7 +567,7 @@
   }
 
   .seachitem:nth-child(5n) {
-    /* 尽量让item在list中居中，两边都没有margin */
+    /* Try to center the item in the list, with no margin on either side */
     margin-right: 0px;
   }
 
@@ -583,7 +583,7 @@
     // margin-right: 0px!important;
   }
 
-  // 鼠标经过某一行背景色改变
+  // The background color changes when the mouse passes over a certain line
   .el-table::before {
     height: 0px !important;
   }
@@ -608,15 +608,15 @@
     background-color: #e9f0ff !important;
   }
 
-  // // 如果使用了stripe斑马纹 可能需要加!important
-  // .el-table__fixed tbody tr:hover>td {    //左边固定
+  // // If you use stripe zebra pattern, you may need to add !important
+  // .el-table__fixed tbody tr:hover>td { //left fixed
   //   background-color: #D8E0F7 !important;
   // }
-  // .el-table__fixed-right tbody tr:hover>td {   //右边固定
+  // .el-table__fixed-right tbody tr:hover>td { //right fixed
   //   background-color: #D8E0F7 !important;
   // }
 
-  //斑马线选中改变颜色
+  //Select zebra crossing to change color
   // .el-table--striped .el-table__body tr.current-row.el-table__row--striped td {
   //   background: #E3F4FC!important;
   // }
@@ -636,7 +636,7 @@
     }
   }
 
-  //列表标题高度
+  //List title height
   .el-table .el-table__header-wrapper th {
     word-break: break-word;
     background-color: #f1f1f5 !important;
@@ -647,7 +647,7 @@
     padding: 6px 0 !important;
   }
 
-  //列表字体颜色设置
+  //List font color settings
   .el-table {
     font-size: 14px;
 
@@ -660,12 +660,12 @@
     }
 
     // color: rgba(0,0,0,0.85);
-    //操作按钮图标大小
+    //Action button icon size
     .el-icon {
       font-size: 12px;
     }
 
-    //操作按钮颜色
+    //Action button color
     .el-button>span {
       font-size: 14px;
       // color: rgba(0, 0, 0, 0.85);
@@ -683,7 +683,7 @@
     // }
   }
 
-  //列表标题字体颜色设置
+  //List title font color setting
   .el-table thead .cell {
     font-size: 14px;
     // font-family: PingFangSC-Medium, PingFangSC-Medium;
@@ -691,7 +691,7 @@
     color: #666666;
   }
 
-  // 双行折行
+  // Double line wrap
   .el-table .cell.el-tooltip {
     display: -webkit-box !important;
     overflow: hidden;
@@ -699,23 +699,23 @@
     word-break: break-all;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical !important;
-    white-space: normal; //添加才会折行
+    white-space: normal; //Line breaks will occur only after adding
   }
 
-  //列表内容行高
+  //List content row height
   .el-table {
     .el-table__row {
       height: 42px;
     }
   }
 
-  //进度条字体
+  //Progress bar font
   .el-progress__text {
     // border: 1px solid;
     font-size: 14px !important;
   }
 
-  // //根据不同状态显示不同颜色
+  // //Display different colors according to different statuses
   // .el-tag {
   //   border-radius: 0px!important;
   //   // width: 67px;
@@ -725,14 +725,14 @@
   //   height: 22px!important;
   //   line-height: 20px!important;
   // }
-  // //类型
+  // //Type
   // // .sourcetype{
   // //   .el-tag{
   // //     border: 0px!important;
   // //     background: #ffffff!important;
   // //   }
   // // }
-  // //状态  颜色样式调整
+  // //Status color style adjustment
   // .el-tag.el-tag--danger {
   //   color: #CF1322!important;
   //   background: #FFF1F0!important;
@@ -767,20 +767,20 @@
   //   border: 1px solid #FFBD72!important;
   //   color: #FF6F00!important;
   // }
-  // /* //撤回 */
+  // /* //Withdraw */
   // .el-tag.el-tag--revocation {
   //   background: #FBF2F3!important;
   //   border: 1px solid #C29E98!important;
   //   color: #611C10!important;
   // }
-  // /* 关闭 */
+  // /* Close */
   // .el-tag.el-tag--off {
   //   background: #F4F4F5!important;
   //   border: 1px solid #CFCECE!important;
   //   color: #565656!important;
   // }
 
-  //状态  颜色样式调整  开始
+  //Status Color Style Adjustment Start
   .el-tag {
     border-radius: 2px 2px 2px 2px !important;
     font-size: 12px !important;
@@ -837,26 +837,26 @@
     border: 0px solid #f4f4f5 !important;
   }
 
-  /* //撤回 */
+  /* //Withdraw */
   .el-tag.el-tag--revocation {
     background: #fbf2f3 !important;
     border: 0px solid #c29e98 !important;
     color: #611c10 !important;
   }
 
-  /* 关闭 */
+  /* close */
   .el-tag.el-tag--off {
     background: #f4f4f5 !important;
     border: 0px solid #cfcece !important;
     color: #565656 !important;
   }
 
-  //状态  颜色样式调整  结束
+  //Status Color Style Adjustment Finished
 
-  // //列表样式调整  结束
+  // //List style adjustment end
 
-  //弹窗样式调整
-  //小弹窗高度
+  //Pop-up window style adjustment
+  //Small pop-up window height
   .smallwindow {
     .el-dialog .el-dialog__body {
       height: 550px;
@@ -868,7 +868,7 @@
     background: #f8f8f8;
   }
 
-  //关闭弹窗样式调整
+  //Close pop-up window style adjustment
   .el-dialog__headerbtn {
     top: 12px !important;
   }
@@ -877,7 +877,7 @@
     color: #484848 !important;
   }
 
-  // // input高度调整
+  // // input height adjustment
   // .el-input--medium .el-input__inner {
   //   height: 32px!important;
   //   line-height: 32px!important;
@@ -886,7 +886,7 @@
   //   line-height: 32px!important;
   // }
 
-  // //弹窗内容居表头高度
+  // //The content of the pop-up window is at the height of the header
   // .el-dialog__body{
   //   padding: 22px 13px!important;
   //   border: 1px solid yellow;
@@ -897,7 +897,7 @@
   //     margin: 0px!important;
   //   }
   // }
-  //弹窗样式调整
+  //Pop-up window style adjustment
   .el-textarea__inner:hover {
     border-radius: 2px 2px 2px 2px;
   }
@@ -917,7 +917,7 @@
     margin-bottom: 14px;
   }
 
-  //进度条样式
+  //Progress bar style
   .el-progress-bar__inner {
     // transform: translate(0, -10%);
     // background: repeating-linear-gradient(135deg, #0EA2FC, #0EA2FC 3px, #2469FB 3px, #2469FB 5px);
@@ -931,24 +931,24 @@
     border-top: 1px solid #efefef;
   }
 
-  //按钮间隔线
+  //button spacer
   .anjg {
     border-right: 1px solid #eeeeee;
     width: 1px;
     height: 16px;
   }
 
-  //组织树 背景颜色 及右边线颜色
+  //Organization tree background color and right line color
   .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
     background-color: #d8e0f7 !important;
     // border-right: 2px solid #2666fb;
   }
 
-  // //按钮居右侧位置
+  // //The button is on the right side
   // .el-tree-node__expand-icon {
   //     right: 5%!important;
   // }
-  //上传图片
+  //Upload pictures
   .el-upload--picture-card {
     border-radius: 2px !important;
     background-color: #f5f5f5 !important;
@@ -962,13 +962,13 @@
     border-radius: 2px !important;
   }
 
-  //高度
+  //height
   .el-tree-node__content {
     height: 40px !important;
     // border: 1px solid;
   }
 
-  //左侧树样式
+  //left tree style
   .treecont {
     //  height: 82vh;
     // padding-right: 33px;
@@ -1086,14 +1086,14 @@
     }
   }
 
-  //筛选条件组织树  选中
+  //Filter criteria organization tree selected
   .el-cascader-node.in-active-path,
   .el-cascader-node.is-active,
   .el-cascader-node.is-selectable.in-checked-path {
     background: #d8e0f7;
   }
 
-  //筛选条件组织树  隐藏radio
+  //Filter organization tree Hide radio
   .mycascade {
     .el-radio {
       // color: red;
@@ -1101,7 +1101,7 @@
     }
   }
 
-  // //  input-number内容居左
+  // // input-number content is on the left
   // .el-input-number.is-controls-right .el-input__inner {
   //   text-align: left;
   // }
@@ -1109,7 +1109,7 @@
   //   text-align: left;
   // }
 
-  //列表名称
+  //List name
   .fks-query-list-name {
     display: flex;
     align-items: center;
@@ -1130,7 +1130,7 @@
     //line-height: 22px;
   }
 
-  /* 标题图标样式 */
+  /* Title icon style */
   .fks-title-icon {
     width: 20px;
     height: 20px;
@@ -1170,7 +1170,7 @@
     // padding: 0 10px 0 0;
   }
 
-  //筛选条件长度------------
+  //Filter condition length------------
   .el-form-input-width {
     width: 210px;
   }
@@ -1179,7 +1179,7 @@
     width: 308px;
   }
 
-  //筛选条件长度-------
+  //Filter condition length-------
 
   // .el-form-item__label {
   //   font-size: 14px;
@@ -1351,7 +1351,7 @@
     padding: 0px 8px 0px 8px;
   }
 
-  //复杂详情样式-----------开始
+  //Complex detail style----------Start
   .infotop {
     .clearfixs {
       width: 100%;
@@ -1449,7 +1449,7 @@
     background-color: #2094ff;
   }
 
-  //复杂详情样式-----------结束
+  //Complex detail style----------End
 }
 
 .el-dialog._fd-preview-dialog {
@@ -1518,7 +1518,7 @@
     // padding: 0 10px 0 0;
   }
 
-  //筛选条件长度------------
+  //Filter condition length------------
   .el-form-input-width {
     width: 210px;
   }
@@ -1545,7 +1545,7 @@
   }
 }
 
-// 字体颜色
+// Font color
 .el-popper {
   --el-text-color-regular: #333;
   --el-text-color-primary: #333;
@@ -1555,12 +1555,12 @@
   padding-right: 0px !important;
 }
 
-/* 针对浏览器自动填充的背景色进行样式覆盖 */
+/* Style override for browser auto-fill background color */
 input:-webkit-autofill {
   background-color: white !important;
-  /* 设置背景为白色 */
+  /* Set background to white */
   box-shadow: 0 0 0px 1000px white inset !important;
-  /* 覆盖边框阴影 */
+  /* Override border shadow */
 }
 
 input:-internal-autofill-selected {
@@ -1575,7 +1575,7 @@ input:-internal-autofill-selected {
   filter: opacity(0) !important;
 }
 
-// 详细信息 平均分布
+// Details average distribution
 .basicInfo {
   .el-descriptions__table {
     table-layout: fixed !important;
@@ -1589,7 +1589,7 @@ input:-internal-autofill-selected {
   }
 }
 
-// 详情弹框
+// Details pop-up box
 .el-dialog {
   .form-readonly {
     width: 100%;
@@ -1602,11 +1602,11 @@ input:-internal-autofill-selected {
     display: flex;
     align-items: center;
     white-space: pre-wrap;
-    /* 保留空格和换行 */
+    /* Preserve spaces and line breaks */
     word-wrap: break-word;
-    /* 长单词或长串强制换行 */
+    /* Long words or long strings are forced to wrap */
     word-break: break-all;
-    /* 中文或连续字符强制换行 */
+    /* Chinese or continuous characters are forced to wrap */
   }
 
   .h2-title {
@@ -1629,7 +1629,7 @@ input:-internal-autofill-selected {
     }
   }
 
-  // 文本域
+  // text field
   .textarea {
     min-height: 85px;
     display: block;
@@ -1656,18 +1656,18 @@ input:-internal-autofill-selected {
   }
 }
 
-/* 1. 禁用状态 */
+/* 1. Disabled state */
 .icon-disabled {
   filter: currentcolor !important;
 }
 
-/* 2. 正常状态（企业颜色） */
+/* 2. Normal state (corporate color) */
 .icon-normal {
   fill: grayscale(100%) brightness(70%) !important;
   transition: filter 0.3s;
 }
 
-/* 3. hover 状态 */
+/* 3. hover state */
 .el-button:hover .icon-normal {
   filter: brightness(120%);
 }

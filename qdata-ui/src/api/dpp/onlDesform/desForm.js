@@ -18,7 +18,7 @@
 
 import request from "@/utils/request";
 
-// 查询在线单设计器列表
+// Query the list of online single designers
 export function listdesform(query) {
   return request({
     url: "/dpp/desForm/list",
@@ -27,7 +27,7 @@ export function listdesform(query) {
   });
 }
 
-// 查询在线单设计器详细
+// Query online single designer details
 export function getdesform(id) {
   return request({
     url: "/dpp/desForm/" + id,
@@ -35,7 +35,7 @@ export function getdesform(id) {
   });
 }
 
-// 新增在线单设计器
+// Added online single designer
 export function add(data) {
   return request({
     url: "/dpp/desForm",
@@ -44,7 +44,7 @@ export function add(data) {
   });
 }
 
-// 修改在线单设计器
+// Modify online single designer
 export function edit(data) {
   return request({
     url: "/dpp/desForm",
@@ -53,14 +53,14 @@ export function edit(data) {
   });
 }
 
-// 删除在线单设计器
+// Delete online single designer
 export function deldesform(id) {
   return request({
     url: "/dpp/desForm/deleted?id=" + id,
     method: "delete",
   });
 }
-// 表单编码是否重复校验
+// Whether the form code is repeated and verified
 export function duplicateCheck(query) {
   return request({
     url: "/dpp/desForm/duplicateCheck",
@@ -68,7 +68,7 @@ export function duplicateCheck(query) {
     params: query,
   });
 }
-// 通过表单编码查询
+// Query via form encoding
 export function getByDesformCode(desformCode) {
   return request({
     url: "/dpp/desForm/" + desformCode,

@@ -104,7 +104,7 @@ import {
 
 const contentWrapper = ref(null);
 const selectedCard = ref(null);
-const leftWidth = ref(250); // 初始左侧宽度
+const leftWidth = ref(250); // Initial left width
 const emit = defineEmits(["card-click"]);
 const props = defineProps({
   type: {
@@ -150,7 +150,7 @@ async function fetchRulesByDimension() {
     attCleanRuleList.value = list;
   }
 
-  // 排序，把 validFlag == false 的放后面
+  // Sort, put validFlag == false at the end
   attCleanRuleList.value.sort((a, b) => {
     return (b.validFlag === true) - (a.validFlag === true);
   });
@@ -199,7 +199,7 @@ onMounted(() => {
   position: relative;
 }
 
-/* 右侧内容 */
+/* Right content */
 .content-col {
   height: 75vh;
   overflow: hidden;
@@ -267,7 +267,7 @@ onMounted(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 17ch;
-    /* 限制最大宽度为8个字符 */
+    /* Limit maximum width to 8 characters */
     margin: 0 auto;
     cursor: pointer;
     text-align: center;
@@ -288,7 +288,7 @@ onMounted(() => {
     word-break: break-word;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    /* 显示3行 */
+    /* Show 3 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -320,7 +320,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 
-  /* 文字样式 */
+  /* text style */
   font-size: 16px;
   color: #999;
   user-select: none;

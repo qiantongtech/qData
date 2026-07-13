@@ -20,7 +20,7 @@ import request from '@/utils/request'
 
 
 /**
- * 查询数据集成节点实例列表
+ * Query the list of data integration node instances
  */
 export function listDppEtlNodeInstance(query) {
         return request({
@@ -31,7 +31,7 @@ export function listDppEtlNodeInstance(query) {
 }
 
 /**
- * 查询数据集成节点实例详细
+ * Query data integration node instance details
  */
 export function getDppEtlNodeInstance(id) {
         return request({
@@ -41,7 +41,7 @@ export function getDppEtlNodeInstance(id) {
 }
 
 /**
- * 新增数据集成节点实例
+ * Add new data integration node instance
  */
 export function addDppEtlNodeInstance(data) {
         return request({
@@ -52,7 +52,7 @@ export function addDppEtlNodeInstance(data) {
 }
 
 /**
- * 修改数据集成节点实例
+ * Modify the data integration node instance
  */
 export function updateDppEtlNodeInstance(data) {
         return request({
@@ -63,7 +63,7 @@ export function updateDppEtlNodeInstance(data) {
 }
 
 /**
- * 删除数据集成节点实例
+ * Delete a data integration node instance
  */
 export function delDppEtlNodeInstance(id) {
         return request({
@@ -73,7 +73,7 @@ export function delDppEtlNodeInstance(id) {
 }
 
 /**
- * 查看日志详情（修复了“超看”错别字）
+ * View log details (fixed the typo of "Super View")
  */
 export function logDetailCat(id) {
         return request({

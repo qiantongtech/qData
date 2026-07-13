@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 时间字段先后顺序校验 -->
+  <!-- Time field sequence verification -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-form-item label="">
       <div
@@ -71,7 +71,7 @@
           />
         </template>
 
-        <!-- 添加按钮 -->
+        <!-- Add button -->
         <el-button
           v-if="!falg"
           icon="Plus"
@@ -122,18 +122,18 @@ const timeColumns = computed(() =>
   })
 );
 
-// 拼接选择的时间字段，参考evaColumn的实现
+// To splice the selected time field, refer to the implementation of evaColumn
 const timeOrderFields = computed(() => {
   if (!form.conditions || form.conditions.length === 0) return "";
-  // 获取所有唯一的字段名
+  // Get all unique field names
   const fieldNames = new Set();
   form.conditions.forEach((cond) => {
     if (cond.leftField) fieldNames.add(cond.leftField);
     if (cond.rightField) fieldNames.add(cond.rightField);
   });
-  // 转换为数组并排序
+  // Convert to array and sort
   const fieldsArray = Array.from(fieldNames);
-  // 使用columnList中的label显示，如果没有则显示columnName
+  // Use label in columnList to display, if not, display columnName
   const map = new Map(
     (columnList.value || []).map((c) => [c.columnName, c.label || c.columnName])
   );
@@ -210,21 +210,21 @@ function validate() {
         return;
       }
 
-      // 获取所有唯一的字段名
+      // Get all unique field names
       const fieldNames = new Set();
       form.conditions.forEach((cond) => {
         if (cond.leftField) fieldNames.add(cond.leftField);
         if (cond.rightField) fieldNames.add(cond.rightField);
       });
 
-      // 转换为数组
+      // Convert to array
       const fieldsArray = Array.from(fieldNames);
 
       resolve({
         valid: true,
         data: {
           conditions: JSON.parse(JSON.stringify(form.conditions)),
-          evaColumn: fieldsArray, // 直接返回字段数组，用于赋值给父组件的evaColumn
+          evaColumn: fieldsArray, // Directly returns the field array for assignment to the evaColumn of the parent component.
         },
       });
     });

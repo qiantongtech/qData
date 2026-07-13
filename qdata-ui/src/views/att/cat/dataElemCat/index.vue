@@ -224,7 +224,7 @@
       />
     </div>
 
-    <!-- 新增或修改数据元类目管理对话框 -->
+    <!-- Add or modify the data element category management dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -363,7 +363,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询数据元类目管理列表 */
+/** Query the data element category management list */
 function getList() {
   loading.value = true;
   listAttDataElemCat(queryParams.value).then((response) => {
@@ -384,15 +384,15 @@ function getDataTree() {
     attDataElemCatOptions.value.push(data);
   });
 }
-/** 查询数据元类目管理下拉树结构1 */
+/** Query data element category management drop-down tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -414,11 +414,11 @@ function reset() {
   proxy.resetForm("attDataElemCatRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -438,13 +438,13 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -463,7 +463,7 @@ function handleAdd(row) {
   title.value = td('att.dataElemCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -472,15 +472,15 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDataElemCat();
   attDataElemCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return (
       d.ID !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -493,7 +493,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDataElemCat(row.id).then((response) => {
-    //把createTime过滤掉
+    //Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -502,7 +502,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["attDataElemCatRef"].validate((valid) => {
     if (valid) {
@@ -523,7 +523,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal
     .confirm(td('att.dataElemCat.messages.confirmDelete').replace('<name>', row.name))

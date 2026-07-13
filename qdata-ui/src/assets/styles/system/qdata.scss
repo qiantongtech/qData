@@ -1,9 +1,9 @@
  /**
- * 通用css样式布局处理
+ * General css style layout processing
  * Copyright (c) 2019 qdata
  */
 
- /** 基础通用 **/
+ /** Basic general **/
  .pt5 {
  	padding-top: 5px;
  }
@@ -101,7 +101,7 @@
  	padding: 10px 20px 0;
  }
 
- /** 表单布局 **/
+ /** Form layout **/
  .form-header {
  	font-size: 15px;
  	color: #6379bb;
@@ -110,7 +110,7 @@
  	padding-bottom: 5px
  }
 
- /** 表格布局 **/
+ /** Table layout **/
  .pagination-container {
  	position: relative;
  	height: 25px;
@@ -153,7 +153,7 @@
  	width: inherit;
  }
 
- /** 表格更多操作下拉样式 */
+ /** Table more operations drop-down style */
  .el-table .el-dropdown-link {
  	cursor: pointer;
  	color: #2666FB;
@@ -279,14 +279,14 @@
  	overflow: hidden;
  }
 
- /* 拖拽列样式 */
+ /* Drag column style */
  .sortable-ghost {
  	opacity: .8;
  	color: #fff !important;
  	background: #42b983 !important;
  }
 
- /* 单行文本省略 */
+ /* Single line text omitted */
  .text-ellipsis {
  	overflow: hidden;
  	white-space: nowrap;
@@ -316,25 +316,25 @@
  	max-width: 100px;
  }
 
- /* Cron 文本容器（配合 .text-ellipsis 使用） */
+ /* Cron text container (used with .text-ellipsis) */
  .cron-text {
  	display: inline-block;
  	max-width: 190px;
  }
 
- /* 垂直布局 */
+ /* vertical layout */
  .flex-column {
  	display: flex;
  	flex-direction: column;
  }
 
- /* 描述文本样式 */
+ /* Describe text style */
  .desc-text {
  	color: #999;
  	font-size: 12px;
  }
 
- /* 任务名称文本 */
+ /* Task name text */
  .task-name-text {
  	font-weight: bold;
  	color: #333;
@@ -342,7 +342,7 @@
 
  }
 
- /* 字体大小 14px */
+ /* Font size 14px */
  .fz14 {
  	font-size: 14px !important;
  }
@@ -352,19 +352,19 @@
  	align-items: center;
  }
 
- /* 灰黑色文本 */
+ /* black text */
  .grey-black-text {
  	// color: #606266;
  }
 
 
- /* 黑色标签文本 */
+ /* black label text */
  .black-label {
  	color: #333 !important;
  	font-weight: normal;
  }
 
- /* switch 标签颜色 */
+ /* switch label color */
  .black-label-switch {
  	.el-switch__label {
  		color: #333 !important;
@@ -378,12 +378,12 @@
 
 
 
- /* 表格右侧工具栏样式 */
+ /* Toolbar style on the right side of the table */
  .top-right-btn {
  	margin-left: auto;
  }
 
- // 页面级弹窗-双列表单
+ // Page-level pop-up window-double column form
  .column-form {
  	display: grid;
  	grid-template-columns: repeat(2, 1fr);

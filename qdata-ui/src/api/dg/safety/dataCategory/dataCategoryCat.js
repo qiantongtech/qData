@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据分类-类目列表
+// Query data classification-category list
 export function listDataCategoryCat(query) {
   return request({
     url: '/dg/dataCategoryCat/list',
@@ -27,7 +27,7 @@ export function listDataCategoryCat(query) {
   })
 }
 
-// 查询数据分类-类目详细
+// Query data classification-category details
 export function getDataCategoryCat(id) {
   return request({
     url: '/dg/dataCategoryCat/' + id,
@@ -35,7 +35,7 @@ export function getDataCategoryCat(id) {
   })
 }
 
-// 新增数据分类-类目
+// Add new data classification-category
 export function addDataCategoryCat(data) {
   return request({
     url: '/dg/dataCategoryCat',
@@ -44,7 +44,7 @@ export function addDataCategoryCat(data) {
   })
 }
 
-// 修改数据分类-类目
+// Modify data classification-category
 export function updateDataCategoryCat(data) {
   return request({
     url: '/dg/dataCategoryCat',
@@ -53,7 +53,7 @@ export function updateDataCategoryCat(data) {
   })
 }
 
-// 删除数据分类-类目
+// Delete data classification-category
 export function delDataCategoryCat(id) {
   return request({
     url: '/dg/dataCategoryCat/' + id,

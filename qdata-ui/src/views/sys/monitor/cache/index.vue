@@ -114,7 +114,7 @@ function getList() {
 }
 
 function initCharts(data) {
-  // 销毁旧实例
+  // Destroy old instance
   if (commandstatsIntance) {
     commandstatsIntance.dispose();
     commandstatsIntance = null;
@@ -169,7 +169,7 @@ function initCharts(data) {
   });
 }
 
-// 监听语言变化，重新渲染图表
+// Monitor language changes and re-render charts
 watch(locale, () => {
   if (cache.value && cache.value.info) {
     initCharts(cache.value);

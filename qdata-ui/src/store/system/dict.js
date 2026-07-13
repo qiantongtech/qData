@@ -23,7 +23,7 @@ const useDictStore = defineStore(
       dict: new Array()
     }),
     actions: {
-      // 获取字典
+      // Get dictionary
       getDict(_key) {
         if (_key == null && _key == "") {
           return null;
@@ -38,7 +38,7 @@ const useDictStore = defineStore(
           return null;
         }
       },
-      // 设置字典
+      // Set dictionary
       setDict(_key, value) {
         if (_key !== null && _key !== "") {
           this.dict.push({
@@ -47,7 +47,7 @@ const useDictStore = defineStore(
           });
         }
       },
-      // 删除字典
+      // delete dictionary
       removeDict(_key) {
         var bln = false;
         try {
@@ -62,11 +62,11 @@ const useDictStore = defineStore(
         }
         return bln;
       },
-      // 清空字典
+      // Clear dictionary
       cleanDict() {
         this.dict = new Array();
       },
-      // 初始字典
+      // initial dictionary
       initDict() {
       }
     }

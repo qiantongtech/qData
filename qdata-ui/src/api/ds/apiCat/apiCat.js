@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据服务类目管理列表
+// Query the data service category management list
 export function listAttApiCat(query) {
   return request({
     url: '/att/apiCat/list',
@@ -27,7 +27,7 @@ export function listAttApiCat(query) {
   })
 }
 
-// 查询数据服务类目管理详细
+// Query data service category management details
 export function getAttApiCat(id) {
   return request({
     url: '/att/apiCat/' + id,
@@ -35,7 +35,7 @@ export function getAttApiCat(id) {
   })
 }
 
-// 新增数据服务类目管理
+// Added new data service category management
 export function addAttApiCat(data) {
   return request({
     url: '/att/apiCat',
@@ -44,7 +44,7 @@ export function addAttApiCat(data) {
   })
 }
 
-// 修改数据服务类目管理
+// Modify data service category management
 export function updateAttApiCat(data) {
   return request({
     url: '/att/apiCat',
@@ -53,7 +53,7 @@ export function updateAttApiCat(data) {
   })
 }
 
-// 删除数据服务类目管理
+// Delete data service category management
 export function delAttApiCat(id) {
   return request({
     url: '/att/apiCat/' + id,

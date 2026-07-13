@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询稽查规则列表
+// Query the list of audit rules
 export function listAttAuditRule(query) {
   return request({
     url: '/att/auditRule/list',
@@ -27,7 +27,7 @@ export function listAttAuditRule(query) {
   })
 }
 
-// 查询稽查规则详细
+// Query detailed audit rules
 export function getAttAuditRule(id) {
   return request({
     url: '/att/auditRule/' + id,
@@ -35,7 +35,7 @@ export function getAttAuditRule(id) {
   })
 }
 
-// 新增稽查规则
+// Add new audit rules
 export function addAttAuditRule(data) {
   return request({
     url: '/att/auditRule',
@@ -44,7 +44,7 @@ export function addAttAuditRule(data) {
   })
 }
 
-// 修改稽查规则
+// Modify audit rules
 export function updateAttAuditRule(data) {
   return request({
     url: '/att/auditRule',
@@ -53,7 +53,7 @@ export function updateAttAuditRule(data) {
   })
 }
 
-// 删除稽查规则
+// Delete audit rules
 export function delAttAuditRule(id) {
   return request({
     url: '/att/auditRule/' + id,

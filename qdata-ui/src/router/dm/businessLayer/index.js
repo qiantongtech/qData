@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 业务分类模块公共路由
+// Business classification module public routing
 export default [
     {
         path: '/dm/businessCategory/detail',

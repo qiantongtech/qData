@@ -93,7 +93,7 @@ const isMaterializedDetail = computed(
   () => route.path === "/dm/model/materializedModel/detail"
 );
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
@@ -101,7 +101,7 @@ watch(
     activeName.value = "1";
     getDpModelDetailById();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   dpModelDetail: {},
@@ -126,7 +126,7 @@ const detailItems = computed(() => [
   },
 ]);
 const userList = ref();
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDpModelDetailById() {
   const _ID = id;
   if (_ID == -1) {

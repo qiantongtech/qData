@@ -27,15 +27,15 @@ export const useProjectStore = defineStore('project', {
         modelDeptTree: []
     }),
     actions: {
-        // 设置整个项目对象
+        // Set up the entire project object
         setProject(newProject) {
             this.project = newProject
         },
-        // 设置项目中的某个属性
+        // Set a property in the project
         setProjectField(field, value) {
             this.project[field] = value
         },
-        // 获取资产类目树
+        // Get asset category tree
         async getAssetDeptTree(refresh = false) {
             if (this.assetDeptTree.length > 0 && !refresh) {
                 return this.assetDeptTree
@@ -45,11 +45,11 @@ export const useProjectStore = defineStore('project', {
                 this.assetDeptTree = response.data || []
                 return this.assetDeptTree
             } catch (error) {
-                console.error('获取资产类目树失败:', error)
+                console.error("Failed to fetch asset category tree:", error)
                 return []
             }
         },
-        // 获取模型类目树
+        // Get model category tree
         async getModelDeptTree(refresh = false) {
             if (this.modelDeptTree.length > 0 && !refresh) {
                 return this.modelDeptTree
@@ -59,7 +59,7 @@ export const useProjectStore = defineStore('project', {
                 this.modelDeptTree = response.data || []
                 return this.modelDeptTree
             } catch (error) {
-                console.error('获取模型类目树失败:', error)
+                console.error("Failed to fetch model category tree:", error)
                 return []
             }
         }

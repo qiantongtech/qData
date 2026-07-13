@@ -19,7 +19,7 @@
 <template>
   <div class="app-container" ref="app-container">
     <el-container style="90%">
-      <!-- 左侧可调整的部分 -->
+      <!-- Adjustable part on the left -->
       <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
         <div class="left-tree">
           <div class="head-container">
@@ -32,14 +32,14 @@
               @node-click="handleNodeClick">
               <template #default="{ node, data }">
                 <span class="custom-tree-node">
-                  <!-- 第一级 -->
+                  <!-- first level -->
                   <el-icon class="iconimg colorxz" v-if="node.expanded && node.level === 1">
                     <FolderOpened />
                   </el-icon>
                   <el-icon class="iconimg colorxz" v-if="!node.expanded && node.level === 1">
                     <Folder />
                   </el-icon>
-                  <!-- 第二级 -->
+                  <!-- Level 2 -->
                   <el-icon class="iconimg colorxz" v-if="
                     node.expanded && node.childNodes.length && node.level == 2
                   ">
@@ -52,7 +52,7 @@
                   ">
                     <Folder />
                   </el-icon>
-                  <!-- 子级 -->
+                  <!-- child -->
                   <el-icon class="zjiconimg colorwxz" v-show="!node.isCurrent && node.level == 3">
                     <Tickets />
                   </el-icon>
@@ -69,7 +69,7 @@
           </div>
         </div>
       </el-aside>
-      <!-- 拖拽条 -->
+      <!-- Drag strip -->
       <div class="resize-bar" @mousedown="startResize">
         <div class="resize-handle-sx">
           <span class="zjsx"></span>
@@ -81,9 +81,9 @@
           </el-icon>
         </div>
       </div>
-      <!-- 右侧部分 -->
+      <!-- right part -->
       <el-main>
-        <!--用户数据-->
+        <!--User data-->
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item :label="td('sys.system.user.userName')" prop="userName">
@@ -168,16 +168,16 @@
             </el-table-column>
             <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="240">
               <template #default="scope">
-                <!-- <el-tooltip content="修改" placement="top" v-if="scope.row.userId !== 1">
+                <!-- <el-tooltip content="Modify" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                                 </el-tooltip>
-                                <el-tooltip content="删除" placement="top" v-if="scope.row.userId !== 1">
+                                <el-tooltip content="Delete" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']"></el-button>
                                 </el-tooltip>
-                                <el-tooltip content="重置密码" placement="top" v-if="scope.row.userId !== 1">
+                                <el-tooltip content="Reset password" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="primary" icon="Key" @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']"></el-button>
                                 </el-tooltip>
-                                <el-tooltip content="分配角色" placement="top" v-if="scope.row.userId !== 1">
+                                <el-tooltip content="Assign roles" placement="top" v-if="scope.row.userId !== 1">
                                    <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                                 </el-tooltip> -->
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -209,7 +209,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改用户配置对话框 -->
+    <!-- Add or modify user configuration dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form :model="form" :rules="rules" ref="userRef" label-width="80px" :label-position="labelPosition">
@@ -224,7 +224,7 @@
               <el-tree-select v-model="form.deptId" :data="deptOptions"
                 :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" :placeholder="td('sys.system.user.selectBelongDept')"
                 check-strictly />
-              <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="请选择归属部门"-->
+              <!--                     <treeselect v-model="form.deptId" :options="deptOptions" :flat="true" :show-count="true" placeholder="Please select the department you belong to"-->
               <!--                                  :noResultsText="{{td('common.noData')}}" :multiple="true"-->
               <!--                     />-->
             </el-form-item>
@@ -306,7 +306,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -365,7 +365,7 @@ import store from "@/store";
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 const userId = ref(userStore.id);
-// 计算属性动态设置 phonenumber 规则
+// Computed property dynamically sets phonenumber rule
 const phonenumberRules = computed(() => {
   const rules = [
     {
@@ -385,7 +385,7 @@ const phonenumberRules = computed(() => {
   return rules;
 });
 
-// 表单校验规则
+// Form validation rules
 const rules = computed(() => ({
   userName: [
     { required: true, message: td('sys.system.user.userNameRequired'), trigger: "blur" },
@@ -464,24 +464,24 @@ const initPassword = ref(undefined);
 const postOptions = ref([]);
 const roleOptions = ref([]);
 
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed
 
 const startResize = (event) => {
   isResizing.value = true;
   startX = event.clientX;
-  // 使用 requestAnimationFrame 减少重绘频率
+  // Use requestAnimationFrame to reduce redraw frequency
   document.addEventListener("mousemove", updateResize);
   document.addEventListener("mouseup", stopResize);
 };
 
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
@@ -491,7 +491,7 @@ const stopResize = () => {
   document.removeEventListener("mousemove", updateResize);
   document.removeEventListener("mouseup", stopResize);
 };
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
   if (leftWidth.value === 0) {
     leftWidth.value = 300;
@@ -500,22 +500,22 @@ const toggleCollapse = () => {
   }
   emit("update:leftWidth", leftWidth.value);
 };
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/system/user/importData",
 });
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('sys.system.user.columnVisibility.userNo'), visible: true },
   { key: 1, label: td('sys.system.user.columnVisibility.userName'), visible: true },
@@ -540,25 +540,25 @@ const data = reactive({
 
 const { queryParams, form } = toRefs(data);
 
-/** 通过条件过滤节点  */
+/** Filter nodes by condition  */
 const filterNode = (value, data) => {
   if (!value) return true;
   return data.label.indexOf(value) !== -1;
 };
 
-/** 根据名称筛选部门树 */
+/** Filter department tree by name */
 watch(deptName, (val) => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
 
-/** 查询部门下拉树结构 */
+/** Query department drop-down tree structure */
 function getDeptTree() {
   deptTreeSelect().then((response) => {
     deptOptions.value = response.data;
   });
 }
 
-/** 查询用户列表 */
+/** Query user list */
 function getList() {
   loading.value = true;
   listUser(proxy.addDateRange(queryParams.value, dateRange.value)).then(
@@ -570,10 +570,10 @@ function getList() {
   );
 }
 
-// // 自定义渲染内容的函数
+// // Function to customize rendering content
 // const renderContent = (h, { node }) => {
 //    console.log(node.level,node.label,"===========node.level")
-//   // 判断节点类型，选择不同的图标
+//   // Determine the node type and select different icons
 // //   const icon = node.level === 1 ? 'el-icon-folder' : 'el-icon-document';
 // //   return (
 // //     <span>
@@ -583,7 +583,7 @@ function getList() {
 // //   );
 // };
 
-/** 节点单击事件 */
+/** Node click event */
 function handleNodeClick(data) {
   queryParams.value.deptId = data.id;
   handleQuery();
@@ -593,13 +593,13 @@ function getNode(node) {
   console.log(node, "============node");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
@@ -608,7 +608,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
   proxy.$modal
@@ -623,7 +623,7 @@ function handleDelete(row) {
     .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "system/user/export",
@@ -634,7 +634,7 @@ function handleExport() {
   );
 }
 
-/** 用户状态修改  */
+/** User status modification  */
 function handleStatusChange(row) {
   let text = row.status === "0" ? td('sys.system.user.enable') : td('sys.system.user.disable');
   proxy.$modal
@@ -650,7 +650,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** 更多操作 */
+/** More actions */
 function handleCommand(command, row) {
   switch (command) {
     case "handleResetPwd":
@@ -664,13 +664,13 @@ function handleCommand(command, row) {
   }
 }
 
-/** 跳转角色分配 */
+/** Jump to role assignment */
 function handleAuthRole(row) {
   const userId = row.userId;
   router.push("/system/user-auth/role/" + userId);
 }
 
-/** 重置密码按钮操作 */
+/** Reset password button action */
 function handleResetPwd(row) {
   proxy
     .$prompt(td('sys.system.user.resetPasswordPrompt', { name: row.userName }), td('common.message.prompt'), {
@@ -678,19 +678,19 @@ function handleResetPwd(row) {
       cancelButtonText: td('common.button.cancel'),
       closeOnClickModal: false,
       inputType: 'password',
-      inputPattern: /^.{8,20}$/, // 密码长度要求在 8 到 20 之间
+      inputPattern: /^.{8,20}$/, // Password length requirement is between 8 and 20
       inputErrorMessage: td('sys.system.user.resetPasswordInputError'),
       inputValidator: (value) => {
-        // 校验密码包含的非法字符
+        // Verify that the password contains illegal characters
         if (/<|>|"|'|\||\\/.test(value)) {
           return td('sys.system.user.invalidChars');
         }
-        // 校验密码强度
+        // Check password strength
         const strengthRegex = {
-          upperCase: /[A-Z]/, // 至少一个大写字母
-          lowerCase: /[a-z]/, // 至少一个小写字母
-          number: /\d/, // 至少一个数字
-          specialChar: /[!@#$%^&*(),.?":{}|<>]/, // 至少一个特殊字符
+          upperCase: /[A-Z]/, // at least one capital letter
+          lowerCase: /[a-z]/, // at least one lowercase letter
+          number: /\d/, // at least one number
+          specialChar: /[!@#$%^&*(),.?":{}|<>]/, // at least one special character
         };
 
         if (!strengthRegex.upperCase.test(value)) {
@@ -713,24 +713,24 @@ function handleResetPwd(row) {
       });
     })
     .catch(() => {
-      // 处理取消操作
+      // Handling cancellation operations
     });
 }
 
-/** 选择条数  */
+/** Select the number of items  */
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.userId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 导入按钮操作 */
+/** Import button actions */
 function handleImport() {
   upload.title = td('sys.system.user.userImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -739,12 +739,12 @@ function importTemplate() {
   );
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -759,12 +759,12 @@ const handleFileSuccess = (response, file, fileList) => {
   getList();
 };
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/** 重置操作表单 */
+/** Reset action form */
 function reset() {
   form.value = {
     userId: undefined,
@@ -783,13 +783,13 @@ function reset() {
   proxy.resetForm("userRef");
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   getUser().then((response) => {
@@ -801,7 +801,7 @@ function handleAdd() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const userId = row.userId || ids.value;
@@ -817,7 +817,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["userRef"].validate((valid) => {
     if (valid) {
@@ -854,7 +854,7 @@ getList();
   background-color: #ffffff;
   overflow: hidden;
   transition: width 0s;
-  /* 可以根据需要调整过渡时间 */
+  /* Transition time can be adjusted as needed */
 }
 
 .app-container {
@@ -906,7 +906,7 @@ getList();
   font-size: 15px;
 }
 
-//上传附件样式调整
+//Upload attachment style adjustment
 ::v-deep {
 
   // .el-upload-list{
@@ -931,7 +931,7 @@ getList();
   width: 15px;
   text-align: center;
   position: relative;
-  /* 必须加，用来定位 collapse-icon */
+  /* Must be added to locate collapse-icon */
 }
 
 .zjsx {
@@ -947,7 +947,7 @@ getList();
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* 真正的居中 */
+  /* true center */
   font-size: 28px;
   color: #aaa;
   cursor: pointer;

@@ -26,7 +26,7 @@
         :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
         :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
         :unique-opened="true"
-        :active-text-color="/*系统配置 theme*/ '#fff'"
+        :active-text-color="/* System configuration theme */ '#fff'"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -73,14 +73,14 @@ const activeMenu = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-/* 子菜单颜色 */
+/* Submenu color */
 .theme-dark {
   ::v-deep .nest-menu li {
     background-color: #0C2135 !important;
   }
 }
 
-/* 选中子菜单颜色 */
+/* Select submenu color */
 .theme-dark {
   ::v-deep div .nest-menu li.is-active {
     background-color: var(--bgColor) !important;

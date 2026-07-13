@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 数据预览的修改记录前后对比弹窗 -->
+    <!-- Data preview before and after modification record comparison pop-up window -->
     <el-dialog v-model="visible" class="dialog" width="1200px" draggable destroy-on-close>
         <template #header="{ close, titleId, titleClass }">
             <span role="heading" aria-level="2" class="el-dialog__title">
@@ -30,8 +30,8 @@
                 output-format="side-by-side" />
         </div>
         <!-- <template #footer>
-            <el-button type="primary" @click="cancel">确认</el-button>
-            <el-button icon="Stopwatch" @click="rollBack" :disabled="loading">回滚</el-button>
+            <el-button type="primary" @click="cancel">Confirm</el-button>
+            <el-button icon="Stopwatch" @click="rollBack" :disabled="loading">Rollback</el-button>
         </template> -->
     </el-dialog>
 </template>

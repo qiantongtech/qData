@@ -98,14 +98,14 @@ function handleok() {
     for (const field of parsedFields.value) {
         if (!field.editable) continue
 
-        const label = field.name   // 中文展示名
+        const label = field.name   // Chinese display name
         const newValue = formData.value[label]
         const originKey = Object.keys(originalJson).find(
             k => k.toLowerCase() === field.label.toLowerCase()
         )
         const oldValue = originalJson[originKey]
 
-        // ⚠️ 用 field.label 作为 key
+        // ⚠️ Use field.label as key
         if (newValue != oldValue) {
             keyWordData[field.label] = newValue
         }
@@ -116,7 +116,7 @@ function handleok() {
         return
     }
 
-    // 最终 formData 转 label-key 的对象
+    // Finally formData is converted to label-key object
     const result = Object.entries(formData.value).reduce((acc, [key, val]) => {
         const field = parsedFields.value.find(f => f.name === key)
         if (field) {

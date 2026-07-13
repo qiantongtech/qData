@@ -48,16 +48,16 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       confirmPassword: undefined
    });
 
-   // 密码强度检测的正则表达式
+   // Regular expression for password strength detection
    const passwordStrengthRegex = {
-      minLength: /^.{8,}$/, // 最小 8 位
-      upperCase: /[A-Z]/,    // 至少一个大写字母
-      lowerCase: /[a-z]/,    // 至少一个小写字母
-      number: /\d/,          // 至少一个数字
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/, // 至少一个特殊字符
+      minLength: /^.{8,}$/, // Minimum 8 bits
+      upperCase: /[A-Z]/,    // at least one capital letter
+      lowerCase: /[a-z]/,    // at least one lowercase letter
+      number: /\d/,          // at least one number
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/, // at least one special character
    };
 
-   // 密码强度检测逻辑
+   // Password strength detection logic
    const checkPasswordStrength = (password) => {
       if (!password) return null;
 
@@ -84,7 +84,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       return strengthValid ? null : message;
    };
 
-   // 用于显示密码强度提示
+   // Used to display password strength prompts
    let passwordStrengthMessage = "";
 
    const equalToPassword = (rule, value, callback) => {
@@ -106,10 +106,10 @@ import { updateUserPwd } from "@/api/system/system/user.js";
                const strengthMessage = checkPasswordStrength(value);
                if (strengthMessage) {
                   passwordStrengthMessage = strengthMessage;
-                  callback(new Error(strengthMessage));  // 报告错误
+                  callback(new Error(strengthMessage));  // Report an error
                } else {
-                  passwordStrengthMessage = "";  // 清除密码强度提示
-                  callback();  // 密码强度符合要求
+                  passwordStrengthMessage = "";  // Clear password strength prompts
+                  callback();  // Password strength meets requirements
                }
             },
             trigger: "blur"
@@ -121,7 +121,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       ]
    });
 
-   /** 提交按钮 */
+   /** submit button */
    function submit() {
       proxy.$refs.pwdRef.validate(valid => {
          if (valid) {
@@ -132,7 +132,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       });
    };
 
-   /** 关闭按钮 */
+   /** close button */
    function close() {
       proxy.$tab.closePage();
    };

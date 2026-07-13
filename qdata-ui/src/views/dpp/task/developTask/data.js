@@ -54,6 +54,6 @@ export const treeData = [
     falg: true,
     children: [],
     icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
-    elTagType: "info", // 紫色
+    elTagType: "info", // purple
   },
 ];

@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 非结构化数据 -->
+  <!-- unstructured data -->
   <qt-form-item
       :label="td('dpp.asset.add.table.datasourceName')"
       prop="datasourceId"
@@ -122,7 +122,7 @@
             <span style="margin-left: 5px">{{ td('common.button.return') }}</span>
           </el-text>
           <div class="catalogue">
-            <!-- 默认展示根目录 -->
+            <!-- Display root directory by default -->
             <el-text type="primary" @click="handleCatalogue('/')">
               <span class="catalogue-text">{{ localForm.datasourceName }}</span>
             </el-text>
@@ -245,7 +245,7 @@ const currentPageData = computed(() => {
   return fileList.value.slice(startIndex, endIndex);
 });
 
-/*** 上传文件参数 */
+/*** Upload file parameters */
 const upload = reactive({
   isUploading: false,
   headers: { Authorization: "Bearer " + getToken() },
@@ -262,23 +262,23 @@ const handleBeforeUpload = () => {
   //   if (upload.fileSize) {
   //     const isLt = file.size / 1024 / 1024 < upload.fileSize;
   //     if (!isLt) {
-  //       proxy.$modal.msgWarning(`上传文件大小不能超过 ${upload.fileSize} MB!`);
+  //       proxy.$modal.msgWarning(`Upload file size cannot exceed ${upload.fileSize} MB!`);
   //       return false;
   //     }
   //   }
   return true;
 };
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = () => {
   upload.isUploading = true;
 };
-// 上传失败
+// Upload failed
 function handleUploadError(err) {
   console.log(err, "err");
   upload.isUploading = false;
   proxy.$modal.msgWarning(t('common.upload.uploadFailedAdmin'));
 }
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file) => {
   console.log(response, "response");
   upload.isUploading = false;
@@ -290,7 +290,7 @@ const handleFileSuccess = (response, file) => {
   }
   getList();
 };
-const createTypeList = ref([]); // 数据源列表
+const createTypeList = ref([]); // Data source list
 let loading = ref(false);
 // const getDatasourceList = async () => {
 //   try {
@@ -325,11 +325,11 @@ const getDatasourceList = async () => {
 };
 const localForm = ref({ ...props.form });
 
-// 同步 props.form 到 localForm
+// Synchronize props.form to localForm
 
 getDatasourceList();
 
-// 数据源变化时
+// When the data source changes
 const handleDatasourceChange = async (id,selected) => {
   if (!selected) return;
   const { datasourceType, datasourceConfig, datasourceName } = selected;
@@ -402,7 +402,7 @@ const handleSearch = () => {
     return proxy.$modal.msgWarning(td('dpp.asset.add.unstructured.noDatasource'));
   }
 };
-// 返回上级目录
+// Return to the upper level directory
 const handleBack = () => {
   if (catalogues.value.length > 1) {
     currPath.value =
@@ -413,7 +413,7 @@ const handleBack = () => {
     getList();
   }
 };
-// 切换目录
+// Switch directory
 const handleCatalogue = (path) => {
   if (path == "/") {
     currPath.value = "";
@@ -475,14 +475,14 @@ const cancel = () => {
   visibleDialog.value = false;
   single.value = {};
   fileList.value = [];
-  //   刷新path
+  //   refresh path
   //   currPath.value = "";
 };
 const submitForm = () => {
   if (!single.value.path) {
     return proxy.$modal.msgWarning(t('common.upload.noFileSelected'));
   }
-  //   赋值文件路径，文件描述
+  //   Assign file path, file description
   Object.assign(localForm.value, {
     filePath: single.value.path,
   });
@@ -579,7 +579,7 @@ defineExpose({ fileDesc });
   }
 }
 
-// 隐藏表头全选选择框
+// Hide header select all selection box
 :deep(.el-table__header .el-checkbox) {
   display: none;
 }

@@ -25,12 +25,12 @@ import AniviaComponents from 'anivia-components'
 import 'anivia-components/style.css'
 import 'element-plus/dist/index.css'
 
-// 初始化多语言
+// Initialize multiple languages
 import { setupI18n, i18n } from '@/plugins/vueI18n'
 import { useLocaleStoreWithOut } from '@/store/system/locale'
 
 import '@/assets/styles/system/index.scss' // global css
-import '@/assets/styles/system/anivia.scss' // 自定义样式 css
+import '@/assets/styles/system/anivia.scss' // Custom style css
 import '@/assets/icons/iconfont/iconfont.css' // iconfont css
 
 import App from './App'
@@ -38,13 +38,13 @@ import store from './store'
 import router from './router'
 import directive from './directive' // directive
 
-// 注册指令
+// Registration instructions
 import plugins from './plugins' // plugins
 import { download, download2 } from '@/utils/request'
-// 引入自定义事件总线
+// Introducing a custom event bus
 import bus from '@/utils/bus';
 
-// svg图标
+// svg icon
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon'
 import elementIcons from '@/components/SvgIcon/svgicon'
@@ -54,34 +54,34 @@ import './permission' // permission control
 import { useDict } from '@/utils/dict'
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels, getFormatValue, formatNewlines, formatVersion, downloadContent } from '@/utils/anivia.js'
 
-// 分页组件
+// Pagination component
 import Pagination from '@/components/Pagination'
-// 自定义表格工具组件
+// Custom form tool component
 import RightToolbar from '@/components/RightToolbar'
-// 自定义表格工具组件 样式二
+// Custom table tool component style 2
 import RightToolbar2 from '@/components/RightToolbar/index2.vue'
-// 富文本组件
+// Rich text component
 import Editor from "@/components/Editor"
-// 文件上传组件
+// File upload component
 import FileUpload from "@/components/FileUpload2"
-// 文件上传按钮组件
+// File upload button component
 import FileUploadbtn from "@/components/FileUploadbtn"
-// 提示组件
+// Prompt component
 import GuideTip from "@/components/GuideTip"
-// 图片上传组件
+// Image upload component
 import ImageUpload from "@/components/ImageUpload"
-// 图片预览组件
+// Image preview component
 import ImagePreview from "@/components/ImagePreview"
-// 自定义树选择组件
+// Custom tree selection component
 import TreeSelect from '@/components/TreeSelect'
-// 字典标签组件
+// dictionary tag component
 import DictTag from '@/components/DictTag'
-// 可视化表单设计器工具
+// Visual form designer tool
 // import FcDesigner from '@form-create/designer';
 import '@/assets/icons/iconfont/fontNew/iconfont.css' // iconfont css
-// 通用详情页头部组件
+// Universal detail page header component
 import DetailInfo from "@/components/DetailInfo"
-// 通用描述信息组件（el-descriptions 封装）
+// Universal description information component (el-descriptions package)
 import DescriptionsInfo from "@/components/DescriptionsInfo"
 
 import QtSearchBar from '@/components/QtSearchBar/index.vue';
@@ -93,7 +93,7 @@ import QtTagGroup from '@/components/QtTagGroup/index.vue';
 
 const app = createApp(App)
 
-// 初始化多语言（必须在使用 store / element-plus 之前完成）
+// Initialize multilingual (must be done before using store / element-plus)
 const setupAll = async () => {
   app.use(store)
   await setupI18n(app)
@@ -102,7 +102,7 @@ const setupAll = async () => {
 //   app.use(FcDesigner)
 //   app.use(FcDesigner.formCreate)
 
-  // 全局方法挂载
+  // Global method mounting
   app.config.globalProperties.labelPosition = i18n.global.locale.value === 'zh-CN' ? 'right' : 'top';
   app.config.globalProperties.useDict = useDict
   app.config.globalProperties.download = download
@@ -116,10 +116,10 @@ const setupAll = async () => {
   app.config.globalProperties.getFormatValue = getFormatValue
   app.config.globalProperties.downloadContent = downloadContent
   app.config.globalProperties.formatVersion = formatVersion
-  // 将事件总线挂载到全局属性
+  // Mount event bus to global properties
   app.config.globalProperties.$bus = bus
 
-  // 全局组件挂载
+  // Global component mounting
   app.component('QtTagGroup', QtTagGroup)
   app.component('DictTag', DictTag)
   app.component('Pagination', Pagination)
@@ -147,11 +147,11 @@ const setupAll = async () => {
 
   directive(app)
 
-  // 使用 element-plus 并且设置全局的大小、跟随当前语言
+  // Use element-plus and set the global size to follow the current language
   const localeStore = useLocaleStoreWithOut()
   app.use(ElementPlus, {
     locale: localeStore.getCurrentLocale.elLocale,
-    // 支持 large、default、small
+    // Support large, default, small
     size: Cookies.get('size') || 'default'
   })
 

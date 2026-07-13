@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 消息列表为空时，展示 prompt 列表 -->
+<!-- Display the prompt list when the message list is empty -->
 <template>
   <div class="chat-empty">
     <!-- title -->
@@ -49,11 +49,11 @@ const promptList = [
   {
     prompt: td('ai.chat.promptPoem'),
   },
-]; // prompt 列表
+]; // prompt list
 
 const emits = defineEmits(["onPrompt"]);
 
-/** 选中 prompt 点击 */
+/** Select prompt and click */
 const handlerPromptClick = async ({ prompt }) => {
   emits("onPrompt", prompt);
 };

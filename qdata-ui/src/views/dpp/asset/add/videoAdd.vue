@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- // 视频  -->
+  <!-- // video  -->
   <template v-if="form.type == '5'">
     <el-form-item
         :label="td('dpp.asset.add.video.platform')"

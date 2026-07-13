@@ -171,17 +171,17 @@ const visible = ref(false);
 const loading = ref(false);
 const formRef = ref();
 
-// 组件内部状态
+// Component internal state
 const title = ref("");
 const treeOptions = ref([]);
 const dataDomainOptions = ref([]);
 const customRules = ref(null);
 const managerOptions = ref([]);
 
-// 缓存原始树数据
+// Cache original tree data
 const rawTreeData = ref([]);
 
-// 默认表单数据
+// Default form data
 const defaultForm = {
   parentId: 0,
   name: "",
@@ -198,7 +198,7 @@ const defaultForm = {
 
 const form = ref({ ...defaultForm });
 
-// 默认校验规则
+// Default validation rules
 const defaultRules = {
   name: [{ required: true, message: td('dm.businessCategory.nameRequired', '业务分类名称不能为空'), trigger: "blur" }],
   engName: [
@@ -216,7 +216,7 @@ const defaultRules = {
   ],
 };
 
-// 计算最终使用的规则，优先使用传入的 customRules
+// Calculate the final rules used, giving priority to the passed customRules
 const currentRules = computed(() => {
   return customRules.value || defaultRules;
 });
@@ -244,7 +244,7 @@ const handleEngNameInput = (value) => {
   form.value.engName = (value || "").replace(/[^a-zA-Z]/g, "");
 };
 
-/** 获取数据域列表 */
+/** Get a list of data fields */
 const getDataDomainOptions = () => {
   return listDataDomain({
     orderByColumn: "create_time",
@@ -254,14 +254,14 @@ const getDataDomainOptions = () => {
   });
 };
 
-/** 刷新树数据 */
+/** Refresh tree data */
 const refreshTreeData = () => {
   return listBusinessCategory().then((response) => {
     rawTreeData.value = response?.data || [];
   });
 };
 
-/** 处理树结构显示，包含过滤逻辑 */
+/** Processing tree structure display, including filtering logic */
 const processTreeData = (excludeId) => {
   let rows = [...rawTreeData.value];
   if (excludeId) {
@@ -280,7 +280,7 @@ const processTreeData = (excludeId) => {
   ];
 };
 
-/** 获取上级分类树 */
+/** Get the superior classification tree */
 const getTreeData = (excludeId) => {
   return refreshTreeData().then(() => {
     processTreeData(excludeId);
@@ -288,37 +288,37 @@ const getTreeData = (excludeId) => {
 };
 
 /**
- * 打开弹窗的方法
- * @param {Object} options 配置项
+ * How to open a pop-up window
+ * @param {Object} options configuration items
  */
 const open = (options = {}) => {
   title.value = options.title || td('dm.common.edit', '修改');
   customRules.value = options.rules || null;
 
-  // 1. 获取关联数据域（每次打开都重新获取且按时间倒序）
+  // 1. Obtain the associated data fields (reacquire each time it is opened and in reverse chronological order)
   getDataDomainOptions();
 
-  // 2. 获取负责人
+  // 2. Get the person in charge
   if (!managerOptions.value?.length) {
     getManagerOptions();
   }
 
-  // 3. 初始化表单数据
+  // 3. Initialize form data
   if (options.form) {
     form.value = JSON.parse(
       JSON.stringify({ ...defaultForm, ...options.form })
     );
-    // 如果存在 domainList，初始化 domainIds
+    // If domainList exists, initialize domainIds
     if (form.value.domainList && form.value.domainList.length > 0) {
       form.value.domainIds = form.value.domainList.map(
         (item) => item.dataDomainId
       );
     } else if (form.value.domainId) {
-      // 兼容旧数据
+      // Compatible with old data
       form.value.domainIds = [form.value.domainId];
     } else if (form.value.domainIds && Array.isArray(form.value.domainIds)) {
-      // 已经有 domainIds，且是数组，则不需要重置。
-      // 如果后端返回的是字符串数组，而 options 是数字，这里建议统一转成数字以保证回显
+      // If domainIds already exists and is an array, there is no need to reset.
+      // If the backend returns a string array and options is a number, it is recommended to convert it into a number to ensure echo.
       form.value.domainIds = form.value.domainIds.map((id) =>
         isNaN(Number(id)) ? id : Number(id)
       );
@@ -330,10 +330,10 @@ const open = (options = {}) => {
   }
 
   visible.value = true;
-  // 4. 获取上级分类树（内部带缓存）
+  // 4. Get the superior classification tree (with internal cache)
   getTreeData(form.value.id);
 
-  // 重置校验状态
+  // Reset verification status
   nextTick(() => {
     formRef.value?.clearValidate();
   });
@@ -348,7 +348,7 @@ const onSubmit = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
-      // 提交前将 domainIds 转换回 domainList
+      // Convert domainIds back to domainList before submitting
       const submitForm = JSON.parse(JSON.stringify(form.value));
       submitForm.domainList = (submitForm.domainIds || []).map((id) => {
         const item = dataDomainOptions.value.find((opt) => opt.id === id);
@@ -371,7 +371,7 @@ const stopLoading = () => {
   loading.value = false;
 };
 
-// 暴露 open 方法给父组件
+// Expose the open method to the parent component
 defineExpose({
   open,
   close,

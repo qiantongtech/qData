@@ -257,7 +257,7 @@ const typaOptions = treeData.map((item) => {
   }
 })
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -276,20 +276,20 @@ const getStatus = (status) => {
     return '0'
   }
 }
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 let userList = ref([]);
 let taskForm = ref({});
 const handleAdd = () => {
   taskConfigDialogVisible.value = true;
 }
-// 保存并关闭
+// Save and close
 const handleSave = (form) => {
   const parms = {
     ...form,
 
     projectCode: userStore.projectCode,
-    type: "3",//数据开发新增标识
+    type: "3",//New identifier for data development
   }
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
@@ -299,8 +299,8 @@ const handleSave = (form) => {
   })
 }
 const deptOptions = ref([]);
-const leftWidth = ref(300); // 初始左侧宽度
-/** 下拉树结构 */
+const leftWidth = ref(300); // Initial left width
+/** Drop down tree structure */
 function getDeptTree() {
   listAttQualityCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
@@ -327,14 +327,14 @@ let openCron = ref(false);
 const DppQualityTaskEvaluateList = ref([]);
 let row = ref();
 let expression = ref("");
-/** 运行实例按钮操作 */
+/** Run instance button action */
 function handleJobLog(data) {
   row.value = "";
   row.value = data || "";
   openCron.value = true;
   expression.value = data.cycle || "";
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row, e) {
   const text = row?.status == "1" ? td('da.qualityTask.offline') : td('da.qualityTask.online');
   proxy.$modal
@@ -359,7 +359,7 @@ function handleStatusChange(row, e) {
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   row.value.crontab = value;
   updateDaDiscoveryTaskCronExpression({
@@ -390,12 +390,12 @@ const handleExecuteOnce = async (row) => {
   }
 };
 let DataView = ref(false);
-/** 运行实例接口 */
+/** Run instance interface */
 function handleDataView(row) {
   form.value = row;
   DataView.value = true;
 }
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 1, label: td('da.qualityTask.columnVisibility.id'), visible: true },
   { key: 2, label: td('da.qualityTask.columnVisibility.taskName'), visible: true },
@@ -460,13 +460,13 @@ function getList() {
 }
 
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -476,7 +476,7 @@ function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal

@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 查看抽查结果弹窗 新增修改第三步 稽查规则信息  -->
+    <!-- View the spot check results pop-up window. Add and modify the third step of audit rule information.  -->
     <el-dialog v-model="visible" :title="td('da.qualityTask.spotCheckResult.title')" width="1200px" :before-close="handleClose">
         <el-tabs v-model="activeTab" @tab-click="handleTabClick">
             <el-tab-pane :label="td('da.qualityTask.spotCheckResult.problemData')" name="problem">

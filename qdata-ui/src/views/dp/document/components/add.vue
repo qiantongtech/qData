@@ -150,7 +150,7 @@ const { column_type, sys_disable, dp_document_status } = proxy.useDict(
 let deptOptions = ref([]);
 const visible = ref(false);
 const formRef = ref(null);
-const loading = ref(false);   // 提交按钮 loading
+const loading = ref(false);   // Submit button loading
 
 const form = reactive({
     id: null,
@@ -181,7 +181,7 @@ const titleMap = {
     '4': td('dp.document.groupStandard'),
 };
 
-/** 打开弹窗 */
+/** Open pop-up window */
 function openModal(formData = {}, options = [], types) {
     deptOptions.value = options;
     type.value = types
@@ -200,13 +200,13 @@ function openModal(formData = {}, options = [], types) {
     nextTick(() => formRef.value?.clearValidate());
 }
 
-/** 关闭弹窗 */
+/** Close pop-up window */
 function close() {
     visible.value = false;
     clearForm();
 }
 
-/** 清空表单 */
+/** Clear form */
 function clearForm() {
     form.id = null;
     form.code = "";
@@ -226,7 +226,7 @@ function clearForm() {
 
     nextTick(() => formRef.value?.clearValidate());
 }
-/** 提交表单 */
+/** Submit form */
 function submitForm() {
     formRef.value.validate((valid) => {
         if (!valid) return;
@@ -246,7 +246,7 @@ function submitForm() {
     });
 }
 
-/** 文件移除 */
+/** File removal */
 function handleRemove(file) {
     form.standardUrl = null;
     form.fileUrl = "";

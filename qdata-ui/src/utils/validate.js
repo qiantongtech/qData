@@ -17,7 +17,7 @@
  */
 
 /**
- * 判断url是否是http或https
+ * Determine whether the url is http or https
  * @param {string} path
  * @returns {Boolean}
  */
@@ -26,7 +26,7 @@
 }
 
 /**
- * 判断path是否为外链
+ * Determine whether the path is an external link
  * @param {string} path
  * @returns {Boolean}
  */

@@ -19,9 +19,9 @@
 import request from '@/utils/request'
 import {encrypt} from "@/utils/aesEncrypt";
 
-// 数据库信息api
+// database information api
 
-// 获取表名
+// Get table name
 export function getTables(params) {
   return request({
     url: '/data/dts/metadata/getTables',
@@ -30,7 +30,7 @@ export function getTables(params) {
   })
 }
 
-// 获取schema
+// Get schema
 export function getTableSchema(params) {
   return request({
     url: '/data/dts/metadata/getDBSchema',
@@ -39,7 +39,7 @@ export function getTableSchema(params) {
   })
 }
 
-// 获取字段
+// Get fields
 export function getColumns(params) {
   return request({
     url: '/data/dts/metadata/getColumns',
@@ -48,7 +48,7 @@ export function getColumns(params) {
   })
 }
 
-// 根据sql获取字段
+// Get fields based on sql
 export function getColumnsByQuerySql(data) {
   data = JSON.parse(JSON.stringify(data))
   data.querySql = encrypt(data.querySql)
@@ -59,7 +59,7 @@ export function getColumnsByQuerySql(data) {
   })
 }
 
-// 根据datasourceID、tablename创建表【目标端】
+// Create a table [target end] based on datasourceID, tablename
 export function createTable(params) {
   return request({
     url: '/data/dts/metadata/createTable',
@@ -67,7 +67,7 @@ export function createTable(params) {
     params
   })
 }
-// 判断字段是否存在，存在，即更新值，否则添加字段
+// Determine whether the field exists. If it exists, update the value. Otherwise, add the field.
 export function updateColumnsValue(query) {
   return request({
     url: '/data/dts/metadata/updateColumnsValue',

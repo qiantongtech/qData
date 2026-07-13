@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数仓分层管理列表
+// Query the data warehouse hierarchical management list
 export function listDataLayer(query) {
   return request({
     url: '/dm/dataLayer/list',
@@ -27,7 +27,7 @@ export function listDataLayer(query) {
   })
 }
 
-// 查询数仓分层管理详细
+// Query the details of hierarchical management of data warehouse
 export function getDataLayer(id) {
   return request({
     url: '/dm/dataLayer/' + id,
@@ -35,7 +35,7 @@ export function getDataLayer(id) {
   })
 }
 
-// 查询数仓分层管理树
+// Query the data warehouse hierarchical management tree
 export function treeDataLayer() {
   return request({
     url: '/dm/dataLayer/tree',
@@ -43,7 +43,7 @@ export function treeDataLayer() {
   })
 }
 
-// 新增数仓分层管理
+// Added new data warehouse hierarchical management
 export function addDataLayer(data) {
   return request({
     url: '/dm/dataLayer',
@@ -52,7 +52,7 @@ export function addDataLayer(data) {
   })
 }
 
-// 修改数仓分层管理
+// Modify data warehouse hierarchical management
 export function updateDataLayer(data) {
   return request({
     url: '/dm/dataLayer',
@@ -61,7 +61,7 @@ export function updateDataLayer(data) {
   })
 }
 
-// 删除数仓分层管理
+// Delete data warehouse hierarchical management
 export function delDataLayer(id) {
   return request({
     url: '/dm/dataLayer/' + id,

@@ -1,5 +1,5 @@
 {
-  "_comment": "this is comments，按照数据库类型输入对应得关键字数组，如果想要函数提示也可，函数内得参数定位需要手动编写：eg：SUM(${1:}) 在输入后会将光标定位在括号内，多个参数列表 则数字依次向下+1, presto & phoenix & clickhouse 暂未整理",
+  "_comment": "This is comments. Enter the corresponding keyword array according to the database type. If you want function prompts, you can also write the parameter positioning in the function manually: eg: SUM(${1:}). After input, the cursor will be positioned in the brackets. For multiple parameter lists, the numbers will be +1 in order. Presto & phoenix & clickhouse have not been sorted yet.",
   "fragments": [
     "CASE WHEN ${1:} THEN ${2:} ELSE ${3:} END AS ${4:}",
     "SELECT ${1:} FROM ${2:}",

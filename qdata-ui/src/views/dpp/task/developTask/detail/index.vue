@@ -85,7 +85,7 @@
       </div>
     </div>
     <div class="tabs-container" v-bind:style="tabAreaStyle">
-      <!-- 图标放置在最右侧 -->
+      <!-- The icon is placed on the far right -->
       <el-icon class="icon-right" @click="minimizeAction">
         <Minus />
       </el-icon>
@@ -133,7 +133,7 @@ let form = ref({
 });
 
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
     [() => route.query.id, () => userStore.projectCode],
     ([newId, newCode], [oldId, oldCode]) => {
@@ -150,7 +150,7 @@ watch(
       }
     }
 );
-// 图标
+// icon
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM":
@@ -179,7 +179,7 @@ const getDatasourceIcon = (type) => {
 };
 let hasUnsavedChanges = ref(false);
 let nodeData = ref({ name: "" });
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 let editorRef = ref("");
 function changeTextarea(val) {
@@ -191,18 +191,18 @@ function getList() {
   loading.value = true;
   etlTask(route.query.id)
     .then((response) => {
-      // 任务配置
+      // Task configuration
       nodeData.value = {
         ...response.data.taskConfig,
         draftJson: response.data.draftJson,
         status: response.data.status,
         typaCode: response.data.draftJson ? JSON.parse(response.data.draftJson).typaCode : "",
       };
-      // 修改或新增标记
+      // Edit or add tags
       formStatus.value = response.data.status;
       iconListR.value[0].data = JSON.parse(JSON.stringify(response.data));
       iconList.value[0].data = JSON.parse(JSON.stringify(response.data));
-      // 默认选中-控制台
+      // Selected by default - Console
       consoleVisible.value = true;
       activeValue.value = iconList.value[0];
       activeValueR.value = iconListR.value[0];
@@ -215,7 +215,7 @@ function getList() {
       } else {
         form.value.sql = response.data.taskDefinitionList[0].taskParams.sql;
       }
-      // 部门
+      // Department
     })
     .finally(() => {
       loading.value = false;
@@ -231,17 +231,17 @@ function getDeptTree() {
       projectCode: userStore.projectCode,
       validFlag: true,
     }).catch((err) => {
-      console.error("获取类别数据失败", err);
+      console.error("Failed to fetch category data", err);
       return { data: [] };
     }),
     deptUserTree().catch((err) => {
-      console.error("获取用户数据失败", err);
+      console.error("Failed to fetch user data", err);
       return { data: [] };
     }),
   ])
     .then(([taskCatRes, userRes]) => {
       deptOptions.value = []
-      // 处理部门类别数据
+      // Process department category data
       deptOptions.value = [
         {
           id: 0,
@@ -251,11 +251,11 @@ function getDeptTree() {
         },
       ];
 
-      // 处理用户数据
+      // Processing of user data
       userList.value = userRes.data;
     })
     .finally(() => {
-      // 所有请求完成后，隐藏 loading
+      // After all requests are completed, hide the loading
     });
 }
 
@@ -273,7 +273,7 @@ const handleRun = async () => {
     const res = await startDppEtlTask(id);
     if (res.code == 200) {
       proxy.$modal.msgSuccess(td('common.message.msgOpSuccess', '操作成功'));
-      // 打开控制台
+      // Open the console
       activeValue.value = iconList.value[0];
     } else {
       proxy.$modal.msgWarning(res?.msg || td('dpp.developTask.executeFailed', '执行失败，请联系管理员'));
@@ -282,7 +282,7 @@ const handleRun = async () => {
     loading.value = false;
   }
 };
-// 运行实例保存
+// Run instance save
 const handletaskConfig = (obj) => {
   nodeData.value = {
     ...obj,
@@ -292,7 +292,7 @@ const dataJson = () => {
   const taskParams = configViewRef.value.form;
   const taskDefinitionList = {
     taskParams: taskParams,
-    // 任务配置
+    // Task configuration
     id: form.value.id,
     name: nodeData.value.name,
     code: form.value.code,
@@ -302,22 +302,22 @@ const dataJson = () => {
     // flag: taskParams.flag,
     // isCache: taskParams.isCache,
     // taskExecuteType: taskParams.taskExecuteType,
-    // 基本配置
+    // Basic configuration
     taskPriority: taskParams.taskPriority,
     workerGroup: taskParams.workerGroup,
     failRetryTimes: taskParams.failRetryTimes,
     failRetryInterval: taskParams.failRetryInterval,
     delayTime: taskParams.delayTime,
-    // 其他配置
+    // Other configurations
     taskType: taskParams.taskType,
     componentType: taskParams.componentType,
   };
   taskDefinitionList.taskParams.sql = form.value.sql;
-  // 任务配置
+  // Task configuration
   nodeData.value.componentType = taskParams.componentType;
   nodeData.value.taskType = taskParams.taskType;
   nodeData.value.executionType = "PARALLEL";
-  // 准备需要返回的数据
+  // Prepare the data to be returned
   const taskRelationData = {
     name: "",
     preTaskCode: 0,
@@ -328,7 +328,7 @@ const dataJson = () => {
     conditionParams: {},
   };
   const locations = [{ taskCode: form.value?.code, x: 0, y: 0 }];
-  // 返回这三个值
+  // Return these three values
   return {
     ...form.value,
     taskRelationJson: JSON.stringify([taskRelationData]),
@@ -341,7 +341,7 @@ const dataJson = () => {
   };
 };
 let exportData2 = ref();
-// 大保存
+// Great save
 const handleExportData = async () => {
   loading.value = true;
   try {
@@ -358,7 +358,7 @@ const handleExportData = async () => {
     }
     exportData2.value = dataJson();
     console.log("🚀 ~ handleExportData ~ exportData2.value:", exportData2.value);
-    // 根据 nodeData.id 判断是更新还是创建
+    // Determine whether to update or create based on nodeData.id
     const res =
       formStatus.value != "-1"
         ? await updateProcessDefinition({
@@ -367,7 +367,7 @@ const handleExportData = async () => {
         })
         : await createProcessDefinition(exportData2.value);
 
-    // 成功后处理
+    // Processing after success
     if (res.code == "200") {
       handleSuccess();
     } else {
@@ -389,7 +389,7 @@ const handleSuccess = () => {
 };
 
 const handleError = (error) => {
-  console.error("操作失败:", error);
+  console.error("Operation failed:", error);
   proxy.$modal.msgWarning(error.message || td('dpp.integratioTask.operationFailed', '操作失败，请联系管理员'));
 };
 
@@ -401,7 +401,7 @@ const minimizeAction = () => {
   tabAreaStyle.value.bottom = "-9999px";
 };
 
-// 初始化函数
+// initialization function
 onMounted(() => {
   if(userStore.projectId){
     getDeptTree();
@@ -427,13 +427,13 @@ function routeTo(link, row) {
     }
   }
 }
-// 用于控制当前选中的标签
+// Used to control the currently selected tag
 const activeTab = ref("checkMessage");
 const tabs = ref([
   { name: "checkMessage", label: td('dpp.developTaskDetail.checkMessage', '检查消息'), content: td('dpp.developTaskDetail.checkMessageContent', '检查消息内容') },
-  // { name: "log", label: "日志", content: "日志内容" },
+  // { name: "log", label: "log", content: "log content" },
 ]);
-// 用于设置标签区域的样式
+// Used to style the label area
 const tabAreaStyle = ref({
   position: "absolute",
   height: "300px",
@@ -442,7 +442,7 @@ const tabAreaStyle = ref({
   bottom: "-9999px",
   backgroundColor: "#fff",
 });
-// 切换到任务检查标签
+// Switch to task inspection tab
 const selectTab = (tabName) => {
   console.log("🚀 ~ selectTab ~ tabName:", tabName);
   activeTab.value = tabName;
@@ -487,13 +487,13 @@ const isValidClick = () => {
   tabs.value[0].content = message;
   console.log("🚀 ~ isValidClick ~ message:", message);
 };
-// 跳转并保存数据的逻辑（如果需要）
+// Logic to jump to and save data (if needed)
 const saveData = async () => {
-  // 假设这是保存数据的函数
-  hasUnsavedChanges.value = false; // 保存后标记为无未保存内容
-  // 执行保存操作
+  // Let's say this is a function that saves data
+  hasUnsavedChanges.value = false; // After saving, mark it as no unsaved content
+  // Perform save operation
 };
-// 离开页面时提示
+// Prompt when leaving the page
 onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
@@ -505,20 +505,20 @@ onBeforeRouteLeave((to, from, next) => {
         type: "warning",
         beforeClose: (action, instance, done) => {
           if (action === 'confirm') {
-            // 点击保存
+            // Click save
             handleExportData();
             saveData();
-            done();       // 关闭弹窗
-            next(false);  // 阻止路由离开
+            done();       // Close pop-up window
+            next(false);  // Prevent routes from leaving
           } else if (action === 'cancel') {
-            // 点击放弃
-            done();       // 关闭弹窗
-            next();       // 允许路由离开
+            // Click to give up
+            done();       // Close pop-up window
+            next();       // Allow route to leave
           } else if (action === 'close') {
-            // 点击 X 号，只关闭弹窗，不阻止路由
-            done();       // 关闭弹窗
-            next(false);  // 阻止路由离开
-            // 不调用 next()，路由不会受影响
+            // Click the X number to only close the pop-up window and not block routing
+            done();       // Close pop-up window
+            next(false);  // Prevent routes from leaving
+            // Without calling next(), routing will not be affected
           }
         }
       }
@@ -528,8 +528,8 @@ onBeforeRouteLeave((to, from, next) => {
   }
 });
 
-// #region sql编辑器
-// 左侧图标
+// #region sql editor
+// left icon
 const iconList = ref([
   {
     name: td('dpp.developTaskDetail.logConsole', '日志控制台'),
@@ -556,14 +556,14 @@ const handleIcon = (item) => {
     closeConsoleDialog();
   } else {
     activeValue.value = item;
-    consoleVisible.value = true; // 显示控制台
+    consoleVisible.value = true; // show console
   }
 };
 const closeConsoleDialog = () => {
-  activeValue.value = { name: "" }; // 重置选中
-  consoleVisible.value = false;     // 高度归零
+  activeValue.value = { name: "" }; // Reset selected
+  consoleVisible.value = false;     // Altitude return to zero
 };
-// 右侧图标
+// right icon
 const iconListR = ref([
   {
     name: td('dpp.developTaskDetail.attrConfig', '属性配置'),
@@ -586,7 +586,7 @@ const closeConsoleDialogR = () => {
   activeValueR.value = { name: "" };
 };
 const consoleVisible = ref(false);
-// 控制台和配置页的自定义宽高
+// Custom width and height of console and configuration pages
 const consoleRef = ref(null);
 const consoleHeight = computed(() => {
   if (!consoleVisible.value) return 0;
@@ -595,7 +595,7 @@ const consoleHeight = computed(() => {
 const configViewRef = ref(null);
 const configWidth = computed(() => configViewRef.value && configViewRef.value.currWidth);
 
-// 全屏
+// full screen
 const editorMain = ref(null);
 const { isFullscreen, toggle } = useFullscreen(editorMain);
 const fullScreenCallBack = () => {
@@ -806,11 +806,11 @@ const fullScreenCallBack = () => {
 
 :deep(.x6-widget-selection-box) {
   fill: rgba(0, 123, 255, 0.3);
-  /* 设置选中框的填充颜色 */
+  /* Set the fill color of the check box */
   stroke: #007bff;
-  /* 设置选中框的边框颜色 */
+  /* Set the border color of the selected box */
   opacity: 1;
-  /* 设置选中框的透明度 */
+  /* Set the transparency of the check box */
   pointer-events: none !important;
 }
 

@@ -241,7 +241,7 @@ const open = ref(false);
 const title = ref("");
 const tableRef = ref(null);
 
-// 添加计算属性用于控制展开/折叠
+// Add computed properties to control expand/collapse
 const defaultExpandAll = computed({
   get() {
     return tableStore.config.table.defaultExpandAll;
@@ -391,7 +391,7 @@ const searchStore = reactive({
   ],
 });
 
-/** 查询主题域管理列表 */
+/** Query the subject domain management list */
 function getList() {
   tableRef.value?.getList();
 }
@@ -429,13 +429,13 @@ function getDataLayerTree() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -460,11 +460,11 @@ function reset() {
   proxy.resetForm("themeDomainRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('dm.themeDomain.enableText', '启用') : td('dm.themeDomain.disableText', '禁用');
   proxy.$modal
@@ -488,7 +488,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   Object.keys(queryParams.value).forEach((key) => {
     queryParams.value[key] = null;
@@ -496,7 +496,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 当负责人改变时，更新电话号码 */
+/** Update phone number when person in charge changes */
 const handleOwnerChange = (selectedValue) => {
   const selectedUser = managerOptions.value.find(
     (user) => user.userId == selectedValue
@@ -504,7 +504,7 @@ const handleOwnerChange = (selectedValue) => {
   form.value.ownerUserPhoneNumber = selectedUser?.phonenumber || "";
 };
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -523,21 +523,21 @@ function handleAdd(row) {
   title.value = td('dm.themeDomain.addTitle', '新增主题域');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   defaultExpandAll.value = !defaultExpandAll.value;
   tableRef.value.reload();
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listThemeDomain();
   attDataElemCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return (
       d.ID !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -550,7 +550,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getThemeDomain(row.id).then((response) => {
-    //把createTime过滤掉
+    //Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -560,7 +560,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["themeDomainRef"].validate((valid) => {
     if (valid) {
@@ -581,7 +581,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal
     .confirm(td('dm.themeDomain.confirmDelete', '是否确认删除主题域管理编号为"<name>"的数据项？').replace('<name>', row.name))
@@ -595,7 +595,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-// 初始化数据
+// initialization data
 onMounted(() => {
   getDataTree();
   getManagerOptions();

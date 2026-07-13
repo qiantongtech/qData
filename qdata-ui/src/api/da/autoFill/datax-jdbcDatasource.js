@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// datax插件api
+// datax plugin api
 
 export function list(params) {
   return request({

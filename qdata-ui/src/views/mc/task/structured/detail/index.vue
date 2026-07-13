@@ -177,7 +177,7 @@ const store = reactive({
 
 const form = computed(() => store.form);
 
-// 获取详情
+// Get details
 function getDetail() {
   store.loading = true;
   getTask(route.query.id).then((res) => {
@@ -186,7 +186,7 @@ function getDetail() {
   });
 }
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -199,7 +199,7 @@ const getDomainPath = computed(() => {
   };
 });
 
-// 获取来源系统列表
+// Get source system list
 function getSourceSystemTreeData() {
   sourceSystemTree().then((res) => {
     store.treeDomains = res.data;

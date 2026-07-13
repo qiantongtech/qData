@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询脱敏清单列表
+// Query desensitization list list
 export function listDgDesensitizeList(query) {
   return request({
     url: '/dg/DgDesensitizeList/list',
@@ -9,7 +9,7 @@ export function listDgDesensitizeList(query) {
   })
 }
 
-// 查询脱敏规则关联脱敏清单列表（比脱敏清单列表多传 ruleId）
+// Query the desensitization list list associated with the desensitization rule (pass the ruleId more than the desensitization list list)
 export function listDgDesensitizeListByRuleId(query) {
   return request({
     url: '/dg/DgDesensitizeList/listByRuleId',
@@ -18,7 +18,7 @@ export function listDgDesensitizeListByRuleId(query) {
   })
 }
 
-// 查询脱敏清单详细
+// Check the desensitization list details
 export function getDgDesensitizeList(id) {
   return request({
     url: '/dg/DgDesensitizeList/' + id,
@@ -26,7 +26,7 @@ export function getDgDesensitizeList(id) {
   })
 }
 
-// 新增脱敏清单
+// Added desensitization list
 export function addDgDesensitizeList(data) {
   return request({
     url: '/dg/DgDesensitizeList',
@@ -35,7 +35,7 @@ export function addDgDesensitizeList(data) {
   })
 }
 
-// 修改脱敏清单
+// Modify desensitization list
 export function updateDgDesensitizeList(data) {
   return request({
     url: '/dg/DgDesensitizeList',
@@ -44,7 +44,7 @@ export function updateDgDesensitizeList(data) {
   })
 }
 
-// 删除脱敏清单
+// Delete desensitization list
 export function delDgDesensitizeList(ids) {
   const idStr = Array.isArray(ids) ? ids.join(',') : ids
   return request({

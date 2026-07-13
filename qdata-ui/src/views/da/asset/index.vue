@@ -241,7 +241,7 @@
               <div class="item-con">
                 <div class="item-con-left">
                   <div class="flex-wrap">
-                    <!-- 库表类型 -->
+                    <!-- Library table type -->
                     <template v-if="item.type == 1">
                       <div class="item-form item-form1">
                         <div class="form-label">{{ td('da.asset.tableName') }}:</div>
@@ -280,7 +280,7 @@
                         </div>
                       </div>
                     </template>
-                    <!-- 文件类型 -->
+                    <!-- File type -->
                     <template v-else-if="item.type == 7">
                       <div class="item-form item-form1">
                         <div class="form-label">{{ td('da.asset.fileName') }}:</div>
@@ -310,7 +310,7 @@
                         </div>
                       </div>
                     </template>
-                    <!-- API类型 -->
+                    <!-- API type -->
                     <template v-else-if="item.type == 2">
                       <div class="item-form item-form1">
                         <div class="form-label">{{ td('da.asset.appName') }}:</div>
@@ -484,7 +484,7 @@
         </div>
       </el-main>
     </el-container>
-    <!-- 数据资产详情对话框 -->
+    <!-- Data Asset Details Dialog -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -604,7 +604,7 @@
       :isRegister="isRegister"
       type="0"
     />
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="td('da.asset.addTagTitle')"
       class="tag-view"
@@ -651,7 +651,7 @@
         </div>
       </template>
     </el-dialog>
-    <!-- 申请数据资产对话框 -->
+    <!-- Apply for data assets dialog box -->
     <el-dialog
       :title="titleApply"
       v-model="openApply"
@@ -833,7 +833,7 @@ const titleBtns = [
     icon: "da-document",
   },
 ];
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('da.asset.columnVisibility.id'), visible: true },
   { key: 1, label: td('da.asset.columnVisibility.assetName'), visible: true },
@@ -1005,7 +1005,7 @@ function handleView(row) {
   routeTo(type == 1 ? "/dpp/asset/detail" : "/da/asset/detail", row);
 }
 
-/** 查询数据资产列表 */
+/** Query data asset list */
 function getList() {
   if (!queryParams.value?.orderByColumn) {
     queryParams.value.orderByColumn = defaultSort.value.prop;
@@ -1031,14 +1031,14 @@ function getList() {
   getListTag();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -1065,13 +1065,13 @@ function reset() {
   proxy.resetForm("daAssetRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -1090,7 +1090,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 查询部门下拉树结构 */
+/** Query department drop-down tree structure */
 function getAssetCat() {
   console.log(`getAssetCat->`);
   projectStore.getAssetDeptTree().then((data) => {
@@ -1098,7 +1098,7 @@ function getAssetCat() {
   });
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(command) {
   const dict = da_asset_type.value.find((item) => item.value == command);
   if (dict && dict.label == td('dict.da_asset_type.1')) {
@@ -1108,7 +1108,7 @@ function handleAdd(command) {
   return proxy.$modal.msgWarning(td('da.asset.developing'));
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row, register) {
   if (register == "register") {
     isRegister.value = true;
@@ -1124,7 +1124,7 @@ function handleUpdate(row, register) {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -1180,12 +1180,12 @@ function routeTo(link, row) {
 }
 
 /**
- * 标签管理
+ * tag management
  */
 function getListTag() {
   listDict().then((response) => {
     AttTagList.value = response.data.sort((a, b) => {
-      // 按创建时间倒序排序
+      // Sort by creation time in descending order
       return new Date(b.createTime) - new Date(a.createTime);
     });
   });
@@ -1203,7 +1203,7 @@ function submitTag() {
     getList();
   });
   // proxy.$modal
-  //   .confirm("是否确定打标该资产？")
+  //   .confirm("Are you sure you want to mark this asset?")
   //   .then(function () {
   //
   //   })
@@ -1221,7 +1221,7 @@ const themeNames = (item) => {
   }
   return "-";
 };
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(row) {
   const text = row.status === "2" ? td('da.asset.revokePublish') : td('da.asset.publish');
   const status = row.status === "2" ? "1" : "2";
@@ -1303,7 +1303,7 @@ getAssetThemeList();
 }
 
 .fix-icon {
-  //width: 16px; /* 固定图标占位宽度，使图标文字对齐一致 */
+  //width: 16px; /* Fixed icon occupancy width to align icon text consistently */
   //text-align: center;
   margin-left: -10px;
 }
@@ -1325,7 +1325,7 @@ getAssetThemeList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//上传附件样式调整
+//Upload attachment style adjustment
 ::v-deep {
   // .el-upload-list{
   //    display: flex;
@@ -1357,12 +1357,12 @@ getAssetThemeList();
 .page-list {
   height: 69.6vh;
   height: auto;
-  /* 或者直接删掉这行 */
+  /* Or just delete this line */
   max-height: none;
-  /* 保证不被限制高度 */
+  /* Guaranteed not to be restricted in height */
   overflow: visible;
 
-  /* 不产生内部滚动条 */
+  /* Do not generate internal scroll bars */
   &::-webkit-scrollbar {
     width: 2px;
   }

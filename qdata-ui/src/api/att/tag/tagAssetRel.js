@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询标签与资产关联关系列表
+// Query the list of relationships between tags and assets
 export function listAttTagAssetRel(query) {
   return request({
     url: '/att/tagAssetRel/list',
@@ -27,7 +27,7 @@ export function listAttTagAssetRel(query) {
   })
 }
 
-// 查询标签与资产关联关系详细
+// Query the detailed relationship between tags and assets
 export function getAttTagAssetRel(ID) {
   return request({
     url: '/att/tagAssetRel/' + ID,
@@ -35,7 +35,7 @@ export function getAttTagAssetRel(ID) {
   })
 }
 
-// 新增标签与资产关联关系
+// Add new tags and asset relationships
 export function addAttTagAssetRel(data) {
   return request({
     url: '/att/tagAssetRel',
@@ -44,7 +44,7 @@ export function addAttTagAssetRel(data) {
   })
 }
 
-// 修改标签与资产关联关系
+// Modify the relationship between tags and assets
 export function updateAttTagAssetRel(data) {
   return request({
     url: '/att/tagAssetRel',
@@ -53,7 +53,7 @@ export function updateAttTagAssetRel(data) {
   })
 }
 
-// 删除标签与资产关联关系
+// Delete the relationship between tags and assets
 export function delAttTagAssetRel(ID) {
   return request({
     url: '/att/tagAssetRel/' + ID,

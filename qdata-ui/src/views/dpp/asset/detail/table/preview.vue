@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 资产预览tab -->
+  <!-- Asset preview tab -->
   <div style="padding: 5px">
     <div class="justify-between mb15">
       <el-row :gutter="15" class="btn-style">
@@ -234,7 +234,7 @@ const formData = ref({
   rows: [],
 });
 const formVisible = ref(false);
-const updateDialogRef = ref(null); // 组件的 ref 引用
+const updateDialogRef = ref(null); // ref reference to the component
 watch(
   () => route.query.id,
   (newId) => {
@@ -270,7 +270,7 @@ const generateSqlQuery = () => {
   return sql;
 };
 
-// 查询按钮点击事件
+// Query button click event
 const handleQuery = () => {
   let falg = validateFields();
   if (!falg) return false;

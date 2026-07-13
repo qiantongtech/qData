@@ -142,7 +142,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改数据资产申请对话框 -->
+    <!-- Add or edit data asset application dialog -->
     <el-dialog :title="title" v-model="open" width="1000px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -250,7 +250,7 @@
       </template>
     </el-dialog>
 
-    <!-- 数据资产申请详情对话框 -->
+    <!-- Data asset application detail dialog -->
     <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
       <el-form :model="form" :label-position="labelPosition">
         <el-row :gutter="20">
@@ -368,7 +368,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -420,7 +420,7 @@ const { da_asset_apply_status, datasource_type } = proxy.useDict(
 );
 const daAssetApplyList = ref([]);
 
-// 列显隐信息
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('da.assetApply.assetName'), visible: true },
   { key: 2, label: td('da.assetApply.englishName'), visible: true },
@@ -435,9 +435,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If no corresponding column configuration found, default to showing it
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If corresponding column configuration found, control visibility based on the visible property
   return column.visible;
 };
 
@@ -453,23 +453,23 @@ const title = ref("");
 const defaultSort = ref({ columnKey: "create_time", order: "desc" });
 const router = useRouter();
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Whether currently dragging
 const projectOptions = ref([]);
-let startX = 0; // 鼠标按下时的初始位置
+let startX = 0; // Initial position when mouse is pressed
 /*** 用户导入参数 */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to show the popup layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user import)
   title: "",
-  // 是否禁用上传
+  // Whether to disable upload
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload URL
   url: import.meta.env.VITE_APP_BASE_API + "/da/daAssetApply/importData",
 });
 
@@ -518,10 +518,10 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update start position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
@@ -544,7 +544,7 @@ function getAssetCat() {
   });
 }
 
-/** 查询数据资产申请列表 */
+/** Query data asset application list */
 function getList() {
   loading.value = true;
   listDaAssetApply(queryParams.value).then((response) => {
@@ -554,14 +554,14 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -585,13 +585,13 @@ function reset() {
   proxy.resetForm("daAssetApplyRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -601,28 +601,28 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Checkbox selection data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('da.assetApply.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Edit button operation */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -637,7 +637,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -648,7 +648,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
@@ -683,7 +683,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -698,7 +698,7 @@ function handleDelete(row) {
     .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button operation */
 function handleExport() {
   proxy.download(
     "da/daAssetApply/export",
@@ -709,14 +709,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations -----------------**/
+/** Import button operation */
 function handleImport() {
   upload.title = td('da.assetApply.importTitle');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -725,17 +725,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/** File upload in progress handler */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload success handler */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -790,7 +790,7 @@ getList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//上传附件样式调整
+// Upload attachment style adjustment
 ::v-deep {
 
   // .el-upload-list{

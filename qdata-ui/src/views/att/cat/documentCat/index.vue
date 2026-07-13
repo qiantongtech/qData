@@ -124,7 +124,7 @@
       <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
         @pagination="getList" />
     </div>
-    <!-- 添加或修改标签类目管理对话框 -->
+    <!-- Add or edit document category management dialog -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="AttTagCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -221,7 +221,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询数据文档管理列表 */
+/** Query document category management list */
 function getList() {
   loading.value = true;
   listAttDocumentCat(queryParams.value).then((response) => {
@@ -238,15 +238,15 @@ function getDataTree() {
     AttTagCatOptions.value.push(data);
   });
 }
-/** 查询数据文档管理下拉树结构1 */
+/** Query document category dropdown tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -268,11 +268,11 @@ function reset() {
   proxy.resetForm('AttTagCatRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -290,13 +290,13 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm('queryRef');
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -315,7 +315,7 @@ function handleAdd(row) {
   title.value = td('att.documentCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -324,15 +324,15 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDocumentCat();
   AttTagCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };

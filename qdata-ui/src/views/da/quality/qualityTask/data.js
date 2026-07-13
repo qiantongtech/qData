@@ -61,14 +61,14 @@ export const treeData =
       children: [],
       icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
-    // 禁用的节点
+    // Disabled nodes
     {
       id: 6,
       label: "Sqlerver",
       value: "Sqlerver",
       type: "SQLSERVER",
       children: [],
-      disabled: true // 禁用该节点
+      disabled: true // Disable this node
     },
     {
       id: 7,
@@ -76,7 +76,7 @@ export const treeData =
       value: "PostgreSql",
       type: "POSTGRESQL",
       children: [],
-      disabled: true // 禁用该节点
+      disabled: true // Disable this node
     },
     {
       id: 8,
@@ -84,7 +84,7 @@ export const treeData =
       value: "Hive",
       type: "HIVE",
       children: [],
-      disabled: false // 禁用该节点
+      disabled: false // Disable this node
     },
     {
       id: 9,

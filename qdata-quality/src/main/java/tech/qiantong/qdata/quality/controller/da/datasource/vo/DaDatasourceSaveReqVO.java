@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据源 创建/修改 Request VO DA_DATASOURCE
+ * Data Source Create/Modify Request VO DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21

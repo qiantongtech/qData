@@ -24,7 +24,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 字段组完整性校验（字段成对非空）
+// Field group integrity check (field pairs are not empty)
 @Component("GROUP_FIELD_COMPLETENESS")
 public class GroupFieldCompletenessGenerator implements QualitySqlGenerator {
     @Override

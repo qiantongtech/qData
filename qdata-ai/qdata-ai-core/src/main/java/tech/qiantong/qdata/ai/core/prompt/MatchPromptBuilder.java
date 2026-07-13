@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:事实表及维度表匹配提示词构建
+ * Purpose: Fact table and dimension table matching prompt word construction
  * </p>
  *
  * @author: FXB
@@ -95,7 +95,7 @@ public class MatchPromptBuilder {
     public String buildPrompt(FactTable factTable, List<DimensionTable> dimensions) {
         StringBuilder prompt = new StringBuilder();
 
-        // 构建事实表JSON
+        // Build fact table JSON
         StringBuilder factTableJson = new StringBuilder();
         factTableJson.append("{\n");
         factTableJson.append(String.format("  \"tableName\": \"%s\",\n", escapeJson(factTable.getTableName())));
@@ -118,7 +118,7 @@ public class MatchPromptBuilder {
 
         factTableJson.append("  ],\n");
 
-        // 添加主键信息
+        // Add primary key information
         factTableJson.append("  \"primaryKeys\": [");
         if (factTable.getPrimaryKeys() != null && !factTable.getPrimaryKeys().isEmpty()) {
             for (int i = 0; i < factTable.getPrimaryKeys().size(); i++) {
@@ -131,7 +131,7 @@ public class MatchPromptBuilder {
         factTableJson.append("]\n");
         factTableJson.append("}");
 
-        // 构建维度表JSON数组
+        // Build dimension table JSON array
         StringBuilder dimensionTablesJson = new StringBuilder();
         dimensionTablesJson.append("[\n");
 
@@ -158,7 +158,7 @@ public class MatchPromptBuilder {
 
             dimensionTablesJson.append("    ],\n");
 
-            // 添加主键信息
+            // Add primary key information
             dimensionTablesJson.append("    \"primaryKeys\": [");
             if (dim.getPrimaryKeys() != null && !dim.getPrimaryKeys().isEmpty()) {
                 for (int i = 0; i < dim.getPrimaryKeys().size(); i++) {
@@ -192,7 +192,7 @@ public class MatchPromptBuilder {
                 输入 JSON 结构:
                 """
         );
-        // 组装完整的JSON输入
+        // Assemble complete JSON input
         prompt.append("{\n");
         prompt.append("  \"fact_table\": ").append(factTableJson.toString().replaceAll("\n", "\n  ")).append(",\n");
         prompt.append("  \"dimension_tables\": ").append(dimensionTablesJson.toString().replaceAll("\n", "\n  ")).append("\n");

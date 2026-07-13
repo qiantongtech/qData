@@ -21,25 +21,25 @@ package tech.qiantong.qdata.common.core.page;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 分页数据
+ * Paginated data
  *
  * @author qdata
  */
 public class PageDomain
 {
-    /** 当前记录起始索引 */
+    /** Current record starting index */
     private Integer pageNum;
 
-    /** 每页显示记录数 */
+    /** Display the number of records per page */
     private Integer pageSize;
 
-    /** 排序列 */
+    /** Sorting column */
     private String orderByColumn;
 
-    /** 排序的方向desc或者asc */
+    /** Sorting direction desc or asc */
     private String isAsc = "asc";
 
-    /** 分页参数合理化 */
+    /** Rationalization of paging parameters */
     private Boolean reasonable = true;
 
     public String getOrderBy()
@@ -90,7 +90,7 @@ public class PageDomain
     {
         if (StringUtils.isNotEmpty(isAsc))
         {
-            // 兼容前端排序类型
+            // Compatible with front-end sorting types
             if ("ascending".equals(isAsc))
             {
                 isAsc = "asc";

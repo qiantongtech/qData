@@ -141,13 +141,13 @@ public class FileUploadUtil {
      */
 /*    public static String upload2(MultipartFile file) {
         FileInfo fileInfo = fileStorageService.of(file)
-                .setPath("upload/")               // 设置文件保存的相对路径
-                .setSaveFilename("image.jpg")     // 设置保存的文件名，如果不设置将随机生成
-                .setObjectId("0")                 // 关联对象 ID，用于管理，不需要可以不写
-                .setObjectType("0")               // 关联对象类型，用于管理，不需要可以不写
-                .putAttr("role", "admin")         // 设置自定义属性，用于在其他地方获取使用
+                .setPath("upload/") //Set the relative path for file saving
+                .setSaveFilename("image.jpg") //Set the saved file name. If not set, it will be randomly generated.
+                .setObjectId("0") //Associated object ID, used for management, don't write it if not needed
+                .setObjectType("0") // Associated object type, used for management, don’t write it if not needed
+                .putAttr("role", "admin") // Set custom attributes for use elsewhere
                 .upload();
-        return fileInfo == null ? "上传失败！" : fileInfo.getUrl();
+        return fileInfo == null? "Upload failed!": fileInfo.getUrl();
     }*/
 
     /**

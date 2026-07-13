@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 元数据字段信息 - 日志Service业务层处理
+ * Metadata field information - Log Service business layer processing
  *
  * @author qdata
  * @date 2026-03-10
@@ -58,15 +58,15 @@ public class McColumnLogServiceImpl  extends ServiceImpl<McColumnLogMapper,McCol
 
     @Override
     public int updateMcColumnLog(McColumnLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新元数据字段信息 - 日志
+        // Update metadata field information - Log
         McColumnLogDO updateMcColumnLogDO = BeanUtils.toBean(updateReqVO, McColumnLogDO.class);
         return mcColumnLogMapper.updateById(updateMcColumnLogDO);
     }
     @Override
     public int removeMcColumnLog(Collection<Long> idList) {
-        // 批量删除元数据字段信息 - 日志
+        // Deleting metadata field information in batches - Log
         return mcColumnLogMapper.deleteBatchIds(idList);
     }
 
@@ -87,7 +87,7 @@ public class McColumnLogServiceImpl  extends ServiceImpl<McColumnLogMapper,McCol
                 .collect(Collectors.toMap(
                         McColumnLogDO::getId,
                         mcColumnLogDO -> mcColumnLogDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }

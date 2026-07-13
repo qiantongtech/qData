@@ -25,7 +25,7 @@ import tech.qiantong.qdata.neo4j.node.TaskNode;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -40,26 +40,26 @@ public class TableToTaskRel {
     private Long id;
 
     /**
-     * 任务id
+     * Task id
      */
     private Long taskId;
 
     /**
-     * 任务编码
+     * Task coding
      */
     private String taskCode;
 
     /**
-     * 全限定表名 例如：sales_db.dwh.orders
+     * Fully qualified table name For example: sales_db.dwh.orders
      */
     private String tableName;
 //    /**
-//     * 数据源 id
+// * Data source id
 //     */
 //    private Long datasourceId;
 
     /**
-     * 数据源ip:port
+     * Data source ip:port
      */
     private String datasourceHostPort;
 

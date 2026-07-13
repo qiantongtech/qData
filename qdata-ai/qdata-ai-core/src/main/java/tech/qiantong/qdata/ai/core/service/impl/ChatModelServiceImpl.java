@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 import tech.qiantong.qdata.module.ai.service.model.IAiModelService;
 
 /**
- * springAi chatModel 服务
+ * springAi chatModel service
  *
  * @author fabian
  */
@@ -54,12 +54,12 @@ public class ChatModelServiceImpl implements IChatModelService {
     private IAiModelService aiModelService;
 
     /**
-     * 获取 chatModel
+     * Get chatModel
      *
-     * @param platForm  平台名称
+     * @param platForm platform name
      * @param baseUrl   baseUrl
      * @param apiKey    apiKey
-     * @param modelName 模型名称
+     * @param modelName model name
      * @return chatModel
      */
     @Override
@@ -90,11 +90,11 @@ public class ChatModelServiceImpl implements IChatModelService {
     }
 
     /**
-     * 获取 OpenAi 聊天模型
+     * Get the OpenAi chat model
      *
-     * @param baseUrl   baseUrl（必需）
-     * @param apiKey    apiKey（必需）
-     * @param modelName modelName（必需）
+     * @param baseUrl baseUrl (required)
+     * @param apiKey apiKey (required)
+     * @param modelName modelName (required)
      * @return OpenAiChatModel
      */
     private OpenAiChatModel getOpenAiChatModel(String baseUrl, String apiKey, String modelName) {
@@ -110,10 +110,10 @@ public class ChatModelServiceImpl implements IChatModelService {
     }
 
     /**
-     * 获取 阿里百炼 聊天模型
+     * Get Ali Bailian chat model
      *
-     * @param apiKey    apiKey（必需）
-     * @param modelName modelName（必需）
+     * @param apiKey apiKey (required)
+     * @param modelName modelName (required)
      * @return DashScopeChatModel
      */
     private DashScopeChatModel getDashScopeChatModel(String baseUrl, String apiKey, String modelName) {
@@ -127,10 +127,10 @@ public class ChatModelServiceImpl implements IChatModelService {
     }
 
     /**
-     * 获取 ollama 聊天模型
+     * Get ollama chat model
      *
-     * @param baseUrl   baseUrl（必需）
-     * @param modelName modelName（必需）
+     * @param baseUrl baseUrl (required)
+     * @param modelName modelName (required)
      * @return OllamaChatModel
      */
     private OllamaChatModel getOllamaChatModel(String baseUrl, String modelName) {
@@ -144,10 +144,10 @@ public class ChatModelServiceImpl implements IChatModelService {
     }
 
     /**
-     * 获取 deepseek 聊天模型
+     * Get deepseek chat model
      *
-     * @param apiKey    apiKey（必需）
-     * @param modelName modelName（必需）
+     * @param apiKey apiKey (required)
+     * @param modelName modelName (required)
      * @return DeepSeekChatModel
      */
     private DeepSeekChatModel getDeepSeekChatModel(String apiKey, String modelName) {

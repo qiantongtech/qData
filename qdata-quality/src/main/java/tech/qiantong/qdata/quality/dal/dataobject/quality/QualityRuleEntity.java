@@ -31,21 +31,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// QualityRuleEntity 示例定义（用于策略类）
+// QualityRuleEntity example definition (for policy classes)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityRuleEntity {
 
-    //表名称
-    //字段名
-    /** 稽查规则编号 */
+    //Table name
+    //Field name
+    /** Audit rule number */
     private String ruleCode;
-    /** 稽查规则名称 */
+    /** Audit rule name */
     private String ruleName;
-    /** 质量维度*/
+    /** Quality Dimension*/
     private String dimensionType;
-    /** 规则描述 */
+    /** Rule description */
     private String ruleDescription;
     private Long evaluateId;
 
@@ -79,31 +79,31 @@ public class QualityRuleEntity {
      *   "allowPartialNull": true
      * }
      *
-         *      * 是否忽略空值
-         *      * true 表示忽略；false 表示不忽略
+         * * Whether to ignore null values
+         * * true means ignore; false means not ignore
         private Boolean ignoreNullValue;
          *
-          *      * 是否忽略大小写
-          *      * true 表示忽略；false 表示不忽略
+          * * Whether to ignore case
+          * * true means ignore; false means not ignore
         private Boolean ignoreCase;
          *
-          *      * 字段填写策略：
-          *      * 1 表示字段必须全部填写（部分为空为异常）
-          *      * 2 表示字段要么全部为空，要么全部填写（部分填写为异常）
+          * *Field filling strategy:
+          * * 1 means that all fields must be filled in (partially empty is an exception)
+          * * 2 means that the fields are either all empty or all filled in (partially filled in is an exception)
         private Integer fillStrategy;
          *
-          *      * 是否包含最大最小值
-          *      * true 表示包含（>=、<=）；false 表示不包含（>、<）
+          * * Whether to include the maximum and minimum values
+          * * true means including (>=, <=); false means not including (>, <)
         private Boolean includeRangeBound;
 
-        是否忽略整数值，* true 表示忽略；false 表示不忽略
+        Whether to ignore integer values, * true means ignore; false means not ignore
         private Boolean skipInteger;
      *
      *
      */
     private Map<String, Object> config;
 
-    // 可选：组合唯一性支持多个列
+    // Optional: Combined uniqueness supports multiple columns
     private List<String> ruleColumns;
     private List<String> showErrorColumns;
 
@@ -112,7 +112,7 @@ public class QualityRuleEntity {
     public QualityRuleEntity(Map<String, Object> stringObjectMap){
 
         // TODO
-        //表字段需要兼容
+        //Table fields need to be compatible
 
     }
 
@@ -120,7 +120,7 @@ public class QualityRuleEntity {
         this.tableName = queryReqDTO.getTableName();
         this.config = queryReqDTO.getConfig();
         this.whereClause = queryReqDTO.getWhereClause();
-        this.ruleColumn = queryReqDTO.getEvaColumn(); // 若是单字段规则，取 evaColumn
+        this.ruleColumn = queryReqDTO.getEvaColumn(); // If it is a single field rule, take evaColumn
 
         ruleColumns = new ArrayList<>();
         if (queryReqDTO.getEvaColumn() != null && !queryReqDTO.getEvaColumn().trim().isEmpty()) {
@@ -146,7 +146,7 @@ public class QualityRuleEntity {
         this.ruleType = dppQualityTaskEvaluateDO.getRuleType();
         this.tableName = dppQualityTaskEvaluateDO.getTableName();
         this.whereClause = dppQualityTaskEvaluateDO.getWhereClause();
-        this.ruleColumn = dppQualityTaskEvaluateDO.getEvaColumn(); // 若是单字段规则，取 evaColumn
+        this.ruleColumn = dppQualityTaskEvaluateDO.getEvaColumn(); // If it is a single field rule, take evaColumn
 
         Map<String, Object> map = JSONUtils.convertTaskDefinitionJsonMap(dppQualityTaskEvaluateDO.getRule());
 

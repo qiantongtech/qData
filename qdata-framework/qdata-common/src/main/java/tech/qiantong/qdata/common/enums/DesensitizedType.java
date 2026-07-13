@@ -23,44 +23,44 @@ import tech.qiantong.qdata.common.utils.DesensitizedUtil;
 import java.util.function.Function;
 
 /**
- * 脱敏类型
+ * Type of desensitization
  *
  * @author qdata
  */
 public enum DesensitizedType
 {
     /**
-     * 姓名，第2位星号替换
+     * Name, replace the 2nd digit with an asterisk
      */
     USERNAME(s -> s.replaceAll("(\\S)\\S(\\S*)", "$1*$2")),
 
     /**
-     * 密码，全部字符都用*代替
+     * Password, all characters are replaced with *
      */
     PASSWORD(DesensitizedUtil::password),
 
     /**
-     * 身份证，中间10位星号替换
+     * ID card, replace the 10 asterisks in the middle
      */
     ID_CARD(s -> s.replaceAll("(\\d{4})\\d{10}(\\d{4})", "$1** **** ****$2")),
 
     /**
-     * 手机号，中间4位星号替换
+     * Mobile phone number, replace the 4 asterisks in the middle
      */
     PHONE(s -> s.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2")),
 
     /**
-     * 电子邮箱，仅显示第一个字母和@后面的地址显示，其他星号替换
+     * Email address, only the first letter and the address after @ are displayed, other asterisks are replaced
      */
     EMAIL(s -> s.replaceAll("(^.)[^@]*(@.*$)", "$1****$2")),
 
     /**
-     * 银行卡号，保留最后4位，其他星号替换
+     * Bank card number, keep the last 4 digits, replace other asterisks
      */
     BANK_CARD(s -> s.replaceAll("\\d{15}(\\d{3})", "**** **** **** **** $1")),
 
     /**
-     * 车牌号码，包含普通车辆、新能源车辆
+     * License plate number, including ordinary vehicles and new energy vehicles
      */
     CAR_LICENSE(DesensitizedUtil::carLicense);
 

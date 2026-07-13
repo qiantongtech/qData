@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * ORACLE Oracle12c+数据库方言
+ * ORACLE Oracle12c+ database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -102,11 +102,11 @@ public class Oracle12cDialect extends OracleDialect {
             }
             createSql.append(",");
         }
-        // 去逗号
+        // Remove commas
         if (createSql.lastIndexOf(",") == createSql.length() - 1) {
             createSql.deleteCharAt(createSql.length() - 1);
         }
-        // 主键
+        // Primary key
         if (!pkList.isEmpty()) {
             createSql.append(",\n  PRIMARY KEY(");
             for (String pk : pkList) {
@@ -118,12 +118,12 @@ public class Oracle12cDialect extends OracleDialect {
         createSql.append("\n)");
         sqlList.add(createSql.toString());
 
-        // 表注释
+        // Table annotation
         if (tech.qiantong.qdata.common.utils.StringUtils.hasText(tableComment)) {
             String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
             sqlList.add(tableCmt);
         }
-        // 字段注释
+        // Field annotation
         for (DbColumn col : columns) {
             if (tech.qiantong.qdata.common.utils.StringUtils.hasText(col.getColComment())) {
                 String colCmt = "COMMENT ON COLUMN " + tableName + "." + col.getColName()
@@ -162,7 +162,7 @@ public class Oracle12cDialect extends OracleDialect {
     }
 
     private static String mapOracleColumnType(DbColumn col) {
-        // 类似 Oracle
+        // Similar to Oracle
         String type = col.getDataType();
         Long length = DatabaseUtil.getStringToLong(col.getDataLength());
         Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
@@ -205,13 +205,13 @@ public class Oracle12cDialect extends OracleDialect {
     }
 
     /**
-     * 根据列的长度和小数位数生成用于拼接的 SQL 字符串
+     * Generate SQL string for concatenation based on column length and scale
      *
-     * @param columnLength 列的长度（字符串表示）
-     * @param maxLength    长度限制的最大值（例如 38）
-     * @param includeScale 是否拼接小数位数
-     * @param columnScale  列的小数位数（字符串表示，可能为空）
-     * @return 生成的用于拼接的 SQL 字符串
+     * @param columnLength column length (string representation)
+     * @param maxLength The maximum value of the length limit (e.g. 38)
+     * @param includeScale Whether to splice decimal places
+     * @param columnScale The number of decimal places in the column (string representation, may be empty)
+     * @return generated SQL string for concatenation
      */
     public static String generateColumnDefinitionOracle(Long columnLength, long maxLength, boolean includeScale, Long columnScale) {
         StringBuilder sql = new StringBuilder("");
@@ -220,17 +220,17 @@ public class Oracle12cDialect extends OracleDialect {
             throw new UnsupportedOperationException("属性类型：格式错误，数字类型长度未填充");
         }
 
-        // 如果 columnLength 为空，则使用 maxLength 作为默认值
+        // If columnLength is empty, maxLength is used as the default value
         long length = columnLength;
 
         if (length > maxLength) {
             length = maxLength;
         }
 
-        // 拼接长度
+        // Splicing length
         sql.append("(").append(length);
 
-        // 根据 includeScale 和 columnScale 判断是否需要拼接小数位数
+        // Determine whether the number of decimal places needs to be spliced based on includeScale and columnScale
         if (includeScale &&  columnScale != 0 ) {
             sql.append(", ").append(columnScale);
         }
@@ -242,17 +242,17 @@ public class Oracle12cDialect extends OracleDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " +dbQueryProperty.getDbName()+"."+ tableName;
     }
     @Override

@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception;
 
 /**
- * 全局异常
+ * Global exception
  *
  * @author qdata
  */
@@ -28,19 +28,19 @@ public class GlobalException extends RuntimeException
     private static final long serialVersionUID = 1L;
 
     /**
-     * 错误提示
+     * Error message
      */
     private String message;
 
     /**
-     * 错误明细，内部调试错误
+     * Error details, internal debugging errors
      *
-     * 和 {@link CommonResult#getDetailMessage()} 一致的设计
+     * Design consistent with {@link CommonResult#getDetailMessage()}
      */
     private String detailMessage;
 
     /**
-     * 空构造方法，避免反序列化问题
+     * Empty constructor to avoid deserialization problems
      */
     public GlobalException()
     {

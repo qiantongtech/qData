@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Repeatable 过滤器
+ * Repeatable filter
  *
  * @author qdata
  */

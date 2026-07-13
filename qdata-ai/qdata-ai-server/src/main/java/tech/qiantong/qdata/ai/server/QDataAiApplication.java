@@ -37,7 +37,7 @@ import tech.qiantong.qdata.security.config.SecurityConfig;
 import tech.qiantong.qdata.security.filter.JwtAuthenticationTokenFilter;
 
 @EnableNeo4jRepositories(basePackages = "tech.qiantong.qdata.neo4j.repository")
-@EntityScan(basePackages = "tech.qiantong.qdata.neo4j.node")   // 节点/关系实
+@EntityScan(basePackages = "tech.qiantong.qdata.neo4j.node")   // Node/relationship
 @EnableFileStorage
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ComponentScan(basePackages = {"tech.qiantong"},

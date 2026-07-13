@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 定时任务调度测试
+ * Scheduled task scheduling test
  *
  * @author qdata
  */

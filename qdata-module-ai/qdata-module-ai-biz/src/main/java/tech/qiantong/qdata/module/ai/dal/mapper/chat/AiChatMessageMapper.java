@@ -29,7 +29,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * ai聊天消息Mapper接口
+ * ai chat message Mapper interface
  *
  * @author FXB
  * @date 2026-04-01
@@ -37,10 +37,10 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 public interface AiChatMessageMapper extends BaseMapperX<AiChatMessageDO> {
 
     default PageResult<AiChatMessageDO> selectPage(AiChatMessagePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AiChatMessageDO>()
                 .eqIfPresent(AiChatMessageDO::getConversationId, reqVO.getConversationId())
                 .eqIfPresent(AiChatMessageDO::getReplyId, reqVO.getReplyId())
@@ -50,9 +50,9 @@ public interface AiChatMessageMapper extends BaseMapperX<AiChatMessageDO> {
                 .eqIfPresent(AiChatMessageDO::getContent, reqVO.getContent())
                 .eqIfPresent(AiChatMessageDO::getContextFlag, reqVO.getContextFlag())
                 .eqIfPresent(AiChatMessageDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(AiChatMessageDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

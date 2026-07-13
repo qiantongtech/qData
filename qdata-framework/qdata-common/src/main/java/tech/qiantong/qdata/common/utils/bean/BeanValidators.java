@@ -24,7 +24,7 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
- * bean对象属性验证
+ * bean object property validation
  *
  * @author qdata
  */

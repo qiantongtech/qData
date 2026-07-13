@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McColumnDO;
 import java.util.List;
 
 /**
- * 元数据字段信息 Convert
+ * Metadata field information Convert
  *
  * @author qdata
  * @date 2026-02-11
@@ -20,29 +20,29 @@ public interface McColumnConvert {
     McColumnConvert INSTANCE = Mappers.getMapper(McColumnConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcColumnPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcColumnPageReqVO request parameters
      * @return McColumnDTO
      */
      McColumnDO convertToDO(McColumnPageReqVO mcColumnPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcColumnSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcColumnSaveReqVO save request parameters
      * @return McColumnDTO
      */
      McColumnDO convertToDO(McColumnSaveReqVO mcColumnSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcColumnDO 实体对象
+     * DO to RespVO
+     * @param mcColumnDO entity object
      * @return McColumnRespDTO
      */
      McColumnRespVO convertToRespVO(McColumnDO mcColumnDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcColumnDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcColumnDOList entity object list
      * @return List<McColumnRespDTO>
      */
      List<McColumnRespVO> convertToRespVOList(List<McColumnDO> mcColumnDOList);

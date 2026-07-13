@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.ai.service.chat.IAiChatMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * ai聊天消息Service业务层处理
+ * ai chat message Service business layer processing
  *
  * @author FXB
  * @date 2026-04-01
@@ -69,19 +69,19 @@ public class AiChatMessageServiceImpl extends ServiceImpl<AiChatMessageMapper, A
 
     @Override
     public int updateAiChatMessage(AiChatMessageSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新ai聊天消息
+        // Update ai chat message
         AiChatMessageDO updateObj = BeanUtils.toBean(updateReqVO, AiChatMessageDO.class);
         return aiChatMessageMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAiChatMessage(Collection<Long> idList) {
-//        //删除所有回复
+// //Delete all replies
 //        aiChatMessageMapper.delete(Wrappers.lambdaUpdate(AiChatMessageDO.class)
 //                .notIn(AiChatMessageDO::getReplyId, idList));
-        // 批量删除ai聊天消息
+        // Delete ai chat messages in batches
         return aiChatMessageMapper.deleteBatchIds(idList);
     }
 
@@ -102,7 +102,7 @@ public class AiChatMessageServiceImpl extends ServiceImpl<AiChatMessageMapper, A
                 .collect(Collectors.toMap(
                         AiChatMessageDO::getId,
                         aiChatMessageDO -> aiChatMessageDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }

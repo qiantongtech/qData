@@ -35,7 +35,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 数据服务类目管理Controller
+ * Data Service Category Management Controller
  *
  * @author qdata
  * @date 2025-03-11
@@ -50,11 +50,11 @@ public class QualityTaskExecutorController extends BaseController {
 
 
     /**
-     * 错误数据分页查询
+     * Error data paging query
      *
      * @param pageNum
      * @param pageSize
-     * @param ruleId   规则id
+     * @param ruleId rule id
      * @param reportId
      * @return
      */
@@ -67,7 +67,7 @@ public class QualityTaskExecutorController extends BaseController {
     }
 
     /**
-     * 修改错误数据
+     * Modify erroneous data
      */
     @PostMapping("/updateErrorData")
     public AjaxResult updateErrorData(@RequestBody CheckErrorDataReqDTO dto) {
@@ -77,7 +77,7 @@ public class QualityTaskExecutorController extends BaseController {
 
 
     /**
-     * 正确数据分页查询
+     * Correct data paging query
      *
      * @return
      */
@@ -87,7 +87,7 @@ public class QualityTaskExecutorController extends BaseController {
     }
 
     /**
-     * 错误数据
+     * Wrong data
      *
      * @return
      */
@@ -112,7 +112,7 @@ public class QualityTaskExecutorController extends BaseController {
 
 
     /**
-     * 用户输入数据校验
+     * User input data verification
      *
      * @return
      */

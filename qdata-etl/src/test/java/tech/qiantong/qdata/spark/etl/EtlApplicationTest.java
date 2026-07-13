@@ -42,10 +42,10 @@ class EtlApplicationTest {
         JSONObject taskInfo = config.getJSONObject("taskInfo");
         String resourceUrl = config.getString("resourceUrl");
 
-        //创建流程实例
+        //Create process instance
         ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);
 
-        //注册spark
+        //Register spark
         SparkConf conf = new SparkConf().setAppName("EtlApplication")
                 .setMaster("local[*]")
                 .set("spark.executor.memory", "6g")
@@ -58,22 +58,22 @@ class EtlApplicationTest {
                 .config(conf)
                 .getOrCreate();
 
-        //读取配置
+        //Read configuration
         JSONObject reader = taskParams.getJSONObject("reader");
-        //参数信息
+        //Parameter information
         JSONObject readParameter = reader.getJSONObject("parameter");
 
-        //输入类型
+        //Input type
         TaskComponentTypeEnum readerComponentType = TaskComponentTypeEnum.findEnumByType(reader.getString("componentType"));
 
-        //输入字段
+        //Input field
         List<String> readerColumns = new ArrayList<>();
 
-        //创建输入节点实例
+        //Create an input node instance
         TaskInstance readerTaskInstance = createTask(processInstance, reader, now, rabbitmq);
         LogUtils.Params readerLogParams = new LogUtils.Params(rabbitmq, readerTaskInstance.getProcessInstanceId(), readerTaskInstance.getId());
 
-        //读取数据集
+        //Read the data set
         Dataset<Row> data;
         try {
             data = ReaderFactory.getReader(readerComponentType.getCode())
@@ -81,7 +81,7 @@ class EtlApplicationTest {
             if (data == null) {
                 LogUtils.writeLog(readerLogParams, "任务失败");
                 updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-                //更新输入节点实例执行失败
+                //Update input node instance execution failed
                 updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                 spark.stop();
                 return;
@@ -89,7 +89,7 @@ class EtlApplicationTest {
         } catch (Exception e) {
             log.error("任务失败", e);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            //更新输入节点实例执行失败
+            //Update input node instance execution failed
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
             LogUtils.writeLog(readerLogParams, "任务失败");
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
@@ -97,25 +97,25 @@ class EtlApplicationTest {
             return;
         }
 
-        //更新输入节点实例执行成功
+        //Update input node instance executed successfully
         updateTask(readerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
         LogUtils.writeLog(readerLogParams, "任务成功");
         LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
 
 //        if (readParameter.containsKey("batchSize")) {
-//            //分批处理
+// //Batch processing
 //            data = data.repartition(readParameter.getInteger("batchSize"));
 //        }
 
         if (taskParams.getJSONArray("transition") != null && taskParams.getJSONArray("transition").size() > 0) {
-            //读取配置
+            //Read configuration
             JSONArray transitionArr = taskParams.getJSONArray("transition");
             for (int i = 0; i < transitionArr.size(); i++) {
                 JSONObject transition = (JSONObject) transitionArr.get(i);
-                //转换类型
+                //Conversion type
                 TaskComponentTypeEnum transitionComponentType = TaskComponentTypeEnum.findEnumByType(transition.getString("componentType"));
 
-                //创建转换节点实例
+                //Create a transformation node instance
                 TaskInstance transitionTaskInstance = createTask(processInstance, transition, now, rabbitmq);
                 LogUtils.Params transitionLogParams = new LogUtils.Params(rabbitmq, transitionTaskInstance.getProcessInstanceId(), transitionTaskInstance.getId());
 
@@ -123,7 +123,7 @@ class EtlApplicationTest {
                     data = TransitionFactory.getTransition(transitionComponentType.getCode())
                             .transition(spark, data, transition, transitionLogParams);
                 } catch (Exception e) {
-                    //更新清洗节点实例执行失败
+                    //Update cleaning node instance execution failed
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
@@ -132,20 +132,20 @@ class EtlApplicationTest {
                     spark.stop();
                     return;
                 }
-                //更新输入节点实例执行成功
+                //Update input node instance executed successfully
                 updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
                 LogUtils.writeLog(transitionLogParams, "任务成功");
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
         }
 
-        //写入配置
+        //Write configuration
         JSONObject writer = taskParams.getJSONObject("writer");
-        //输出类型
+        //Output type
         TaskComponentTypeEnum writerComponentType = TaskComponentTypeEnum.findEnumByType(writer.getString("componentType"));
 
 
-        //创建输出节点实例
+        //Create an output node instance
         TaskInstance writerTaskInstance = createTask(processInstance, writer, now, rabbitmq);
 
         LogUtils.Params writerLogParams = new LogUtils.Params(rabbitmq, writerTaskInstance.getProcessInstanceId(), writerTaskInstance.getId());

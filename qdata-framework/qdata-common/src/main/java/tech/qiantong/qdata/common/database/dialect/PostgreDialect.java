@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Postgre 数据库方言
+ * Postgre database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -69,7 +69,7 @@ public class PostgreDialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbName + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  'public' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -102,7 +102,7 @@ public class PostgreDialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbQueryProperty.getDbName() + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + dbQueryProperty.getSid() + "' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -118,17 +118,17 @@ public class PostgreDialect extends AbstractDbDialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Generate CREATE TABLE statement
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // 转换数据类型为PostgreSQL支持的类型
+                // Convert data types to types supported by PostgreSQL
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // PostgreSQL不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2": // PostgreSQL does not support VARCHAR2, mapping to VARCHAR
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
@@ -151,7 +151,7 @@ public class PostgreDialect extends AbstractDbDialect {
                         sql.append("BIGINT");
                         break;
                     case "TINYINT":
-                        sql.append("SMALLINT"); // PostgreSQL没有TINYINT，使用SMALLINT
+                        sql.append("SMALLINT"); // PostgreSQL does not have TINYINT, use SMALLINT
                         break;
                     case "NUMERIC":
                     case "NUMBER":
@@ -166,7 +166,7 @@ public class PostgreDialect extends AbstractDbDialect {
                         }
                         break;
                     case "FLOAT":
-                        sql.append("REAL"); // PostgreSQL的单精度浮点数
+                        sql.append("REAL"); // PostgreSQL single precision floating point numbers
                         break;
                     case "DOUBLE":
                         sql.append("DOUBLE PRECISION");
@@ -182,16 +182,16 @@ public class PostgreDialect extends AbstractDbDialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Handle unknown types by default
                         break;
                 }
 
-                // 检查是否必填
+                // Check if required
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Default value handling
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -200,7 +200,7 @@ public class PostgreDialect extends AbstractDbDialect {
                     }
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Add the field to the primary key list, if it is a primary key
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -208,17 +208,17 @@ public class PostgreDialect extends AbstractDbDialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Remove final comma and newline
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Add primary key constraints
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Remove final comma and space
                 sql.append(")");
             }
 
@@ -227,14 +227,14 @@ public class PostgreDialect extends AbstractDbDialect {
         }
 
 
-        // 添加表备注
+        // Add table notes
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("COMMENT ON TABLE ").append(tableName).append(" IS '").append(DatabaseUtil.escapeSingleQuotes(tableComment)).append("'\n");
             sqlList.add(sql.toString());
         }
 
-        // 添加字段备注
+        // Add field notes
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -290,17 +290,17 @@ public class PostgreDialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -337,14 +337,14 @@ public class PostgreDialect extends AbstractDbDialect {
         int level =  dbName == null ? 1 : dbName.getLevel()+1;
 
         if (level == 1) {
-            // 第一次请求，列出所有数据库
+            // First request, list all databases
             return "SELECT datname AS DBNAME, 1 AS LVL, 2 AS TOTALLEVELS " +
                     "FROM pg_database " +
                     "WHERE datistemplate = false " +
                     "ORDER BY datname";
         } else if (level == 2) {
-            // 第二次请求，列出指定数据库下所有 schema
-            // 注意：执行前必须连接到该数据库
+            // The second request lists all schemas under the specified database.
+            // Note: You must connect to the database before executing
             return "SELECT nspname AS DBNAME, 2 AS LVL, 2 AS TOTALLEVELS " +
                     "FROM pg_namespace " +
                     "WHERE nspname NOT IN ('pg_catalog','information_schema','pg_toast') " +

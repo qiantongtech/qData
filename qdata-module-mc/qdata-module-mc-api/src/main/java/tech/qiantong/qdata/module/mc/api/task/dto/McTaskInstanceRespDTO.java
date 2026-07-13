@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 采集任务实例 DTO 对象 MC_TASK_INSTANCE
+ * Collection task instance DTO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,61 +18,61 @@ public class McTaskInstanceRespDTO {
     /** ID */
     private Long id;
 
-    /** 来源系统ID */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** 采集任务id */
+    /** Collection task id */
     private Long taskId;
 
-    /** 采集模式 */
+    /** Collection mode */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Collection range */
     private String collectionScope;
 
-    /** 采集表总数量 */
+    /** Total number of collection tables */
     private Long totalCount;
 
-    /** 采集表成功数量 */
+    /** Number of successful collection tables */
     private Long successCount;
 
-    /** 采集表失败数量 */
+    /** Number of failed collection tables */
     private Long failCount;
 
-    /** 失败原因 */
+    /** Reason for failure */
     private String failCause;
 
-    /** 新增数量 */
+    /** New quantity */
     private Long addCount;
 
-    /** 删减数量 */
+    /** Delete quantity */
     private Long delCount;
 
-    /** 变更数量 */
+    /** Change quantity */
     private Long updateCount;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     private Date endTime;
 
-    /** 耗时 */
+    /** Time consuming */
     private Long duration;
 
-    /** 状态 */
+    /** status */
     private String status;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

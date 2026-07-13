@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 采集范围枚举
+ * Collection range enumeration
  *
  * @author qdata
  * @date 2026-04-27
@@ -32,30 +32,30 @@ import lombok.Getter;
 public enum CollectionScopeEnum {
 
     /**
-     * 全部库
+     * All databases
      */
     ALL("2", "全部库"),
 
     /**
-     * 自定义库
+     * Custom library
      */
     CUSTOM("1", "自定义库");
 
     /**
-     * 采集范围值
+     * Collection range value
      */
     private final String scope;
 
     /**
-     * 采集范围名称
+     * Collection range name
      */
     private final String name;
 
     /**
-     * 根据范围值获取枚举
+     * Get enum based on range value
      *
-     * @param scope 范围值
-     * @return 枚举对象
+     * @param scope scope value
+     * @return enumeration object
      */
     public static CollectionScopeEnum getByScope(String scope) {
         if (scope == null) {
@@ -70,20 +70,20 @@ public enum CollectionScopeEnum {
     }
 
     /**
-     * 判断是否为全部库
+     * Determine whether it is all databases
      *
-     * @param scope 范围值
-     * @return 是否为全部库
+     * @param scope scope value
+     * @return whether it is all databases
      */
     public static boolean isAll(String scope) {
         return ALL.getScope().equals(scope);
     }
 
     /**
-     * 判断是否为自定义库
+     * Determine whether it is a custom library
      *
-     * @param scope 范围值
-     * @return 是否为自定义库
+     * @param scope scope value
+     * @return whether it is a custom library
      */
     public static boolean isCustom(String scope) {
         return CUSTOM.getScope().equals(scope);

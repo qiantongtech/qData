@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 服务资源门户部门 DO 对象 RP_DEPT
+ * Service Resource Portal Department DO Object RP_DEPT
  *
  * @author qdata
  * @date 2025-04-18
@@ -36,39 +36,39 @@ public class RpDept extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    /** 部门id */
+    /** Department id */
     private Long deptId;
 
-    /** 父部门id */
+    /** Parent department id */
     private Long parentId;
 
-    /** 祖级列表 */
+    /** Ancestor list */
     private String ancestors;
 
-    /** 部门名称 */
+    /** Department name */
     private String deptName;
     private String deptCode;
     private String deptType;
 
-    /** 显示顺序 */
+    /** Display order */
     private String orderNum;
 
-    /** 负责人 */
+    /** Person in charge */
     private String leader;
 
-    /** 联系电话 */
+    /** Contact number */
     private String phone;
 
-    /** 邮箱 */
+    /** Email */
     private String email;
 
-    /** 部门状态（0正常 1停用） */
+    /** Department status (0 normal 1 disabled) */
     private String status;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

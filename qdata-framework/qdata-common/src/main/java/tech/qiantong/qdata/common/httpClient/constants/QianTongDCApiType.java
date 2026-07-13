@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.httpClient.constants;
 
 /**
- * DolphinScheduler API 类型
+ * DolphinScheduler API Type
  *
  * @author QianTongDC
  * @date 2025-02-14
@@ -28,165 +28,165 @@ public enum QianTongDCApiType {
 
 
     /**
-     * 创建流程定义接口
+     * Create process definition interface
      */
     CREATE_PROCESS_DEFINITION("1", "创建流程定义接口", "/projects/{projectCode}/process-definition", "POST"),
 
     /**
-     * 更新流程定义接口
+     * Update process definition interface
      */
     UPDATE_PROCESS_DEFINITION("2", "更新流程定义接口", "/projects/{projectCode}/process-definition/{code}", "PUT"),
 
     /**
-     * 删除流程定义接口
+     * Delete process definition interface
      */
     DELETE_PROCESS_DEFINITION("3", "通过流程定义ID删除流程定义", "/projects/{projectCode}/process-definition/{code}", "DELETE"),
 
     /**
-     * 分页查询流程定义列表接口
+     * Paging query process definition list interface
      */
     GET_PROCESS_DEFINITION_LIST("4", "分页查询流程定义列表接口", "/projects/{projectCode}/process-definition", "GET"),
 
     /**
-     * 发布流程定义接口
+     * Publish process definition interface
      */
     RELEASE_PROCESS_DEFINITION("5", "发布流程定义接口", "/projects/{projectCode}/process-definition/{code}/release", "POST"),
 
     /**
-     * 批量删除流程定义接口
+     * Batch deletion process definition interface
      */
     BATCH_DELETE_PROCESS_DEFINITION("6", "通过流程定义ID集合批量删除流程定义", "/projects/{projectCode}/process-definition/batch-delete", "POST"),
 
     /**
-     * 移动工作流定义接口
+     * Mobile workflow definition interface
      */
     BATCH_MOVE_PROCESS_DEFINITION("7", "移动工作流定义接口", "/projects/{projectCode}/process-definition/batch-move", "POST"),
 
     /**
-     * 复制工作流定义接口
+     * Copy workflow definition interface
      */
     BATCH_COPY_PROCESS_DEFINITION("8", "复制工作流定义接口", "/projects/{projectCode}/process-definition/batch-copy", "POST"),
 
     /**
-     * 查询流程历史版本信息接口
+     * Query process historical version information interface
      */
     GET_PROCESS_DEFINITION_VERSIONS("9", "查询流程历史版本信息接口", "/projects/{projectCode}/process-definition/{code}/versions", "GET"),
 
     /**
-     * 切换流程版本接口
+     * Switch process version interface
      */
     SWITCH_PROCESS_DEFINITION_VERSION("10", "切换流程版本接口", "/projects/{projectCode}/process-definition/{code}/versions/{version}", "GET"),
 
     /**
-     * 删除流程历史版本接口
+     * Delete process historical version interface
      */
     DELETE_PROCESS_DEFINITION_VERSION("11", "删除流程历史版本接口", "/projects/{projectCode}/process-definition/{code}/versions/{version}", "DELETE"),
 
-    //项目相关接口开始》》》》》》》》》
+    //Project related interface starts》》》》》》》》》
 
     /**
-     * 通过项目ID查询项目信息接口
+     * Query project information interface through project ID
      */
     GET_PROJECT_INFO("12", "通过项目ID查询项目信息接口", "/v2/projects/{code}", "GET"),
 
     /**
-     * 更新项目信息接口
+     * Update project information interface
      */
     UPDATE_PROJECT("13", "更新项目信息接口", "/v2/projects/{code}", "PUT"),
 
     /**
-     * 删除项目接口
+     * Delete project interface
      */
     DELETE_PROJECT("14", "通过ID删除项目接口", "/v2/projects/{code}", "DELETE"),
 
     /**
-     * 创建项目接口
+     * Create project interface
      */
     CREATE_PROJECT("15", "创建项目接口", "/v2/projects", "POST"),
 
-    //项目相关接口结束》》》》》》》》》
+    //Project related interface ended》》》》》》》》》
     /**
-     * 查询指定用户的access token接口
+     * Query the access token interface of the specified user
      */
     GET_USER_ACCESS_TOKEN("16", "查询指定用户的access token接口", "/access-tokens/user/{userId}", "GET"),
 
     /**
-     * 更新定时接口
+     * Update timing interface
      */
     UPDATE_SCHEDULE("17", "更新定时接口", "/projects/{projectCode}/schedules/{id}", "PUT"),
 
     /**
-     * 删除定时接口
+     * Delete timing interface
      */
     DELETE_SCHEDULE("18", "根据定时id删除定时数据接口", "/projects/{projectCode}/schedules/{id}", "DELETE"),
 
     /**
-     * 创建定时接口
+     * Create a timing interface
      */
     CREATE_SCHEDULE("19", "创建定时接口", "/projects/{projectCode}/schedules", "POST"),
 
     /**
-     * 定时上线接口
+     * Scheduled online interface
      */
     SCHEDULE_ONLINE("20", "定时上线接口", "/projects/{projectCode}/schedules/{id}/online", "POST"),
 
     /**
-     * 定时下线接口
+     * Scheduled offline interface
      */
     SCHEDULE_OFFLINE("21", "定时下线接口", "/projects/{projectCode}/schedules/{id}/offline", "POST"),
 
     /**
-     * 定时调度预览接口
+     * Scheduled scheduling preview interface
      */
     SCHEDULE_PREVIEW("22", "定时调度预览接口", "/projects/{projectCode}/schedules/preview", "POST"),
 
     /**
-     * 查询流程实例列表接口
+     * Query process instance list interface
      */
     GET_PROCESS_INSTANCE_LIST("23", "查询流程实例列表接口", "/projects/{projectCode}/process-instances", "GET"),
 
     /**
-     * 通过流程实例ID查询流程实例接口
+     * Query the process instance interface by process instance ID
      */
     GET_PROCESS_INSTANCE_BY_ID("24", "通过流程实例ID查询流程实例接口", "/projects/{projectCode}/process-instances/{id}", "GET"),
 
     /**
-     * 分页查询任务实例列表接口
+     * Paged query task instance list interface
      */
     GET_TASK_INSTANCE_LIST("25", "分页查询任务实例列表接口", "/projects/{projectCode}/task-instances", "GET"),
 
     /**
-     * 查询任务实例日志接口
+     * Query task instance log interface
      */
     GET_TASK_INSTANCE_LOG("26", "查询任务实例日志接口", "/log/detail", "GET"),
 
     /**
-     * 下载任务实例日志接口
+     * Download task instance log interface
      */
     DOWNLOAD_TASK_INSTANCE_LOG("27", "下载任务实例日志接口", "/log/download-log", "GET"),
 
-    //任务定义相关接口开始
+    //Task definition related interface starts
 
     /**
-     * 生成任务编码接口
+     * Generate task coding interface
      */
     GEN_TASK_DEFINITION_CODES("28", "分页查询任务实例列表接口", "/v2/tasks/gen-task-codes", "GET"),
 
-    //任务定义相关接口接受结束》》》》》》》》》
+    //Task definition related interface acceptance ends》》》》》》》》》
 
     /**
-     * 根据流程编码获取调度调度信息
+     * Obtain scheduling information based on process coding
      */
     GET_SCHEDULE_BY_PROCESS_CODE("29", "根据流程编码获取调度调度信息", "/projects/{projectCode}/schedules/getByProcessDefinitionCode/{code}", "GET"),
 
 
     /**
-     * 手动启动流程
+     * Manually start the process
      */
     POST_START_PROCESS("30", "手动启动流程", "/projects/{projectCode}/executors/start-process-instance", "POST"),
 
     /**
-     * 执行流程实例
+     * Execution process instance
      */
     POST_EXECUTORS_EXECUTE("31", "执行流程实例", "/projects/{projectCode}/executors/execute", "POST"),
 
@@ -195,22 +195,22 @@ public enum QianTongDCApiType {
     ;
 
     /**
-     * API 类型的编号
+     * API type number
      */
     private final String apiId;
 
     /**
-     * 描述
+     * Description
      */
     private final String description;
 
     /**
-     * URL 路径
+     * URL path
      */
     private final String url;
 
     /**
-     * HTTP 请求方法
+     * HTTP request method
      */
     private final String method;
 
@@ -238,10 +238,10 @@ public enum QianTongDCApiType {
     }
 
     /**
-     * 获取 API 类型
+     * Get API type
      *
-     * @param apiId API 类型字符串
-     * @return 对应的 ApiType 枚举
+     * @param apiId API type string
+     * @return corresponding ApiType enumeration
      */
     public static QianTongDCApiType getApiType(String apiId) {
         for (QianTongDCApiType type : QianTongDCApiType.values()) {

@@ -24,14 +24,14 @@ import tech.qiantong.qdata.common.core.page.TableSupport;
 import tech.qiantong.qdata.common.utils.sql.SqlUtil;
 
 /**
- * 分页工具类
+ * Paging tool class
  *
  * @author qdata
  */
 public class PageUtils extends PageHelper
 {
     /**
-     * 设置请求分页数据
+     * Set request paging data
      */
     public static void startPage()
     {
@@ -44,7 +44,7 @@ public class PageUtils extends PageHelper
     }
 
     /**
-     * 清理分页的线程变量
+     * Clean up paged thread variables
      */
     public static void clearPage()
     {

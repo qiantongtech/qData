@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -41,11 +41,11 @@ public enum ChatMessageTypeEnum {
     ERROR("500", "报错异常");
 
     /**
-     * 类型
+     * Type
      */
     private final String type;
     /**
-     * 名称
+     * Name
      */
     private final String name;
 

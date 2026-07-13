@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.user;
 
 /**
- * 黑名单IP异常类
+ * Blacklist IP exception class
  *
  * @author qdata
  */

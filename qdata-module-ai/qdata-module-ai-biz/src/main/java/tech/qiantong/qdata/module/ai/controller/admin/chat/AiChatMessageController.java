@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatMessageDO;
 import tech.qiantong.qdata.module.ai.service.chat.IAiChatMessageService;
 
 /**
- * ai聊天消息Controller
+ * ai chat message controller
  *
  * @author FXB
  * @date 2026-04-01

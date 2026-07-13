@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 采集任务Service接口
+ * Collection task service interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -23,82 +23,82 @@ import java.util.Map;
 public interface IMcTaskService extends IService<McTaskDO> {
 
     /**
-     * 获得采集任务分页列表
+     * Get a paginated list of collection tasks
      *
-     * @param pageReqVO 分页请求
-     * @return 采集任务分页列表
+     * @param pageReqVO paging request
+     * @return Paginated list of collection tasks
      */
     PageResult<McTaskDO> getMcTaskPage(McTaskPageReqVO pageReqVO);
 
     /**
-     * 创建采集任务
+     * Create a collection task
      *
-     * @param createReqVO 采集任务信息
-     * @return 采集任务编号
+     * @param createReqVO collect task information
+     * @return collection task number
      */
     Long createMcTask(McTaskSaveReqVO createReqVO);
 
     /**
-     * 更新采集任务
+     * Update collection tasks
      *
-     * @param updateReqVO 采集任务信息
+     * @param updateReqVO collect task information
      */
     int updateMcTask(McTaskSaveReqVO updateReqVO);
 
     /**
-     * 删除采集任务
+     * Delete collection task
      *
-     * @param idList 采集任务编号
+     * @param idList collection task number
      */
     int removeMcTask(Collection<Long> idList);
 
     /**
-     * 获得采集任务详情
+     * Get collection task details
      *
-     * @param id 采集任务编号
-     * @return 采集任务
+     * @param id collection task number
+     * @return collection task
      */
     McTaskDO getMcTaskById(Long id);
     McTaskRespVO getMcTaskByIdNew(Long id);
 
     /**
-     * 获得全部采集任务列表
+     * Get a list of all collection tasks
      *
-     * @return 采集任务列表
+     * @return Collection task list
      */
     List<McTaskDO> getMcTaskList();
 
     /**
-     * 获得全部采集任务 Map
+     * Get all collection task maps
      *
-     * @return 采集任务 Map
+     * @return Collection task Map
      */
     Map<Long, McTaskDO> getMcTaskMap();
 
 
     /**
-     * 导入采集任务数据
+     * Import collection task data
      *
-     * @param importExcelList 采集任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList collection task data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importMcTask(List<McTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
 
     /**
-     * 定时任务触发
+     * Scheduled task trigger
      * @param taskId
      * @return
      */
     boolean runDaDiscoveryTask(Long taskId);
 
     /**
-     * 获取实时采集范围
+     * Get real-time collection range
      *
-     * @param id 数据源id
-     * @return 实时采集范围列表
+     * @param id data source id
+     * @return real-time collection range list
      */
     List<McTaskScopeDO> getRealtimeMcTaskScopeList(Long id);
 
@@ -111,12 +111,12 @@ public interface IMcTaskService extends IService<McTaskDO> {
     Map<String, Object> runJobOnce(McTaskSaveReqVO mcTask);
 
     /**
-     * 获取来源系统树形结构
-     * 一级: 来源系统
-     * 二级: 数据源
-     * 三级: 数据库(根据采集模式展示)
+     * Get the source system tree structure
+     * Level 1: Source System
+     * Level 2: Data source
+     * Level 3: Database (displayed according to collection mode)
      *
-     * @return 树形结构列表
+     * @return tree structure list
      */
     List<McTaskSourceTreeRespVO> getSourceSystemTree();
 }

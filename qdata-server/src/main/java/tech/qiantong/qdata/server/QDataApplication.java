@@ -29,7 +29,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
 /**
- * 启动程序
+ * Start the program
  *
  * @author qdata
  */
@@ -38,7 +38,7 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 @ServletComponentScan(basePackages = {"tech.qiantong"})
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @EnableNeo4jRepositories(basePackages = "tech.qiantong.qdata.neo4j.repository")
-@EntityScan(basePackages = "tech.qiantong.qdata.neo4j.node")   // 节点/关系实
+@EntityScan(basePackages = "tech.qiantong.qdata.neo4j.node")   // Node/relationship
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class QDataApplication
 {

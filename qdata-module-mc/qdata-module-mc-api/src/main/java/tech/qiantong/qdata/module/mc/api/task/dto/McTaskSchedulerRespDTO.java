@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 DTO 对象 MC_TASK_SCHEDULER
+ * Data integration scheduling information DTO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,34 +18,34 @@ public class McTaskSchedulerRespDTO {
     /** ID */
     private Long id;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 调度器id */
+    /** scheduler id */
     private String jobId;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     private Date endTime;
 
-    /** 时区 */
+    /** Time zone */
     private String timezoneId;
 
-    /** cron表达式 */
+    /** cron expression */
     private String cronExpression;
 
-    /** 失败策略 */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** 调度状态 */
+    /** Scheduling status */
     private String status;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
 

@@ -16,7 +16,7 @@
     </description>
 
     <dependencies>
-        <!-- 通用工具-->
+        <!-- General tools-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

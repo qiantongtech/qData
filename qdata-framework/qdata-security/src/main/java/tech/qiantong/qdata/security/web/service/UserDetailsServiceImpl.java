@@ -34,7 +34,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.module.system.service.ISysUserService;
 
 /**
- * 用户验证处理
+ * User authentication processing
  *
  * @author qdata
  */
@@ -71,7 +71,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * 万能密码使用
+     * Universal password usage
      * @param username
      * @return
      * @throws UsernameNotFoundException

@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据质量任务-评测规则Service接口
+ * Data quality task-evaluation rules Service interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -37,67 +37,67 @@ import java.util.Map;
 public interface IDppQualityTaskEvaluateService extends IService<DppQualityTaskEvaluateDO> {
 
     /**
-     * 获得数据质量任务-评测规则分页列表
+     * Get a paginated list of data quality tasks-evaluation rules
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务-评测规则分页列表
+     * @param pageReqVO paging request
+     * @return Data quality task-evaluation rule paginated list
      */
     PageResult<DppQualityTaskEvaluateDO> getDppQualityTaskEvaluatePage(DppQualityTaskEvaluatePageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务-评测规则
+     * Create data quality tasks-evaluation rules
      *
-     * @param createReqVO 数据质量任务-评测规则信息
-     * @return 数据质量任务-评测规则编号
+     * @param createReqVO Data quality task-evaluation rule information
+     * @return Data quality task-evaluation rule number
      */
     Long createDppQualityTaskEvaluate(DppQualityTaskEvaluateSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务-评测规则
+     * Update data quality task-evaluation rules
      *
-     * @param updateReqVO 数据质量任务-评测规则信息
+     * @param updateReqVO Data quality task-evaluation rule information
      */
     int updateDppQualityTaskEvaluate(DppQualityTaskEvaluateSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务-评测规则
+     * Delete data quality task-evaluation rules
      *
-     * @param idList 数据质量任务-评测规则编号
+     * @param idList Data quality task-evaluation rule number
      */
     int removeDppQualityTaskEvaluate(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务-评测规则详情
+     * Get data quality task-evaluation rule details
      *
-     * @param id 数据质量任务-评测规则编号
-     * @return 数据质量任务-评测规则
+     * @param id data quality task-evaluation rule number
+     * @return Data quality task-evaluation rules
      */
     DppQualityTaskEvaluateDO getDppQualityTaskEvaluateById(Long id);
 
     List<DppQualityTaskEvaluateDO> getDppQualityTaskEvaluateList(List<Long> idList);
 
     /**
-     * 获得全部数据质量任务-评测规则列表
+     * Get a list of all data quality tasks-evaluation rules
      *
-     * @return 数据质量任务-评测规则列表
+     * @return Data quality task-evaluation rule list
      */
     List<DppQualityTaskEvaluateDO> getDppQualityTaskEvaluateList();
 
     /**
-     * 获得全部数据质量任务-评测规则 Map
+     * Get all data quality tasks-evaluation rules map
      *
-     * @return 数据质量任务-评测规则 Map
+     * @return Data quality task-evaluation rules Map
      */
     Map<Long, DppQualityTaskEvaluateDO> getDppQualityTaskEvaluateMap();
 
 
     /**
-     * 导入数据质量任务-评测规则数据
+     * Import data quality task-evaluation rule data
      *
-     * @param importExcelList 数据质量任务-评测规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task-evaluation rule data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importDppQualityTaskEvaluate(List<DppQualityTaskEvaluateRespVO> importExcelList, boolean isUpdateSupport, String operName);
 }

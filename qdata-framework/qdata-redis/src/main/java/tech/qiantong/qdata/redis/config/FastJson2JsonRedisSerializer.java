@@ -29,7 +29,7 @@ import tech.qiantong.qdata.redis.constant.Constants;
 import java.nio.charset.Charset;
 
 /**
- * Redis使用FastJson序列化
+ * Redis serializes using FastJson
  *
  * @author qdata
  */

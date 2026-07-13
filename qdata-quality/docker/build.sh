@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# 创建 builder（关键一步）
+# Create builder (key step)
 docker buildx create \
   --name qdata-builder \
   --driver docker-container \
   --use
 
-# 启动 builder（加载 QEMU 等）
+# Start builder (load QEMU, etc.)
 docker buildx inspect --bootstrap
 
-# 构建 AMD64（x86_64）版本
-cd /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 路径改成你自己的路径
+# Build AMD64 (x86_64) version
+cd /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # Change the path to your own path
 
 docker buildx build \
   --platform linux/amd64 \
@@ -18,24 +18,24 @@ docker buildx build \
   -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.5.4 \
   --file=docker/Dockerfile \
   --load \
-  /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 上下文路径改成你自己的路径
+  /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # Change the context path to your own path
 
-# 构建 ARM64（适配鲲鹏、飞腾、树莓派等 ARM 服务器）
+# Build ARM64 (adapted to Kunpeng, Feiteng, Raspberry Pi and other ARM servers)
 docker buildx build \
   --platform linux/arm64 \
   --no-cache \
   -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.5.4 \
   --file=docker/Dockerfile \
   --load \
-  /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # 上下文路径改成你自己的路径
+  /mnt/c/Users/Ming/Desktop/qData/qdata-quality-ce # Change the context path to your own path
 
-# 检查是否支持 ARM64
+# Check if ARM64 is supported
 docker inspect crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-quality-ce:1.5.4 --format '{{.Architecture}}'
 
-# 删掉之前建的 builder（可选但建议，保持干净）
+# Delete the previously built builder (optional but recommended, keep it clean)
 docker buildx rm qdata-builder
 
-# 启动新容器
+# Start new container
 docker run -d \
   --name qdata-quality-ce \
   -p 8083:8083 \

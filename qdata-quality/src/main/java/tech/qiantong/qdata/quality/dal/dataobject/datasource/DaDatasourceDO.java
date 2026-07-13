@@ -24,14 +24,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 
 /**
- * 数据源 DO 对象 DA_DATASOURCE
+ * Data source DO object DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DA_DATASOURCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("DA_DATASOURCE_seq")
 @Builder
 @NoArgsConstructor
@@ -45,42 +45,42 @@ public class DaDatasourceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据源名称 */
+    /** Data source name */
     private String datasourceName;
 
-    /** 数据源类型 */
+    /** Data source type */
     private String datasourceType;
 
-    /** 数据源配置(json字符串) */
+    /** Data source configuration (json string) */
     private String datasourceConfig;
 
-    /** 项目名称 */
+    /** Project name */
     @TableField(exist = false)
     private String projectName;
 
-    /** 是否是管理员分配给数据研发 */
+    /** Whether the administrator is assigned to data research and development */
     @TableField(exist = false)
     private Boolean isAdminAddTo;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port number */
     private Long port;
 
-    /** 数据库表数（预留） */
+    /** Number of database tables (reserved) */
     private Long listCount;
 
-    /** 同步记录数（预留） */
+    /** Number of synchronized records (reserved) */
     private Long syncCount;
 
-    /** 同步数据量大小（预留） */
+    /** Synchronization data size (reserved) */
     private Long dataSize;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
     @TableLogic

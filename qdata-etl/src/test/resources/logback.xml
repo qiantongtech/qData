@@ -18,21 +18,21 @@
 -->
 
 <configuration>
-    <!-- 日志存放路径 -->
+    <!-- Log storage path -->
     <property name="log.path" value="logs" />
-    <!-- 日志输出格式 -->
+    <!-- Log output format -->
     <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
 
-    <!-- 控制台输出 -->
+    <!-- Console output -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
     </appender>
 
-    <!-- 系统模块日志级别控制  -->
+    <!-- System module log level control  -->
     <logger name="tech.qiantong.qMes" level="info" />
-    <!-- Spring日志级别控制  -->
+    <!-- Spring log level control  -->
     <logger name="org.springframework" level="warn" />
 
     <root level="info">

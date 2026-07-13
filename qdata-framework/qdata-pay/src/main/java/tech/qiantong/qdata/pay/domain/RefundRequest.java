@@ -21,8 +21,8 @@ package tech.qiantong.qdata.pay.domain;
 import lombok.Data;
 
 /**
- * 类表示退款请求的数据。
- * 该类包含发起退款操作所需的所有信息。
+ * Class represents the data for a refund request.
+ * This class contains all the information needed to initiate a refund operation.
  *
  * @author qdata
  */
@@ -30,20 +30,20 @@ import lombok.Data;
 public class RefundRequest {
 
     /**
-     * 商户系统中的订单唯一标识符。
-     * 用于标识需要退款的订单。
+     * The order's unique identifier in the merchant's system.
+     * Used to identify orders that require refunds.
      */
     private String orderId;
 
     /**
-     * 退款金额，以货币的最小单位表示（例如人民币的分）。
-     * 通常退款金额不应超过原支付金额。
+     * Refund amount, expressed in the smallest unit of currency (for example, RMB cents).
+     * Normally the refund amount should not exceed the original payment amount.
      */
     private long amount;
 
     /**
-     * 支付方式，例如支付宝（ALIPAY）或微信支付（WECHAT）。
-     * 用于指定通过哪个支付网关处理退款。
+     * Payment method, such as Alipay (ALIPAY) or WeChat Pay (WECHAT).
+     * Used to specify which payment gateway to process refunds through.
      */
     private PaymentType paymentType;
 }

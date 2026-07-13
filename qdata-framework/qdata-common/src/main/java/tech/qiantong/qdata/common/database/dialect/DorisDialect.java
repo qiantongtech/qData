@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * DORIS 数据库方言
+ * DORIS database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class DorisDialect extends AbstractDbDialect {
 
 
-    // 定义一个包含常见DORIS保留关键字的集合（全部转换为大写便于比较）
+    // Define a set containing common DORIS reserved keywords (all converted to uppercase for easier comparison)
     private static final String[] DORIS_RESERVED_WORDS = {
             "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
             "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
@@ -149,7 +149,7 @@ public class DorisDialect extends AbstractDbDialect {
 
             sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
 
-            // 映射 Doris 支持的数据类型
+            // Mapping the data types supported by Doris
             switch (columnType.toUpperCase()) {
                 case "VARCHAR":
                 case "VARCHAR2":
@@ -198,7 +198,7 @@ public class DorisDialect extends AbstractDbDialect {
                     sql.append("DATETIME");
                     break;
                 default:
-                    sql.append("VARCHAR(255)"); // fallback 处理
+                    sql.append("VARCHAR(255)"); // fallback processing
                     break;
             }
 
@@ -207,18 +207,18 @@ public class DorisDialect extends AbstractDbDialect {
                 sql.append(" NOT NULL");
             }
 
-            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1); // 获取当前已拼接的数据类型
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1); // Get the currently spliced data type
             String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
             sql.append(defaultClause);
 
 //
-//            // 默认值（Doris 不允许函数类默认值）
+// //Default value (Doris does not allow function class default values)
 //            if (StringUtils.isNotEmpty(column.getDataDefault()) &&
 //                    column.getDataDefault().matches("^[0-9'.-]+$")) {
 //                sql.append(" DEFAULT ").append(column.getDataDefault());
 //            }
 
-            // 注释
+            // Comment
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
             }
@@ -230,11 +230,11 @@ public class DorisDialect extends AbstractDbDialect {
             sql.append(",\n");
         }
 
-        // 去掉最后一个逗号
+        // Remove the last comma
         sql.setLength(sql.length() - 2);
         sql.append("\n)");
 
-        // Doris 必须指定 KEY 类型
+        // Doris must specify the KEY type
         if (!primaryKeys.isEmpty()) {
             sql.append("\nUNIQUE KEY (");
             for (String pk : primaryKeys) {
@@ -243,20 +243,20 @@ public class DorisDialect extends AbstractDbDialect {
             sql.setLength(sql.length() - 2);
             sql.append(")");
         } else {
-            // 无主键则用第一列作 DUPLICATE KEY
+            // If there is no primary key, use the first column as DUPLICATE KEY
             sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
         }
 
-        // 分桶策略（必需）
+        // Bucketing strategy (required)
         sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
 
-        // 表属性（含表注释）
+        // Table properties (including table comments)
         sql.append("\nPROPERTIES (\n");
         sql.append("  \"replication_num\" = \"1\"");
         sql.append("\n)");
 
         sqlList.add(sql.toString());
-        //表注释
+        //Table annotation
         sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
         return sqlList;
     }
@@ -276,7 +276,7 @@ public class DorisDialect extends AbstractDbDialect {
 
             sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
 
-            // 映射 Doris 支持的数据类型
+            // Mapping the data types supported by Doris
             switch (columnType.toUpperCase()) {
                 case "VARCHAR":
                 case "VARCHAR2":
@@ -323,7 +323,7 @@ public class DorisDialect extends AbstractDbDialect {
                     sql.append("DATETIME");
                     break;
                 default:
-                    sql.append("VARCHAR(255)"); // fallback 处理
+                    sql.append("VARCHAR(255)"); // fallback processing
                     break;
             }
 
@@ -332,11 +332,11 @@ public class DorisDialect extends AbstractDbDialect {
                 sql.append(" NOT NULL");
             }
 
-            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1); // 获取当前已拼接的数据类型
+            String columnTypeResolved = sql.substring(sql.lastIndexOf(" ") + 1); // Get the currently spliced data type
             String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
             sql.append(defaultClause);
 
-            // 注释
+            // Comment
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
             }
@@ -348,11 +348,11 @@ public class DorisDialect extends AbstractDbDialect {
             sql.append(",\n");
         }
 
-        // 去掉最后一个逗号
+        // Remove the last comma
         sql.setLength(sql.length() - 2);
         sql.append("\n)");
 
-        // Doris 必须指定 KEY 类型
+        // Doris must specify the KEY type
         if (!primaryKeys.isEmpty()) {
             sql.append("\nUNIQUE KEY (");
             for (String pk : primaryKeys) {
@@ -361,38 +361,38 @@ public class DorisDialect extends AbstractDbDialect {
             sql.setLength(sql.length() - 2);
             sql.append(")");
         } else {
-            // 无主键则用第一列作 DUPLICATE KEY
+            // If there is no primary key, use the first column as DUPLICATE KEY
             sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
         }
 
-        //判断是否添加分区
+        //Determine whether to add a partition
         if (StringUtils.isNotBlank(partitionRule)) {
             sql.append("\n").append(partitionRule);
         }
 
-        // 分桶策略（必需）
+        // Bucketing strategy (required)
         if (StringUtils.isBlank(bucketRule)) {
             sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
         } else {
             sql.append("\n").append(bucketRule);
         }
 
-        // 表属性（含表注释）
+        // Table properties (including table comments)
         sql.append("\nPROPERTIES (\n");
         sql.append("  \"replication_num\" = \"" + replica + "\"");
         sql.append("\n)");
         sqlList.add(sql.toString());
-        //表注释
+        //Table annotation
         sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
         return sqlList;
     }
 
     /**
-     * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
+     * Construct a legal DEFAULT clause for Doris (only legal literals are allowed to prevent table creation failure)
      *
-     * @param dataType     字段类型，如 VARCHAR、INT、DECIMAL(10,2) 等
-     * @param defaultValue 默认值，如 'abc'、0、1.23 等
-     * @return 若合法则返回 DEFAULT xxx 子句，否则返回空字符串
+     * @param dataType field type, such as VARCHAR, INT, DECIMAL(10,2), etc.
+     * @param defaultValue default value, such as 'abc', 0, 1.23, etc.
+     * @return If legal, return the DEFAULT xxx clause, otherwise return an empty string
      */
     public static String buildDorisDefaultClause(String dataType, String defaultValue) {
         if (StringUtils.isBlank(defaultValue) || StringUtils.isBlank(dataType)) {
@@ -405,18 +405,18 @@ public class DorisDialect extends AbstractDbDialect {
         boolean isNumeric = def.matches("^-?\\d+(\\.\\d+)?$");
         boolean isQuoted = def.matches("^'.*'$");
 
-        // CHAR / VARCHAR 必须用引号包裹字符串默认值
+        // CHAR / VARCHAR string default values must be wrapped in quotes
         if (type.contains("CHAR") || type.contains("TEXT")) {
-            // 没有引号就加上
+            // Add without quotation marks
             if (!isQuoted && isNumeric) {
                 return " DEFAULT '" + def + "'";
             } else if (isQuoted) {
                 return " DEFAULT " + def;
             }
-            return ""; // 其他不合法情况过滤掉
+            return ""; // Other illegal situations are filtered out
         }
 
-        // 数值类型禁止 DEFAULT
+        // Numeric type prohibition DEFAULT
         if (type.matches(".*(INT|BIGINT|TINYINT|DECIMAL|FLOAT|DOUBLE).*")) {
             return "";
         }
@@ -445,20 +445,20 @@ public class DorisDialect extends AbstractDbDialect {
     public static String generateColumnSQLDORIS(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
         StringBuilder sql = new StringBuilder(columnType);
 
-        // 仅当是需要长度和小数位数的类型时，才处理长度
+        // Handle length only if it is a type that requires length and number of decimal places
         if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
             if (StringUtils.isNotEmpty(columnLength)) {
                 int length = Integer.parseInt(columnLength);
-                // 限制长度不超过最大长度
+                // Limit the length to no more than the maximum length
                 if (length > maxLength) {
                     length = maxLength;
                 }
                 sql.append("(").append(length);
 
-                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                // If the column type is DECIMAL and the number of decimal places is provided, append the decimal places
                 if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
                     int scale = Integer.parseInt(columnScale);
-                    // 限制小数位数不超过最大值
+                    // Limit the number of decimal places to the maximum
                     if (scale > maxScale) {
                         scale = maxScale;
                     }
@@ -480,16 +480,16 @@ public class DorisDialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(column -> escapeReservedKeyword(column.getColName()))
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + tableName;
     }
 
@@ -508,7 +508,7 @@ public class DorisDialect extends AbstractDbDialect {
     @Override
     public String getDbName(DbName req) {
         int level = req == null ? 1 : req.getLevel() + 1;
-        // Doris 默认只有 Database 层，总层级=1
+        // Doris only has the Database layer by default, and the total level is 1
         if (level == 1) {
             return "SHOW DATABASES";
         }
@@ -518,7 +518,7 @@ public class DorisDialect extends AbstractDbDialect {
     @Override
     public RowMapper<DbName> firstLevelMapper(int level) {
         return (rs, i) -> DbName.builder()
-                .dbName(rs.getString(1))  // Doris 的第一列就是 Database 名
+                .dbName(rs.getString(1))  // The first column of Doris is the Database name
                 .level(1)
                 .totalLevels(1)
                 .build();

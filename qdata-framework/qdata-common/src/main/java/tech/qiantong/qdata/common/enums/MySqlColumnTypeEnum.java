@@ -22,7 +22,7 @@ import lombok.Getter;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 
 /**
- * MySQL数据库字段类型枚举
+ * MySQL database field type enumeration
  */
 @Getter
 public enum MySqlColumnTypeEnum {
@@ -57,7 +57,7 @@ public enum MySqlColumnTypeEnum {
     }
 
     /**
-     * 将MySQL类型转换为达梦类型
+     * Convert MySQL type to Damon type
      */
     public static String convertToDmType(String type) {
         String mysqlType = MD5Util.convertIfLowercase(type);
@@ -68,6 +68,6 @@ public enum MySqlColumnTypeEnum {
             }
         }
         return mysqlType;
-//        return DmColumnTypeEnum.VARCHAR.getType(); // 默认转为VARCHAR
+// return DmColumnTypeEnum.VARCHAR.getType(); // Convert to VARCHAR by default
     }
 }

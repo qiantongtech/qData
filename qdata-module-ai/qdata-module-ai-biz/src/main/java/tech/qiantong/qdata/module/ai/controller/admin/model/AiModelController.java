@@ -49,7 +49,7 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 import tech.qiantong.qdata.module.ai.service.model.IAiModelService;
 
 /**
- * 模型管理Controller
+ * Model ManagementController
  *
  * @author FXB
  * @date 2026-04-01

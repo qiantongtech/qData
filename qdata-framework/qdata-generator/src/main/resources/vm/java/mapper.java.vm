@@ -32,7 +32,7 @@ import ${packageName}.domain.${subClassName};
 #end
 
 /**
- * ${functionName}Mapper接口
+ * ${functionName}Mapper interface
  *
  * @author ${author}
  * @date ${datetime}
@@ -40,10 +40,10 @@ import ${packageName}.domain.${subClassName};
 public interface ${ClassName}Mapper extends BaseMapperX<${ClassName}DO> {
 
     default PageResult<${ClassName}DO> selectPage(${ClassName}PageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<${ClassName}DO>()
                 #foreach($column in $columns)
                 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -88,9 +88,9 @@ public interface ${ClassName}Mapper extends BaseMapperX<${ClassName}DO> {
                 #end
                 #end
 ##                .betweenIfPresent(${ClassName}DO::getCreateTime,reqVO.getParams().get("beginCreateTime"), reqVO.getParams().get("endCreateTime"))
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(${ClassName}DO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

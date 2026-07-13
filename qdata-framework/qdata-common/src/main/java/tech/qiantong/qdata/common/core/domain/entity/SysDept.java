@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 部门表 sys_dept
+ * Department table sys_dept
  *
  * @author qdata
  */
@@ -38,40 +38,40 @@ public class SysDept extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 部门ID */
+    /** Department ID */
     private Long deptId;
 
-    /** 父部门ID */
+    /** Parent department ID */
     private Long parentId;
 
-    /** 祖级列表 */
+    /** Ancestor list */
     private String ancestors;
 
-    /** 部门名称 */
+    /** Department name */
     private String deptName;
 
-    /** 显示顺序 */
+    /** Display order */
     private Integer orderNum;
 
-    /** 负责人 */
+    /** Person in charge */
     private String leader;
 
-    /** 联系电话 */
+    /** Contact number */
     private String phone;
 
-    /** 邮箱 */
+    /** Email */
     private String email;
 
-    /** 部门状态:0正常,1停用 */
+    /** Department status: 0 normal, 1 disabled */
     private String status;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /** Delete flag (0 represents existence, 2 represents deletion) */
     private String delFlag;
 
-    /** 父部门名称 */
+    /** Parent department name */
     private String parentName;
 
-    /** 子部门 */
+    /** Sub-department */
     private List<SysDept> children = new ArrayList<SysDept>();
 
     public Long getDeptId()

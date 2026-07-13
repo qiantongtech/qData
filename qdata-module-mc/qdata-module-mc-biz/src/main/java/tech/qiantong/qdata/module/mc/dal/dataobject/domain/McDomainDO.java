@@ -5,14 +5,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 业务域 DO 对象 MC_DOMAIN
+ * Business domain DO object MC_DOMAIN
  *
  * @author qdata
  * @date 2026-02-12
  */
 @Data
 @TableName(value = "MC_DOMAIN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_DOMAIN_seq")
 @Builder
 @NoArgsConstructor
@@ -26,26 +26,26 @@ public class McDomainDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 业务名称 */
+    /** Business name */
     private String name;
 
-    /** 关联上级ID */
+    /** Associated superior ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Category sorting */
     private Integer sortOrder;
 
-    /** 层级编码 */
+    /** Hierarchical encoding */
     private String code;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

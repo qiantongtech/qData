@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.database.core.FileInfo;
 import java.util.List;
 
 /**
- * 数据资产-非结构化方言
+ * Data Assets - Unstructured Dialect
  *
  * @author Chaos
  * @date 2025-07-16

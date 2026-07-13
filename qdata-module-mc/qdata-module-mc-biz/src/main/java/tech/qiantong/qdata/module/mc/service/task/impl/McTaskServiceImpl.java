@@ -67,7 +67,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 采集任务Service业务层处理
+ * Collection task Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -98,7 +98,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     @Lazy
     private IRedisService redisService;
 
-    //外部api
+    //External api
     @Resource
     @Lazy
     private IMcDbService mcDbService;
@@ -149,10 +149,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return mcTaskDOPageResult;
         }
 
-        // FIXME(用户查询避免循环查询，临时方案)  使用 Map 缓存用户信息,避免重复查询
+        // FIXME (user query to avoid circular query, temporary solution) uses Map to cache user information to avoid repeated queries
         Map<Long, SysUser> userCache = Maps.newHashMap();
         for (McTaskDO row : rows) {
-            // 获取创建人手机号
+            // Get the creator’s mobile phone number
             Long creatorId = row.getCreatorId();
             if (creatorId != null && !userCache.containsKey(creatorId)) {
                 SysUser sysUser = sysUserService.selectUserById(creatorId);
@@ -179,7 +179,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     @Override
     public Long createMcTask(McTaskSaveReqVO createReqVO) {
         daDatasourceApiService.getDatabaseListByDatasourceId(createReqVO.getDatasourceId());
-        // 校验任务是否重复
+        // Verify whether tasks are repeated
         validateDuplicateTask(createReqVO, null);
 
         McTaskDO dictType = BeanUtils.toBean(createReqVO, McTaskDO.class);
@@ -189,19 +189,19 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         mcTaskMapper.insert(dictType);
         Long id = dictType.getId();
 
-        // 创建 DolphinScheduler 任务定义
+        // Create a DolphinScheduler task definition
         String taskCode = mcTaskDolphinSchedulerService.createTaskDefinition(dictType.getName(), id);
 
-        // 先上线任务（DolphinScheduler要求：只有上线的任务才能创建调度器）
+        // Online tasks first (DolphinScheduler requirements: only online tasks can create a scheduler)
         mcTaskDolphinSchedulerService.onlineTask(taskCode);
 
-        // 创建调度器
+        // Create scheduler
         Long schedulerId = mcTaskDolphinSchedulerService.createScheduler(taskCode, dictType.getCronExpression());
 
-        //存储调度信息
+        //Store scheduling information
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
         schedulerSaveReqVO.setJobId(String.valueOf(schedulerId));
-        schedulerSaveReqVO.setTaskCode(taskCode);  // 设置任务编码到调度表
+        schedulerSaveReqVO.setTaskCode(taskCode);  // Set task encoding to schedule
         schedulerSaveReqVO.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         mcTaskSchedulerService.createMcTaskScheduler(schedulerSaveReqVO);
 
@@ -218,32 +218,32 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     @Override
     public int updateMcTask(McTaskSaveReqVO updateReqVO) {
-        // 校验任务是否重复(排除当前任务自身)
+        // Verify whether the task is repeated (excluding the current task itself)
         validateDuplicateTask(updateReqVO, updateReqVO.getId());
 
-        // 1. 更新采集任务
+        // 1. Update collection tasks
         McTaskDO updateObj = BeanUtils.toBean(updateReqVO, McTaskDO.class);
         int rows = mcTaskMapper.updateById(updateObj);
 
-        // 2. 查询调度信息
+        // 2. Query scheduling information
         McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(updateObj.getId());
         if (scheduler != null) {
-            // 3. 只在有变更时才更新
+            // 3. Only update when there are changes
             McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO();
             schedulerSaveReqVO.setId(scheduler.getId());
 
             boolean needUpdate = false;
 
-            // cron 表达式
+            // cron expression
             String cronExpression = updateReqVO.getCronExpression();
             if (StringUtils.isNotEmpty(cronExpression) && !StringUtils.equals(cronExpression, scheduler.getCronExpression())) {
                 schedulerSaveReqVO.setCronExpression(cronExpression);
 
-                // 获取任务编码（从调度表）
+                // Get task encoding (from schedule)
                 String taskCode = scheduler.getTaskCode();
 
                 if (StringUtils.isNotEmpty(taskCode)) {
-                    // 更新 DolphinScheduler 调度器
+                    // Update the DolphinScheduler scheduler
                     Long newSchedulerId = mcTaskDolphinSchedulerService.updateScheduler(
                             Long.parseLong(scheduler.getJobId()), taskCode, cronExpression);
                     schedulerSaveReqVO.setJobId(String.valueOf(newSchedulerId));
@@ -251,14 +251,14 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 needUpdate = true;
             }
 
-            // 调度状态
+            // Scheduling status
             String schedulerStatus = updateReqVO.getSchedulerStatus();
             if (StringUtils.isNotEmpty(schedulerStatus) && !StringUtils.equals(schedulerStatus, scheduler.getStatus())) {
                 schedulerSaveReqVO.setStatus(schedulerStatus);
                 needUpdate = true;
             }
 
-            // 4. 有变化才落库
+            // 4. Store only when there are changes
             if (needUpdate) {
                 mcTaskSchedulerService.updateMcTaskScheduler(schedulerSaveReqVO);
             }
@@ -266,9 +266,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         }
 
         if (StringUtils.equals("1", updateReqVO.getCollectionScope())) {
-            //删除
+            //Delete
             mcTaskScopeService.removeMcTaskScopeBytaskId(updateObj.getId());
-            //新增
+            //New
             List<McTaskScopeSaveReqVO> scopeSaveReqVOS = updateReqVO.getScopeSaveReqVOS();
             for (McTaskScopeSaveReqVO scopeSaveReqVO : scopeSaveReqVOS) {
                 scopeSaveReqVO.setId(null);
@@ -285,7 +285,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(id);
             McTaskDO task = mcTaskMapper.selectById(id);
 
-            // 先下线任务和调度器
+            // Offline tasks and schedulers first
             if (task != null && scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
                 try {
                     Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
@@ -295,7 +295,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                     log.warn("下线任务失败，taskId={}", id, e);
                 }
 
-                // 删除任务
+                // Delete task
                 try {
                     mcTaskDolphinSchedulerService.deleteTask(scheduler.getTaskCode());
                 } catch (Exception e) {
@@ -303,7 +303,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 }
             }
         }
-        // 批量删除采集任务
+        // Delete collection tasks in batches
         return mcTaskMapper.deleteBatchIds(idList);
     }
 
@@ -345,7 +345,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             bean.setCronExpression(scheduler.getCronExpression());
             bean.setSchedulerStatus(scheduler.getStatus());
             bean.setJobId(scheduler.getJobId());
-            bean.setTaskCode(scheduler.getTaskCode());  // 从调度表获取 taskCode
+            bean.setTaskCode(scheduler.getTaskCode());  // Get taskCode from schedule
         }
 
         List<McTaskScopeDO> mcTaskScopeDOS = mcTaskScopeService.getMcTaskScopeListBytaskId(id);
@@ -371,18 +371,18 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     public Map<Long, McTaskDO> getMcTaskMap() {
         List<McTaskDO> mcTaskList = mcTaskMapper.selectList();
         return mcTaskList.stream().collect(Collectors.toMap(McTaskDO::getId, mcTaskDO -> mcTaskDO,
-                // 保留已存在的值
+                // Keep existing values
                 (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入采集任务数据
+     * Import collection task data
      *
-     * @param importExcelList 采集任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList collection task data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTask(List<McTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -512,19 +512,19 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return new HashMap<>();
         }
 
-        // 获取调度器信息
+        // Get scheduler information
         McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
 
         if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
             Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
                     Long.parseLong(scheduler.getJobId()) : null;
 
-            // 下线调度器（禁用定时触发）
+            // Offline scheduler (disable scheduled triggering)
             if (SchedulerStatusEnum.isDisabled(mcTask.getStatus())) {
                 mcTaskDolphinSchedulerService.offlineSchedulerOnly(schedulerId);
             }
 
-            // 上线调度器（启用定时触发）
+            // Online scheduler (enable scheduled triggering)
             if (SchedulerStatusEnum.isEnabled(mcTask.getStatus())) {
                 mcTaskDolphinSchedulerService.onlineSchedulerOnly(schedulerId);
             }
@@ -544,15 +544,15 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         if (!checkTaskRunLock(redisKey)) {
             throw new RuntimeException(MessageUtils.messageEn("mc.error.task.running"));
         }
-        // FIXME 记录用redis解决执行一次的人
+        // FIXME records the person who used redis to solve the problem once
         redisService.set(redisKey + ":creatorId", mcTask.getCreatorId().toString(), 60 * 60 * 12);
         redisService.set(redisKey + ":createBy", mcTask.getCreateBy().toString(), 60 * 60 * 12);
 
         McTaskRespVO mcTaskByIdNew = this.getMcTaskByIdNew(mcTask.getId());
 
-        // 使用 DolphinScheduler 立即执行任务
+        // Use DolphinScheduler to execute tasks immediately
         if (mcTaskByIdNew != null) {
-            // 从调度信息中获取 taskCode
+            // Get taskCode from scheduling information
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
             if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
                 mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
@@ -575,7 +575,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         McTaskInstanceDO instance = createTaskInstance(task);
         Long instanceId = instance.getId();
 
-        // ⚠️ 从这里开始：必须保证日志
+        // ⚠️ Start here: logs must be ensured
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.task.start"));
 
         try {
@@ -615,7 +615,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     }
 
     private String buildRunLockKey(Long taskId) {
-        // 统一前缀，避免与其它模块 key 冲突
+        // Unify the prefix to avoid key conflicts with other modules
         return "mc:task:run:" + taskId;
     }
 
@@ -682,7 +682,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         try {
             mcTaskInstanceLogService.taskInstanceLogAppend(instanceId, taskId, msg);
         } catch (Exception e) {
-            // ⚠️ 日志失败只允许打本地日志，绝不再抛，避免覆盖业务异常
+            // ⚠️ Only local logs are allowed when logging fails, and will never be thrown again to avoid overwriting business exceptions.
             log.error("任务实例日志写入失败 instanceId={}, msg={}", instanceId, msg, e);
         }
     }
@@ -757,7 +757,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     }
 
     /**
-     * 主流程
+     * Main process
      *
      * @param task
      * @param instance
@@ -786,13 +786,13 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.task.params", scopeDesc, task.getDatasourceId(), task.getSourceSystemName(), task.getSourceSystemId()));
 
-        // 1. 根据采集范围，获取“库级”范围
+        // 1. According to the collection range, obtain the "library level" range
         List<McTaskScopeDO> databaseScopes;
         if ("2".equalsIgnoreCase(task.getCollectionScope())) {
-            // 全量：实时从数据源加载数据库
+            // Full volume: Load the database from the data source in real time
             databaseScopes = loadDatabaseScopesFromDatasource(task, instance, datasource);
         } else {
-            // 增量：直接使用任务配置的采集范围
+            // Increment: directly use the collection range configured by the task
             databaseScopes = loadDatabaseScopesFromTask(task, instance);
         }
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.scope.count", databaseScopes.size()));
@@ -802,7 +802,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return null;
         }
 
-        // 2. 库级比对（是否新增 / 变更 / 删除）
+        // 2. Library-level comparison (whether to add/change/delete)
         List<McDbSaveReqVO> dbReqDTOList = compareAndRecordDatabaseScope(task, instance, databaseScopes, datasource);
 
         List<McDbRespVO> mcDbByTaskId = mcDbService.getMcDbByTaskId(taskId);
@@ -821,12 +821,12 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                         StringUtils.defaultIfBlank(blacklist, MessageUtils.messageEn("mc.log.blacklist.empty"))));
 
         int dbIndex = 1;
-        // 3. 循环每个库
+        // 3. Loop through each library
         for (McDbSaveReqVO dbScope : dbReqDTOList) {
             String dbName = dbScope.getDbName();
             safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.db.processing", dbIndex++, databaseScopes.size(), dbName, StringUtils.isNotBlank(dbScope.getSchemaName()) ? ", schema=" + dbScope.getSchemaName() : ""));
 
-            //黑名单
+            //Blacklist
             if (StringUtils.isNotEmpty(blacklist)) {
                 if (isInBlacklist(dbName, blacklist)) {
                     safeLog(instanceId, taskId,
@@ -866,7 +866,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             }
         }
 
-        // 更新负责人、负责部门
+        // Update person in charge and responsible department
         mcTableTxService.runInNewTx(() -> this.updateResponsibleInfoForMetadata(task));
 
         //
@@ -981,7 +981,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     private DbQueryContext createDbQueryForScope(DaDatasourceRespDTO datasource, McDbSaveReqVO dbScope, McTaskRespVO task, McTaskInstanceDO instance) {
         DbQueryProperty property = new DbQueryProperty(datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
 
-        // PG / Kingbase 切库 + schema
+        // PG / Kingbase Cheku + schema
         if (DbType.KINGBASE8.getDb().equals(property.getDbType()) || DbType.POSTGRE_SQL.getDb()
                 .equals(property.getDbType())) {
             property.setDbName(dbScope.getDbName());
@@ -1017,7 +1017,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.db.snapshot", addCount, updateCount, delCount));
 
-        // 1. 表列表（不再建连接）
+        // 1. Table list (no connection will be established)
         List<DbTable> tables = loadTablesByDatabase(dbQuery, task, instance, dbScope);
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.db.tables.loaded", dbScope.getDbName(), tables.size()));
         if (CollectionUtils.isEmpty(tables)) {
@@ -1028,7 +1028,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         totalCount = size + totalCount;
         List<McTableRespVO> tableRespDTOList = getMcTableById(task, instance, dbScope);
 
-        // 2. 表级比对
+        // 2. Table-level comparison
         List<McTableSaveReqVO> mcTables = compareAndRecordTables(task, instance, dbScope, tables);
 
 
@@ -1046,7 +1046,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         List<McColumnSaveReqVO> mcColumnReqDTOList = new ArrayList<>();
         List<Long> updateTableIds = new ArrayList<>();
-        // 3. 表循环
+        // 3. Table loop
         for (McTableSaveReqVO table : mcTables) {
             if (notEmptyBlacklist) {
                 String dbName = dbScope.getDbName();
@@ -1098,18 +1098,18 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             }
         }
 
-        //根据表存储大小之和更新库存储大小
+        //Update library storage size based on sum of table storage sizes
         mcTableTxService.runInNewTx(() -> mcDbMapper.updateStorageSizeById(dbScope.getId()));
-        //根据表的行数之和更新库的数据行数
+        //Update the number of data rows in the database based on the sum of the number of rows in the table
         mcTableTxService.runInNewTx(() -> mcDbMapper.updateDataRowCountById(dbScope.getId()));
 
         if (CollectionUtils.isNotEmpty(mcColumnReqDTOList)) {
             List<McColumnDO> columnDOList = mcTableTxService.runInNewTx(() -> mcColumnService.createMcColumnList(mcColumnReqDTOList));
 
-            //添加字段变更版本日志记录
+            //Add field change version logging
             mcTableTxService.runInNewTx(() -> mcColumnLogService.createMcColumnLog(columnDOList));
         }
-        //更新元数据表的字段数
+        //Update the number of fields in the metadata table
         mcTableTxService.runInNewTx(() -> mcDbMapper.updateColumnCountByDbId(dbScope.getId()));
 
 
@@ -1119,17 +1119,17 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             while (iterator.hasNext()) {
                 McTableRespVO table = iterator.next();
 
-                String dbName = table.getDbName();      // 确认这里字段名
+                String dbName = table.getDbName();      // Confirm this field name
                 String tableName = table.getTableName();
                 String fullName = dbName + "." + tableName;
 
-                // 黑名单判断
+                // Blacklist judgment
                 if (isInBlacklist(fullName, blacklist)) {
                     safeLog(instanceId, taskId,
                             MessageUtils.messageEn("mc.log.db.table.delete.resp", fullName,
                                     StringUtils.defaultIfBlank(blacklist, MessageUtils.messageEn("mc.log.blacklist.empty"))));
 
-                    iterator.remove(); // 安全删除
+                    iterator.remove(); // Safe delete
                 }
             }
         }
@@ -1209,10 +1209,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             table.setId(mcTableId);
             addCount++;
-            //新增的表所有的字段都设置版本为1
+            //All fields in the newly added table are set to version 1
             columnReqDTOS.forEach(columnReqDTO -> columnReqDTO.setVersion(1));
         }
-        //添加表的版本变更记录
+        //Add table version change record
         Long mcTableLogId = mcTableTxService.runInNewTx(() -> mcTableLogService.createMcTableLog(table));
 
         for (McColumnSaveReqVO columnReqDTO : columnReqDTOS) {
@@ -1240,10 +1240,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     private boolean isTableUpdated(McTableSaveReqVO reqTable, McTableRespVO respTable, List<McColumnSaveReqVO> reqColumns, List<McColumnRespVO> respColumns) {
 
-        // 1️⃣ 表注释不一致 → 更新
+        // 1️⃣ Table comments are inconsistent → Update
         boolean result = false;
         StringBuilder updateMsg = new StringBuilder();
-        Set<String> type = new HashSet<>();//变更类型集合
+        Set<String> type = new HashSet<>();//Change type collection
         String reqComment = StringUtils.defaultString(reqTable.getTableComment());
         String respComment = StringUtils.defaultString(respTable.getTableComment());
         if (!reqComment.equals(respComment)) {
@@ -1256,14 +1256,14 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("1");
         }
 
-        // 2️⃣ 字段数量不一致 → 更新
+        // 2️⃣ The number of fields is inconsistent → Update
         int reqSize = reqColumns == null ? 0 : reqColumns.size();
         int respSize = respColumns == null ? 0 : respColumns.size();
         if (reqSize != respSize) {
             result = true;
         }
 
-        // 3️⃣ 构建 respColumns 的 Map（columnName 唯一）
+        // 3️⃣ Build a Map of respColumns (columnName is unique)
         Map<String, McColumnRespVO> respColumnMap = new HashMap<>();
         if (respColumns != null) {
             for (McColumnRespVO respCol : respColumns) {
@@ -1271,13 +1271,13 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             }
         }
         Set<String> addColumnNames = new HashSet<>(), updateColumnNames = new HashSet<>(), deleteColumnNames = new HashSet<>();
-        // 4️⃣ 循环 reqColumns，逐字段判断
+        // 4️⃣ Loop reqColumns and judge field by field
         if (reqColumns != null) {
             for (McColumnSaveReqVO reqCol : reqColumns) {
 
                 McColumnRespVO respCol = respColumnMap.get(reqCol.getColumnName());
 
-                // 字段不存在 → 更新
+                // Field does not exist → update
                 if (respCol == null) {
                     result = true;
                     reqCol.setVersion(1);
@@ -1286,7 +1286,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                     addColumnNames.add(reqCol.getColumnName());
                 }
 
-                // 字段属性不一致 → 更新
+                // Field attributes are inconsistent → Update
                 if (respCol != null && isColumnUpdated(reqCol, respCol)) {
                     result = true;
                     updateColumnNames.add(reqCol.getColumnName());
@@ -1294,7 +1294,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             }
         }
 
-        // 5 检查删除的字段：遍历原有的字段，看是否在新的字段列表中存在
+        // 5 Check the deleted fields: traverse the original fields to see if they exist in the new field list
         if (respColumns != null) {
             for (McColumnRespVO respCol : respColumns) {
                 boolean found = false;
@@ -1346,25 +1346,25 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     private boolean isTableUpdated2(McTableSaveReqVO reqTable, McTableRespVO respTable) {
         boolean result = false;
         StringBuilder updateMsg = new StringBuilder();
-        Set<String> type = new HashSet<>();//变更类型集合
+        Set<String> type = new HashSet<>();//Change type collection
 
-        // 检查索引字段是否有变更、存储大小是否变更  respTables是匹配到的表中的数据
+        // Check whether the index field has changed and whether the storage size has changed. respTables is the data in the matched table.
         McTableDO mcTableDO = BeanUtils.toBean(respTable, McTableDO.class);
-        // 获取表中原来存储的索引字段和存储大小
+        // Get the index fields and storage size originally stored in the table
         String tbIndex = mcTableDO.getTbIndex();
         Integer storageSize = mcTableDO.getStorageSize();
         if (storageSize == null) {
             storageSize = 0;
         }
-        // 获取数据库元数据信息，包括数据库类型
+        // Get database metadata information, including database type
         McDbDO mcDbDO = mcDbMapper.findById(mcTableDO.getDbId());
         if (mcDbDO != null) {
-            // 使用数据库方言获取表的行数、索引、分区字段等信息
+            // Use the database dialect to obtain the number of rows, indexes, partition fields and other information of the table
             DatabaseDialect dialect = DatabaseDialectFactory.getDialect(mcDbDO);
             if (dialect != null) {
-                // 批量获取表元数据信息
+                // Obtain table metadata information in batches
                 DatabaseDialect.TableMetadata metadata = dialect.getTableMetadata(mcDbDO, mcTableDO.getTableName());
-                // 对比索引字段和存储大小
+                // Compare index fields and storage size
                 if (StringUtils.isNotBlank(tbIndex) && !tbIndex.equals(metadata.getIndexes())) {
                     result = true;
                     updateMsg.append("表索引字段变更旧索引：")
@@ -1394,10 +1394,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     private boolean isColumnUpdated(McColumnSaveReqVO req, McColumnRespVO resp) {
 
         StringBuilder updateMsg = new StringBuilder();
-        Set<String> type = new HashSet<>();//变更类型集合
+        Set<String> type = new HashSet<>();//Change type collection
         boolean result = false;
 
-        // 字段注释变更
+        // Field comment changes
         String reqComment = StringUtils.defaultString(req.getColumnComment());
         String respComment = StringUtils.defaultString(resp.getColumnComment());
         if (!reqComment.equals(respComment)) {
@@ -1410,7 +1410,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("1");
         }
 
-        // 字段类型变更
+        // Field type change
         String reqType = StringUtils.defaultString(req.getColumnType());
         String respType = StringUtils.defaultString(resp.getColumnType());
         if (!reqType.equals(respType)) {
@@ -1419,7 +1419,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("2");
         }
 
-        // 字段长度变更
+        // Field length changes
         if (!Objects.equals(req.getColumnLength(), resp.getColumnLength())) {
             result = true;
             updateMsg.append("字段长度变更旧长度：")
@@ -1430,7 +1430,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("3");
         }
 
-        // 字段精度变更
+        // Field precision changes
         if (!Objects.equals(req.getColumnPrecision(), resp.getColumnPrecision())) {
             result = true;
             updateMsg.append("字段精度变更旧精度：")
@@ -1441,7 +1441,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("4");
         }
 
-        // 字段小数位数变更
+        // Field decimal places change
         if (!Objects.equals(req.getColumnScale(), resp.getColumnScale())) {
             result = true;
             updateMsg.append("字段小数位数变更旧小数位数：")
@@ -1452,7 +1452,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("5");
         }
 
-        // 字段默认值变更
+        // Field default value changed
         String reqDefault = StringUtils.defaultString(req.getDefaultValue());
         String respDefault = StringUtils.defaultString(resp.getDefaultValue());
         if (!reqDefault.equals(respDefault)) {
@@ -1465,7 +1465,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("6");
         }
 
-        // 主键标识变更
+        // Primary key identifier change
         String reqPkFlag = StringUtils.defaultString(req.getPkFlag());
         String respPkFlag = StringUtils.defaultString(resp.getPkFlag());
         if (!reqPkFlag.equals(respPkFlag)) {
@@ -1478,7 +1478,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("7");
         }
 
-        // 外键标识变更
+        // Foreign key identification change
         String reqFkFlag = StringUtils.defaultString(req.getFkFlag());
         String respFkFlag = StringUtils.defaultString(resp.getFkFlag());
         if (!reqFkFlag.equals(respFkFlag)) {
@@ -1491,7 +1491,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             type.add("8");
         }
 
-        // 可空标识变更
+        // Nullable flag change
         String reqNullableFlag = StringUtils.defaultString(req.getNullableFlag());
         String respNullableFlag = StringUtils.defaultString(resp.getNullableFlag());
         if (!reqNullableFlag.equals(respNullableFlag)) {
@@ -1506,7 +1506,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         req.setUpdateMsg(updateMsg.toString());
         req.setUpdateType(String.join(",", type));
-        //字段调整版本加1
+        //Field adjustment version plus 1
         if (result) {
             req.setVersion(resp.getVersion() != null ? resp.getVersion() + 1 : 1);
         } else {
@@ -1607,10 +1607,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.mode.full"));
 
-        // 1. 构建 DbQueryProperty
+        // 1. Build DbQueryProperty
         DbQueryProperty baseProperty = new DbQueryProperty(datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
 
-        // 2. 获取数据库列表（含层级）
+        // 2. Get the database list (including hierarchy)
         List<DbName> dbNames;
         DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
         try {
@@ -1629,7 +1629,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return scopeList;
         }
 
-        // 3. 单层结构：直接映射 dbName
+        // 3. Single-layer structure: direct mapping dbName
         if (dbNames.get(0).getLevel() == 1 && dbNames.get(0).getTotalLevels() == 1) {
             for (DbName dbName : dbNames) {
                 McTaskScopeDO scope = new McTaskScopeDO();
@@ -1639,7 +1639,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return scopeList;
         }
 
-        // 4. 多层结构：加载下级并映射 db + schema
+        // 4. Multi-layer structure: load subordinates and map db + schema
         for (DbName dbName : dbNames) {
 
             DbQueryProperty childProperty = baseProperty;
@@ -1694,18 +1694,18 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         List<McDbSaveReqVO> dbReqDTOList = new ArrayList<>();
         String creatorId = redisService.get(buildRunLockKey(task.getId()) + ":creatorId");
         String createBy = redisService.get(buildRunLockKey(task.getId()) + ":createBy");
-        //TODO 逻辑待完善
+        //TODO logic needs to be improved
         for (McTaskScopeDO databaseScope : databaseScopes) {
 
             McDbSaveReqVO createReqVO = new McDbSaveReqVO();
-            //采集标识
+            //Collection ID
             createReqVO.setTaskId(task.getId());
 
-            // ====== 来源系统 ======
+            // ====== Source System ======
             createReqVO.setSourceSystemId(task.getSourceSystemId());
             createReqVO.setSourceSystemName(task.getSourceSystemName());
 
-            // ====== 数据源基础信息 ======
+            // ====== Basic information of data source ======
             createReqVO.setDatasourceId(datasource.getId());
             createReqVO.setDbType(datasource.getDatasourceType());
             createReqVO.setIp(datasource.getIp());
@@ -1716,15 +1716,15 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             createReqVO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
             createReqVO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
-            // ====== 库 / 模式 ======
+            // ====== Libraries/Patterns ======
             createReqVO.setDbName(databaseScope.getDbName());
             createReqVO.setSchemaName(databaseScope.getSchemaName());
 
-            // ====== 描述 ======
+            // ====== Description ======
             createReqVO.setDescription(databaseScope.getDescription());
 
-            // ====== 状态与标志位（后端可统一兜底，这里显式给） ======
-            createReqVO.setStatus("0");      // 未发布
+            // ====== Status and flag bits (the backend can provide the details in a unified manner, and they are explicitly given here) ======
+            createReqVO.setStatus("0");      // Unpublished
             createReqVO.setAuditStatus("2");
             createReqVO.setVersion(1);
             createReqVO.setAuditTime(new Date());
@@ -1744,34 +1744,34 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             McTableSaveReqVO mcTableReqDTO = new McTableSaveReqVO();
 
-            // ====== 关联关系 ======
+            // ====== Related relationships ======
             mcTableReqDTO.setTaskId(task.getId());
             mcTableReqDTO.setDbId(dbScope.getId());
             mcTableReqDTO.setDatasourceId(task.getDatasourceId());
 
-            // ====== 表基础信息 ======
+            // ====== Table basic information ======
             mcTableReqDTO.setTableName(table.getTableName());
             mcTableReqDTO.setTableComment(StringUtils.isEmpty(table.getTableComment()) ? "" : table.getTableComment());
 
-            // ====== 库 / 模式 ======
+            // ====== Libraries/Patterns ======
             mcTableReqDTO.setDbName(dbScope.getDbName());
             mcTableReqDTO.setSchemaName(dbScope.getSchemaName());
 
             mcTableReqDTO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
             mcTableReqDTO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
-            // ====== 状态与标志位 ======
-            mcTableReqDTO.setStatus("0");     // 未发布
+            // ====== Status and Flags ======
+            mcTableReqDTO.setStatus("0");     // Unpublished
             mcTableReqDTO.setVersion(1);
             mcTableReqDTO.setMasterFlag("1");
             mcTableReqDTO.setTempFlag("0");
             mcTableReqDTO.setAuditStatus("2");
             mcTableReqDTO.setAuditTime(new Date());
 
-            // ====== 描述 ======
+            // ====== Description ======
             mcTableReqDTO.setDescription(table.getTableComment());
 
-            // ====== 调用元数据服务 ======
+            // ====== Call metadata service ======
 //            Long mcTableId = mcTableService.createMcTable(mcTableReqDTO);
 //
 //            mcTableReqDTO.setId(mcTableId);
@@ -1790,26 +1790,26 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             if (null != column) {
                 McColumnSaveReqVO createReqVO = new McColumnSaveReqVO();
 
-                // ====== 关联信息 ======
+                // ====== Related information ======
                 createReqVO.setTaskId(task.getId());
                 createReqVO.setDbId(dbScope.getId());
                 createReqVO.setTableId(table.getId());
                 createReqVO.setDatasourceId(task.getDatasourceId());
 
-                // ====== 字段基础信息 ======
+                // ====== Field basic information ======
                 createReqVO.setColumnName(StringUtils.isEmpty(column.getColName()) ? "" : column.getColName());
                 createReqVO.setColumnComment(StringUtils.isEmpty(column.getColComment()) ? "" : column.getColComment());
                 createReqVO.setColumnType(StringUtils.isEmpty(column.getDataType()) ? "" : column.getDataType());
 
-                // ====== 长度 / 精度 ======
+                // ====== Length/Precision ======
                 createReqVO.setColumnLength(parseInt(column.getDataLength()));
                 createReqVO.setColumnPrecision(parseInt(column.getDataPrecision()));
                 createReqVO.setColumnScale(parseInt(column.getDataScale()));
 
-                // ====== 默认值 ======
+                // ====== Default value ======
                 createReqVO.setDefaultValue(column.getDataDefault());
 
-                // ====== 主键 / 可空 ======
+                // ====== Primary key / nullable ======
                 createReqVO.setPkFlag(Boolean.TRUE.equals(column.getColKey()) ? "1" : "0");
                 createReqVO.setNullableFlag(Boolean.FALSE.equals(column.getNullable()) ? "1" : "0");
                 createReqVO.setFkFlag("0");
@@ -1817,27 +1817,27 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 createReqVO.setCreateBy(StringUtils.isNotEmpty(createBy) ? createBy : "System Collection Task");
                 createReqVO.setCreatorId(StringUtils.isNotEmpty(creatorId) ? Long.parseLong(creatorId) : 1L);
 
-                // ====== 状态与标志位 ======
-                createReqVO.setStatus("0");     // 未发布
+                // ====== Status and Flags ======
+                createReqVO.setStatus("0");     // Unpublished
                 createReqVO.setVersion(1);
                 createReqVO.setAuditStatus("2");
                 createReqVO.setAuditTime(new Date());
 
-                // ====== 描述 ======
+                // ====== Description ======
                 createReqVO.setDescription(column.getColComment());
 
 
                 columnReqDTOS.add(createReqVO);
-                // ====== 调用字段元数据服务 ======
+                // ====== Call field metadata service ======
 
-                // 如需回写 columnId，可在 DbColumn 中扩展字段
+                // If you need to write back columnId, you can extend the field in DbColumn
             }
         }
         return columnReqDTOS;
     }
 
     /**
-     * 安全的 String -> Integer 转换
+     * Safe String -> Integer conversion
      */
     private Integer parseInt(String val) {
         if (val == null || val.trim().isEmpty()) {
@@ -1851,10 +1851,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     }
 
     /**
-     * 校验任务是否重复
+     * Verify whether tasks are repeated
      *
-     * @param reqVO         任务信息
-     * @param excludeTaskId 排除的任务ID(用于更新时排除自身)
+     * @param reqVO task information
+     * @param excludeTaskId Excluded task ID (used to exclude itself when updating)
      */
     private void validateDuplicateTask(McTaskSaveReqVO reqVO, Long excludeTaskId) {
         String collectionScope = reqVO.getCollectionScope();
@@ -1864,39 +1864,39 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             return;
         }
 
-        // 全部库 (0-全部库)
+        // All databases (0-all databases)
         if (CollectionScopeEnum.isAll(collectionScope)) {
-            // 检查该数据源是否已有任何任务
+            // Check if there are any tasks already for this data source
             boolean exists = mcTaskMapper.existsByDatasourceId(datasourceId, excludeTaskId);
             if (exists) {
                 throw new ServiceException(MessageUtils.messageEn("mc.error.datasource.conflict"), HttpStatus.CONFLICT);
             }
         }
-        // 自定义库 (1-自定义库)
+        // Custom Library (1-Custom Library)
         else if (CollectionScopeEnum.isCustom(collectionScope)) {
-            // 1. 检查是否存在全部库模式且相同数据源
+            // 1. Check whether all library schemas exist and have the same data source
             boolean hasAllScope = mcTaskMapper.existsByDatasourceAndScope(datasourceId, CollectionScopeEnum.ALL.getScope(), excludeTaskId);
             if (hasAllScope) {
                 throw new ServiceException(MessageUtils.messageEn("mc.error.datasource.full.conflict"), HttpStatus.CONFLICT);
             }
 
-            // 2. 检查是否有相同数据源的自定义库任务，且采集范围有重复的库
+            // 2. Check whether there are custom library tasks with the same data source and duplicate libraries in the collection range.
             List<McTaskDO> existCustomTasks = mcTaskMapper.selectByDatasourceAndScope(datasourceId, CollectionScopeEnum.CUSTOM.getScope(), excludeTaskId);
             if (!CollectionUtils.isEmpty(existCustomTasks)) {
-                // 获取当前任务的采集范围
+                // Get the collection range of the current task
                 List<McTaskScopeSaveReqVO> currentScopes = reqVO.getScopeSaveReqVOS();
                 if (CollectionUtils.isEmpty(currentScopes)) {
                     return;
                 }
 
                 for (McTaskDO existTask : existCustomTasks) {
-                    // 获取已存在任务的采集范围
+                    // Get the collection range of existing tasks
                     List<McTaskScopeDO> existScopes = mcTaskScopeService.getMcTaskScopeListBytaskId(existTask.getId());
                     if (CollectionUtils.isEmpty(existScopes)) {
                         continue;
                     }
 
-                    // 检查是否有重复的库
+                    // Check if there are duplicate libraries
                     for (McTaskScopeSaveReqVO currentScope : currentScopes) {
                         for (McTaskScopeDO existScope : existScopes) {
                             if (isSameDatabase(currentScope, existScope)) {
@@ -1915,11 +1915,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     }
 
     /**
-     * 判断两个采集范围是否指向同一个数据库
+     * Determine whether two collection ranges point to the same database
      *
-     * @param scope1 采集范围1
-     * @param scope2 采集范围2
-     * @return 是否相同
+     * @param scope1 collection scope 1
+     * @param scope2 collection scope 2
+     * @return Is it the same?
      */
     private boolean isSameDatabase(McTaskScopeSaveReqVO scope1, McTaskScopeDO scope2) {
         if (scope1 == null || scope2 == null) {
@@ -1931,22 +1931,22 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
     @Override
     public List<McTaskSourceTreeRespVO> getSourceSystemTree() {
-        // 1. 获取所有有效的来源系统
+        // 1. Get all valid source systems
         List<AttSourceSystemRespDTO> validSourceSystems = attSourceSystemApiService.getValidSourceSystems();
         if (CollectionUtils.isEmpty(validSourceSystems)) {
             return Lists.newArrayList();
         }
 
-        // 2. 查询所有任务，用于构建数据源和数据库节点
+        // 2. Query all tasks for building data sources and database nodes
         List<McTaskDO> allTasks = mcTaskMapper.selectList();
         Map<Long, List<McTaskDO>> tasksBySourceSystemMap = Maps.newHashMap();
         List<DaDatasourceRespDTO> daDatasourceRespDTOList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(allTasks)) {
-            // 按来源系统ID分组任务
+            // Group tasks by source system ID
             tasksBySourceSystemMap = allTasks.stream()
                     .filter(task -> task.getSourceSystemId() != null)
                     .collect(Collectors.groupingBy(McTaskDO::getSourceSystemId));
-            // 3. 获取所有任务涉及的数据源信息
+            // 3. Obtain data source information involved in all tasks
             Set<Long> datasourceIds = allTasks.stream()
                     .map(McTaskDO::getDatasourceId)
                     .filter(Objects::nonNull)
@@ -1961,17 +1961,17 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         List<McTaskSourceTreeRespVO> treeList = Lists.newArrayList();
 
-        // 4. 构建一级节点：来源系统
+        // 4. Build a first-level node: source system
         for (AttSourceSystemRespDTO sourceSystem : validSourceSystems) {
             McTaskSourceTreeRespVO sourceNode = new McTaskSourceTreeRespVO();
             sourceNode.setId(sourceSystem.getId());
             sourceNode.setName(sourceSystem.getName());
             sourceNode.setType("SOURCE");
 
-            // 5. 获取该来源系统下的所有任务
+            // 5. Get all tasks under the source system
             List<McTaskDO> sourceSystemTasks = tasksBySourceSystemMap.getOrDefault(sourceSystem.getId(), Lists.newArrayList());
 
-            // 6. 构建二级节点：数据源（去重）
+            // 6. Build secondary nodes: data source (remove duplication)
             Map<Long, List<McTaskDO>> datasourceGroupMap = sourceSystemTasks.stream()
                     .filter(task -> task.getDatasourceId() != null)
                     .collect(Collectors.groupingBy(McTaskDO::getDatasourceId));
@@ -1992,7 +1992,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 datasourceNode.setDatasourceType(daDatasourceRespDTO == null ? "" : daDatasourceRespDTO.getDatasourceType());
                 datasourceNode.setType("DATASOURCE");
 
-                // 7. 构建三级节点：数据库（合并所有任务的数据库）
+                // 7. Build a third-level node: database (a database that merges all tasks)
                 List<McTaskSourceTreeRespVO> dbChildren = Lists.newArrayList();
                 for (McTaskDO task : dsTasks) {
                     List<McTaskSourceTreeRespVO> taskDbNodes = buildDatabaseNodes(task);
@@ -2011,17 +2011,17 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     }
 
     /**
-     * 构建数据库节点列表
+     * Build database node list
      *
-     * @param task 采集任务
-     * @return 数据库节点列表
+     * @param task collection task
+     * @return database node list
      */
     private List<McTaskSourceTreeRespVO> buildDatabaseNodes(McTaskDO task) {
         List<McTaskSourceTreeRespVO> dbNodes = Lists.newArrayList();
 
-        // 采集范围: 2-全部库, 1-自定义库
+        // Collection range: 2-all databases, 1-custom databases
         if (CollectionScopeEnum.isAll(task.getCollectionScope())) {
-            // 全部库：查询该数据源下的所有数据库
+            // All databases: Query all databases under this data source
             List<McDbDO> allDbs = mcDbMapper.selectList(
                     new QueryWrapper<McDbDO>()
                             .eq("DATASOURCE_ID", task.getDatasourceId())
@@ -2055,7 +2055,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                     dbNodes.add(dbNode);
                 }
             }
-            // 自定义库：查询该任务的采集范围
+            // Custom library: Query the collection range of the task
             //List<McTaskScopeDO> scopes = mcTaskScopeService.getMcTaskScopeListBytaskId(task.getId());
             //
             //if (CollectionUtils.isNotEmpty(scopes)) {

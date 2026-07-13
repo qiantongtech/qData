@@ -34,18 +34,18 @@ import java.util.Date;
 public class HttpTaskLogger {
 
     /**
-     * 定义存储文件夹路径的变量
+     * Define variables to store folder paths
      */
     private String folderPath;
 
     /**
-     * 定义存储文件路径的变量
+     * Define variables to store file paths
      */
     @Getter
     private String filePath;
 
     /**
-     * 定义FileWriter对象，用于写入文件
+     * Define a FileWriter object for writing files
      */
     private FileWriter fileWriter;
 
@@ -54,25 +54,25 @@ public class HttpTaskLogger {
         this.filePath = filePath;
     }
 
-    // 构造函数，接受文件夹路径和文件名作为参数
+    // Constructor that accepts folder path and file name as parameters
     public HttpTaskLogger(String folderPath, String fileName) {
         if(StringUtils.isBlank(folderPath) || StringUtils.isBlank(fileName)){
             throw  new RuntimeException("路径、文件名 都不能为空");
         }
-        // 初始化文件夹路径
+        // Initialize folder path
         this.folderPath = folderPath;
-        // 构建完整的文件路径
+        // Build full file path
         this.filePath = folderPath + File.separator + fileName;
-        // 创建文件夹
+        // Create folder
         createFolder();
-        // 创建文件
+        // Create file
         createFile();
-        // 打开文件写入器
+        // Open file writer
         openFileWriter();
     }
 
     /**
-     * 创建存储文件的文件夹
+     * Create a folder to store files
      */
     private void createFolder() {
         try {
@@ -80,42 +80,42 @@ public class HttpTaskLogger {
                 FileUtil.mkdir(folderPath);
             }
         } catch (Exception e) {
-            //打印异常堆栈，方便调试
+            //Print exception stack for easy debugging
             e.printStackTrace(); //
         }
     }
 
     /**
-     * 创建日志文件
+     * Create log file
      */
     private void createFile() {
         try {
-            // 使用Files类的createFile方法创建文件
+            // Create a file using the createFile method of the Files class
             Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8);
         } catch (IOException e) {
             if (!e.getMessage().contains("File already exists")) {
-                // 如果文件不存在，则打印异常堆栈
+                // If the file does not exist, print the exception stack
                 e.printStackTrace();
             }
-            // 如果文件已存在，不打印异常，避免日志污染
+            // If the file already exists, no exception will be printed to avoid log pollution.
         }
     }
 
     /**
-     * 打开文件写入器，用于后续的写操作
+     * Open the file writer for subsequent writing operations
      */
     private void openFileWriter() {
         try {
-            //实例化FileWriter，设置为追加模式
+            //Instantiate FileWriter and set it to append mode
             fileWriter = new FileWriter(filePath, true);
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }
 
     /**
-     * 将消息写入日志文件
+     * Write message to log file
      * @param message
      */
     public void log(String message) {
@@ -123,12 +123,12 @@ public class HttpTaskLogger {
 //            String string = new StringBuilder(DateUtils.getTime()).append(" INFO: ").append(message).append("\n").toString();
 //            System.out.println(DateUtils.getTime()+"==--------------");
 //            System.out.println(string);
-            // 写入消息并换行
+            // Write message and wrap
             fileWriter.write(messagePage(message) + "\n");
-            // 刷新缓冲区，确保消息立即写入文件
+            // Flush the buffer to ensure messages are written to the file immediately
             fileWriter.flush();
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }
@@ -143,16 +143,16 @@ public class HttpTaskLogger {
     }
 
     /**
-     * 关闭文件写入器，释放资源
+     * Close the file writer and release resources
      */
     public void close() {
         try {
             if (fileWriter != null) {
-                // 关闭FileWriter对象
+                // Close the FileWriter object
                 fileWriter.close();
             }
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }

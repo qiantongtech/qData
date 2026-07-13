@@ -21,30 +21,30 @@ package tech.qiantong.qdata.pay.service;
 import tech.qiantong.qdata.pay.domain.*;
 
 /**
- * 定义了支付模块的核心业务操作。
- * 该接口包括发起支付、退款、查询支付状态以及处理支付回调的方法。
+ * Defines the core business operations of the payment module.
+ * This interface includes methods for initiating payment, refunding, querying payment status, and handling payment callbacks.
  * @author qdata
  */
 public interface PaymentService {
 
     /**
-     * 发起支付请求。
-     * @param request 包含支付请求的详细信息
-     * @return 返回支付响应信息
+     * Initiate a payment request.
+     * @param request contains details of the payment request
+     * @return returns payment response information
      */
     PaymentResponse pay(PaymentRequest request);
 
     /**
-     * 发起退款请求。
-     * @param request 包含退款请求的详细信息
-     * @return 返回退款响应信息
+     * Initiate a refund request.
+     * @param request Contains details of the refund request
+     * @return returns refund response information
      */
     RefundResponse refund(RefundRequest request);
 
     /**
-     * 查询支付状态。
-     * @param paymentId 支付订单的唯一标识符
-     * @return 返回支付状态响应信息
+     * Check payment status.
+     * @param paymentId unique identifier of the payment order
+     * @return Returns payment status response information
      */
     PaymentStatusResponse queryStatus(String paymentId);
 }

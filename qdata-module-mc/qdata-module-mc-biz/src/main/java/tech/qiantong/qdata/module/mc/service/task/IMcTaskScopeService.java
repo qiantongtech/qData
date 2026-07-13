@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 采集范围Service接口
+ * Collection range Service interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,67 +20,67 @@ import java.util.Map;
 public interface IMcTaskScopeService extends IService<McTaskScopeDO> {
 
     /**
-     * 获得采集范围分页列表
+     * Get a paging list of collection ranges
      *
-     * @param pageReqVO 分页请求
-     * @return 采集范围分页列表
+     * @param pageReqVO paging request
+     * @return collection range paging list
      */
     PageResult<McTaskScopeDO> getMcTaskScopePage(McTaskScopePageReqVO pageReqVO);
 
     /**
-     * 创建采集范围
+     * Create a collection range
      *
-     * @param createReqVO 采集范围信息
-     * @return 采集范围编号
+     * @param createReqVO collection range information
+     * @return collection range number
      */
     Long createMcTaskScope(McTaskScopeSaveReqVO createReqVO);
 
     /**
-     * 更新采集范围
+     * Update collection range
      *
-     * @param updateReqVO 采集范围信息
+     * @param updateReqVO collection range information
      */
     int updateMcTaskScope(McTaskScopeSaveReqVO updateReqVO);
 
     /**
-     * 删除采集范围
+     * Delete collection range
      *
-     * @param idList 采集范围编号
+     * @param idList collection range number
      */
     int removeMcTaskScope(Collection<Long> idList);
 
     /**
-     * 获得采集范围详情
+     * Get collection range details
      *
-     * @param id 采集范围编号
-     * @return 采集范围
+     * @param id collection range number
+     * @return collection range
      */
     McTaskScopeDO getMcTaskScopeById(Long id);
 
     /**
-     * 获得全部采集范围列表
+     * Get a list of all collection ranges
      *
-     * @return 采集范围列表
+     * @return Collection range list
      */
     List<McTaskScopeDO> getMcTaskScopeList();
 
     List<McTaskScopeDO> getMcTaskScopeListBytaskId(Long taskId);
 
     /**
-     * 获得全部采集范围 Map
+     * Get the entire collection range Map
      *
-     * @return 采集范围 Map
+     * @return Collection range Map
      */
     Map<Long, McTaskScopeDO> getMcTaskScopeMap();
 
 
     /**
-     * 导入采集范围数据
+     * Import collection range data
      *
-     * @param importExcelList 采集范围数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList collection range data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importMcTaskScope(List<McTaskScopeRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

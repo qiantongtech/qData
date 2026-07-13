@@ -22,29 +22,29 @@ import tech.qiantong.qdata.common.exception.UtilException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * sql操作工具类
+ * sql operation tool class
  *
  * @author qdata
  */
 public class SqlUtil
 {
     /**
-     * 定义常用的 sql关键字
+     * Define commonly used sql keywords
      */
     public static String SQL_REGEX = "and |extractvalue|updatexml|exec |insert |select |delete |update |drop |count |chr |mid |master |truncate |char |declare |or |+|user()";
 
     /**
-     * 仅支持字母、数字、下划线、空格、逗号、小数点（支持多个字段排序）
+     * Only supports letters, numbers, underscores, spaces, commas, and decimal points (supports sorting by multiple fields)
      */
     public static String SQL_PATTERN = "[a-zA-Z0-9_\\ \\,\\.]+";
 
     /**
-     * 限制orderBy最大长度
+     * Limit the maximum length of orderBy
      */
     private static final int ORDER_BY_MAX_LENGTH = 500;
 
     /**
-     * 检查字符，防止注入绕过
+     * Check characters to prevent injection bypass
      */
     public static String escapeOrderBySql(String value)
     {
@@ -60,7 +60,7 @@ public class SqlUtil
     }
 
     /**
-     * 验证 order by 语法是否符合规范
+     * Verify whether the order by syntax complies with the specification
      */
     public static boolean isValidOrderBySql(String value)
     {
@@ -68,7 +68,7 @@ public class SqlUtil
     }
 
     /**
-     * SQL关键字检查
+     * SQL keyword check
      */
     public static void filterKeyword(String value)
     {

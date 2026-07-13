@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 采集任务实例 Response VO 对象 MC_TASK_INSTANCE
+ * Collection task instance Response VO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
@@ -134,30 +134,30 @@ public class McTaskInstanceRespVO implements Serializable {
     private String description;
 
     /**
-     * 任务名称
+     * Task name
      */
     @TableField(exist = false)
     private String name;
     /**
-     * 任务状态
+     * Task status
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * 创建人电话
+     * Creator phone number
      */
     private String createPhoneNumber;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

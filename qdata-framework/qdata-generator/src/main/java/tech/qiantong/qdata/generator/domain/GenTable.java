@@ -28,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
- * 业务表 gen_table
+ * Business table gen_table
  *
  * @author qdata
  */
@@ -36,85 +36,85 @@ public class GenTable extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 编号 */
+    /** number */
     private Long tableId;
 
-    /** 表名称 */
+    /** table name */
     @NotBlank(message = "表名称不能为空")
     private String tableName;
 
-    /** 表描述 */
+    /** Table description */
     @NotBlank(message = "表描述不能为空")
     private String tableComment;
 
-    /** 关联父表的表名 */
+    /** Table name of associated parent table */
     private String subTableName;
 
-    /** 本表关联父表的外键名 */
+    /** The foreign key name of the parent table associated with this table */
     private String subTableFkName;
 
-    /** 实体类名称(首字母大写) */
+    /** Entity class name (first letter capitalized) */
     @NotBlank(message = "实体类名称不能为空")
     private String className;
 
-    /** 使用的模板（crud单表操作 tree树表操作 sub主子表操作） */
+    /** Template used (crud single table operation tree tree table operation sub main sub-table operation) */
     private String tplCategory;
 
-    /** 前端类型（element-ui模版 element-plus模版） */
+    /** Front-end type (element-ui template element-plus template) */
     private String tplWebType;
 
-    /** 生成包路径 */
+    /** Generate package path */
     @NotBlank(message = "生成包路径不能为空")
     private String packageName;
 
-    /** 生成模块名 */
+    /** Generate module name */
     @NotBlank(message = "生成模块名不能为空")
     private String moduleName;
 
-    /** 生成业务名 */
+    /** Generate business name */
     @NotBlank(message = "生成业务名不能为空")
     private String businessName;
 
-    /** 生成功能名 */
+    /** Generate function name */
     @NotBlank(message = "生成功能名不能为空")
     private String functionName;
 
-    /** 生成作者 */
+    /** Generate author */
     @NotBlank(message = "作者不能为空")
     private String functionAuthor;
 
-    /** 生成代码方式（0zip压缩包 1自定义路径） */
+    /** Code generation method (0zip compressed package 1 custom path) */
     private String genType;
 
-    /** 生成路径（不填默认项目路径） */
+    /** Generate path (do not fill in the default project path) */
     private String genPath;
 
-    /** 主键信息 */
+    /** Primary key information */
     private GenTableColumn pkColumn;
 
-    /** 子表信息 */
+    /** Subtable information */
     private GenTable subTable;
 
-    /** 表列信息 */
+    /** List information */
     @Valid
     private List<GenTableColumn> columns;
 
-    /** 其它生成选项 */
+    /** Other generation options */
     private String options;
 
-    /** 树编码字段 */
+    /** Tree encoding field */
     private String treeCode;
 
-    /** 树父编码字段 */
+    /** Tree parent encoding field */
     private String treeParentCode;
 
-    /** 树名称字段 */
+    /** Tree name field */
     private String treeName;
 
-    /** 上级菜单ID字段 */
+    /** Upper level menu ID field */
     private String parentMenuId;
 
-    /** 上级菜单名称字段 */
+    /** Upper level menu name field */
     private String parentMenuName;
 
     public Long getTableId()

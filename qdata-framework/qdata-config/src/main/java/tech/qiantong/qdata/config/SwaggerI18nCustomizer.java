@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
  *   @Tag(name = "Role Management")            <-- messages.properties key
  *
  *   messages_zh_CN.properties:
- *     Query Role List=查询角色列表
- *     Role Management=角色管理
+ * Query Role List=Query role list
+ * Role Management=Role Management
  *
  * @author qdata
  */

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 采集任务Controller
+ * Collection taskController
  *
  * @author qdata
  * @date 2025-12-16

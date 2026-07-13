@@ -28,7 +28,7 @@ import tech.qiantong.qdata.quality.dal.dataobject.qa.DppQualityTaskDO;
 import java.util.Arrays;
 
 /**
- * 数据质量任务Mapper接口
+ * Data quality task Mapper interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -53,12 +53,12 @@ public interface DppQualityTaskMapper extends BaseMapperX<DppQualityTaskDO> {
                 .eqIfPresent(DppQualityTaskDO::getRetryInterval, reqVO.getRetryInterval())
                 .eqIfPresent(DppQualityTaskDO::getDelayTime, reqVO.getDelayTime())
                 .eqIfPresent(DppQualityTaskDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(DppQualityTaskDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
 }

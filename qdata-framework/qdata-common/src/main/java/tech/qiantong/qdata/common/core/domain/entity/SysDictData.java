@@ -32,7 +32,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 字典数据表 sys_dict_data
+ * Dictionary data table sys_dict_data
  *
  * @author qdata
  */
@@ -43,37 +43,37 @@ public class SysDictData extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 字典编码 */
+    /** Dictionary encoding */
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
     private Long dictCode;
 
-    /** 字典排序 */
+    /** Dictionary sorting */
     @Excel(name = "字典排序", cellType = ColumnType.NUMERIC)
     private Long dictSort;
 
-    /** 字典标签 */
+    /** Dictionary tag */
     @Excel(name = "字典标签")
     private String dictLabel;
 
-    /** 字典键值 */
+    /** Dictionary key value */
     @Excel(name = "字典键值")
     private String dictValue;
 
-    /** 字典类型 */
+    /** Dictionary type */
     @Excel(name = "字典类型")
     private String dictType;
 
-    /** 样式属性（其他样式扩展） */
+    /** Style attributes (other style extensions) */
     private String cssClass;
 
-    /** 表格字典样式 */
+    /** Table dictionary style */
     private String listClass;
 
-    /** 是否默认（Y是 N否） */
+    /** Is it the default (Y yes N no) */
     @Excel(name = "是否默认", readConverterExp = "Y=是,N=否")
     private String isDefault;
 
-    /** 状态（0正常 1停用） */
+    /** Status (0 normal 1 disabled) */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
 

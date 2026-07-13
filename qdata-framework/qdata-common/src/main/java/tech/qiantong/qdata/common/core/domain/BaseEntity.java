@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Entity基类
+ * Entity base class
  *
  * @author qdata
  */
@@ -40,7 +40,7 @@ public class BaseEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     /**
-     * 搜索值
+     * Search value
      */
     @JsonIgnore
     @TableField(exist = false)
@@ -52,16 +52,16 @@ public class BaseEntity implements Serializable
     private Long creatorId;
 
     /**
-     * 创建者
+     * Creator
      */
     @Schema(description = "创建者", example = "")
     @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
     /**
-     * 创建时间
+     * Creation time
      */
-    // 创建时间自动填充
+    // Creation time automatically populated
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "创建时间", example = "")
@@ -72,29 +72,29 @@ public class BaseEntity implements Serializable
     private Long updaterId;
 
     /**
-     * 更新者
+     * Updater
      */
     @Schema(description = "更新者", example = "")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String updateBy;
 
     /**
-     * 更新时间
+     * Update time
      */
-    // 更新时间自动填充
+    // Update time automatically filled in
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "更新时间", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
-     * 备注
+     * Remarks
      */
     @Schema(description = "备注", example = "")
     private String remark;
 
     /**
-     * 请求参数
+     * Request parameters
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @TableField(exist = false)

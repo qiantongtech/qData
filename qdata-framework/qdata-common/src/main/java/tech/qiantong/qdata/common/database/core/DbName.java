@@ -32,17 +32,17 @@ import java.util.List;
 public class DbName {
 
     /**
-     * 列名
+     * List
      */
     private String dbName;
 
     /**
-     * 当前层级
+     * Current level
      */
     private int level;
 
     /**
-     * 总层级
+     * Overall level
      */
     private int totalLevels;
 

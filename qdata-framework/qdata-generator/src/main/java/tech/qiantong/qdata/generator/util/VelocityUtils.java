@@ -35,25 +35,25 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 模板处理工具类
+ * Template processing tools
  *
  * @author qdata
  */
 public class VelocityUtils
 {
-    /** 项目空间路径 */
+    /** Project space path */
     private static final String PROJECT_PATH = "main/java";
 
-    /** mybatis空间路径 */
+    /** mybatis space path */
     private static final String MYBATIS_PATH = "main/resources/mapper";
 
-    /** 默认上级菜单，系统工具 */
+    /** Default upper-level menu, system tools */
     private static final String DEFAULT_PARENT_MENU_ID = "3";
 
     /**
-     * 设置模板变量信息
+     * Set template variable information
      *
-     * @return 模板列表
+     * @return template list
      */
     public static VelocityContext prepareContext(GenTable genTable)
     {
@@ -74,14 +74,14 @@ public class VelocityUtils
         velocityContext.put("businessName", genTable.getBusinessName());
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
-        // 顶级模块名称如：system
+        // Top-level module name such as: system
         velocityContext.put("topModule", packageName.substring(packageName.lastIndexOf(".") + 1));
         velocityContext.put("controllerPrefix", packageName.replaceFirst("^.*?\\.module\\.", "").replace(".", "/"));
         velocityContext.put("author", genTable.getFunctionAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
         velocityContext.put("pkColumn", genTable.getPkColumn());
         velocityContext.put("importList", getImportList(genTable));
-        // 包模块名称如：example
+        // Package module name such as: example
         String sysModule = velocityContext.get("controllerPrefix").toString().replace("/", ":");
         velocityContext.put("permissionPrefix", getPermissionPrefix(sysModule, moduleName, businessName.replace(sysModule, "").toLowerCase()));
         velocityContext.put("columns", genTable.getColumns());
@@ -101,9 +101,9 @@ public class VelocityUtils
 
 
     /**
-     * 设置字典模板变量信息
+     * Set dictionary template variable information
      *
-     * @return 模板列表
+     * @return template list
      */
     public static VelocityContext prepareDictContext(SysDictType sysDictType)
     {
@@ -173,10 +173,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取模板信息
-     * @param tplCategory 生成的模板
-     * @param tplWebType 前端类型
-     * @return 模板列表
+     * Get template information
+     * @param tplCategory generated template
+     * @param tplWebType front-end type
+     * @return template list
      */
     public static List<String> getTemplateList(String tplCategory, String tplWebType)
     {
@@ -230,8 +230,8 @@ public class VelocityUtils
 
 
     /**
-     * 获取模板信息
-     * @return 枚举类模板列表
+     * Get template information
+     * @return enum class template list
      */
     public static List<String> getTemplateListForDict()
     {
@@ -243,7 +243,7 @@ public class VelocityUtils
     }
 
     public static String getEnumFileName(String dictType){
-        // 文件名称
+        // File name
         String fileName = "";
         fileName = StringUtils.format("{}Enum.java",  StringUtils.convertToCamelCase(dictType));
         return fileName;
@@ -251,19 +251,19 @@ public class VelocityUtils
 
 
     /**
-     * 获取文件名
+     * Get file name
      */
     public static String getFileName(String template, GenTable genTable)
     {
-        // 文件名称
+        // File name
         String fileName = "";
-        // 包路径
+        // Package path
         String packageName = genTable.getPackageName();
-        // 模块名
+        // Module name
         String moduleName = genTable.getModuleName();
-        // 大写类名
+        // Uppercase class name
         String className = genTable.getClassName();
-        // 业务名称
+        // Business name
         String businessName = genTable.getBusinessName();
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
@@ -400,10 +400,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取包前缀
+     * Get package prefix
      *
-     * @param packageName 包名称
-     * @return 包前缀名称
+     * @param packageName package name
+     * @return package prefix name
      */
     public static String getPackagePrefix(String packageName)
     {
@@ -412,10 +412,10 @@ public class VelocityUtils
     }
 
     /**
-     * 根据列类型获取导入包
+     * Get import package based on column type
      *
-     * @param genTable 业务表对象
-     * @return 返回需要导入的包列表
+     * @param genTable business table object
+     * @return Returns the list of packages that need to be imported
      */
     public static HashSet<String> getImportList(GenTable genTable)
     {
@@ -442,10 +442,10 @@ public class VelocityUtils
     }
 
     /**
-     * 根据列类型获取字典组
+     * Get dictionary group based on column type
      *
-     * @param genTable 业务表对象
-     * @return 返回字典组
+     * @param genTable business table object
+     * @return dictionary group
      */
     public static String getDicts(GenTable genTable)
     {
@@ -461,10 +461,10 @@ public class VelocityUtils
     }
 
     /**
-     * 添加字典列表
+     * Add dictionary list
      *
-     * @param dicts 字典列表
-     * @param columns 列集合
+     * @param dicts dictionary list
+     * @param columns column collection
      */
     public static void addDicts(Set<String> dicts, List<GenTableColumn> columns)
     {
@@ -480,11 +480,11 @@ public class VelocityUtils
     }
 
     /**
-     * 获取权限前缀
+     * Get permission prefix
      *
-     * @param topModuleName 子系统名称
-     * @param moduleName 子系统中的模块名称
-     * @return 返回权限前缀
+     * @param topModuleName subsystem name
+     * @param moduleName module name in subsystem
+     * @return return permission prefix
      */
     public static String getPermissionPrefix(String topModuleName, String moduleName, String businessName)
     {
@@ -492,10 +492,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取上级菜单ID字段
+     * Get the upper-level menu ID field
      *
-     * @param paramsObj 生成其他选项
-     * @return 上级菜单ID字段
+     * @param paramsObj generates other options
+     * @return Parent menu ID field
      */
     public static String getParentMenuId(JSONObject paramsObj)
     {
@@ -508,10 +508,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取树编码
+     * Get tree code
      *
-     * @param paramsObj 生成其他选项
-     * @return 树编码
+     * @param paramsObj generates other options
+     * @return tree code
      */
     public static String getTreecode(JSONObject paramsObj)
     {
@@ -523,10 +523,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取树父编码
+     * Get parent tree code
      *
-     * @param paramsObj 生成其他选项
-     * @return 树父编码
+     * @param paramsObj generates other options
+     * @return parent tree code
      */
     public static String getTreeParentCode(JSONObject paramsObj)
     {
@@ -538,10 +538,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取树名称
+     * Get tree name
      *
-     * @param paramsObj 生成其他选项
-     * @return 树名称
+     * @param paramsObj generates other options
+     * @return tree name
      */
     public static String getTreeName(JSONObject paramsObj)
     {
@@ -553,10 +553,10 @@ public class VelocityUtils
     }
 
     /**
-     * 获取需要在哪一列上面显示展开按钮
+     * Get the column on which the expand button needs to be displayed
      *
-     * @param genTable 业务表对象
-     * @return 展开按钮列序号
+     * @param genTable business table object
+     * @return Expand button column number
      */
     public static int getExpandColumn(GenTable genTable)
     {

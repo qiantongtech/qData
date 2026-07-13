@@ -21,7 +21,7 @@ import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.lower;
 
 /**
- * 数据去重
+ * Data deduplication
  */
 public class DataDeduplicationTransition implements Transition {
 
@@ -46,15 +46,15 @@ public class DataDeduplicationTransition implements Transition {
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
         JSONObject parameter = transition.getJSONObject("parameter");
 
-        //选择的字段
+        //Selected fields
         List<Map<String, Object>> tableFields = (List<Map<String, Object>>) MapUtils.getObject(parameter, "tableFields");
 
-        //检验
+        //Inspect
         if (CollectionUtils.isEmpty(tableFields)) {
             throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.dedup.fields.empty"));
         }
 
-        // 所有字段转小写列 + 添加为临时列
+        // Convert all fields to lowercase columns + add as temporary columns
         for (Map<String, Object> field : tableFields) {
             String columnName = MapUtils.getString(field, "columnName");
             String ignoreCase = MapUtils.getString(field, "ignoreCase", "1");
@@ -66,20 +66,20 @@ public class DataDeduplicationTransition implements Transition {
             }
         }
 
-        // 构造临时字段名数组
+        // Construct an array of temporary field names
         List<String> tmpFields = tableFields.stream()
                 .map(f -> "_tmp_" + MapUtils.getString(f, "columnName"))
                 .collect(Collectors.toList());
 
-        // 去重
+        // Remove duplicates
         Dataset<Row> rowDataset = dataset.dropDuplicates(tmpFields.toArray(new String[0]));
 
-        // 删除临时字段
+        // Delete temporary fields
         for (String tmp : tmpFields) {
             rowDataset = rowDataset.drop(tmp);
         }
 
-        // 调试日志
+        // Debug log
         System.out.println("数据去重后的字段结构：");
         rowDataset.printSchema();
 

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * SQLServer 数据库方言
+ * SQLServer database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -95,22 +95,22 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Generate CREATE TABLE statement
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // 转换数据类型为SQL Server支持的类型
+                // Convert data types to types supported by SQL Server
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // SQL Server不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2": // SQL Server does not support VARCHAR2, mapping to VARCHAR
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
                         } else {
-                            sql.append("(MAX)"); // SQL Server中的VARCHAR默认支持最大长度
+                            sql.append("(MAX)"); // VARCHAR in SQL Server supports maximum length by default
                         }
                         break;
                     case "CHAR":
@@ -146,7 +146,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("FLOAT");
                         break;
                     case "DOUBLE":
-                        sql.append("FLOAT"); // SQL Server中没有DOUBLE，使用FLOAT
+                        sql.append("FLOAT"); // There is no DOUBLE in SQL Server, use FLOAT
                         break;
                     case "DATE":
                         sql.append("DATE");
@@ -158,16 +158,16 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Handle unknown types by default
                         break;
                 }
 
-                // 检查是否必填
+                // Check if required
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Default value handling
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -176,7 +176,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                     }
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Add the field to the primary key list, if it is a primary key
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -184,17 +184,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Remove final comma and newline
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Add primary key constraints
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Remove final comma and space
                 sql.append(")");
             }
 
@@ -203,7 +203,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         }
 
 
-        // 添加表备注（SQL Server不直接支持表备注，但可以使用扩展属性等方式）
+        // Add table comments (SQL Server does not directly support table comments, but you can use extended attributes, etc.)
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
@@ -212,7 +212,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
             sqlList.add(sql.toString());
         }
 
-        // 添加字段备注
+        // Add field notes
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -229,17 +229,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -355,7 +355,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        //判断是否开启ssl
+        //Determine whether to enable ssl
         if (checkUseSSL(property)) {
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
             url = url.replace("encrypt=false", "encrypt=true")

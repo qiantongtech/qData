@@ -19,27 +19,27 @@
 package tech.qiantong.qdata.pay.domain;
 
 /**
- * 定义了系统中支持的支付方式。
+ * Defines the payment methods supported in the system.
  *
  * @author qdata
  */
 public enum PaymentType {
 
     /**
-     * 支付宝支付
+     * Alipay payment
      */
     ALIPAY,
 
     /**
-     * 微信支付
+     * WeChat Pay
      */
     WECHAT;
 
     /**
-     * 根据输入的字符串值获取对应的支付类型。
+     * Get the corresponding payment type based on the input string value.
      *
-     * @param type 输入的字符串，如 "ALIPAY" 或 "WECHAT"
-     * @return 返回对应的 PaymentType 枚举值，如果没有匹配则返回 null
+     * @param type input string, such as "ALIPAY" or "WECHAT"
+     * @return Returns the corresponding PaymentType enumeration value, or null if there is no match
      */
     public static PaymentType fromString(String type) {
         for (PaymentType paymentType : PaymentType.values()) {

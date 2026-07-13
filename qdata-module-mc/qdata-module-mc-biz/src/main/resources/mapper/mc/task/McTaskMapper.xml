@@ -17,7 +17,7 @@
         <result property="collectionScope"    column="COLLECTION_SCOPE"    />
         <result property="status"    column="STATUS"    />
 
-        <!-- 新增字段 -->
+        <!-- Add new field -->
         <result property="collectType" column="COLLECT_TYPE" />
         <result property="blacklist" column="BLACKLIST" />
 

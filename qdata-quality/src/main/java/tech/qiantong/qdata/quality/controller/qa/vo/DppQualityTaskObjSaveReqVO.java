@@ -27,7 +27,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据质量任务-稽查对象 创建/修改 Request VO DPP_QUALITY_TASK_OBJ
+ * Data quality task-audit object creation/modification Request VO DPP_QUALITY_TASK_OBJ
  *
  * @author Chaos
  * @date 2025-07-21
@@ -43,7 +43,7 @@ public class DppQualityTaskObjSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    // 数据质量任务id
+    // Data quality task id
     private Long taskId;
 
     @Schema(description = "稽查对象名称", example = "")

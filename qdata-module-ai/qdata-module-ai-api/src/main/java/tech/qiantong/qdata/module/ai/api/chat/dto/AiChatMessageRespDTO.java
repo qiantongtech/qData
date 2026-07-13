@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.ai.api.chat.dto;
 import lombok.*;
 
 /**
- * ai聊天消息 DTO 对象 AI_CHAT_MESSAGE
+ * ai chat message DTO object AI_CHAT_MESSAGE
  *
  * @author FXB
  * @date 2026-04-01
@@ -34,36 +34,36 @@ public class AiChatMessageRespDTO {
     /** ID */
     private Long id;
 
-    /** 对话id */
+    /** Conversation id */
     private Long conversationId;
 
-    /** 回复id */
+    /** reply id */
     private Long replyId;
 
     /**
-     * 回复类型;1:知识问答 2: 知识图表
+     * Reply type; 1: Knowledge Q&A 2: Knowledge graph
      */
     private String replyType;
 
-    /** 统计任务id */
+    /** Statistics task id */
 //    private Long statisticsTaskId;
 
-    /** 用户id */
+    /** User ID */
     private Long userId;
 
-    /** 消息类型;1:用户 2：机器人 */
+    /** Message type; 1: User 2: Robot */
     private String type;
 
-    /** 消息内容 */
+    /** Message content */
     private String content;
 
-    /** 是否携带上下文;0：否，1：是 */
+    /** Whether to carry context; 0: no, 1: yes */
     private String contextFlag;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

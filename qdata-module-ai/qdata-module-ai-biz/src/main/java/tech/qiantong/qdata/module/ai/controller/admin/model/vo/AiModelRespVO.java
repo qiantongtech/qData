@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 模型管理 Response VO 对象 AI_MODEL
+ * Model management Response VO object AI_MODEL
  *
  * @author FXB
  * @date 2026-04-01

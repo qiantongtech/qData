@@ -24,7 +24,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 数值精度校验（如金额最多保留两位）
+// Numeric accuracy check (for example, the amount can be kept at most two digits)
 @Component("DECIMAL_PRECISION_VALIDATION")
 public class DecimalPrecisionGenerator implements QualitySqlGenerator {
     @Override

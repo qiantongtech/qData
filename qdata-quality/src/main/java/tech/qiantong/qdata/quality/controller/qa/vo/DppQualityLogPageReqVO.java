@@ -27,7 +27,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据质量日志 Request VO 对象 DPP_QUALITY_LOG
+ * Data Quality Log Request VO Object DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19

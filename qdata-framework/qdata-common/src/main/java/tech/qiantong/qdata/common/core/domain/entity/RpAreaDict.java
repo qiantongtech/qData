@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 服务资源门户区域字典 DO 对象 RP_AREA_DICT
+ * Service Resource Portal Area Dictionary DO Object RP_AREA_DICT
  *
  * @author qdata
  * @date 2025-04-21
@@ -38,25 +38,25 @@ public class RpAreaDict extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 区域名称 */
+    /** Region name */
     private String name;
 
-    /** 编码 */
+    /** Encoding */
     private String code;
 
-    /** 父级id */
+    /** Parent id */
     private Long parentId;
 
-    /** 排序 */
+    /** Sort */
     private Long sortOrder;
 
-    /** 类型 */
+    /** Type */
     private String type;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

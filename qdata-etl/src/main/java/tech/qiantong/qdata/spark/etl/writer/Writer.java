@@ -25,7 +25,7 @@ import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 /**
  * <P>
- * 用途:写数据
+ * Purpose: write data
  * </p>
  *
  * @author: FXB

@@ -30,7 +30,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * ai聊天对话 Response VO 对象 AI_CHAT_CONVERSATION
+ * ai chat conversation Response VO object AI_CHAT_CONVERSATION
  *
  * @author FXB
  * @date 2026-04-01
@@ -67,7 +67,7 @@ public class AiChatConversationRespVO implements Serializable {
     private Long datasourceId;
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @Schema(description = "数据源类型", example = "")
     private String datasourceType;
@@ -85,25 +85,25 @@ public class AiChatConversationRespVO implements Serializable {
     private String dimensionTable;
 
     /**
-     * 关联信息,格式如下
+     * Related information, the format is as follows
      * [{
-     * "dimensionTable": "维度表名",
-     * "factColumnName": "事实表外键字段名",
-     * "dimensionColumnName": "维度表主键字段名",
-     * "matchReason": "匹配依据"
+     * "dimensionTable": "Dimension table name",
+     * "factColumnName": "Fact table foreign key field name",
+     * "dimensionColumnName": "Dimension table primary key field name",
+     * "matchReason": "matching basis"
      * }]
      */
     @Schema(description = "[{\"dimensionTable\": \"维度表名\",\"factColumnName\": \"事实表外键字段名\",\"dimensionColumnName\": \"维度表主键字段名\",\"matchReason\": \"匹配依据\"}")
     private String associations;
 
     /**
-     * 关联条件匹配状态;0：未匹配，1：已匹配
+     * Association condition matching status; 0: not matched, 1: matched
      */
     @Schema(description = "关联条件匹配状态;0：未匹配，1：已匹配", example = "")
     private Boolean joinConditionMatchFlag;
 
     /**
-     * 关联条件匹配类型;1：自动匹配 2:手动匹配
+     * Association condition matching type; 1: automatic matching 2: manual matching
      */
     @Schema(description = "关联条件匹配类型;1：自动匹配 2:手动匹配,字典：ai_chat_coversation_jcm_type", example = "")
     private String joinConditionMatchType;

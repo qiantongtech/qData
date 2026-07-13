@@ -42,7 +42,7 @@ public class ChatMessageSendRespVO {
         private Long id;
 
         @Schema(description = "消息类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "role")
-        private String type; // 参见 MessageType 枚举类
+        private String type; // See MessageType enumeration class
 
         @Schema(description = "回复类型;1:知识问答 2: 知识图表",example = "")
         private String replyType;

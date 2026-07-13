@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 用户状态
+ * User status
  *
  * @author qdata
  */

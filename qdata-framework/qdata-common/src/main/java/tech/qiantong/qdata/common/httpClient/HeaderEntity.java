@@ -24,7 +24,7 @@ import lombok.Data;
  *
  * @author QianTongDC
  * @date 2022/10/7 11:21
- * 常量描述类
+ * Constant description class
  **/
 @Data
 public class HeaderEntity {

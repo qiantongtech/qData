@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * ai聊天消息 创建/修改 Request VO AI_CHAT_MESSAGE
+ * ai chat message create/modify Request VO AI_CHAT_MESSAGE
  *
  * @author FXB
  * @date 2026-04-01
@@ -49,12 +49,12 @@ public class AiChatMessageSaveReqVO extends BaseEntity {
     private Long replyId;
 
     /**
-     * 回复类型;1:知识问答 2: 知识图表
+     * Reply type; 1: Knowledge Q&A 2: Knowledge graph
      */
     @Schema(description = "回复类型;1:知识问答 2: 知识图表", example = "")
     private String replyType;
 
-//    @Schema(description = "统计任务id", example = "")
+// @Schema(description = "statistical task id", example = "")
 //    private Long statisticsTaskId;
 
     @Schema(description = "用户id", example = "")

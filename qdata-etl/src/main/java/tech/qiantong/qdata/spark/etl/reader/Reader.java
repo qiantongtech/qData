@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:读数据
+ * Purpose: read data
  * </p>
  *
  * @author: FXB

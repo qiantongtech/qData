@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据质量任务-评测规则Service业务层处理
+ * Data quality task-evaluation rules Service business layer processing
  *
  * @author Chaos
  * @date 2025-07-21
@@ -70,15 +70,15 @@ public class DppQualityTaskEvaluateServiceImpl  extends ServiceImpl<DppQualityTa
 
     @Override
     public int updateDppQualityTaskEvaluate(DppQualityTaskEvaluateSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据质量任务-评测规则
+        // Update data quality task-evaluation rules
         DppQualityTaskEvaluateDO updateObj = BeanUtils.toBean(updateReqVO, DppQualityTaskEvaluateDO.class);
         return dppQualityTaskEvaluateMapper.updateById(updateObj);
     }
     @Override
     public int removeDppQualityTaskEvaluate(Collection<Long> idList) {
-        // 批量删除数据质量任务-评测规则
+        // Deleting data quality tasks in batches-evaluation rules
         return dppQualityTaskEvaluateMapper.deleteBatchIds(idList);
     }
 
@@ -107,19 +107,19 @@ public class DppQualityTaskEvaluateServiceImpl  extends ServiceImpl<DppQualityTa
                 .collect(Collectors.toMap(
                         DppQualityTaskEvaluateDO::getId,
                         dppQualityTaskEvaluateDO -> dppQualityTaskEvaluateDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据质量任务-评测规则数据
+         * Import data quality task-evaluation rule data
          *
-         * @param importExcelList 数据质量任务-评测规则数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data quality task-evaluation rule data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String importDppQualityTaskEvaluate(List<DppQualityTaskEvaluateRespVO> importExcelList, boolean isUpdateSupport, String operName) {

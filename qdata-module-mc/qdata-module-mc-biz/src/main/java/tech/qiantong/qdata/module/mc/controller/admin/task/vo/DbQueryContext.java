@@ -10,12 +10,12 @@ import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 public class DbQueryContext {
 
     /**
-     * 已校验、可用的 DbQuery
+     * Validated, working DbQuery
      */
     private DbQuery dbQuery;
 
     /**
-     * 当前库 / schema 对应的查询属性
+     * Query attributes corresponding to the current library/schema
      */
     private DbQueryProperty property;
 }

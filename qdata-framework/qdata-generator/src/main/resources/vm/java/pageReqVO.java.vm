@@ -29,7 +29,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 #end
 
 /**
- * ${functionName} Request VO 对象 ${tableName}
+ * ${functionName} Request VO object ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -73,7 +73,7 @@ public class ${ClassName}PageReqVO extends PageParam {
 #end
 #end
 #if($table.sub)
-    /** $table.subTable.functionName信息 */
+    /** $table.subTable.functionName information */
     private List<${subClassName}> ${subclassName}List;
 
 #end

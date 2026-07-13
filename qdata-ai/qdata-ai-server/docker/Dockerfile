@@ -1,6 +1,6 @@
 FROM crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/eclipse-temurin:17-jre
 
-# 设置时区和应用目录
+# Set time zone and application directory
 ENV TZ=Asia/Shanghai \
     APP_HOME=/usr/app/jar
 
@@ -10,7 +10,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 
 WORKDIR $APP_HOME
 
-# 拷贝产物
+# Copy product
 COPY ./target/*.jar ./qdata-ai.jar
 
 EXPOSE 8087

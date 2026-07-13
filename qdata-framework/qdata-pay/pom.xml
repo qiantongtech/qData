@@ -34,13 +34,13 @@
     </description>
 
     <dependencies>
-        <!-- 通用工具-->
+        <!-- General tools-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!--支付宝SDK-->
+        <!--Alipay SDK-->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>

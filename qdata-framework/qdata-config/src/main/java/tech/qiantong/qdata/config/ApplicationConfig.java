@@ -27,19 +27,19 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import java.util.TimeZone;
 
 /**
- * 程序注解配置
+ * Program annotation configuration
  *
  * @author qdata
  */
 @Configuration
-// 表示通过aop框架暴露该代理对象,AopContext能够访问
+// Indicates that the proxy object is exposed through the aop framework and AopContext can access it.
 @EnableAspectJAutoProxy(exposeProxy = true)
-// 指定要扫描的Mapper类的包的路径
+// Specify the path to the package of the Mapper class to be scanned
 @MapperScan("tech.qiantong.**.mapper")
 public class ApplicationConfig
 {
     /**
-     * 时区配置
+     * Time zone configuration
      */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization()

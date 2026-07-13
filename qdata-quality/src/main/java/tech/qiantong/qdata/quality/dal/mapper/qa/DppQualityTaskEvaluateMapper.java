@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据质量任务-评测规则Mapper接口
+ * Data quality task-evaluation rule Mapper interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -38,10 +38,10 @@ import java.util.Set;
 public interface DppQualityTaskEvaluateMapper extends BaseMapperX<DppQualityTaskEvaluateDO> {
 
     default PageResult<DppQualityTaskEvaluateDO> selectPage(DppQualityTaskEvaluatePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppQualityTaskEvaluateDO>()
                 .eqIfPresent(DppQualityTaskEvaluateDO::getTaskId, reqVO.getTaskId())
                 .likeIfPresent(DppQualityTaskEvaluateDO::getName, reqVO.getName())
@@ -59,9 +59,9 @@ public interface DppQualityTaskEvaluateMapper extends BaseMapperX<DppQualityTask
                 .eqIfPresent(DppQualityTaskEvaluateDO::getEvaColumn, reqVO.getEvaColumn())
                 .eqIfPresent(DppQualityTaskEvaluateDO::getRule, reqVO.getRule())
                 .eqIfPresent(DppQualityTaskEvaluateDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(DppQualityTaskEvaluateDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

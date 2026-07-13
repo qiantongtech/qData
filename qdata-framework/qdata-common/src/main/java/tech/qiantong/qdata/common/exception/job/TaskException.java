@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.job;
 
 /**
- * 计划策略异常
+ * Planning strategy exception
  *
  * @author qdata
  */

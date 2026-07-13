@@ -36,9 +36,9 @@ public class PageParam extends BaseEntity implements Serializable  {
     private static final Integer PAGE_SIZE = 120;
 
     /**
-     * 每页条数 - 不分页
+     * Number of items per page - no pagination
      *
-     * 例如说，导出接口，可以设置 {@link #pageSize} 为 -1 不分页，查询所有数据。
+     * For example, when exporting an interface, you can set {@link #pageSize} to -1 to query all data without paging.
      */
     public static final Integer PAGE_SIZE_NONE = -1;
 
@@ -54,10 +54,10 @@ public class PageParam extends BaseEntity implements Serializable  {
     private Integer pageSize = PAGE_SIZE;
 
 
-    /** 排序列 */
+    /** Sorting column */
     private String orderByColumn;
 
-    /** 排序的方向desc或者asc */
+    /** Sorting direction desc or asc */
     private String isAsc = "asc";
     private String isDesc = "desc";
 
@@ -76,7 +76,7 @@ public class PageParam extends BaseEntity implements Serializable  {
     {
         if (StringUtils.isNotEmpty(isAsc))
         {
-            // 兼容前端排序类型
+            // Compatible with front-end sorting types
             if ("ascending".equals(isAsc))
             {
                 isAsc = "asc";

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hive数据库方言实现
+ * Hive database dialect implementation
  */
 @Slf4j
 public class HiveDialect implements DatabaseDialect {
@@ -20,7 +20,7 @@ public class HiveDialect implements DatabaseDialect {
     @Override
     public String getStorageEngine(McDbDO mcDbDO) {
         try {
-            // Hive使用HDFS存储，这里返回Hive
+            // Hive uses HDFS storage, return Hive here
             return "Hive";
         } catch (Exception e) {
             log.error("获取Hive存储引擎失败", e);
@@ -45,7 +45,7 @@ public class HiveDialect implements DatabaseDialect {
 
     @Override
     public boolean isColumnAutoIncrement(McDbDO mcDbDO, String tableName, String columnName) {
-        // Hive不支持自增字段，直接返回false
+        // Hive does not support auto-increment fields and returns false directly.
         log.info("Hive不支持自增字段");
         return false;
     }
@@ -56,7 +56,7 @@ public class HiveDialect implements DatabaseDialect {
     }
 
     /**
-     * 解析datasourceConfig获取连接信息
+     * Parse datasourceConfig to obtain connection information
      */
     private Map<String, Object> parseDatasourceConfig(String datasourceConfig) {
         if (StringUtils.isBlank(datasourceConfig)) {
@@ -72,7 +72,7 @@ public class HiveDialect implements DatabaseDialect {
     }
 
     /**
-     * 构建连接信息
+     * Build connection information
      */
     private ConnectionInfo buildConnectionInfo(McDbDO mcDbDO) {
         Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
@@ -94,7 +94,7 @@ public class HiveDialect implements DatabaseDialect {
     }
 
     /**
-     * 连接信息类
+     * Connection information class
      */
     private static class ConnectionInfo {
         private final String url;
@@ -124,13 +124,13 @@ public class HiveDialect implements DatabaseDialect {
     public DbMetadata getDbMetadata(McDbDO mcDbDO) {
         DbMetadata dbMetadata = new DbMetadata();
         try {
-            // 构建连接信息
+            // Build connection information
             ConnectionInfo connectionInfo = buildConnectionInfo(mcDbDO);
             if (connectionInfo == null) {
                 return dbMetadata;
             }
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(connectionInfo.getUrl(), connectionInfo.getUsername(), connectionInfo.getPassword())) {
                 List<String> tables = getTableNames(conn, mcDbDO.getDbName());
                 long totalSizeBytes = 0;
@@ -138,7 +138,7 @@ public class HiveDialect implements DatabaseDialect {
                     totalSizeBytes += getTableSizeBytes(conn, table);
                 }
 
-                // 设置存储大小
+                // Set storage size
                 dbMetadata.setStorageSize((int) (totalSizeBytes / 1024.0 / 1024.0));
             }
         } catch (Exception e) {
@@ -147,13 +147,13 @@ public class HiveDialect implements DatabaseDialect {
         return dbMetadata;
     }
 
-    // 获取指定库中所有表名
+    // Get all table names in the specified database
     private static List<String> getTableNames(Connection conn, String dbName) throws SQLException {
         List<String> tables = new ArrayList<>();
-        // 切换到指定数据库
+        // Switch to the specified database
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("USE " + dbName);
-            // 获取所有表
+            // Get all tables
             ResultSet rs = conn.getMetaData().getTables(null, dbName, null, new String[]{"TABLE"});
             while (rs.next()) {
                 tables.add(rs.getString("TABLE_NAME"));
@@ -164,17 +164,17 @@ public class HiveDialect implements DatabaseDialect {
         return tables;
     }
 
-    // 查询单个表的大小 (单位: 字节)
+    // Query the size of a single table (unit: bytes)
     private static long getTableSizeBytes(Connection conn, String tableName) throws SQLException {
         String sql = "DESCRIBE FORMATTED " + tableName;
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // DESCRIBE FORMATTED 返回三列: col_name, data_type, comment
+                // DESCRIBE FORMATTED returns three columns: col_name, data_type, comment
                 String colName = rs.getString("col_name");
                 if ("Total Size".equals(colName)) {
-                    String sizeStr = rs.getString("data_type").replaceAll(",", ""); // 移除数字中的逗号
+                    String sizeStr = rs.getString("data_type").replaceAll(",", ""); // Remove commas from numbers
                     return Long.parseLong(sizeStr);
                 }
                 String data_type = rs.getString("data_type");
@@ -182,14 +182,14 @@ public class HiveDialect implements DatabaseDialect {
         }
         return 0;
     }
-    // 查询表级注释
+    // Query table-level comments
     private static String getTableComment(Connection conn, String tableName) throws SQLException {
         String sql = "DESCRIBE FORMATTED " + tableName;
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // DESCRIBE FORMATTED 返回三列: col_name, data_type, comment
+                // DESCRIBE FORMATTED returns three columns: col_name, data_type, comment
                 String data_type = rs.getString("data_type");
                 if (StringUtils.isNotBlank(data_type)&&data_type.contains("comment")) {
                     String comment = rs.getString("comment");
@@ -200,26 +200,26 @@ public class HiveDialect implements DatabaseDialect {
         return "";
     }
 
-    // 查询表创建时间
+    // Query table creation time
     private static String getTableCreateTime(Connection conn, String tableName) throws SQLException {
         String sql = "DESCRIBE FORMATTED " + tableName;
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // DESCRIBE FORMATTED 返回三列: col_name, data_type, comment
+                // DESCRIBE FORMATTED returns three columns: col_name, data_type, comment
                 String colName = rs.getString("col_name");
                 if ("Created".equals(colName)) {
                     String originalTime = rs.getString("data_type");
-                    // 转换时间格式为 yyyy-MM-dd HH:mm:ss
+                    // Convert the time format to yyyy-MM-dd HH:mm:ss
                     try {
-                        // Hive返回的时间格式通常为：Thu Apr 14 10:00:00 CST 2026
+                        // The time format returned by Hive is usually: Thu Apr 14 10:00:00 CST 2026
                         java.text.SimpleDateFormat inputFormat = new java.text.SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.ENGLISH);
                         java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         java.util.Date date = inputFormat.parse(originalTime);
                         return outputFormat.format(date);
                     } catch (Exception e) {
-                        // 解析失败，返回原始时间
+                        // Parsing failed; return the original time
                         log.error("时间转换失败：{}", e.getMessage());
                         return originalTime;
                     }
@@ -232,16 +232,16 @@ public class HiveDialect implements DatabaseDialect {
     public TableMetadata getTableMetadata(McDbDO mcDbDO, String tableName) {
         TableMetadata metadata = new TableMetadata();
         try {
-            // 构建连接信息
+            // Build connection information
             ConnectionInfo connectionInfo = buildConnectionInfo(mcDbDO);
             if (connectionInfo == null) {
                 return metadata;
             }
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(connectionInfo.getUrl(), connectionInfo.getUsername(), connectionInfo.getPassword())) {
                 String dbName = mcDbDO.getDbName();
-                // 获取表行数
+                // Get the number of table rows
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SELECT COUNT(*) FROM " + tableName;
                     ResultSet rs = stmt.executeQuery(sql);
@@ -250,7 +250,7 @@ public class HiveDialect implements DatabaseDialect {
                     }
                 }
 
-                // 获取表索引信息
+                // Get table index information
 //                try (Statement stmt = conn.createStatement()) {
 //                    String sql = "SHOW INDEXES IN " + tableName;
 //                    ResultSet rs = stmt.executeQuery(sql);
@@ -265,7 +265,7 @@ public class HiveDialect implements DatabaseDialect {
 //                    metadata.setIndexes(indexes.toString());
 //                }
 
-                // 获取表分区字段信息
+                // Get table partition field information
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SHOW PARTITIONS " + tableName;
                     ResultSet rs = stmt.executeQuery(sql);
@@ -291,19 +291,19 @@ public class HiveDialect implements DatabaseDialect {
                     metadata.setPartitionFields("");
                 }
 
-                // 获取表存储大小
+                // Get table storage size
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SHOW TABLE EXTENDED LIKE '" + tableName + "'";
                     ResultSet rs = stmt.executeQuery(sql);
                     while (rs.next()) {
                         String line = rs.getString(1);
                         if (line != null && line.contains("totalFileSize:")) {
-                            // 解析存储大小，直接获取字节数
+                            // Parse the storage size and directly obtain the number of bytes
                             int startIndex = line.indexOf("totalFileSize:") + "totalFileSize:".length();
                             String sizeStr = line.substring(startIndex).trim();
                             try {
                                 Integer size = Integer.valueOf(sizeStr);
-                                // 转换为MB，保留两位小数
+                                // Convert to MB to two decimal places
                                 metadata.setTableSize(size);
                             } catch (NumberFormatException e) {
                                 log.warn("解析Hive表存储大小失败: {}", sizeStr);
@@ -314,10 +314,10 @@ public class HiveDialect implements DatabaseDialect {
                 }
                 metadata.setTableComment(getTableComment(conn,tableName));
 
-                // Hive不支持主键，设置为空
+                // Hive does not support primary keys and is set to empty
                 metadata.setPrimaryKey("");
 
-                // 使用DESCRIBE FORMATTED查询获取创建时间和InputFormat
+                // Use DESCRIBE FORMATTED query to get creation time and InputFormat
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "DESCRIBE FORMATTED " + tableName;
                     ResultSet rs = stmt.executeQuery(sql);
@@ -329,24 +329,24 @@ public class HiveDialect implements DatabaseDialect {
                             inputFormat = rs.getString("data_type");
                         } else if (colName.contains("CreateTime")) {
                             createTime = rs.getString("data_type");
-                            // 转换时间格式为 yyyy-MM-dd HH:mm:ss
+                            // Convert the time format to yyyy-MM-dd HH:mm:ss
                             try {
-                                // Hive返回的时间格式通常为：Thu Apr 14 10:00:00 CST 2026
+                                // The time format returned by Hive is usually: Thu Apr 14 10:00:00 CST 2026
                                 java.text.SimpleDateFormat dataFormat = new java.text.SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.ENGLISH);
                                 java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 java.util.Date date = dataFormat.parse(createTime);
                                 createTime = outputFormat.format(date);
                             } catch (Exception e) {
-                                // 解析失败，返回原始时间
+                                // Parsing failed; return the original time
                                 log.error("时间转换失败：{}", e.getMessage());
                             }
                         }
                     }
-                    // 设置创建时间（Hive不支持修改时间，设置为创建时间）
+                    // Set the creation time (Hive does not support modification time, set it to the creation time)
                     metadata.setCreateTime(createTime);
                     metadata.setUpdateTime(null);
 
-                    // 根据InputFormat映射存储引擎类型
+                    // Mapping storage engine types based on InputFormat
                     if (inputFormat.contains("OrcInputFormat")) {
                         metadata.setStorageEngine("ORC");
                     } else if (inputFormat.contains("ParquetInputFormat")) {
@@ -360,7 +360,7 @@ public class HiveDialect implements DatabaseDialect {
                     } else if (inputFormat.contains("SequenceFileInputFormat")) {
                         metadata.setStorageEngine("SEQUENCEFILE");
                     } else if (!inputFormat.isEmpty()) {
-                        // 处理其他存储格式
+                        // Handle other storage formats
                         metadata.setStorageEngine(inputFormat);
                     } else {
                         metadata.setStorageEngine("Hive");
@@ -380,18 +380,18 @@ public class HiveDialect implements DatabaseDialect {
     public ColumnMetadata getColumnMetadata(McDbDO mcDbDO, String tableName, String columnName) {
         ColumnMetadata metadata = new ColumnMetadata();
         try {
-            // Hive不支持自增字段
+            // Hive does not support auto-increment fields
             metadata.setAutoIncrement(false);
-            // Hive不支持唯一约束
+            // Hive does not support unique constraints
             metadata.setUnique(false);
 
-            // 构建连接信息
+            // Build connection information
             ConnectionInfo connectionInfo = buildConnectionInfo(mcDbDO);
             if (connectionInfo == null) {
                 return metadata;
             }
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(connectionInfo.getUrl(), connectionInfo.getUsername(), connectionInfo.getPassword());
                  Statement stmt = conn.createStatement()) {
                 String sql = "SHOW PARTITIONS " + tableName;
@@ -419,8 +419,8 @@ public class HiveDialect implements DatabaseDialect {
     }
 
     /**
-     * 解析Hive返回的存储大小字符串，转换为字节数
-     * 例如："100.5 MB" -> 105480192
+     * Parse the storage size string returned by Hive and convert it to the number of bytes
+     * For example: "100.5 MB" -> 105480192
      */
     private static long parseHiveSize(String sizeStr) {
         if (sizeStr == null || sizeStr.isEmpty()) {
@@ -428,14 +428,14 @@ public class HiveDialect implements DatabaseDialect {
         }
 
         sizeStr = sizeStr.trim();
-        // 提取数字部分和单位部分
+        // Extract the numeric part and the unit part
         String numberStr = sizeStr.replaceAll("[^0-9.]", "");
         String unitStr = sizeStr.replaceAll("[0-9.]", "").trim().toUpperCase();
 
         double number = Double.parseDouble(numberStr);
         long multiplier = 1;
 
-        // 根据单位转换为字节
+        // Convert to bytes based on units
         switch (unitStr) {
             case "KB":
                 multiplier = 1024;
@@ -449,7 +449,7 @@ public class HiveDialect implements DatabaseDialect {
             case "TB":
                 multiplier = 1024L * 1024 * 1024 * 1024;
                 break;
-            // 默认为字节
+            // Defaults to bytes
         }
 
         return (long) (number * multiplier);

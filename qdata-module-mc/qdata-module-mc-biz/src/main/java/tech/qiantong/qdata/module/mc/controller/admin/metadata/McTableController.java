@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据信息Controller
+ * Metadata InformationController
  *
  * @author qdata
  * @date 2026-02-11

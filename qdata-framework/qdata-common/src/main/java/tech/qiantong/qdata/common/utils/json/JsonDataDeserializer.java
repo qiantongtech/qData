@@ -28,7 +28,7 @@ import java.io.IOException;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB

@@ -54,7 +54,7 @@ import java.util.Set;
 
 /**
  * <P>
- * 用途:伪实现类
+ * Purpose: Pseudo implementation class
  * </p>
  *
  * @author: FXB

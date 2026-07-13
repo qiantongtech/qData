@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成调度信息Service接口
+ * Data integration scheduling information Service interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,67 +20,67 @@ import java.util.Map;
 public interface IMcTaskSchedulerService extends IService<McTaskSchedulerDO> {
 
     /**
-     * 获得数据集成调度信息分页列表
+     * Obtain a paginated list of data integration scheduling information
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成调度信息分页列表
+     * @param pageReqVO paging request
+     * @return Data integration scheduling information paging list
      */
     PageResult<McTaskSchedulerDO> getMcTaskSchedulerPage(McTaskSchedulerPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成调度信息
+     * Create data integration scheduling information
      *
-     * @param createReqVO 数据集成调度信息信息
-     * @return 数据集成调度信息编号
+     * @param createReqVO data integration scheduling information
+     * @return Data integration scheduling information number
      */
     Long createMcTaskScheduler(McTaskSchedulerSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成调度信息
+     * Update data integration scheduling information
      *
-     * @param updateReqVO 数据集成调度信息信息
+     * @param updateReqVO data integration scheduling information
      */
     int updateMcTaskScheduler(McTaskSchedulerSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成调度信息
+     * Delete data integration scheduling information
      *
-     * @param idList 数据集成调度信息编号
+     * @param idList Data integration scheduling information number
      */
     int removeMcTaskScheduler(Collection<Long> idList);
 
     /**
-     * 获得数据集成调度信息详情
+     * Get data integration scheduling information details
      *
-     * @param id 数据集成调度信息编号
-     * @return 数据集成调度信息
+     * @param id data integration scheduling information number
+     * @return data integration scheduling information
      */
     McTaskSchedulerDO getMcTaskSchedulerById(Long id);
 
     McTaskSchedulerDO getMcTaskSchedulerBytaskId(Long taskId);
 
     /**
-     * 获得全部数据集成调度信息列表
+     * Get a list of all data integration scheduling information
      *
-     * @return 数据集成调度信息列表
+     * @return Data integration scheduling information list
      */
     List<McTaskSchedulerDO> getMcTaskSchedulerList();
 
     /**
-     * 获得全部数据集成调度信息 Map
+     * Get all data integration scheduling information Map
      *
-     * @return 数据集成调度信息 Map
+     * @return Data integration scheduling information Map
      */
     Map<Long, McTaskSchedulerDO> getMcTaskSchedulerMap();
 
 
     /**
-     * 导入数据集成调度信息数据
+     * Import data integration scheduling information data
      *
-     * @param importExcelList 数据集成调度信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration scheduling information data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importMcTaskScheduler(List<McTaskSchedulerRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

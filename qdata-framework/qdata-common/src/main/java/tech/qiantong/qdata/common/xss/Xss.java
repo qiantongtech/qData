@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自定义xss校验注解
+ * Custom xss validation annotations
  *
  * @author qdata
  */

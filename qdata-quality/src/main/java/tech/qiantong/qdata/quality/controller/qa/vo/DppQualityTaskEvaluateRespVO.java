@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量任务-评测规则 Response VO 对象 DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task-Evaluation Rule Response VO Object DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21

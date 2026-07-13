@@ -8,14 +8,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 元数据信息 DO 对象 MC_TABLE
+ * Metadata information DO object MC_TABLE
  *
  * @author qdata
  * @date 2026-02-11
  */
 @Data
 @TableName(value = "MC_TABLE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TABLE_seq")
 @Builder
 @NoArgsConstructor
@@ -29,81 +29,81 @@ public class McTableDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 采集任务id;预留字段，暂时不用 */
+    /** Collection task id; reserved field, not used temporarily */
     private Long taskId;
 
-    /** 库id */
+    /** Database ID */
     private Long dbId;
 
-    /** 数据源id;冗余字段 */
+    /** Data source id; redundant field */
     private Long datasourceId;
 
-    /** 版本 */
+    /** version */
     private Integer version;
 
-    /** 表名称（表英文名称） */
+    /** Table name (table English name) */
     private String tableName;
 
-    /** 表注释/表描述（表中文名称） */
+    /** Table comment/table description (table Chinese name) */
     private String tableComment;
 
-    /** 安全等级id */
+    /** Security level id */
     private Long safetyLevelId;
 
-    /** 数据库名 */
+    /** Database name */
     private String dbName;
 
-    /** 模式名;可空 */
+    /** Pattern name; can be empty */
     private String schemaName;
 
-    /** 存储类型 */
+    /** Storage type */
     private String storageType;
 
-    /** 存储大小 */
+    /** Storage size */
     private Integer storageSize;
 
-    /** 业务责任人 */
+    /** Business Responsible Person */
     private Long businessLeader;
 
-    /** 业务责任人电话 */
+    /** Phone number of business person in charge */
     private String businessLeaderPhone;
 
-    /** 技术责任人 */
+    /** Technical Responsible Person */
     private Long techLeader;
 
-    /** 技术责任人电话 */
+    /** Telephone number of technical person in charge */
     private String techLeaderPhone;
 
-    /** 是否主表;0：否，1：是 */
+    /** Whether it is the main table; 0: no, 1: yes */
     private String masterFlag;
 
-    /** 是否临时表;0：否，1：是 */
+    /** Whether it is a temporary table; 0: no, 1: yes */
     private String tempFlag;
 
-    /** 数据质量 */
+    /** Data quality */
     private Integer dataQuality;
 
-    /** 审核状态;1：审批中，2：审批通过，3：审批拒绝，4：审批撤回，5：审批异常 */
+    /** Review status; 1: Approval in progress, 2: Approval passed, 3: Approval rejected, 4: Approval withdrawn, 5: Approval abnormal */
     private String auditStatus;
 
-    /** 审核时间 */
+    /** Review time */
     private Date auditTime;
 
-    /** 状态;0：未发布，1：已发布 */
+    /** Status; 0: not released, 1: released */
     private String status;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
@@ -115,91 +115,91 @@ public class McTableDO extends BaseEntity {
     private String sourceSystemName;
 
     /**
-     * 业务责任人姓名
+     * Name of person responsible for business
      */
     @TableField(exist = false)
     private String businessLeaderName;
 
     /**
-     * 技术责任人姓名
+     * Name of technical person in charge
      */
     @TableField(exist = false)
     private String techLeaderName;
 
     /**
-     * 安全等级名称
+     * Security level name
      */
     @TableField(exist = false)
     private String safetyLevelName;
 
 
-    /** cron表达式 */
+    /** cron expression */
     @TableField(exist = false)
     private String cronExpression;
 
-    /** 字段数量 */
+    /** Number of fields */
     private Long columnCount;
 
-    /** 索引 */
+    /** Index */
     private String tbIndex;
 
-    /** 行数 */
+    /** Number of lines */
     private Long rowCount;
 
-    /** 分区字段 */
+    /** Partition field */
     private String partitionKey;
     /**
-     * 存储引擎
+     * Storage engine
      */
     private String storageEngine;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     private Long responsibleDept;
 
     /**
-     * 主键字段
+     * Primary key field
      */
     private String primaryKey;
 
     /**
-     * 表创建时间
+     * Table creation time
      */
     private Date tbCreateTime;
 
     /**
-     * 数据更新时间
+     * Data update time
      */
     private Date dataUpdateTime;
 
     /**
-     * 是否已经关联资产
+     * Whether assets have been associated
      */
     @TableField(exist = false)
     private Boolean dssetFlag;
 
     /**
-     * 创建人电话
+     * Creator phone number
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * 更新人电话
+     * Updater’s phone number
      */
     @TableField(exist = false)
     private String updatePhoneNumber;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

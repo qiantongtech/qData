@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量日志 Response VO 对象 DPP_QUALITY_LOG
+ * Data Quality Log Response VO Object DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19

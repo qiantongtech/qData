@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 自定义退出处理类 返回成功
+ * Custom exit processing class returns success
  *
  * @author qdata
  */
@@ -50,7 +50,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler
     private TokenService tokenService;
 
     /**
-     * 退出处理
+     * Exit processing
      *
      * @return
      */
@@ -62,9 +62,9 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler
         if (StringUtils.isNotNull(loginUser))
         {
             String userName = loginUser.getUsername();
-            // 删除用户缓存记录
+            // Delete user cache records
             tokenService.delLoginUser(loginUser.getToken());
-            // 记录用户退出日志
+            // Record user exit log
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, MessageUtils.messageEn("user.logout.success")));
         }
         ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(MessageUtils.message("user.logout.success"))));

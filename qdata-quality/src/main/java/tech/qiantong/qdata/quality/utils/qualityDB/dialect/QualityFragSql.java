@@ -134,12 +134,12 @@ public interface QualityFragSql {
         Collection<?> dateformat = (Collection<?>) rule.getConfig().get("dateformat");
         Collection<?> dateformatError = (Collection<?>) rule.getConfig().get("dateformatError");
 
-        // 格式模式映射
+        // Format pattern mapping
         Map<String, String> formatPatterns = new HashMap<>(8);
         formatPatterns.put("yyyy-MM-dd", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
         formatPatterns.put("yyyy-MM-dd HH:mm:ss", "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$");
 
-        // 构建格式条件
+        // Build format conditions
         List<String> formatConditions = CollectionUtils.isEmpty(dateformat) ?
                 Collections.emptyList() :
                 dateformat.stream()
@@ -149,14 +149,14 @@ public interface QualityFragSql {
                         .map(pattern -> regex(column, pattern))
                         .collect(Collectors.toList());
 
-        // 构建错误格式排除条件
+        // Build error format exclusions
         List<String> errorConditions = CollectionUtils.isEmpty(dateformatError) ?
                 Collections.emptyList() :
                 dateformatError.stream()
                         .map(error -> String.format("%s <> '%s'", column, error.toString()))
                         .collect(Collectors.toList());
 
-        // 组合所有条件
+        // Combine all conditions
         List<String> allConditions = new ArrayList<>();
         if (!formatConditions.isEmpty()) {
             allConditions.add("(" + String.join(" or ", formatConditions) + ")");

@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成调度信息Service业务层处理
+ * Data integration scheduling information Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -57,16 +57,16 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
 
     @Override
     public int updateMcTaskScheduler(McTaskSchedulerSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据集成调度信息
+        // Update data integration scheduling information
         McTaskSchedulerDO updateObj = BeanUtils.toBean(updateReqVO, McTaskSchedulerDO.class);
         return mcTaskSchedulerMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskScheduler(Collection<Long> idList) {
-        // 批量删除数据集成调度信息
+        // Deleting data integration scheduling information in batches
         return mcTaskSchedulerMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
                 .collect(Collectors.toMap(
                         McTaskSchedulerDO::getId,
                         mcTaskSchedulerDO -> mcTaskSchedulerDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成调度信息数据
+     * Import data integration scheduling information data
      *
-     * @param importExcelList 数据集成调度信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration scheduling information data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTaskScheduler(List<McTaskSchedulerRespVO> importExcelList, boolean isUpdateSupport, String operName) {

@@ -31,8 +31,8 @@ import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 嵌入式 Redis实例配置，解决本地卡顿的问题
- * 仅供本地开发测试使用，注意！！！！
+ * Embedded Redis instance configuration to solve the problem of local lag
+ * For local development and testing only, please note!!!!
  * @author Ming
  */
 @Configuration
@@ -51,13 +51,13 @@ public class EmbeddedRedisConfig {
             if (isPortAvailable(redisPort)) {
                 redisServer = new RedisServer(redisPort);
 
-                // 打印开始信息
+                // Print start information
                 log.info("-------------------------------------------------");
                 log.info("| 注意: 仅供测试使用，生产环境误用！！！           |");
                 log.info("| 注意: 本地嵌入式 Redis Server 正在启动...         |");
                 log.info("-------------------------------------------------");
 
-                // 启动Redis服务器前的等待动画
+                // Waiting animation before starting the Redis server
                 String[] frames = new String[]{"-", "\\", "|", "/"};
                 for (int i = 0; i < 12; i++) {
                     for (String frame : frames) {
@@ -67,10 +67,10 @@ public class EmbeddedRedisConfig {
                     }
                 }
 
-                // 实际启动Redis服务器
+                // Actually start the Redis server
                 redisServer.start();
 
-                // 清除当前行并打印最终成功消息
+                // Clear the current line and print a final success message
                 System.out.print("\r✓ 本地嵌入式 Redis Server 已成功启动于端口: " + redisServer.ports());
                 System.out.println();
                 log.info("-------------------------------------------------");
@@ -84,10 +84,10 @@ public class EmbeddedRedisConfig {
     }
 
     /**
-     * 检查指定端口是否可用
+     * Check whether the specified port is available
      *
-     * @param port 要检查的端口号
-     * @return 如果端口未被占用返回true，否则返回false
+     * @param port The port number to check
+     * @return Returns true if the port is not occupied, otherwise returns false
      */
     private boolean isPortAvailable(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {

@@ -30,7 +30,7 @@ import javax.sql.DataSource;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -47,7 +47,7 @@ public class MultiTxManagerConfig {
     }
 
     /**
-     * Neo4j 事务管理器
+     * Neo4j transaction manager
      *
      * @param dbProvider
      * @return

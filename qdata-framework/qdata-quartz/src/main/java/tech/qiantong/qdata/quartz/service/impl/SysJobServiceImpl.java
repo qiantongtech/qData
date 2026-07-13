@@ -40,7 +40,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
- * 定时任务调度信息 服务层
+ * Scheduled task scheduling information service layer
  *
  * @author qdata
  */
@@ -53,7 +53,7 @@ public class SysJobServiceImpl implements ISysJobService {
     private SysJobMapper jobMapper;
 
     /**
-     * 项目启动时，初始化定时器 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库ID和任务组名，否则会导致脏数据）
+     * When the project starts, the timer is initialized mainly to prevent manual modification of the database from being synchronized to the scheduled task processing (note: the database ID and task group name cannot be modified manually, otherwise dirty data will result)
      */
     @PostConstruct
     public void init() throws SchedulerException, TaskException {
@@ -65,9 +65,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 获取quartz调度器的计划任务列表
+     * Get the scheduled task list of the quartz scheduler
      *
-     * @param job 调度信息
+     * @param job scheduling information
      * @return
      */
     @Override
@@ -76,10 +76,10 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 通过调度任务ID查询调度信息
+     * Query scheduling information by scheduling task ID
      *
-     * @param jobId 调度任务ID
-     * @return 调度任务对象信息
+     * @param jobId scheduling task ID
+     * @return Scheduling task object information
      */
     @Override
     public SysJob selectJobById(Long jobId) {
@@ -87,9 +87,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 暂停任务
+     * Pause task
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -105,9 +105,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 恢复任务
+     * Recovery task
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -123,9 +123,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 删除任务后，所对应的trigger也将被删除
+     * After deleting a task, the corresponding trigger will also be deleted.
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -140,10 +140,10 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 批量删除调度信息
+     * Delete scheduling information in batches
      *
-     * @param jobIds 需要删除的任务ID
-     * @return 结果
+     * @param jobIds The task ID to be deleted
+     * @return result
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -155,9 +155,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 任务调度状态修改
+     * Task scheduling status modification
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -173,9 +173,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 立即运行任务
+     * Run task now
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -184,7 +184,7 @@ public class SysJobServiceImpl implements ISysJobService {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         SysJob properties = selectJobById(job.getJobId());
-        // 参数
+        // Parameters
         JobDataMap dataMap = new JobDataMap();
         dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
         JobKey jobKey = ScheduleUtils.getJobKey(jobId, jobGroup);
@@ -196,9 +196,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 新增任务
+     * Add new task
      *
-     * @param job 调度信息 调度信息
+     * @param job scheduling information scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -212,14 +212,14 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 新增任务带有校验验证
+     * Added new tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     @Override
     public Long insertJobReturnId(SysJob job) throws SchedulerException, TaskException {
-        // 校验任务配置的合法性
+        // Verify the legality of task configuration
         Long validationResult = validateJobConfig(job);
         if (validationResult != 0) {
             return validationResult;
@@ -233,9 +233,9 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 更新任务的时间表达式
+     * Update task time expression
      *
-     * @param job 调度信息
+     * @param job scheduling information
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -249,14 +249,14 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 更新任务带有校验验证
+     * Update tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果 返回任务主键ID
+     * @param job scheduling information
+     * @return result returns the task primary key ID
      */
     @Override
     public Long updateJobReturnId(SysJob job) throws SchedulerException, TaskException {
-        // 校验任务配置的合法性
+        // Verify the legality of task configuration
         Long validationResult = validateJobConfig(job);
         if (validationResult != 0) {
             return validationResult;
@@ -270,27 +270,27 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 更新任务
+     * Update task
      *
-     * @param job      任务对象
-     * @param jobGroup 任务组名
+     * @param job task object
+     * @param jobGroup task group name
      */
     public void updateSchedulerJob(SysJob job, String jobGroup) throws SchedulerException, TaskException {
         Long jobId = job.getJobId();
-        // 判断是否存在
+        // Determine whether it exists
         JobKey jobKey = ScheduleUtils.getJobKey(jobId, jobGroup);
         if (scheduler.checkExists(jobKey)) {
-            // 防止创建时存在数据问题 先移除，然后在执行创建操作
+            // To prevent data problems during creation, remove first and then perform the creation operation
             scheduler.deleteJob(jobKey);
         }
         ScheduleUtils.createScheduleJob(scheduler, job);
     }
 
     /**
-     * 校验cron表达式是否有效
+     * Verify whether cron expression is valid
      *
-     * @param cronExpression 表达式
-     * @return 结果
+     * @param cronExpression expression
+     * @return result
      */
     @Override
     public boolean checkCronExpressionIsValid(String cronExpression) {
@@ -298,43 +298,43 @@ public class SysJobServiceImpl implements ISysJobService {
     }
 
     /**
-     * 校验任务配置的合法性
+     * Verify the legality of task configuration
      *
-     * @param job 任务信息
-     * @return 校验结果码，0表示校验通过
+     * @param job task information
+     * @return verification result code, 0 means verification passed
      */
     private Long validateJobConfig(SysJob job) {
-        // 1. 校验Cron表达式
+        // 1. Verify Cron expression
         if (!CronUtils.isValid(job.getCronExpression())) {
             return JobErrorEnum.CRON_INVALID.getCode();
         }
 
-        // 2. 校验目标字符串
+        // 2. Verify target string
         String invokeTarget = job.getInvokeTarget();
 
-        // 2.1 检查RMI调用
+        // 2.1 Check RMI calls
         if (StringUtils.containsIgnoreCase(invokeTarget, Constants.LOOKUP_RMI)) {
             return JobErrorEnum.RMI_NOT_ALLOWED.getCode();
         }
 
-        // 2.2 检查LDAP调用
+        // 2.2 Check LDAP calls
         if (StringUtils.containsAnyIgnoreCase(invokeTarget,
                 new String[]{Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS})) {
             return JobErrorEnum.LDAP_NOT_ALLOWED.getCode();
         }
 
-        // 2.3 检查HTTP调用
+        // 2.3 Check HTTP calls
         if (StringUtils.containsAnyIgnoreCase(invokeTarget,
                 new String[]{Constants.HTTP, Constants.HTTPS})) {
             return JobErrorEnum.HTTP_NOT_ALLOWED.getCode();
         }
 
-        // 2.4 检查违规字符串
+        // 2.4 Check illegal strings
         if (StringUtils.containsAnyIgnoreCase(invokeTarget, Constants.JOB_ERROR_STR)) {
             return JobErrorEnum.INVALID_TARGET.getCode();
         }
 
-//        // 2.5 检查白名单
+// // 2.5 Check whitelist
 //        if (!ScheduleUtils.whiteList(invokeTarget)) {
 //            return JobErrorEnum.NOT_IN_WHITELIST.getCode();
 //        }

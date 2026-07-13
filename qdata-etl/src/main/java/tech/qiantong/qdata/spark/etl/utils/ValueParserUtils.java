@@ -1,11 +1,11 @@
 package tech.qiantong.qdata.spark.etl.utils;
 
 /**
- * 字符串转化工具类
+ * String conversion tool class
  */
 public class ValueParserUtils {
     /**
-     * 安全解析 int，非法返回 0
+     * Safe parsing of int, illegal return of 0
      */
     public static int parseInt(String value) {
         try {
@@ -16,7 +16,7 @@ public class ValueParserUtils {
     }
 
     /**
-     * 安全解析 long，非法返回 0L
+     * Safely parse long, illegally return 0L
      */
     public static long parseLong(String value) {
         try {
@@ -27,7 +27,7 @@ public class ValueParserUtils {
     }
 
     /**
-     * 安全解析 double，非法返回 0.0
+     * Safely parses double, returns 0.0 illegally
      */
     public static double parseDouble(String value) {
         try {
@@ -38,14 +38,14 @@ public class ValueParserUtils {
     }
 
     /**
-     * 安全解析 boolean，支持 true/1 识别为 true，其它为 false
+     * Safely parse boolean, support true/1 to be recognized as true, others as false
      */
     public static boolean parseBoolean(String value) {
         return "true".equalsIgnoreCase(value) || "1".equals(value);
     }
 
     /**
-     * 转义字符串，用于正则匹配
+     * Escape string for regular matching
      * @param str
      * @return
      */
@@ -55,14 +55,14 @@ public class ValueParserUtils {
 
 
     /**
-     * SQL 字符串转义方法
-     * // 替换单引号为两个单引号，防止 SQL 报错
+     * SQL string escaping methods
+     * //Replace the single quote with two single quotes to prevent SQL errors.
      * @param str
      * @return
      */
     public static String escapeForSQL(String str) {
         if (str == null) return "";
-        // 替换单引号为两个单引号，防止 SQL 报错
+        // Replace single quotes with two single quotes to prevent SQL errors.
         return str.replace("'", "''");
     }
 

@@ -29,23 +29,23 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 线程池配置
+ * Thread pool configuration
  *
  * @author qdata
  **/
 @Configuration
 public class ThreadPoolConfig
 {
-    // 核心线程池大小
+    // Core thread pool size
     private int corePoolSize = 50;
 
-    // 最大可创建的线程数
+    // The maximum number of threads that can be created
     private int maxPoolSize = 200;
 
-    // 队列最大长度
+    // Queue maximum length
     private int queueCapacity = 1000;
 
-    // 线程池维护线程所允许的空闲时间
+    // The thread pool maintains the idle time allowed for threads
     private int keepAliveSeconds = 300;
 
     @Bean(name = "threadPoolTaskExecutor")
@@ -56,13 +56,13 @@ public class ThreadPoolConfig
         executor.setCorePoolSize(corePoolSize);
         executor.setQueueCapacity(queueCapacity);
         executor.setKeepAliveSeconds(keepAliveSeconds);
-        // 线程池对拒绝任务(无线程可用)的处理策略
+        // Thread pool's handling strategy for rejected tasks (no thread available)
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         return executor;
     }
 
     /**
-     * 执行周期性或定时任务
+     * Execute periodic or scheduled tasks
      */
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService()

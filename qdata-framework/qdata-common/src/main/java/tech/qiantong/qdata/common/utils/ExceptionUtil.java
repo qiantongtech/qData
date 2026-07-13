@@ -24,14 +24,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 错误信息处理类。
+ * Error message handling class.
  *
  * @author qdata
  */
 public class ExceptionUtil
 {
     /**
-     * 获取exception的详细错误信息。
+     * Get the detailed error information of the exception.
      */
     public static String getExceptionMessage(Throwable e)
     {

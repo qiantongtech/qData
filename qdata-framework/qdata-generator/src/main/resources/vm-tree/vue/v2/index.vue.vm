@@ -197,7 +197,7 @@
       @pagination="getList"
     />
 
-    <!-- {{ td('.pleaseEnter') + '内容' }} -->
+    <!-- {{ td('.pleaseEnter') + 'content' }} -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
@@ -381,40 +381,40 @@ export default {
 #end
   data() {
     return {
-      // 遮罩层
+      // Mask layer
       loading: true,
-      // 选中数组
+      // Select array
       ids: [],
 #if($table.sub)
-      // 子表选中数据
+      // Subtable selected data
       checked${subClassName}: [],
 #end
-      // 非单个禁用
+      // Not individually disabled
       single: true,
-      // 非多个禁用
+      // Not multiple disabled
       multiple: true,
-      // 显示搜索条件
+      // Show search criteria
       showSearch: true,
-      // 总条数
+      // Total number of items
       total: 0,
-      // ${functionName}表格数据
+      // ${functionName}table data
       ${businessName}List: [],
 #if($table.sub)
-      // ${subTable.functionName}表格数据
+      // ${subTable.functionName}table data
       ${subclassName}List: [],
 #end
-      // 弹出层标题
+      // Popup layer title
       title: "",
-      // 是否显示弹出层
+      // Whether to display popup layer
       open: false,
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-      // $comment时间范围
+      // $commentTime Range
       daterange${AttrName}: [],
 #end
 #end
-      // 查询参数
+      // Query parameters
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -424,9 +424,9 @@ export default {
 #end
 #end
       },
-      // 表单参数
+      // Form parameters
       form: {},
-      // 表单校验
+      // Form validation
       rules: {
 #foreach ($column in $columns)
 #if($column.required)
@@ -448,7 +448,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询${functionName}列表 */
+    /** Query ${functionName} list */
     getList() {
       this.loading = true;
 #foreach ($column in $columns)
@@ -472,12 +472,12 @@ export default {
         this.loading = false;
       });
     },
-    // 取消按钮
+    // Cancel button
     cancel() {
       this.open = false;
       this.reset();
     },
-    // 表单重置
+    // Form reset
     reset() {
       this.form = {
 #foreach ($column in $columns)
@@ -493,12 +493,12 @@ export default {
 #end
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    /** Search button operation */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
+    /** Reset button operation */
     resetQuery() {
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -509,19 +509,19 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
+    // Multiple selection box selected data
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.${pkColumn.javaField})
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
+    /** Add button operation */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加${functionName}";
     },
-    /** 修改按钮操作 */
+    /** Modify button operation */
     handleUpdate(row) {
       this.reset();
       const ${pkColumn.javaField} = row.${pkColumn.javaField} || this.ids
@@ -539,7 +539,7 @@ export default {
         this.title = "修改${functionName}";
       });
     },
-    /** 提交按钮 */
+    /** Submit button */
     submitForm() {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
@@ -567,7 +567,7 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    /** Delete button operation */
     handleDelete(row) {
       const ${pkColumn.javaField}s = row.${pkColumn.javaField} || this.ids;
       this.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + ${pkColumn.javaField}s + '"的数据项？').then(function() {
@@ -578,11 +578,11 @@ export default {
       }).catch(() => {});
     },
 #if($table.sub)
-	/** ${subTable.functionName}序号 */
+	/** ${subTable.functionName} serial number */
     row${subClassName}Index({ row, rowIndex }) {
       row.index = rowIndex + 1;
     },
-    /** ${subTable.functionName}添加按钮操作 */
+    /** ${subTable.functionName}Add button operation */
     handleAdd${subClassName}() {
       let obj = {};
 #foreach($column in $subTable.columns)
@@ -593,7 +593,7 @@ export default {
 #end
       this.${subclassName}List.push(obj);
     },
-    /** ${subTable.functionName}删除按钮操作 */
+    /** ${subTable.functionName} delete button operation */
     handleDelete${subClassName}() {
       if (this.checked${subClassName}.length == 0) {
         this.#[[$modal]]#.msgError("请先选择要删除的${subTable.functionName}数据");
@@ -605,12 +605,12 @@ export default {
         });
       }
     },
-    /** 复选框选中数据 */
+    /** Check box selected data */
     handle${subClassName}SelectionChange(selection) {
       this.checked${subClassName} = selection.map(item => item.index)
     },
 #end
-    /** 导出按钮操作 */
+    /** Export button operation */
     handleExport() {
       this.download('${moduleName}/${businessName}/export', {
         ...this.queryParams

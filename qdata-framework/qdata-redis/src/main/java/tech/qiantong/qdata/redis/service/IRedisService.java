@@ -24,7 +24,7 @@ import java.util.Map;
 public interface IRedisService {
 
     /**
-     * 设置
+     * Settings
      *
      * @param key
      * @param value
@@ -32,7 +32,7 @@ public interface IRedisService {
     void set(String key, String value);
 
     /**
-     * 设置，带超时
+     * Settings, with timeout
      *
      * @param key
      * @param value
@@ -75,11 +75,11 @@ public interface IRedisService {
     List<Object> hashMultiGet(String key, List<String> hashKeys);
 
     /**
-     * 判断 Hash 中是否存在指定字段
+     * Determine whether the specified field exists in the Hash
      *
-     * @param key     Redis 键
-     * @param hashKey Hash 字段
-     * @return 是否存在
+     * @param key Redis key
+     * @param hashKey Hash field
+     * @return does it exist
      */
     Boolean hashHasKey(String key, String hashKey);
 }

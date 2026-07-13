@@ -49,7 +49,7 @@ public class IPUtil {
     }
 
     /**
-     * 获取当前网络ip
+     * Get current network ip
      *
      * @param request
      * @return
@@ -65,7 +65,7 @@ public class IPUtil {
         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
             if (ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")) {
-                //根据网卡取本机配置的IP
+                //Get the IP configured on this machine based on the network card
                 InetAddress inet = null;
                 try {
                     inet = InetAddress.getLocalHost();
@@ -75,7 +75,7 @@ public class IPUtil {
                 ipAddress = inet.getHostAddress();
             }
         }
-        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        //For the case of multiple proxies, the first IP is the real IP of the client, and multiple IPs are divided according to ','
         if (ipAddress != null && ipAddress.length() > 15) { //"***.***.***.***".length() = 15
             if (ipAddress.indexOf(",") > 0) {
                 ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
@@ -85,7 +85,7 @@ public class IPUtil {
     }
 
     /**
-     * 获取当前网络ip
+     * Get current network ip
      *
      * @param request
      * @return
@@ -112,7 +112,7 @@ public class IPUtil {
         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddress().getHostString();
             if (ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")) {
-                //根据网卡取本机配置的IP
+                //Get the IP configured on this machine based on the network card
                 InetAddress inet = null;
                 try {
                     inet = InetAddress.getLocalHost();
@@ -122,7 +122,7 @@ public class IPUtil {
                 ipAddress = inet.getHostAddress();
             }
         }
-        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        //For the case of multiple proxies, the first IP is the real IP of the client, and multiple IPs are divided according to ','
         if (ipAddress != null && ipAddress.length() > 15) { //"***.***.***.***".length() = 15
             if (ipAddress.indexOf(",") > 0) {
                 ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));

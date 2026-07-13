@@ -21,8 +21,8 @@ import tech.qiantong.qdata.module.mc.utils.model.TaskSaveReqInput;
 import javax.annotation.Resource;
 
 /**
- * DolphinScheduler 调度器服务
- * 用于管理数据采集任务的调度和执行
+ * DolphinScheduler scheduler service
+ * Used to manage the scheduling and execution of data collection tasks
  *
  * @author qdata
  * @date 2025-12-16
@@ -43,14 +43,14 @@ public class McTaskDolphinSchedulerService {
     @Resource
     private IDsEtlNodeService dsEtlNodeService;
 
-    // ==================== DolphinScheduler 核心方法 ====================
+    // ==================== DolphinScheduler core methods ====================
 
     /**
-     * 创建任务流程定义
+     * Create task process definition
      *
-     * @param taskName 任务名称
-     * @param taskId   任务ID
-     * @return 任务编码
+     * @param taskName task name
+     * @param taskId task ID
+     * @return task code
      */
     public String createTaskDefinition(String taskName, Long taskId) {
         TaskSaveReqInput input = new TaskSaveReqInput();
@@ -65,13 +65,13 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 更新任务流程定义
+     * Update task process definition
      *
-     * @param taskName 任务名称
-     * @param taskId   任务ID
-     * @param taskCode 任务编码
-     * @param nodeCode 节点编码
-     * @return 任务编码
+     * @param taskName task name
+     * @param taskId task ID
+     * @param taskCode task code
+     * @param nodeCode node code
+     * @return task code
      */
     public String updateTaskDefinition(String taskName, Long taskId, String taskCode, String nodeCode) {
         TaskSaveReqInput input = new TaskSaveReqInput();
@@ -86,11 +86,11 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 创建调度器
+     * Create scheduler
      *
-     * @param taskCode 任务编码
-     * @param cronExpression cron表达式
-     * @return 调度器ID
+     * @param taskCode task code
+     * @param cronExpression cron expression
+     * @return scheduler ID
      */
     public Long createScheduler(String taskCode, String cronExpression) {
         DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO = McTaskConverter.createSchedulerRequest(
@@ -107,12 +107,12 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 更新调度器
+     * Update scheduler
      *
-     * @param schedulerId 调度器ID
-     * @param taskCode 任务编码
-     * @param cronExpression cron表达式
-     * @return 调度器ID
+     * @param schedulerId scheduler ID
+     * @param taskCode task code
+     * @param cronExpression cron expression
+     * @return scheduler ID
      */
     public Long updateScheduler(Long schedulerId, String taskCode, String cronExpression) {
         DsSchedulerUpdateReqDTO schedulerUpdateRequest = McTaskConverter.createSchedulerUpdateRequest(
@@ -129,9 +129,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 上线任务（单独上线任务，不操作调度器）
+     * Online tasks (online tasks alone, without operating the scheduler)
      *
-     * @param taskCode 任务编码
+     * @param taskCode task code
      */
     public void onlineTask(String taskCode) {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
@@ -142,9 +142,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 下线调度器（单独下线调度器，不操作任务）
+     * Offline scheduler (separate offline scheduler, does not operate tasks)
      *
-     * @param schedulerId 调度器ID
+     * @param schedulerId scheduler ID
      */
     public void offlineScheduler(String schedulerId) {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
@@ -155,9 +155,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 上线调度器（单独上线调度器，不操作任务）
+     * Online scheduler (online scheduler alone, does not operate tasks)
      *
-     * @param schedulerId 调度器ID
+     * @param schedulerId scheduler ID
      */
     public void onlineSchedulerOnly(Long schedulerId) {
         DsStatusRespDTO dsStatusRespDTO = iDsEtlSchedulerService.onlineScheduler(
@@ -168,9 +168,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 下线调度器（单独下线调度器，不操作任务）
+     * Offline scheduler (separate offline scheduler, does not operate tasks)
      *
-     * @param schedulerId 调度器ID
+     * @param schedulerId scheduler ID
      */
     public void offlineSchedulerOnly(Long schedulerId) {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
@@ -181,20 +181,20 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 上线任务和调度器
+     * Online tasks and scheduler
      *
-     * @param taskCode 任务编码
-     * @param schedulerId 调度器ID
+     * @param taskCode task code
+     * @param schedulerId scheduler ID
      */
     public void onlineTaskAndScheduler(String taskCode, Long schedulerId) {
-        // 上线任务
+        // Online tasks
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
             throw new ServiceException("mc.error.task.publish.fail", "发布任务失败！");
         }
 
-        // 上线调度器
+        // Online scheduler
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!dsStatusRespDTO1.getData()) {
@@ -203,13 +203,13 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 下线任务和调度器
+     * Offline tasks and scheduler
      *
-     * @param taskCode 任务编码
-     * @param schedulerId 调度器ID
+     * @param taskCode task code
+     * @param schedulerId scheduler ID
      */
     public void offlineTaskAndScheduler(String taskCode, Long schedulerId) {
-        // 下线任务（会自动处理调度器下线）
+        // Offline tasks (will automatically handle scheduler offline)
         DsStatusRespDTO respDTO = dsEtlTaskService.releaseTask("OFFLINE",
                 String.valueOf(projectCode), taskCode);
         if (respDTO == null || !respDTO.getSuccess()) {
@@ -218,7 +218,7 @@ public class McTaskDolphinSchedulerService {
             throw new ServiceException("mc.error.task.offline", "下线任务失败！");
         }
 
-        // 额外确保调度器也下线
+        // Additionally make sure the scheduler is also offline
         if (schedulerId != null && schedulerId > 0) {
             DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                     String.valueOf(projectCode), schedulerId);
@@ -229,9 +229,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 删除任务
+     * Delete task
      *
-     * @param taskCode 任务编码
+     * @param taskCode task code
      */
     public void deleteTask(String taskCode) {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(
@@ -242,9 +242,9 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 启动任务（立即执行一次）
+     * Start the task (execute it once immediately)
      *
-     * @param taskCode 任务编码
+     * @param taskCode task code
      */
     public void startTask(String taskCode) {
         DsStartTaskReqDTO dsStartTaskReqDTO = McTaskConverter.createDsStartTaskReqDTO(taskCode);
@@ -256,10 +256,10 @@ public class McTaskDolphinSchedulerService {
         }
     }
 
-    // ==================== 内部辅助方法 ====================
+    // ==================== Internal helper methods ====================
 
     /**
-     * 创建流程定义
+     * Create process definition
      */
     private ProcessDefinition createProcessDefinition(TaskSaveReqInput input) {
         Long nodeUniqueKey = this.getNodeUniqueKey(projectCode);
@@ -276,7 +276,7 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 更新流程定义
+     * Update process definition
      */
     private ProcessDefinition updateProcessDefinition(TaskSaveReqInput input) {
         Long nodeUniqueKey = this.getNodeUniqueKey(
@@ -294,7 +294,7 @@ public class McTaskDolphinSchedulerService {
     }
 
     /**
-     * 获取节点唯一编码
+     * Get the unique code of the node
      */
     private Long getNodeUniqueKey(Long projectCode) {
         try {

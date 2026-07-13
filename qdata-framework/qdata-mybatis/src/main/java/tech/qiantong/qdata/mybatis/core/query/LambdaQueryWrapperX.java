@@ -30,11 +30,11 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * 拓展 MyBatis Plus QueryWrapper 类，主要增加如下功能：
+ * Expand the MyBatis Plus QueryWrapper class, mainly adding the following functions:
  * <p>
- * 1. 拼接条件的方法，增加 xxxIfPresent 方法，用于判断值不存在的时候，不要拼接到条件中。
+ * 1. For the method of splicing conditions, add the xxxIfPresent method. When it is used to judge that the value does not exist, do not splice it into the condition.
  *
- * @param <T> 数据类型
+ * @param <T> data type
  */
 public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
 
@@ -129,12 +129,12 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
 
 
     /**
-     * 添加基于字符串字段名的多列排序方法，使用允许的字段集合防止 SQL 注入。
+     * Added multi-column sort method based on string field names, using allowed fields set to prevent SQL injection.
      *
-     * @param columns        逗号分隔的列名（驼峰命名）
-     * @param isAsc          逗号分隔的排序方向（"asc", "desc"），或单一方向应用于所有列
-     * @param allowedColumns 允许排序的字段集合（下划线命名）
-     * @return this，保持链式调用
+     * @param columns comma separated column names (camel case naming)
+     * @param isAsc Comma separated sort directions ("asc", "desc"), or a single direction applied to all columns
+     * @param allowedColumns Set of fields that are allowed to be sorted (underlined naming)
+     * @return this, keep the chain of calls
      */
     public LambdaQueryWrapperX<T> orderBy(String columns, String isAsc, Set<String> allowedColumns) {
         if (columns != null && !columns.trim().isEmpty()) {
@@ -149,12 +149,12 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
                 }
 
                 String columnName = camelToUnderline(column);
-                // 校验字段名是否合法
+                // Verify whether the field name is legal
                 if (!allowedColumns.contains(columnName)) {
                     throw new IllegalArgumentException("非法的排序字段：" + column);
                 }
 
-                boolean ascending = true; // 默认升序
+                boolean ascending = true; // Default ascending order
 
                 if (isAscArray.length > 0) {
                     if (i < isAscArray.length) {
@@ -162,7 +162,7 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
                         if (direction.equals("desc")) {
                             ascending = false;
                         } else if (!direction.equals("asc")) {
-                            // 如果方向无效，默认降序
+                            // If the direction is invalid, the default is descending order.
                             ascending = false;
                         }
                     } else if (isAscArray.length == 1) {
@@ -173,11 +173,11 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
                             ascending = false;
                         }
                     } else {
-                        // 如果没有提供对应的排序方向，默认降序
+                        // If no corresponding sorting direction is provided, the default is descending order.
                         ascending = false;
                     }
                 } else {
-                    // 如果未提供 isAsc，默认降序
+                    // If isAsc is not provided, defaults to descending order
                     ascending = false;
                 }
 
@@ -185,16 +185,16 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
             }
 
 
-            // 移除末尾的逗号和空格
+            // Remove trailing commas and spaces
             if (orderClause.length() > 0) {
                 orderClause.setLength(orderClause.length() - 2);
-                // 检查是否已经存在 ORDER BY 子句
+                // Check if ORDER BY clause already exists
                 String existingOrderBy = this.getSqlSegment().toLowerCase(Locale.ROOT);
                 if (existingOrderBy.contains("order by")) {
-                    // 追加到现有的 ORDER BY 子句
+                    // Append to existing ORDER BY clause
                     this.last(", " + orderClause.toString());
                 } else {
-                    // 添加新的 ORDER BY 子句
+                    // Add new ORDER BY clause
                     this.last(" ORDER BY " + orderClause.toString());
                 }
             }
@@ -203,10 +203,10 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
     }
 
     /**
-     * 将驼峰命名转换为下划线命名
+     * Convert camelCase naming to underscore naming
      *
-     * @param param 驼峰命名字符串
-     * @return 下划线命名字符串
+     * @param param camel case named string
+     * @return underscore named string
      */
     public static String camelToUnderline(String param) {
         if (param == null || param.isEmpty()) {
@@ -232,7 +232,7 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
         return betweenIfPresent(column, val1, val2);
     }
 
-    // ========== 重写父类方法，方便链式调用 ==========
+    // ========== Rewrite the parent class method to facilitate chain calls ==========
 
     @Override
     public LambdaQueryWrapperX<T> eq(boolean condition, SFunction<T, ?> column, Object val) {

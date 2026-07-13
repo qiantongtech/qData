@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志Controller
+ * Metadata database and information and field information relationship-Log Controller
  *
  * @author qdata
  * @date 2026-03-10

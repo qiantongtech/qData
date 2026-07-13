@@ -29,7 +29,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.http.HttpUtils;
 
 /**
- * 获取地址类
+ * Get address class
  *
  * @author qdata
  */
@@ -37,15 +37,15 @@ public class AddressUtils
 {
     private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
-    // IP地址查询
+    // IP address query
     public static final String IP_URL = "http://whois.pconline.com.cn/ipJson.jsp";
 
-    // 未知地址
+    // Unknown address
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip)
     {
-        // 内网不查询
+        // Intranet does not query
         if (IpUtils.internalIp(ip))
         {
             return MessageUtils.messageEn("log.address.internal.ip");

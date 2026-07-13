@@ -19,17 +19,17 @@
 package tech.qiantong.qdata.common.utils;
 
 /**
- * 脱敏工具类
+ * Desensitization tools
  *
  * @author qdata
  */
 public class DesensitizedUtil
 {
     /**
-     * 密码的全部字符都用*代替，比如：******
+     * All characters in the password are replaced with *, for example: ******
      *
-     * @param password 密码
-     * @return 脱敏后的密码
+     * @param password password
+     * @return Password after desensitization
      */
     public static String password(String password)
     {
@@ -41,10 +41,10 @@ public class DesensitizedUtil
     }
 
     /**
-     * 车牌中间用*代替，如果是错误的车牌，不处理
+     * Use * in the middle of the license plate. If it is the wrong license plate, it will not be processed.
      *
-     * @param carLicense 完整的车牌号
-     * @return 脱敏后的车牌
+     * @param carLicense complete license plate number
+     * @return the desensitized license plate
      */
     public static String carLicense(String carLicense)
     {
@@ -52,14 +52,14 @@ public class DesensitizedUtil
         {
             return StringUtils.EMPTY;
         }
-        // 普通车牌
+        // Ordinary license plate
         if (carLicense.length() == 7)
         {
             carLicense = StringUtils.hide(carLicense, 3, 6);
         }
         else if (carLicense.length() == 8)
         {
-            // 新能源车牌
+            // New energy license plate
             carLicense = StringUtils.hide(carLicense, 3, 7);
         }
         return carLicense;

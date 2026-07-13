@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CacheDataSourceFactoryBean extends AbstractDataSourceFactory {
 
 	/**
-	 * 数据源缓存
+	 * Data source cache
 	 */
 	private static Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<>();
 
@@ -53,7 +53,7 @@ public class CacheDataSourceFactoryBean extends AbstractDataSourceFactory {
 		return dataSource;
 	}
 
-	// 压缩
+	// Compression
 	public static String compress(String str) {
 		if (str == null || str.length() == 0) {
 			return str;
@@ -76,10 +76,10 @@ public class CacheDataSourceFactoryBean extends AbstractDataSourceFactory {
 				buf.append("0");
 			buf.append(Integer.toHexString(i));
 		}
-//        System.out.println("MD5(" + str + ",32小写) = " + buf.toString());
-//        System.out.println("MD5(" + str + ",32大写) = " + buf.toString().toUpperCase());
-//        System.out.println("MD5(" + str + ",16小写) = " + buf.toString().substring(8, 24));
-//        System.out.println("MD5(" + str + ",16大写) = " + buf.toString().substring(8, 24).toUpperCase());
+// System.out.println("MD5(" + str + ",32 lowercase) = " + buf.toString());
+// System.out.println("MD5(" + str + ",32 uppercase) = " + buf.toString().toUpperCase());
+// System.out.println("MD5(" + str + ",16 lowercase) = " + buf.toString().substring(8, 24));
+// System.out.println("MD5(" + str + ",16 uppercase) = " + buf.toString().substring(8, 24).toUpperCase());
 		return buf.toString().substring(8, 24).toUpperCase();
 	}
 }

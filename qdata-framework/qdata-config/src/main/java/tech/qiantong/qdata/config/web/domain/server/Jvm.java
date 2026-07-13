@@ -24,34 +24,34 @@ import tech.qiantong.qdata.common.utils.DateUtils;
 import java.lang.management.ManagementFactory;
 
 /**
- * JVM相关信息
+ * JVM related information
  *
  * @author qdata
  */
 public class Jvm
 {
     /**
-     * 当前JVM占用的内存总数(M)
+     * Total memory currently occupied by JVM (M)
      */
     private double total;
 
     /**
-     * JVM最大可用内存总数(M)
+     * JVM maximum total available memory (M)
      */
     private double max;
 
     /**
-     * JVM空闲内存(M)
+     * JVM free memory (M)
      */
     private double free;
 
     /**
-     * JDK版本
+     * JDK version
      */
     private String version;
 
     /**
-     * JDK路径
+     * JDK path
      */
     private String home;
 
@@ -96,7 +96,7 @@ public class Jvm
     }
 
     /**
-     * 获取JDK名称
+     * Get JDK name
      */
     public String getName()
     {
@@ -124,7 +124,7 @@ public class Jvm
     }
 
     /**
-     * JDK启动时间
+     * JDK startup time
      */
     public String getStartTime()
     {
@@ -132,7 +132,7 @@ public class Jvm
     }
 
     /**
-     * JDK运行时间
+     * JDK runtime
      */
     public String getRunTime()
     {
@@ -140,7 +140,7 @@ public class Jvm
     }
 
     /**
-     * 运行参数
+     * Operating parameters
      */
     public String getInputArgs()
     {

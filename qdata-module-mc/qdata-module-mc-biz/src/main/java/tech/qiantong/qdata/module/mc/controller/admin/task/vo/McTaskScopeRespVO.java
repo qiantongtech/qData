@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 采集范围 Response VO 对象 MC_TASK_SCOPE
+ * Collection range Response VO object MC_TASK_SCOPE
  *
  * @author qdata
  * @date 2025-12-16

@@ -182,7 +182,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- {{ td('.pleaseEnter') + '内容' }} -->
+    <!-- {{ td('.pleaseEnter') + 'content' }} -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
@@ -316,30 +316,30 @@ export default {
   },
   data() {
     return {
-      // 遮罩层
+      // Mask layer
       loading: true,
-      // 显示搜索条件
+      // Show search criteria
       showSearch: true,
-      // ${functionName}表格数据
+      // ${functionName}table data
       ${businessName}List: [],
-      // ${functionName}树选项
+      // ${functionName} tree options
       ${businessName}Options: [],
-      // 弹出层标题
+      // Popup layer title
       title: "",
-      // 是否显示弹出层
+      // Whether to display popup layer
       open: false,
-      // 是否展开，默认全部展开
+      // Whether to expand, expand all by default
       isExpandAll: true,
-      // 重新渲染表格状态
+      // Re-render table state
       refreshTable: true,
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-      // $comment时间范围
+      // $commentTime Range
       daterange${AttrName}: [],
 #end
 #end
-      // 查询参数
+      // Query parameters
       queryParams: {
 #foreach ($column in $columns)
 #if($column.query)
@@ -347,9 +347,9 @@ export default {
 #end
 #end
       },
-      // 表单参数
+      // Form parameters
       form: {},
-      // 表单校验
+      // Form validation
       rules: {
 #foreach ($column in $columns)
 #if($column.required)
@@ -371,7 +371,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询${functionName}列表 */
+    /** Query ${functionName} list */
     getList() {
       this.loading = true;
 #foreach ($column in $columns)
@@ -394,7 +394,7 @@ export default {
         this.loading = false;
       });
     },
-    /** 转换${functionName}数据结构 */
+    /** Convert ${functionName} data structure */
     normalizer(node) {
       if (node.children && !node.children.length) {
         delete node.children;
@@ -405,7 +405,7 @@ export default {
         children: node.children
       };
     },
-	/** 查询${functionName}下拉树结构 */
+	/** Query ${functionName} drop-down tree structure */
     getTreeselect() {
       list${BusinessName}().then(response => {
         this.${businessName}Options = [];
@@ -414,12 +414,12 @@ export default {
         this.${businessName}Options.push(data);
       });
     },
-    // 取消按钮
+    // Cancel button
     cancel() {
       this.open = false;
       this.reset();
     },
-    // 表单重置
+    // Form reset
     reset() {
       this.form = {
 #foreach ($column in $columns)
@@ -432,11 +432,11 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    /** Search button operation */
     handleQuery() {
       this.getList();
     },
-    /** 重置按钮操作 */
+    /** Reset button operation */
     resetQuery() {
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -447,7 +447,7 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    /** 新增按钮操作 */
+    /** Add button operation */
     handleAdd(row) {
       this.reset();
       this.getTreeselect();
@@ -459,7 +459,7 @@ export default {
       this.open = true;
       this.title = "添加${functionName}";
     },
-    /** 展开/折叠操作 */
+    /** Expand/collapse operations */
     toggleExpandAll() {
       this.refreshTable = false;
       this.isExpandAll = !this.isExpandAll;
@@ -467,7 +467,7 @@ export default {
         this.refreshTable = true;
       });
     },
-    /** 修改按钮操作 */
+    /** Modify button operation */
     handleUpdate(row) {
       this.reset();
       // this.getTreeselect();
@@ -490,7 +490,7 @@ export default {
         this.title = "修改${functionName}";
       });
     },
-    /** 提交按钮 */
+    /** Submit button */
     submitForm() {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
@@ -515,7 +515,7 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    /** Delete button operation */
     handleDelete(row) {
       this.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + row.${pkColumn.javaField} + '"的数据项？').then(function() {
         return del${BusinessName}(row.${pkColumn.javaField});

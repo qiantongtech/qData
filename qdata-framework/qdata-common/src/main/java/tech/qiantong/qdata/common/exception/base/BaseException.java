@@ -22,7 +22,7 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 基础异常
+ * Basic exception
  *
  * @author qdata
  */
@@ -31,22 +31,22 @@ public class BaseException extends RuntimeException
     private static final long serialVersionUID = 1L;
 
     /**
-     * 所属模块
+     * Belonging module
      */
     private String module;
 
     /**
-     * 错误码
+     * Error code
      */
     private String code;
 
     /**
-     * 错误码对应的参数
+     * Parameters corresponding to the error code
      */
     private Object[] args;
 
     /**
-     * 错误消息
+     * Error message
      */
     private String defaultMessage;
 

@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.exception.ServiceException;
 import java.util.Arrays;
 
 /**
- * AI 模型平台
+ * AI model platform
  *
  * @author wang
  */
@@ -33,26 +33,26 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum AiPlatformEnum {
 
-    // ========== 国内平台 ==========
+    // ========== Domestic Platform ==========
 
-    TONG_YI("TongYi", "通义千问", "https://dashscope.aliyuncs.com/api/v1"), // 阿里
-    YI_YAN("YiYan", "文心一言", ""), // 百度
+    TONG_YI("TongYi", "通义千问", "https://dashscope.aliyuncs.com/api/v1"), // Ali
+    YI_YAN("YiYan", "文心一言", ""), // Baidu
     DEEP_SEEK("DeepSeek", "DeepSeek", "https://api.deepseek.com/v1"), // DeepSeek
-    ZHI_PU("ZhiPu", "智谱", ""), // 智谱 AI
-    XING_HUO("XingHuo", "星火", ""), // 讯飞
-    DOU_BAO("DouBao", "豆包", ""), // 字节
-    HUN_YUAN("HunYuan", "混元", ""), // 腾讯
-    SILICON_FLOW("SiliconFlow", "硅基流动", ""), // 硅基流动
-    MINI_MAX("MiniMax", "MiniMax", ""), // 稀宇科技
+    ZHI_PU("ZhiPu", "智谱", ""), // Wisdom spectrum AI
+    XING_HUO("XingHuo", "星火", ""), // IFlytek
+    DOU_BAO("DouBao", "豆包", ""), // Bytes
+    HUN_YUAN("HunYuan", "混元", ""), // Tencent
+    SILICON_FLOW("SiliconFlow", "硅基流动", ""), // Silicon based flow
+    MINI_MAX("MiniMax", "MiniMax", ""), // Xiyu Technology
     MOONSHOT("Moonshot", "月之暗面", ""), // KIMI
-    BAI_CHUAN("BaiChuan", "百川智能", ""), // 百川智能
+    BAI_CHUAN("BaiChuan", "百川智能", ""), // Baichuan Intelligence
 
-    // ========== 国外平台 ==========
+    // ========== Overseas Platform ==========
 
-    OPENAI("OpenAI", "OpenAI", ""), // OpenAI 官方
-    AZURE_OPENAI("AzureOpenAI", "AzureOpenAI", ""), // OpenAI 微软
+    OPENAI("OpenAI", "OpenAI", ""), // OpenAI official
+    AZURE_OPENAI("AzureOpenAI", "AzureOpenAI", ""), // OpenAI Microsoft
     ANTHROPIC("Anthropic", "Anthropic", ""), // Anthropic Claude
-    GEMINI("Gemini", "Gemini", ""), // 谷歌 Gemini
+    GEMINI("Gemini", "Gemini", ""), // Google Gemini
     OLLAMA("Ollama", "Ollama", ""),
 
     STABLE_DIFFUSION("StableDiffusion", "StableDiffusion", ""), // Stability AI
@@ -63,16 +63,16 @@ public enum AiPlatformEnum {
     ;
 
     /**
-     * 平台
+     * Platform
      */
     private final String platform;
     /**
-     * 平台名
+     * Platform name
      */
     private final String name;
 
     /**
-     * openAiUrl 地址，以 v1 结尾，不带 /
+     * openAiUrl address, ending with v1 without /
      */
     private final String openAiUrl;
 

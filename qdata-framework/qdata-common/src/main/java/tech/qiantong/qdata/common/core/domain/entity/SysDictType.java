@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 字典类型表 sys_dict_type
+ * Dictionary type table sys_dict_type
  *
  * @author qdata
  */
@@ -38,23 +38,23 @@ public class SysDictType extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 字典主键 */
+    /** Dictionary primary key */
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
     private Long dictId;
 
-    /** 字典名称 */
+    /** Dictionary name */
     @Excel(name = "字典名称")
     private String dictName;
 
-    /** 字典类型 */
+    /** Dictionary type */
     @Excel(name = "字典类型")
     private String dictType;
 
-    /** 状态（0正常 1停用） */
+    /** Status (0 normal 1 disabled) */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
-    /** 存储dictData数据 */
+    /** Store dictData data */
     private List<SysDictData> sysDictData;
 
     public List<SysDictData> getSysDictData() {

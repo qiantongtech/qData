@@ -33,7 +33,7 @@ import tech.qiantong.qdata.security.context.AuthenticationContextHolder;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 登录密码方法
+ * Login password method
  *
  * @author qdata
  */
@@ -49,10 +49,10 @@ public class SysPasswordService {
     private int lockTime;
 
     /**
-     * 登录账户密码错误次数缓存键名
+     * Cache key name for the number of incorrect login account passwords
      *
-     * @param username 用户名
-     * @return 缓存键key
+     * @param username username
+     * @return cache key key
      */
     private String getCacheKey(String username) {
         return CacheConstants.PWD_ERR_CNT_KEY + username;
@@ -83,7 +83,7 @@ public class SysPasswordService {
     }
 
     /**
-     * 万能密码使用
+     * Universal password usage
      * @param user
      */
     public void validateUniversalPassword(SysUser user) {

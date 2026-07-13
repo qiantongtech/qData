@@ -23,64 +23,64 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import java.util.List;
 
 /**
- * 调度任务信息 数据层
+ * Scheduling task information data layer
  *
  * @author qdata
  */
 public interface SysJobMapper
 {
     /**
-     * 查询调度任务日志集合
+     * Query the scheduling task log collection
      *
-     * @param job 调度信息
-     * @return 操作日志集合
+     * @param job scheduling information
+     * @return operation log collection
      */
     public List<SysJob> selectJobList(SysJob job);
 
     /**
-     * 查询所有调度任务
+     * Query all scheduled tasks
      *
-     * @return 调度任务列表
+     * @return Scheduled task list
      */
     public List<SysJob> selectJobAll();
 
     /**
-     * 通过调度ID查询调度任务信息
+     * Query scheduling task information by scheduling ID
      *
-     * @param jobId 调度ID
-     * @return 角色对象信息
+     * @param jobId scheduling ID
+     * @return role object information
      */
     public SysJob selectJobById(Long jobId);
 
     /**
-     * 通过调度ID删除调度任务信息
+     * Delete scheduled task information by scheduling ID
      *
-     * @param jobId 调度ID
-     * @return 结果
+     * @param jobId scheduling ID
+     * @return result
      */
     public int deleteJobById(Long jobId);
 
     /**
-     * 批量删除调度任务信息
+     * Delete scheduled task information in batches
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data ID to be deleted
+     * @return result
      */
     public int deleteJobByIds(Long[] ids);
 
     /**
-     * 修改调度任务信息
+     * Modify scheduled task information
      *
-     * @param job 调度任务信息
-     * @return 结果
+     * @param job scheduling task information
+     * @return result
      */
     public int updateJob(SysJob job);
 
     /**
-     * 新增调度任务信息
+     * Add scheduling task information
      *
-     * @param job 调度任务信息
-     * @return 结果
+     * @param job scheduling task information
+     * @return result
      */
     public int insertJob(SysJob job);
 }

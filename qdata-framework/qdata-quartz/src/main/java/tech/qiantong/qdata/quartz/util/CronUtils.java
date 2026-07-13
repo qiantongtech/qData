@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * cron表达式工具类
+ * cron expression tool class
  *
  * @author qdata
  *
@@ -32,10 +32,10 @@ import java.util.Date;
 public class CronUtils
 {
     /**
-     * 返回一个布尔值代表一个给定的Cron表达式的有效性
+     * Returns a Boolean value representing the validity of a given Cron expression
      *
-     * @param cronExpression Cron表达式
-     * @return boolean 表达式是否有效
+     * @param cronExpression Cron expression
+     * @return boolean whether the expression is valid
      */
     public static boolean isValid(String cronExpression)
     {
@@ -43,10 +43,10 @@ public class CronUtils
     }
 
     /**
-     * 返回一个字符串值,表示该消息无效Cron表达式给出有效性
+     * Returns a string value indicating that the message is invalid Cron expression gives validity
      *
-     * @param cronExpression Cron表达式
-     * @return String 无效时返回表达式错误描述,如果有效返回null
+     * @param cronExpression Cron expression
+     * @return String Returns expression error description when invalid, returns null if valid
      */
     public static String getInvalidMessage(String cronExpression)
     {
@@ -62,10 +62,10 @@ public class CronUtils
     }
 
     /**
-     * 返回下一个执行时间根据给定的Cron表达式
+     * Returns the next execution time based on the given Cron expression
      *
-     * @param cronExpression Cron表达式
-     * @return Date 下次Cron表达式执行时间
+     * @param cronExpression Cron expression
+     * @return Date The next Cron expression execution time
      */
     public static Date getNextExecution(String cronExpression)
     {

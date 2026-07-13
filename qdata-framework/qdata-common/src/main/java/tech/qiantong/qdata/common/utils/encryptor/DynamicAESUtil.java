@@ -31,9 +31,9 @@ public class DynamicAESUtil {
     private static final String ALGORITHM = "AES";
 
     /**
-     * 生成随机密钥
+     * Generate random keys
      *
-     * @return 随机密钥字符串
+     * @return random key string
      */
     public static String generateRandomKey() {
         try {
@@ -47,11 +47,11 @@ public class DynamicAESUtil {
     }
 
     /**
-     * AES加密
+     * AES encryption
      *
-     * @param data 明文数据
-     * @param key  密钥字符串
-     * @return 加密后的密文
+     * @param data plain text data
+     * @param key key string
+     * @return encrypted ciphertext
      */
     public static String encrypt(String data, String key) {
         try {
@@ -66,11 +66,11 @@ public class DynamicAESUtil {
     }
 
     /**
-     * AES解密
+     * AES decryption
      *
-     * @param encryptedData 密文数据
-     * @param key           密钥字符串
-     * @return 解密后的明文
+     * @param encryptedData ciphertext data
+     * @param key key string
+     * @return decrypted plaintext
      */
     public static String decrypt(String encryptedData, String key) {
         try {

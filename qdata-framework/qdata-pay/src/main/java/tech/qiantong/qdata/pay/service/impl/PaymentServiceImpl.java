@@ -29,16 +29,16 @@ import tech.qiantong.qdata.pay.service.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
-    @Qualifier("alipayClientImpl") // 指定要注入的Bean名称
+    @Qualifier("alipayClientImpl") // Specify the name of the bean to be injected
     private PayGatewayClient alipayClient;
 
     @Autowired
-    @Qualifier("weChatPayClientImpl") // 指定要注入的Bean名称
+    @Qualifier("weChatPayClientImpl") // Specify the name of the bean to be injected
     private PayGatewayClient wechatPayClient;
 
     @Override
     public PaymentResponse pay(PaymentRequest request) {
-        // 根据支付类型选择相应的支付网关客户端
+        // Select the appropriate payment gateway client based on the payment type
         if (request.getPaymentType() == PaymentType.ALIPAY) {
             return alipayClient.initiatePayment(request);
         } else if (request.getPaymentType() == PaymentType.WECHAT) {
@@ -50,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public RefundResponse refund(RefundRequest request) {
-        // 根据支付类型选择相应的退款操作
+        // Select the appropriate refund operation based on the payment type
         if (request.getPaymentType() == PaymentType.ALIPAY) {
             return alipayClient.refund(request);
         } else if (request.getPaymentType() == PaymentType.WECHAT) {
@@ -62,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentStatusResponse queryStatus(String paymentId) {
-        // 假设支付ID可以推断出支付类型，实际情况可能需要进一步处理
+        // Assuming that the payment type can be inferred from the payment ID, the actual situation may require further processing
         if (paymentId.startsWith("ALIPAY")) {
             return alipayClient.queryStatus(paymentId);
         } else if (paymentId.startsWith("WECHAT")) {

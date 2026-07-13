@@ -43,7 +43,7 @@ import static org.apache.spark.sql.functions.*;
 
 /**
  * <P>
- * 用途:清洗-转换
+ * Purpose: cleaning-conversion
  * </p>
  *
  * @author: FXB
@@ -52,7 +52,7 @@ import static org.apache.spark.sql.functions.*;
 public class CleanTransition implements Transition {
 
     /**
-     * 新
+     * New
      * @param spark
      * @param dataset
      * @param transition
@@ -67,7 +67,7 @@ public class CleanTransition implements Transition {
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
 
         JSONObject parameter = transition.getJSONObject("parameter");
-        // 获取需要处理的列名
+        // Get the column names that need to be processed
         List<Map<String, Object>> tableFieldList = (List<Map<String, Object>>) parameter.get("tableFields");
         String where = parameter.getString("where");
         if(StringUtils.isNotEmpty(where)){
@@ -79,7 +79,7 @@ public class CleanTransition implements Transition {
             return dataset;
         }
 
-        // 对每个列应用数据处理
+        // Apply data processing to each column
         for (Map<String, Object> rule : tableFieldList) {
             String ruleCode = MapUtils.getString(rule, "ruleCode");
             String ruleType = MapUtils.getString(rule, "ruleType");
@@ -90,50 +90,50 @@ public class CleanTransition implements Transition {
                 dataset = safeFilter(dataset, whereClause, logParams);
             }
 
-            // 执行前检查字段是否存在
+            // Check whether the field exists before executing
             if (!checkColumnsExist(dataset, ruleConfig)) {
                 LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.rule.skip", ruleCode));
                 continue;
             }
 
             switch (ruleType) {
-                case "WITHIN_BOUNDARY": // 数值边界调整
+                case "WITHIN_BOUNDARY": // Numerical boundary adjustment
                     dataset = applyNumericBoundary(dataset, ruleConfig);
                     break;
-                case "REMOVE_WHITESPACE": // 去除字符串空格
+                case "REMOVE_WHITESPACE": // Remove spaces from string
                     dataset = applyTrim(dataset, ruleConfig);
                     break;
-                case "SIMPLE_REPLACE": // 正则表达式替换
+                case "SIMPLE_REPLACE": // Regular expression replacement
                     dataset = applyRegexReplace(dataset, ruleConfig);
                     break;
-                case "REMOVE_EMPTY_COMBINATION": // 组合字段为空删除
+                case "REMOVE_EMPTY_COMBINATION": // Delete the combined field if it is empty
                     dataset = applyDeleteIfAllNull(dataset, ruleConfig);
                     break;
-                case "TO_UPPERCASE": // 字段值转大写
+                case "TO_UPPERCASE": // Convert field values to uppercase
                     dataset = applyUpperCase(dataset, ruleConfig);
                     break;
-                case "TO_LOWERCASE": // 字段值转小写
+                case "TO_LOWERCASE": // Convert field values to lowercase
                     dataset = applyLowerCase(dataset, ruleConfig);
                     break;
-                case "ADD_PREFIX_SUFFIX": // 字段前/后缀统一
+                case "ADD_PREFIX_SUFFIX": // Unify field prefix/suffix
                     dataset = applyPrefixSuffix(dataset, ruleConfig);
                     break;
-                case "MENU_CUSTOM": // 枚举值映射标准化
+                case "MENU_CUSTOM": // Enumeration value mapping normalization
                     dataset = normalizeEnumMapping(dataset, ruleConfig);
                     break;
-                case "KEEP_LATEST_OR_FIRST": // 按组合字段去重（保留最新或首条）
+                case "KEEP_LATEST_OR_FIRST": // Deduplication by combined fields (keep the latest or first item)
                     dataset = deduplicateByFieldsKeepFirst(dataset, ruleConfig);
                     break;
-                case "CHECK_EXPIRATION": // 清理过期记录
+                case "CHECK_EXPIRATION": // Clean up expired records
                     dataset = purgeStaleEntries(dataset, ruleConfig);
                     break;
-                case "FIX_TO_PRECISION": // 小数位统一
+                case "FIX_TO_PRECISION": // Uniform decimal places
                     dataset = formatDecimalPlaces(dataset, ruleConfig);
                     break;
-                case "DATE_FORMAT_STD": // 日期格式统一
+                case "DATE_FORMAT_STD": // Unified date format
                     dataset = applyDateFormatStd(dataset, ruleConfig);
                     break;
-                case "STRING_SUBSTR": // 字符截取
+                case "STRING_SUBSTR": // Character interception
                     dataset = applyStringSubstr(dataset, ruleConfig);
                     break;
                 default:
@@ -149,14 +149,14 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * STRING_SUBSTR —— 字符截取
-     * 当字段长度超过指定长度时，按配置从开头或结尾截取。
+     * STRING_SUBSTR - character interception
+     * When the field length exceeds the specified length, it is truncated from the beginning or end according to the configuration.
      *
-     * cfg 示例：
+     * cfg example:
      * {
      *   "columns": ["description"],
      *   "maxLength": 100,
-     *   "direction": "1"   // 可选：1（从开头），2（从结尾），1
+     * "direction": "1" // Optional: 1 (from the beginning), 2 (from the end), 1
      * }
      */
     private Dataset<Row> applyStringSubstr(Dataset<Row> dataset, JSONObject cfg) {
@@ -171,12 +171,12 @@ public class CleanTransition implements Transition {
 
         Column newCol;
         if ("2".equalsIgnoreCase(direction)) {
-            // 从末尾截取 maxLength 个字符
+            // Cut maxLength characters from the end
             newCol = functions.when(functions.length(col).gt(maxLength),
                             functions.expr("substring(" + colName + ", length(" + colName + ")-" + (maxLength - 1) + ", " + maxLength + ")"))
                     .otherwise(col);
         } else {
-            // 从开头截取（默认）
+            // Cut from the beginning (default)
             newCol = functions.when(functions.length(col).gt(maxLength),
                             functions.expr("substring(" + colName + ", 1, " + maxLength + ")"))
                     .otherwise(col);
@@ -186,7 +186,7 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 去除字符串空格
+     * Remove spaces from string
      */
     private Dataset<Row> applyTrim(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
@@ -204,7 +204,7 @@ public class CleanTransition implements Transition {
         Integer stringValue = cfg.getInteger("stringValue");
 
         Column formattedColumn = functions.round(col(col), stringValue);
-        // 如果 decimalPlaces 为 0，转换为整数类型
+        // If decimalPlaces is 0, convert to integer type
         if (stringValue == 0) {
             formattedColumn = formattedColumn.cast("int");
         }
@@ -218,16 +218,16 @@ public class CleanTransition implements Transition {
         Integer dataRangeType = cfg.getInteger("dataRangeType");
         String dataRangeValue = cfg.getString("dataRangeValue");
         LocalDate currentDate = LocalDate.now();
-        // 标识大于、等于
+        // Identifies greater than, equal to
         Boolean flag = true;
-        // 格式化日期为字符串
+        // Format date as string
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // 0：固定时间范围，1：具体日期
+        // 0: fixed time range, 1: specific date
         Integer dataRange = cfg.getInteger("dataRange");
         if (dataRange == 0) {
             flag = true;
             LocalDate date30DaysAgo = null;
-            // 计算30天、月、年之前日期
+            // Calculate the date 30 days, months and years ago
             if (dataRangeType == 1) {
                 date30DaysAgo = currentDate.minusDays(cfg.getInteger("dataRangeValue"));
             }else if (dataRangeType == 2) {
@@ -243,7 +243,7 @@ public class CleanTransition implements Transition {
                 flag = false;
             }
         }
-        // 过期处理方式
+        // Expiration processing method
         return handleExpiredRecords(dataset , cfg , dataRangeValue , col , flag);
     }
 
@@ -253,10 +253,10 @@ public class CleanTransition implements Transition {
         String handleValue = cfg.getString("handleValue");
 
         Column condition;
-        // 将 dataRangeValue 将日期对象转换为指定的格式进行比较
+        // Convert dataRangeValue date objects to the specified format for comparison
         Column dateColumn = functions.date_format(functions.col(col), "yyyy-MM-dd");
 
-        // 判断日期之前还是之后
+        // Determine whether the date is before or after
         if (flag) {
             condition = dateColumn.lt(dataRangeValue);
         } else {
@@ -265,18 +265,18 @@ public class CleanTransition implements Transition {
 
         Column result = functions.lit(handleValue);
 
-        // 0：过期处理方式，1：删除记录
+        // 0: Expiration processing method, 1: Delete records
         if (handleType == 0) {
             dataset = dataset.withColumn(handleColumns, functions.when(condition, result).otherwise(functions.col(handleColumns)));
         } else {
-            // 默认满足条件的数据保留，not方法取反
+            // By default, data that meets the conditions are retained, and the not method is inverted.
             dataset = dataset.filter(functions.not(condition));
         }
         return dataset;
     }
 
     private Dataset<Row> deduplicateByFieldsKeepFirst(Dataset<Row> ds, JSONObject cfg) {
-        // 1) 读取配置
+        // 1) Read configuration
         List<String> allCols = Optional.ofNullable(cfg.getJSONArray("columns"))
                 .map(a -> a.toJavaList(String.class))
                 .orElse(Collections.emptyList());
@@ -287,13 +287,13 @@ public class CleanTransition implements Transition {
         JSONArray sv = cfg == null ? null : cfg.getJSONArray("stringValue");
         List<JSONObject> sortRules = sv == null ? Collections.emptyList() : sv.toJavaList(JSONObject.class);
 
-        // 2) 无排序规则：直接 dropDuplicates
+        // 2) No sorting rules: dropDuplicates directly
         if (sortRules.isEmpty()) {
-            // 仅按分组键去重，保留任意一条（通常是首条），最简也最高效
+            // Only remove duplicates by group key and keep any one (usually the first one), which is the simplest and most efficient
             return ds.dropDuplicates(allCols.toArray(new String[0]));
         }
 
-        // 3) 有排序规则：构建分组键 = columns - 排序字段（防止把排序键也分组进去）
+        // 3) There are sorting rules: Build grouping key = columns - sorting field (to prevent the sorting key from also being grouped)
         Set<String> sortCols = sortRules.stream()
                 .map(o -> o.getString("columns"))
                 .filter(Objects::nonNull)
@@ -302,24 +302,24 @@ public class CleanTransition implements Transition {
                 .filter(c -> !sortCols.contains(c))
                 .collect(Collectors.toList());
         if (groupCols.isEmpty()) {
-            // 全被剔除了就用原 columns 兜底
+            // If all are removed, use the original columns to get the bottom of things.
             groupCols = allCols;
         }
 
-        // 4) 构建窗口：按 sort 升序表示优先级；type: 0=desc(最新)，1=asc(最早)
+        // 4) Build window: Sort in ascending order to indicate priority; type: 0=desc (latest), 1=asc (earliest)
         Column[] partCols = groupCols.stream().map(functions::col).toArray(Column[]::new);
         WindowSpec spec = Window.partitionBy(partCols);
 
-        sortRules.sort(Comparator.comparingInt(o -> o.getIntValue("sort"))); // 安全取整，避免NPE
+        sortRules.sort(Comparator.comparingInt(o -> o.getIntValue("sort"))); // Safe rounding to avoid NPE
         List<Column> orders = new ArrayList<>();
         for (JSONObject r : sortRules) {
             String c = r.getString("columns");
-            int t = r.getIntValue("type"); // "0"/"1" 也能解析
+            int t = r.getIntValue("type"); // "0"/"1" can also be parsed
             orders.add(t == 0 ? functions.col(c).desc() : functions.col(c).asc());
         }
         spec = spec.orderBy(orders.toArray(new Column[0]));
 
-        // 5) 取第一条
+        // 5) Take the first one
         Dataset<Row> withRN = ds.withColumn("__rn", functions.row_number().over(spec));
         return withRN.filter(functions.col("__rn").equalTo(1)).drop("__rn");
     }
@@ -327,12 +327,12 @@ public class CleanTransition implements Transition {
     private Dataset<Row> normalizeEnumMapping(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
         List<JSONObject> list = cfg.getList("stringValue", JSONObject.class);
-//        String handleType = cfg.getString("handleType"); // "1-加前缀" / "2-加后缀"
+// String handleType = cfg.getString("handleType"); // "1-Add prefix" / "2-Add suffix"
 
         if (StringUtils.isBlank(col) || list == null || list.size() < 1) {
             throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.config.missing", "024", "columns/stringValue"));
         }
-        // 构建 when...otherwise 的表达式
+        // Construct expressions for when...otherwise
         Column mappedColumn = null;
         for (int i = 0; i < list.size(); i++) {
             JSONObject dict = list.get(i);
@@ -349,17 +349,17 @@ public class CleanTransition implements Transition {
             }
         }
 
-        // 所有都不匹配则返回原值
+        // If nothing matches, the original value is returned.
         mappedColumn = mappedColumn.otherwise(functions.col(col));
 
-        // 替换列
+        // Replace column
         return dataset.withColumn(col, mappedColumn);
     }
 
     private Dataset<Row> applyPrefixSuffix(Dataset<Row> dataset, JSONObject cfg) {
         String colName = cfg.getJSONArray("columns").getString(0);
         String stringValue = cfg.getString("stringValue");
-        String handleType = cfg.getString("handleType"); // "1" 前缀；"2" 后缀；
+        String handleType = cfg.getString("handleType"); // "1" prefix; "2" suffix;
 
         if (StringUtils.isBlank(colName) || StringUtils.isBlank(stringValue) || StringUtils.isBlank(handleType)) {
             throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.rule.config.missing", "107", "columns/stringValue/handleType"));
@@ -372,56 +372,56 @@ public class CleanTransition implements Transition {
         Column c = col(colName).cast("string");
         String sv = stringValue;
 
-        //以下是不看大小写，如果一样就不拼接
+        //The following is not case-sensitive. If they are the same, they will not be spliced.
 //        String svLower = sv.toLowerCase();
 //        if (StringUtils.equals("1", handleType)) {
-//            // 前缀
+// // prefix
 //            dataset = dataset.withColumn(
 //                    colName,
 //                    when(c.isNull(), lit(null))
-//                            .when(lower(c).like(svLower + "%"), c) // 用 like 判断前缀
+// .when(lower(c).like(svLower + "%"), c) // Use like to determine the prefix
 //                            .otherwise(concat(lit(sv), c))
 //            );
 //        } else {
-//            // 后缀
+// // suffix
 //            dataset = dataset.withColumn(
 //                    colName,
 //                    when(c.isNull(), lit(null))
-//                            .when(lower(c).like("%" + svLower), c) // 用 like 判断后缀
+// .when(lower(c).like("%" + svLower), c) // Use like to determine the suffix
 //                            .otherwise(concat(c, lit(sv)))
 //            );
 //        }
 
-        //以下是检验发小写，如果前缀大写，库里小写，依旧拼接
+        //The following is a test to send lowercase letters. If the prefix is uppercase and the database name is lowercase, it will still be spliced.
         switch (handleType) {
-            case "1": // 加前缀
+            case "1": // Add prefix
                 dataset = dataset.withColumn(
                         colName,
                         when(c.isNull(), lit(null))
-                                .when(c.startsWith(sv), c) // 区分大小写判断已有前缀
+                                .when(c.startsWith(sv), c) // Case-sensitive detection of existing prefixes
                                 .otherwise(concat(lit(sv), c))
                 );
                 break;
 
-            case "2": // 加后缀
+            case "2": // Add suffix
                 dataset = dataset.withColumn(
                         colName,
                         when(c.isNull(), lit(null))
-                                .when(c.endsWith(sv), c) // 区分大小写判断已有后缀
+                                .when(c.endsWith(sv), c) // Case-sensitive detection of existing suffixes
                                 .otherwise(concat(c, lit(sv)))
                 );
                 break;
 
-            case "3": // 去除匹配上的前缀
+            case "3": // Remove prefix from match
                 dataset = dataset.withColumn(
                         colName,
                         when(c.isNull(), lit(null))
-                                .when(c.startsWith(sv), overlay(c, lit(""), lit(1), lit(sv.length()))) // 删掉开头 sv.length() 个字符
+                                .when(c.startsWith(sv), overlay(c, lit(""), lit(1), lit(sv.length()))) // Delete the first sv.length() characters
                                 .otherwise(c)
                 );
                 break;
 
-            case "4": // 去除匹配上的后缀
+            case "4": // Remove suffix from match
                 dataset = dataset.withColumn(
                         colName,
                         when(c.isNull(), lit(null))
@@ -429,9 +429,9 @@ public class CleanTransition implements Transition {
                                         overlay(
                                                 c,
                                                 lit(""),
-                                                length(c).minus(lit(sv.length())).plus(lit(1)), // 起始位置：len - svLen + 1
-                                                lit(sv.length())                               // 删除长度：svLen
-                                        ))// 从头截取到后缀前
+                                                length(c).minus(lit(sv.length())).plus(lit(1)), // Starting position: len - svLen + 1
+                                                lit(sv.length())                               // Delete length: svLen
+                                        ))// Cut from the beginning to before the suffix
                                 .otherwise(c)
                 );
                 break;
@@ -445,12 +445,12 @@ public class CleanTransition implements Transition {
             return dataset;
         }
 
-        // 获取所有列名（转小写方便比较）
+        // Get all column names (converted to lowercase for easier comparison)
         Set<String> columnSet = Arrays.stream(dataset.columns())
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
-        // 简单提取 where 中出现的字段名（按空格、符号拆分）
+        // Simply extract the field names appearing in where (split by spaces and symbols)
         String[] tokens = where.replaceAll("[()><=!,]", " ")
                 .trim()
                 .split("\\s+");
@@ -470,13 +470,13 @@ public class CleanTransition implements Transition {
             throw new IllegalArgumentException(msg, e);
         }
 
-        // 通过校验后执行
+        // Execute after passing verification
         return dataset.filter(where);
     }
 
 
     /**
-     * 检查字段是否存在
+     * Check if field exists
      */
     private boolean checkColumnsExist(Dataset<Row> dataset, JSONObject ruleConfig) {
         List<String> allColumns = Arrays.asList(dataset.columns());
@@ -492,7 +492,7 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 数值边界调整
+     * Numerical boundary adjustment
      */
     private Dataset<Row> applyNumericBoundary(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
@@ -522,7 +522,7 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 正则表达式替换
+     * Regular expression replacement
      */
     private Dataset<Row> applyRegexReplace(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
@@ -532,13 +532,13 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 组合字段为空删除
+     * Delete the combined field if it is empty
      */
     private Dataset<Row> applyDeleteIfAllNull(Dataset<Row> dataset, JSONObject cfg) {
         List<String> cols = cfg.getJSONArray("columns").toJavaList(String.class);
         if (cols == null || cols.isEmpty()) return dataset;
 
-        // 列存在性校验
+        // Column existence check
         Set<String> exists = new HashSet<>(Arrays.asList(dataset.columns()));
         List<String> missing = cols.stream().filter(c -> !exists.contains(c)).collect(Collectors.toList());
         if (!missing.isEmpty()) {
@@ -551,13 +551,13 @@ public class CleanTransition implements Transition {
         for (String c : cols) {
             DataType t = schema.apply(c).dataType();
 
-            // NULL 判定
+            // NULL judgment
             Column isNull = functions.col(c).isNull();
 
-            // 空白串判定（先统一转 string 再 trim）
+            // Blank string judgment (convert to string first and then trim)
             Column isBlank = functions.trim(functions.col(c).cast("string")).equalTo("");
 
-            // 数值 NaN 判定
+            // Value NaN judgment
             Column isEmpty = isNull.or(isBlank);
             if (t.sameType(DataTypes.FloatType) || t.sameType(DataTypes.DoubleType)) {
                 isEmpty = isEmpty.or(functions.isnan(functions.col(c)));
@@ -570,7 +570,7 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 字段值转大写
+     * Convert field values to uppercase
      */
     private Dataset<Row> applyUpperCase(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
@@ -578,7 +578,7 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * 字段值转小写
+     * Convert field values to lowercase
      */
     private Dataset<Row> applyLowerCase(Dataset<Row> dataset, JSONObject cfg) {
         String col = cfg.getJSONArray("columns").getString(0);
@@ -586,11 +586,11 @@ public class CleanTransition implements Transition {
     }
 
     /**
-     * DATE_FORMAT_STD —— 日期格式统一（支持 inputFormats 中的 "timestamp"）
-     * - 普通模式：使用 to_timestamp(asStr, pattern)
-     * - 时间戳模式："timestamp" 视为 Unix 时间戳；自动兼容 10 位(秒) 与 13 位(毫秒)
+     * DATE_FORMAT_STD - unified date format (supports "timestamp" in inputFormats)
+     * - Normal mode: use to_timestamp(asStr, pattern)
+     * - Timestamp mode: "timestamp" is treated as a Unix timestamp; automatically compatible with 10 digits (seconds) and 13 digits (milliseconds)
      *
-     * cfg 示例：
+     * cfg example:
      * {
      *   "columns": ["bizDate"],
      *   "targetFormat": "yyyy-MM-dd",
@@ -606,22 +606,22 @@ public class CleanTransition implements Transition {
         dataset.show(10, false);
 
         String colName = cfg.getJSONArray("columns").getString(0);
-        String targetFmt = cfg.getString("targetFormat"); // 仅当输出为 string 时生效
+        String targetFmt = cfg.getString("targetFormat"); // Only takes effect when the output is string
         JSONArray arr = cfg.getJSONArray("inputFormats");
 
         Column col = functions.col(colName);
         DataType dt = dataset.schema().apply(colName).dataType();
 
-        // === 1) 统一得到 asTs：仅在需要时才解析 ===
+        // === 1) Get asTs uniformly: parse only when needed ===
         Column asTs;
 
-        // 1.1 源列已是日期/时间戳：直接使用，避免时区二次转换
+        // 1.1 The source column is already a date/time stamp: use it directly to avoid secondary time zone conversion
         if (dt.sameType(DataTypes.DateType)) {
             asTs = col.cast("timestamp");
         } else if (dt.sameType(DataTypes.TimestampType)) {
-            asTs = col; // 已经是 timestamp
+            asTs = col; // Already timestamp
         }
-        // 1.2 源列是字符串：用 inputFormats 尝试解析
+        // 1.2 The source column is a string: use inputFormats to try to parse
         else if (dt.sameType(DataTypes.StringType)) {
             Column asStr = col.cast("string");
             Column parsed = null;
@@ -629,7 +629,7 @@ public class CleanTransition implements Transition {
                 String pattern = arr.getString(i);
                 Column p;
                 if ("timestamp".equalsIgnoreCase(pattern)) {
-                    // 数字型时间戳字符串：10位秒、13位毫秒，其他长度视为无效
+                    // Numeric timestamp string: 10-digit seconds, 13-digit milliseconds, other lengths are considered invalid
                     Column digits = functions.regexp_replace(asStr, "[^0-9]", "");
                     Column len = functions.length(digits);
                     Column seconds = functions.when(len.equalTo(13), digits.cast("double").divide(1000.0))
@@ -641,25 +641,25 @@ public class CleanTransition implements Transition {
                 }
                 parsed = (parsed == null) ? p : functions.coalesce(parsed, p);
             }
-            asTs = parsed; // 全部失败则为 null
+            asTs = parsed; // Null on all failures
         }
-        // 1.3 源列是数值型：按阈值判断秒/毫秒
+        // 1.3 The source column is numeric: judge seconds/milliseconds according to the threshold
         else if (dt.equals(DataTypes.IntegerType) || dt.equals(DataTypes.LongType)
                 || dt.equals(DataTypes.ShortType)   || dt.equals(DataTypes.FloatType)
                 || dt.equals(DataTypes.DoubleType)  || dt.typeName().startsWith("decimal")) {
             Column num = col.cast("double");
-            // >=1e12 视为毫秒；介于[1e9,1e12) 视为秒；否则无效
+            // >=1e12 is regarded as milliseconds; between [1e9,1e12) is regarded as seconds; otherwise it is invalid
             Column seconds = functions.when(num.geq(1_000_000_000_000.0), num.divide(1000.0))
                     .when(num.geq(1_000_000_000.0),      num)
                     .otherwise(functions.lit((Double) null));
             asTs = functions.to_timestamp(functions.from_unixtime(seconds));
         }
-        // 1.4 其他类型：放弃解析
+        // 1.4 Other types: give up parsing
         else {
             asTs = functions.lit(null);
         }
 
-        // === 2) 决定输出类型：优先 forceTargetType，其次沿用原列类型，默认 string ===
+        // === 2) Determine the output type: forceTargetType first, followed by the original column type, default string ===
         String targetType;
         if (targetFmt != null && !targetFmt.trim().isEmpty()) {
             targetType = targetFmt.trim().toLowerCase();
@@ -673,7 +673,7 @@ public class CleanTransition implements Transition {
             targetType = "string";
         }
 
-        // === 3) 落地：仅当解析成功才替换，否则保留原值 ===
+        // === 3) Implementation: Replace only if parsing is successful, otherwise keep the original value ===
         Column outCol;
         switch (targetType) {
             case "date":
@@ -689,7 +689,7 @@ public class CleanTransition implements Transition {
                         ? functions.date_format(asTs, "yyyy-MM-dd HH:mm:ss")
                         : functions.date_format(asTs, targetFmt);
                 outCol = functions.when(asTs.isNotNull(), formatted)
-                        .otherwise(col.cast("string")); // 统一成字符串
+                        .otherwise(col.cast("string")); // Unify into string
                 break;
         }
         dataset = dataset.withColumn(colName, outCol);

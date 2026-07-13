@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.utils.html;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 转义和反转义工具类
+ * Escape and anti-escaping tool classes
  *
  * @author qdata
  */
@@ -39,18 +39,18 @@ public class EscapeUtil
         }
 
         // special HTML characters
-        TEXT['\''] = "&#039;".toCharArray(); // 单引号
-        TEXT['"'] = "&#34;".toCharArray(); // 双引号
-        TEXT['&'] = "&#38;".toCharArray(); // &符
-        TEXT['<'] = "&#60;".toCharArray(); // 小于号
-        TEXT['>'] = "&#62;".toCharArray(); // 大于号
+        TEXT['\''] = "&#039;".toCharArray(); // Single quote
+        TEXT['"'] = "&#34;".toCharArray(); // Double quotes
+        TEXT['&'] = "&#38;".toCharArray(); // & symbol
+        TEXT['<'] = "&#60;".toCharArray(); // Less than sign
+        TEXT['>'] = "&#62;".toCharArray(); // Greater than sign
     }
 
     /**
-     * 转义文本中的HTML字符为安全的字符
+     * Escape HTML characters in text to safe characters
      *
-     * @param text 被转义的文本
-     * @return 转义后的文本
+     * @param text The escaped text
+     * @return escaped text
      */
     public static String escape(String text)
     {
@@ -58,10 +58,10 @@ public class EscapeUtil
     }
 
     /**
-     * 还原被转义的HTML特殊字符
+     * Restore escaped HTML special characters
      *
-     * @param content 包含转义符的HTML内容
-     * @return 转换后的字符串
+     * @param content HTML content containing escape characters
+     * @return converted string
      */
     public static String unescape(String content)
     {
@@ -69,10 +69,10 @@ public class EscapeUtil
     }
 
     /**
-     * 清除所有HTML标签，但是不删除标签内的内容
+     * Clear all HTML tags, but do not delete the content within the tags
      *
-     * @param content 文本
-     * @return 清除标签后的文本
+     * @param content text
+     * @return Clear the text after the label
      */
     public static String clean(String content)
     {
@@ -80,10 +80,10 @@ public class EscapeUtil
     }
 
     /**
-     * Escape编码
+     * Escape encoding
      *
-     * @param text 被编码的文本
-     * @return 编码后的字符
+     * @param text The encoded text
+     * @return encoded characters
      */
     private static String encode(String text)
     {
@@ -121,10 +121,10 @@ public class EscapeUtil
     }
 
     /**
-     * Escape解码
+     * Escape decoding
      *
-     * @param content 被转义的内容
-     * @return 解码后的字符串
+     * @param content The escaped content
+     * @return decoded string
      */
     public static String decode(String content)
     {

@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 评测规则结果Service业务层处理
+ * Evaluation rule results Service business layer processing
  *
  * @author qdata
  * @date 2025-07-21
@@ -68,15 +68,15 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 
     @Override
     public int updateDppEvaluateLog(DppEvaluateLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新评测规则结果
+        // Update evaluation rule results
         DppEvaluateLogDO updateObj = BeanUtils.toBean(updateReqVO, DppEvaluateLogDO.class);
         return dppEvaluateLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEvaluateLog(Collection<Long> idList) {
-        // 批量删除评测规则结果
+        // Delete evaluation rule results in batches
         return dppEvaluateLogMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                 .collect(Collectors.toMap(
                         DppEvaluateLogDO::getId,
                         dppEvaluateLogDO -> dppEvaluateLogDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入评测规则结果数据
+         * Import evaluation rule result data
          *
-         * @param importExcelList 评测规则结果数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Evaluation rule result data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {

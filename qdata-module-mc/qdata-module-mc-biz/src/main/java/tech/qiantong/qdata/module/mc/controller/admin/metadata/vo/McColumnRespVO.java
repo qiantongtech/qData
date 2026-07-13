@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 元数据字段信息 Response VO 对象 MC_COLUMN
+ * Metadata field information Response VO object MC_COLUMN
  *
  * @author qdata
  * @date 2026-02-11
@@ -182,7 +182,7 @@ public class McColumnRespVO implements Serializable {
     private String safetyLevelName;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
@@ -193,29 +193,29 @@ public class McColumnRespVO implements Serializable {
     @Schema(description = "是否分区字段", example = "")
     private String partitionFlag;
     /**
-     * 负责部门
+     * Responsible department
      */
     @Schema(description = "负责部门", example = "")
     private Long responsibleDept;
 
-    /** 责任人 */
+    /** Responsible person */
     @Schema(description = "责任人", example = "")
     private Long businessLeader;
 
     /**
-     * 字段规范
+     * Field specification
      */
     @Schema(description = "字段规范", example = "")
     private String columnStandard;
 
     /**
-     * 取值逻辑
+     * Value logic
      */
     @Schema(description = "取值逻辑", example = "")
     private String valueRule;
 
     /**
-     * 是否唯一
+     * Is it unique?
      */
     @Schema(description = "是否唯一", example = "")
     private Long uniqueFlag;

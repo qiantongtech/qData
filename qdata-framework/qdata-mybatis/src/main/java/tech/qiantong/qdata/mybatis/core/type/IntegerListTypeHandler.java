@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * List<Integer> 的类型转换器实现类，对应数据库的 varchar 类型
+ * Type converter implementation class of List<Integer>, corresponding to the varchar type of the database
  *
  * @author jason
  */

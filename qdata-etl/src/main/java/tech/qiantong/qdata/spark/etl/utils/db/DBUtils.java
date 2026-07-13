@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:数据库相关工具类
+ * Purpose: Database related tools
  * </p>
  *
  * @author: FXB
@@ -47,7 +47,7 @@ public class DBUtils {
     }
 
     /**
-     * 获取数据库连接配置
+     * Get database connection configuration
      */
     public static Map<String, String> getDbOptions(JSONObject parameter) {
         String datasourceId = parameter.getString("datasourceId");
@@ -69,9 +69,9 @@ public class DBUtils {
         } else {
             options.put("url", jdbcUrl);
         }
-        //注册驱动
+        //Register driver
         try {
-            // 根据不同数据库类型设置连接参数
+            // Set connection parameters according to different database types
             switch (DbType.getDbType(dbType)) {
                 case DM8:
                     Class.forName("dm.jdbc.driver.DmDriver");
@@ -101,7 +101,7 @@ public class DBUtils {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     options.put("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     break;
-                //后续再扩展
+                //Will be expanded later
                 default:
                     throw new RuntimeException("Unsupported database type: " + dbType);
             }
@@ -112,7 +112,7 @@ public class DBUtils {
         options.put("dbName", dbName);
         if (connection.containsKey("table")) {
             //{\"username\":\"qdata_dev\",\"password\":\"2LKqLVMQ!xVDT$Qx\",\"dbname\":\"qdata_dev\",\"sid\":\"public\"}
-            //表查询
+            //Table query
             if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType)
                     || StringUtils.equals(DbType.SQL_SERVER.getDb(), dbType)
                     || StringUtils.equals(DbType.SQL_SERVER2008.getDb(), dbType)) {
@@ -124,7 +124,7 @@ public class DBUtils {
             }
             options.put("tableName", connection.getString("table"));
         } else {
-            //sql查询
+            //sql query
             options.put("query", connection.getString("querySql"));
         }
         return options;

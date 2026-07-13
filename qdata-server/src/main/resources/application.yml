@@ -14,56 +14,56 @@
 # Business License: https://community.qdata.tech/business/policy.html
 # See the LICENSE file in the project root for full license information.
 
-# 项目相关配置
+# Project related configuration
 qdata:
-  # 名称
+  # Name
   name: qData
-  # 版本
+  # Version
   version: 3.8.8
-  # 版权年份
+  # Copyright year
   copyrightYear: 2024
-  # 文件路径 示例（ Windows配置D:/qdata/uploadPath，Linux配置 /home/qdata/uploadPath） -- 需要和 file 模块保持一致
+  # File path example (Windows configuration D:/qdata/uploadPath, Linux configuration /home/qdata/uploadPath) -- needs to be consistent with the file module
   profile: ${user.dir}/upload/
-  # 获取ip地址开关
+  # Get ip address switch
   addressEnabled: false
-  # 验证码类型 math 数字计算 char 字符验证
+  # Verification code type math numerical calculation char character verification
   captchaType: math
 
-# 开发环境配置
+# Development environment configuration
 server:
-  # 服务器的HTTP端口，默认为8080
+  # The HTTP port of the server, default is 8080
   port: 8080
   servlet:
-    # 应用的访问路径
+    # Application access path
     context-path: /
   tomcat:
-    # tomcat的URI编码
+    # tomcat URI encoding
     uri-encoding: UTF-8
-    # 连接数满后的排队数，默认为100
+    # The number of queues after the number of connections is full, the default is 100
     accept-count: 1000
     threads:
-      # tomcat最大线程数，默认为200
+      # The maximum number of threads in tomcat, the default is 200
       max: 800
-      # Tomcat启动初始化的线程数，默认值10
+      # The number of threads that Tomcat starts initializing, the default value is 10
       min-spare: 100
 
-# 日志配置
+# Log configuration
 logging:
   level:
     tech.qiantong: debug
     org.springframework: warn
 
-# 用户配置
+# User configuration
 user:
   password:
-    # 密码最大错误次数
+    # Maximum number of incorrect passwords
     maxRetryCount: 5
-    # 密码锁定时间（默认10分钟）
+    # Password lock time (default 10 minutes)
     lockTime: 10
-    #万能密码 配置为空则不生效
+    #Universal password will not take effect if it is empty.
     universalPassword: qData123
 
-# Spring配置
+# Spring configuration
 spring:
   cache:
     type: jcache
@@ -74,120 +74,120 @@ spring:
     mode: HTML
     encoding: utf-8
     cache: false
-  # 资源信息
+  # Resource information
   messages:
-    # 国际化资源文件路径（多模块加载，按顺序查找，先匹配的生效）
-    # messages:        qdata-server 公共消息（系统异常/用户认证/文件上传）
-    # system-messages: System模块专属（数据权限等）
-    # dm-messages:     DM模块专属（数据导入/主题域等）
-    # dg-messages:     DG模块专属（数据治理/脱敏等）
-    # att-messages:    ATT模块专属（资产分类/标签等）
-    # da-messages:     DA模块专属（数据资产/发现任务等）
-    # dp-messages:     DP模块专属（数据标准/模型/数据元等）
-    # dpp-messages:    DPP模块专属（数据开发/ETL/调度等）
-    # ds-messages:     DS模块专属（数据服务/API等）
-    # mc-messages:     MC模块专属（元数据采集/调度等）
-    # quality-messages: 数据质量模块专属
+    # Internationalized resource file path (multiple modules are loaded, searched in order, the one that matches first takes effect)
+    # messages: qdata-server public messages (system exception/user authentication/file upload)
+    # system-messages: System module exclusive (data permissions, etc.)
+    # dm-messages: Exclusive to DM module (data import/subject field, etc.)
+    # dg-messages: Exclusive to DG module (data governance/desensitization, etc.)
+    # att-messages: Exclusive to ATT module (asset classification/label, etc.)
+    # da-messages: Exclusive to DA module (data assets/discovery tasks, etc.)
+    # dp-messages: Exclusive to DP module (data standards/models/data elements, etc.)
+    # dpp-messages: Exclusive to DPP module (data development/ETL/scheduling, etc.)
+    # ds-messages: Exclusive to DS module (data service/API, etc.)
+    # mc-messages: exclusive to MC module (metadata collection/scheduling, etc.)
+    # quality-messages: exclusive to the data quality module
     basename: i18n/messages,i18n/system-messages,i18n/dm-messages,i18n/dg-messages,i18n/att-messages,i18n/da-messages,i18n/dp-messages,i18n/dpp-messages,i18n/ds-messages,i18n/mc-messages,i18n/quality-messages,i18n/log-messages,i18n/etl-messages
     encoding: UTF-8
   profiles:
-    active: dev  # 默认激活的环境，可以在启动时覆盖
+    active: dev  # The environment activated by default, which can be overridden at startup
   config:
     import:
       - "application-${spring.profiles.active}.yml"
       - "classpath:application-auth-${spring.profiles.active}.yml"
       - "classpath:application-file-${spring.profiles.active}.yml"
-      # 示意：引入业务模块配置文件（请按照项目情况调整）
+      # Instructions: Introduce the business module configuration file (please adjust according to the project situation)
       - "classpath:application-system-${spring.profiles.active}.yml"
       - "classpath:application-mc-${spring.profiles.active}.yml"
-  # 文件上传
+  # File upload
   servlet:
     multipart:
-      # 单个文件大小
+      # Single file size
       max-file-size: 3000MB
-      # 设置总上传的文件大小
+      # Set the total uploaded file size
       max-request-size: 3000MB
-  # 服务模块
+  # Service module
   devtools:
     restart:
-      # 热部署开关
+      # Hot deployment switch
       enabled: true
 
-# token配置
+# token configuration
 token:
-  # 令牌自定义标识
+  # Token custom identification
   header: Authorization
-  # 令牌自定义标识
+  # Token custom identification
   rpHeader: token
-  # 令牌密钥
+  # Token key
   secret: abcdefghijklmnopqrstuvwxyz
-  # 令牌有效期（默认30分钟）
+  # Token validity period (default 30 minutes)
   expireTime: 600
 
-# MyBatis配置
+# MyBatis configuration
 # mybatis:
-  # 搜索指定包别名
+  # Search for a specified package alias
   # typeAliasesPackage: tech.qiantong.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  # Configure mapper scanning to find all mapper.xml mapping files
   # mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
+  # Load global configuration file
   # configLocation: classpath:mybatis/mybatis-config.xml
 
-# MyBatis Plus配置
+# MyBatis Plus configuration
 mybatis-plus:
-  # 搜索指定包别名
+  # Search for a specified package alias
   typeAliasesPackage: tech.qiantong.**.dataobject,tech.qiantong.**.dataobject.assetchild, tech.qiantong.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  # Configure mapper scanning to find all mapper.xml mapping files
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
+  # Load global configuration file
   configLocation: classpath:mybatis/mybatis-config.xml
   global-config:
-    # 关闭 MyBatis-Plus 的 Banner
+    # Close the Banner of MyBatis-Plus
     banner: false
     db-config:
-      # 主键类型 AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
+      # Primary key type AUTO auto-increment NONE empty INPUT user input ASSIGN_ID snowflake ASSIGN_UUID unique UUID
       idType: AUTO
-      # 全局逻辑删除字段名
+      # Global tombstone field name
       logic-delete-field: delFlag
-      # 逻辑已删除值（默认为1）
+      # Logical deleted value (default is 1)
       logic-delete-value: 1
-      # 逻辑未删除值（默认为0）
+      # Logical undeleted value (default 0)
       logic-not-delete-value: 0
-      # 字段验证策略之 insert,在 insert 的时候的字段验证策略 IGNORED 忽略 NOT_NULL 非NULL NOT_EMPTY 非空 DEFAULT 默认 NEVER 不加入 SQL
+      # Field validation strategy for insert, field validation strategy during insert IGNORED ignore NOT_NULL non-NULL NOT_EMPTY non-empty DEFAULT default NEVER do not join SQL
       insertStrategy: NOT_NULL
-      # 字段验证策略之 update,在 update 的时候的字段验证策略
+      # Field validation strategy update, field validation strategy during update
       updateStrategy: NOT_NULL
-      # 字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
+      # Field validation strategy for select, the field validation strategy during select is wrapper based on the where condition generated by the internal entity
       where-strategy: NOT_NULL
 
 mybatis-plus-join:
-  # 是否打印 mybatis plus join banner，默认true
+  # Whether to print mybatis plus join banner, default true
   banner: false
-  # 全局启用副表逻辑删除，默认true。关闭后关联查询不会加副表逻辑删除
+  # Globally enable logical deletion of secondary tables, default true. After closing, the related query will not add the logical deletion of the secondary table.
   sub-table-logic: true
-  # 拦截器MappedStatement缓存，默认 true
+  # Interceptor MappedStatement cache, default true
   ms-cache: true
-  # 表别名(默认 t)
+  # Table alias (default t)
   table-alias: t
-  # 副表逻辑删除条件的位置，支持 WHERE、ON，默认 ON
+  # The position of the logical deletion condition of the secondary table, supports WHERE and ON, and defaults to ON
   logic-del-type: on
 
-# PageHelper分页插件
+# PageHelper paging plug-in
 pagehelper:
   helperDialect: mysql
   supportMethodsArguments: true
   params: count=countSql
 
-# 防止XSS攻击
+# Prevent XSS attacks
 xss:
-  # 过滤开关
+  # Filter switch
   enabled: true
-  # 排除链接（多个用逗号分隔）
+  # Exclude links (separate multiple with commas)
   excludes: /system/notice
-  # 匹配链接
+  # Matching link
   urlPatterns: /system/*,/monitor/*,/tool/*
 
-# Swagger 分组配置
+# Swagger group configuration
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -208,7 +208,7 @@ springdoc:
     - group: 'dm'
       paths-to-match: '/**'
       packages-to-scan: tech.qiantong.qdata.module.dm.controller
-# Swagger 增强配置
+# Swagger enhanced configuration
 knife4j:
   enable: true
   documents:
@@ -246,12 +246,12 @@ knife4j:
     username: test
     password: 12313
 
-## 工作流模块的访问地址
+##Access address of workflow module
 flyflow:
   url: http://127.0.0.1:26859/
 
-#ID生成器使用 为以后分布式不重复ID做应用
-#工作机器ID(0~31)
+#The ID generator is used for future applications of distributed unique IDs.
+#Work machine ID (0~31)
 id.workerId: 1
-#数据中心ID(0~31)
+#Data center ID (0~31)
 id.datacenterId: 1

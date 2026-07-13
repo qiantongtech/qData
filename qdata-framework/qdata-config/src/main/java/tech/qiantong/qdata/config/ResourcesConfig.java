@@ -37,7 +37,7 @@ import tech.qiantong.qdata.config.interceptor.RepeatSubmitInterceptor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 通用配置
+ * Common configuration
  *
  * @author qdata
  */
@@ -49,11 +49,11 @@ public class ResourcesConfig implements WebMvcConfigurer
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // 后台页面配置
+        // Backend page configuration
         registry.addViewController("/index").setViewName("admin/index.html");
         registry.addViewController("/").setViewName("admin/index.html");
 
-        // sso 登录页配置
+        // sso login page configuration
         registry.addViewController("/sso/index.html").setViewName("sso/index.html");
         registry.addViewController("/sso/confirm.html").setViewName("sso/login.html");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -62,32 +62,32 @@ public class ResourcesConfig implements WebMvcConfigurer
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
-        /** 本地文件上传路径 */
+        /** Local file upload path */
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
                 .addResourceLocations("file:" + AniviaConfig.getProfile());
 
-        /** 页面静态化Vue2 */
+        /** Page static Vue2 */
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/dist/admin/static/");
 
-        /** 页面静态化Vue3 */
+        /** Page static Vue3 */
         registry.addResourceHandler("/assets/**", "/favicon.ico")
                 .addResourceLocations("classpath:/dist/admin/assets/")
                 .addResourceLocations("classpath:/dist/sso/assets/")
                 .addResourceLocations("classpath:/dist/sso/")
         ;
 
-        /** 页面静态化 SSO 认证登录页面 */
+        /** Page static SSO authentication login page */
 //        registry.addResourceHandler("/sso/v1/**").addResourceLocations("classpath:/dist/sso/");
 //        registry.addResourceHandler("/sso/v1/assets/**").addResourceLocations("classpath:/dist/sso/assets/");
 
-        /** swagger配置 */
+        /** swagger configuration */
         registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());;
     }
 
     /**
-     * 自定义拦截规则
+     * Custom interception rules
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry)
@@ -96,25 +96,25 @@ public class ResourcesConfig implements WebMvcConfigurer
     }
 
     /**
-     * 跨域配置
+     * Cross-domain configuration
      */
     @Bean
     public CorsFilter corsFilter()
     {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        // 设置访问源地址
+        // Set access source address
         config.addAllowedOriginPattern("*");
-        // 设置访问源请求头
+        // Set access source request header
         config.addAllowedHeader("*");
-        // 设置访问源请求方法
+        // Set access source request method
         config.addAllowedMethod("*");
-        // 有效期 1800秒
+        // Validity period 1800 seconds
         config.setMaxAge(1800L);
-        // 添加映射路径，拦截一切请求
+        // Add a mapping path to intercept all requests
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        // 返回新的CorsFilter
+        // Return new CorsFilter
         return new CorsFilter(source);
     }
 }

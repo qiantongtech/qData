@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 通用分页结果
+ * Generic paginated results
  * @author Ming
  */
 

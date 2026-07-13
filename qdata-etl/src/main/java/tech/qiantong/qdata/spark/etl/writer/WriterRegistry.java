@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:输出组件注册
+ * Purpose: Output component registration
  * </p>
  *
  * @author: FXB

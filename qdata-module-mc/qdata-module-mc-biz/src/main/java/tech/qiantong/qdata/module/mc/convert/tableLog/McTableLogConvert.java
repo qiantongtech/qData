@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.tableLog.McTableLogDO;
 import java.util.List;
 
 /**
- * 元数据信息 - 日志 Convert
+ * Metadata Information - Log Convert
  *
  * @author qdata
  * @date 2026-03-10
@@ -20,29 +20,29 @@ public interface McTableLogConvert {
     McTableLogConvert INSTANCE = Mappers.getMapper(McTableLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcTableLogPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcTableLogPageReqVO request parameters
      * @return McTableLogDO
      */
      McTableLogDO convertToDO(McTableLogPageReqVO mcTableLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcTableLogSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcTableLogSaveReqVO save request parameters
      * @return McTableLogDO
      */
      McTableLogDO convertToDO(McTableLogSaveReqVO mcTableLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcTableLogDO 实体对象
+     * DO to RespVO
+     * @param mcTableLogDO entity object
      * @return McTableLogRespVO
      */
      McTableLogRespVO convertToRespVO(McTableLogDO mcTableLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcTableLogDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcTableLogDOList entity object list
      * @return List<McTableLogRespVO>
      */
      List<McTableLogRespVO> convertToRespVOList(List<McTableLogDO> mcTableLogDOList);

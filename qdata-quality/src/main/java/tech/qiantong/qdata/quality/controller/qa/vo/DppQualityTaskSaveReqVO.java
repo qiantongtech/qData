@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据质量任务 创建/修改 Request VO DPP_QUALITY_TASK
+ * Data Quality Task Create/Modify Request VO DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
@@ -98,10 +98,10 @@ public class DppQualityTaskSaveReqVO extends BaseEntity {
     private String cycle;
 
 
-    // 数据质量任务-稽查对象
+    // Data quality tasks-audit objects
     private List<DppQualityTaskObjSaveReqVO> dppQualityTaskObjSaveReqVO;
 
-    // 规则对象
+    // Rule object
     private List<DppQualityTaskEvaluateSaveReqVO> dppQualityTaskEvaluateSaveReqVO;
 
 

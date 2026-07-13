@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 元数据信息 - 日志Service业务层处理
+ * Metadata information - Log Service business layer processing
  *
  * @author qdata
  * @date 2026-03-10
@@ -49,15 +49,15 @@ public class McTableLogServiceImpl  extends ServiceImpl<McTableLogMapper,McTable
 
     @Override
     public int updateMcTableLog(McTableLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新元数据信息 - 日志
+        // Update metadata information - log
         McTableLogDO updateMcTableLogDO = BeanUtils.toBean(updateReqVO, McTableLogDO.class);
         return mcTableLogMapper.updateById(updateMcTableLogDO);
     }
     @Override
     public int removeMcTableLog(Collection<Long> idList) {
-        // 批量删除元数据信息 - 日志
+        // Delete metadata information in batches - Log
         return mcTableLogMapper.deleteBatchIds(idList);
     }
 
@@ -72,9 +72,9 @@ public class McTableLogServiceImpl  extends ServiceImpl<McTableLogMapper,McTable
     }
 
     /**
-     * 根据元数据表信息添加元数据版本变更日志
-     * @param table 元数据表信息
-     * @return 元数据版本变更日志id
+     * Add metadata version change log based on metadata table information
+     * @param table metadata table information
+     * @return metadata version change log id
      */
     @Override
     public Long createMcTableLog(McTableSaveReqVO table) {
@@ -89,14 +89,14 @@ public class McTableLogServiceImpl  extends ServiceImpl<McTableLogMapper,McTable
                 .collect(Collectors.toMap(
                         McTableLogDO::getId,
                         mcTableLogDO -> mcTableLogDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
     /**
-     * 根据时间生成版本号 Vyyyy.MM.ddHHmm
-     * @return 版本号
+     * Generate version number Vyyyy.MM.ddHHmm based on time
+     * @return version number
      */
     public  String getVersion(){
         return "V" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.ddHHmm"));

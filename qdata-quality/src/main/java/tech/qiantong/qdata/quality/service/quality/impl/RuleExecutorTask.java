@@ -79,19 +79,19 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
         try {
             DppEvaluateLogSaveReqVO createReqVO = new DppEvaluateLogSaveReqVO(rule);
             logger.log(MessageUtils.messageEn("quality.log.rule.exec.start", rule.getId(), rule.getRuleType()));
-            // 1. 生成 SQL 脚本（策略模式）
+            // 1. Generate SQL script (strategy mode)
             logger.log(MessageUtils.messageEn("quality.log.sql.generating"));
             QualitySqlGenerator generator = sqlFactory.getGenerator(rule.getRuleType());
             String checkSql = generator.generateSql(rule);
             String errorSql = generator.generateErrorSql(rule);
             logger.log(MessageUtils.messageEn("quality.log.sql.generated", checkSql, errorSql));
 
-            // 2. 执行 SQL
+            // 2. Execute SQL
             try (Connection conn = getConn(rule,dbQuery).getConnection();
                  Statement stmt = conn.createStatement()) {
 
                 logger.log(MessageUtils.messageEn("quality.log.sql.executing"));
-                // 查询异常数 & 总数
+                // Query the number of exceptions & total number
                 int errorCount = 0;
                 int totalCount = 0;
                 try (ResultSet rs = stmt.executeQuery(checkSql)) {
@@ -103,7 +103,7 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                     }
                 }
                 logger.log(MessageUtils.messageEn("quality.log.sql.executed", errorCount, totalCount));
-                // 查询异常明细
+                // Query exception details
                 logger.log(MessageUtils.messageEn("quality.log.error.query"));
                 List<JSONObject> errorList = new ArrayList<>();
                 try (ResultSet rs = stmt.executeQuery(errorSql)) {
@@ -122,7 +122,7 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                 createReqVO.setProblemTotal((long)errorCount);
                 Long dppEvaluateLog = iDppEvaluateLogService.createDppEvaluateLog(createReqVO);
 
-                // 保存 Mongo 错误
+                // Save Mongo errors
                 logger.log(MessageUtils.messageEn("quality.log.mongo.writing"));
                 for (JSONObject obj : errorList) {
                     CheckErrorData doc = CheckErrorData.builder()
@@ -141,7 +141,7 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                     MongoUtil.safeSave(mongoTemplate, doc, "quality_error_data");
                 }
                 logger.log(MessageUtils.messageEn("quality.log.mongo.done"));
-                // 构建返回
+                // Build returns
                 logger.log(MessageUtils.messageEn("quality.log.result.build"));
                 return new QualityCheckResult(rule.getId(), batch, errorCount, totalCount);
             }

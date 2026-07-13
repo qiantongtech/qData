@@ -23,7 +23,7 @@ import lombok.Data;
 
 /**
  * <P>
- * 用途: 事实维度关联
+ * Purpose: fact dimension association
  * </p>
  *
  * @author: FXB

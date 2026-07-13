@@ -24,7 +24,7 @@ import java.util.Locale;
 
 /**
  * <P>
- * 用途:类目表枚举
+ * Purpose: Category table enumeration
  * </p>
  *
  * @author: FXB

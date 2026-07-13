@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据库Controller
+ * DatabaseController
  *
  * @author qdata
  * @date 2026-02-11

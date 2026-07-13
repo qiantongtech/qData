@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.Map;
 
 /**
- * Oracle数据库方言实现
+ * Oracle database dialect implementation
  */
 @Slf4j
 public class OracleDialect implements DatabaseDialect {
@@ -29,7 +29,7 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getStorageEngine(McDbDO mcDbDO) {
         try {
-            // Oracle数据库使用表空间，这里返回Oracle Database
+            // Oracle database uses table space, return Oracle Database here
             return "Oracle Database";
         } catch (Exception e) {
             log.error("获取Oracle存储引擎失败", e);
@@ -40,18 +40,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public Long getTableRowCount(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return 0L;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COUNT(*) FROM " + tableName;
@@ -69,18 +69,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getTableIndexes(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return "";
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT INDEX_NAME FROM USER_INDEXES WHERE TABLE_NAME = '" + tableName.toUpperCase() + "' AND INDEX_NAME != 'PK_'";
@@ -104,18 +104,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getTablePartitionFields(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return "";
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COLUMN_NAME FROM USER_PART_KEY_COLUMNS WHERE NAME = '" + tableName.toUpperCase() + "'";
@@ -139,18 +139,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public boolean isColumnAutoIncrement(McDbDO mcDbDO, String tableName, String columnName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return false;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT IDENTITY_COLUMN FROM USER_TAB_COLUMNS WHERE TABLE_NAME = '" + tableName.toUpperCase() + "' AND COLUMN_NAME = '" + columnName.toUpperCase() + "'";
@@ -169,18 +169,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public boolean isPartitionField(McDbDO mcDbDO, String tableName, String columnName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return false;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COLUMN_NAME FROM USER_PART_KEY_COLUMNS WHERE NAME = '" + tableName.toUpperCase() + "' AND COLUMN_NAME = '" + columnName.toUpperCase() + "'";
@@ -199,7 +199,7 @@ public class OracleDialect implements DatabaseDialect {
     }
 
     /**
-     * 解析datasourceConfig获取连接信息
+     * Parse datasourceConfig to obtain connection information
      */
     private Map<String, Object> parseDatasourceConfig(String datasourceConfig) {
         if (StringUtils.isBlank(datasourceConfig)) {

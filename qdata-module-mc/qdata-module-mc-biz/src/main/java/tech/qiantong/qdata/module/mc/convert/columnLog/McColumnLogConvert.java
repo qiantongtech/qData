@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.columnLog.McColumnLogDO;
 import java.util.List;
 
 /**
- * 元数据字段信息 - 日志 Convert
+ * Metadata field information - Log Convert
  *
  * @author qdata
  * @date 2026-03-10
@@ -20,29 +20,29 @@ public interface McColumnLogConvert {
     McColumnLogConvert INSTANCE = Mappers.getMapper(McColumnLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcColumnLogPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcColumnLogPageReqVO request parameters
      * @return McColumnLogDO
      */
      McColumnLogDO convertToDO(McColumnLogPageReqVO mcColumnLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcColumnLogSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcColumnLogSaveReqVO save request parameters
      * @return McColumnLogDO
      */
      McColumnLogDO convertToDO(McColumnLogSaveReqVO mcColumnLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcColumnLogDO 实体对象
+     * DO to RespVO
+     * @param mcColumnLogDO entity object
      * @return McColumnLogRespVO
      */
      McColumnLogRespVO convertToRespVO(McColumnLogDO mcColumnLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcColumnLogDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcColumnLogDOList entity object list
      * @return List<McColumnLogRespVO>
      */
      List<McColumnLogRespVO> convertToRespVOList(List<McColumnLogDO> mcColumnLogDOList);

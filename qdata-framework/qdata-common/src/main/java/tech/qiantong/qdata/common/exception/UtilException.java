@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception;
 
 /**
- * 工具类异常
+ * Tool exception
  *
  * @author qdata
  */

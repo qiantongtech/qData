@@ -25,134 +25,134 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 业务 服务层
+ * Business service layer
  *
  * @author qdata
  */
 public interface IGenTableService
 {
     /**
-     * 查询业务列表
+     * Query business list
      *
-     * @param genTable 业务信息
-     * @return 业务集合
+     * @param genTable business information
+     * @return business collection
      */
     public List<GenTable> selectGenTableList(GenTable genTable);
 
     /**
-     * 查询据库列表
+     * Query database list
      *
-     * @param genTable 业务信息
-     * @return 数据库表集合
+     * @param genTable business information
+     * @return database table collection
      */
     public List<GenTable> selectDbTableList(GenTable genTable);
 
     /**
-     * 查询据库列表
+     * Query database list
      *
-     * @param tableNames 表名称组
-     * @return 数据库表集合
+     * @param tableNames table name group
+     * @return database table collection
      */
     public List<GenTable> selectDbTableListByNames(String[] tableNames);
 
     /**
-     * 查询所有表信息
+     * Query all table information
      *
-     * @return 表信息集合
+     * @return table information collection
      */
     public List<GenTable> selectGenTableAll();
 
     /**
-     * 查询业务信息
+     * Query business information
      *
-     * @param id 业务ID
-     * @return 业务信息
+     * @param id business ID
+     * @return business information
      */
     public GenTable selectGenTableById(Long id);
 
     /**
-     * 修改业务
+     * Modify business
      *
-     * @param genTable 业务信息
-     * @return 结果
+     * @param genTable business information
+     * @return result
      */
     public void updateGenTable(GenTable genTable);
 
     /**
-     * 删除业务信息
+     * Delete business information
      *
-     * @param tableIds 需要删除的表数据ID
-     * @return 结果
+     * @param tableIds table data ID to be deleted
+     * @return result
      */
     public void deleteGenTableByIds(Long[] tableIds);
 
     /**
-     * 创建表
+     * Create table
      *
-     * @param sql 创建表语句
-     * @return 结果
+     * @param sql create table statement
+     * @return result
      */
     public boolean createTable(String sql);
 
     /**
-     * 导入表结构
+     * Import table structure
      *
-     * @param tableList 导入表列表
-     * @param operName 操作人员
+     * @param tableList import table list
+     * @param operName operator
      */
     public void importGenTable(List<GenTable> tableList, String operName);
 
     /**
-     * 预览代码
+     * Preview code
      *
-     * @param tableId 表编号
-     * @return 预览数据列表
+     * @param tableId table number
+     * @return preview data list
      */
     public Map<String, String> previewCode(Long tableId);
 
     /**
-     * 生成代码（下载方式）
+     * Generate code (download method)
      *
-     * @param tableName 表名称
-     * @return 数据
+     * @param tableName table name
+     * @return data
      */
     public byte[] downloadCode(String tableName);
 
     /**
-     * 生成代码（自定义路径）
+     * Generate code (custom path)
      *
-     * @param tableName 表名称
-     * @return 数据
+     * @param tableName table name
+     * @return data
      */
     public void generatorCode(String tableName);
 
     /**
-     * 同步数据库
+     * Sync database
      *
-     * @param tableName 表名称
+     * @param tableName table name
      */
     public void synchDb(String tableName);
 
     /**
-     * 批量生成代码（下载方式）
+     * Generate codes in batches (download method)
      *
-     * @param tableNames 表数组
-     * @return 数据
+     * @param tableNames table array
+     * @return data
      */
     public byte[] downloadCode(String[] tableNames);
 
     /**
-     * 修改保存参数校验
+     * Modify and save parameter verification
      *
-     * @param genTable 业务信息
+     * @param genTable business information
      */
     public void validateEdit(GenTable genTable);
 
     /**
-     * 批量生成字典枚举类（下载方式）
+     * Batch generation of dictionary enumeration classes (download method)
      *
-     * @param dictTypesList 字典类型数组
-     * @return 数据
+     * @param dictTypesList dictionary type array
+     * @return data
      */
     byte[] downloadEnums(List<SysDictType> dictTypesList);
 }

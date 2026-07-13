@@ -19,122 +19,122 @@
 package tech.qiantong.qdata.common.constant;
 
 /**
- * 代码生成通用常量
+ * Code generation common constants
  *
  * @author qdata
  */
 public class GenConstants
 {
-    /** 单表（增删改查） */
+    /** Single table (add, delete, modify, query) */
     public static final String TPL_CRUD = "crud";
 
-    /** 树表（增删改查） */
+    /** Tree table (add, delete, modify, query) */
     public static final String TPL_TREE = "tree";
 
-    /** 主子表（增删改查） */
+    /** Master and child tables (add, delete, modify and query) */
     public static final String TPL_SUB = "sub";
 
-    /** 树编码字段 */
+    /** Tree encoding field */
     public static final String TREE_CODE = "treeCode";
 
-    /** 树父编码字段 */
+    /** Tree parent encoding field */
     public static final String TREE_PARENT_CODE = "treeParentCode";
 
-    /** 树名称字段 */
+    /** Tree name field */
     public static final String TREE_NAME = "treeName";
 
-    /** 上级菜单ID字段 */
+    /** Upper level menu ID field */
     public static final String PARENT_MENU_ID = "parentMenuId";
 
-    /** 上级菜单名称字段 */
+    /** Upper level menu name field */
     public static final String PARENT_MENU_NAME = "parentMenuName";
 
-    /** 数据库字符串类型 */
+    /** Database string type */
     public static final String[] COLUMNTYPE_STR = { "char", "varchar", "nvarchar", "varchar2" };
 
-    /** 数据库文本类型 */
+    /** Database text type */
     public static final String[] COLUMNTYPE_TEXT = { "tinytext", "text", "mediumtext", "longtext" };
 
-    /** 数据库时间类型 */
+    /** Database time type */
     public static final String[] COLUMNTYPE_TIME = { "datetime", "time", "date", "timestamp" };
 
-    /** 数据库数字类型 */
+    /** Database numeric type */
     public static final String[] COLUMNTYPE_NUMBER = { "tinyint", "smallint", "mediumint", "int", "number", "integer",
             "bit", "bigint", "float", "double", "decimal", "int8", "int4" };
 
-    /** 页面不需要编辑字段 */
+    /** The page does not require editing fields */
     public static final String[] COLUMNNAME_NOT_EDIT = { "id", "create_by", "create_time", "del_flag", "valid_flag",
             "creator_id", "update_by", "updater_id", "update_time" };
 
-    /** 页面不需要显示的列表字段 */
+    /** List fields that do not need to be displayed on the page */
     public static final String[] COLUMNNAME_NOT_LIST ={"del_flag", "valid_flag", "creator_id", "update_by", "updater_id", "update_time" };
 
-    /** 页面不需要查询字段 */
+    /** The page does not require query fields */
     public static final String[] COLUMNNAME_NOT_QUERY = { "id", "create_by", "del_flag", "valid_flag", "creator_id",
             "update_by", "updater_id", "update_time" , "remark" };
 
-    /** Entity基类字段 */
+    /** Entity base class fields */
     public static final String[] BASE_ENTITY = { "createBy", "createTime", "updateBy", "updateTime", "remark", "searchValue",
             "creatorId", "creatorId", "updaterId", "remark", "params" };
 
-    /** Tree基类字段 */
+    /** Tree base class field */
     //public static final String[] TREE_ENTITY = { "parentName", "parentId", "orderNum", "ancestors", "children" };
     public static final String[] TREE_ENTITY = { "parentName", "orderNum", "ancestors", "children" };
 
-    /** 文本框 */
+    /** text box */
     public static final String HTML_INPUT = "input";
 
-    /** 文本域 */
+    /** Text field */
     public static final String HTML_TEXTAREA = "textarea";
 
-    /** 下拉框 */
+    /** Drop-down box */
     public static final String HTML_SELECT = "select";
 
-    /** 单选框 */
+    /** Radio button */
     public static final String HTML_RADIO = "radio";
 
-    /** 复选框 */
+    /** Checkbox */
     public static final String HTML_CHECKBOX = "checkbox";
 
-    /** 日期控件 */
+    /** Date control */
     public static final String HTML_DATETIME = "datetime";
 
-    /** 图片上传控件 */
+    /** Image upload control */
     public static final String HTML_IMAGE_UPLOAD = "imageUpload";
 
-    /** 文件上传控件 */
+    /** File upload control */
     public static final String HTML_FILE_UPLOAD = "fileUpload";
 
-    /** 富文本控件 */
+    /** Rich text control */
     public static final String HTML_EDITOR = "editor";
 
-    /** 字符串类型 */
+    /** String type */
     public static final String TYPE_STRING = "String";
 
-    /** 整型 */
+    /** Integer type */
     public static final String TYPE_INTEGER = "Integer";
 
-    /** 长整型 */
+    /** Long integer type */
     public static final String TYPE_LONG = "Long";
 
-    /** 浮点型 */
+    /** Floating point type */
     public static final String TYPE_DOUBLE = "Double";
 
-    /** 高精度计算类型 */
+    /** High-precision calculation type */
     public static final String TYPE_BIGDECIMAL = "BigDecimal";
 
-    /** 时间类型 */
+    /** Time type */
     public static final String TYPE_DATE = "Date";
 
-    /** 模糊查询 */
+    /** Fuzzy query */
     public static final String QUERY_LIKE = "LIKE";
 
-    /** 相等查询 */
+    /** Equality query */
     public static final String QUERY_EQ = "EQ";
 
-    /** 相等范围 */
+    /** Equality range */
     public static final String QUERY_BETWEEN = "BETWEEN";
 
-    /** 需要 */
+    /** required */
     public static final String REQUIRE = "1";
 }

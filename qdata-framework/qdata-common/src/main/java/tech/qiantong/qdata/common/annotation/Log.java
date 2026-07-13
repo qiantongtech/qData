@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.enums.OperatorType;
 import java.lang.annotation.*;
 
 /**
- * 自定义操作日志记录注解
+ * Custom operation logging annotations
  *
  * @author qdata
  *
@@ -35,32 +35,32 @@ import java.lang.annotation.*;
 public @interface Log
 {
     /**
-     * 模块
+     * Module
      */
     public String title() default "";
 
     /**
-     * 功能
+     * Function
      */
     public BusinessType businessType() default BusinessType.OTHER;
 
     /**
-     * 操作人类别
+     * Operator category
      */
     public OperatorType operatorType() default OperatorType.MANAGE;
 
     /**
-     * 是否保存请求的参数
+     * Whether to save requested parameters
      */
     public boolean isSaveRequestData() default true;
 
     /**
-     * 是否保存响应的参数
+     * Whether to save response parameters
      */
     public boolean isSaveResponseData() default true;
 
     /**
-     * 排除指定的请求参数
+     * Exclude specified request parameters
      */
     public String[] excludeParamNames() default {};
 }

@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.domain.McDomainDO;
 import java.util.List;
 
 /**
- * 业务域 Convert
+ * Business domain Convert
  *
  * @author qdata
  * @date 2026-02-12
@@ -20,29 +20,29 @@ public interface McDomainConvert {
     McDomainConvert INSTANCE = Mappers.getMapper(McDomainConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcDomainPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcDomainPageReqVO request parameters
      * @return McDomainDO
      */
      McDomainDO convertToDO(McDomainPageReqVO mcDomainPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcDomainSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcDomainSaveReqVO Save request parameters
      * @return McDomainDO
      */
      McDomainDO convertToDO(McDomainSaveReqVO mcDomainSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcDomainDO 实体对象
+     * DO to RespVO
+     * @param mcDomainDO entity object
      * @return McDomainRespVO
      */
      McDomainRespVO convertToRespVO(McDomainDO mcDomainDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcDomainDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcDomainDOList entity object list
      * @return List<McDomainRespVO>
      */
      List<McDomainRespVO> convertToRespVOList(List<McDomainDO> mcDomainDOList);

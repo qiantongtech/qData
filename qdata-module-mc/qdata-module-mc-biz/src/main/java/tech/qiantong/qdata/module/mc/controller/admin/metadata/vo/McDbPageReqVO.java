@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据库 Request VO 对象 MC_DB
+ * Database Request VO object MC_DB
  *
  * @author qdata
  * @date 2026-02-11
@@ -114,13 +114,13 @@ public class McDbPageReqVO extends PageParam {
     private String techLeaderName;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
     /**
-     * 多选数据源，查询库
+     * Multiple selection of data sources, query library
      */
     private List<Long> datasourceIdList;
 

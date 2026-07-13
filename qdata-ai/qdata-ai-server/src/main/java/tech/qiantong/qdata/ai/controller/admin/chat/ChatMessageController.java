@@ -47,7 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ai聊天消息Controller
+ * ai chat message controller
  *
  * @author qknow
  * @date 2025-02-17
@@ -71,7 +71,7 @@ public class ChatMessageController extends BaseController {
     public Flux<CommonResult<ChatMessageSendRespVO>> sendChatMessageStream(@RequestBody ChatMessageSendReqVO sendReqVO) {
         return chatMessageService.sendChatMessageStream(sendReqVO, 1l)
                 .map(CommonResult::success)
-                // 错误转换
+                // Error conversion
                 .onErrorResume(e -> Flux.just(CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), e.getMessage())));
     }
 

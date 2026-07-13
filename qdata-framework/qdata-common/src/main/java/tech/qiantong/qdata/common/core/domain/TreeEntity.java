@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Tree基类
+ * Tree base class
  *
  * @author qdata
  */
@@ -30,19 +30,19 @@ public class TreeEntity extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 父菜单名称 */
+    /** Parent menu name */
     private String parentName;
 
-    /** 父菜单ID */
+    /** Parent menu ID */
     private Long parentId;
 
-    /** 显示顺序 */
+    /** Display order */
     private Integer orderNum;
 
-    /** 祖级列表 */
+    /** Ancestor list */
     private String ancestors;
 
-    /** 子部门 */
+    /** Sub-department */
     private List<?> children = new ArrayList<>();
 
     public String getParentName()

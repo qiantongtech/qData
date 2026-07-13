@@ -19,18 +19,18 @@
 package tech.qiantong.qdata.common.database.constants.fieldtypes;
 
 /**
- * MySQL 数据库支持的字段类型枚举
+ * Enumeration of field types supported by MySQL database
  */
 public enum MysqlFieldType {
     VARCHAR("VARCHAR"),
     CHAR("CHAR"),
-    // MySQL 一般采用 INT/DECIMAL 来代替 NUMBER
+    // MySQL generally uses INT/DECIMAL instead of NUMBER
     INT("INT"),
     DECIMAL("DECIMAL"),
     DATE("DATE"),
     DATETIME("DATETIME"),
     TIMESTAMP("TIMESTAMP"),
-    // 使用 TEXT 表示大文本类型
+    // Use TEXT for large text types
     TEXT("TEXT");
 
     private final String type;

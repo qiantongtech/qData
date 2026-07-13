@@ -34,7 +34,7 @@ public interface QualityTaskExecutorService {
     public ValidationSqlResult generateValidationErrorDataSql(QualityRuleQueryReqDTO queryReqDTO);
 
     /**
-     * 错误数据分页查询
+     * Error data paging query
      *
      * @param of
      * @return

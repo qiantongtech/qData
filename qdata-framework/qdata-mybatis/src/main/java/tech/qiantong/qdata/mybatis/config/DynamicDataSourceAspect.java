@@ -25,7 +25,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 /**
- * 数据源切换切面
+ * Data source switching aspect
  * @author Ming
  */
 @Slf4j

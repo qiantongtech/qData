@@ -180,7 +180,7 @@
       @pagination="getList"
     />
 
-    <!-- {{ td('.pleaseEnter') + '内容' }} -->
+    <!-- {{ td('.pleaseEnter') + 'content' }} -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
@@ -422,7 +422,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询${functionName}列表 */
+/** Query ${functionName} list */
 function getList() {
   loading.value = true;
 #foreach ($column in $columns)
@@ -447,13 +447,13 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// Form reset
 function reset() {
   form.value = {
 #foreach ($column in $columns)
@@ -470,13 +470,13 @@ function reset() {
   proxy.resetForm("${businessName}Ref");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -488,21 +488,21 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.${pkColumn.javaField});
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('${moduleName}.title.add');
 }
 
-/** 修改按钮操作 */
+/** Modify button operation */
 function handleUpdate(row) {
   reset();
   const _${pkColumn.javaField} = row.${pkColumn.javaField} || ids.value
@@ -521,7 +521,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
   proxy.#[[$]]#refs["${businessName}Ref"].validate(valid => {
     if (valid) {
@@ -550,7 +550,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   const _${pkColumn.javaField}s = row.${pkColumn.javaField} || ids.value;
   proxy.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + _${pkColumn.javaField}s + '"的数据项？').then(function() {
@@ -562,12 +562,12 @@ function handleDelete(row) {
 }
 
 #if($table.sub)
-/** ${subTable.functionName}序号 */
+/** ${subTable.functionName} serial number */
 function row${subClassName}Index({ row, rowIndex }) {
   row.index = rowIndex + 1;
 }
 
-/** ${subTable.functionName}添加按钮操作 */
+/** ${subTable.functionName}Add button operation */
 function handleAdd${subClassName}() {
   let obj = {};
 #foreach($column in $subTable.columns)
@@ -579,7 +579,7 @@ function handleAdd${subClassName}() {
   ${subclassName}List.value.push(obj);
 }
 
-/** ${subTable.functionName}删除按钮操作 */
+/** ${subTable.functionName} delete button operation */
 function handleDelete${subClassName}() {
   if (checked${subClassName}.value.length == 0) {
     proxy.#[[$modal]]#.msgError("请先选择要删除的${subTable.functionName}数据");
@@ -592,13 +592,13 @@ function handleDelete${subClassName}() {
   }
 }
 
-/** 复选框选中数据 */
+/** Check box selected data */
 function handle${subClassName}SelectionChange(selection) {
   checked${subClassName}.value = selection.map(item => item.index)
 }
 
 #end
-/** 导出按钮操作 */
+/** Export button operation */
 function handleExport() {
   proxy.download('${moduleName}/${businessName}/export', {
     ...queryParams.value

@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.file;
 
 /**
- * 文件名大小限制异常类
+ * File name size limit exception class
  *
  * @author qdata
  */

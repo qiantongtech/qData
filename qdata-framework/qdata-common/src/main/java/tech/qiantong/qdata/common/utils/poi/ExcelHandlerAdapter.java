@@ -22,21 +22,21 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
- * Excel数据格式处理适配器
+ * Excel data format processing adapter
  *
  * @author qdata
  */
 public interface ExcelHandlerAdapter
 {
     /**
-     * 格式化
+     * Format
      *
-     * @param value 单元格数据值
-     * @param args excel注解args参数组
-     * @param cell 单元格对象
-     * @param wb 工作簿对象
+     * @param value cell data value
+     * @param args excel annotation args parameter group
+     * @param cell cell object
+     * @param wb workbook object
      *
-     * @return 处理后的值
+     * @return processed value
      */
     Object format(Object value, String[] args, Cell cell, Workbook wb);
 }

@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:转换组件注册
+ * Purpose: Conversion component registration
  * </p>
  *
  * @author: FXB

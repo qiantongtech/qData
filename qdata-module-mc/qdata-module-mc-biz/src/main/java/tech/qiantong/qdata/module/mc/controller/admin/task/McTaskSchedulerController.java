@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据集成调度信息Controller
+ * Data Integration Scheduling Information Controller
  *
  * @author qdata
  * @date 2025-12-16

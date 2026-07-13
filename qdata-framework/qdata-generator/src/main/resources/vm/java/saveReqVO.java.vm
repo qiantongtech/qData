@@ -34,7 +34,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 #end
 
 /**
- * ${functionName} 创建/修改 Request VO ${tableName}
+ * ${functionName} Create/Modify Request VO ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -94,7 +94,7 @@ public class ${ClassName}SaveReqVO extends BaseEntity {
 #end
 #end
 #if($table.sub)
-    /** $table.subTable.functionName信息 */
+    /** $table.subTable.functionName information */
     private List<${subClassName}> ${subclassName}List;
 
 #end

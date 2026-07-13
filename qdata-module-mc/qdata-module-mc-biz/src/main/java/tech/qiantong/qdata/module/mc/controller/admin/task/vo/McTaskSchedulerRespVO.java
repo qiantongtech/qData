@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 Response VO 对象 MC_TASK_SCHEDULER
+ * Data integration scheduling information Response VO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16

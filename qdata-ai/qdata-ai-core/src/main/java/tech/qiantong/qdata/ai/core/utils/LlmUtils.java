@@ -29,32 +29,32 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 /**
- * LLM调用工具类
- * 提供标准化的LLM调用接口，支持流式和非流式两种模式
- * 统一处理异常和线程调度
+ * LLM calling tool class
+ * Provides a standardized LLM calling interface, supporting both streaming and non-streaming modes
+ * Unified handling of exceptions and thread scheduling
  */
 @Slf4j
 public class LlmUtils {
 
-    // ==================== 流式调用方法 ====================
+    // ==================== Streaming calling method ====================
 
     /**
-     * 执行LLM流式调用
+     * Perform LLM streaming calls
      *
-     * @param chatModel LLM模型客户端
-     * @param messages 消息列表
-     * @return ChatResponse的Flux流
+     * @param chatModel LLM model client
+     * @param messages message list
+     * @return Flux stream of ChatResponse
      */
     public static Flux<ChatResponse> streamLlmResponse(ChatModel chatModel, List<Message> messages) {
         return streamLlmResponse(chatModel, new Prompt(messages));
     }
 
     /**
-     * 执行LLM流式调用（核心方法）
+     * Execute LLM streaming call (core method)
      *
-     * @param chatModel LLM模型客户端
-     * @param prompt 提示词对象
-     * @return ChatResponse的Flux流
+     * @param chatModel LLM model client
+     * @param prompt prompt word object
+     * @return Flux stream of ChatResponse
      */
     public static Flux<ChatResponse> streamLlmResponse(ChatModel chatModel, Prompt prompt) {
         return chatModel.stream(prompt)
@@ -74,25 +74,25 @@ public class LlmUtils {
                 });
     }
 
-    // ==================== 非流式（直接）调用方法 ====================
+    // ==================== Non-streaming (direct) calling method ====================
 
     /**
-     * 执行LLM非流式调用（直接输出）
+     * Perform LLM non-streaming calls (direct output)
      *
-     * @param chatModel LLM模型客户端
-     * @param messages 消息列表
-     * @return 包含ChatResponse的Mono
+     * @param chatModel LLM model client
+     * @param messages message list
+     * @return Mono containing ChatResponse
      */
     public static ChatResponse callLlm(ChatModel chatModel, List<Message> messages) {
         return callLlm(chatModel, new Prompt(messages));
     }
 
     /**
-     * 执行LLM非流式调用（直接输出）- 核心方法
+     * Execute LLM non-streaming call (direct output) - core method
      *
-     * @param chatModel LLM模型客户端
-     * @param prompt 提示词对象
-     * @return 包含ChatResponse的Mono
+     * @param chatModel LLM model client
+     * @param prompt prompt word object
+     * @return Mono containing ChatResponse
      */
     public static ChatResponse callLlm(ChatModel chatModel, Prompt prompt) {
         try {

@@ -45,7 +45,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- SpringBoot的依赖配置-->
+            <!-- SpringBoot dependency configuration-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -54,7 +54,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- 使用 Jakarta 版本 (Tomcat 10+) -->
+            <!-- Using Jakarta version (Tomcat 10+) -->
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-jasper</artifactId>
@@ -124,7 +124,7 @@
                     <flattenMode>defaults</flattenMode>
                 </configuration>
                 <executions>
-                    <!-- 在编译前执行 flatten -->
+                    <!-- Execute flatten before compilation -->
                     <execution>
                         <id>flatten</id>
                         <phase>process-resources</phase>
@@ -132,7 +132,7 @@
                             <goal>flatten</goal>
                         </goals>
                     </execution>
-                    <!-- 在 clean 时清理生成的文件 -->
+                    <!-- Clean generated files during clean -->
                     <execution>
                         <id>flatten.clean</id>
                         <phase>clean</phase>

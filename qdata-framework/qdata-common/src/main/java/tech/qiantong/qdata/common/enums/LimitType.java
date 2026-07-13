@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 限流类型
+ * Current limiting type
  *
  * @author qdata
  */
@@ -27,12 +27,12 @@ package tech.qiantong.qdata.common.enums;
 public enum LimitType
 {
     /**
-     * 默认策略全局限流
+     * The default policy restricts all traffic
      */
     DEFAULT,
 
     /**
-     * 根据请求者IP进行限流
+     * Limit traffic based on requester IP
      */
     IP
 }

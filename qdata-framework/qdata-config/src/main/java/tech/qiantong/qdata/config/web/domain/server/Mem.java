@@ -21,24 +21,24 @@ package tech.qiantong.qdata.config.web.domain.server;
 import tech.qiantong.qdata.common.utils.Arith;
 
 /**
- * 內存相关信息
+ * Memory related information
  *
  * @author qdata
  */
 public class Mem
 {
     /**
-     * 内存总量
+     * Total memory
      */
     private double total;
 
     /**
-     * 已用内存
+     * Used memory
      */
     private double used;
 
     /**
-     * 剩余内存
+     * Remaining memory
      */
     private double free;
 

@@ -22,14 +22,14 @@ import tech.qiantong.qdata.ai.core.vo.AiChatConversationSaveRespVO;
 import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatConversationSaveReqVO;
 
 /**
- * 会话服务
+ * Session service
  *
  * @author fabian
  */
 public interface IChatConversationService {
 
     /**
-     * 创建会话
+     * Create session
      *
      * @param reqVO
      * @return

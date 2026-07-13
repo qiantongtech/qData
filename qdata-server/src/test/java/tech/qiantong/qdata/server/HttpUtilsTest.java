@@ -33,7 +33,7 @@ import java.util.Map;
 
 
 /**
- * HttpUtils 测试
+ * HttpUtils test
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = QDataApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

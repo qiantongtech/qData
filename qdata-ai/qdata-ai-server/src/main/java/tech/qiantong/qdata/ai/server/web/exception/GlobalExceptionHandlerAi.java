@@ -40,8 +40,8 @@ import tech.qiantong.qdata.common.utils.html.EscapeUtil;
 
 
 /**
- * 全局异常处理器（AI 模块）
- * 系统异常和业务异常统一返回 i18n 消息（根据请求语言 zh_CN / en_US / ja_JP 返回对应文案）
+ * Global exception handler (AI module)
+ * System exceptions and business exceptions uniformly return i18n messages (corresponding copy is returned according to the request language zh_CN / en_US / ja_JP)
  *
  * @author qdata
  */
@@ -51,7 +51,7 @@ public class GlobalExceptionHandlerAi
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandlerAi.class);
 
     /**
-     * 权限校验异常
+     * Permission verification exception
      */
     @ExceptionHandler(AccessDeniedException.class)
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
@@ -63,7 +63,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 请求方式不支持
+     * The request method is not supported
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public AjaxResult handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
@@ -76,8 +76,8 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 业务异常
-     * 优先使用 ServiceException 中设置的 i18nCode 获取国际化消息
+     * Business abnormality
+     * Prioritize using i18nCode set in ServiceException to obtain internationalized messages
      */
     @ExceptionHandler(ServiceException.class)
     public AjaxResult handleServiceException(ServiceException e, HttpServletRequest request)
@@ -89,7 +89,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 请求路径中缺少必需的路径变量
+     * A required path variable is missing from the request path
      */
     @ExceptionHandler(MissingPathVariableException.class)
     public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
@@ -102,7 +102,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 请求参数类型不匹配
+     * Request parameter type mismatch
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public AjaxResult handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request)
@@ -120,7 +120,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 拦截未知的运行时异常
+     * Intercept unknown runtime exceptions
      */
     @ExceptionHandler(RuntimeException.class)
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
@@ -132,7 +132,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 系统异常
+     * System exception
      */
     @ExceptionHandler(Exception.class)
     public AjaxResult handleException(Exception e, HttpServletRequest request)
@@ -144,7 +144,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 自定义验证异常
+     * Custom validation exception
      */
     @ExceptionHandler(BindException.class)
     public AjaxResult handleBindException(BindException e)
@@ -155,7 +155,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 自定义验证异常
+     * Custom validation exception
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
@@ -166,7 +166,7 @@ public class GlobalExceptionHandlerAi
     }
 
     /**
-     * 演示模式异常
+     * Demo mode exception
      */
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)

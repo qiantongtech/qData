@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 元数据字段信息 - 日志Mapper接口
+ * Metadata field information - Log Mapper interface
  *
  * @author qdata
  * @date 2026-03-10
@@ -19,10 +19,10 @@ import java.util.Set;
 public interface McColumnLogMapper extends BaseMapperX<McColumnLogDO> {
 
     default PageResult<McColumnLogDO> selectPage(McColumnLogPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<McColumnLogDO>()
                 .eqIfPresent(McColumnLogDO::getDataType, reqVO.getDataType())
                 .eqIfPresent(McColumnLogDO::getTaskId, reqVO.getTaskId())
@@ -50,9 +50,9 @@ public interface McColumnLogMapper extends BaseMapperX<McColumnLogDO> {
                 .eqIfPresent(McColumnLogDO::getUpdateMsg, reqVO.getUpdateMsg())
                 .eqIfPresent(McColumnLogDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(McColumnLogDO::getDescription, reqVO.getDescription())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(McColumnLogDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

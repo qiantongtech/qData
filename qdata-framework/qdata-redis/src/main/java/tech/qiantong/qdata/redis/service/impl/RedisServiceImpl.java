@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis接口
+ * Redis interface
  *
  * @author: tzh
- * @date: 2018年6月3日 下午4:41:13
+ * @date: June 3, 2018 4:41:13 pm
  */
 @Service
 public class RedisServiceImpl implements IRedisService {

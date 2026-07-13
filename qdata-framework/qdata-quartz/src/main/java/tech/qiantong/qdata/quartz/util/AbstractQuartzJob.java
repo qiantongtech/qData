@@ -37,7 +37,7 @@ import tech.qiantong.qdata.quartz.service.ISysJobLogService;
 import java.util.Date;
 
 /**
- * 抽象quartz调用
+ * Abstract quartz call
  *
  * @author qdata
  */
@@ -46,7 +46,7 @@ public abstract class AbstractQuartzJob implements Job
     private static final Logger log = LoggerFactory.getLogger(AbstractQuartzJob.class);
 
     /**
-     * 线程本地变量
+     * Thread local variables
      */
     private static ThreadLocal<Date> threadLocal = new ThreadLocal<>();
 
@@ -72,10 +72,10 @@ public abstract class AbstractQuartzJob implements Job
     }
 
     /**
-     * 执行前
+     * Before execution
      *
-     * @param context 工作执行上下文对象
-     * @param sysJob 系统计划任务
+     * @param context work execution context object
+     * @param sysJob system scheduled task
      */
     protected void before(JobExecutionContext context, SysJob sysJob)
     {
@@ -83,10 +83,10 @@ public abstract class AbstractQuartzJob implements Job
     }
 
     /**
-     * 执行后
+     * After execution
      *
-     * @param context 工作执行上下文对象
-     * @param sysJob 系统计划任务
+     * @param context work execution context object
+     * @param sysJob system scheduled task
      */
     protected void after(JobExecutionContext context, SysJob sysJob, Exception e)
     {
@@ -112,16 +112,16 @@ public abstract class AbstractQuartzJob implements Job
             sysJobLog.setStatus(Constants.SUCCESS);
         }
 
-        // 写入数据库当中
+        // Write to database
         SpringUtils.getBean(ISysJobLogService.class).addJobLog(sysJobLog);
     }
 
     /**
-     * 执行方法，由子类重载
+     * Execution method, overloaded by subclasses
      *
-     * @param context 工作执行上下文对象
-     * @param sysJob 系统计划任务
-     * @throws Exception 执行过程中的异常
+     * @param context work execution context object
+     * @param sysJob system scheduled task
+     * @throws Exception Exceptions during execution
      */
     protected abstract void doExecute(JobExecutionContext context, SysJob sysJob) throws Exception;
 }

@@ -40,36 +40,36 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 生成自签名CA根证书并保存私钥为PEM文件
+ * Generate a self-signed CA root certificate and save the private key as a PEM file
  * @author qdata
  */
 public class CaGenerateRootCertificate {
 
     /**
-     * 根据证书信息生成主体根证书
-     * @param dnNameStr 证书信息
-     * @return List<MultipartFile> 第一个是证书，第二个是私钥
+     * Generate subject root certificate based on certificate information
+     * @param dnNameStr certificate information
+     * @return List<MultipartFile> The first one is the certificate, the second one is the private key
      */
     public static List<MultipartFile> generateRootCertificate(String dnNameStr) {
         List<MultipartFile> files = new ArrayList<>();
         try {
-            // 生成RSA密钥对
+            // Generate RSA key pair
             KeyPair keyPair = SecureUtil.generateKeyPair("RSA", 2048);
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
-            // 设定证书的有效期
+            // Set the validity period of the certificate
             long currentTime = System.currentTimeMillis();
             Date startDate = new Date(currentTime);
-            // 有效期30年
+            // Valid for 30 years
             Date endDate = new Date(currentTime + 365L * 30L * 24L * 60L * 60L * 1000L);
 
-            // 设定证书信息
+            // Set certificate information
             X500Principal dnName = new X500Principal(dnNameStr);
-            // 使用当前时间作为序列号
+            // Use current time as sequence number
             BigInteger certSerialNumber = new BigInteger(Long.toString(currentTime));
 
-            // 创建 X.509 证书对象
+            // Create an X.509 certificate object
             X509CertInfo certInfo = new X509CertInfo();
             certInfo.set(X509CertInfo.VERSION, new CertificateVersion(CertificateVersion.V3));
             certInfo.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(certSerialNumber));
@@ -79,11 +79,11 @@ public class CaGenerateRootCertificate {
             certInfo.set(X509CertInfo.KEY, new CertificateX509Key(publicKey));
             certInfo.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(AlgorithmId.get("SHA256withRSA")));
 
-            // 创建证书
+            // Create certificate
             X509CertImpl certificate = new X509CertImpl(certInfo);
             certificate.sign(privateKey, "SHA256withRSA");
 
-            // 保存证书为 .cer 文件
+            // Save the certificate as a.cer file
             String certFilePath = "rootCA.cer";
             ByteArrayOutputStream certOutputStream = new ByteArrayOutputStream();
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(certOutputStream, StandardCharsets.US_ASCII))) {
@@ -93,7 +93,7 @@ public class CaGenerateRootCertificate {
             }
             Files.write(Paths.get(certFilePath), certOutputStream.toByteArray());
 
-            // 保存私钥为 PEM 文件
+            // Save private key as PEM file
             String privateKeyFilePath = "privateKey.pem";
             ByteArrayOutputStream pemOutputStream = new ByteArrayOutputStream();
             try (PemWriter pemWriter = new PemWriter(new OutputStreamWriter(pemOutputStream, StandardCharsets.US_ASCII))) {
@@ -101,11 +101,11 @@ public class CaGenerateRootCertificate {
                 pemWriter.writeObject(pemObject);
             }
 
-            // 将生成的文件转换为 MultipartFile
+            // Convert the generated file to MultipartFile
             files.add(convertFileToMultipartFile(certFilePath, "rootCA.cer"));
             files.add(new MockMultipartFile(privateKeyFilePath, privateKeyFilePath, "application/x-pem-file", pemOutputStream.toByteArray()));
 
-            // 删除原始文件
+            // Delete original files
             deleteFile(certFilePath);
             deleteFile(privateKeyFilePath);
 
@@ -136,11 +136,11 @@ public class CaGenerateRootCertificate {
     }
 
     public static void main(String[] args) {
-        // 测试生成自签名证书
+        // Test generated self-signed certificate
         String dnNameStr = "CN=YcgtRootCA, OU=IT, O=盐城市国有资产投资集团有限公司, L=Yancheng, ST=Yancheng, C=CN";
         List<MultipartFile> files = generateRootCertificate(dnNameStr);
 
-        // 打印生成的文件名称
+        // Print the generated file name
         for (MultipartFile file : files) {
             System.out.println("生成的文件: " + file.getOriginalFilename());
         }

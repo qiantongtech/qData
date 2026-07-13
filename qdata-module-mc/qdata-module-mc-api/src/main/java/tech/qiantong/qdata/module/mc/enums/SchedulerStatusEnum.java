@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 调度器状态枚举
+ * Scheduler status enum
  *
  * @author qdata
  * @date 2026-05-11
@@ -32,30 +32,30 @@ import lombok.Getter;
 public enum SchedulerStatusEnum {
 
     /**
-     * 禁用/下线状态
+     * Disabled/offline status
      */
     DISABLED("0", "禁用"),
 
     /**
-     * 启用/上线状态
+     * Enabled/online status
      */
     ENABLED("1", "启用");
 
     /**
-     * 状态值
+     * Status value
      */
     private final String value;
 
     /**
-     * 状态名称
+     * Status name
      */
     private final String name;
 
     /**
-     * 根据状态值获取枚举
+     * Get enum based on status value
      *
-     * @param value 状态值
-     * @return 枚举对象
+     * @param value status value
+     * @return enumeration object
      */
     public static SchedulerStatusEnum getByValue(String value) {
         if (value == null) {
@@ -70,20 +70,20 @@ public enum SchedulerStatusEnum {
     }
 
     /**
-     * 判断是否为禁用状态
+     * Determine whether it is disabled
      *
-     * @param value 状态值
-     * @return 是否为禁用
+     * @param value status value
+     * @return whether it is disabled
      */
     public static boolean isDisabled(String value) {
         return DISABLED.getValue().equals(value);
     }
 
     /**
-     * 判断是否为启用状态
+     * Determine whether it is enabled
      *
-     * @param value 状态值
-     * @return 是否为启用
+     * @param value status value
+     * @return whether it is enabled
      */
     public static boolean isEnabled(String value) {
         return ENABLED.getValue().equals(value);

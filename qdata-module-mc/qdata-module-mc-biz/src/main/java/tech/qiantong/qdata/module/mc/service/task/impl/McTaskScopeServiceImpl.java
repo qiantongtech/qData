@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 采集范围Service业务层处理
+ * Collection scope Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -52,16 +52,16 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
 
     @Override
     public int updateMcTaskScope(McTaskScopeSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新采集范围
+        // Update collection range
         McTaskScopeDO updateObj = BeanUtils.toBean(updateReqVO, McTaskScopeDO.class);
         return mcTaskScopeMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskScope(Collection<Long> idList) {
-        // 批量删除采集范围
+        // Delete collection ranges in batches
         return mcTaskScopeMapper.deleteBatchIds(idList);
     }
 
@@ -82,19 +82,19 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                 .collect(Collectors.toMap(
                         McTaskScopeDO::getId,
                         mcTaskScopeDO -> mcTaskScopeDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入采集范围数据
+     * Import collection range data
      *
-     * @param importExcelList 采集范围数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList collection range data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTaskScope(List<McTaskScopeRespVO> importExcelList, boolean isUpdateSupport, String operName) {

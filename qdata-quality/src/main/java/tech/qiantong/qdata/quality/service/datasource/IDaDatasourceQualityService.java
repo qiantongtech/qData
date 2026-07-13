@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据源Service接口
+ * Data source Service interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -42,10 +42,10 @@ import java.util.Map;
 public interface IDaDatasourceQualityService extends IService<DaDatasourceDO> {
 
     /**
-     * 获得数据源分页列表
+     * Get a paginated list of data sources
      *
-     * @param pageReqVO 分页请求
-     * @return 数据源分页列表
+     * @param pageReqVO paging request
+     * @return data source paginated list
      */
     PageResult<DaDatasourceDO> getDaDatasourcePage(DaDatasourcePageReqVO pageReqVO);
 
@@ -54,7 +54,7 @@ public interface IDaDatasourceQualityService extends IService<DaDatasourceDO> {
     DaDatasourceRespDTO getDatasourceById(Long id);
 
     /**
-     * 查询数据资产的数据源连接信息
+     * Query the data source connection information of data assets
      *
      * @param daAsset
      * @return
@@ -63,53 +63,53 @@ public interface IDaDatasourceQualityService extends IService<DaDatasourceDO> {
 
 
     /**
-     * 创建数据源
+     * Create data source
      *
-     * @param createReqVO 数据源信息
-     * @return 数据源编号
+     * @param createReqVO data source information
+     * @return data source number
      */
     Long createDaDatasource(DaDatasourceSaveReqVO createReqVO);
 
     /**
-     * 删除数据源
+     * Delete data source
      *
-     * @param idList 数据源编号
+     * @param idList data source number
      */
     int removeDaDatasource(Collection<Long> idList);
 
 
 
     /**
-     * 获得数据源详情
+     * Get data source details
      *
-     * @param id 数据源编号
-     * @return 数据源
+     * @param id data source number
+     * @return data source
      */
     DaDatasourceDO getDaDatasourceById(Long id);
     DaDatasourceRespVO getDaDatasourceByIdSimple(Long id);
 
     /**
-     * 获得全部数据源列表
+     * Get a list of all data sources
      *
-     * @return 数据源列表
+     * @return data source list
      */
     List<DaDatasourceDO> getDaDatasourceList();
 
     /**
-     * 获得全部数据源 Map
+     * Get all data sources Map
      *
-     * @return 数据源 Map
+     * @return data source Map
      */
     Map<Long, DaDatasourceDO> getDaDatasourceMap();
 
 
     /**
-     * 导入数据源数据
+     * Import data source data
      *
-     * @param importExcelList 数据源数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data source data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -117,19 +117,19 @@ public interface IDaDatasourceQualityService extends IService<DaDatasourceDO> {
     AjaxResult clientsTest(Long id);
 
     /**
-     * 获取数据库表信息
+     * Get database table information
      *
-     * @param id 数据源id
+     * @param id data source id
      * @return
      */
     List<DbTable> getDbTables(Long id);
 
     /**
-     * 获取数据库
-     * 表的字段信息
+     * Get database
+     * Table field information
      *
-     * @param id        数据源id
-     * @param tableName 表名称
+     * @param id data source id
+     * @param tableName table name
      * @return
      */
     List<DbColumn> getDbTableColumns(Long id, String tableName);

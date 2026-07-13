@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 评测规则结果Mapper接口
+ * Evaluation rule result Mapper interface
  *
  * @author qdata
  * @date 2025-07-21
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DppEvaluateLogMapper extends BaseMapperX<DppEvaluateLogDO> {
 
     default PageResult<DppEvaluateLogDO> selectPage(DppEvaluateLogPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppEvaluateLogDO>()
                 .likeIfPresent(DppEvaluateLogDO::getTableName, reqVO.getTableName())
                 .likeIfPresent(DppEvaluateLogDO::getColumnName, reqVO.getColumnName())
@@ -54,9 +54,9 @@ public interface DppEvaluateLogMapper extends BaseMapperX<DppEvaluateLogDO> {
                 .eqIfPresent(DppEvaluateLogDO::getProblemTotal, reqVO.getProblemTotal())
                 .eqIfPresent(DppEvaluateLogDO::getCheckDate, reqVO.getCheckDate())
                 .eqIfPresent(DppEvaluateLogDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(DppEvaluateLogDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 
 			<choose>
-				<!-- 如果数据库是 kingBase -->
+				<!-- If the database is kingBase -->
 				<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 					<if test="jobName != null and jobName != ''">
 						AND job_name LIKE '%' || #{jobName} || '%'
@@ -57,15 +57,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<if test="invokeTarget != null and invokeTarget != ''">
 						AND invoke_target LIKE '%' || #{invokeTarget} || '%'
 					</if>
-					<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+					<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 						AND create_time &gt;= #{params.beginTime}
 					</if>
-					<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+					<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 						AND create_time &lt;= #{params.endTime}
 					</if>
 				</when>
 
-				<!-- 如果是其他数据库（如 MySQL、 DM） -->
+				<!-- If it is other databases (such as MySQL, DM) -->
 				<otherwise>
 					<if test="jobName != null and jobName != ''">
 						AND job_name like concat('%', #{jobName}, '%')
@@ -73,10 +73,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<if test="invokeTarget != null and invokeTarget != ''">
 						AND invoke_target like concat('%', #{invokeTarget}, '%')
 					</if>
-					<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+					<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 						and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 					</if>
-					<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+					<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 						and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 					</if>
 				</otherwise>

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 方言抽象类
+ * Dialect abstract class
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -80,7 +80,7 @@ public abstract class AbstractDbDialect implements DbDialect {
 
     @Override
     public String buildPaginationSql(String originalSql, long offset, long count) {
-        // 获取 分页实际条数
+        // Get the actual number of pagination items
         StringBuilder sqlBuilder = new StringBuilder(originalSql);
         sqlBuilder.append(" LIMIT ").append(offset).append(" , ").append(count);
         return sqlBuilder.toString();
@@ -93,7 +93,7 @@ public abstract class AbstractDbDialect implements DbDialect {
 
     @Override
     public String countNew(String tableName, Map<String, Object> params) {
-        // 动态构建 WHERE 子句
+        // Dynamically constructing WHERE clauses
         StringBuilder countSql = new StringBuilder("SELECT COUNT(*) FROM ").append(tableName);
         if (params != null && !params.isEmpty()) {
             countSql.append(buildWhereClause(params));
@@ -102,7 +102,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 验证连接
+     * Verify connection
      *
      * @param dataSource
      * @param dbQueryProperty
@@ -120,10 +120,10 @@ public abstract class AbstractDbDialect implements DbDialect {
 
 
     /**
-     * 动态构建 WHERE 子句
+     * Dynamically constructing WHERE clauses
      *
-     * @param params 参数 Map
-     * @return WHERE 子句字符串
+     * @param params parameter Map
+     * @return WHERE clause string
      */
     private static String buildWhereClause(Map<String, Object> params) {
         StringBuilder whereClause = new StringBuilder(" WHERE 1=1");
@@ -185,7 +185,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 检查是否使用SSL
+     * Check if SSL is used
      *
      * @param property
      * @return
@@ -201,7 +201,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 检查是否使用Kerberos
+     * Check if Kerberos is used
      *
      * @param property
      * @return

@@ -22,7 +22,7 @@ import org.quartz.JobExecutionContext;
 import tech.qiantong.qdata.quartz.domain.SysJob;
 
 /**
- * 定时任务处理（允许并发执行）
+ * Scheduled task processing (allowing concurrent execution)
  *
  * @author qdata
  *

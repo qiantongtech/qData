@@ -15,8 +15,8 @@ import tech.qiantong.qdata.module.mc.service.task.IMcTaskService;
 import javax.annotation.Resource;
 
 /**
- * 采集任务执行器Controller
- * 用于DolphinScheduler回调执行采集任务
+ * Collection task executorController
+ * Used for DolphinScheduler callback to perform collection tasks
  *
  * @author qdata
  * @date 2026-05-11
@@ -31,10 +31,10 @@ public class McTaskExecutorController extends BaseController {
     private IMcTaskService mcTaskService;
 
     /**
-     * DolphinScheduler回调执行采集任务
+     * DolphinScheduler callback to perform collection tasks
      *
-     * @param id 任务ID
-     * @return 执行结果
+     * @param id task ID
+     * @return execution result
      */
     @PutMapping("/runExecuteTask/{id}")
     public CommonResult<String> runExecuteTask(@PathVariable("id") Long id) {

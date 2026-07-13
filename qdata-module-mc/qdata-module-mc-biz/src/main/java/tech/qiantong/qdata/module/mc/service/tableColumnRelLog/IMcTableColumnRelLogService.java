@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志Service接口
+ * Metadata database and information and field information relationship - Log Service interface
  *
  * @author qdata
  * @date 2026-03-10
@@ -19,54 +19,54 @@ import java.util.Map;
 public interface IMcTableColumnRelLogService extends IService<McTableColumnRelLogDO> {
 
     /**
-     * 获得元数据数据库与信息及字段信息关系-日志分页列表
+     * Obtain the relationship between metadata database and information and field information - log paging list
      *
-     * @param pageReqVO 分页请求
-     * @return 元数据数据库与信息及字段信息关系-日志分页列表
+     * @param pageReqVO paging request
+     * @return Metadata database and information and field information relationship - log paging list
      */
     PageResult<McTableColumnRelLogDO> getMcTableColumnRelLogPage(McTableColumnRelLogPageReqVO pageReqVO);
 
     /**
-     * 创建元数据数据库与信息及字段信息关系-日志
+     * Create metadata database and information and field information relationships-log
      *
-     * @param createReqVO 元数据数据库与信息及字段信息关系-日志信息
-     * @return 元数据数据库与信息及字段信息关系-日志编号
+     * @param createReqVO Metadata database and information and field information relationship - log information
+     * @return Metadata database and information and field information relationship - log number
      */
     Long createMcTableColumnRelLog(McTableColumnRelLogSaveReqVO createReqVO);
 
     /**
-     * 更新元数据数据库与信息及字段信息关系-日志
+     * Update metadata database and information and field information relationships-log
      *
-     * @param updateReqVO 元数据数据库与信息及字段信息关系-日志信息
+     * @param updateReqVO Metadata database and information and field information relationship - log information
      */
     int updateMcTableColumnRelLog(McTableColumnRelLogSaveReqVO updateReqVO);
 
     /**
-     * 删除元数据数据库与信息及字段信息关系-日志
+     * Delete metadata database and information and field information relationships-log
      *
-     * @param idList 元数据数据库与信息及字段信息关系-日志编号
+     * @param idList Metadata database and information and field information relationship - log number
      */
     int removeMcTableColumnRelLog(Collection<Long> idList);
 
     /**
-     * 获得元数据数据库与信息及字段信息关系-日志详情
+     * Obtain metadata database and information and field information relationships - log details
      *
-     * @param id 元数据数据库与信息及字段信息关系-日志编号
-     * @return 元数据数据库与信息及字段信息关系-日志
+     * @param id Metadata database and information and field information relationship - log number
+     * @return Metadata database and information and field information relationship-log
      */
     McTableColumnRelLogDO getMcTableColumnRelLogById(Long id);
 
     /**
-     * 获得全部元数据数据库与信息及字段信息关系-日志列表
+     * Obtain all metadata databases and information and field information relationships - log list
      *
-     * @return 元数据数据库与信息及字段信息关系-日志列表
+     * @return Metadata database and information and field information relationship - log list
      */
     List<McTableColumnRelLogDO> getMcTableColumnRelLogList();
 
     /**
-     * 获得全部元数据数据库与信息及字段信息关系-日志 Map
+     * Obtain all metadata databases and information and field information relationships-Log Map
      *
-     * @return 元数据数据库与信息及字段信息关系-日志 Map
+     * @return Metadata database and information and field information relationship-Log Map
      */
     Map<Long, McTableColumnRelLogDO> getMcTableColumnRelLogMap();
 

@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 限流处理
+ * Current limiting processing
  *
  * @author qdata
  */

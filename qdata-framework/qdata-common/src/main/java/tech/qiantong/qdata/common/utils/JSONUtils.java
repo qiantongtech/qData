@@ -206,7 +206,7 @@ public final class JSONUtils {
     }
 
     public static String convertParametersToJson(Map<String, String> taskParamMap) throws JsonProcessingException {
-        // 将 taskParamMap 转换为 JSON 字符串
+        // Convert taskParamMap to JSON string
         return objectMapper.writeValueAsString(taskParamMap);
     }
 
@@ -275,7 +275,7 @@ public final class JSONUtils {
      * @param classV classV
      * @param <K> K
      * @param <V> V
-     * @return to map
+     * @return converted map
      */
     public static <K, V> Map<K, V> toMap(String json, Class<K> classK, Class<V> classV) {
         if (Strings.isNullOrEmpty(json)) {
@@ -448,26 +448,26 @@ public final class JSONUtils {
     }
 
     /**
-     * 将对象转换为 JSON 字符串
-     * @param object 要转换的对象
-     * @return JSON 字符串
+     * Convert object to JSON string
+     * @param object The object to be converted
+     * @return JSON string
      */
     public static String toJson(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);  // 转为 JSON 字符串
+            return objectMapper.writeValueAsString(object);  // Convert to JSON string
         } catch (Exception e) {
             e.printStackTrace();
-            return null;  // 转换失败时返回 null
+            return null;  // Returns null if conversion fails
         }
     }
 
 
 
     /**
-     * 将字符串转换为 long 类型
+     * Convert string to type long
      *
-     * @param processDefinitionCode 要转换的字符串
-     * @return 转换后的 long 值，若转换失败返回 -1
+     * @param processDefinitionCode The string to convert
+     * @return the converted long value, if the conversion fails, -1 is returned
      */
     public static long convertToLong(String processDefinitionCode) {
         if (processDefinitionCode == null || processDefinitionCode.trim().isEmpty()) {

@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.quartz.enums;
 
 /**
- * 任务操作错误信息枚举
+ * Task operation error information enumeration
  *
  * @author qdata
  */
@@ -53,7 +53,7 @@ public enum JobErrorEnum {
     }
 
     /**
-     * 根据错误码获取枚举
+     * Get enumeration based on error code
      */
     public static JobErrorEnum getByCode(Long code) {
         for (JobErrorEnum error : values()) {

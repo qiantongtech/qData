@@ -23,13 +23,13 @@ import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
- * 错误码对象
+ * Error code object
  *
- * 全局错误码，占用 [0, 999]，参见 {@link GlobalErrorCodeConstants}
- * 业务异常错误码，占用 [1 000 000 000, +∞)，参见 {@link ServiceErrorCodeRange}
+ * Global error code, occupies [0, 999], see {@link GlobalErrorCodeConstants}
+ * Business exception error code, occupies [1 000 000 000, +∞), see {@link ServiceErrorCodeRange}
  *
- * i18n 国际化：getMsg() 优先从资源文件读取（key = "error.{code}"），找不到则使用构造函数传入的默认 message
- * 资源文件：qdata-server/src/main/resources/i18n/messages*.properties
+ * i18n internationalization: getMsg() preferentially reads from the resource file (key = "error.{code}"). If it cannot find it, the default message passed in the constructor is used.
+ * Resource file: qdata-server/src/main/resources/i18n/messages*.properties
  *
  * @author qdata
  */
@@ -37,11 +37,11 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 public class ErrorCode {
 
     /**
-     * 错误码
+     * Error code
      */
     private final Integer code;
     /**
-     * 错误提示（默认消息，i18n 获取失败时的兜底）
+     * Error message (default message, clarification when i18n acquisition fails)
      */
     private final String msg;
 
@@ -51,9 +51,9 @@ public class ErrorCode {
     }
 
     /**
-     * 获取国际化后的错误提示
-     * 优先从 i18n 资源文件获取 key = "error.{code}" 的文案
-     * 获取不到则使用构造函数传入的 msg 作为兜底
+     * Get the error message after internationalization
+     * Prioritize getting the copy of key = "error.{code}" from the i18n resource file
+     * If it cannot be obtained, use the msg passed in the constructor as a backup
      */
     public String getMsg() {
         return MessageUtils.messageWithFallback("error." + code, msg);

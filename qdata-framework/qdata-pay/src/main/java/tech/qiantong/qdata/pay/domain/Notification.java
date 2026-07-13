@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * 封装支付宝回调通知的参数
+ * Encapsulates the parameters of Alipay callback notification
  */
 @Data
 @AllArgsConstructor

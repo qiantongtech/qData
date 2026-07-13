@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 采集任务实例-日志Service业务层处理
+ * Collection task instance-Log Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -35,7 +35,7 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogMapper, McTaskInstanceLogDO> implements IMcTaskInstanceLogService {
 
-    // 可放到常量类，这里内联
+    // Can be placed in constant class, inline here
     public static final String MC_TASK_INSTANCE_LOG_KEY_PREFIX = "MC_TASK_INSTANCE_LOG:LOG:TASK:";
     public static final String FINALIZE_TOKEN = "FINALIZE_SESSION";
 
@@ -60,16 +60,16 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
 
     @Override
     public int updateMcTaskInstanceLog(McTaskInstanceLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新采集任务实例-日志
+        // Update collection task instance-log
         McTaskInstanceLogDO updateObj = BeanUtils.toBean(updateReqVO, McTaskInstanceLogDO.class);
         return mcTaskInstanceLogMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskInstanceLog(Collection<Long> idList) {
-        // 批量删除采集任务实例-日志
+        // Batch deletion of collection task instances-logs
         return mcTaskInstanceLogMapper.deleteBatchIds(idList);
     }
 
@@ -92,7 +92,7 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
 
 
     /**
-     * 从 Redis 实时获取日志并封装为 McTaskInstanceLogDO
+     * Obtain logs from Redis in real time and encapsulate them as McTaskInstanceLogDO
      */
     private McTaskInstanceLogDO buildRealtimeLog(Long taskInstanceId) {
         final String taskLogKey = MC_TASK_INSTANCE_LOG_KEY_PREFIX + taskInstanceId;
@@ -133,7 +133,7 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
                 return line;
             }
 
-            end = start; // 继续往上找
+            end = start; // Keep looking up
         }
 
         return null;
@@ -147,11 +147,11 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
 
 
     /**
-     * 采集任务实例日志写入（增量累积 + 会话结束一次性落库）
+     * Collection task instance log writing (incremental accumulation + one-time drop at the end of the session)
      *
-     * @param taskInstanceId 任务实例 ID
-     * @param taskId         任务 ID
-     * @param logStr         本次追加日志
+     * @param taskInstanceId task instance ID
+     * @param taskId task ID
+     * @param logStr append log this time
      */
     @Override
     public void taskInstanceLogAppend(Long taskInstanceId, Long taskId, String logStr) {
@@ -161,7 +161,7 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
 
         final String taskLogKey = MC_TASK_INSTANCE_LOG_KEY_PREFIX + taskInstanceId;
 
-        // 1. 读取已有日志
+        // 1. Read existing logs
         String taskLog = redisService.get(taskLogKey);
         if (taskLog == null) {
             taskLog = "";
@@ -170,11 +170,11 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
         String time = DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
         logStr = time + " - " + logStr + "\n";
 
-        // 2. 追加
+        // 2. Append
         taskLog += logStr + (logStr.matches(".*\\r?\\n.*") ? "" : "\n");
         redisService.set(taskLogKey, taskLog);
 
-        // 3. 会话结束标记，统一入库
+        // 3. Session end mark, unified storage
         if (StringUtils.contains(logStr, FINALIZE_TOKEN)) {
             McTaskInstanceLogDO entity = McTaskInstanceLogDO.builder()
                     .taskInstanceId(taskInstanceId)
@@ -187,7 +187,7 @@ public class McTaskInstanceLogServiceImpl extends ServiceImpl<McTaskInstanceLogM
 
             this.saveOrUpdateByPk(entity);
 
-            // 4. 清 Redis，并短暂缓存（5 分钟）
+            // 4. Clear Redis and cache it briefly (5 minutes)
             redisService.delete(taskLogKey);
             redisService.set(taskLogKey, taskLog, 60 * 5);
         }

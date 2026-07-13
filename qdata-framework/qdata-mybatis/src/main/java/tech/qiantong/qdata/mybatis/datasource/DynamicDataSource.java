@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * 动态数据源
+ * Dynamic data source
  *
  * @author qdata
  */

@@ -44,7 +44,7 @@ import java.util.Optional;
 
 /**
  * <P>
- * 用途:ai聊天对话
+ * Purpose: ai chat conversation
  * </p>
  *
  * @author: FXB

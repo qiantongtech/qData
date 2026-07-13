@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
 
 /**
- * 将 "1" 和 "0" 转换为布尔值
+ * Convert "1" and "0" to boolean
  * @author qdata
  */
 public class BooleanDeserializer extends JsonDeserializer<Boolean> {
@@ -39,7 +39,7 @@ public class BooleanDeserializer extends JsonDeserializer<Boolean> {
         } else if ("0".equals(value)) {
             return false;
         } else {
-            // 其他值保持默认行为
+            // Other values keep default behavior
             return Boolean.valueOf(value);
         }
     }

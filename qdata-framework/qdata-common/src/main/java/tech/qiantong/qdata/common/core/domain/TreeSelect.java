@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Treeselect树结构实体类
+ * Treeselect tree structure entity class
  *
  * @author qdata
  */
@@ -37,13 +37,13 @@ public class TreeSelect implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    /** 节点ID */
+    /** Node ID */
     private Long id;
 
-    /** 节点名称 */
+    /** Node name */
     private String label;
 
-    /** 子节点 */
+    /** Child node */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TreeSelect> children;
 

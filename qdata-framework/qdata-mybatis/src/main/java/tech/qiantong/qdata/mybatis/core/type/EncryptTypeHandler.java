@@ -31,10 +31,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 字段字段的 TypeHandler 实现类，基于 {@link AES} 实现
- * 可通过 jasypt.encryptor.password 配置项，设置密钥
+ * TypeHandler implementation class of field field, implemented based on {@link AES}
+ * The key can be set through the jasypt.encryptor.password configuration item
  *
- * @author 芋道源码
+ * @author taro source code
  */
 public class EncryptTypeHandler extends BaseTypeHandler<String> {
 
@@ -83,7 +83,7 @@ public class EncryptTypeHandler extends BaseTypeHandler<String> {
         if (aes != null) {
             return aes;
         }
-        // 构建 AES
+        // Build AES
         String password = SpringUtil.getProperty(ENCRYPTOR_PROPERTY_NAME);
         Assert.notEmpty(password, "配置项({}) 不能为空", ENCRYPTOR_PROPERTY_NAME);
         aes = SecureUtil.aes(password.getBytes());

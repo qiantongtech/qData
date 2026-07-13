@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 业务域Controller
+ * Business domainController
  *
  * @author qdata
  * @date 2026-02-12
@@ -102,7 +102,7 @@ public class McDomainController extends BaseController {
     }
 
     /**
-     * 批量删除检查,查询可删除数和不可删除数
+     * Batch deletion check, query the number that can be deleted and the number that cannot be deleted
      */
     @Operation(summary = "批量删除检查业务域")
     @GetMapping("/batchDeleteCheck/{ids}")

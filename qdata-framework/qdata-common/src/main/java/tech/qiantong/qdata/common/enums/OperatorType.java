@@ -19,24 +19,24 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 操作人类别
+ * Operator category
  *
  * @author qdata
  */
 public enum OperatorType
 {
     /**
-     * 其它
+     * Others
      */
     OTHER,
 
     /**
-     * 后台用户
+     * Backend user
      */
     MANAGE,
 
     /**
-     * 手机端用户
+     * Mobile users
      */
     MOBILE
 }

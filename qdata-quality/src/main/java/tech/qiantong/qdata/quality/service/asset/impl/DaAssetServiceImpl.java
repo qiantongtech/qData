@@ -30,7 +30,7 @@ import tech.qiantong.qdata.quality.dal.mapper.asset.DaAssetMapper;
 import tech.qiantong.qdata.quality.service.asset.IDaAssetService;
 
 /**
- * 数据资产Service业务层处理
+ * Data asset service business layer processing
  *
  * @author lhs
  * @date 2025-01-21

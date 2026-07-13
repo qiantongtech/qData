@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:统计sql提示词构建
+ * Purpose: Statistical SQL prompt word construction
  * </p>
  *
  * @author: FXB
@@ -133,7 +133,7 @@ public class StatisticsPromptBuilder {
                 - 别名: 表别名简短清晰,字段别名使用AS关键字
                 """);
 
-        // 1. 事实表描述
+        // 1. Fact table description
         prompt.append("【事实表】\n");
         prompt.append(String.format("表名: %s (别名: %s)\n",
                 factTable.getTableName(), factTable.getAlias()));
@@ -155,7 +155,7 @@ public class StatisticsPromptBuilder {
             ));
         }
 
-        // 2. 维度表描述
+        // 2. Dimension table description
         prompt.append("\n【维度表】\n");
         for (DimensionTable dim : dimensionTables) {
             prompt.append(String.format("\n表名: %s (别名: %s)\n",
@@ -174,7 +174,7 @@ public class StatisticsPromptBuilder {
             }
         }
 
-        // 3. 关联关系
+        // 3. Related relationships
         prompt.append("\n【关联关系】\n");
         for (FactDimensionRelation rel : relations) {
             prompt.append(String.format("%s.%s = %s.%s (%s) - %s\n",

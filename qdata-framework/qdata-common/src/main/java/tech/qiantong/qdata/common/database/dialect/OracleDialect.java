@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Oracle Oracle11g及以下数据库方言
+ * Oracle Oracle11g and below database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -162,7 +162,7 @@ public class OracleDialect extends AbstractDbDialect {
             sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
 
             String columnTypeResolved = "";
-            // 映射 Doris 支持的数据类型
+            // Mapping the data types supported by Doris
             switch (columnType.toUpperCase()) {
                 case "VARCHAR2":
                 case "NVARCHAR2":
@@ -189,13 +189,13 @@ public class OracleDialect extends AbstractDbDialect {
                     columnTypeResolved = "STRING";
                     break;
                 case "NUMBER":
-                    //NUMBER(无参数) → DOUBLE
+                    //NUMBER(no parameters) → DOUBLE
                     if (StringUtils.isBlank(column.getDataLength()) && StringUtils.isBlank(column.getDataPrecision())) {
                         sql.append("DOUBLE");
                         columnTypeResolved = "DOUBLE";
                         break;
                     }
-                    //判断是否存在小数位
+                    //Determine whether there are decimal places
                     if (StringUtils.isBlank(column.getDataScale())) {
                         Integer dataLength = Integer.parseInt(column.getDataLength());
                         if (dataLength < 3) {
@@ -237,7 +237,7 @@ public class OracleDialect extends AbstractDbDialect {
                     columnTypeResolved = "DATETIME";
                     break;
                 default:
-                    sql.append("VARCHAR(255)"); // fallback 处理
+                    sql.append("VARCHAR(255)"); // fallback processing
                     columnTypeResolved = "VARCHAR";
                     break;
             }
@@ -249,7 +249,7 @@ public class OracleDialect extends AbstractDbDialect {
             String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
             sql.append(defaultClause);
 
-            // 注释
+            // Comment
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
             }
@@ -261,11 +261,11 @@ public class OracleDialect extends AbstractDbDialect {
             sql.append(",\n");
         }
 
-        // 去掉最后一个逗号
+        // Remove the last comma
         sql.setLength(sql.length() - 2);
         sql.append("\n)");
 
-        // Doris 必须指定 KEY 类型
+        // Doris must specify the KEY type
         if (!primaryKeys.isEmpty()) {
             sql.append("\nUNIQUE KEY (");
             for (String pk : primaryKeys) {
@@ -274,33 +274,33 @@ public class OracleDialect extends AbstractDbDialect {
             sql.setLength(sql.length() - 2);
             sql.append(")");
         } else {
-            // 无主键则用第一列作 DUPLICATE KEY
+            // If there is no primary key, use the first column as DUPLICATE KEY
             sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
         }
 
-        //判断是否添加分区
+        //Determine whether to add a partition
         if (StringUtils.isNotBlank(partitionRule)) {
             sql.append("\n").append(partitionRule);
         }
 
-        // 分桶策略（必需）
+        // Bucketing strategy (required)
         if (StringUtils.isBlank(bucketRule)) {
             sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
         } else {
             sql.append("\n").append(bucketRule);
         }
 
-        // 表属性（含表注释）
+        // Table properties (including table comments)
         sql.append("\nPROPERTIES (\n");
         sql.append("  \"replication_num\" = \"" + replica + "\"");
         sql.append("\n)");
         sqlList.add(sql.toString());
-        //表注释
+        //Table annotation
         sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
         return sqlList;
     }
 
-    // 定义一个包含常见DORIS保留关键字的集合（全部转换为大写便于比较）
+    // Define a set containing common DORIS reserved keywords (all converted to uppercase for easier comparison)
     private static final String[] DORIS_RESERVED_WORDS = {
             "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
             "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
@@ -329,11 +329,11 @@ public class OracleDialect extends AbstractDbDialect {
     };
 
     /**
-     * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
+     * Construct a legal DEFAULT clause for Doris (only legal literals are allowed to prevent table creation failure)
      *
-     * @param dataType     字段类型，如 VARCHAR、INT、DECIMAL(10,2) 等
-     * @param defaultValue 默认值，如 'abc'、0、1.23 等
-     * @return 若合法则返回 DEFAULT xxx 子句，否则返回空字符串
+     * @param dataType field type, such as VARCHAR, INT, DECIMAL(10,2), etc.
+     * @param defaultValue default value, such as 'abc', 0, 1.23, etc.
+     * @return If legal, return the DEFAULT xxx clause, otherwise return an empty string
      */
     public static String buildDorisDefaultClause(String dataType, String defaultValue) {
         if (StringUtils.isBlank(defaultValue) || StringUtils.isBlank(dataType)) {
@@ -346,7 +346,7 @@ public class OracleDialect extends AbstractDbDialect {
         boolean isNumeric = def.matches("^-?\\d+(\\.\\d+)?$");
         boolean isQuoted = def.matches("^'.*'$");
 
-        // 非下面的数值类型无法添加默认值
+        // Default values cannot be added to numeric types other than the following
         if (type.matches(".*(TINYINT|SMALLINT|INT|BIGINT|LARGEINT|FLOAT|DOUBLE|DECIMAL|FLOAT|CHAR|VARCHAR|DATE|DATETIME|BOOLEAN).*")) {
             if (!isQuoted && isNumeric) {
                 return " DEFAULT '" + def + "'";
@@ -354,7 +354,7 @@ public class OracleDialect extends AbstractDbDialect {
                 return " DEFAULT " + def;
             }
         }
-        return ""; // 其他不合法情况过滤掉
+        return ""; // Other illegal situations are filtered out
     }
 
     public static String escapeReservedKeyword(String colName) {
@@ -372,20 +372,20 @@ public class OracleDialect extends AbstractDbDialect {
     public static String generateColumnSQLDORIS(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
         StringBuilder sql = new StringBuilder(columnType);
 
-        // 仅当是需要长度和小数位数的类型时，才处理长度
+        // Handle length only if it is a type that requires length and number of decimal places
         if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
             if (StringUtils.isNotEmpty(columnLength)) {
                 int length = Integer.parseInt(columnLength);
-                // 限制长度不超过最大长度
+                // Limit the length to no more than the maximum length
                 if (length > maxLength) {
                     length = maxLength;
                 }
                 sql.append("(").append(length);
 
-                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                // If the column type is DECIMAL and the number of decimal places is provided, append the decimal places
                 if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
                     int scale = Integer.parseInt(columnScale);
-                    // 限制小数位数不超过最大值
+                    // Limit the number of decimal places to the maximum
                     if (scale > maxScale) {
                         scale = maxScale;
                     }
@@ -435,11 +435,11 @@ public class OracleDialect extends AbstractDbDialect {
             }
             createSql.append(",");
         }
-        // 去逗号
+        // Remove commas
         if (createSql.lastIndexOf(",") == createSql.length() - 1) {
             createSql.deleteCharAt(createSql.length() - 1);
         }
-        // 主键
+        // Primary key
         if (!pkList.isEmpty()) {
             createSql.append(",\n  PRIMARY KEY(");
             for (String pk : pkList) {
@@ -451,12 +451,12 @@ public class OracleDialect extends AbstractDbDialect {
         createSql.append("\n)");
         sqlList.add(createSql.toString());
 
-        // 表注释
+        // Table annotation
         if (tech.qiantong.qdata.common.utils.StringUtils.hasText(tableComment)) {
             String tableCmt = "COMMENT ON TABLE " + tableName + " IS '" + DatabaseUtil.escapeSingleQuotes(tableComment) + "'";
             sqlList.add(tableCmt);
         }
-        // 字段注释
+        // Field annotation
         for (DbColumn col : columns) {
             if (tech.qiantong.qdata.common.utils.StringUtils.hasText(col.getColComment())) {
                 String colCmt = "COMMENT ON COLUMN " + tableName + "." + col.getColName()
@@ -495,7 +495,7 @@ public class OracleDialect extends AbstractDbDialect {
     }
 
     private static String mapOracleColumnType(DbColumn col) {
-        // 类似 Oracle
+        // Similar to Oracle
         String type = col.getDataType();
         Long length = DatabaseUtil.getStringToLong(col.getDataLength());
         Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
@@ -540,13 +540,13 @@ public class OracleDialect extends AbstractDbDialect {
     }
 
     /**
-     * 根据列的长度和小数位数生成用于拼接的 SQL 字符串
+     * Generate SQL string for concatenation based on column length and scale
      *
-     * @param columnLength 列的长度（字符串表示）
-     * @param maxLength    长度限制的最大值（例如 38）
-     * @param includeScale 是否拼接小数位数
-     * @param columnScale  列的小数位数（字符串表示，可能为空）
-     * @return 生成的用于拼接的 SQL 字符串
+     * @param columnLength column length (string representation)
+     * @param maxLength The maximum value of the length limit (e.g. 38)
+     * @param includeScale Whether to splice decimal places
+     * @param columnScale The number of decimal places in the column (string representation, may be empty)
+     * @return generated SQL string for concatenation
      */
     public static String generateColumnDefinitionOracle(Long columnLength, long maxLength, boolean includeScale, Long columnScale) {
         StringBuilder sql = new StringBuilder("");
@@ -555,17 +555,17 @@ public class OracleDialect extends AbstractDbDialect {
             throw new UnsupportedOperationException("属性类型：格式错误，数字类型长度未填充");
         }
 
-        // 如果 columnLength 为空，则使用 maxLength 作为默认值
+        // If columnLength is empty, maxLength is used as the default value
         long length = columnLength;
 
         if (length > maxLength) {
             length = maxLength;
         }
 
-        // 拼接长度
+        // Splicing length
         sql.append("(").append(length);
 
-        // 根据 includeScale 和 columnScale 判断是否需要拼接小数位数
+        // Determine whether the number of decimal places needs to be spliced based on includeScale and columnScale
         if (includeScale && columnScale != 0) {
             sql.append(", ").append(columnScale);
         }
@@ -598,17 +598,17 @@ public class OracleDialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + tableName;
     }
 
@@ -643,7 +643,7 @@ public class OracleDialect extends AbstractDbDialect {
     @Override
     public String getDbName(DbName dbName) {
         int level = dbName == null ? 1 : dbName.getLevel() + 1;
-        // 只有一个层级：数据库（库）
+        // Only one level is used: database
         if (level == 1) {
             return "SELECT USERNAME AS DBNAME,1 AS TOTALLEVELS \n" +
                     "FROM ALL_USERS\n" +
@@ -655,7 +655,7 @@ public class OracleDialect extends AbstractDbDialect {
                     ")\n" +
                     "ORDER BY DBNAME";
         }
-        // 没有第二层
+        // No second layer
         throw new UnsupportedOperationException("Oracle11g only has one level");
     }
 
@@ -685,7 +685,7 @@ public class OracleDialect extends AbstractDbDialect {
             entity.setDataScale(rs.getString("DATASCALE"));
             entity.setColKey("1".equals(rs.getString("COLKEY")));
             entity.setNullable("Y".equals(rs.getString("NULLABLE")));
-            //long类型，单独处理
+            //long type, processed separately
             //entity.setDataDefault(rs.getString("DATADEFAULT"));
             entity.setColPosition(rs.getInt("COLPOSITION"));
             entity.setColComment(rs.getString("COLCOMMENT"));
@@ -871,21 +871,21 @@ public class OracleDialect extends AbstractDbDialect {
         List<String> sqlList = new ArrayList<>();
         String fullTableName = getTableName(dbQueryProperty, tableName);
 
-        // 首先删除现有的主键约束
+        // First delete the existing primary key constraint
         sqlList.add("ALTER TABLE " + fullTableName + " DROP PRIMARY KEY CASCADE");
 
-        // 如果提供了新的主键字段列表，则添加新的主键约束
+        // If a new primary key field list is provided, add a new primary key constraint
         if (colKeyDbColumnList != null && !colKeyDbColumnList.isEmpty()) {
             StringBuilder addSql = new StringBuilder();
             addSql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT ");
 
-            // 生成约束名：表名_主键字段组合
+            // Generate constraint name: table name_primary key field combination
             StringBuilder constraintName = new StringBuilder();
             constraintName.append(tableName.toUpperCase());
             for (DbColumn col : colKeyDbColumnList) {
                 constraintName.append("_").append(col.getColName().toUpperCase());
             }
-            // 达梦约束名长度限制为128个字符
+            // Dameng constraint name length is limited to 128 characters
             String finalConstraintName = constraintName.length() > 128 ?
                     constraintName.substring(0, 128) : constraintName.toString();
 

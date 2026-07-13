@@ -7,14 +7,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 DO 对象 MC_TASK_SCHEDULER
+ * Data integration scheduling information DO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_SCHEDULER")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_SCHEDULER_seq")
 @Builder
 @NoArgsConstructor
@@ -28,37 +28,37 @@ public class McTaskSchedulerDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 调度器ID */
+    /** Scheduler ID */
     private String jobId;
 
-    /** DolphinScheduler任务编码（用于API调用） */
+    /** DolphinScheduler task encoding (for API calls) */
     private String taskCode;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     private Date endTime;
 
-    /** 时区 */
+    /** Time zone */
     private String timezoneId;
 
-    /** cron表达式 */
+    /** cron expression */
     private String cronExpression;
 
-    /** 失败策略 */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** 调度状态 */
+    /** Scheduling status */
     private String status;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

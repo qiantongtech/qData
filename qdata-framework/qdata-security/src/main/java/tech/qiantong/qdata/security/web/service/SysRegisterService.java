@@ -37,7 +37,7 @@ import tech.qiantong.qdata.security.manager.AsyncManager;
 import tech.qiantong.qdata.security.manager.factory.AsyncFactory;
 
 /**
- * 注册校验方法
+ * Registration verification method
  *
  * @author qdata
  */
@@ -54,7 +54,7 @@ public class SysRegisterService
     private RedisCache redisCache;
 
     /**
-     * 注册
+     * Register
      */
     public String register(RegisterBody registerBody)
     {
@@ -62,7 +62,7 @@ public class SysRegisterService
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
 
-        // 验证码开关
+        // Verification code switch
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         if (captchaEnabled)
         {
@@ -109,12 +109,12 @@ public class SysRegisterService
     }
 
     /**
-     * 校验验证码
+     * Verify verification code
      *
-     * @param username 用户名
-     * @param code 验证码
-     * @param uuid 唯一标识
-     * @return 结果
+     * @param username username
+     * @param code verification code
+     * @param uuid unique identifier
+     * @return result
      */
     public void validateCaptcha(String username, String code, String uuid)
     {

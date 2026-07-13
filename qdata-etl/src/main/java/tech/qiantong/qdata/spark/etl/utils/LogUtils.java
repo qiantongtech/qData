@@ -32,7 +32,7 @@ import java.util.Date;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -42,7 +42,7 @@ import java.util.Date;
 public class LogUtils {
 
     /**
-     * 生成日志路径
+     * Generate log path
      *
      * @param nodeJson
      * @return
@@ -81,22 +81,22 @@ public class LogUtils {
     public static class Params {
 
         /**
-         * rabbitmq连接信息
+         * rabbitmq connection information
          */
         @JsonIgnore
         private JSONObject rabbitmq;
 
         /**
-         * 流程实例ID
+         * Process instance ID
          */
         private String workflowInstanceId;
         /**
-         * 任务实例ID
+         * Task instance ID
          */
         private String taskInstanceId;
 
         /**
-         * 日志
+         * Log
          */
         private String log;
 

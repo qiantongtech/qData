@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 元数据字段信息Service接口
+ * Metadata field information Service interface
  *
  * @author qdata
  * @date 2025-12-18
@@ -17,7 +17,7 @@ public interface McColumnApiService {
     boolean existsByDataElemIds(Collection<Long> dataElemIds);
 
     /**
-     * 根据表id查询字段信息
+     * Query field information based on table id
      * @param tableId
      * @return
      */

@@ -23,7 +23,7 @@ import tech.qiantong.qdata.quality.dal.dataobject.asset.DaAssetDO;
 
 
 /**
- * 数据资产Mapper接口
+ * Data asset Mapper interface
  *
  * @author lhs
  * @date 2025-01-21

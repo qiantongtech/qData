@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 代码生成 操作处理
+ * Code generation operation processing
  *
  * @author qdata
  */
@@ -63,7 +63,7 @@ public class GenController extends BaseController
     private IGenTableColumnService genTableColumnService;
 
     /**
-     * 查询代码生成列表
+     * Query code generation list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/list")
@@ -75,7 +75,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 修改代码生成业务
+     * Modify code generation business
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:query')")
     @GetMapping(value = "/{tableId}")
@@ -97,7 +97,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 查询数据库列表
+     * Query database list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/db/list")
@@ -109,7 +109,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 查询数据表字段列表
+     * Query data table field list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping(value = "/column/{tableId}")
@@ -123,7 +123,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 导入表结构（保存）
+     * Import table structure (save)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:import')")
     @Log(title = "log.op.title.gen.import", businessType = BusinessType.IMPORT)
@@ -131,14 +131,14 @@ public class GenController extends BaseController
     public AjaxResult importTableSave(String tables)
     {
         String[] tableNames = Convert.toStrArray(tables);
-        // 查询表信息
+        // Query table information
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
         genTableService.importGenTable(tableList, SecurityUtils.getUsername());
         return success();
     }
 
     /**
-     * 创建表结构（保存）
+     * Create table structure (save)
      */
     @PreAuthorize("@ss.hasRole('admin')")
     @Log(title = "log.op.title.gen.create.table", businessType = BusinessType.OTHER)
@@ -175,7 +175,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 修改保存代码生成业务
+     * Modify and save code generation business
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.UPDATE)
@@ -188,7 +188,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 删除代码生成
+     * Remove code generation
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:remove')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.DELETE)
@@ -200,7 +200,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 预览代码
+     * Preview code
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:preview')")
     @GetMapping("/preview/{tableId}")
@@ -211,7 +211,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成代码（下载方式）
+     * Generate code (download method)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
@@ -223,7 +223,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成代码（自定义路径）
+     * Generate code (custom path)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
@@ -235,7 +235,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 同步数据库
+     * Sync database
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.UPDATE)
@@ -247,7 +247,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 批量生成代码
+     * Generate code in batches
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
     @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
@@ -260,7 +260,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成zip文件
+     * Generate zip file
      */
     private void genCode(HttpServletResponse response, byte[] data) throws IOException
     {

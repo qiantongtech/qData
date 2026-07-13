@@ -131,7 +131,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
     @Autowired
     private IRedisService redisService;
-    // 本地文件路径前缀
+    // Local file path prefix
     private static String prefixUrl;
 
     @Value("${file.job.log.qualitytask_prefix_url}")
@@ -154,43 +154,43 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
     public void executeQualityTask(String taskId,String key) {
 
-        // 创建TaskLogger实例，指定日志文件存放的文件夹和文件名
+        // Create a TaskLogger instance and specify the folder and file name where the log file is stored.
         String tmpFilePath = "taskLog-" + IdUtil.simpleUUID() + ".txt";
         HttpTaskLogger logger = new HttpTaskLogger(prefixUrl, tmpFilePath);
         logger.log(MessageUtils.messageEn("quality.log.task.start"));
 
-        //1、查询任务基本信息
+        //1. Query basic information of the task
         DppQualityTaskRespVO dppQualityTaskById = iDppQualityTaskService.getDppQualityTaskById(JSONUtils.convertToLong(taskId));
         if(dppQualityTaskById == null){
             logger.log(MessageUtils.messageEn("quality.log.task.query.empty"));
             logger.log(MessageUtils.messageEn("quality.log.task.end"));
-            // 任务完成后，关闭logger，释放资源
+            // After the task is completed, close the logger and release resources
             logger.close();
             redisService.set(key, "3", 300);
             return;
         }
 
         logger.log(MessageUtils.messageEn("quality.log.task.info", dppQualityTaskById.toString()));
-        //2、生成本次批次号
+        //2. Generate this batch number
         String batch = DateUtil.format(new Date(), "yyyyMMddHHmmss");
         logger.log(MessageUtils.messageEn("quality.log.batch.generate", batch));
 
-        //获取文件地址路径
+        //Get file address path
         String filePath = logger.getFilePath();
-        //创建本次任务日志，先创建日志，再执行
+        //Create a log for this task. Create the log first and then execute it.
         DppQualityLogSaveReqVO dppQualityLogSaveReqVO = new DppQualityLogSaveReqVO(dppQualityTaskById);
         dppQualityLogSaveReqVO.setPath(filePath);
         Long taskLogId = iDppQualityLogService.createDppQualityLog(dppQualityLogSaveReqVO);
         logger.log(MessageUtils.messageEn("quality.log.log.created", taskLogId));
 
-        // 3. 查询本次任务所需执行的数据源列表
+        // 3. Query the list of data sources required for this task
         logger.log(MessageUtils.messageEn("quality.log.datasource.list.start"));
         List<DppQualityTaskObjDO> qualityTaskObjDOList = iDppQualityTaskObjService.getDppQualityTaskObjList(taskId);
         if (CollectionUtils.isEmpty(qualityTaskObjDOList)) {
             logger.log(MessageUtils.messageEn("quality.log.datasource.list.empty"));
             logger.log(MessageUtils.messageEn("quality.log.task.end"));
             updateQualityLog(taskLogId,"1");
-            // 任务完成后，关闭logger，释放资源
+            // After the task is completed, close the logger and release resources
             logger.close();
             redisService.set(key, "3", 300);
             return;
@@ -198,15 +198,15 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         logger.log(MessageUtils.messageEn("quality.log.datasource.list.count", qualityTaskObjDOList.size()));
 
         logger.log(MessageUtils.messageEn("quality.log.group.start"));
-        //4、根据数据源id分组，不用重复创建数据源链接
+        //4. Group according to data source ID, no need to repeatedly create data source links
         Map<Long, List<Long>> groupIdsByDatasourceId = groupIdsByDatasourceId(qualityTaskObjDOList);
         logger.log(MessageUtils.messageEn("quality.log.group.end", groupIdsByDatasourceId.size()));
         for (Map.Entry<Long, List<Long>> entry : groupIdsByDatasourceId.entrySet()) {
-            Long datasourceId = entry.getKey();          // 即 daDatasourceById
-            List<Long> idList = entry.getValue();        // id集合
+            Long datasourceId = entry.getKey();          // I.e. daDatasourceById
+            List<Long> idList = entry.getValue();        // id collection
 
             logger.log(MessageUtils.messageEn("quality.log.datasource.connecting"));
-            //5、获取数据源基本信息
+            //5. Obtain basic information about data sources
             DaDatasourceDO daDatasourceById = iDaDatasourceQualityService.getDaDatasourceById(datasourceId);
             if (daDatasourceById == null){
                 logger.log(MessageUtils.messageEn("quality.log.datasource.fetch.fail", datasourceId));
@@ -214,7 +214,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
                 continue;
             }
             logger.log(MessageUtils.messageEn("quality.log.datasource.fetch.success", daDatasourceById.getDatasourceName(), daDatasourceById.getId()));
-            //6、测试数据源是否正常，不正常则结束进行下一个
+            //6. Test whether the data source is normal. If not, end and proceed to the next step.
             DbQueryProperty dbQueryProperty = new DbQueryProperty(
                     daDatasourceById.getDatasourceType(),
                     daDatasourceById.getIp(),
@@ -238,13 +238,13 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             logger.log(MessageUtils.messageEn("quality.log.datasource.connection.success"));
 
             logger.log(MessageUtils.messageEn("quality.log.rules.fetch"));
-            //7、从数据源取出规则进行规则查询
+            //7. Retrieve rules from the data source for rule query
             List<DppQualityTaskEvaluateDO> dppQualityTaskEvaluateList = iDppQualityTaskEvaluateService.getDppQualityTaskEvaluateList(idList);
 
             logger.log(MessageUtils.messageEn("quality.log.rules.process"));
-            //循环规则
+            //Round robin rules
             for (DppQualityTaskEvaluateDO dppQualityTaskEvaluateDO : dppQualityTaskEvaluateList) {
-                //8、封装规则进行调取方法
+                //8. Encapsulation rule retrieval method
                 QualityRuleEntity qualityRuleEntity = new QualityRuleEntity(dppQualityTaskEvaluateDO);
                 logger.log(MessageUtils.messageEn("quality.log.rule.prepare"));
                 qualityRuleEntity.setTaskLogId(taskLogId);
@@ -256,7 +256,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
                 List<String> showErrorColumns = tableColumns.stream()
                         .map(DbColumn::getColName)
                         .collect(Collectors.toList());
-                //存储参数
+                //Store parameters
                 qualityRuleEntity.setShowErrorColumns(showErrorColumns);
                 qualityRuleEntity.setTaskLogId(taskLogId);
                 qualityRuleEntity.setDaDatasourceById(daDatasourceById);
@@ -273,10 +273,10 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
                 logger.log(MessageUtils.messageEn("quality.log.rule.done"));
             }
         }
-        //更新完善日志
+        //Update and improve log
         updateQualityLog(taskLogId,"0");
         logger.log(MessageUtils.messageEn("quality.log.task.end"));
-        // 任务完成后，关闭logger，释放资源
+        // After the task is completed, close the logger and release resources
         logger.close();
         redisService.set(key, "2", 300);
     }
@@ -296,9 +296,9 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
 
     /**
-     * 更新数据质量日志状态（仅更新 successFlag 和结束时间）
-     * @param id 日志ID
-     * @param successFlag 状态标志（1：成功，2：失败）
+     * Update data quality log status (only update successFlag and end time)
+     * @param id log ID
+     * @param successFlag status flag (1: success, 2: failure)
      */
     public void updateQualityLog(Long id, String successFlag) {
         DppQualityLogSaveReqVO vo = new DppQualityLogSaveReqVO();
@@ -311,11 +311,11 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
 //
 //    public void executeTask2(QualityRuleEntity taskId) {
-//        // 1. 查询任务详情（模拟或从任务表）
-//        // 包含数据源信息、表名、任务批次等
+// // 1. Query task details (simulation or from task table)
+// // Contains data source information, table names, task batches, etc.
 //        String batch = DateUtil.format(new Date(), "yyyyMMddHHmmss");
 //
-//        // 2. 查询质量规则（可执行的）
+// // 2. Query quality rules (executable)
 ////        List<QualityRuleEntity> rules = qualityRuleService.getRulesByTaskId(taskId);
 //        List<QualityRuleEntity> rules =new ArrayList<>();
 //        rules.add(taskId);
@@ -336,7 +336,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 //            for (Future<QualityCheckResult> future : futures) {
 //                QualityCheckResult result = future.get();
 //                System.out.println(result.toString());
-//                // 保存结果 report，可扩展逻辑
+// //Save the result report, expandable logic
 //            }
 //        } catch (Exception e) {
 //            e.printStackTrace();
@@ -372,7 +372,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
                 .map(DbColumn::getColName)
                 .collect(Collectors.toList());
         ValidationSqlResult validationSqlResult = new ValidationSqlResult();
-        //存储参数
+        //Store parameters
         validationSqlResult.setShowErrorColumns(tableColumns);
 
         QualitySqlGenerator generator = qualitySqlGenerateFactory.getGenerator(queryReqDTO.getRuleType());
@@ -380,7 +380,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         rule.setShowErrorColumns(showErrorColumns);
         rule.setDaDatasourceById(daDatasourceById);
         String checkSql = generator.generateValidDataSql(rule,queryReqDTO.getLimit(),queryReqDTO.getOffset());
-        // 2. 执行 SQL
+        // 2. Execute SQL
         try (Connection conn = dbQuery.getConnection();
              Statement stmt = conn.createStatement()) {
             List<JSONObject> errorList = new ArrayList<>();
@@ -434,11 +434,11 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
         QualitySqlGenerator generator = qualitySqlGenerateFactory.getGenerator(queryReqDTO.getRuleType());
         QualityRuleEntity rule = new QualityRuleEntity(queryReqDTO);
-        //存储参数
+        //Store parameters
         rule.setShowErrorColumns(showErrorColumns);
         rule.setDaDatasourceById(daDatasourceById);
         String checkSql = generator.generateErrorSql(rule);
-        // 2. 执行 SQL
+        // 2. Execute SQL
         try (Connection conn = dbQuery.getConnection();
              Statement stmt = conn.createStatement()) {
             List<JSONObject> errorList = new ArrayList<>();
@@ -463,8 +463,8 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 //        CheckErrorData person =  this.convertFrom(checkErrorDataReqDTO);
 //        Example<CheckErrorData> example = Example.of(person);
 //        Page<CheckErrorData> page = checkErrorDataRepository.findAll(example, of);
-//        System.out.println("总条数：" + page.getTotalElements());
-//        System.out.println("总页数：" + page.getTotalPages());
+// System.out.println("Total number of items: " + page.getTotalElements());
+// System.out.println("Total number of pages: " + page.getTotalPages());
 //        page.getContent().forEach(s -> {
 //            s.setJsonData(JSONObject.parseObject(s.getDataJsonStr()));
 //        });
@@ -491,7 +491,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         query.addCriteria(Criteria.where("reportId").is(dto.getReportId()));
 
 
-        // data_json 子字段条件
+        // data_json subfield conditions
         Map<String, Object> keyWordData = dto.getKeyWordData();
         if (keyWordData != null && !keyWordData.isEmpty()) {
             List<Criteria> orCriteriaList = new ArrayList<>();
@@ -507,7 +507,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
                 query.addCriteria(new Criteria().orOperator(orCriteriaList.toArray(new Criteria[0])));
             }
         }
-        // 分页信息
+        // Pagination information
         long total = mongoTemplate.count(query, CheckErrorData.class);
         List<CheckErrorData> content = mongoTemplate.find(query.with(pageRequest), CheckErrorData.class);
         content.forEach(s -> {
@@ -534,35 +534,35 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         Update update = new Update();
 
         switch (updateType) {
-            case "1": // 修改数据
+            case "1": // Modify data
 
                 if (dto.getUpdatedData() != null && !dto.getUpdatedData().isEmpty()) {
                     boolean success = updatePhysicalTable(dto);
                     if (!success) return false;
 
-                    //成功继续，不成功返回
+                    //Continue if successful, return if unsuccessful
                     update.set("data_json",JSONObject.toJSONString(dto.getUpdatedData()));
                     Map<String, Object> oldData = dto.getOldData();
                     String dataJsonStr = MapUtils.getString(oldData, "dataJsonStr");
                     Object jsonData = MapUtils.getObject(oldData, "jsonData");
                     String id = MapUtils.getString(oldData, "id");
-                    query.addCriteria(Criteria.where("id").is(id)); // Mongo 主键
-                    // 同步修改旧数据字段
+                    query.addCriteria(Criteria.where("id").is(id)); // Mongo primary key
+                    // Synchronously modify old data fields
                     update.set("data_json_old",dataJsonStr);
                     update.set("json_data_old",jsonData);
                     update.set("repair", "1");
                 }
                 break;
 
-            case "2": // 修改备注
+            case "2": // Modify remarks
                 if (dto.getId() == null) {
                     return false;
                 }
-                query.addCriteria(Criteria.where("id").is(dto.getId())); // Mongo 主键
+                query.addCriteria(Criteria.where("id").is(dto.getId())); // Mongo primary key
                 update.set("remark", dto.getRemark() == null ? "" : dto.getRemark());
                 break;
 
-            case "3": // 修改状态（repair 字段）
+            case "3": // Modify status (repair field)
                 if (CollectionUtils.isEmpty(dto.getErrorDataId())) {
                     return false;
                 }
@@ -606,7 +606,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             return false;
         }
 
-        // 取出 oldData 中的 jsonData 字段（Map<String, Object>）
+        // Get the jsonData field in oldData (Map<String, Object>)
         Object jsonDataObj = oldDataMap.get("jsonData");
         if (!(jsonDataObj instanceof Map)) {
             return false;
@@ -615,10 +615,10 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         @SuppressWarnings("unchecked")
         Map<String, Object> whereData = (Map<String, Object>) jsonDataObj;
 
-        // 表名（前提：已做白名单校验）
+        // Table name (prerequisite: whitelist verification has been done)
         String fullTable = buildFullTableName(dbQueryProperty,dto.getTableName());
 
-//        // SET 子句
+// // SET clause
 //        StringBuilder setClause = new StringBuilder();
 //        for (Map.Entry<String, Object> entry : updatedData.entrySet()) {
 //            if (setClause.length() > 0) setClause.append(", ");
@@ -626,7 +626,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 //                    .append(toSqlLiteral(entry.getValue()));
 //        }
 //
-//        // WHERE 子句（null -> IS NULL；集合 -> IN(...)）
+// // WHERE clause (null -> IS NULL; collection -> IN(...))
 //        StringBuilder whereClause = new StringBuilder();
 //        for (Map.Entry<String, Object> entry : whereData.entrySet()) {
 //            if (whereClause.length() > 0) whereClause.append(" AND ");
@@ -640,7 +640,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 //                    whereClause.append("IN (NULL)");
 //                } else {
 //                    whereClause.append("IN (")
-//                            // if toSqlLiteral 是 static：用 lambda 避免 this:: 报错
+// // if toSqlLiteral is static: use lambda to avoid this:: error
 //                            .append(col.stream().map(o -> toSqlLiteral(o))
 //                                    .collect(Collectors.joining(", ")))
 //                            .append(")");
@@ -694,18 +694,18 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return "'" + fmt.format((Date) v) + "'";
         }
-        // 默认当作字符串
+        // Defaults to string
         return "'" + escapeSql(v.toString()) + "'";
     }
     private static String escapeSql(String s) {
-        // 单引号 -> 两个单引号；反斜杠 -> 双反斜杠（若 NO_BACKSLASH_ESCAPES 开启，可仅替换单引号）
+        // Single quote -> two single quotes; backslash -> double backslash (if NO_BACKSLASH_ESCAPES is turned on, only single quotes can be replaced)
         return s.replace("\\", "\\\\").replace("'", "''");
     }
 
     /**
-     * 获取完整表名
-     * @param dbQueryProperty 数据源配置
-     * @return 完整表名
+     * Get the full table name
+     * @param dbQueryProperty data source configuration
+     * @return full table name
      */
     public static String buildFullTableName(DbQueryProperty dbQueryProperty, String tableName ) {
         String dbType = dbQueryProperty.getDbType();
@@ -713,16 +713,16 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         String sid = dbQueryProperty.getSid();
 
         if (StringUtils.equals(DbType.SQL_SERVER.getDb(), dbType)) {
-            // SQL Server 拼接方式：dbName.sid.tableName
+            // SQL Server splicing method: dbName.sid.tableName
             if (StringUtils.isNotBlank(dbName) && StringUtils.isNotBlank(sid)) {
                 return dbName + "." + sid + "." + tableName;
             } else if (StringUtils.isNotBlank(dbName)) {
-                return dbName + ".." + tableName; // 只拼库名
+                return dbName + ".." + tableName; // Just spell the database name
             } else {
-                return tableName; // 只表名
+                return tableName; // Only name
             }
         } else {
-            // 默认 MySQL 及其他，使用反引号
+            // Default MySQL and others, use backticks
             return StringUtils.isNotBlank(dbName)
                     ? "`" + dbName + "`.`" + tableName + "`"
                     : "`" + tableName + "`";
@@ -745,7 +745,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         return col + " = " + toSqlLiteral(val, dbType);
     }
 
-    // ========== 标识符引号 ==========
+    // ========== Identifier quotes ==========
     private static String openQuote(String dbType) {
         return StringUtils.equalsIgnoreCase(DbType.SQL_SERVER.getDb(), dbType) ? "[" : "`";
     }
@@ -753,7 +753,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         return StringUtils.equalsIgnoreCase(DbType.SQL_SERVER.getDb(), dbType) ? "]" : "`";
     }
 
-    // ========== 值转 SQL 字面量 ==========
+    // ========== Convert value to SQL literal ==========
     private static String toSqlLiteral(Object v, String dbType) {
         if (v == null) return "NULL";
 
@@ -834,7 +834,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
         rule.setDaDatasourceById(daDatasourceById);
         String checkSql = characterValidationGenerator.generateDataCheckSql(rule, queryReqDTO.getInputValue());
 
-        // 执行 SQL，取第一行第一列（0/1）
+        // Execute SQL and get the first row and first column (0/1)
         try (Connection conn = dbQuery.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(checkSql)) {
@@ -842,7 +842,7 @@ public class QualityTaskExecutorServiceImpl implements QualityTaskExecutorServic
 
             if (rs.next()) {
                 Object val = rs.getObject(1);
-                // 统一返回字符串 "0" / "1"
+                // Uniformly returns the string "0" / "1"
                 return val == null ? "0" : String.valueOf(val);
             }
             return "0";

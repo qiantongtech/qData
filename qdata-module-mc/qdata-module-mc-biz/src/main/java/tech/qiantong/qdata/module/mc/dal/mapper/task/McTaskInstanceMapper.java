@@ -11,7 +11,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.Arrays;
 
 /**
- * 采集任务实例Mapper接口
+ * Collection task instance Mapper interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -19,10 +19,10 @@ import java.util.Arrays;
 public interface McTaskInstanceMapper extends BaseMapperX<McTaskInstanceDO> {
 
 //    default PageResult<McTaskInstanceDO> selectPage(McTaskInstancePageReqVO reqVO) {
-//        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+// // Define the sorting field (prevent SQL injection, consistent with the database field name)
 //        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 //
-//        // 构造动态查询条件
+// //Construct dynamic query conditions
 //        return selectPage(reqVO, new LambdaQueryWrapperX<McTaskInstanceDO>()
 //                .eqIfPresent(McTaskInstanceDO::getDomainId, reqVO.getDomainId())
 //                .eqIfPresent(McTaskInstanceDO::getDomainCode, reqVO.getDomainCode())
@@ -42,9 +42,9 @@ public interface McTaskInstanceMapper extends BaseMapperX<McTaskInstanceDO> {
 //                .eqIfPresent(McTaskInstanceDO::getStatus, reqVO.getStatus())
 //                .eqIfPresent(McTaskInstanceDO::getCreateTime, reqVO.getCreateTime())
 //                .eqIfPresent(McTaskInstanceDO::getDescription, reqVO.getDescription())
-//                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+// // If reqVO.getName() is not empty, add the exact matching condition of name (name = '<name>')
 //                // .likeIfPresent(McTaskInstanceDO::getName, reqVO.getName())
-//                // 按照 createTime 字段降序排序
+// // Sort by createTime field in descending order
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
 //    }
 

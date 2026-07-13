@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 采集模式枚举
+ * Collection mode enumeration
  *
  * @author qdata
  * @date 2026-04-27
@@ -32,30 +32,30 @@ import lombok.Getter;
 public enum CollectionModeEnum {
 
     /**
-     * 全量采集
+     * Full collection
      */
     FULL("0", "全量采集"),
 
     /**
-     * 增量采集
+     * Incremental acquisition
      */
     INCREMENTAL("1", "增量采集");
 
     /**
-     * 采集模式值
+     * Acquisition mode value
      */
     private final String mode;
 
     /**
-     * 采集模式名称
+     * Collection mode name
      */
     private final String name;
 
     /**
-     * 根据模式值获取枚举
+     * Get enum based on pattern value
      *
-     * @param mode 模式值
-     * @return 枚举对象
+     * @param mode mode value
+     * @return enumeration object
      */
     public static CollectionModeEnum getByMode(String mode) {
         if (mode == null) {
@@ -70,20 +70,20 @@ public enum CollectionModeEnum {
     }
 
     /**
-     * 判断是否为全量采集
+     * Determine whether it is full collection
      *
-     * @param mode 模式值
-     * @return 是否为全量采集
+     * @param mode mode value
+     * @return Whether it is full collection
      */
     public static boolean isFull(String mode) {
         return FULL.getMode().equals(mode);
     }
 
     /**
-     * 判断是否为增量采集
+     * Determine whether it is incremental collection
      *
-     * @param mode 模式值
-     * @return 是否为增量采集
+     * @param mode mode value
+     * @return Whether it is incremental collection
      */
     public static boolean isIncremental(String mode) {
         return INCREMENTAL.getMode().equals(mode);

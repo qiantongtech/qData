@@ -28,10 +28,10 @@ import java.util.Date;
 public class LongDataColumn extends DataColumn {
 
     /**
-     * 从整形字符串表示转为LongColumn，支持Java科学计数法
+     * Convert from integer string representation to LongColumn, support Java scientific notation
      * <p>
      * NOTE: <br>
-     * 如果data为浮点类型的字符串表示，数据将会失真，请使用DoubleColumn对接浮点字符串
+     * If the data is a floating-point string representation, the data will be distorted. Please use DoubleColumn to connect the floating-point string.
      */
     public LongDataColumn(final String data) {
         super(null, Type.LONG, 0);
@@ -44,13 +44,13 @@ public class LongDataColumn extends DataColumn {
                     .toBigInteger();
             super.setRawData(rawData);
 
-            // 当 rawData 为[0-127]时，rawData.bitLength() < 8，导致其 byteSize = 0，简单起见，直接认为其长度为 data.length()
+            // When rawData is [0-127], rawData.bitLength() < 8, resulting in its byteSize = 0. For simplicity, its length is directly considered to be data.length()
             // super.setByteSize(rawData.bitLength() / 8);
             super.setByteSize(data.length());
         } catch (Exception e) {
 //			throw DataXException.asDataXException(
 //					CommonErrorCode.CONVERT_NOT_SUPPORT,
-//					String.format("String[%s]不能转为Long .", data));
+//	String.format("String[%s] cannot be converted to Long.", data));
         }
     }
 

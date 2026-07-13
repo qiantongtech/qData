@@ -26,7 +26,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * ai聊天对话 Request VO 对象 AI_CHAT_CONVERSATION
+ * ai chat conversation Request VO object AI_CHAT_CONVERSATION
  *
  * @author FXB
  * @date 2026-04-01
@@ -54,7 +54,7 @@ public class AiChatConversationPageReqVO extends PageParam {
     private Long datasourceId;
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @Schema(description = "数据源类型", example = "")
     private String datasourceType;
@@ -69,13 +69,13 @@ public class AiChatConversationPageReqVO extends PageParam {
     private String dimensionTable;
 
     /**
-     * 关联条件匹配状态;0：未匹配，1：已匹配
+     * Association condition matching status; 0: not matched, 1: matched
      */
     @Schema(description = "关联条件匹配状态;0：未匹配，1：已匹配", example = "")
     private Boolean joinConditionMatchFlag;
 
     /**
-     * 关联条件匹配类型;1：自动匹配 2:手动匹配
+     * Association condition matching type; 1: automatic matching 2: manual matching
      */
     @Schema(description = "关联条件匹配类型;1：自动匹配 2:手动匹配,字典：ai_chat_coversation_jcm_type", example = "")
     private String joinConditionMatchType;

@@ -27,7 +27,7 @@ import tech.qiantong.qdata.generator.mapper.GenTableColumnMapper;
 import java.util.List;
 
 /**
- * 业务字段 服务层实现
+ * Business field service layer implementation
  *
  * @author qdata
  */
@@ -38,10 +38,10 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	private GenTableColumnMapper genTableColumnMapper;
 
 	/**
-     * 查询业务字段列表
+     * Query business field list
      *
-     * @param tableId 业务字段编号
-     * @return 业务字段集合
+     * @param tableId business field number
+     * @return business field collection
      */
 	@Override
 	public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId)
@@ -50,10 +50,10 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	}
 
     /**
-     * 新增业务字段
+     * Add new business fields
      *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
+     * @param genTableColumn business field information
+     * @return result
      */
 	@Override
 	public int insertGenTableColumn(GenTableColumn genTableColumn)
@@ -62,10 +62,10 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	}
 
 	/**
-     * 修改业务字段
+     * Modify business fields
      *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
+     * @param genTableColumn business field information
+     * @return result
      */
 	@Override
 	public int updateGenTableColumn(GenTableColumn genTableColumn)
@@ -74,10 +74,10 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService
 	}
 
 	/**
-     * 删除业务字段对象
+     * Delete business field object
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data ID to be deleted
+     * @return result
      */
 	@Override
 	public int deleteGenTableColumnByIds(String ids)

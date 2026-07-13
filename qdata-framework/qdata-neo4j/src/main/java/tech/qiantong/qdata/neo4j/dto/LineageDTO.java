@@ -32,21 +32,21 @@ import java.util.Map;
 public class LineageDTO {
 
     /**
-     * 当前表节点
+     * Current table node
      */
     private TableNode currentTable;
 
     /**
-     * 所有Task节点
+     * All Task nodes
      */
     private List<TaskNode> tasks;
     /**
-     * 所有Table节点
+     * All Table nodes
      */
     private List<TableNode> tables;
 
     /**
-     * 节点关系
+     * Node relationship
      */
     private List<JSONObject> rels;
 }

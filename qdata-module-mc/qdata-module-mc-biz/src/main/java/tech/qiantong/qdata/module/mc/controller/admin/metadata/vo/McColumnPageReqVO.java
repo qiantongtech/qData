@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 元数据字段信息 Request VO 对象 MC_COLUMN
+ * Metadata field information Request VO object MC_COLUMN
  *
  * @author qdata
  * @date 2026-02-11
@@ -109,7 +109,7 @@ public class McColumnPageReqVO extends PageParam {
     private String sourceSystemName;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;

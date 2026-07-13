@@ -21,39 +21,39 @@ package tech.qiantong.qdata.config.web.domain.server;
 import tech.qiantong.qdata.common.utils.Arith;
 
 /**
- * CPU相关信息
+ * CPU related information
  *
  * @author qdata
  */
 public class Cpu
 {
     /**
-     * 核心数
+     * Number of cores
      */
     private int cpuNum;
 
     /**
-     * CPU总的使用率
+     * Total CPU usage
      */
     private double total;
 
     /**
-     * CPU系统使用率
+     * CPU system usage
      */
     private double sys;
 
     /**
-     * CPU用户使用率
+     * CPU user usage
      */
     private double used;
 
     /**
-     * CPU当前等待率
+     * CPU current wait rate
      */
     private double wait;
 
     /**
-     * CPU当前空闲率
+     * CPU current idle rate
      */
     private double free;
 

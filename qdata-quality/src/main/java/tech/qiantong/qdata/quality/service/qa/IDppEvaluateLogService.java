@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 评测规则结果Service接口
+ * Evaluation rule result Service interface
  *
  * @author qdata
  * @date 2025-07-21
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDppEvaluateLogService extends IService<DppEvaluateLogDO> {
 
     /**
-     * 获得评测规则结果分页列表
+     * Get a paginated list of evaluation rule results
      *
-     * @param pageReqVO 分页请求
-     * @return 评测规则结果分页列表
+     * @param pageReqVO paging request
+     * @return paging list of evaluation rule results
      */
     PageResult<DppEvaluateLogDO> getDppEvaluateLogPage(DppEvaluateLogPageReqVO pageReqVO);
 
     /**
-     * 创建评测规则结果
+     * Create evaluation rule results
      *
-     * @param createReqVO 评测规则结果信息
-     * @return 评测规则结果编号
+     * @param createReqVO evaluation rule result information
+     * @return evaluation rule result number
      */
     Long createDppEvaluateLog(DppEvaluateLogSaveReqVO createReqVO);
 
     /**
-     * 更新评测规则结果
+     * Update evaluation rule results
      *
-     * @param updateReqVO 评测规则结果信息
+     * @param updateReqVO evaluation rule result information
      */
     int updateDppEvaluateLog(DppEvaluateLogSaveReqVO updateReqVO);
 
     /**
-     * 删除评测规则结果
+     * Delete evaluation rule results
      *
-     * @param idList 评测规则结果编号
+     * @param idList evaluation rule result number
      */
     int removeDppEvaluateLog(Collection<Long> idList);
 
     /**
-     * 获得评测规则结果详情
+     * Get details of evaluation rules results
      *
-     * @param id 评测规则结果编号
-     * @return 评测规则结果
+     * @param id evaluation rule result number
+     * @return evaluation rule results
      */
     DppEvaluateLogDO getDppEvaluateLogById(Long id);
 
     /**
-     * 获得全部评测规则结果列表
+     * Get a list of all evaluation rule results
      *
-     * @return 评测规则结果列表
+     * @return Evaluation rule result list
      */
     List<DppEvaluateLogDO> getDppEvaluateLogList();
 
     /**
-     * 获得全部评测规则结果 Map
+     * Get all evaluation rule results Map
      *
-     * @return 评测规则结果 Map
+     * @return Evaluation rule results Map
      */
     Map<Long, DppEvaluateLogDO> getDppEvaluateLogMap();
 
 
     /**
-     * 导入评测规则结果数据
+     * Import evaluation rule result data
      *
-     * @param importExcelList 评测规则结果数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Evaluation rule result data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

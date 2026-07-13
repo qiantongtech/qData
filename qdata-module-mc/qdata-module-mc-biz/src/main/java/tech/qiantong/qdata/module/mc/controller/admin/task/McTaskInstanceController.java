@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 采集任务实例Controller
+ * Collection task instanceController
  *
  * @author qdata
  * @date 2025-12-16

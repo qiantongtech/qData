@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
- * 字段
+ * Field
  */
 public class SelectFieldsTransition implements Transition {
 
@@ -47,13 +47,13 @@ public class SelectFieldsTransition implements Transition {
 
         JSONArray removeFields = parameter.getJSONArray("removeFields");
 
-        // 原始列集合，便于做存在性校验与 keepOthers
+        // Original column set to facilitate existence verification and keepOthers
         Set<String> originalCols = new HashSet<>(Arrays.asList(dataset.columns()));
         Set<String> outputNames = new HashSet<>();
 
         Dataset<Row> result = dataset;
 
-        // 1. 字段选择 + 重命名 + 类型转换
+        // 1. Field selection + renaming + type conversion
         List<Column> selectedColumns = new ArrayList<>();
         Set<String> renameTargets = new HashSet<>();
 
@@ -62,8 +62,8 @@ public class SelectFieldsTransition implements Transition {
             String inputField = field.getString("inputField");
             String outputField = field.getString("outputField");
             String type = field.getString("type");
-            Integer length = field.getInteger("length");      // 长度，精度
-            Integer scale = field.getInteger("precision");   // 长度，精度
+            Integer length = field.getInteger("length");      // Length, accuracy
+            Integer scale = field.getInteger("precision");   // Length, accuracy
 
             if (outputField == null || outputField.trim().isEmpty()) {
                 throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.output.field.empty"));
@@ -75,7 +75,7 @@ public class SelectFieldsTransition implements Transition {
 
             Column col = functions.col(inputField);
 
-            // 类型转化
+            // Type conversion
             if (type != null) {
                 switch (type.toLowerCase()) {
                     case "string":
@@ -101,30 +101,30 @@ public class SelectFieldsTransition implements Transition {
                         col = col.cast(DataTypes.TimestampType);
                         break;
                     default:
-                        // 不处理未知类型
+                        // Don't handle unknown types
                 }
             }
 
-            // 精度、长度 处理
+            // Accuracy, length processing
             if (length != null || scale != null) {
                 switch (type.toLowerCase()) {
                     case "string":
                         if (length != null && length > 0) {
                             col = functions.substring(col, 1, length);
                         }
-                        // string 不处理 scale
+                        // string does not handle scale
                         break;
                     case "double":
                         if (scale != null && scale >= 0) {
                             col = functions.bround(col, scale);
                         }
-                        // double 不处理 length
+                        // double does not handle length
                         break;
                     case "int":
                     case "integer":
                         col = col.cast(DataTypes.IntegerType);
                         if (length != null && length > 0) {
-                            // 简单范围校验（如 length=3 表示允许 -999 ~ 999）
+                            // Simple range check (for example, length=3 means -999 ~ 999 is allowed)
                             int maxVal = (int) Math.pow(10, length) - 1;
                             int minVal = -maxVal;
                             col = functions.when(col.gt(maxVal), maxVal)
@@ -143,7 +143,7 @@ public class SelectFieldsTransition implements Transition {
                         }
                         break;
 
-                    // 其他数值/日期/布尔类型通常不做 length/scale 约束
+                    // Other numeric/date/boolean types usually do not have length/scale constraints
                     default:
                         // no-op
                 }
@@ -158,7 +158,7 @@ public class SelectFieldsTransition implements Transition {
             renameTargets.add(outputField);
         }
 
-        // 2. 执行 select 保留未声明的其他原始列 + 追加选定列（可能重名，后者会覆盖）
+        // 2. Execute select to retain other undeclared original columns + append selected columns (may have the same name, the latter will overwrite)
         List<String> otherCols = originalCols.stream()
                 .filter(c -> !outputNames.contains(c))
                 .collect(Collectors.toList());
@@ -169,7 +169,7 @@ public class SelectFieldsTransition implements Transition {
             result = result.withColumn(outName, c);
         }
 
-        // 3. 删除字段
+        // 3. Delete fields
         if (removeFields != null && !removeFields.isEmpty()) {
             for (int i = 0; i < removeFields.size(); i++) {
                 String fieldName = removeFields.getJSONObject(i).getString("inputField");

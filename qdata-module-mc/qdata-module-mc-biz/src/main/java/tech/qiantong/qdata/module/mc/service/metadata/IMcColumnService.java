@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 元数据字段信息Service接口
+ * Metadata field information Service interface
  *
  * @author qdata
  * @date 2026-02-11
@@ -21,58 +21,58 @@ import java.util.Map;
 public interface IMcColumnService extends IService<McColumnDO> {
 
     /**
-     * 获得元数据字段信息分页列表
+     * Get a paginated list of metadata field information
      *
-     * @param pageReqVO 分页请求
-     * @return 元数据字段信息分页列表
+     * @param pageReqVO paging request
+     * @return metadata field information paginated list
      */
     PageResult<McColumnDO> getMcColumnPage(McColumnPageReqVO pageReqVO);
 
     /**
-     * 创建元数据字段信息
+     * Create metadata field information
      *
-     * @param createReqVO 元数据字段信息信息
-     * @return 元数据字段信息编号
+     * @param createReqVO metadata field information
+     * @return metadata field information number
      */
     Long createMcColumn(McColumnSaveReqVO createReqVO);
 
     List<McColumnDO>  createMcColumnList(List<McColumnSaveReqVO> createReqVO);
 
     /**
-     * 更新元数据字段信息
+     * Update metadata field information
      *
-     * @param updateReqVO 元数据字段信息信息
+     * @param updateReqVO metadata field information information
      */
     int updateMcColumn(McColumnSaveReqVO updateReqVO);
 
     /**
-     * 删除元数据字段信息
+     * Delete metadata field information
      *
-     * @param idList 元数据字段信息编号
+     * @param idList metadata field information number
      */
     int removeMcColumn(Collection<Long> idList);
     int removeMcColumn(McColumnRespVO mcColumnRespVO);
 
     /**
-     * 获得元数据字段信息详情
+     * Get metadata field information details
      *
-     * @param id 元数据字段信息编号
-     * @return 元数据字段信息
+     * @param id metadata field information number
+     * @return metadata field information
      */
     McColumnRespVO getMcColumnById(Long id);
 
     /**
-     * 获得全部元数据字段信息列表
+     * Get a list of all metadata field information
      *
-     * @return 元数据字段信息列表
+     * @return metadata field information list
      */
     List<McColumnDO> getMcColumnList();
     List<McColumnRespVO> getMcColumnList(McColumnRespVO mcColumnRespVO);
 
     /**
-     * 获得全部元数据字段信息 Map
+     * Get all metadata field information Map
      *
-     * @return 元数据字段信息 Map
+     * @return Metadata field information Map
      */
     Map<Long, McColumnDO> getMcColumnMap();
 

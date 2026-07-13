@@ -34,11 +34,11 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * 拓展 MyBatis Plus Join QueryWrapper 类，主要增加如下功能：
+ * Expand the MyBatis Plus Join QueryWrapper class, mainly adding the following functions:
  * <p>
- * 1. 拼接条件的方法，增加 xxxIfPresent 方法，用于判断值不存在的时候，不要拼接到条件中。
+ * 1. For the method of splicing conditions, add the xxxIfPresent method. When it is used to judge that the value does not exist, do not splice it into the condition.
  *
- * @param <T> 数据类型
+ * @param <T> data type
  */
 public class MPJLambdaWrapperX<T> extends MPJLambdaWrapper<T> {
 
@@ -125,7 +125,7 @@ public class MPJLambdaWrapperX<T> extends MPJLambdaWrapper<T> {
         return betweenIfPresent(column, val1, val2);
     }
 
-    // ========== 重写父类方法，方便链式调用 ==========
+    // ========== Rewrite the parent class method to facilitate chain calls ==========
 
     @Override
     public <X> MPJLambdaWrapperX<T> eq(boolean condition, SFunction<X, ?> column, Object val) {

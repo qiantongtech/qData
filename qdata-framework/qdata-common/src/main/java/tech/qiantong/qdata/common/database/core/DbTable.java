@@ -24,12 +24,12 @@ import lombok.Data;
 public class DbTable {
 
     /**
-     * 表名
+     * Table name
      */
     private String tableName;
 
     /**
-     * 表注释
+     * Table annotation
      */
     private String tableComment;
 }

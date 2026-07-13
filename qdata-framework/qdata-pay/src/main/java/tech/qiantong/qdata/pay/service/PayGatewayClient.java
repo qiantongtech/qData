@@ -23,36 +23,36 @@ import tech.qiantong.qdata.pay.domain.*;
 import java.util.Map;
 
 /**
- * 接口定义了与支付网关集成的基本操作。
- * 该接口包括发起支付、退款、查询支付状态以及处理回调的方法。
+ * The interface defines the basic operations for integrating with payment gateways.
+ * This interface includes methods for initiating payment, refunding, querying payment status, and handling callbacks.
  * @author qdata
  */
 public interface PayGatewayClient {
 
     /**
-     * 发起支付请求。
-     * @param request 包含支付请求的详细信息
-     * @return 返回支付响应信息
+     * Initiate a payment request.
+     * @param request contains details of the payment request
+     * @return returns payment response information
      */
     PaymentResponse initiatePayment(PaymentRequest request);
 
     /**
-     * 发起退款请求。
-     * @param request 包含退款请求的详细信息
-     * @return 返回退款响应信息
+     * Initiate a refund request.
+     * @param request Contains details of the refund request
+     * @return returns refund response information
      */
     RefundResponse refund(RefundRequest request);
 
     /**
-     * 查询支付状态。
-     * @param paymentId 支付订单的唯一标识符
-     * @return 返回支付状态响应信息
+     * Check payment status.
+     * @param paymentId unique identifier of the payment order
+     * @return Returns payment status response information
      */
     PaymentStatusResponse queryStatus(String paymentId);
 
     /**
-     * 处理支付回调通知。
-     * @param parameters 包含回调通知的所有参数
+     * Handle payment callback notifications.
+     * @param parameters contains all parameters of the callback notification
      */
     Notification handleNotification(Map<String, String> parameters);
 }

@@ -152,9 +152,9 @@ class StringCast {
 }
 
 /**
- * 后续为了可维护性，可以考虑直接使用 apache 的DateFormatUtils.
+ * For maintainability in the future, you can consider using apache's DateFormatUtils directly.
  * <p>
- * 迟南已经修复了该问题，但是为了维护性，还是直接使用apache的内置函数
+ * Chi Nan has fixed this problem, but for maintainability, we still use Apache’s built-in functions directly.
  */
 class DateCast {
 

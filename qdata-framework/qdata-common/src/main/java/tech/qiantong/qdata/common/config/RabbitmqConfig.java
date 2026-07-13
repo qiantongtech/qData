@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <P>
- * 用途:读取rabbitmq相关配置
+ * Purpose: Read rabbitmq related configuration
  * </p>
  *
  * @author: FXB
@@ -35,22 +35,22 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "spring.rabbitmq")
 public class RabbitmqConfig {
     /**
-     * 项目名称
+     * Project name
      */
     private String host;
 
     /**
-     * 版本
+     * Version
      */
     private Integer port;
 
     /**
-     * 项目名称
+     * Project name
      */
     private String username;
 
     /**
-     * 项目名称
+     * Project name
      */
     private String password;
 }

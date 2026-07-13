@@ -27,7 +27,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据质量任务-评测规则 创建/修改 Request VO DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task-Evaluation Rules Create/Modify Request VO DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21

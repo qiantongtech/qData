@@ -53,7 +53,7 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
  * <P>
- * 用途:数据库输出
+ * Purpose: database output
  * </p>
  *
  * @author: FXB
@@ -71,25 +71,25 @@ public class DBWriter implements Writer {
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", writer.toJSONString(PrettyFormat)));
         JSONObject parameter = writer.getJSONObject("parameter");
-        //封装读取信息
+        //Encapsulate read information
         Map<String, String> writerOptions = DBUtils.getDbOptions(parameter);
 
-        //前置sql
+        //Pre-sql
         Integer batchSize = parameter.getInteger("batchSize");
 
-        //前置sql
+        //Pre-sql
         List<Object> preSql = parameter.getJSONArray("preSql");
 
-        //输入字段
+        //Input field
         List<Object> column = parameter.getJSONArray("column");
         List<String> readerColumns = column.stream().map(c -> (String) c).collect(Collectors.toList());
-        //输出字段
+        //Output fields
         List<Object> targetColumn = parameter.getJSONArray("target_column");
 
 
-        //后置sql
+        //Post sql
         List<Object> postSql = parameter.getJSONArray("postSql");
-        //写入类型 1 全量，2 追加写，3 增量更新
+        //Write type 1 full, 2 append write, 3 incremental update
         Integer writeModeType = parameter.getInteger("writeModeType");
         String writeMode = null;
         switch (writeModeType) {
@@ -107,9 +107,9 @@ public class DBWriter implements Writer {
                 break;
         }
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.mode.info", writeMode));
-        //增量更新主键
+        //Incremental update of primary key
         List<Object> selectedColumns = parameter.getJSONArray("selectedColumns");
-        //目标表名称
+        //Target table name
         String tableName = parameter.getJSONObject("connection").getString("table");
         String tmpTableName = null;
         if (writeModeType == 1) {
@@ -118,7 +118,7 @@ public class DBWriter implements Writer {
         }
         DbQueryProperty writerProperty = JSONObject.parseObject(parameter.getJSONObject("writerProperty").toString(), DbQueryProperty.class);
 
-        //创建连接
+        //Create connection
         DbQuery dbQuery = dataSourceFactory.createDbQuery(writerProperty);
         log.info(JSON.toJSONString(writerProperty));
         if (!dbQuery.valid()) {
@@ -128,7 +128,7 @@ public class DBWriter implements Writer {
         }
         Boolean success = true;
         try {
-            //创建临时表
+            //Create temporary table
             if (StringUtils.isNotBlank(tmpTableName)) {
                 LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.create.temp.table", tmpTableName));
                 log.info(MessageUtils.message("etl.writer.create.temp.table", tmpTableName));
@@ -139,7 +139,7 @@ public class DBWriter implements Writer {
                 }
             }
 
-            //执行前置sql
+            //Execute pre-sql
             if (preSql != null && preSql.size() > 0) {
                 preSql.forEach(sql -> {
                     dbQuery.execute(sql.toString());
@@ -147,7 +147,7 @@ public class DBWriter implements Writer {
                 LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.pre.sql", JSON.toJSONString(preSql)));
             }
 
-            //字段设置对应关系
+            //Field setting correspondence
             List<Column> cpColumnList = new ArrayList<>();
             for (int i = 0; i < readerColumns.size(); i++) {
                 cpColumnList.add(new Column(readerColumns.get(i)).as(targetColumn.get(i).toString()));
@@ -155,7 +155,7 @@ public class DBWriter implements Writer {
             dataset = dataset.select(cpColumnList.toArray(new Column[cpColumnList.size()]));
 
             Boolean flag = false;
-            //全量写或追加写
+            //Full write or append write
             if (writeModeType == 1 || writeModeType == 2) {
                 try {
                     dataset.write()
@@ -171,12 +171,12 @@ public class DBWriter implements Writer {
                 }
             }
 
-            //增量更新
+            //Incremental update
             if (writeModeType == 3) {
                 updateOrInsertModeType(dataset, dbQuery, writerProperty, batchSize, selectedColumns, targetColumn, tableName);
             }
 
-            //判断是否存在临时表
+            //Determine whether a temporary table exists
             if (StringUtils.isNotBlank(tmpTableName)) {
                 if (flag) {
                     if (StringUtils.equals(DbType.KINGBASE8.getDb(), writerProperty.getDbType())
@@ -190,12 +190,12 @@ public class DBWriter implements Writer {
                     }
                     writerOptions.put("dbtable", tmpTableName);
 
-                    //删除目标
+                    //Delete target
                     dbQuery.execute("DROP TABLE " + tableName);
                     log.info(MessageUtils.message("etl.writer.drop.target.table", tableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.target.table", tableName));
 
-                    //临时表名改为正式表
+                    //Change the temporary table name to a formal table
                     String repTableName = (StringUtils.isNotBlank(writerProperty.getDbName()) ? StringUtils.replace(tableName, writerProperty.getDbName() + ".", "") : tableName);
                     if (StringUtils.isNotBlank(writerProperty.getSid())) {
                         repTableName = StringUtils.replace(repTableName, writerProperty.getSid() + ".", "");
@@ -208,13 +208,13 @@ public class DBWriter implements Writer {
                     log.info(MessageUtils.message("etl.writer.rename.temp.table", tmpTableName, tableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.rename.temp.table", tmpTableName, tableName));
                 } else {
-                    //删除临时表
+                    //Delete temporary table
                     dbQuery.execute("DROP TABLE " + tmpTableName);
                     log.info(MessageUtils.message("etl.writer.drop.temp.table", tmpTableName));
                     LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.writer.drop.temp.table", tmpTableName));
                 }
             }
-            //执行后置sql
+            //Execute post sql
             if (postSql != null) {
                 postSql.forEach(sql -> {
                     dbQuery.execute(sql.toString());
@@ -238,7 +238,7 @@ public class DBWriter implements Writer {
     }
 
     /**
-     * 获取指定库表字段信息
+     * Get field information of specified database table
      *
      * @param conn
      * @param columns
@@ -444,8 +444,8 @@ public class DBWriter implements Writer {
                 pstmt.setBoolean(columnIndex + 1, dataColumn.asBoolean());
                 break;
 
-            // warn: bit(1) -> Types.BIT 可使用setBoolean
-            // warn: bit(>1) -> Types.VARBINARY 可使用setBytes
+            // warn: bit(1) -> Types.BIT You can use setBoolean
+            // warn: bit(>1) -> Types.VARBINARY can use setBytes
             case Types.BIT:
                 if (DbType.MYSQL.getDb().equals(dbType)) {
                     pstmt.setBoolean(columnIndex + 1, dataColumn.asBoolean());
@@ -458,7 +458,7 @@ public class DBWriter implements Writer {
 
 
     /***
-     * 处理追加模式
+     * Handle append mode
      * @param dataset
      * @param dbQuery
      * @param writerProperty
@@ -491,19 +491,19 @@ public class DBWriter implements Writer {
 
             columnList = recordOne;
         }
-        // 获取批处理数据
+        // Get batch data
         List<Row> rows = dataset.collectAsList();
-        // 如果没有数据则跳过
+        // Skip if no data
         if (rows.isEmpty()) {
             return false;
         }
-        // 连接数据库
+        // Connect to database
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(writerProperty.trainToJdbcUrl(), writerProperty.getUsername(), writerProperty.getPassword());
-            conn.setAutoCommit(false); // 禁用自动提交
+            conn.setAutoCommit(false); // Disable autocommit
             List<Row> writeBuffer = new ArrayList<>(batchSize);
-            //获取目标库字段类型列表
+            //Get the target database field type list
             Triple<List<String>, List<Integer>, List<String>> resultSetMetaData = getColumnMetaData(conn, columnList, writerProperty, tableName);
             for (Row row : rows) {
                 writeBuffer.add(row);
@@ -532,32 +532,32 @@ public class DBWriter implements Writer {
     }
 
     void doBatchInsert(DbQueryProperty writerProperty, List<Row> writeBuffer, Connection conn, String updateSql, List<String> columnList, Triple<List<String>, List<Integer>, List<String>> resultSetMetaData) throws SQLException {
-        // 创建 PreparedStatement
+        // Create PreparedStatement
         try (PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
 
             for (Row row : writeBuffer) {
-                Integer columnIndex = 0;//sql?下标
-                // 设置数据
+                Integer columnIndex = 0;//sql?subscript
+                // Set data
                 for (String o : columnList) {
-                    //当字段在row的下标
+                    //When the field is at the subscript of row
                     Integer index = row.fieldIndex(o);
                     Object value = row.get(index);
-                    //封装成 DataColumn
+                    //Encapsulated into DataColumn
                     DataColumn dataColumn = getColumn(value);
-                    //当前字段在目标字段下标
+                    //The current field is subscripted into the target field
                     Integer metaIndex = resultSetMetaData.getLeft().indexOf(o);
-                    //获取目标字段类型
+                    //Get target field type
                     int columnSqltype = resultSetMetaData.getMiddle().get(metaIndex);
-                    //获取目标字段类型名称
+                    //Get the target field type name
                     String typeName = resultSetMetaData.getRight().get(metaIndex);
                     fillPreparedStatementColumnType(pstmt, columnIndex, columnSqltype, typeName, dataColumn, resultSetMetaData, writerProperty.getDbType());
                     columnIndex++;
                 }
-                pstmt.addBatch(); // 添加到批量更新
+                pstmt.addBatch(); // Add to batch update
             }
-            // 执行批量更新
+            // Perform batch updates
             pstmt.executeBatch();
-            conn.commit(); // 提交事务
+            conn.commit(); // Commit transaction
         }
     }
 }

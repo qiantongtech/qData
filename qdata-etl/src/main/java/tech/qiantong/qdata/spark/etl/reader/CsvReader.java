@@ -34,7 +34,7 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
  * <P>
- * 用途:csv输入
+ * Purpose: csv input
  * </p>
  *
  * @author: FXB
@@ -49,18 +49,18 @@ public class CsvReader implements Reader {
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.reader.csv.start"));
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
         LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", reader.toJSONString(PrettyFormat)));
-        //参数信息
+        //Parameter information
         JSONObject parameter = reader.getJSONObject("parameter");
-        //字段
+        //Field
         List<Object> column = parameter.getJSONArray("column");
-        //csv 文件路径
+        //csv file path
         String path = parameter.getString("path");
 
         spark.conf().set("dfs.client.use.datanode.hostname", "true");
         Dataset<Row> dataset = spark.read()
                 .format("csv")
-                .option("header", "true") // 如果 CSV 文件有表头
-                .option("inferSchema", "true") // 自动推断数据类型
+                .option("header", "true") // If the CSV file has a header
+                .option("inferSchema", "true") // Automatically infer data types
                 .option("multiLine", "true")
                 .option("escape", "\"")
                 .load(path);

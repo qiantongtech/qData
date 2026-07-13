@@ -22,8 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * 类表示支付请求的响应数据。
- * 该类包含支付网关返回的结果信息。
+ * Class represents the response data for a payment request.
+ * This class contains the result information returned by the payment gateway.
  *
  * @author qdata
  */
@@ -32,20 +32,20 @@ import lombok.Data;
 public class PaymentResponse {
 
     /**
-     * 支付状态，表示支付是否成功或失败。
-     * 例如，“SUCCESS”表示成功，“FAILED”表示失败。
+     * Payment status, indicating whether the payment was successful or failed.
+     * For example, "SUCCESS" indicates success and "FAILED" indicates failure.
      */
     private String status;
 
     /**
-     * 支付跳转链接，用户可以通过此链接完成支付。
-     * 对于需要用户跳转的支付方式（如PC网页支付），此链接尤为重要。
+     * Payment jump link, users can complete payment through this link.
+     * This link is particularly important for payment methods that require users to jump (such as PC web payment).
      */
     private String paymentUrl;
 
     /**
-     * 商户系统中的订单唯一标识符。
-     * 用于标识该支付响应针对的订单。
+     * The order's unique identifier in the merchant's system.
+     * Used to identify the order for which this payment response is directed.
      */
     private String orderId;
 

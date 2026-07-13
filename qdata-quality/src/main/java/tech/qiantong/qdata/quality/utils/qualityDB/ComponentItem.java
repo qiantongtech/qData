@@ -35,7 +35,7 @@ import static tech.qiantong.qdata.quality.utils.quality.enums.CommonGenerator.*;
 
 /**
  * <P>
- * 用途:数据质量sql
+ * Purpose: data quality sql
  * </p>
  *
  * @create: 2025-03-12 16:29
@@ -47,10 +47,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 生成字符串类型校验的SQL（如身份证只允许数字和X）
-     * 规则编码：CHARACTER_VALIDATION
+     * Generate SQL for string type verification (for example, ID cards only allow numbers and X)
+     * Rule code: CHARACTER_VALIDATION
      * <p>
-     * 输出：错误数据数 + 总数
+     * Output: number of error data + total number
      */
     default String generateCharacterValidationSql(QualityRuleEntity rule) {
         String frag = fragCharacter(rule);
@@ -59,10 +59,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 生成字符串类型校验的错误数据SQL
-     * 规则编码：CHARACTER_VALIDATION
+     * Generating error data SQL for string type verification
+     * Rule code: CHARACTER_VALIDATION
      * <p>
-     * 输出：错误明细
+     * Output: error details
      */
     default String generateCharacterValidationErrorSql(QualityRuleEntity rule) {
         String frag = fragCharacter(rule);
@@ -71,15 +71,15 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 生成字符串类型校验的正常数据查询SQL（支持分页）
-     * 规则编码：CHARACTER_VALIDATION
+     * Generate normal data query SQL for string type verification (supports paging)
+     * Rule code: CHARACTER_VALIDATION
      * <p>
-     * 用于查询符合正则的数据明细
+     * Used to query data details that comply with regular rules
      *
-     * @param rule   质量规则实体，包含表名、字段名、正则
-     * @param limit  最大行数
-     * @param offset 偏移量（从第几行开始）
-     * @return SQL字符串
+     * @param rule quality rule entity, including table name, field name, regular expression
+     * @param limit maximum number of rows
+     * @param offset offset (from which line to start)
+     * @return SQL string
      */
     default String generateCharacterValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragCharacter(rule);
@@ -88,10 +88,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 多字段组合唯一性校验 - 错误统计 SQL
-     * 规则编码：COMPOSITE_UNIQUENESS_VALIDATION
+     * Multi-field combination uniqueness check - error statistics SQL
+     * Rule code: COMPOSITE_UNIQUNESS_VALIDATION
      * <p>
-     * 输出：组合字段重复数量 + 总记录数
+     * Output: Number of combined field repetitions + total number of records
      */
     default String generateCompositeUniquenessValidationSql(QualityRuleEntity rule) {
         String table = rule.getTableName();
@@ -122,10 +122,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 多字段组合唯一性校验 - 错误明细 SQL
-     * 规则编码：COMPOSITE_UNIQUENESS_VALIDATION
+     * Multi-field combination uniqueness check - error details SQL
+     * Rule code: COMPOSITE_UNIQUNESS_VALIDATION
      * <p>
-     * 输出：重复组合的记录
+     * Output: Repeated combination of records
      */
     default String generateCompositeUniquenessValidationErrorSql(QualityRuleEntity rule) {
         String table = rule.getTableName();
@@ -150,10 +150,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 多字段组合唯一性校验 - 正常数据 SQL（分页）
-     * 规则编码：COMPOSITE_UNIQUENESS_VALIDATION
+     * Multi-field combination uniqueness check - normal data SQL (paging)
+     * Rule code: COMPOSITE_UNIQUNESS_VALIDATION
      * <p>
-     * 输出：未重复组合数据明细（即组合唯一的记录）
+     * Output: Unduplicated combined data details (i.e. unique records in the combination)
      */
     default String generateCompositeUniquenessValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String table = rule.getTableName();
@@ -179,10 +179,10 @@ public interface ComponentItem extends QualityFragSql {
 
 
     /**
-     * 数值精度校验 - 错误统计 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - error statistics SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      * <p>
-     * 检查小数点后超过指定精度的数量，统计错误总数 + 全部记录数。
+     * Check the number after the decimal point that exceeds the specified precision, and count the total number of errors + the number of all records.
      */
     default String generateDecimalPrecisionValidationSql(QualityRuleEntity rule) {
         String frag = fragDecimalPrecision(rule);
@@ -191,10 +191,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 数值精度校验 - 错误明细 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - error details SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      * <p>
-     * 返回所有小数位数超出指定精度的记录。
+     * Returns all records with more decimal places than the specified precision.
      */
     default String generateDecimalPrecisionValidationErrorSql(QualityRuleEntity rule) {
         String frag = fragDecimalPrecision(rule);
@@ -203,10 +203,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 数值精度校验 - 正常数据分页 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - normal data paging SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      * <p>
-     * 返回所有符合小数精度要求的记录（不超过指定小数位数）。
+     * Returns all records that meet the decimal precision requirement (no more than the specified number of decimal places).
      */
     default String generateDecimalPrecisionValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragDecimalPrecision(rule);
@@ -215,10 +215,10 @@ public interface ComponentItem extends QualityFragSql {
      }
 
     /**
-     * 枚举值校验 - 错误统计 SQL
-     * 规则编码：ENUM_VALIDATION
+     * Enumeration value verification - error statistics SQL
+     * Rule code: ENUM_VALIDATION
      * <p>
-     * 检查字段值是否在指定枚举值列表内，统计不合法数量 + 总数。
+     * Check whether the field value is within the specified enumeration value list, and count the illegal number + total number.
      */
     default String generateEnumValidationSql(QualityRuleEntity rule) {
         String frag = fragEnum(rule);
@@ -227,10 +227,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 枚举值校验 - 错误明细 SQL
-     * 规则编码：ENUM_VALIDATION
+     * Enumeration value verification - error details SQL
+     * Rule code: ENUM_VALIDATION
      * <p>
-     * 返回字段值不在指定枚举列表中的记录。
+     * Returns records whose field values ​​are not in the specified enumeration list.
      */
     default String generateEnumValidationErrorSql(QualityRuleEntity rule) {
         String frag = fragEnum(rule);
@@ -239,10 +239,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 枚举值校验 - 正常数据分页 SQL
-     * 规则编码：ENUM_VALIDATION
+     * Enumeration value verification - normal data paging SQL
+     * Rule code: ENUM_VALIDATION
      * <p>
-     * 返回字段值在枚举列表中的记录，支持分页。
+     * Returns the records whose field values are in the enumeration list, and supports paging.
      */
     default String generateEnumValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragEnum(rule);
@@ -251,10 +251,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段长度范围校验 - 错误统计 SQL
-     * 规则编码：LENGTH_VALIDATION
+     * Field length range verification - error statistics SQL
+     * Rule code: LENGTH_VALIDATION
      * <p>
-     * 检查字段字符串长度是否超出 [min, max] 范围，返回错误数 + 总数。
+     * Checks whether the field string length exceeds the [min, max] range and returns the number of errors + total number.
      */
     default String generateLengthValidationSql(QualityRuleEntity rule) {
         String frag = fragLength(rule);
@@ -263,10 +263,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段长度范围校验 - 错误明细 SQL
-     * 规则编码：LENGTH_VALIDATION
+     * Field length range verification - error details SQL
+     * Rule code: LENGTH_VALIDATION
      * <p>
-     * 返回字段长度不在合法区间内的记录。
+     * Returns records whose field length is not within the legal range.
      */
     default String generateLengthValidationErrorSql(QualityRuleEntity rule) {
         String frag = fragLength(rule);
@@ -275,10 +275,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段长度范围校验 - 正常数据分页 SQL
-     * 规则编码：LENGTH_VALIDATION
+     * Field length range verification - normal data paging SQL
+     * Rule code: LENGTH_VALIDATION
      * <p>
-     * 返回字段长度在合法范围内的记录，支持分页。
+     * Returns records whose field length is within the legal range and supports paging.
      */
     default String generateLengthValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragLength(rule);
@@ -286,10 +286,10 @@ public interface ComponentItem extends QualityFragSql {
         return addPagination(generateDataSql(rule, frag), limit, offset);
     }
     /**
-     * 数值字段范围校验 - 错误统计 SQL
-     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * Numeric field range verification - error statistics SQL
+     * Rule code: NUMERIC_RANGE_VALIDATION
      * <p>
-     * 检查字段数值是否超出 [min, max] 范围，返回错误数量 + 总记录数。
+     * Check whether the field value exceeds the [min, max] range and return the number of errors + the total number of records.
      */
     default String generateNumericRangeValidationSql(QualityRuleEntity rule) {
         String frag = fragNumericRange(rule);
@@ -298,10 +298,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 数值字段范围校验 - 错误明细 SQL
-     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * Numeric field range verification - error details SQL
+     * Rule code: NUMERIC_RANGE_VALIDATION
      * <p>
-     * 返回字段值不在 [min, max] 范围内的记录。
+     * Returns records whose field values are not in the range [min, max].
      */
     default String generateNumericRangeValidationErrorSql(QualityRuleEntity rule) {
         String frag = fragNumericRange(rule);
@@ -310,10 +310,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 数值字段范围校验 - 正常数据分页 SQL
-     * 规则编码：NUMERIC_RANGE_VALIDATION
+     * Numeric field range verification - normal data paging SQL
+     * Rule code: NUMERIC_RANGE_VALIDATION
      * <p>
-     * 返回字段值在 [min, max] 范围内的记录，支持分页。
+     * Returns records whose field values are within the [min, max] range, and supports paging.
      */
     default String generateNumericRangeValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         String frag = fragNumericRange(rule);
@@ -341,10 +341,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段组完整性校验 - 错误统计 SQL
-     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * Field group integrity check - error statistics SQL
+     * Rule code: GROUP_FIELD_COMPLETENESS
      * <p>
-     * 检查字段组中是否存在任一字段为 NULL，统计错误数量和总数。
+     * Check whether any field in the field group is NULL, and count the number and total number of errors.
      */
     default String generateGroupFieldCompletenessSql(QualityRuleEntity rule) {
         List<String> columns = rule.getRuleColumns();
@@ -355,10 +355,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段组完整性校验 - 错误明细 SQL
-     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * Field group integrity check - error details SQL
+     * Rule code: GROUP_FIELD_COMPLETENESS
      * <p>
-     * 返回字段组中存在 NULL 值的记录明细。
+     * Returns details of records with NULL values in the field group.
      */
     default String generateGroupFieldCompletenessErrorSql(QualityRuleEntity rule) {
         List<String> columns = rule.getRuleColumns();
@@ -369,10 +369,10 @@ public interface ComponentItem extends QualityFragSql {
     }
 
     /**
-     * 字段组完整性校验 - 正常数据分页 SQL
-     * 规则编码：GROUP_FIELD_COMPLETENESS
+     * Field group integrity check - normal data paging SQL
+     * Rule code: GROUP_FIELD_COMPLETENESS
      * <p>
-     * 返回字段组中所有字段都非空的记录，支持分页。
+     * Returns records in which all fields in the field group are non-empty, and paging is supported.
      */
     default String generateGroupFieldCompletenessValidDataSql(QualityRuleEntity rule, int limit, int offset) {
         List<String> columns = rule.getRuleColumns();
@@ -385,25 +385,25 @@ public interface ComponentItem extends QualityFragSql {
 
 
     /**
-     * 生成字符串类型校验的SQL
-     * 只用于客户输入数据，点击检测的sql生成方法
+     * Generate SQL for string type verification
+     * Only used for customer input data, click detection sql generation method
      *
      * @param rule
      * @param inputValue
      * @return
      */
     default String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue){
-        // 1. 构造“输入值”的 SQL 表达式（防止直接拼 Java 变量）
+        // 1. Construct the SQL expression of "input value" (prevent direct spelling of Java variables)
         String valueExpr = "'" + inputValue.replace("'", "''") + "'";
 
-        // 2. 构造规则校验片段（基于输入值，而不是字段）
+        // 2. Construct a rule verification fragment (based on input values, not fields)
         String regex = (String) rule.getConfig().get("regex");
         String frag = regex(valueExpr, regex);
 
-        // 3. 处理是否忽略 NULL
+        // 3. Whether to ignore NULL when processing
 //        frag = neg(frag, rule);
 
-        // 4. 最终 SQL（只返回 0 / 1）
+        // 4. Final SQL (only returns 0 / 1)
         return new StringBuilder()
                 .append("SELECT CASE WHEN ")
                 .append(frag)

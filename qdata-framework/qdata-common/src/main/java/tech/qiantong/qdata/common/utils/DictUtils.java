@@ -28,22 +28,22 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 字典工具类
+ * Dictionary tool class
  *
  * @author qdata
  */
 public class DictUtils
 {
     /**
-     * 分隔符
+     * Delimiter
      */
     public static final String SEPARATOR = ",";
 
     /**
-     * 设置字典缓存
+     * Set up dictionary cache
      *
-     * @param key 参数键
-     * @param dictDatas 字典数据列表
+     * @param key parameter key
+     * @param dictDatas dictionary data list
      */
     public static void setDictCache(String key, List<SysDictData> dictDatas)
     {
@@ -51,10 +51,10 @@ public class DictUtils
     }
 
     /**
-     * 获取字典缓存
+     * Get dictionary cache
      *
-     * @param key 参数键
-     * @return dictDatas 字典数据列表
+     * @param key parameter key
+     * @return dictDatas dictionary data list
      */
     public static List<SysDictData> getDictCache(String key)
     {
@@ -67,11 +67,11 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型和字典值获取字典标签
+     * Get dictionary tags based on dictionary type and dictionary value
      *
-     * @param dictType 字典类型
-     * @param dictValue 字典值
-     * @return 字典标签
+     * @param dictType dictionary type
+     * @param dictValue dictionary value
+     * @return dictionary tag
      */
     public static String getDictLabel(String dictType, String dictValue)
     {
@@ -83,11 +83,11 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型和字典标签获取字典值
+     * Get dictionary value based on dictionary type and dictionary tag
      *
-     * @param dictType 字典类型
-     * @param dictLabel 字典标签
-     * @return 字典值
+     * @param dictType dictionary type
+     * @param dictLabel dictionary label
+     * @return dictionary value
      */
     public static String getDictValue(String dictType, String dictLabel)
     {
@@ -99,12 +99,12 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型和字典值获取字典标签
+     * Get dictionary tags based on dictionary type and dictionary value
      *
-     * @param dictType 字典类型
-     * @param dictValue 字典值
-     * @param separator 分隔符
-     * @return 字典标签
+     * @param dictType dictionary type
+     * @param dictValue dictionary value
+     * @param separator separator
+     * @return dictionary tag
      */
     public static String getDictLabel(String dictType, String dictValue, String separator)
     {
@@ -142,12 +142,12 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型和字典标签获取字典值
+     * Get dictionary value based on dictionary type and dictionary tag
      *
-     * @param dictType 字典类型
-     * @param dictLabel 字典标签
-     * @param separator 分隔符
-     * @return 字典值
+     * @param dictType dictionary type
+     * @param dictLabel dictionary label
+     * @param separator separator
+     * @return dictionary value
      */
     public static String getDictValue(String dictType, String dictLabel, String separator)
     {
@@ -185,10 +185,10 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型获取字典所有值
+     * Get all values of dictionary based on dictionary type
      *
-     * @param dictType 字典类型
-     * @return 字典值
+     * @param dictType dictionary type
+     * @return dictionary value
      */
     public static String getDictValues(String dictType)
     {
@@ -206,10 +206,10 @@ public class DictUtils
     }
 
     /**
-     * 根据字典类型获取字典所有标签
+     * Get all tags in the dictionary based on the dictionary type
      *
-     * @param dictType 字典类型
-     * @return 字典值
+     * @param dictType dictionary type
+     * @return dictionary value
      */
     public static String getDictLabels(String dictType)
     {
@@ -227,9 +227,9 @@ public class DictUtils
     }
 
     /**
-     * 删除指定字典缓存
+     * Delete the specified dictionary cache
      *
-     * @param key 字典键
+     * @param key dictionary key
      */
     public static void removeDictCache(String key)
     {
@@ -237,7 +237,7 @@ public class DictUtils
     }
 
     /**
-     * 清空字典缓存
+     * Clear dictionary cache
      */
     public static void clearDictCache()
     {
@@ -246,10 +246,10 @@ public class DictUtils
     }
 
     /**
-     * 设置cache key
+     * Set cache key
      *
-     * @param configKey 参数键
-     * @return 缓存键key
+     * @param configKey parameter key
+     * @return cache key key
      */
     public static String getCacheKey(String configKey)
     {

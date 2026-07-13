@@ -1,0 +1,89 @@
+name: "🤔 Usage Question"
+description: Ask a question, request help, or discuss best practices
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Questions are welcome. To help us assist you efficiently, please clearly describe your use case and specific question.
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have checked the official documentation but did not find an answer
+          required: true
+        - label: I have searched existing issues, including closed ones, and found no similar question
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Software version
+      description: The version you are currently using
+      placeholder: "Example: v1.2.3 / main branch"
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Runtime environment (optional)
+      description: Briefly describe your deployment method to help identify environment-specific issues.
+      placeholder: "Example: Docker deployment / Ubuntu 22.04 / Java 17 ..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Goal / use case
+      description: Describe your business context or the final outcome you want to achieve.
+      placeholder: |
+        Example:
+        I want to configure cluster mode in Kubernetes...
+        Or: I want to integrate a third-party OAuth login flow, and the current process is...
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Specific question
+      description: What is blocking you? Is a configuration option unclear, or is the actual behavior different from expected?
+      placeholder: "Please describe your question in detail..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: Attempts made
+      description: What have you already tried, and what happened? This helps us avoid suggesting the same things again.
+      placeholder: |
+        1. I tried changing the xxx parameter in config.yaml, but...
+        2. I followed the xxx section of the documentation, but found that...
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Relevant logs / configuration snippets
+      description: Paste relevant configuration snippets or key error log excerpts. Remember to redact sensitive information.
+      render: shell
+      placeholder: |
+        ```yaml
+        # Configuration snippet
+        server:
+          port: 8080
+        ```
+
+        ```text
+        # Error log excerpt
+        Error: address already in use...
+        ```
+    validations:
+      required: false

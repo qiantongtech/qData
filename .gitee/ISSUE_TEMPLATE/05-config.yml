@@ -1,9 +1,9 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💼 商业咨询
-    url: https://qdata.qiantong.tech/business.html
+    url: https://community.qdata.tech/business/policy.html
     about: 开源版授权 / 商业版授权 / OEM / 付费支持 / 定制开发 等
 
   - name: 🔒 安全漏洞
-    url: https://qdata.qiantong.tech/assets/image/wechat-qr.jpg
+    url: https://community.qdata.tech/assets/image/wechat-qr.jpg
     about: 请勿在公开 Issue 中披露安全问题，请通过邮件私下反馈

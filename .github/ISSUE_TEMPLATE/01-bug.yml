@@ -1,0 +1,88 @@
+name: 🐛 Bug Report
+description: Report a problem to help us reproduce, locate, and fix it quickly
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide reproducible steps, version/environment details, and relevant logs when possible.
+        ⚠️ Issues are public. Do not include passwords, tokens, phone numbers, or other sensitive information.
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have searched existing issues, including closed ones, and found no duplicates
+          required: true
+        - label: I confirm this issue does not contain sensitive information such as passwords, tokens, or phone numbers
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Provide the version, branch, or commit hash. More precise is better.
+      placeholder: "Example: v1.2.3 / main / 1a2b3c4"
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: A brief description is enough, such as deployment method, OS, and runtime.
+      placeholder: |
+        Deployment: Docker / source code / Kubernetes / other
+        OS: Ubuntu 22.04 / Windows 11 / macOS 14
+        Runtime: Java 8 / Node 20 / Python 3.11
+        Other: database / external dependencies / proxy
+    validations:
+      required: true
+
+  - type: textarea
+    id: desc
+    attributes:
+      label: Description
+      placeholder: "What happened? What is the impact? How often does it occur?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: "What behavior or result did you expect?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: "What actually happened? If there is an error, include the key details."
+    validations:
+      required: true
+
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Logs / screenshots (optional)
+      description: You can drag and drop screenshots or recordings. Please redact sensitive information from logs.
+      placeholder: |
+        1) Key logs. Relevant excerpts are preferred:
+        2) Screenshots / recordings:
+    validations:
+      required: false

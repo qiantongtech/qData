@@ -954,6 +954,11 @@ export default {
     executeFailed: '実行に失敗しました。管理者に連絡してください',
     confirmClone: 'タスク【{name}】をクローンしてもよろしいですか？',
     confirmDelete: 'データ統合タスク番号「{ids}」のデータを削除してもよろしいですか？',
+    unsupportedEngineSwitch: '現時点では切り替えはサポートされていません！',
+    upDs: 'DolphinSchedulerのスケジューラを起動してください！',
+    viewDeployDocs: "查デプロイドキュメントを確認する看部署文档",
+    dolphinSchedulerGuideDescription: '使用前に DolphinScheduler サービスが起動していることを確認してください',
+    quartzGuideDescription: "システムの組み込みコンポーネントによってタスクが実行されます"
   },
   metadataSelect: {
     selectMetadata: 'メタデータ選択',

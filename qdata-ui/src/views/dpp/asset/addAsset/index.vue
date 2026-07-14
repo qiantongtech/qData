@@ -298,13 +298,13 @@
         </div>
         <el-form-item :label="td('dpp.asset.add.tableType')" :label-position="labelPosition">
           <el-select
-            v-model="batchForm.tableType"
-            placeholder="{{ td('dpp.asset.add.noChange') }}"
-            class="full-width"
-            @change="handleBatchTableTypeChange"
+              v-model="batchForm.tableType"
+              :placeholder="td('dpp.asset.add.noChange')"
+              class="full-width"
+              @change="handleBatchTableTypeChange"
             clearable
           >
-            <el-option label="{{ td('dpp.asset.add.noChange') }}" :value="-1" />
+            <el-option :label="td('dpp.asset.add.noChange')" :value="-1" />
             <el-option
               v-for="item in table_type"
               :key="item.value"
@@ -356,7 +356,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.add.noChange') }}"
+            :placeholder="td('dpp.asset.add.noChange')"
             check-strictly
             filterable
             clearable
@@ -387,7 +387,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.add.noChange') }}"
+            :placeholder="td('dpp.asset.add.noChange')"
             check-strictly
             filterable
             clearable
@@ -416,7 +416,7 @@
             }"
             node-key="id"
             value-key="id"
-            placeholder="{{ td('dpp.asset.add.noChange') }}"
+            :placeholder="td('dpp.asset.add.noChange')"
             check-strictly
             filterable
             clearable
@@ -427,11 +427,11 @@
         <el-form-item :label="td('dpp.asset.add.tableCase')" :label-position="labelPosition">
           <el-select
             v-model="batchForm.tableCase"
-            placeholder="{{ td('dpp.asset.add.noChange') }}"
+            :placeholder="td('dpp.asset.add.noChange')"
             class="full-width"
             clearable
           >
-            <el-option label="{{ td('dpp.asset.add.noChange') }}" :value="-1" />
+            <el-option :label="td('dpp.asset.add.noChange')" :value="-1" />
             <el-option
               v-for="item in table_name_case"
               :key="item.value"

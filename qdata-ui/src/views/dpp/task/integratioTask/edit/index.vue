@@ -640,7 +640,7 @@ const handleExportData = async (localSave) => {
     };
     // Determine whether to update or create
     const res =
-      localSave || nodeData.value?.dsId > 0
+      localSave || (nodeData.value?.dsId > 0 || nodeData.value?.quartzId > 0)
         ? await updateProcessDefinitions(
             {
               ...exportData2.value,
@@ -817,7 +817,7 @@ function handleEdgeClick({ cell }) {
 // / Handle node addition event
 async function handleNodeAdded({ node }) {
   if (!node.data.code) {
-    node.data.code = await fetchNodeUniqueKey();
+    node.data.code = await fetchNodeUniqueKey({ scheduler: nodeData.value.taskConfig.scheduler});
   }
 
   if (!loading.value) {

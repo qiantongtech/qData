@@ -437,8 +437,6 @@ export const validateGraph = (graph, flag) => {
     }
   };
 
-
-
   // All nodes cycle check
   nodes.forEach((node) => {
     const { data } = node;
@@ -483,7 +481,6 @@ export const validateGraph = (graph, flag) => {
     valid = false;
     addErrorMessage(td('dpp.utils.missingOutput'));
   }
-
 
   if (errorMessages.length > 0 && !flag) {
     ElMessage.warning(errorMessages[0]);
@@ -575,9 +572,10 @@ export const renderGraph = (graph, savedData, width) => {
   });
 };
 // Get code
-export const fetchNodeUniqueKey = async () => {
+export const fetchNodeUniqueKey = async ({scheduler}) => {
   try {
     const response = await getNodeUniqueKey({
+      scheduler: scheduler,
       projectCode: userStore.projectCode || "133545087166112",
       projectId: userStore.projectId,
     });

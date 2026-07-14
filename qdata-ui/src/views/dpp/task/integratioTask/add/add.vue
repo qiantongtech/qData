@@ -23,6 +23,7 @@
     class="dialog"
     :title="title"
     destroy-on-close
+    width="60%"
     :append-to="$refs['app-container']"
   >
     <el-form
@@ -136,6 +137,38 @@
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-form-item
+              :label="td('dpp.integratioTask.scheduler', '调度器')"
+              prop="scheduler"
+              :label-position="labelPosition"
+          >
+            <el-radio-group
+                v-if="title != td('dpp.integratioTask.taskDetail')"
+                class="el-form-input-width"
+                v-model="form.scheduler"
+                @change="handleSchedulerChange"
+                style="width: 100%"
+            >
+              <el-radio
+                  v-for="(item, index) in scheduler_type"
+                  :key="index"
+                  :value="item.value"
+                  :label="item.label"
+              >
+                {{ item.label }}
+              </el-radio>
+            </el-radio-group>
+            <div class="form-readonly" v-else>{{ form.scheduler || "-" }}</div>
+            <p style="display: flex;align-items: center;line-height: 1;font-size: 12px;color: #888; margin-top: 10px;">
+              {{ schedulerGuide.description }}
+            </p>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integratioTask.responsiblePerson', '责任人')"
@@ -350,8 +383,16 @@
               v-model="form.taskType"
               class="el-form-input-width"
               :disabled="props.data.id"
+              @change="handleExecutionEngineChange"
             >
-              <el-radio label="SPARK"> SPARK </el-radio>
+              <el-radio
+                v-for="(item, index) in schedulerTypeList"
+                :key="index"
+                :value="item.value"
+                :label="item.label"
+              >
+                {{ item.label }}
+              </el-radio>
             </el-radio-group>
             <div class="form-readonly" v-else>{{ form.taskType || "-" }}</div>
           </el-form-item>
@@ -548,6 +589,7 @@
 </template>
 
 <script setup>
+import { checkApi } from "@/api/ds/api/api.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import Crontab from "@/components/Crontab/index.vue";
@@ -556,10 +598,14 @@ const {
   dpp_etl_task_execution_type,
   dpp_etl_task_status,
   dpp_etl_task_priority,
+  scheduler_type,
+  actuator_type
 } = proxy.useDict(
   "dpp_etl_task_execution_type",
   "dpp_etl_task_status",
-  "dpp_etl_task_priority"
+  "dpp_etl_task_priority",
+    "scheduler_type",
+    "actuator_type"
 );
 import { useRoute, useRouter } from "vue-router";
 
@@ -577,6 +623,15 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:visible", "confirm", "save"]);
+
+const schedulerTypeList = ref([]);
+const updateSchedulerTypeList = () => {
+  schedulerTypeList.value = actuator_type.value.filter((item) =>
+    form.value.scheduler === "QUARTZ"
+      ? item.value === "DATAX"
+      : item.value !== "DATAX"
+  );
+};
 
 // Define form validation rules
 const rules = {
@@ -604,6 +659,13 @@ const rules = {
       trigger: "change",
     },
   ],
+  scheduler: [
+    {
+      required: true,
+      message: td("dpp.integratioTask.selectScheduler", "调度器不能为空"),
+      trigger: "change",
+    },
+  ],
   crontab: [
     {
       required: true,
@@ -611,8 +673,9 @@ const rules = {
       trigger: "change",
     },
   ],
+
   // releaseState: [{ required: true, message: "Task status cannot be empty", trigger: "change" }],
-  engine: [
+  taskType: [
     {
       required: true,
       message: td("dpp.integratioTask.executionEngine", "执行引擎不能为空"),
@@ -635,6 +698,8 @@ const form = ref({
   name: "",
   catCode: "", // Can be initialized to empty or set to default value
   executionType: "PARALLEL", // Initialized to empty or default value
+  scheduler: "QUARTZ",
+  actuator: "DATAX",
   crontab: "",
   releaseState: "0",
   description: "",
@@ -646,7 +711,7 @@ const form = ref({
   failRetryTimes: "",
   failRetryInterval: "",
   delayTime: "",
-  taskType: "SPARK",
+  taskType: "DATAX",
   // Fink configuration
   jobManagerMemory: "1G",
   taskManagerMemory: "2G",
@@ -662,11 +727,31 @@ const form = ref({
   yarnQueue: "",
 });
 
+const schedulerGuide = computed(() => {
+  if (form.value.scheduler === "DOLPHINSCHEDULER") {
+    return {
+      description: td(
+        "dpp.integratioTask.dolphinSchedulerGuideDescription",
+        "使用前请确保 DolphinScheduler 服务已启动。"
+      ),
+    };
+  }
+
+  return {
+    description: td(
+      "dpp.integratioTask.quartzGuideDescription",
+      "由系统内置组件执行任务。"
+    ),
+  };
+});
+
 const reset = () => {
   proxy.resetForm("daDiscoveryTaskRef");
   form.value = {
     name: "",
     catId: "",
+    scheduler: "QUARTZ",
+    actuator: "DATAX",
     catCode: "", // Can be initialized to empty or set to default value
     executionType: "PARALLEL", // Initialized to empty or default value
     crontab: "",
@@ -680,7 +765,7 @@ const reset = () => {
     failRetryTimes: "",
     failRetryInterval: "",
     delayTime: "",
-    taskType: "SPARK",
+    taskType: "DATAX",
     // Fink configuration
     jobManagerMemory: "1G",
     taskManagerMemory: "2G",
@@ -705,10 +790,18 @@ watch(
         console.log("🚀 ~ props.data.taskConfig:", props.data.taskConfig);
         let draftJson = JSON.parse(data.draftJson);
         form.value = { ...data, ...draftJson };
+        // 兼容老任务：以前没有 scheduler/actuator 时，默认还是走 DS + Spark。
+        form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
+        form.value.taskType = form.value.actuator == "DATAX" ? "DATAX" : form.value.taskType || "SPARK";
+        updateSchedulerTypeList();
+        syncActuatorByEngine();
+        enforceQuartzDataX();
         form.value.personCharge = Number(form.value.personCharge) || "";
         form.value.crontab = props?.data.taskConfig?.crontab;
       } else {
         form.value.catCode = props?.catCode || "";
+        updateSchedulerTypeList();
+        syncActuatorByEngine();
       }
     } else {
       reset();
@@ -718,6 +811,44 @@ watch(
 const handleNodeClick = (val) => {
   console.log("Task category changed; current value:", val);
   form.value.catId = val.id;
+};
+
+/**
+ * DolphinScheduler
+ * @returns {Promise<void>}
+ */
+const handleSchedulerChange = async () => {
+  updateSchedulerTypeList();
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.taskType = "DATAX";
+  } else {
+    form.value.taskType = "SPARK";
+  }
+  syncActuatorByEngine();
+};
+
+watch(actuator_type, updateSchedulerTypeList, { immediate: true });
+
+const handleExecutionEngineChange = (value) => {
+  if (form.value.scheduler != "QUARTZ" && value == "DATAX") {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    form.value.taskType = "SPARK";
+  }
+  if (form.value.scheduler == "QUARTZ" && value != "DATAX") {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    form.value.taskType = "DATAX";
+  }
+  syncActuatorByEngine();
+};
+
+const enforceQuartzDataX = () => {
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.taskType = "DATAX";
+  }
+};
+
+const syncActuatorByEngine = () => {
+  form.value.actuator = form.value.taskType == "DATAX" ? "DATAX" : "SPARK";
 };
 // Computed property handling v-model
 const visibleDialog = computed({
@@ -732,9 +863,13 @@ let daDiscoveryTaskRef = ref();
 const closeDialog = () => {
   emit("update:visible", false);
 };
-const saveClose = () => {
+const saveClose = async () => {
+  if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    return;
+  }
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
+      syncActuatorByEngine();
       emit("save", form.value);
       emit("update:visible", false);
     } else {
@@ -743,9 +878,13 @@ const saveClose = () => {
   });
 };
 // How to save data
-const saveData = () => {
+const saveData = async () => {
+  if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    return;
+  }
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
+      syncActuatorByEngine();
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
@@ -753,6 +892,18 @@ const saveData = () => {
     }
   });
 };
+
+/**
+ * check dolphinscheduler api
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const checkDSUpStart = async () => {
+  const resp = await checkApi();
+  if (!resp.data) {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+  }
+  return resp.data;
+}
 
 let openCron = ref(false);
 const expression = ref("");

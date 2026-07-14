@@ -92,7 +92,6 @@ public class DppEtlTaskDO extends BaseEntity {
     /** Contact number */
     private String contactNumber;
 
-
     /** Node location info */
     private String locations;
 
@@ -117,7 +116,16 @@ public class DppEtlTaskDO extends BaseEntity {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Valid flag */
+    /** Quartz调度任务id，任务表也保存一份，方便按任务直接找到对应的 Quartz Job。 */
+    private Long quartzId;
+
+    /** 调度器 */
+    private String scheduler;
+
+    /** 执行器 */
+    private String actuator;
+
+    /** 是否有效 */
     private Boolean validFlag;
 
     /** Delete flag */

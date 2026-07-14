@@ -602,9 +602,12 @@ public class DaDiscoveryTaskServiceImpl extends ServiceImpl<DaDiscoveryTaskMappe
 
         DsStartTaskReqDTO dsStartTaskReqDTO = DaTaskConverter.createDsStartTaskReqDTO(daDiscoveryTaskDO.getTaskCode());
 
-        DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(dsStartTaskReqDTO, projectCode);
-
-        return dsStatusRespDTO.getSuccess() ? success() : error(dsStatusRespDTO.getMsg());
+        try {
+            DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(dsStartTaskReqDTO, projectCode);
+            return dsStatusRespDTO.getSuccess() ? success() : error(dsStatusRespDTO.getMsg());
+        } catch (Exception e) {
+            throw new ServiceException("dpp.error.scheduler.start", "执行调度器，失败！");
+        }
     }
 
 

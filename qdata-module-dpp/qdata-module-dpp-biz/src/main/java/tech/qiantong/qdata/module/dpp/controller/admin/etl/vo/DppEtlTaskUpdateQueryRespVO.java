@@ -107,6 +107,12 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
+    @Schema(description = "调度器", example = "")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "")
+    private String actuator;
+
     @Excel(name = "Timeout")
     @Schema(description = "Timeout", example = "")
     private Long timeout;
@@ -126,6 +132,11 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Excel(name = "DolphinScheduler ID")
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
+
+    // 编辑详情也返回 Quartz Job id，页面排查调度绑定关系时不用再单独查调度表。
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
 
     @Excel(name = "Valid")
     @Schema(description = "Valid", example = "")
@@ -215,6 +226,10 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.locations = parseList(dppEtlTaskDO.getLocations());
         this.description = dppEtlTaskDO.getDescription();
         this.executionType = dppEtlTaskDO.getExecutionType();
+        // 任务表里保存了一份 Quartz Job id，这里同步带到编辑详情。
+        this.quartzId = dppEtlTaskDO.getQuartzId();
+        this.scheduler = dppEtlTaskDO.getScheduler();
+        this.actuator = dppEtlTaskDO.getActuator();
         this.timeout = dppEtlTaskDO.getTimeout();
         this.extractionCount = dppEtlTaskDO.getExtractionCount();
         this.writeCount = dppEtlTaskDO.getWriteCount();
@@ -328,6 +343,8 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         taskConfig.put("description", this.description); // Get description from itself
         taskConfig.put("name", this.name); // Get task name from itself
         taskConfig.put("executionType", this.executionType); // Get execution type from itself
+        taskConfig.put("scheduler", this.scheduler);
+        taskConfig.put("actuator", this.actuator);
         taskConfig.put("crontab", this.crontab); // Fixed crontab expression
         taskConfig.put("personCharge", this.personCharge); // Person in charge
         taskConfig.put("contactNumber", this.contactNumber); // Contact number

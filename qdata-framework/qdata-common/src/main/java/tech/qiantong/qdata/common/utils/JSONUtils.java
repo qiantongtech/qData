@@ -479,4 +479,22 @@ public final class JSONUtils {
             return -1;
         }
     }
+
+    /**
+     * 格式化 JSON 字符串
+     *
+     * @param json 原始 JSON 字符串
+     * @return 格式化后的 JSON 字符串
+     */
+    public static String formatJson(String json) {
+        try {
+            Object jsonObject = objectMapper.readValue(json, Object.class);
+
+            return objectMapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(jsonObject);
+        } catch (Exception e) {
+            throw new RuntimeException("JSON 格式化失败，请检查 JSON 内容是否正确", e);
+        }
+    }
 }

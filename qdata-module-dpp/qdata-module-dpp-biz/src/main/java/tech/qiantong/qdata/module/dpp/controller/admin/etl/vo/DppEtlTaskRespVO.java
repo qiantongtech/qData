@@ -121,6 +121,19 @@ public class DppEtlTaskRespVO implements Serializable {
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
+    // 任务详情返回 Quartz Job id，页面或接口排查调度问题时能看到任务绑定的是哪条 Quartz 任务。
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
+    @Excel(name = "调度器")
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Excel(name = "执行器")
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
+
     @Excel(name = "Valid")
     @Schema(description = "Valid", example = "")
     private Boolean validFlag;

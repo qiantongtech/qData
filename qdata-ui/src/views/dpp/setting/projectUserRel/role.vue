@@ -502,11 +502,26 @@ const data = reactive({
         message: td("dpp.setting.projectUserRel.roleKeyRequired"),
         trigger: "blur",
       },
+      {
+        pattern: /^[a-zA-Z0-9_:]+$/,
+        message: td("dpp.setting.projectUserRel.roleKeyInvalid", "权限字符仅支持字母、数字、下划线和冒号"),
+        trigger: "blur",
+      },
     ],
     roleSort: [
       {
         required: true,
         message: td("dpp.setting.projectUserRel.roleSortRequired"),
+        trigger: "blur",
+      },
+      {
+        validator: (_rule, value, callback) => {
+          if (!Number.isInteger(Number(value)) || Number(value) < 0) {
+            callback(new Error(td("dpp.setting.projectUserRel.roleSortInvalid", "显示顺序不合法，请输入非负整数")));
+          } else {
+            callback();
+          }
+        },
         trigger: "blur",
       },
     ],

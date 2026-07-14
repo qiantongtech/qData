@@ -125,7 +125,7 @@
             v-model:limit="queryParams.pageSize" @pagination="getList" />
       </div>
 
-      <!-- 添加或修改公告对话框 -->
+      <!-- Add or modify the bulletin dialog -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
          destroy-on-close>
          <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -238,15 +238,15 @@ const data = reactive({
    },
    rules: {
       noticeTitle: [{ required: true, message: td('sys.system.notice.noticeTitleRequired'), trigger: "blur" }],
-      // alertFlag: [{ required: true, message: "是否弹窗不能为空", trigger: "blur" }],
-      // topFlag: [{ required: true, message: "是否置顶不能为空", trigger: "blur" }],
+      // AlertFlag: [ {required: true, message: "Wasn't the window empty," trigger: "blur"},
+      // TopFlag: [ {required: true, message: "Is the top not empty," trigger: "blur"},
       noticeType: [{ required: true, message: td('sys.system.notice.noticeTypeRequired'), trigger: "change" }]
    },
 });
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询公告列表 */
+/** Query Bulletin List */
 function getList() {
    loading.value = true;
    listNotice(queryParams.value).then(response => {
@@ -256,13 +256,13 @@ function getList() {
    });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
    open.value = false;
    reset();
 }
 
-/** 表单重置 */
+/** Form Reset */
 function reset() {
    form.value = {
       noticeId: undefined,
@@ -280,33 +280,33 @@ function reset() {
    proxy.resetForm("noticeRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
    queryParams.value.pageNum = 1;
    getList();
 }
 
-/** 重置按钮操作 */
+/** Reset button operations */
 function resetQuery() {
    proxy.resetForm("queryRef");
    handleQuery();
 }
 
-/** 多选框选中数据 */
+/** Multiple box selected data */
 function handleSelectionChange(selection) {
    ids.value = selection.map(item => item.noticeId);
    single.value = selection.length != 1;
    multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
    reset();
    open.value = true;
    title.value = td('sys.system.notice.addTitle');
 }
 
-/**修改按钮操作 */
+/**Modify button operation */
 function handleUpdate(row) {
    reset();
    const noticeId = row.noticeId || ids.value;
@@ -325,11 +325,11 @@ function handleView(row) {
    router.push({ path: '/sys/system/notice/detail', query: { id: row.noticeId } });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
    if (submitLoading.value) return;
    submitLoading.value = true;
-   // 将 dateRange 拆分为字段
+   // Split dateRange into fields
    form.value.alertStartTime = dateRange.value?.[0] || null;
    form.value.alertEndTime = dateRange.value?.[1] || null;
 
@@ -360,7 +360,7 @@ function submitForm() {
    });
 }
 
-/** 删除按钮操作 */
+/** Remove button operation */
 function handleDelete(row) {
    const noticeIds = row.noticeId || ids.value
    proxy.$modal.confirm(td('sys.system.notice.confirmDelete', { id: noticeIds })).then(function () {

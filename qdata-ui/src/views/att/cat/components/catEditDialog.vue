@@ -144,6 +144,7 @@ import { useI18n } from 'vue-i18n'
  */
 
 import { ref, computed, nextTick } from "vue";
+import { ElMessageBox } from "element-plus";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
@@ -160,6 +161,7 @@ const nameLabel = ref(td('att.common.categoryName'));
 const treeOptions = ref([]);
 const customRules = ref(null);
 const dialogType = ref("");
+const oldParentId = ref();
 
 // Default form data
 const defaultForm = {
@@ -186,14 +188,37 @@ const defaultRules = {
 
 // Compute final rules to use, preferring passed-in customRules
 const currentRules = computed(() => {
-  if (customRules.value) {
-    return customRules.value;
-  }
-  // Dynamically update messages in default rules
-  const rules = JSON.parse(JSON.stringify(defaultRules));
+  const rules = customRules.value
+    ? Object.fromEntries(Object.entries(customRules.value).map(([key, value]) => [key, [...value]]))
+    : JSON.parse(JSON.stringify(defaultRules));
   if (rules.name && rules.name[0]) {
     rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
   }
+  rules.name = [
+    ...(rules.name || []),
+    {
+      validator: (_rule, value, callback) => {
+        const name = String(value || "");
+        if (/\s/.test(name)) return callback(new Error('类目名称不能包含空白字符'));
+        if (!/[A-Za-z0-9\u4e00-\u9fa5]/.test(name)) return callback(new Error('类目名称不能仅由符号组成'));
+        callback();
+      },
+      trigger: "blur",
+    },
+    { max: 50, message: '类目名称长度不能超过50个字符', trigger: "blur" },
+  ];
+  rules.sortOrder = [
+    {
+      validator: (_rule, value, callback) => {
+        if (!Number.isInteger(Number(value)) || Number(value) < 0) {
+          callback(new Error('排序值不合法，请输入非负整数'));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur",
+    },
+  ];
   return rules;
 });
 
@@ -215,8 +240,10 @@ const open = (options = {}) => {
     form.value = JSON.parse(
       JSON.stringify({ ...defaultForm, ...options.form })
     );
+    oldParentId.value = form.value.parentId;
   } else {
     form.value = JSON.parse(JSON.stringify(defaultForm));
+    oldParentId.value = form.value.parentId;
   }
 
   visible.value = true;
@@ -233,12 +260,21 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  formRef.value?.validate((valid) => {
+  const submit = () => formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       emit("submit", JSON.parse(JSON.stringify(form.value)));
     }
   });
+  if (form.value.id && form.value.parentId !== oldParentId.value) {
+    ElMessageBox.confirm(
+      '修改上级类目会影响该类目下任务的归属路径，请确认。',
+      '系统提示',
+      { type: 'warning' }
+    ).then(submit).catch(() => {});
+    return;
+  }
+  submit();
 };
 
 const close = () => {

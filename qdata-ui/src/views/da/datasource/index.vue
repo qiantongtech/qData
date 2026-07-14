@@ -86,13 +86,13 @@
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:dataSource:edit']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
+          <!--             <i class = "iconfont-mini econ-xiugai & #45; copy mr5">/i>-->
           <!--           </el-button>-->
           <!--         </el-col>-->
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:dataSource:remove']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
+          <!--             <i calass="iconfont-mini icon-shanchu-huise mr5">/i>-->
           <!--           </el-button>-->
           <!--         </el-col>-->
         </el-row>
@@ -996,7 +996,7 @@ const projectIdAndCodeList = ref([]);
 const route = useRoute();
 let type = route.query.type || null;
 
-/*** 用户导入参数 */
+/*** User Import Parameters */
 const upload = reactive({
   // Whether to show the popup layer (user import)
   open: false,
@@ -1084,7 +1084,7 @@ const data = reactive({
       { required: true, message: td('da.datasource.dbNameRequired'), trigger: "blur" },
       // {
       //   pattern: /^[^\u4e00-\u9fa5]+$/,
-      //   message: '数据库名称cannot contain Chinese characters',
+      //   Message: 'Cannot contact Chinese agents',
       //   trigger: 'blur'
       // }
     ],
@@ -1126,7 +1126,7 @@ watch(
   (newCode) => {
     getList();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` for true means that when the page is loaded, watch
 );
 
 function getProjectOptions() {
@@ -1135,7 +1135,7 @@ function getProjectOptions() {
   });
 }
 
-//数据连接类型change事件
+//Data Connection Type Change Event
 function handleDatasourceChange(type) {
   if (type == "Hive") {
     rules.value.password[0].required = false;

@@ -41,6 +41,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataDevCatDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttDataDevCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttDataDevCatService;
+import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import javax.annotation.Resource;
@@ -62,6 +63,8 @@ import java.util.stream.Collectors;
 public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, AttDataDevCatDO> implements IAttDataDevCatService, IAttDataDevCatApiService {
     @Resource
     private AttDataDevCatMapper attDataDevCatMapper;
+    @Resource
+    private DppEtlTaskService dppEtlTaskService;
 
     @Override
     public PageResult<AttDataDevCatDO> getAttDataDevCatPage(AttDataDevCatPageReqVO pageReqVO) {
@@ -70,6 +73,8 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
 
     @Override
     public Long createAttDataDevCat(AttDataDevCatSaveReqVO createReqVO) {
+        normalizeAndValidate(createReqVO);
+        checkDuplicate(createReqVO.getId(), createReqVO.getParentId(), createReqVO.getName());
         AttDataDevCatDO dictType = BeanUtils.toBean(createReqVO, AttDataDevCatDO.class);
         dictType.setCode(createCode(createReqVO.getParentId(), null));
         attDataDevCatMapper.insert(dictType);
@@ -78,11 +83,22 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
 
     @Override
     public int updateAttDataDevCat(AttDataDevCatSaveReqVO updateReqVO) {
-        // Validation
+        normalizeAndValidate(updateReqVO);
+        AttDataDevCatDO existing = attDataDevCatMapper.selectById(updateReqVO.getId());
+        if (existing == null) {
+            throw new ServiceException("类目不存在");
+        }
+        checkDuplicate(updateReqVO.getId(), updateReqVO.getParentId(), updateReqVO.getName());
+        checkParentCycle(existing, updateReqVO.getParentId());
 
         // Update Data Development Category Management
         AttDataDevCatDO updateObj = BeanUtils.toBean(updateReqVO, AttDataDevCatDO.class);
-        return attDataDevCatMapper.updateById(updateObj);
+        int rows = attDataDevCatMapper.updateById(updateObj);
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            this.lambdaUpdate().likeRight(AttDataDevCatDO::getCode, existing.getCode())
+                    .set(AttDataDevCatDO::getValidFlag, false).update();
+        }
+        return rows;
     }
 
     @Override
@@ -96,8 +112,45 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
 
     @Override
     public int removeAttDataDevCat(Collection<Long> idList) {
-        // Batch delete Data Development Category Management
+        for (AttDataDevCatDO category : attDataDevCatMapper.selectBatchIds(idList)) {
+            long childCount = this.lambdaQuery().likeRight(AttDataDevCatDO::getCode, category.getCode())
+                    .ne(AttDataDevCatDO::getId, category.getId()).count();
+            long taskCount = dppEtlTaskService.getCountByCatCode(category.getCode(), java.util.Collections.singletonList("3"));
+            if (childCount > 0 || taskCount > 0) {
+                throw new ServiceException("该类目包含" + childCount + "个子类目和" + taskCount + "个任务，不能直接删除。");
+            }
+        }
         return attDataDevCatMapper.deleteBatchIds(idList);
+    }
+
+    private void normalizeAndValidate(AttDataDevCatSaveReqVO reqVO) {
+        reqVO.setName(reqVO.getName() == null ? null : reqVO.getName().trim());
+        if (StringUtils.isBlank(reqVO.getName()) || reqVO.getName().matches(".*\\s+.*")
+                || !reqVO.getName().matches(".*[A-Za-z0-9\\u4e00-\\u9fa5].*")) {
+            throw new ServiceException("类目名称不能为空、不能包含空白字符或仅由符号组成");
+        }
+        if (reqVO.getSortOrder() != null && reqVO.getSortOrder() < 0) {
+            throw new ServiceException("排序值不合法，请输入非负整数");
+        }
+    }
+
+    private void checkDuplicate(Long id, Long parentId, String name) {
+        long count = this.lambdaQuery().eq(AttDataDevCatDO::getParentId, parentId)
+                .eq(AttDataDevCatDO::getName, name).ne(id != null, AttDataDevCatDO::getId, id).count();
+        if (count > 0) {
+            throw new ServiceException("当前上级类目下已存在同名类目，请修改。");
+        }
+    }
+
+    private void checkParentCycle(AttDataDevCatDO current, Long parentId) {
+        if (parentId == null || parentId == 0) return;
+        if (parentId.equals(current.getId())) {
+            throw new ServiceException("上级类目不能选择自身或其子级。");
+        }
+        AttDataDevCatDO parent = attDataDevCatMapper.selectById(parentId);
+        if (parent == null || (parent.getCode() != null && parent.getCode().startsWith(current.getCode()))) {
+            throw new ServiceException("上级类目不能选择自身或其子级。");
+        }
     }
 
     @Override

@@ -103,7 +103,7 @@
       />
     </div>
 
-    <!-- 添加或修改主体管理对话框 -->
+    <!-- Add or modify the subject management dialogue -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"   draggable destroy-on-close>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
@@ -168,27 +168,27 @@ export default {
   },
   data() {
     return {
-      // 遮罩层
+      // Mask
       loading: true,
-      // 选中数组
+      // Selected array
       ids: [],
-      // 非单个禁用
+      // Not Disable by Single
       single: true,
-      // 非多个禁用
+      // Not Disable
       multiple: true,
-      // 显示搜索条件
+      // Show search conditions
       showSearch: true,
-      // 总条数
+      // Total number of articles
       total: 0,
-      // 主体管理表格数据
+      // Master Management Table Data
       subjectList: [],
-      // 弹出层标题
+      // Popup Layer Title
       title: "",
-      // 是否显示弹出层
+      // Whether to show the eject layer
       open: false,
-      // 提交按钮防重复点击
+      // Submit buttons to avoid repeat clicks
       submitLoading: false,
-      // 查询参数
+      // Query parameters
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -204,9 +204,9 @@ export default {
         validFlag: null,
         creatorId: null,
       },
-      // 表单参数
+      // Form parameters
       form: {},
-      // 表单校验
+      // Form validation
       rules: {
         name: [
           { required: true, message: this.td('sys.subject.subjectNameRequired'), trigger: "blur" }
@@ -237,7 +237,7 @@ export default {
   },
   methods: {
     red,
-    /** 查询主体管理列表 */
+    /** Query Subject Management List */
     getList() {
       this.loading = true;
       listSubject(this.queryParams).then(response => {
@@ -255,7 +255,7 @@ export default {
         const response = await fetch(fileUrl);
         const blob = await response.blob();
 
-        // 自动获取文件名
+        // Automatically get filenames
         const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
         zip.file(fileName, blob);
       }
@@ -264,12 +264,12 @@ export default {
         saveAs(content, row.name + "_根证书" + '.zip');
       });
     },
-    // 取消按钮
+    // Cancel button
     cancel() {
       this.open = false;
       this.reset();
     },
-    // 表单重置
+    // Form Reset
     reset() {
       this.form = {
         id: null,
@@ -293,29 +293,29 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
+    /** Search button operation */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** 重置按钮操作 */
+    /** Reset button operations */
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
+    // Multiple box selected data
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** 新增按钮操作 */
+    /** Add button operation */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = this.td('sys.subject.addTitle');
     },
-    /** 修改按钮操作 */
+    /** Modify button operation */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
@@ -325,7 +325,7 @@ export default {
         this.title = this.td('sys.subject.editTitle');
       });
     },
-    /** 提交按钮 */
+    /** Submit button */
     submitForm() {
       if (this.submitLoading) return;
       this.submitLoading = true;
@@ -355,7 +355,7 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
+    /** Remove button operation */
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm(this.td('sys.subject.confirmDelete', { id: ids })).then(function() {
@@ -365,7 +365,7 @@ export default {
         this.$modal.msgSuccess(td('common.message.deleteSuccess'));
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
+    /** Export button operation */
     handleExport() {
       this.download('ca/subject/export', {
         ...this.queryParams

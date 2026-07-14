@@ -37,6 +37,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -221,10 +222,11 @@ public class AttProjectUserRelController extends BaseController {
     @Log(title = "log.op.title.att.role", businessType = BusinessType.INSERT)
     @PostMapping("/role")
     public AjaxResult add(@Validated @RequestBody SysRole role) {
+        role.setRoleName(role.getRoleName().trim());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("角色名称已存在，请修改");
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，权限字符已存在");
+            return error("权限字符已存在，请修改");
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -238,12 +240,13 @@ public class AttProjectUserRelController extends BaseController {
     @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
     @PutMapping("/role")
     public AjaxResult edit(@Validated @RequestBody SysRole role) {
+        role.setRoleName(role.getRoleName().trim());
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("角色名称已存在，请修改");
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，权限字符已存在");
+            return error("权限字符已存在，请修改");
         }
         role.setUpdateBy(getUsername());
 
@@ -281,6 +284,12 @@ public class AttProjectUserRelController extends BaseController {
     public AjaxResult changeStatus(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
+        if ("1".equals(role.getStatus())) {
+            int count = roleService.countUserRoleByRoleId(role.getRoleId());
+            if (count > 0) {
+                throw new ServiceException("该角色已分配给" + count + "名成员，不能直接停用");
+            }
+        }
         role.setUpdateBy(getUsername());
         return toAjax(roleService.updateRoleStatus(role));
     }

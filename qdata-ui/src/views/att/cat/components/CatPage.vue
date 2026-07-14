@@ -270,9 +270,12 @@ if (props.checkProjectParams) {
 
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
+  const impactText = row.validFlag === false
+    ? '停用父类目将同步影响子类目，且不能继续新增任务到该类目。'
+    : '';
   proxy.$modal
     .confirm(
-      td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
+      impactText + td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
     )
     .then(function () {
       props
@@ -369,9 +372,14 @@ function onDialogCancel() {}
 
 function handleDelete(row) {
   const id = row.id;
+  const childCount = Array.isArray(row.children) ? row.children.length : 0;
+  const confirmText = childCount > 0
+    ? `该类目包含${childCount}个子类目，不能直接删除。`
+    : td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id);
   proxy.$modal
-    .confirm(td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id))
+    .confirm(confirmText)
     .then(function () {
+      if (childCount > 0) return Promise.reject('hasChildren');
       return props.delFunc(id);
     })
     .then(() => {

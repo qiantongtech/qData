@@ -88,7 +88,14 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
 
     @Override
     public int updateUserListAndRoleList(AttProjectUserRelSaveReqVO updateReqVO) {
-        // Validate
+        List<Long> adminRoleIds = getProjectAdminRoleIds(updateReqVO.getProjectId());
+        boolean currentIsAdmin = sysUserRoleMapper.getUserRoleByRoleId(updateReqVO.getUserId()).stream()
+                .anyMatch(rel -> adminRoleIds.contains(rel.getRoleId()));
+        boolean remainsAdmin = updateReqVO.getRoleIdList() != null && updateReqVO.getRoleIdList().stream()
+                .anyMatch(adminRoleIds::contains);
+        if (currentIsAdmin && !remainsAdmin && getProjectAdminUserIds(updateReqVO.getProjectId()).size() <= 1) {
+            throw new ServiceException("项目至少需要保留一名项目管理员");
+        }
 
         // Update project-user relationship
         SysRole sysRole = new SysRole();
@@ -124,10 +131,18 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         QueryWrapper<AttProjectUserRelDO> projectWrapper = new QueryWrapper<>();
         projectWrapper.in(!CollectionUtils.isEmpty(idList), "id", idList);
         List<AttProjectUserRelDO> attProjectUserRelDOList = attProjectUserRelMapper.selectList(projectWrapper);
+        if (attProjectUserRelDOList.isEmpty()) {
+            return 0;
+        }
         List<Long> userId = attProjectUserRelDOList.stream().map(AttProjectUserRelDO::getUserId).collect(Collectors.toList());
+        Long projectId = attProjectUserRelDOList.get(0).getProjectId();
+        Set<Long> adminUserIds = getProjectAdminUserIds(projectId);
+        long deletingAdminCount = userId.stream().distinct().filter(adminUserIds::contains).count();
+        if (!adminUserIds.isEmpty() && deletingAdminCount >= adminUserIds.size()) {
+            throw new ServiceException("项目至少需要保留一名项目管理员");
+        }
         List<SysUserRole> byUserIdList = sysUserRoleMapper.getByUserIdList(userId);
         SysRole sysRole = new SysRole();
-        Long projectId = attProjectUserRelDOList.get(0) != null ? attProjectUserRelDOList.get(0).getProjectId() : -999;
         sysRole.setProjectId(projectId);
         List<SysRole> sysRoleList = sysRoleMapper.selectRoleList(sysRole);
         List<Long> roleIdList = sysRoleList.stream().map(SysRole::getRoleId).collect(Collectors.toList());
@@ -142,6 +157,29 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         }
         // Batch delete project-user relationship
         return attProjectUserRelMapper.deleteBatchIds(idList);
+    }
+
+    private List<Long> getProjectAdminRoleIds(Long projectId) {
+        SysRole query = new SysRole();
+        query.setProjectId(projectId);
+        return sysRoleMapper.selectRoleList(query).stream()
+                .filter(role -> "gly".equals(role.getRoleKey()))
+                .map(SysRole::getRoleId)
+                .collect(Collectors.toList());
+    }
+
+    private Set<Long> getProjectAdminUserIds(Long projectId) {
+        List<Long> memberUserIds = attProjectUserRelMapper.selectList(
+                new QueryWrapper<AttProjectUserRelDO>().eq("PROJECT_ID", projectId)
+        ).stream().map(AttProjectUserRelDO::getUserId).distinct().collect(Collectors.toList());
+        List<Long> adminRoleIds = getProjectAdminRoleIds(projectId);
+        if (memberUserIds.isEmpty() || adminRoleIds.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return sysUserRoleMapper.getByUserIdList(memberUserIds).stream()
+                .filter(rel -> adminRoleIds.contains(rel.getRoleId()))
+                .map(SysUserRole::getUserId)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -256,6 +294,10 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         List<AttProjectUserRelDO> attProjectUserRelDOList = new ArrayList<>();
         List<SysUserRole> sysUserRoleList = new ArrayList<>();
         for (Long userId : attProject.getUserIdList()) {
+            SysUser user = sysUserMapper.selectUserById(userId);
+            if (user == null || !"0".equals(user.getStatus())) {
+                throw new ServiceException("该系统用户已停用，不能添加为项目成员。");
+            }
             AttProjectUserRelDO attProjectUserRelDO = new AttProjectUserRelDO();
             attProjectUserRelDO.setUserId(userId);
             attProjectUserRelDO.setProjectId(attProject.getProjectId());

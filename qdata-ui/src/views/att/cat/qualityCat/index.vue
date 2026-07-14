@@ -137,9 +137,9 @@
               <el-input v-model="form.name" :placeholder="td('att.common.qualityCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
-          <!--            <el-form-item label="类别排序" prop="sortOrder" :label-position="labelPosition">-->
-          <!--&lt;!&ndash;              <el-input v-model="form.sortOrder" placeholder="请输入类别排序" />&ndash;&gt;-->
-          <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="请输入类别排序" />-->
+          <!--            <el-form-item label="group sorting"-->
+          <!--& lt;! & ndash; <el-input v-model = "form.sortOrder" placeholder = "please enter category sorting" / > & ndash; &gt;-->
+          <!--              <el-input-number v-model= "form.sortOrder" steps= "1":min= "0" placeholder= "please enter category sorting" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
             <el-form-item :label="td('att.common.parentCat')" prop="parentId" :label-position="labelPosition">

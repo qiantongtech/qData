@@ -127,8 +127,7 @@
               <span class="catalogue-text">{{ localForm.datasourceName }}</span>
             </el-text>
             <span class="catalogue-split" v-if="catalogues.length != 0">
-              /
-            </span>
+              //            </span>
             <el-text
                 type="primary"
                 @click="handleCatalogue(item)"
@@ -140,8 +139,7 @@
                   class="catalogue-split"
                   v-if="index != catalogues.length - 1"
               >
-                /
-              </span>
+                //              </span>
             </el-text>
           </div>
         </div>

@@ -333,7 +333,7 @@ watch(
       getDaAssetDetailById();
     }
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` for true means that when the page is loaded, watch
 );
 const data = reactive({
   daAssetDetail: {},

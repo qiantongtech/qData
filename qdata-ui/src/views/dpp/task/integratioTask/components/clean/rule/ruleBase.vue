@@ -215,6 +215,7 @@
 import useDefaultLang from "@/composables/useDefaultLang"
 import SideMenu from "./ruleSelectorMenu.vue";
 import { getRuleConfig, getRuleComponent } from "./registry.js";
+import { isNumericColumnType, isTextColumnType, validateWhereCondition } from "../../../utils/foolproof.js";
 
 import moment from "moment";
 
@@ -331,6 +332,14 @@ const shouldDisableField = computed(() => {
       return !isDateType;
     }
 
+    if (form.ruleCode == "001" || form.ruleCode == "008") {
+      return !isNumericColumnType(dict.columnType);
+    }
+
+    if (["009", "010", "011", "012", "022"].includes(form.ruleCode)) {
+      return !isTextColumnType(dict.columnType);
+    }
+
     // For rule 007 date format
     // if (form.ruleCode == "007") {
     //   const isStringType =
@@ -366,6 +375,11 @@ async function handleSave() {
     await formRef?.value?.validate();
   } catch (err) {
     proxy.$message.warning(td("dpp.cleanRule.completeRequired", "请完善必填项"));
+    return;
+  }
+  const whereResult = validateWhereCondition(form.whereClause);
+  if (!whereResult.valid) {
+    proxy.$message.warning(whereResult.message);
     return;
   }
   let res = { valid: true, data: {} };

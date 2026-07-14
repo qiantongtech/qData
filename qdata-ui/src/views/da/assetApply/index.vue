@@ -457,7 +457,7 @@ const leftWidth = ref(300); // Initial left width
 const isResizing = ref(false); // Whether currently dragging
 const projectOptions = ref([]);
 let startX = 0; // Initial position when mouse is pressed
-/*** 用户导入参数 */
+/*** User Import Parameters */
 const upload = reactive({
   // Whether to show the popup layer (user import)
   open: false,

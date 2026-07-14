@@ -35,4 +35,9 @@ public interface DppEtlTaskService {
      * @return Count
      */
     int checkTaskIdInAsset(List<Long> assetIdList);
+
+    /**
+     * Count tasks under a category and all of its descendants.
+     */
+    long getCountByCatCode(String catCode, List<String> taskTypes);
 }

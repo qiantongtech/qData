@@ -25,7 +25,9 @@ import tech.qiantong.qdata.common.annotation.Excel.ColumnType;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -151,6 +153,7 @@ public class SysRole extends BaseEntity
 
     @NotBlank(message = "权限字符不能为空")
     @Size(min = 0, max = 100, message = "权限字符长度不能超过100个字符")
+    @Pattern(regexp = "^[a-zA-Z0-9_:]+$", message = "权限字符仅支持字母、数字、下划线和冒号")
     public String getRoleKey()
     {
         return roleKey;
@@ -162,6 +165,7 @@ public class SysRole extends BaseEntity
     }
 
     @NotNull(message = "显示顺序不能为空")
+    @Min(value = 0, message = "显示顺序不合法，请输入非负整数")
     public Integer getRoleSort()
     {
         return roleSort;

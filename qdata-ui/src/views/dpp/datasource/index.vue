@@ -96,13 +96,13 @@
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:dataSource:edit']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
+          <!--             <i class = "iconfont-mini econ-xiugai & #45; copy mr5">/i>-->
           <!--           </el-button>-->
           <!--         </el-col>-->
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:dataSource:remove']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
+          <!--             <i calass="iconfont-mini icon-shanchu-huise mr5">/i>-->
           <!--           </el-button>-->
           <!--         </el-col>-->
         </el-row>
@@ -307,7 +307,7 @@
               </div>
             </el-popover>
             <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/datasource/daDatasourceDetail',scope.row)"-->
-            <!--                      v-hasPermi="['da:dataSource:edit']">复杂详情</el-button>-->
+            <!--                      v-hasPermi=['da:dataSource:edit']-->
           </template>
         </el-table-column>
 
@@ -328,7 +328,7 @@
       />
     </div>
 
-    <!-- 新增或修改数据源对话框 -->
+    <!-- Add or modify the data source dialogue -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -647,7 +647,7 @@
       </template>
     </el-dialog>
 
-    <!-- 详情 -->
+    <!-- Details -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -875,7 +875,7 @@
           {{ td("dpp.datasource.projectSelect") }}
         </span>
       </template>
-      <!--用户数据-->
+      <!--User Data-->
       <el-form
         class="btn-style"
         :model="queryParamsProject"
@@ -1029,7 +1029,7 @@ const { datasource_type, sys_disable } = proxy.useDict(
 );
 const daDatasourceList = ref([]);
 
-// 列显隐状态
+// Column hidden status
 const columnVisible = ref({
   1: true,
   2: true,
@@ -1042,7 +1042,7 @@ const columnVisible = ref({
   9: true,
 });
 
-// 列配置（使用 ref，确保 RightToolbar 修改能持久化）
+// Column Configuration (use ref to ensure that RightToolbar changes last)
 const columns = ref([
   {
     key: 1,
@@ -1091,7 +1091,7 @@ const columns = ref([
   },
 ]);
 
-// 监听 RightToolbar 对 columns 的修改，同步到 columnVisible
+// Listen to RightToolbar changes to columns, sync to columnVisible
 watch(
   columns,
   (newColumns) => {
@@ -1131,19 +1131,19 @@ const projectIdAndCodeList = ref([]);
 const route = useRoute();
 let type = route.query.type || null;
 
-/*** 用户导入参数 */
+/*** User Import Parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to show the eject layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup Layer Title (User Import)
   title: "",
-  // 是否禁用上传
+  // Disable Upload
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set the head of the request for upload
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Uploading Address
   url: import.meta.env.VITE_APP_BASE_API + "/da/daDatasource/importData",
 });
 
@@ -1314,13 +1314,13 @@ const data = reactive({
 
 const { queryParams, form, rules, queryParamsProject } = toRefs(data);
 const selectable = (row) => !row.dppAssigned;
-// 监听 id 变化
+// Listen id changes
 watch(
   () => userStore.projectCode,
   (newCode) => {
     getList();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` for true means that when the page is loaded, watch
 );
 
 function getProjectOptions() {
@@ -1329,7 +1329,7 @@ function getProjectOptions() {
   });
 }
 
-//数据连接类型change事件
+//Data Connection Type Change Event
 function handleDatasourceChange(type) {
   if (type == "Hive") {
     rules.value.password[0].required = false;
@@ -1347,7 +1347,7 @@ function getListProject() {
     totalProject.value = response.data.total;
     loadingProject.value = false;
 
-    // 在表格加载完成后，设置之前选中的项目
+    // Set the selected item before the table is loaded
     nextTick(() => {
       projectList.value.forEach((project) => {
         form.value.projectList.forEach((item) => {
@@ -1392,7 +1392,7 @@ function resetQueryProject() {
   getListProject();
 }
 
-/** 查询数据源列表 */
+/** Query list of data sources */
 function getList() {
   loading.value = true;
   if (type == 1) {
@@ -1412,14 +1412,14 @@ function getList() {
   }
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// Form Reset
 function reset() {
   form.value = {
     id: null,
@@ -1447,33 +1447,33 @@ function reset() {
   proxy.resetForm("daDatasourceRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** Reset button operations */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sort Trigger Event */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   if (type == 1) {
@@ -1493,7 +1493,7 @@ function handleAdd() {
   title.value = td("dpp.datasource.addDatasource");
 }
 
-/** 修改按钮操作 */
+/** Modify button operation */
 let old_password;
 
 function handleUpdate(row, type) {
@@ -1510,7 +1510,7 @@ function handleUpdate(row, type) {
         (item) => item.projectName
       );
 
-      // 拆解 datasourceConfig
+      // Disassembly
       if (form.value.datasourceConfig) {
         const config = JSON.parse(form.value.datasourceConfig);
         form.value.username = config.username;
@@ -1535,11 +1535,11 @@ function handleUpdate(row, type) {
       }
     })
     .finally(() => {
-      loading.value = false; // 不管成功失败都结束loading
+      loading.value = false; // No matter how successful, it's over.
     });
 }
 
-/** 详情按钮操作 */
+/** Details button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -1575,9 +1575,9 @@ function handleDetail(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Details button operation */
 function handleTestConnection(row) {
-  loading.value = true; // 开始加载
+  loading.value = true; // Start loading
   reset();
   const _id = row.id || ids.value;
   clientsTest(_id)
@@ -1586,11 +1586,11 @@ function handleTestConnection(row) {
       proxy.$modal.msgSuccess(response.msg);
     })
     .finally(() => {
-      loading.value = false; // 结束加载
+      loading.value = false; // End Loading
     });
 }
 const btnLoading = ref(false);
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
   proxy.$refs["daDatasourceRef"].validate((valid) => {
     if (valid) {
@@ -1657,7 +1657,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Remove button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -1672,7 +1672,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button operation */
 function handleExport() {
   proxy.download(
     "da/daDatasource/export",
@@ -1683,14 +1683,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** - - - Import-related operations - - - - **/
+/** Import button operation */
 function handleImport() {
   upload.title = td("dpp.datasource.datasourceImport");
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download Template Operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -1699,17 +1699,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit Upload File */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**Uploading and processing files */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -1745,7 +1745,7 @@ function routeTo(link, row) {
   }
 }
 
-/** 改变启用状态值 */
+/** Change Enabled Value */
 function handleStatusChange(row) {
   const text =
     row.validFlag === true

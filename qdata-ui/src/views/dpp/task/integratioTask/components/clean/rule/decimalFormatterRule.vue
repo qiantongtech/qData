@@ -32,6 +32,17 @@
                     message: td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数'),
                     trigger: 'change',
                   },
+                  {
+                    validator: (_rule, value, callback) => {
+                      const number = Number(value);
+                      if (!Number.isInteger(number) || number < 0 || number > 18) {
+                        callback(new Error('小数位数必须为 0-18 的整数'));
+                      } else {
+                        callback();
+                      }
+                    },
+                    trigger: 'blur',
+                  },
                 ]
               : []
           "
@@ -42,6 +53,7 @@
             :placeholder="td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数')"
             type="number"
             min="0"
+            max="18"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.stringValue ?? "-" }}</div>

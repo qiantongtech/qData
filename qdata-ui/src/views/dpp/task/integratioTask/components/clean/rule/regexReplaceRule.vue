@@ -94,10 +94,15 @@ const rules = {
   regex: [
     {
       validator: (rule, value, callback) => {
-        if (form.pattern && !value) {
+        if (!value) {
           callback(new Error(td('dpp.cleanRule.inputRegex', '请输入正则表达式')));
         } else {
-          callback();
+          try {
+            new RegExp(value);
+            callback();
+          } catch {
+            callback(new Error('正则表达式格式不正确'));
+          }
         }
       },
       trigger: "blur",

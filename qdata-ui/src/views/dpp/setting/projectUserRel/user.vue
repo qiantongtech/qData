@@ -827,13 +827,15 @@ function submitForm() {
   proxy.$refs["AttProjectUserRelRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
-        editUserListAndRoleList(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-            open.value = false;
-            getList();
+        proxy.$modal
+          .confirm('修改角色后，该成员可能无法继续维护部分任务，请确认。')
+          .then(() => editUserListAndRoleList(form.value))
+          .then(() => {
+              proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+              open.value = false;
+              getList();
           })
-          .catch((error) => {});
+          .catch(() => {});
       } else {
         // Add additional verification when adding
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
@@ -861,18 +863,21 @@ function submitForm() {
 /** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  const _userId =
-    row.userId ||
-    AttProjectUserRelList.value
-      .filter((item) => ids.value.includes(item.id))
-      .map((item) => item.userId);
+  const selectedRows = row.id
+    ? [row]
+    : AttProjectUserRelList.value.filter((item) => ids.value.includes(item.id));
+  const selectedUserIds = selectedRows.map((item) => item.userId);
+  const removingSelf = selectedUserIds.includes(userStore.id);
+  const confirmText = removingSelf
+    ? '确认移除自己的项目权限吗？操作后可能无法继续管理项目。'
+    : selectedRows.length > 1
+      ? `本次将移除${selectedRows.length}名成员，请确认。`
+      : td(
+          "dpp.setting.projectUserRel.confirmDelete",
+          '是否确认移除编号为"{id}"的数据项？'
+        ).replace("{id}", selectedUserIds[0]);
   proxy.$modal
-    .confirm(
-      td(
-        "dpp.setting.projectUserRel.confirmDelete",
-        '是否确认移除编号为"{id}"的数据项？'
-      ).replace("{id}", _userId)
-    )
+    .confirm(confirmText)
     .then(function () {
       return delAttProjectUserRel(_ids);
     })

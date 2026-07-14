@@ -120,7 +120,7 @@ async function handleQuery() {
     callData.value.columnList = columnList;
     callData.value.dataTotal = data.total || 0;
   } catch (error) {
-    throw error; // 👈 抛出错误给调用方处理
+    throw error; // Throwing error to caller
   } finally {
     loading.value = false;
   }

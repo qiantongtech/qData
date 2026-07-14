@@ -22,6 +22,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -46,13 +49,16 @@ public class AttTaskCatSaveReqVO extends BaseEntity {
     private String projectCode;
 
     @Schema(description = "类别名称", example = "")
-    @Size(max = 256, message = "类别名称长度不能超过256个字符")
+    @NotBlank(message = "类目名称不能为空")
+    @Size(max = 50, message = "类目名称长度不能超过50个字符")
+    @Pattern(regexp = "^(?=.*[A-Za-z0-9\\u4e00-\\u9fa5])\\S+$", message = "类目名称不能包含空白字符或仅由符号组成")
     private String name;
 
     @Schema(description = "关联上级ID", example = "")
     private Long parentId;
 
     @Schema(description = "类别排序", example = "")
+    @Min(value = 0, message = "排序值不合法，请输入非负整数")
     private Long sortOrder;
 
     @Schema(description = "描述", example = "")

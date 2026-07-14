@@ -342,7 +342,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDocumentCat(row.id).then((response) => {
-    //把createTime过滤掉
+    //# Filter out the CreateTime #
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -351,7 +351,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
@@ -382,7 +382,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Remove button operation */
 function handleDelete(row) {
   proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete').replace('<ids>', row.id))
     .then(function () {

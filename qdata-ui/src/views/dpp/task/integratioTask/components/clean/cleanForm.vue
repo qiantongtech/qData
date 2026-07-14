@@ -320,6 +320,7 @@ import {
   renameRuleToRuleConfig,
 } from "@/views/dpp/utils/opBase.js";
 import RuleSelectorDialog from "./rule/ruleBase.vue";
+import { validateWhereCondition } from "../../utils/foolproof.js";
 
 const { td } = useDefaultLang();
 const userStore = useUserStore();
@@ -497,6 +498,14 @@ const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
+
+    if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
+      return proxy.$message.warning('当前转换组件未配置任何清洗规则，请添加规则。');
+    }
+    const whereResult = validateWhereCondition(form.value?.taskParams?.where);
+    if (!whereResult.valid) {
+      return proxy.$message.warning(whereResult.message);
+    }
 
     // If there is no code, call the interface to get the unique code
     if (!form.value.code) {

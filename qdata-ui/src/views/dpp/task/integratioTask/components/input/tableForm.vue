@@ -356,6 +356,7 @@ import {
     sqlParse
 } from '@/api/da/dataSource/dataSource.js';
 import { listDppAsset } from '@/api/da/asset/asset.js';
+import { isDateColumnType, isNumericColumnType, validateWhereCondition } from '../../utils/foolproof.js';
 const { proxy } = getCurrentInstance();
 import useUserStore from '@/store/system/user.js';
 
@@ -439,6 +440,7 @@ const getDatasourceList = async () => {
             pageSize: 9999,
             projectCode: userStore.projectCode,
             projectId: userStore.projectId,
+            validFlag: true,
             datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,SQL_Server2008,PostgreSQL",
         });
         createTypeList.value = response.data.rows;
@@ -636,6 +638,28 @@ const saveData = async () => {
         ) {
             return proxy.$message.warning(td('dpp.integration.validateFailedSelectFields', '校验未通过，请选择属性字段'));
         }
+        const taskParams = form.value?.taskParams;
+        const whereResult = validateWhereCondition(taskParams.where);
+        if (!whereResult.valid) {
+            return proxy.$message.warning(whereResult.message);
+        }
+        if (taskParams.readModeType == 2) {
+            const incrementField = ColumnByAssettab.value.find(
+                (field) => field.columnName === taskParams.idIncrementConfig?.incrementColumn
+            );
+            if (!incrementField || !isNumericColumnType(incrementField.columnType)) {
+                return proxy.$message.warning('请选择增量字段，且字段类型需与读取模式匹配。');
+            }
+        }
+        if (taskParams.readModeType == 3) {
+            const dateColumns = taskParams.dateIncrementConfig?.column || [];
+            if (dateColumns.length === 0 || dateColumns.some((item) => {
+                const field = ColumnByAssettab.value.find((column) => column.columnName === item.incrementColumn);
+                return !field || !isDateColumnType(field.columnType);
+            })) {
+                return proxy.$message.warning('请选择增量字段，且字段类型需与读取模式匹配。');
+            }
+        }
         // If there is no code, call the interface to get the unique code
         if (!form.value.code) {
             loading.value = true;
@@ -646,7 +670,6 @@ const saveData = async () => {
             loading.value = false;
             form.value.code = response.data;
         }
-        const taskParams = form.value?.taskParams;
         taskParams.tableFields = ColumnByAssettab.value;
         taskParams.columnsList = ColumnByAssettab.value.map(({ columnName, columnType }) => ({
             colName: columnName,

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 
 import java.util.*;
 
@@ -32,46 +33,46 @@ public class FlinkxJson {
 
     public static String buildJobJsonMasterdata(Map<String, Object> taskParams) {
 
-        // 创建最外层的 jobJson Map
+        // Create the required record.
         Map<String, Object> jobJson = new HashMap<>();
 
-        // 设置 job 相关的 setting 配置
+        // Implementation details.
         Map<String, Object> setting = new HashMap<>();
 
-        // speed 配置，默认值已直接赋予
+        // Implementation details.
         Map<String, Object> speed = new HashMap<>();
-        speed.put("channel", 1);  // 默认值
-        speed.put("bytes", 0);    // 默认值
+        speed.put("channel", 1);  // Implementation details.
+        speed.put("bytes", 0);    // Implementation details.
         setting.put("speed", speed);
 
-        // errorLimit 配置，默认值已直接赋予
+        // Implementation details.
         Map<String, Object> errorLimit = new HashMap<>();
-        errorLimit.put("record", 999999999);  // 默认值
+        errorLimit.put("record", 999999999);  // Implementation details.
         setting.put("errorLimit", errorLimit);
 
-        // restore 配置，默认值已直接赋予
+        // Implementation details.
         Map<String, Object> restore = new HashMap<>();
-        restore.put("maxRowNumForCheckpoint", 0);   // 默认值
-        restore.put("isRestore", false);            // 默认值
-        restore.put("restoreColumnName", "");       // 默认值
-        restore.put("restoreColumnIndex", 0);       // 默认值
+        restore.put("maxRowNumForCheckpoint", 0);   // Implementation details.
+        restore.put("isRestore", false);            // Implementation details.
+        restore.put("restoreColumnName", "");       // Implementation details.
+        restore.put("restoreColumnIndex", 0);       // Implementation details.
         setting.put("restore", restore);
 
-        // log 配置，默认值已直接赋予
+        // Implementation details.
         Map<String, Object> log = new HashMap<>();
-        log.put("isLogger", false);  // 默认值
-        log.put("level", "debug");   // 默认值
-        log.put("path", "");         // 默认值
-        log.put("pattern", "");      // 默认值
+        log.put("isLogger", false);  // Implementation details.
+        log.put("level", "debug");   // Implementation details.
+        log.put("path", "");         // Implementation details.
+        log.put("pattern", "");      // Implementation details.
         setting.put("log", log);
 
         jobJson.put("setting", setting);
 
 
-        //取出数据源链接
-        // 输出readerDatasource
+        // Handle database and data source configuration.
+        // Implementation details.
         Map<String, Object> readerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "readerDatasource");
-        //输入writerDatasource
+        // Implementation details.
         Map<String, Object> writerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "writerDatasource");
 
         DbQueryProperty readerProperty = MD5Util.buildJobDatasource(readerDatasource);
@@ -86,8 +87,8 @@ public class FlinkxJson {
         String target_table_name = MapUtils.getString(taskParams, "target_table_name", "");
         Object columns = MapUtils.getObject(taskParams, "columns");
         Object target_columns = MapUtils.getObject(taskParams, "target_columns");
-        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");//主键
-        //节点类型 1:输入节点 2:输出节点
+        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");// Implementation details.
+        // Handle node-related data and operations.
         String type = MapUtils.getString(taskParams, "type", "");
         String writeModeType = MapUtils.getString(taskParams, "writeModeType", "");
         if (StringUtils.equals("1", type)) {
@@ -95,17 +96,17 @@ public class FlinkxJson {
         }
         if (StringUtils.equals("2", type)) {
             writeMode = readerProperty.trainToJdbcWriteMode(writeKeySet, writeModeType,writerProperty.getDbType());
-            //当写入是全量时，则输入前置删除sql
+            // Delete the related record.
             if (StringUtils.equals("1", writeModeType)) {
                 preSql = readerProperty.trainToJdbcTruncateTable(writerProperty.getDbNameTableName(target_table_name));
             }
         }
 
-        // 创建 job 相关的 content 配置
+        // Create the required record.
         List<Map<String, Object>> content = new ArrayList<>();
         Map<String, Object> contentItem = new HashMap<>();
 
-        // reader 配置
+        // Implementation details.
         Map<String, Object> reader = new HashMap<>();
         reader.put("name", readerProperty.trainToJdbcReaderName());
         Map<String, Object> readerParameter = new HashMap<>();
@@ -122,13 +123,13 @@ public class FlinkxJson {
         readerParameter.put("connection", readerConnection);
         reader.put("parameter", readerParameter);
 
-        // writer 配置
+        // Implementation details.
         Map<String, Object> writer = new HashMap<>();
         writer.put("name", writerProperty.trainToJdbcWriterName());
         Map<String, Object> writerParameter = new HashMap<>();
         writerParameter.put("username", writerProperty.getUsername());
         writerParameter.put("password", writerProperty.getPassword());
-        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // 默认1024
+        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // Implementation details.
         //
         writerParameter.put("writeMode", writeMode);
         writerParameter.put("column", target_columns);
@@ -146,7 +147,7 @@ public class FlinkxJson {
         writerParameter.put("connection", writerConnection);
         writer.put("parameter", writerParameter);
 
-        // 将 reader 和 writer 添加到 content 中
+        // Implementation details.
         contentItem.put("reader", reader);
         contentItem.put("writer", writer);
         content.add(contentItem);
@@ -154,7 +155,25 @@ public class FlinkxJson {
         jobJson.put("content", content);
         Map<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("job", jobJson);
-        // 转换为 JSON 字符串并返回
+        // Handle JSON data for this operation.
         return JSON.toJSONString(objectObjectHashMap);
+    }
+
+    /**
+     * Handle node-related data and operations.
+     * Handle DataX task configuration and execution.
+     */
+    public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
+        for (DppEtlNodeRespVO node : nodeList) {
+            // Handle node-related data and operations.
+            if (node == null) {
+                continue;
+            }
+            // Handle node-related data and operations.
+            if (StringUtils.equals(componentType, node.getComponentType())) {
+                return node;
+            }
+        }
+        return null;
     }
 }

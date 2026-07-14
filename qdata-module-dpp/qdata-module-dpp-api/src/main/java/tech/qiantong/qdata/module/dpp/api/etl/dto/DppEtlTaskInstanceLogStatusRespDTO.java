@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:实例日志响应数据
+ * Handle execution logging.
  * </p>
  *
  * @author: FXB
@@ -40,18 +40,48 @@ import java.util.List;
 public class DppEtlTaskInstanceLogStatusRespDTO {
 
     /**
-     * 状态;0：提交成功 1：正在执行 2:准备暂停 3：暂停 4：准备停止 5：停止 6：失败 7：成功 12：延时执行  14：串行等待  15 ：准备锁定 16：锁定
-     * 5：停止 6：失败 7：成功 时停止日志轮询
+     * Implementation details.
+     * Handle execution logging.
      */
     private String status;
 
     /**
-     * 状态 1:进行中 2:已结束
+     * Implementation details.
      */
     private String log;
 
     /**
-     * 节点实例列表
+     * Handle node-related data and operations.
      */
     private List<DppEtlNodeInstanceRespDTO> nodeInstanceList;
+
+    /**
+     * DataX input record count.
+     */
+    private Long inputRecords;
+
+    /**
+     * DataX output record count.
+     */
+    private Long outputRecords;
+
+    /**
+     * DataX node name list.
+     */
+    private List<String> nodeNames;
+
+    /**
+     * Number of successful DataX nodes.
+     */
+    private Integer successCount;
+
+    /**
+     * Number of failed DataX nodes.
+     */
+    private Integer failedCount;
+
+    /**
+     * Number of stopped DataX nodes.
+     */
+    private Integer stoppedCount;
 }

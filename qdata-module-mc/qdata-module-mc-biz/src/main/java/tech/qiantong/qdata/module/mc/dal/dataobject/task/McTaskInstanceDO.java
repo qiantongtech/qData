@@ -7,14 +7,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 采集任务实例 DO 对象 MC_TASK_INSTANCE
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_INSTANCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Handle JDBC SQL execution.
 // @KeySequence("MC_TASK_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -28,90 +28,96 @@ public class McTaskInstanceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 来源系统ID */
+    /** Implementation details. */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Implementation details. */
     private String sourceSystemName;
 
-    /** 采集任务id */
+    /** Handle task-related data and operations. */
     private Long taskId;
 
-    /** 采集模式 */
+    /** Implementation details. */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Implementation details. */
     private String collectionScope;
 
-    /** 采集表总数量 */
+    /** Implementation details. */
     private Long totalCount;
 
-    /** 采集表成功数量 */
+    /** Implementation details. */
     private Long successCount;
 
-    /** 采集表失败数量 */
+    /** Implementation details. */
     private Long failCount;
 
-    /** 失败原因 */
+    /** Implementation details. */
     private String failCause;
 
-    /** 新增数量 */
+    /** Implementation details. */
     private Long addCount;
 
-    /** 删减数量 */
+    /** Implementation details. */
     private Long delCount;
 
-    /** 变更数量 */
+    /** Implementation details. */
     private Long updateCount;
 
-    /** 开始时间 */
+    /** Implementation details. */
     private Date startTime;
 
-    /** 结束时间 */
+    /** Implementation details. */
     private Date endTime;
 
-    /** 耗时 */
+    /** Implementation details. */
     private Long duration;
 
-    /** 状态 */
+    /** Implementation details. */
     private String status;
 
-    /** 是否有效 */
+    /** Scheduling engine */
+    private String taskScheduler;
+
+    /** Handle Quartz scheduling operations. */
+    private Long quartzId;
+
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete the related record. */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Implementation details. */
     private String description;
 
     /**
-     * 任务名称
+     * Handle task-related data and operations.
      */
     @TableField(exist = false)
     private String name;
     /**
-     * 任务状态
+     * Handle task-related data and operations.
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * 创建人电话
+     * Create the required record.
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * 数据源名称
+     * Handle database and data source configuration.
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Handle database and data source configuration.
      */
     @TableField(exist = false)
     private String datasourceType;

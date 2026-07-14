@@ -206,7 +206,7 @@ public final class JSONUtils {
     }
 
     public static String convertParametersToJson(Map<String, String> taskParamMap) throws JsonProcessingException {
-        // 将 taskParamMap 转换为 JSON 字符串
+        // Handle JSON data for this operation.
         return objectMapper.writeValueAsString(taskParamMap);
     }
 
@@ -448,26 +448,26 @@ public final class JSONUtils {
     }
 
     /**
-     * 将对象转换为 JSON 字符串
-     * @param object 要转换的对象
-     * @return JSON 字符串
+     * Handle JSON data for this operation.
+     * @param object parameter value
+     * @return the operation result
      */
     public static String toJson(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);  // 转为 JSON 字符串
+            return objectMapper.writeValueAsString(object);  // Handle JSON data for this operation.
         } catch (Exception e) {
             e.printStackTrace();
-            return null;  // 转换失败时返回 null
+            return null;  // Return the operation result.
         }
     }
 
 
 
     /**
-     * 将字符串转换为 long 类型
+     * Implementation details.
      *
-     * @param processDefinitionCode 要转换的字符串
-     * @return 转换后的 long 值，若转换失败返回 -1
+     * @param processDefinitionCode parameter value
+     * @return the operation result
      */
     public static long convertToLong(String processDefinitionCode) {
         if (processDefinitionCode == null || processDefinitionCode.trim().isEmpty()) {
@@ -477,6 +477,24 @@ public final class JSONUtils {
             return Long.parseLong(processDefinitionCode.trim());
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    /**
+     * Handle JSON data for this operation.
+     *
+     * @param json parameter value
+     * @return the operation result
+     */
+    public static String formatJson(String json) {
+        try {
+            Object jsonObject = objectMapper.readValue(json, Object.class);
+
+            return objectMapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(jsonObject);
+        } catch (Exception e) {
+            throw new RuntimeException("JSON 格式化失败，请检查 JSON 内容是否正确", e);
         }
     }
 }

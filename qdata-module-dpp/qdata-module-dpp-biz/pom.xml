@@ -34,52 +34,72 @@
     </description>
 
     <dependencies>
-        <!-- 核心模块 config-->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系統模块 websocket-->
+        <!-- Handle task-related data and operations. -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-quartz</artifactId>
+            <version>${qdata.version}</version>
+        </dependency>
+
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-websocket</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 qdata-security -->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-security</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 mybatis -->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 redis -->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- 文件上传-->
+        <!-- Implementation details. -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>
             <version>${qdata.version}</version>
+        </dependency>
+
+        <!-- Handle DataX task configuration and execution. -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-etl</artifactId>
+            <version>${qdata.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

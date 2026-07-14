@@ -42,8 +42,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 /**
- * 数据集成任务节点关系Service业务层处理
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -81,15 +82,18 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
         return BeanUtils.toBean(dppEtlTaskNodeRelDOS, DppEtlTaskNodeRelRespVO.class);
     }
     /**
-     * 从 List<DppEtlTaskNodeRelDO> 中提取 ID，并封装为 Collection<Long>
+     * Implementation details.
      *
-     * @param dppEtlTaskNodeRelDOS List<DppEtlTaskNodeRelDO> 对象
-     * @return Collection<Long> 返回ID列表
+     * @param dppEtlTaskNodeRelDOS parameter value
+     * @return the operation result
      */
     public static Collection<Long> getIdListFromTaskNodeRel(List<DppEtlTaskNodeRelDO> dppEtlTaskNodeRelDOS) {
+        if (dppEtlTaskNodeRelDOS == null || dppEtlTaskNodeRelDOS.isEmpty()) {
+            return new ArrayList<>();
+        }
         return dppEtlTaskNodeRelDOS.stream()
-                .map(DppEtlTaskNodeRelDO::getId) // 提取 ID
-                .collect(Collectors.toList());   // 收集成 List
+                .map(DppEtlTaskNodeRelDO::getId) // Implementation details.
+                .collect(Collectors.toList());   // Implementation details.
     }
 
     @Override
@@ -108,15 +112,18 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
 
     @Override
     public int updateDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate the input and configuration.
 
-        // 更新数据集成任务节点关系
+        // Handle task-related data and operations.
         DppEtlTaskNodeRelDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskNodeRelDO.class);
         return dppEtlTaskNodeRelMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEtlTaskNodeRel(Collection<Long> idList) {
-        // 批量删除数据集成任务节点关系
+        if (idList == null || idList.isEmpty()) {
+            return 0;
+        }
+        // Handle task-related data and operations.
         return dppEtlTaskNodeRelMapper.deleteBatchIds(idList);
     }
 
@@ -137,19 +144,19 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
                 .collect(Collectors.toMap(
                         DppEtlTaskNodeRelDO::getId,
                         dppEtlTaskNodeRelDO -> dppEtlTaskNodeRelDO,
-                        // 保留已存在的值
+                        // Implementation details.
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据集成任务节点关系数据
+         * Handle task-related data and operations.
          *
-         * @param importExcelList 数据集成任务节点关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList parameter value
+         * @param isUpdateSupport parameter value
+         * @param operName parameter value
+         * @return the operation result
          */
         @Override
         public String importDppEtlTaskNodeRel(List<DppEtlTaskNodeRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

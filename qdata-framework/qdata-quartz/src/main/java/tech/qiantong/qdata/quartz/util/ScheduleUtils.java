@@ -26,9 +26,10 @@ import tech.qiantong.qdata.common.exception.job.TaskException.Code;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 import tech.qiantong.qdata.quartz.domain.SysJob;
+import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 
 /**
- * 定时任务工具类
+ * Handle task-related data and operations.
  *
  * @author qdata
  *
@@ -36,19 +37,22 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 public class ScheduleUtils
 {
     /**
-     * 得到quartz任务类
+     * Handle task-related data and operations.
      *
-     * @param sysJob 执行计划
-     * @return 具体执行任务类
+     * @param sysJob parameter value
+     * @return the operation result
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
-        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
-        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
+        ScheduleExecutionTypeEnum executionType = ScheduleExecutionTypeEnum.resolve(
+                sysJob.getExecutionType(), sysJob.getConcurrent());
+        return executionType.shouldUseDisallowConcurrentJob()
+                ? QuartzDisallowConcurrentExecution.class
+                : QuartzJobExecution.class;
     }
 
     /**
-     * 构建任务触发对象
+     * Handle task-related data and operations.
      */
     public static TriggerKey getTriggerKey(Long jobId, String jobGroup)
     {
@@ -56,7 +60,7 @@ public class ScheduleUtils
     }
 
     /**
-     * 构建任务键对象
+     * Handle task-related data and operations.
      */
     public static JobKey getJobKey(Long jobId, String jobGroup)
     {
@@ -64,42 +68,42 @@ public class ScheduleUtils
     }
 
     /**
-     * 创建定时任务
+     * Handle task-related data and operations.
      */
     public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, TaskException
     {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
-        // 构建job信息
+        // Implementation details.
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 
-        // 表达式调度构建器
+        // Handle scheduling configuration and operations.
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
         cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
-        // 按新的cronExpression表达式构建一个新的trigger
+        // Implementation details.
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
                 .withSchedule(cronScheduleBuilder).build();
 
-        // 放入参数，运行时的方法可以获取
+        // Retrieve the required data.
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
-        // 判断是否存在
+        // Implementation details.
         if (scheduler.checkExists(getJobKey(jobId, jobGroup)))
         {
-            // 防止创建时存在数据问题 先移除，然后在执行创建操作
+            // Create the required record.
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
 
-        // 判断任务是否过期
+        // Handle task-related data and operations.
         if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression())))
         {
-            // 执行调度任务
+            // Handle task-related data and operations.
             scheduler.scheduleJob(jobDetail, trigger);
         }
 
-        // 暂停任务
+        // Handle task-related data and operations.
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
         {
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
@@ -107,7 +111,7 @@ public class ScheduleUtils
     }
 
     /**
-     * 设置定时任务策略
+     * Handle task-related data and operations.
      */
     public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
             throws TaskException
@@ -129,10 +133,10 @@ public class ScheduleUtils
     }
 
     /**
-     * 检查包名是否为白名单配置
+     * Validate the input and configuration.
      *
-     * @param invokeTarget 目标字符串
-     * @return 结果
+     * @param invokeTarget parameter value
+     * @return the operation result
      */
     public static boolean whiteList(String invokeTarget)
     {

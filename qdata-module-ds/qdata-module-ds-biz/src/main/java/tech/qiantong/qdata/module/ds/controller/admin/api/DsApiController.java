@@ -19,6 +19,8 @@
 package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -26,6 +28,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -57,7 +60,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * API服务Controller
+ * Implementation details.
  *
  * @author lhs
  * @date 2025-02-12
@@ -69,6 +72,9 @@ import java.util.List;
 public class DsApiController extends BaseController {
     @Resource
     private IDsApiService dsApiService;
+
+    @Value("${ds.base_url:}")
+    private String dsBaseUrl;
 
     @Operation(summary = "查询API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:list')")
@@ -99,6 +105,19 @@ public class DsApiController extends BaseController {
         String operName = getUsername();
         String message = dsApiService.importDsApi(importExcelList, updateSupport, operName);
         return success(message);
+    }
+
+    @Operation(summary = "检查DolphinScheduler是否可访问")
+    @GetMapping("/checkApi")
+    public CommonResult<Boolean> check() {
+        if (StringUtils.isBlank(dsBaseUrl)) {
+            return CommonResult.success(false);
+        }
+        try (HttpResponse response = HttpRequest.get(dsBaseUrl+"/login/sso").timeout(2000).execute()) {
+            return CommonResult.success(response.getStatus() == 200);
+        } catch (Exception e) {
+            return CommonResult.success(false);
+        }
     }
 
     @Operation(summary = "获取API服务详细信息")
@@ -139,7 +158,7 @@ public class DsApiController extends BaseController {
     }
 
     /**
-     * SQL解析
+     * Handle JDBC SQL execution.
      *
      * @param sqlParseDto
      * @return
@@ -165,7 +184,7 @@ public class DsApiController extends BaseController {
             try {
                 dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
             } catch (Exception e) {
-                logger.error("失败", e);
+                logger.error("Operation failed.", e);
             }
         } else {
             if (dataApi.getExecuteConfig() != null) {
@@ -187,7 +206,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 添加
+     * Implementation details.
      *
      * @param dataApi
      * @return
@@ -211,7 +230,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 修改
+     * Update the related record.
      *
      * @param dataApi
      * @return
@@ -234,7 +253,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 发布接口
+     * Implementation details.
      *
      * @param id
      * @return
@@ -248,7 +267,7 @@ public class DsApiController extends BaseController {
     }
 
     /**
-     * 注销接口
+     * Implementation details.
      *
      * @param id
      * @return

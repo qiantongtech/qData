@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成任务 Response VO 对象 DPP_ETL_TASK
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -107,6 +107,12 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "任务的执行策略", example = "")
     private String executionType;
 
+    @Schema(description = "调度器", example = "")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "")
+    private String actuator;
+
     @Excel(name = "超时时间")
     @Schema(description = "超时时间", example = "")
     private Long timeout;
@@ -126,6 +132,11 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Excel(name = "DolphinScheduler的id")
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    // Handle Quartz scheduling operations.
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
 
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
@@ -166,7 +177,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     private String remark;
 
     /**
-     * cron表达式
+     * Implementation details.
      */
     @TableField(exist = false)
     private String crontab;
@@ -184,18 +195,18 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
 
-    /** 最后执行时间 */
+    /** Implementation details. */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastExecuteTime;
 
-    /** 最后执行状态 */
+    /** Implementation details. */
     private String lastExecuteStatus;
 
-    /** 调度上下线状态 */
+    /** Handle scheduling configuration and operations. */
     private String schedulerState;
 
     /**
-     * 任务实例
+     * Task instance
      */
     private DppEtlTaskInstanceDO taskInstance;
 
@@ -215,6 +226,10 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.locations = parseList(dppEtlTaskDO.getLocations());
         this.description = dppEtlTaskDO.getDescription();
         this.executionType = dppEtlTaskDO.getExecutionType();
+        // Handle Quartz scheduling operations.
+        this.quartzId = dppEtlTaskDO.getQuartzId();
+        this.scheduler = dppEtlTaskDO.getScheduler();
+        this.actuator = dppEtlTaskDO.getActuator();
         this.timeout = dppEtlTaskDO.getTimeout();
         this.extractionCount = dppEtlTaskDO.getExtractionCount();
         this.writeCount = dppEtlTaskDO.getWriteCount();
@@ -242,7 +257,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     }
 
     public void setTaskRelationJsonFromNodeRelList(List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList) {
-        // 将 List<DppEtlTaskNodeRelRespVO> 转换为 List<Map<String, Object>>
+        // Implementation details.
         List<Map<String, Object>> taskRelationJsonList = new ArrayList<>();
 
         for (DppEtlTaskNodeRelRespVO nodeRel : dppEtlTaskNodeRelRespVOList) {
@@ -272,13 +287,13 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
             taskRelationJsonList.add(nodeRelMap);
         }
 
-        // 存入 taskRelationJson 字段
+        // Implementation details.
         this.taskRelationJson = taskRelationJsonList;
     }
 
 
     public void setTaskDefinitionList(List<DppEtlNodeRespVO> dppEtlNodeRespVOList) {
-        // 将 DppEtlNodeRespVO 列表转换为 List<Map<String, Object>>
+        // Implementation details.
         List<Map<String, Object>> taskDefinitionList = dppEtlNodeRespVOList.stream()
                 .map(node -> {
                     Map<String, Object> stringObjectMap = parseMap(node.getParameters());
@@ -315,25 +330,27 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
                 })
                 .collect(Collectors.toList());
 
-        // 将转换后的列表赋值给 taskDefinitionList
+        // Implementation details.
         this.taskDefinitionList = taskDefinitionList;
     }
 
 
     public void createTaskConfig() {
-        // 创建 taskConfig Map
+        // Create the required record.
         Map<String, Object> taskConfig = new HashMap<>();
         taskConfig.put("type", this.type);
         taskConfig.put("releaseState", this.status);
-        taskConfig.put("description", this.description); // 从本身获取描述
-        taskConfig.put("name", this.name); // 从本身获取任务名称
-        taskConfig.put("executionType", this.executionType); // 从本身获取执行策略
-        taskConfig.put("crontab", this.crontab); // 固定 crontab 表达式
-        taskConfig.put("personCharge", this.personCharge); // 责任人
-        taskConfig.put("contactNumber", this.contactNumber); // 联系电话
-        taskConfig.put("catCode", this.catCode); // 责任人
+        taskConfig.put("description", this.description); // Retrieve the required data.
+        taskConfig.put("name", this.name); // Handle task-related data and operations.
+        taskConfig.put("executionType", this.executionType); // Retrieve the required data.
+        taskConfig.put("scheduler", this.scheduler);
+        taskConfig.put("actuator", this.actuator);
+        taskConfig.put("crontab", this.crontab); // Implementation details.
+        taskConfig.put("personCharge", this.personCharge); // Implementation details.
+        taskConfig.put("contactNumber", this.contactNumber); // Implementation details.
+        taskConfig.put("catCode", this.catCode); // Implementation details.
 
-        // 设置 taskConfig
+        // Implementation details.
         this.setTaskConfig(taskConfig);
     }
 }

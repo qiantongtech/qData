@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 采集任务实例 Response VO 对象 MC_TASK_INSTANCE
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-12-16
@@ -91,6 +91,14 @@ public class McTaskInstanceRespVO implements Serializable {
     @Schema(description = "状态", example = "")
     private String status;
 
+    @Excel(name = "调度引擎")
+    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
+    private String taskScheduler;
+
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;
@@ -134,30 +142,30 @@ public class McTaskInstanceRespVO implements Serializable {
     private String description;
 
     /**
-     * 任务名称
+     * Handle task-related data and operations.
      */
     @TableField(exist = false)
     private String name;
     /**
-     * 任务状态
+     * Handle task-related data and operations.
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * 创建人电话
+     * Create the required record.
      */
     private String createPhoneNumber;
 
     /**
-     * 数据源名称
+     * Handle database and data source configuration.
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Handle database and data source configuration.
      */
     @TableField(exist = false)
     private String datasourceType;

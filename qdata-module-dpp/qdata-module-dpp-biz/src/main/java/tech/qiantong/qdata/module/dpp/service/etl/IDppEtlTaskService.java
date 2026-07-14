@@ -28,8 +28,9 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 /**
- * 数据集成任务Service接口
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,65 +38,65 @@ import java.util.Map;
 public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     /**
-     * 获得数据集成任务分页列表
+     * Handle task-related data and operations.
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务分页列表
+     * @param pageReqVO parameter value
+     * @return the operation result
      */
     PageResult<DppEtlTaskDO> getDppEtlTaskPage(DppEtlTaskPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务
+     * Handle task-related data and operations.
      *
-     * @param createReqVO 数据集成任务信息
-     * @return 数据集成任务编号
+     * @param createReqVO parameter value
+     * @return the operation result
      */
     Long createDppEtlTask(DppEtlTaskSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成任务
+     * Handle task-related data and operations.
      *
-     * @param updateReqVO 数据集成任务信息
+     * @param updateReqVO parameter value
      */
     int updateDppEtlTask(DppEtlTaskSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务
+     * Handle task-related data and operations.
      *
-     * @param idList 数据集成任务编号
+     * @param idList parameter value
      */
     int removeDppEtlTask(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务详情
+     * Handle task-related data and operations.
      *
-     * @param id 数据集成任务编号
-     * @return 数据集成任务
+     * @param id parameter value
+     * @return the operation result
      */
     DppEtlTaskRespVO getDppEtlTaskById(Long id);
 
     /**
-     * 获得全部数据集成任务列表
+     * Handle task-related data and operations.
      *
-     * @return 数据集成任务列表
+     * @return the operation result
      */
     List<DppEtlTaskDO> getDppEtlTaskList();
 
     /**
-     * 获得全部数据集成任务 Map
+     * Handle task-related data and operations.
      *
-     * @return 数据集成任务 Map
+     * @return the operation result
      */
     Map<Long, DppEtlTaskDO> getDppEtlTaskMap();
 
 
     /**
-     * 导入数据集成任务数据
+     * Handle task-related data and operations.
      *
-     * @param importExcelList 数据集成任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList parameter value
+     * @param isUpdateSupport parameter value
+     * @param operName parameter value
+     * @return the operation result
      */
     String importDppEtlTask(List<DppEtlTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -114,7 +115,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     DppEtlTaskUpdateQueryRespVO getuUpdateQueryInfo(Long id);
 
     /**
-     * 通过任务编码获取任务id
+     * Handle task-related data and operations.
      *
      * @param taskCode
      * @return
@@ -122,7 +123,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Long getTaskIdByTaskCode(String taskCode);
 
     /**
-     * 通过任务编码获取任务信息
+     * Handle task-related data and operations.
      *
      * @param taskCode
      * @return
@@ -131,7 +132,26 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     List<DppEtlTaskTreeRespVO> getDppEtlTaskListTree(DppEtlTaskPageReqVO dppEtlTask);
 
+    /**
+     * Start the task.
+     * @param id
+     * @return
+     */
     AjaxResult startDppEtlTask(Long id);
+
+    /**
+     * Handle task-related data and operations.
+     * @param id
+     * @return
+     */
+    void startDppEtlTaskDataIntegration(Long id);
+
+    /**
+     * Handle task-related data and operations.
+     *
+     * @param id
+     */
+    void startDppEtlTaskDataDevelopment(Long id);
 
     List<DppEtlTaskRespVO> getSubTaskStatusList(DppEtlTaskPageReqVO dppEtlTask);
 
@@ -140,14 +160,14 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Map<String, Object> updateReleaseSchedule(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * 新增ETL任务
+     * Handle task-related data and operations.
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */
     DppEtlTaskSaveReqVO createEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * 修改ETL任务
+     * Handle task-related data and operations.
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */

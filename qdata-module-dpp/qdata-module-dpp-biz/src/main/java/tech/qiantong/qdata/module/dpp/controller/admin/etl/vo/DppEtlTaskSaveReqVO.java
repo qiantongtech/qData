@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据集成任务 创建/修改 Request VO DPP_ETL_TASK
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -40,11 +40,11 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    /** 类目Id */
+    /** Implementation details. */
     @Schema(description = "类目Id", example = "")
     private Long catId;
 
-    /** 类目编码 */
+    /** Implementation details. */
     @Schema(description = "类目编码", example = "")
     private String catCode;
 
@@ -74,7 +74,7 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "责任人长度不能超过256个字符")
     private String personCharge;
 
-    /** 联系电话 */
+    /** Implementation details. */
     @Schema(description = "联系电话", example = "")
     @Size(max = 256, message = "联系电话长度不能超过256个字符")
     private String contactNumber;
@@ -104,6 +104,16 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
 
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    // Handle Quartz scheduling operations.
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
 
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")

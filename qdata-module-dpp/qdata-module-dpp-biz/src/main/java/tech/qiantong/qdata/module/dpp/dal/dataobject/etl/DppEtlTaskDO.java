@@ -30,14 +30,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成任务 DO 对象 DPP_ETL_TASK
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Handle JDBC SQL execution.
 // @KeySequence("DPP_ETL_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -51,88 +51,96 @@ public class DppEtlTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 类目Id */
+    /** Implementation details. */
     private Long catId;
 
-    /** 类目编码 */
+    /** Implementation details. */
     private String catCode;
 
     @TableField(exist = false)
     private String catName;
 
-    /** 数据源类型 */
+    /** Handle database and data source configuration. */
     @TableField(exist = false)
     private String datasourceType;
 
-    /** 1：离线任务 2：实时任务 3：数据开发任务 4：作业任务 */
+    /** Handle task-related data and operations. */
     private String type;
 
-    /** 任务名称 */
+    /** Handle task-related data and operations. */
     private String name;
 
-    /** 任务编码 */
+    /** Task code */
     private String code;
 
-    /** 任务版本 */
+    /** Task version */
     private Long version;
 
-    /** 项目id */
+    /** Implementation details. */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Implementation details. */
     private String projectCode;
 
-    /** 责任人 */
+    /** Implementation details. */
     private String personCharge;
 
-    /** 责任人名称 */
+    /** Implementation details. */
     @TableField(exist = false)
     private String personChargeName;
 
-    /** 联系电话 */
+    /** Implementation details. */
     private String contactNumber;
 
-
-    /** 节点坐标信息 */
+    /** Handle node-related data and operations. */
     private String locations;
 
     @Schema(description = "任务的执行策略", example = "")
     private String executionType;
 
-    /** 描述 */
+    /** Implementation details. */
     private String description;
 
-    /** 超时时间 */
+    /** Implementation details. */
     private Long timeout;
 
-    /** 抽取量 */
+    /** Implementation details. */
     private Long extractionCount;
 
-    /** 写入量 */
+    /** Implementation details. */
     private Long writeCount;
 
-    /** 任务状态 */
+    /** Handle task-related data and operations. */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** Handle DolphinScheduler operations. */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Handle Quartz scheduling operations. */
+    private Long quartzId;
+
+    /** Scheduler */
+    private String scheduler;
+
+    /** Executor */
+    private String actuator;
+
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete the related record. */
     @TableLogic
     private Boolean delFlag;
 
-    /** cron表达式 */
+    /** Implementation details. */
     @TableField(exist = false)
     private String cronExpression;
 
-    /** 调度上下限 */
+    /** Handle scheduling configuration and operations. */
     @TableField(exist = false)
     private String schedulerState;
 
-    /** 最后执行时间 */
+    /** Implementation details. */
     @TableField(exist = false)
     private Date lastExecuteTime;
 

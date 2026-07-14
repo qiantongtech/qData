@@ -20,9 +20,10 @@ package tech.qiantong.qdata.quartz.util;
 
 import org.quartz.JobExecutionContext;
 import tech.qiantong.qdata.quartz.domain.SysJob;
+import tech.qiantong.qdata.quartz.executor.QuartzExecutionStrategyExecutor;
 
 /**
- * 定时任务处理（允许并发执行）
+ * Handle task-related data and operations.
  *
  * @author qdata
  *
@@ -32,6 +33,6 @@ public class QuartzJobExecution extends AbstractQuartzJob
     @Override
     protected void doExecute(JobExecutionContext context, SysJob sysJob) throws Exception
     {
-        JobInvokeUtil.invokeMethod(sysJob);
+        new QuartzExecutionStrategyExecutor().execute(context, sysJob);
     }
 }

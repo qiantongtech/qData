@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据集成任务-日志 创建/修改 Request VO DPP_ETL_TASK_LOG
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -90,6 +90,9 @@ public class DppEtlTaskLogSaveReqVO extends BaseEntity {
 
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    @Schema(description = "quartz的Id", example = "")
+    private Long quartzId;
 
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")

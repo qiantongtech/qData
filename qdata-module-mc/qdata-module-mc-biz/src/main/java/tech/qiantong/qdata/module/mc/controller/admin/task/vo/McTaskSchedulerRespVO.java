@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 Response VO 对象 MC_TASK_SCHEDULER
+ * Handle scheduling configuration and operations.
  *
  * @author qdata
  * @date 2025-12-16
@@ -35,6 +35,14 @@ public class McTaskSchedulerRespVO implements Serializable {
     @Excel(name = "DolphinScheduler任务编码")
     @Schema(description = "DolphinScheduler任务编码（用于API调用）", example = "")
     private String taskCode;
+
+    @Excel(name = "调度引擎")
+    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
+    private String taskScheduler;
+
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
 
     @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

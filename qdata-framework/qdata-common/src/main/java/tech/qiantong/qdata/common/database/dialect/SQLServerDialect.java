@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * SQLServer 数据库方言
+ * Handle JDBC SQL execution.
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -45,7 +45,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -59,7 +59,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -95,22 +95,22 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Implementation details.
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // 转换数据类型为SQL Server支持的类型
+                // Handle JDBC SQL execution.
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // SQL Server不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2": // Handle JDBC SQL execution.
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
                         } else {
-                            sql.append("(MAX)"); // SQL Server中的VARCHAR默认支持最大长度
+                            sql.append("(MAX)"); // Handle JDBC SQL execution.
                         }
                         break;
                     case "CHAR":
@@ -146,7 +146,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("FLOAT");
                         break;
                     case "DOUBLE":
-                        sql.append("FLOAT"); // SQL Server中没有DOUBLE，使用FLOAT
+                        sql.append("FLOAT"); // Handle JDBC SQL execution.
                         break;
                     case "DATE":
                         sql.append("DATE");
@@ -158,16 +158,16 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Implementation details.
                         break;
                 }
 
-                // 检查是否必填
+                // Validate the input and configuration.
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Implementation details.
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -176,7 +176,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                     }
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Implementation details.
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -184,17 +184,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Implementation details.
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Implementation details.
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Implementation details.
                 sql.append(")");
             }
 
@@ -203,7 +203,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         }
 
 
-        // 添加表备注（SQL Server不直接支持表备注，但可以使用扩展属性等方式）
+        // Handle JDBC SQL execution.
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
@@ -212,7 +212,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
             sqlList.add(sql.toString());
         }
 
-        // 添加字段备注
+        // Implementation details.
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -229,17 +229,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // Retrieve the required data.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Retrieve the required data.
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Handle JDBC SQL execution.
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -355,7 +355,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        //判断是否开启ssl
+        // Implementation details.
         if (checkUseSSL(property)) {
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
             url = url.replace("encrypt=false", "encrypt=true")

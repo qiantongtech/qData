@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成任务实例 DO 对象 DPP_ETL_TASK_INSTANCE
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_INSTANCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Handle JDBC SQL execution.
 // @KeySequence("DPP_ETL_TASK_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -48,138 +48,173 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 类目Id */
+    /** Implementation details. */
     private Long catId;
 
-    /** 类目编码 */
+    /** Implementation details. */
     private String catCode;
 
     /**
-     * 任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务
+     * Handle task-related data and operations.
      */
     private String taskType;
 
     /**
-     * 任务实例名称
+     * Handle task-related data and operations.
      */
     private String name;
 
     /**
-     * 任务id
+     * Task ID
      */
     private Long taskId;
 
     /**
-     * 任务编码
+     * Task code
      */
     private String taskCode;
 
     /**
-     * 任务版本
+     * Task version
      */
     private Integer taskVersion;
 
     /**
-     * 状态历史(json列表)
+     * Implementation details.
      */
     private String statusHistory;
 
     /**
-     * 责任人
+     * Implementation details.
      */
     private String personCharge;
 
     /**
-     * 责任人名称
+     * Implementation details.
      */
     @TableField(exist = false)
     private String personChargeName;
 
 
     /**
-     * 联系电话
+     * Implementation details.
      */
     private String contactNumber;
     /**
-     * 项目id
+     * Implementation details.
      */
     private Long projectId;
 
     /**
-     * 项目编码
+     * Implementation details.
      */
     private String projectCode;
 
     /**
-     * 调度时间
+     * Handle scheduling configuration and operations.
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date scheduleTime;
 
     /**
-     * 开始时间
+     * Implementation details.
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
-     * 结束时间
+     * Implementation details.
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
-     * 运行次数
+     * Implementation details.
      */
     private Integer runTimes;
 
     /**
-     * 运行类型
+     * Implementation details.
      */
     private String commandType;
 
     /**
-     * 最大重试次数
+     * Implementation details.
      */
     private Integer maxTryTimes;
 
     /**
-     * 失败策略
+     * Implementation details.
      */
     private String failureStrategy;
 
     /**
-     * 是否是子任务
+     * Handle task-related data and operations.
      */
     private String subTaskFlag;
 
     /**
-     * 状态
+     * Implementation details.
      */
     private String status;
 
     /**
-     * 父任务实例id;只有为子任务时才有该值
+     * Handle task-related data and operations.
      */
     private Long parentTaskInstanceId;
 
     /**
-     * 父任务节点实例id;只有为子任务时才有该值
+     * Handle task-related data and operations.
      */
     private Long parentNodeInstanceId;
 
     /**
-     * DolphinScheduler的id
+     * Handle DolphinScheduler operations.
      */
     private Long dsId;
 
     /**
-     * 是否有效
+     * Scheduling engine
+     */
+    private String taskScheduler;
+
+    /**
+     * Execution engine
+     */
+    private String taskActuator;
+
+    /**
+     * Handle Quartz scheduling operations.
+     */
+    private Long quartzId;
+
+    /**
+     * Executor job ID.
+     */
+    private String executorJobId;
+
+    /**
+     * Executor configuration file path.
+     */
+    private String executorConfigPath;
+
+    /**
+     * Execution process ID.
+     */
+    private Long pid;
+
+    /**
+     * Execution log file path.
+     */
+    private String logPath;
+
+    /**
+     * Whether the record is valid.
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete the related record.
      */
     @TableLogic
     private Boolean delFlag;

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 Response VO 对象 DPP_ETL_SCHEDULER
+ * Handle scheduling configuration and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -78,6 +78,18 @@ public class DppEtlSchedulerRespVO implements Serializable {
     @Excel(name = "DolphinScheduler的id")
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    @Excel(name = "调度引擎")
+    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
+    private String taskScheduler;
+
+    @Excel(name = "执行引擎")
+    @Schema(description = "执行引擎", example = "SPARK")
+    private String taskActuator;
+
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
 
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")

@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * SQLServer 2005 数据库方言
+ * Handle JDBC SQL execution.
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -50,7 +50,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -64,7 +64,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -85,22 +85,22 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Implementation details.
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // 转换数据类型为SQL Server支持的类型
+                // Handle JDBC SQL execution.
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // SQL Server不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2": // Handle JDBC SQL execution.
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
                         } else {
-                            sql.append("(MAX)"); // SQL Server中的VARCHAR默认支持最大长度
+                            sql.append("(MAX)"); // Handle JDBC SQL execution.
                         }
                         break;
                     case "CHAR":
@@ -136,7 +136,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                         sql.append("FLOAT");
                         break;
                     case "DOUBLE":
-                        sql.append("FLOAT"); // SQL Server中没有DOUBLE，使用FLOAT
+                        sql.append("FLOAT"); // Handle JDBC SQL execution.
                         break;
                     case "DATE":
                         sql.append("DATE");
@@ -148,16 +148,16 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Implementation details.
                         break;
                 }
 
-                // 检查是否必填
+                // Validate the input and configuration.
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Implementation details.
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -166,7 +166,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                     }
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Implementation details.
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -174,17 +174,17 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Implementation details.
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Implementation details.
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Implementation details.
                 sql.append(")");
             }
 
@@ -193,7 +193,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         }
 
 
-        // 添加表备注（SQL Server不直接支持表备注，但可以使用扩展属性等方式）
+        // Handle JDBC SQL execution.
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
@@ -202,7 +202,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             sqlList.add(sql.toString());
         }
 
-        // 添加字段备注
+        // Implementation details.
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -233,7 +233,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
 
             String columnTypeResolved = "";
-            // 映射 Doris 支持的数据类型
+            // Implementation details.
             switch (columnType.toUpperCase()) {
                 case "VARCHAR":
                 case "NVARCHAR":
@@ -296,7 +296,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                     columnTypeResolved = "DATETIME";
                     break;
                 default:
-                    sql.append("VARCHAR(255)"); // fallback 处理
+                    sql.append("VARCHAR(255)"); // Implementation details.
                     columnTypeResolved = "VARCHAR";
                     break;
             }
@@ -309,7 +309,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             String defaultClause = buildDorisDefaultClause(columnTypeResolved, column.getDataDefault());
             sql.append(defaultClause);
 
-            // 注释
+            // Implementation details.
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
             }
@@ -321,11 +321,11 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             sql.append(",\n");
         }
 
-        // 去掉最后一个逗号
+        // Implementation details.
         sql.setLength(sql.length() - 2);
         sql.append("\n)");
 
-        // Doris 必须指定 KEY 类型
+        // Implementation details.
         if (!primaryKeys.isEmpty()) {
             sql.append("\nUNIQUE KEY (");
             for (String pk : primaryKeys) {
@@ -334,33 +334,33 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             sql.setLength(sql.length() - 2);
             sql.append(")");
         } else {
-            // 无主键则用第一列作 DUPLICATE KEY
+            // Implementation details.
             sql.append("\nDUPLICATE KEY (`").append(dbColumnList.get(0).getColName()).append("`)");
         }
 
-        //判断是否添加分区
+        // Implementation details.
         if (StringUtils.isNotBlank(partitionRule)) {
             sql.append("\n").append(partitionRule);
         }
 
-        // 分桶策略（必需）
+        // Implementation details.
         if (StringUtils.isBlank(bucketRule)) {
             sql.append("\nDISTRIBUTED BY HASH(`").append(dbColumnList.get(0).getColName()).append("`) BUCKETS AUTO");
         } else {
             sql.append("\n").append(bucketRule);
         }
 
-        // 表属性（含表注释）
+        // Implementation details.
         sql.append("\nPROPERTIES (\n");
         sql.append("  \"replication_num\" = \"" + replica + "\"");
         sql.append("\n)");
         sqlList.add(sql.toString());
-        //表注释
+        // Implementation details.
         sqlList.add("ALTER TABLE " + tableName + " MODIFY COMMENT '" + tableComment + "'");
         return sqlList;
     }
 
-    // 定义一个包含常见DORIS保留关键字的集合（全部转换为大写便于比较）
+    // Implementation details.
     private static final String[] DORIS_RESERVED_WORDS = {
             "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
             "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
@@ -389,11 +389,11 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
     };
 
     /**
-     * 构造 Doris 合法的 DEFAULT 子句（仅允许合法字面量，防止建表失败）
+     * Implementation details.
      *
-     * @param dataType     字段类型，如 VARCHAR、INT、DECIMAL(10,2) 等
-     * @param defaultValue 默认值，如 'abc'、0、1.23 等
-     * @return 若合法则返回 DEFAULT xxx 子句，否则返回空字符串
+     * @param dataType parameter value
+     * @param defaultValue parameter value
+     * @return the operation result
      */
     public static String buildDorisDefaultClause(String dataType, String defaultValue) {
         if (StringUtils.isBlank(defaultValue) || StringUtils.isBlank(dataType)) {
@@ -406,7 +406,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         boolean isNumeric = def.matches("^-?\\d+(\\.\\d+)?$");
         boolean isQuoted = def.matches("^'.*'$");
 
-        // 非下面的数值类型无法添加默认值
+        // Implementation details.
         if (type.matches(".*(TINYINT|SMALLINT|INT|BIGINT|LARGEINT|FLOAT|DOUBLE|DECIMAL|FLOAT|CHAR|VARCHAR|DATE|DATETIME|BOOLEAN).*")) {
             if (!isQuoted && isNumeric) {
                 return " DEFAULT '" + def + "'";
@@ -414,7 +414,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                 return " DEFAULT " + def;
             }
         }
-        return ""; // 其他不合法情况过滤掉
+        return ""; // Implementation details.
     }
 
     public static String escapeReservedKeyword(String colName) {
@@ -432,20 +432,20 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
     public static String generateColumnSQLDORIS(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
         StringBuilder sql = new StringBuilder(columnType);
 
-        // 仅当是需要长度和小数位数的类型时，才处理长度
+        // Implementation details.
         if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
             if (StringUtils.isNotEmpty(columnLength)) {
                 int length = Integer.parseInt(columnLength);
-                // 限制长度不超过最大长度
+                // Implementation details.
                 if (length > maxLength) {
                     length = maxLength;
                 }
                 sql.append("(").append(length);
 
-                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                // Implementation details.
                 if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
                     int scale = Integer.parseInt(columnScale);
-                    // 限制小数位数不超过最大值
+                    // Implementation details.
                     if (scale > maxScale) {
                         scale = maxScale;
                     }
@@ -479,17 +479,17 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // Retrieve the required data.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Retrieve the required data.
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Handle JDBC SQL execution.
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -530,7 +530,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         sql.append("WITH selectTemp AS (SELECT ").append(distinctStr).append("TOP 100 PERCENT ")
                 .append(" ROW_NUMBER() OVER (").append(orderby).append(") as __row_number__, ").append(pagingBuilder)
                 .append(") SELECT * FROM selectTemp WHERE __row_number__ BETWEEN ")
-                //FIX#299：原因：mysql中limit 10(offset,size) 是从第10开始（不包含10）,；而这里用的BETWEEN是两边都包含，所以改为offset+1
+                // Implementation details.
                 .append(offset + 1)
                 .append(" AND ")
                 .append(offset + count).append(" ORDER BY __row_number__");
@@ -552,13 +552,13 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         int level = dbNameVO == null ? 1 : dbNameVO.getLevel() + 1;
 
         if (level == 1) {
-            // 第一次：列出所有数据库
+            // Handle database and data source configuration.
             return "SELECT name AS DBNAME, 2 AS TOTALLEVELS " +
                     "FROM sys.databases " +
                     "WHERE name NOT IN ('master','tempdb','model','msdb') " +
                     "ORDER BY name";
         } else if (level == 2) {
-            // 第二次：列出某数据库下的所有 schema
+            // Handle database and data source configuration.
             String dbName = dbNameVO.getDbName();
             if (dbName == null || dbName.trim().isEmpty()) {
                 throw new IllegalArgumentException("SQLServer level=2 需要上级 dbName");
@@ -624,7 +624,7 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             conn = DriverManager.getConnection(trainToJdbcUrl(dbQueryProperty), dbQueryProperty.getUsername(),
                     dbQueryProperty.getPassword());
 
-            // 方法2：执行测试查询（双重验证）
+            // Retrieve the required data.
             try (Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT 1")) {
                 if (rs.next()) {

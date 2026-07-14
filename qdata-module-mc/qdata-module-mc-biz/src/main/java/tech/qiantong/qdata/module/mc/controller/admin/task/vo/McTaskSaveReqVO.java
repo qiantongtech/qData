@@ -8,7 +8,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.List;
 
 /**
- * 采集任务 创建/修改 Request VO MC_TASK
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-12-16
@@ -52,6 +52,9 @@ public class McTaskSaveReqVO extends BaseEntity {
     @Schema(description = "任务状态", example = "")
     private String status;
 
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
     @Schema(description = "备注", example = "")
     private String remark;
 
@@ -59,31 +62,31 @@ public class McTaskSaveReqVO extends BaseEntity {
     private String description;
 
     /**
-     * 采集任务类型：1-采集，2-DDL
+     * Handle task-related data and operations.
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * 采集黑名单
+     * Implementation details.
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
 
     /**
-     * cron表达式
+     * Implementation details.
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * 调度状态
+     * Handle scheduling configuration and operations.
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * 采集范围
+     * Implementation details.
      */
     @TableField(exist = false)
     private List<McTaskScopeSaveReqVO> scopeSaveReqVOS;

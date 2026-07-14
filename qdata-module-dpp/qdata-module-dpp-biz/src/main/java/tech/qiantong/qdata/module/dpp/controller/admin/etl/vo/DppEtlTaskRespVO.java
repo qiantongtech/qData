@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据集成任务 Response VO 对象 DPP_ETL_TASK
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -121,6 +121,19 @@ public class DppEtlTaskRespVO implements Serializable {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
+    // Handle Quartz scheduling operations.
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
+    @Excel(name = "调度器")
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Excel(name = "执行器")
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
+
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;
@@ -174,11 +187,11 @@ public class DppEtlTaskRespVO implements Serializable {
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
 
-    /** cron表达式 */
+    /** Implementation details. */
     @TableField(exist = false)
     private String cronExpression;
 
-    /** 调度上下限 */
+    /** Handle scheduling configuration and operations. */
     @TableField(exist = false)
     private String schedulerState;
 
@@ -191,6 +204,6 @@ public class DppEtlTaskRespVO implements Serializable {
 
     @JsonProperty("label")
     public String getLabel() {
-        return name; // label 字段动态取值
+        return name; // Implementation details.
     }
 }

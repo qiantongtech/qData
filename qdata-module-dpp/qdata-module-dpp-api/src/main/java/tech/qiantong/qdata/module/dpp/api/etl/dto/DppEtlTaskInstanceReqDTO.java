@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成任务实例 DTO 对象 DPP_ETL_TASK_INSTANCE
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,60 +37,69 @@ public class DppEtlTaskInstanceReqDTO {
     /** ID */
     private Long id;
 
-    /** 任务实例名称 */
+    /** Handle task-related data and operations. */
     private String name;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task code */
     private String taskCode;
 
-    /** 任务版本 */
+    /** Task version */
     private Long taskVersion;
 
-    /** 状态历史(json列表) */
+    /** Implementation details. */
     private String statusHistory;
 
-    /** 责任人 */
+    /** Implementation details. */
     private String personCharge;
 
-    /** 项目id */
+    /** Implementation details. */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Implementation details. */
     private String projectCode;
 
-    /** 开始时间 */
+    /** Implementation details. */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** 结束时间 */
+    /** Implementation details. */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** 运行类型 */
+    /** Implementation details. */
     private String commandType;
 
-    /** 最大重试次数 */
+    /** Implementation details. */
     private Long maxTryTimes;
 
-    /** 失败策略 */
+    /** Implementation details. */
     private String failureStrategy;
 
-    /** 是否是子任务 */
+    /** Handle task-related data and operations. */
     private String subTaskFlag;
 
-    /** 状态 */
+    /** Implementation details. */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** Handle DolphinScheduler operations. */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Scheduling engine */
+    private String taskScheduler;
+
+    /** Execution engine */
+    private String taskActuator;
+
+    /** Handle Quartz scheduling operations. */
+    private Long quartzId;
+
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete the related record. */
     private Boolean delFlag;
 
 

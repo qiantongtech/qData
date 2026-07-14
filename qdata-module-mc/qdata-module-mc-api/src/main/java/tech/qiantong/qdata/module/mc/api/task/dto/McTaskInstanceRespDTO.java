@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 采集任务实例 DTO 对象 MC_TASK_INSTANCE
+ * Handle task-related data and operations.
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,61 +18,67 @@ public class McTaskInstanceRespDTO {
     /** ID */
     private Long id;
 
-    /** 来源系统ID */
+    /** Implementation details. */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Implementation details. */
     private String sourceSystemName;
 
-    /** 采集任务id */
+    /** Handle task-related data and operations. */
     private Long taskId;
 
-    /** 采集模式 */
+    /** Implementation details. */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Implementation details. */
     private String collectionScope;
 
-    /** 采集表总数量 */
+    /** Implementation details. */
     private Long totalCount;
 
-    /** 采集表成功数量 */
+    /** Implementation details. */
     private Long successCount;
 
-    /** 采集表失败数量 */
+    /** Implementation details. */
     private Long failCount;
 
-    /** 失败原因 */
+    /** Implementation details. */
     private String failCause;
 
-    /** 新增数量 */
+    /** Implementation details. */
     private Long addCount;
 
-    /** 删减数量 */
+    /** Implementation details. */
     private Long delCount;
 
-    /** 变更数量 */
+    /** Implementation details. */
     private Long updateCount;
 
-    /** 开始时间 */
+    /** Implementation details. */
     private Date startTime;
 
-    /** 结束时间 */
+    /** Implementation details. */
     private Date endTime;
 
-    /** 耗时 */
+    /** Implementation details. */
     private Long duration;
 
-    /** 状态 */
+    /** Implementation details. */
     private String status;
 
-    /** 是否有效 */
+    /** Scheduling engine */
+    private String taskScheduler;
+
+    /** Handle Quartz scheduling operations. */
+    private Long quartzId;
+
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete the related record. */
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Implementation details. */
     private String description;
 
 

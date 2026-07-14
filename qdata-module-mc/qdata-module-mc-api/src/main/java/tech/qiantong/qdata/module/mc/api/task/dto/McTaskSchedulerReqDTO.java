@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 DTO 对象 MC_TASK_SCHEDULER
+ * Handle scheduling configuration and operations.
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,34 +18,40 @@ public class McTaskSchedulerReqDTO {
     /** ID */
     private Long id;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 调度器id */
+    /** Handle scheduling configuration and operations. */
     private String jobId;
 
-    /** 开始时间 */
+    /** Scheduling engine */
+    private String taskScheduler;
+
+    /** Handle Quartz scheduling operations. */
+    private Long quartzId;
+
+    /** Implementation details. */
     private Date startTime;
 
-    /** 结束时间 */
+    /** Implementation details. */
     private Date endTime;
 
-    /** 时区 */
+    /** Implementation details. */
     private String timezoneId;
 
-    /** cron表达式 */
+    /** Implementation details. */
     private String cronExpression;
 
-    /** 失败策略 */
+    /** Implementation details. */
     private String failureStrategy;
 
-    /** 调度状态 */
+    /** Handle scheduling configuration and operations. */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete the related record. */
     private Boolean delFlag;
 
 

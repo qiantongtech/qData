@@ -76,7 +76,8 @@ import { useRoute, useRouter } from "vue-router";
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
-// 转换组件
+// 转换组件 src/views/dpp/task/integratioTask/components/transform/dedupFilter.vue
+import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
 // 清洗组件
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
 // 排序组件

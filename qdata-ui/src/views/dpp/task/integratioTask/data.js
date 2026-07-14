@@ -29,7 +29,7 @@ export const treeData = [
         label: td('dpp.integration.input', '输入'),
         level: 1,
         type: 1,
-        engine: ['SPARK', 'FLINK'],
+        engine: ['SPARK', 'FLINK', 'DATAX'],
         children: [
             {
                 label: td('dpp.integration.inputTable', '表输入组件'),
@@ -38,7 +38,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'DATAX',
                 componentType: '1',
-                engine: ['SPARK', 'FLINK'],
+                engine: ['SPARK', 'FLINK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-bsr.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/images/common/dpp/img-sr.png'
             },
@@ -71,7 +71,7 @@ export const treeData = [
         label: td('dpp.integration.transform', '转换'),
         type: 3,
         level: 1,
-        engine: ['SPARK'],
+        engine: ['SPARK','DATAX'],
         children: [
             {
                 label: td('dpp.integration.transformComponent', '转换组件'),
@@ -113,7 +113,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'DATA_DEDUPLICATION',
                 componentType: '40',
-                engine: ['SPARK'],
+                engine: ['SPARK','DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-dedu.svg', import.meta.url).href, // 动态获取路径
                 form: 'transform/dedupFilter.vue',
             },
@@ -156,7 +156,7 @@ export const treeData = [
         label: td('dpp.integration.output', '输出'),
         type: 2,
         level: 1,
-        engine: ['SPARK', 'FLINK'],
+        engine: ['SPARK', 'FLINK', 'DATAX'],
         children: [
             {
                 label: td('dpp.integration.outputTable', '表输出组件'),
@@ -165,7 +165,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'DATAX',
                 componentType: '91',
-                engine: ['SPARK', 'FLINK'],
+                engine: ['SPARK', 'FLINK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-bsc.svg', import.meta.url).href, // 动态获取路径
                 icons: '@/assets/images/common/dpp/img-sc.png'
             },

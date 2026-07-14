@@ -23,6 +23,7 @@
     class="dialog"
     :title="title"
     destroy-on-close
+    width="60%"
     :append-to="$refs['app-container']"
   >
     <el-form
@@ -136,6 +137,38 @@
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-form-item
+              :label="td('dpp.integratioTask.scheduler', '调度器')"
+              prop="scheduler"
+              :label-position="labelPosition"
+          >
+            <el-radio-group
+                v-if="title != td('dpp.integratioTask.taskDetail')"
+                class="el-form-input-width"
+                v-model="form.scheduler"
+                @change="handleSchedulerChange"
+                style="width: 100%"
+            >
+              <el-radio
+                  v-for="(item, index) in scheduler_type"
+                  :key="index"
+                  :value="item.value"
+                  :label="item.label"
+              >
+                {{ item.label }}
+              </el-radio>
+            </el-radio-group>
+            <div class="form-readonly" v-else>{{ form.scheduler || "-" }}</div>
+            <p style="display: flex;align-items: center;line-height: 1;font-size: 12px;color: #888; margin-top: 10px;">
+              {{ schedulerGuide.description }}
+            </p>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integratioTask.responsiblePerson', '责任人')"
@@ -350,8 +383,16 @@
               v-model="form.taskType"
               class="el-form-input-width"
               :disabled="props.data.id"
+              @change="handleExecutionEngineChange"
             >
-              <el-radio label="SPARK"> SPARK </el-radio>
+              <el-radio
+                v-for="(item, index) in schedulerTypeList"
+                :key="index"
+                :value="item.value"
+                :label="item.label"
+              >
+                {{ item.label }}
+              </el-radio>
             </el-radio-group>
             <div class="form-readonly" v-else>{{ form.taskType || "-" }}</div>
           </el-form-item>
@@ -548,18 +589,24 @@
 </template>
 
 <script setup>
+import { checkApi } from "@/api/ds/api/api.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
+import { ElMessage } from "element-plus";
 import Crontab from "@/components/Crontab/index.vue";
 const { proxy } = getCurrentInstance();
 const {
   dpp_etl_task_execution_type,
   dpp_etl_task_status,
   dpp_etl_task_priority,
+  scheduler_type,
+  actuator_type
 } = proxy.useDict(
   "dpp_etl_task_execution_type",
   "dpp_etl_task_status",
-  "dpp_etl_task_priority"
+  "dpp_etl_task_priority",
+    "scheduler_type",
+    "actuator_type"
 );
 import { useRoute, useRouter } from "vue-router";
 
@@ -577,6 +624,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:visible", "confirm", "save"]);
+
+// 根据调度器拆分执行引擎选项，默认 Quartz 仅展示 DataX。
+const schedulerTypeList = ref([]);
+const updateSchedulerTypeList = () => {
+  schedulerTypeList.value = actuator_type.value.filter((item) =>
+    form.value.scheduler === "QUARTZ"
+      ? item.value === "DATAX"
+      : item.value !== "DATAX"
+  );
+};
 
 // 定义表单验证规则
 const rules = {
@@ -604,6 +661,13 @@ const rules = {
       trigger: "change",
     },
   ],
+  scheduler: [
+    {
+      required: true,
+      message: td("dpp.integratioTask.selectScheduler", "调度器不能为空"),
+      trigger: "change",
+    },
+  ],
   crontab: [
     {
       required: true,
@@ -612,7 +676,7 @@ const rules = {
     },
   ],
   // releaseState: [{ required: true, message: "任务状态不能为空", trigger: "change" }],
-  engine: [
+  taskType: [
     {
       required: true,
       message: td("dpp.integratioTask.executionEngine", "执行引擎不能为空"),
@@ -635,6 +699,8 @@ const form = ref({
   name: "",
   catCode: "", // 可以初始化为空，也可以设为默认值
   executionType: "PARALLEL", // 初始化为空或默认值
+  scheduler: "QUARTZ",
+  actuator: "DATAX",
   crontab: "",
   releaseState: "0",
   description: "",
@@ -646,7 +712,7 @@ const form = ref({
   failRetryTimes: "",
   failRetryInterval: "",
   delayTime: "",
-  taskType: "SPARK",
+  taskType: "DATAX",
   // Fink配置
   jobManagerMemory: "1G",
   taskManagerMemory: "2G",
@@ -662,6 +728,24 @@ const form = ref({
   yarnQueue: "",
 });
 
+const schedulerGuide = computed(() => {
+  if (form.value.scheduler === "DOLPHINSCHEDULER") {
+    return {
+      description: td(
+        "dpp.integratioTask.dolphinSchedulerGuideDescription",
+        "使用前请确保 DolphinScheduler 服务已启动。"
+      ),
+    };
+  }
+
+  return {
+    description: td(
+      "dpp.integratioTask.quartzGuideDescription",
+      "由系统内置组件执行任务。"
+    ),
+  };
+});
+
 const reset = () => {
   proxy.resetForm("daDiscoveryTaskRef");
   form.value = {
@@ -669,6 +753,8 @@ const reset = () => {
     catId: "",
     catCode: "", // 可以初始化为空，也可以设为默认值
     executionType: "PARALLEL", // 初始化为空或默认值
+    scheduler: "QUARTZ",
+    actuator: "DATAX",
     crontab: "",
     releaseState: "0",
     description: "",
@@ -680,7 +766,7 @@ const reset = () => {
     failRetryTimes: "",
     failRetryInterval: "",
     delayTime: "",
-    taskType: "SPARK",
+    taskType: "DATAX",
     // Fink配置
     jobManagerMemory: "1G",
     taskManagerMemory: "2G",
@@ -705,10 +791,18 @@ watch(
         console.log("🚀 ~ props.data.taskConfig:", props.data.taskConfig);
         let draftJson = JSON.parse(data.draftJson);
         form.value = { ...data, ...draftJson };
+        // 兼容老任务：以前没有 scheduler/actuator 时，默认还是走 DS + Spark。
+        form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
+        form.value.taskType = form.value.actuator == "DATAX" ? "DATAX" : form.value.taskType || "SPARK";
+        updateSchedulerTypeList();
+        syncActuatorByEngine();
+        enforceQuartzDataX();
         form.value.personCharge = Number(form.value.personCharge) || "";
         form.value.crontab = props?.data.taskConfig?.crontab;
       } else {
         form.value.catCode = props?.catCode || "";
+        updateSchedulerTypeList();
+        syncActuatorByEngine();
       }
     } else {
       reset();
@@ -718,6 +812,53 @@ watch(
 const handleNodeClick = (val) => {
   console.log("任务类目改变了，当前值：", val);
   form.value.catId = val.id;
+};
+
+/**
+ * DolphinScheduler调度器状态检查
+ * @returns {Promise<void>}
+ */
+const handleSchedulerChange = async () => {
+  updateSchedulerTypeList();
+  if (form.value.scheduler == "QUARTZ") {
+    // Quartz 当前只支持 DataX，切到 Quartz 时自动帮用户选好。
+    form.value.taskType = "DATAX";
+  } else {
+    form.value.taskType = "SPARK";
+  }
+  syncActuatorByEngine();
+};
+
+// 字典为异步加载，加载完成后初始化 DataX 选项。
+watch(actuator_type, updateSchedulerTypeList, { immediate: true });
+
+// 引擎切换时，同步执行引擎
+const handleExecutionEngineChange = (value) => {
+  if (form.value.scheduler != "QUARTZ" && value == "DATAX") {
+    // 非 Quartz 暂时不能选 DataX，提示后回到原来的 Spark。
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    form.value.taskType = "SPARK";
+  }
+  if (form.value.scheduler == "QUARTZ" && value != "DATAX") {
+    // Quartz 暂时不能切到 Spark，提示后继续固定 DataX。
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    form.value.taskType = "DATAX";
+  }
+  syncActuatorByEngine();
+};
+
+// 保存前再兜底一次，避免编辑回显或脚本赋值绕过 change 事件。
+const enforceQuartzDataX = () => {
+  // 保存前再兜底一次，避免编辑回显或脚本赋值绕过 change 事件。
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.taskType = "DATAX";
+  }
+};
+
+// 引擎切换时，同步执行引擎
+const syncActuatorByEngine = () => {
+  // 后端识别的是 actuator：DataX 单独执行，其他执行引擎仍归到 DS 执行器。
+  form.value.actuator = form.value.taskType == "DATAX" ? "DATAX" : "SPARK";
 };
 // 计算属性处理 v-model
 const visibleDialog = computed({
@@ -732,9 +873,13 @@ let daDiscoveryTaskRef = ref();
 const closeDialog = () => {
   emit("update:visible", false);
 };
-const saveClose = () => {
+const saveClose = async () => {
+  if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    return;
+  }
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
+      syncActuatorByEngine();
       emit("save", form.value);
       emit("update:visible", false);
     } else {
@@ -743,9 +888,13 @@ const saveClose = () => {
   });
 };
 // 保存数据的方法
-const saveData = () => {
+const saveData = async () => {
+  if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    return;
+  }
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
+      syncActuatorByEngine();
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
@@ -753,6 +902,18 @@ const saveData = () => {
     }
   });
 };
+
+/**
+ * 检查 dolphinscheduler api
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const checkDSUpStart = async () => {
+  const resp = await checkApi();
+  if (!resp.data) {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+  }
+  return resp.data;
+}
 
 let openCron = ref(false);
 const expression = ref("");

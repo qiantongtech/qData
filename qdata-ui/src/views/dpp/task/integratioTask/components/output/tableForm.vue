@@ -278,13 +278,13 @@
            :label-position="labelPosition">
             <el-input
               v-if="!info"
-              v-model="form.preSql"
+              v-model="form.taskParams.preSql"
               type="textarea"
               :placeholder="
                 td('dpp.integration.preSqlPlaceholder', '请输入前置SQL')
               "
             />
-            <div v-else class="form-readonly">{{ form.preSql || "-" }}</div>
+            <div v-else class="form-readonly">{{ form.taskParams.preSql || "-" }}</div>
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{

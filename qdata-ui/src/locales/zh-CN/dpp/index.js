@@ -995,6 +995,11 @@ export default {
     executeFailed: '执行失败，请联系管理员',
     confirmClone: '确定要克隆任务【{name}】吗？',
     confirmDelete: '是否确认删除数据集成任务编号为"{ids}"的数据项？',
+    unsupportedEngineSwitch: '暂不支持切换！',
+    upDs: '请启动DolphinScheduler调度器！',
+    viewDeployDocs: "查看部署文档",
+    dolphinSchedulerGuideDescription: '使用前请确保 DolphinScheduler 服务已启动',
+    quartzGuideDescription: "由系统内置组件执行任务"
   },
   metadataSelect: {
     selectMetadata: '选择元数据',

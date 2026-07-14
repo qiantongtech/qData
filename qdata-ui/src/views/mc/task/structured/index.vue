@@ -204,7 +204,7 @@
               :label="item.datasourceName"
               :value="item.id"
               :disabled="
-                !['MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive'].includes(
+                !['DM8', 'MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive'].includes(
                   item.datasourceType
                 )
               "
@@ -325,6 +325,26 @@
         </el-form-item>
 
         <el-form-item
+            :label="td('mc.task.structured.scheduler')"
+            prop="scheduler"
+            class="row-full"
+            :label-position="labelPosition">
+          <el-radio-group v-model="dialog.form.scheduler">
+            <el-radio
+                v-for="item in toValue(dicts.scheduler_type)"
+                :key="item.value"
+                :label="item.value"
+            >
+              {{ item.label }}
+            </el-radio>
+          </el-radio-group>
+          <p style="
+  flex-basis: 100%;align-items: center;line-height: 1;font-size: 12px;color: #888; margin-top: 10px;">
+            {{ schedulerGuide.description }}
+          </p>
+        </el-form-item>
+
+        <el-form-item
           :label="td('mc.task.structured.collectionScope')"
           class="row-full"
           prop="collectionScope"
@@ -438,6 +458,8 @@ import { listDaDatasource } from "@/api/mc/dataSource/dataSource";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { listValidSourceSystem } from "@/api/att/sourceSystem/sourceSystem";
 import useDefaultLang from "@/composables/useDefaultLang";
+import { checkApi } from "@/api/ds/api/api.js";
+import { ElMessage } from "element-plus";
 
 const { td } = useDefaultLang();
 const rules = {
@@ -503,6 +525,13 @@ const rules = {
       trigger: "change",
     },
   ],
+  scheduler: [
+    {
+      required: true,
+      message: td("mc.task.structured.schedulerRequired"),
+      trigger: "change",
+    },
+  ],
   collectionMode: [
     {
       required: true,
@@ -541,7 +570,8 @@ const { proxy } = getCurrentInstance();
 const dicts = proxy.useDict(
   "datasource_type",
   "mc_collect_scope",
-  "mc_collect_mode"
+  "mc_collect_mode",
+  "scheduler_type"
 );
 
 const router = useRouter();
@@ -673,6 +703,12 @@ const tableStore = reactive({
         effect: "light",
       },
     },
+    {
+      label: td("mc.task.structured.scheduler"),
+      prop: "scheduler",
+      width: 150,
+      formatter: (row) => getSchedulerLabel(row.scheduler),
+    },
     // {
     //   label: td("mc.task.structured.collectionMode"),
     //   prop: "collectionMode",
@@ -776,6 +812,8 @@ const searchStore = reactive({
 const DEFAULT_FORM = {
   collectionMode: "1",
   collectionScope: "2",
+  // 老逻辑默认走 DS，新建任务不选时也保持这个默认值。
+  scheduler: "QUARTZ",
   tables: [],
 };
 const dialog = reactive({
@@ -786,6 +824,24 @@ const dialog = reactive({
   form: {
     ...DEFAULT_FORM,
   },
+});
+
+const schedulerGuide = computed(() => {
+  if (dialog.form.scheduler === "DOLPHINSCHEDULER") {
+    return {
+      description: td(
+          "dpp.integratioTask.dolphinSchedulerGuideDescription",
+          "使用前请确保 DolphinScheduler 服务已启动。"
+      ),
+    };
+  }
+
+  return {
+    description: td(
+        "dpp.integratioTask.quartzGuideDescription",
+        "由系统内置组件执行任务。"
+    ),
+  };
 });
 
 // 调度周期弹窗
@@ -915,6 +971,8 @@ function handleDetailClick(row) {
 // 点击新增
 function handleAddClick() {
   dialog.title = td("mc.task.structured.addTask");
+  // 打开新增弹窗时兜底一次，避免上次编辑留下空值。
+  dialog.form.scheduler = dialog.form.scheduler || "DOLPHINSCHEDULER";
   dialog.open = true;
   dialog.func = addTask;
 }
@@ -932,6 +990,9 @@ function handleCancelClick() {
 
 // 确认新增/修改
 async function handleConfirmClick() {
+  if(!await handleSchedulerChange()){
+    return;
+  }
   const valid = await formRef.value.validate();
   if (!valid) return;
   dialog.loading = true;
@@ -970,9 +1031,22 @@ function handleEditClick(row) {
         res.data.sourceSystemName = system.name;
       }
     }
-    dialog.form = res.data;
+    dialog.form = {
+      ...res.data,
+      // 老任务没有 scheduler 字段时，页面按 DS 展示。
+      scheduler: res.data.scheduler || "DOLPHINSCHEDULER",
+    };
     handleDatasourceChange(res.data.datasourceId, false);
   });
+}
+
+function getSchedulerLabel(value) {
+  // 列表里把库里的枚举值翻译成人能看懂的名字。
+  return (
+    toValue(dicts.scheduler_type).find((item) => item.value == value)?.label ||
+    value ||
+    "-"
+  );
 }
 
 // 删除
@@ -1123,6 +1197,21 @@ function handleSchedulerStatusChange(row, status) {
       row.schedulerStatus = status == "1" ? "0" : "1";
     });
 }
+
+/**
+ * DolphinScheduler调度器状态检查
+ * @returns {Promise<void>}
+ */
+const handleSchedulerChange = async () => {
+  if (dialog.form.scheduler !== "QUARTZ") {
+    const resp = await checkApi();
+    if (!resp.data) {
+      proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+    }
+    return resp.data;
+  }
+  return true;
+};
 
 getDatasources();
 getUserList();

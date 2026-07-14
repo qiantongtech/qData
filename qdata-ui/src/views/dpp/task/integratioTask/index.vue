@@ -150,6 +150,17 @@
                     :value="row.executionType"
                   />
                 </div>
+                <div class="flex-center mt5">
+                  <span class="mr5">{{
+                    td("dpp.integratioTask.schedulerEngine", "调度器")
+                  }}:</span>
+                  <span
+                    class="text-ellipsis cron-text"
+                    :title="`${getSchedulerLabel(row.scheduler)}`"
+                  >
+                    {{ getSchedulerLabel(row.scheduler) }}
+                  </span>
+                </div>
               </div>
             </template>
             <template #lastExecute="{ row }">
@@ -348,7 +359,6 @@ import { usePageRefresh } from "@/composables/usePageRefresh";
 import { cronToZh } from "@/utils/cronUtils";
 import Crontab from "@/components/Crontab/index.vue";
 import instance from "@/views/dpp/components/instance.vue";
-const userStore = useUserStore();
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
 import {
@@ -363,6 +373,7 @@ import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch } from "vue";
 
+const userStore = useUserStore();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
@@ -377,11 +388,19 @@ const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
   dpp_etl_task_instance,
+  scheduler_type
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
-  "dpp_etl_task_instance"
+  "dpp_etl_task_instance",
+    "scheduler_type"
 );
+
+// 获取调度器枚举
+const getSchedulerLabel = (value) => {
+  // 列表里把调度器枚举翻译成用户能看懂的名字。
+  return scheduler_type.value.find((item) => item.value == value)?.label || value || "-";
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -421,7 +440,7 @@ const tableStore = reactive({
     {
       label: td("dpp.integratioTask.scheduleCycle", "调度周期"),
       prop: "cronExpression",
-      width: 220,
+      width: 260,
       slot: "cronExpression",
       align: "left",
     },
@@ -803,6 +822,8 @@ const getDatasourceIcon = (json) => {
       return new URL("@/assets/images/common/icon-flink-one.svg", import.meta.url).href;
     case "SPARK":
       return new URL("@/assets/images/common/icon-spark-one.svg", import.meta.url).href;
+    case "DATAX":
+      return new URL("@/assets/images/common/img-datax.png", import.meta.url).href;
     default:
       return null;
   }

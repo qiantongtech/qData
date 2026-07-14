@@ -18,7 +18,7 @@
 
 // 数据源配置表 (图标 + 标签类型)
 const DATASOURCE_CONFIG = {
-  DM: { icon: "datasource/dimg-m.png" },
+  DM: { icon: "datasource/img-dm.png" },
   DM8: { icon: "datasource/img-dm.png" },
   ORACLE: { icon: "datasource/img-oracle.png" },
   ORACLE11: { icon: "datasource/img-oracle.png" },

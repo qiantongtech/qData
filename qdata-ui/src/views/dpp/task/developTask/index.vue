@@ -148,6 +148,17 @@
                     :value="row.executionType"
                   />
                 </div>
+                <div class="flex-center mt5">
+                  <span class="mr5">{{
+                      td("dpp.developTask.schedulerEngine", "调度器")
+                    }}:</span>
+                  <span
+                      class="text-ellipsis cron-text"
+                      :title="`${getSchedulerLabel(row.scheduler)} `"
+                  >
+                    {{ getSchedulerLabel(row.scheduler) }}
+                  </span>
+                </div>
               </div>
             </template>
             <template #lastExecute="{ row }">
@@ -381,6 +392,7 @@ import DeptTree from "@/components/DeptTree";
 import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch, toRefs } from "vue";
+import {checkApi} from "@/api/ds/api/api.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -412,6 +424,14 @@ const typaOptions = treeData.map((item) => {
     value: item.value,
   };
 });
+const schedulerOptions = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+const getSchedulerLabel = (value) => {
+  // 列表展示时，把库里的调度器值转成页面文案。
+  return schedulerOptions.find((item) => item.value == value)?.label || value || "-";
+};
 const getExecutionType = (executionType) => {
   if (!executionType) return null;
   const item = typaOptions.find(
@@ -760,7 +780,7 @@ const tableStore = reactive({
     {
       label: td("dpp.developTask.scheduleCycle", "调度周期"),
       prop: "cronExpression",
-      width: 220,
+      width: 260,
       slot: "cronExpression",
       align: "left",
     },

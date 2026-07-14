@@ -23,8 +23,11 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProjectRelDO;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+import org.hibernate.validator.constraints.Range;
 
 /**
  * Datasource Create/Update Request VO DA_DATASOURCE
@@ -61,9 +64,14 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
 
     @Schema(description = "IP", example = "")
     @Size(max = 256, message = "IP长度不能超过256个字符")
+    @Pattern(
+            regexp = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$",
+            message = "IP/域名格式不正确，请检查"
+    )
     private String ip;
 
     @Schema(description = "端口号", example = "")
+    @Range(min = 1, max = 65535, message = "端口号需为 1-65535 的数字")
     private Long port;
 
     @Schema(description = "数据库表数", example = "")
@@ -83,5 +91,7 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
+    @Schema(description = "是否有效", example = "false")
+    private Boolean validFlag;
 
 }

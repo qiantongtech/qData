@@ -146,6 +146,16 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     AjaxResult clientsTest(Long id);
 
     /**
+     * Test a datasource connection using unsaved connection properties.
+     */
+    Boolean clientTest(DbQueryProperty dbQueryProperty);
+
+    /**
+     * Test a saved datasource connection.
+     */
+    Boolean clientTest(Long id);
+
+    /**
      * Get database table info
      *
      * @param id datasource ID

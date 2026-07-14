@@ -1202,8 +1202,8 @@ const data = reactive({
         trigger: "blur",
       },
       {
-        pattern: /^[^\u4e00-\u9fa5]+$/,
-        message: td("dpp.datasource.ipNoChinese"),
+        pattern: /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$/,
+        message: td("da.datasource.ipInvalid"),
         trigger: "blur",
       },
     ],
@@ -1214,8 +1214,14 @@ const data = reactive({
         trigger: "blur",
       },
       {
-        pattern: /^\d{1,9}$/,
-        message: td("dpp.datasource.portPattern"),
+        validator: (rule, value, callback) => {
+          if (/^\d+$/.test(String(value)) && Number(value) >= 1 && Number(value) <= 65535) {
+            callback();
+          } else {
+            callback(new Error(td("da.datasource.portInvalid")));
+          }
+        },
+        message: td("da.datasource.portInvalid"),
         trigger: "blur",
       },
     ],
@@ -1590,6 +1596,11 @@ function handleTestConnection(row) {
 const btnLoading = ref(false);
 /** submit button */
 function submitForm() {
+  ["datasourceName", "ip", "username", "password", "dbname", "sid"].forEach((key) => {
+    if (typeof form.value[key] === "string") {
+      form.value[key] = form.value[key].trim();
+    }
+  });
   proxy.$refs["daDatasourceRef"].validate((valid) => {
     if (valid) {
       btnLoading.value = true;
@@ -1758,13 +1769,15 @@ function handleStatusChange(row) {
           })
       )
     .then(function () {
-      editDatasourceStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(td("common.message.operationSuccess"));
-        getList();
+      return editDatasourceStatus(row.id, status).then(() => {
+        proxy.$modal.msgSuccess(td("da.datasource.statusSuccess", '', { text: text }));
       });
     })
     .catch(function () {
       row.validFlag = !row.validFlag;
+    })
+    .finally(function () {
+      getList();
     });
 }
 

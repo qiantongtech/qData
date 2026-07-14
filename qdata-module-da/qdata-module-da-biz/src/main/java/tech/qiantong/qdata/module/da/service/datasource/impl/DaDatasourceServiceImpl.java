@@ -20,7 +20,10 @@ package tech.qiantong.qdata.module.da.service.datasource.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -272,6 +275,11 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public Long createDaDatasource(DaDatasourceSaveReqVO createReqVO) {
+        normalizeDatasource(createReqVO);
+        validateDatasourceConfig(createReqVO);
+        checkDuplicateDatasource(createReqVO);
+        ensureEnabledDatasourceConnectable(createReqVO);
+
         DaDatasourceDO dictType = BeanUtils.toBean(createReqVO, DaDatasourceDO.class);
         daDatasourceMapper.insert(dictType);
         delAndSaveDaDataSourceProject(dictType);
@@ -283,6 +291,11 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public int updateDaDatasource(DaDatasourceSaveReqVO updateReqVO) {
+        normalizeDatasource(updateReqVO);
+        validateDatasourceConfig(updateReqVO);
+        checkDuplicateDatasource(updateReqVO);
+        ensureEnabledDatasourceConnectable(updateReqVO);
+
         Long datasourceId = updateReqVO.getId();
 
         // Update datasource
@@ -292,6 +305,88 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         int i = daDatasourceMapper.updateById(updateObj);
         redisService.hashPut("datasource", datasourceId.toString(), com.alibaba.fastjson2.JSONObject.toJSONString(this.getDaDatasourceById(datasourceId).simplify()));
         return i;
+    }
+
+    private void normalizeDatasource(DaDatasourceSaveReqVO datasource) {
+        datasource.setDatasourceName(StrUtil.trim(datasource.getDatasourceName()));
+        datasource.setDatasourceType(StrUtil.trim(datasource.getDatasourceType()));
+        datasource.setIp(StrUtil.trim(datasource.getIp()));
+
+        if (StrUtil.isBlank(datasource.getDatasourceConfig()) || !JSONUtil.isJsonObj(datasource.getDatasourceConfig())) {
+            return;
+        }
+        JSONObject config = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        trimConfigValue(config, "username");
+        trimConfigValue(config, "password");
+        trimConfigValue(config, "dbname");
+        trimConfigValue(config, "sid");
+        datasource.setDatasourceConfig(config.toString());
+    }
+
+    private void trimConfigValue(JSONObject config, String key) {
+        Object value = config.get(key);
+        if (value instanceof String) {
+            config.set(key, StrUtil.trim((String) value));
+        }
+    }
+
+    private void validateDatasourceConfig(DaDatasourceSaveReqVO datasource) {
+        if (StrUtil.isBlank(datasource.getDatasourceConfig()) || !JSONUtil.isJsonObj(datasource.getDatasourceConfig())) {
+            throw new ServiceException("数据源配置格式不正确");
+        }
+        JSONObject config = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        String type = datasource.getDatasourceType();
+        if (!"OSS-ALIYUN".equals(type) && !"Kafka".equals(type) && !"HDFS".equals(type)
+                && StrUtil.isBlank(config.getStr("username"))) {
+            throw new ServiceException("账号不能为空或仅包含空格");
+        }
+    }
+
+    private void checkDuplicateDatasource(DaDatasourceSaveReqVO datasource) {
+        LambdaQueryWrapper<DaDatasourceDO> nameWrapper = new LambdaQueryWrapper<>();
+        nameWrapper.eq(DaDatasourceDO::getDatasourceName, datasource.getDatasourceName());
+        excludeCurrentDatasource(nameWrapper, datasource.getId());
+        if (this.count(nameWrapper) > 0) {
+            throw new ServiceException("已存在同名数据源，请修改数据源名称");
+        }
+
+        LambdaQueryWrapper<DaDatasourceDO> connectionWrapper = new LambdaQueryWrapper<>();
+        connectionWrapper.eq(DaDatasourceDO::getDatasourceType, datasource.getDatasourceType())
+                .eq(DaDatasourceDO::getIp, datasource.getIp())
+                .eq(DaDatasourceDO::getPort, datasource.getPort())
+                .select(DaDatasourceDO::getId, DaDatasourceDO::getDatasourceConfig);
+        excludeCurrentDatasource(connectionWrapper, datasource.getId());
+
+        JSONObject targetConfig = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        String targetDbName = StrUtil.nullToEmpty(targetConfig.getStr("dbname"));
+        String targetUsername = StrUtil.nullToEmpty(targetConfig.getStr("username"));
+        for (DaDatasourceDO existing : this.list(connectionWrapper)) {
+            if (StrUtil.isBlank(existing.getDatasourceConfig()) || !JSONUtil.isJsonObj(existing.getDatasourceConfig())) {
+                continue;
+            }
+            JSONObject existingConfig = JSONUtil.parseObj(existing.getDatasourceConfig());
+            if (targetDbName.equals(StrUtil.nullToEmpty(existingConfig.getStr("dbname")))
+                    && targetUsername.equals(StrUtil.nullToEmpty(existingConfig.getStr("username")))) {
+                throw new ServiceException("已存在相同连接信息的数据源，请勿重复创建");
+            }
+        }
+    }
+
+    private void excludeCurrentDatasource(LambdaQueryWrapper<DaDatasourceDO> wrapper, Long datasourceId) {
+        if (datasourceId != null) {
+            wrapper.ne(DaDatasourceDO::getId, datasourceId);
+        }
+    }
+
+    private void ensureEnabledDatasourceConnectable(DaDatasourceSaveReqVO datasource) {
+        if (!Boolean.TRUE.equals(datasource.getValidFlag())) {
+            return;
+        }
+        DbQueryProperty property = new DbQueryProperty(
+                datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
+        if (!clientTest(property)) {
+            throw new ServiceException("当前数据源未测试通过，不能启用。");
+        }
     }
 
     private void delAndSaveDaDataSourceProject(DaDatasourceDO daDatasourceDO) {
@@ -462,6 +557,38 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         dbQuery.close();
         return AjaxResult.error(MessageUtils.messageWithFallback("da.error.connection.fail", "数据库连接失败"));
 
+    }
+
+    @Override
+    public Boolean clientTest(Long id) {
+        DbQuery dbQuery = null;
+        try {
+            dbQuery = this.buildDbQuery(id);
+            return dbQuery.valid();
+        } catch (Exception exception) {
+            log.warn("Datasource connection test failed, datasourceId={}", id, exception);
+            return false;
+        } finally {
+            if (dbQuery != null) {
+                dbQuery.close();
+            }
+        }
+    }
+
+    @Override
+    public Boolean clientTest(DbQueryProperty dbQueryProperty) {
+        DbQuery dbQuery = null;
+        try {
+            dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+            return dbQuery.valid();
+        } catch (Exception exception) {
+            log.warn("Datasource connection test failed", exception);
+            return false;
+        } finally {
+            if (dbQuery != null) {
+                dbQuery.close();
+            }
+        }
     }
 
     public DbQuery buildDbQuery(Long id) {
@@ -976,6 +1103,9 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public Boolean editDatasourceStatus(Long datasourceId, Long status) {
+        if (Objects.equals(status, 1L) && !clientTest(datasourceId)) {
+            throw new ServiceException("当前数据源未测试通过，不能启用。");
+        }
         return this.update(Wrappers.lambdaUpdate(DaDatasourceDO.class)
                 .eq(DaDatasourceDO::getId, datasourceId)
                 .set(DaDatasourceDO::getValidFlag, status));

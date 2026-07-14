@@ -466,7 +466,7 @@ const rules = {
   ],
 };
 
-const { proxy } = getCurrentInstance();
+
 const dicts = proxy.useDict(
   "meta_task_status",
   "meta_dw_layers",

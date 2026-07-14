@@ -41,6 +41,13 @@
             <version>${qdata.version}</version>
         </dependency>
 
+        <!-- 定时任务 config-->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-quartz</artifactId>
+            <version>${qdata.version}</version>
+        </dependency>
+
         <!-- 系統模块 websocket-->
         <dependency>
             <groupId>tech.qiantong</groupId>
@@ -80,6 +87,19 @@
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>
             <version>${qdata.version}</version>
+        </dependency>
+
+        <!-- DataX本地执行器 -->
+        <dependency>
+            <groupId>tech.qiantong</groupId>
+            <artifactId>qdata-etl</artifactId>
+            <version>${qdata.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

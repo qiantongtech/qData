@@ -76,6 +76,12 @@ public class McTaskInstanceDO extends BaseEntity {
     /** 状态 */
     private String status;
 
+    /** 调度引擎 */
+    private String taskScheduler;
+
+    /** Quartz调度任务id */
+    private Long quartzId;
+
     /** 是否有效 */
     private Boolean validFlag;
 

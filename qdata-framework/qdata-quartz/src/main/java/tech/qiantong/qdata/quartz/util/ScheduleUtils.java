@@ -26,6 +26,7 @@ import tech.qiantong.qdata.common.exception.job.TaskException.Code;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 import tech.qiantong.qdata.quartz.domain.SysJob;
+import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 
 /**
  * 定时任务工具类
@@ -43,8 +44,11 @@ public class ScheduleUtils
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
-        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
-        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
+        ScheduleExecutionTypeEnum executionType = ScheduleExecutionTypeEnum.resolve(
+                sysJob.getExecutionType(), sysJob.getConcurrent());
+        return executionType.shouldUseDisallowConcurrentJob()
+                ? QuartzDisallowConcurrentExecution.class
+                : QuartzJobExecution.class;
     }
 
     /**

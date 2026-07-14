@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.common.constant.HttpStatus;
+import tech.qiantong.qdata.common.constant.ScheduleConstants;
 import tech.qiantong.qdata.common.core.domain.BatchDeleteCheck;
 import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
@@ -56,6 +57,7 @@ import tech.qiantong.qdata.module.mc.service.metadata.IMcTableService;
 import tech.qiantong.qdata.module.mc.service.metadata.dialect.DatabaseDialect;
 import tech.qiantong.qdata.module.mc.service.metadata.dialect.DatabaseDialectFactory;
 import tech.qiantong.qdata.module.mc.service.scheduler.McTaskDolphinSchedulerService;
+import tech.qiantong.qdata.module.mc.service.scheduler.McTaskQuartzService;
 import tech.qiantong.qdata.module.mc.service.tableColumnRelLog.IMcTableColumnRelLogService;
 import tech.qiantong.qdata.module.mc.service.tableLog.IMcTableLogService;
 import tech.qiantong.qdata.module.mc.service.task.*;
@@ -113,7 +115,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     private McTableTxService mcTableTxService;
     @Resource
     private McTaskDolphinSchedulerService mcTaskDolphinSchedulerService;
-
+    @Resource
+    private McTaskQuartzService mcTaskQuartzService;
 
     @Resource
     private IMcTableLogService mcTableLogService;
@@ -183,25 +186,37 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         validateDuplicateTask(createReqVO, null);
 
         McTaskDO dictType = BeanUtils.toBean(createReqVO, McTaskDO.class);
+        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+        if (StringUtils.isEmpty(dictType.getScheduler())) {
+            dictType.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
+        }
         if (StringUtils.isEmpty(dictType.getStatus())) {
             dictType.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         }
         mcTaskMapper.insert(dictType);
         Long id = dictType.getId();
 
-        // 创建 DolphinScheduler 任务定义
-        String taskCode = mcTaskDolphinSchedulerService.createTaskDefinition(dictType.getName(), id);
-
-        // 先上线任务（DolphinScheduler要求：只有上线的任务才能创建调度器）
-        mcTaskDolphinSchedulerService.onlineTask(taskCode);
-
-        // 创建调度器
-        Long schedulerId = mcTaskDolphinSchedulerService.createScheduler(taskCode, dictType.getCronExpression());
+        String taskCode;
+        Long schedulerId;
+        // 创建 Quartz 调度器
+        if (ScheduleConstants.QUARTZ.equals(dictType.getScheduler())) {
+            schedulerId = mcTaskQuartzService.createSchedulerQuartz(dictType);
+            taskCode = String.valueOf(schedulerId);
+        } else {
+            // 创建 DolphinScheduler 任务定义
+            taskCode = mcTaskDolphinSchedulerService.createTaskDefinition(dictType.getName(), id);
+            // 先上线任务（DolphinScheduler要求：只有上线的任务才能创建调度器）
+            mcTaskDolphinSchedulerService.onlineTask(taskCode);
+            // 创建调度器
+            schedulerId = mcTaskDolphinSchedulerService.createScheduler(taskCode, dictType.getCronExpression());
+        }
 
         //存储调度信息
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
         schedulerSaveReqVO.setJobId(String.valueOf(schedulerId));
         schedulerSaveReqVO.setTaskCode(taskCode);  // 设置任务编码到调度表
+        // 调度记录里保存隐藏执行引擎：Quartz 对应 DataX，DS 对应 Spark。
+        schedulerSaveReqVO.setTaskScheduler(dictType.getScheduler());
         schedulerSaveReqVO.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         mcTaskSchedulerService.createMcTaskScheduler(schedulerSaveReqVO);
 
@@ -223,6 +238,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         // 1. 更新采集任务
         McTaskDO updateObj = BeanUtils.toBean(updateReqVO, McTaskDO.class);
+        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+        if (StringUtils.isEmpty(updateObj.getScheduler())) {
+            updateObj.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
+        }
         int rows = mcTaskMapper.updateById(updateObj);
 
         // 2. 查询调度信息
@@ -521,12 +540,18 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // 下线调度器（禁用定时触发）
             if (SchedulerStatusEnum.isDisabled(mcTask.getStatus())) {
-                mcTaskDolphinSchedulerService.offlineSchedulerOnly(schedulerId);
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                    mcTaskQuartzService.offlineSchedulerOnlyQuartz(schedulerId);
+                } else
+                    mcTaskDolphinSchedulerService.offlineSchedulerOnly(schedulerId);
             }
 
             // 上线调度器（启用定时触发）
             if (SchedulerStatusEnum.isEnabled(mcTask.getStatus())) {
-                mcTaskDolphinSchedulerService.onlineSchedulerOnly(schedulerId);
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                    mcTaskQuartzService.onlineSchedulerOnlyQuartz(schedulerId);
+                } else
+                    mcTaskDolphinSchedulerService.onlineSchedulerOnly(schedulerId);
             }
         }
 
@@ -555,7 +580,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             // 从调度信息中获取 taskCode
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
             if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
-                mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
+                if (ScheduleConstants.DOLPHINSCHEDULER.equals(scheduler.getTaskScheduler())) {
+                    mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
+                } else {
+                    mcTaskQuartzService.startTaskQuartz(scheduler.getJobId());
+                }
             }
         }
 

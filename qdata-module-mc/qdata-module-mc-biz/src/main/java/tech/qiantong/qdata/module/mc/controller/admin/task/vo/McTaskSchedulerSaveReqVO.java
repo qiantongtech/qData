@@ -39,6 +39,9 @@ public class McTaskSchedulerSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "任务编码长度不能超过256个字符")
     private String taskCode;
 
+    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
+    private String taskScheduler;
+
     @Schema(description = "开始时间", example = "")
     private Date startTime;
 

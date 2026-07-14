@@ -77,12 +77,20 @@ public class DppEtlSchedulerDO extends BaseEntity {
     /** DolphinScheduler的id */
     private Long dsId;
 
+    /** 调度引擎 */
+    private String taskScheduler;
+
+    /** 执行引擎 */
+    private String taskActuator;
+
+    /** Quartz调度任务id */
+    private Long quartzId;
+
     /** 是否有效 */
     private Boolean validFlag;
 
     /** 删除标志 */
     @TableLogic
     private Boolean delFlag;
-
 
 }

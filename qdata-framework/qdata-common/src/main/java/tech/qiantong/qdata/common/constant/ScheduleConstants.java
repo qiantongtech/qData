@@ -25,6 +25,12 @@ package tech.qiantong.qdata.common.constant;
  */
 public class ScheduleConstants
 {
+    /** 调度器 Quartz */
+    public static final String QUARTZ = "QUARTZ";
+
+    /** 调度器 DolphinScheduler */
+    public static final String DOLPHINSCHEDULER = "DOLPHINSCHEDULER";
+
     public static final String TASK_CLASS_NAME = "TASK_CLASS_NAME";
 
     /** 执行目标key */

@@ -28,6 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 数据集成任务Service接口
  *
@@ -131,7 +132,26 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     List<DppEtlTaskTreeRespVO> getDppEtlTaskListTree(DppEtlTaskPageReqVO dppEtlTask);
 
+    /**
+     * 启动任务
+     * @param id
+     * @return
+     */
     AjaxResult startDppEtlTask(Long id);
+
+    /**
+     * 启动任务数据集成
+     * @param id
+     * @return
+     */
+    void startDppEtlTaskDataIntegration(Long id);
+
+    /**
+     * 启动任务数据开发
+     *
+     * @param id
+     */
+    void startDppEtlTaskDataDevelopment(Long id);
 
     List<DppEtlTaskRespVO> getSubTaskStatusList(DppEtlTaskPageReqVO dppEtlTask);
 

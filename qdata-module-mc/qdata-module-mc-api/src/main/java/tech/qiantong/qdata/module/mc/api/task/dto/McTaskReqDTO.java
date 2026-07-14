@@ -47,6 +47,9 @@ public class McTaskReqDTO {
     /** 任务状态 */
     private String status;
 
+    /** 调度器 */
+    private String scheduler;
+
     /** 是否有效 */
     private Boolean validFlag;
 

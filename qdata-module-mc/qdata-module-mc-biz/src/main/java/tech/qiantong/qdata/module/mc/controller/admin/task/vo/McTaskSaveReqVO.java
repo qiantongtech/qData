@@ -52,6 +52,9 @@ public class McTaskSaveReqVO extends BaseEntity {
     @Schema(description = "任务状态", example = "")
     private String status;
 
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
     @Schema(description = "备注", example = "")
     private String remark;
 

@@ -43,6 +43,7 @@ import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TaskConverter {
@@ -314,6 +315,8 @@ public class TaskConverter {
         createReqVO.setContactNumber(dppEtlNewNodeSaveReqVO.getContactNumber());
         createReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
+        createReqVO.setScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        createReqVO.setActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
         //暂时没意义参数
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
@@ -500,6 +503,41 @@ public class TaskConverter {
         return resultList;
     }
 
+    public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(List<TaskDefinition> taskDefinitionList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        //取出入参数的信息
+        List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
+        return taskDefinitionList.stream()
+                .map(taskDefinition -> {
+                    DppEtlNodeSaveReqVO createReqVO = new DppEtlNodeSaveReqVO();
+                    createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());
+                    createReqVO.setType(taskDefinition.getTaskType());
+                    createReqVO.setName(taskDefinition.getName());
+                    createReqVO.setCode(String.valueOf(taskDefinition.getCode()));
+                    createReqVO.setVersion(taskDefinition.getVersion());
+                    createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId());
+                    createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode()));
+                    createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));
+                    createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
+                    createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
+                    createReqVO.setTimeout((long) taskDefinition.getTimeout());
+                    createReqVO.setDelayTime((long) taskDefinition.getDelayTime());
+                    createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
+                    createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
+                    createReqVO.setDescription(taskDefinition.getDescription());
+                    createReqVO.setDsId(taskDefinition.getId());
+                    createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode())));
+                    createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId());
+                    createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy());
+                    createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime());
+                    createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId());
+                    createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy());
+                    createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime());
+
+                    return createReqVO;
+                })
+                .collect(Collectors.toList());
+    }
+
     public static String getTaskParamsAsJson(List<Map<String, Object>> list, String code) {
         // 查找匹配的 taskParams
         Optional<Map<String, Object>> matchingTaskParams = list.stream()
@@ -573,11 +611,11 @@ public class TaskConverter {
                 .orElse(-1L);  // 如果没有找到，返回默认值 -1
     }
 
-    public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
+    public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
 
         // 遍历 data 下的 taskRelationList，生成 DppEtlTaskNodeRelSaveReqVO
-        for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
+        for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
             // 1. 填充任务节点关系相关字段
@@ -586,8 +624,8 @@ public class TaskConverter {
 
             // 任务相关字段
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // 任务ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // 任务编码
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // 任务版本
+            taskNodeRelSaveReqVO.setTaskCode(code); // 任务编码
+            taskNodeRelSaveReqVO.setTaskVersion(version); // 任务版本
 
             // 前节点相关字段
             taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // 前节点ID
@@ -595,7 +633,7 @@ public class TaskConverter {
             taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // 前节点版本
 
             // 后节点相关字段
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // 后节点ID
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // 后节点ID
             taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // 后节点编码
             taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // 后节点版本
 
@@ -617,12 +655,11 @@ public class TaskConverter {
         return resultList;
     }
 
-
-    public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO) {
+    public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelLogSaveReqVO> resultList = new ArrayList<>();
 
         // 遍历 data 下的 taskRelationList，生成 DppEtlTaskNodeRelSaveReqVO
-        for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
+        for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelLogSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelLogSaveReqVO();
 
             // 1. 填充任务节点关系相关字段
@@ -631,8 +668,8 @@ public class TaskConverter {
 
             // 任务相关字段
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // 任务ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // 任务编码
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // 任务版本
+            taskNodeRelSaveReqVO.setTaskCode(code); // 任务编码
+            taskNodeRelSaveReqVO.setTaskVersion(version); // 任务版本
 
             // 前节点相关字段
             taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // 前节点ID
@@ -640,7 +677,7 @@ public class TaskConverter {
             taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // 前节点版本
 
             // 后节点相关字段
-            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // 后节点ID
+            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // 后节点ID
             taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // 后节点编码
             taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // 后节点版本
 
@@ -772,9 +809,6 @@ public class TaskConverter {
         reqVO.setTaskId(taskId);
         reqVO.setTaskCode(taskCode);
 
-        // 获取当前时间
-        String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
         // 获取100年后的时间
         long currentTime = System.currentTimeMillis();
         Date date = new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000);
@@ -786,7 +820,8 @@ public class TaskConverter {
         reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
-
+        reqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        reqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
         // 填充dsId，假设dsId与ID相同
         reqVO.setDsId((long) -1);

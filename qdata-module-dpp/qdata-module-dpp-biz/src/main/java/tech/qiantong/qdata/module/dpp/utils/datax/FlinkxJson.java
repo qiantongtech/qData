@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 
 import java.util.*;
 
@@ -156,5 +157,23 @@ public class FlinkxJson {
         objectObjectHashMap.put("job", jobJson);
         // 转换为 JSON 字符串并返回
         return JSON.toJSONString(objectObjectHashMap);
+    }
+
+    /**
+     * 从节点列表里找到指定组件类型的节点。
+     * 本地 DataX 一期只认数据库输入和数据库输出，所以这里只按组件类型查。
+     */
+    public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
+        for (DppEtlNodeRespVO node : nodeList) {
+            // 节点为空时跳过，避免脏数据导致空指针。
+            if (node == null) {
+                continue;
+            }
+            // 组件类型匹配时，这个节点就是我们要找的 reader 或 writer。
+            if (StringUtils.equals(componentType, node.getComponentType())) {
+                return node;
+            }
+        }
+        return null;
     }
 }

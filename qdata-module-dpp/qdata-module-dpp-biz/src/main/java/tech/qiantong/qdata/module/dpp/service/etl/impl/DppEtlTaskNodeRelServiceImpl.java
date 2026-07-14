@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 /**
  * 数据集成任务节点关系Service业务层处理
  *
@@ -87,6 +88,9 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
      * @return Collection<Long> 返回ID列表
      */
     public static Collection<Long> getIdListFromTaskNodeRel(List<DppEtlTaskNodeRelDO> dppEtlTaskNodeRelDOS) {
+        if (dppEtlTaskNodeRelDOS == null || dppEtlTaskNodeRelDOS.isEmpty()) {
+            return new ArrayList<>();
+        }
         return dppEtlTaskNodeRelDOS.stream()
                 .map(DppEtlTaskNodeRelDO::getId) // 提取 ID
                 .collect(Collectors.toList());   // 收集成 List
@@ -116,6 +120,9 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
     }
     @Override
     public int removeDppEtlTaskNodeRel(Collection<Long> idList) {
+        if (idList == null || idList.isEmpty()) {
+            return 0;
+        }
         // 批量删除数据集成任务节点关系
         return dppEtlTaskNodeRelMapper.deleteBatchIds(idList);
     }

@@ -91,6 +91,15 @@ public class DppEtlTaskRespDTO {
     /** DolphinScheduler的id */
     private Long dsId;
 
+    /** Quartz调度任务id，返回给调用方用于识别任务绑定的 Quartz Job。 */
+    private Long quartzId;
+
+    /** 调度器 */
+    private String scheduler;
+
+    /** 执行器 */
+    private String actuator;
+
     /** 是否有效 */
     private Boolean validFlag;
 

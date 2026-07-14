@@ -45,7 +45,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -59,7 +59,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +

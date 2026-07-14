@@ -103,6 +103,13 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     private String code;
     private String crontab;
     private String id;
+    private Integer version;
+
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
 
     /**
      * taskType（SPARK、FINK）

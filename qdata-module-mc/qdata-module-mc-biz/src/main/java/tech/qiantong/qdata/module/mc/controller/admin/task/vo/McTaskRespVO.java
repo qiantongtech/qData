@@ -68,6 +68,10 @@ public class McTaskRespVO implements Serializable {
     @Schema(description = "任务状态", example = "")
     private String status;
 
+    @Excel(name = "调度器")
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;

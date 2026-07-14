@@ -248,11 +248,14 @@ public class McTaskDolphinSchedulerService {
      */
     public void startTask(String taskCode) {
         DsStartTaskReqDTO dsStartTaskReqDTO = McTaskConverter.createDsStartTaskReqDTO(taskCode);
-        DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(
-                dsStartTaskReqDTO, String.valueOf(projectCode));
-
-        if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.task.start", "启动任务失败：" + (dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误"), dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误");
+        try {
+            DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(
+                    dsStartTaskReqDTO, String.valueOf(projectCode));
+            if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
+                throw new ServiceException("mc.error.task.start", "启动任务失败：" + (dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误"), dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误");
+            }
+        } catch (Exception e) {
+            throw new ServiceException("dpp.error.scheduler.start", "执行调度器，失败！");
         }
     }
 

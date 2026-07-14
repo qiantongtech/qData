@@ -107,6 +107,12 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "任务的执行策略", example = "")
     private String executionType;
 
+    @Schema(description = "调度器", example = "")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "")
+    private String actuator;
+
     @Excel(name = "超时时间")
     @Schema(description = "超时时间", example = "")
     private Long timeout;
@@ -126,6 +132,11 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Excel(name = "DolphinScheduler的id")
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    // 编辑详情也返回 Quartz Job id，页面排查调度绑定关系时不用再单独查调度表。
+    @Excel(name = "Quartz调度任务id")
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
 
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
@@ -215,6 +226,10 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.locations = parseList(dppEtlTaskDO.getLocations());
         this.description = dppEtlTaskDO.getDescription();
         this.executionType = dppEtlTaskDO.getExecutionType();
+        // 任务表里保存了一份 Quartz Job id，这里同步带到编辑详情。
+        this.quartzId = dppEtlTaskDO.getQuartzId();
+        this.scheduler = dppEtlTaskDO.getScheduler();
+        this.actuator = dppEtlTaskDO.getActuator();
         this.timeout = dppEtlTaskDO.getTimeout();
         this.extractionCount = dppEtlTaskDO.getExtractionCount();
         this.writeCount = dppEtlTaskDO.getWriteCount();
@@ -328,6 +343,8 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         taskConfig.put("description", this.description); // 从本身获取描述
         taskConfig.put("name", this.name); // 从本身获取任务名称
         taskConfig.put("executionType", this.executionType); // 从本身获取执行策略
+        taskConfig.put("scheduler", this.scheduler);
+        taskConfig.put("actuator", this.actuator);
         taskConfig.put("crontab", this.crontab); // 固定 crontab 表达式
         taskConfig.put("personCharge", this.personCharge); // 责任人
         taskConfig.put("contactNumber", this.contactNumber); // 联系电话

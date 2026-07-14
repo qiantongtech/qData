@@ -18,8 +18,8 @@
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -30,6 +30,7 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.api.ds.api.base.DsStatusRespDTO;
@@ -37,16 +38,18 @@ import tech.qiantong.qdata.api.ds.api.etl.*;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessDefinition;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessTaskRelation;
 import tech.qiantong.qdata.api.ds.api.etl.ds.Schedule;
+import tech.qiantong.qdata.api.ds.api.etl.ds.TaskDefinition;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlNodeService;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlSchedulerService;
 import tech.qiantong.qdata.api.ds.api.service.etl.IDsEtlTaskService;
+import tech.qiantong.qdata.common.constant.ScheduleConstants;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
-import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.JSONUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.uuid.IdUtils;
@@ -62,10 +65,16 @@ import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.*;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskMapper;
+import tech.qiantong.qdata.module.dpp.service.etl.task.DppEtlTaskDataIntegrationRunner;
+import tech.qiantong.qdata.module.dpp.service.etl.task.DataDevelopmentJdbcTaskRunner;
 import tech.qiantong.qdata.module.dpp.service.etl.*;
+import tech.qiantong.qdata.module.dpp.service.scheduler.DppTaskQuartzService;
 import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
+import tech.qiantong.qdata.module.dpp.utils.log.LogUtils;
 import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
 import tech.qiantong.qdata.mybatis.core.util.MyBatisUtils;
+import tech.qiantong.qdata.quartz.domain.ScheduleCommand;
+import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
@@ -86,6 +95,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlTaskDO> implements IDppEtlTaskService, DppEtlTaskService {
+
     @Resource
     private DppEtlTaskMapper dppEtlTaskMapper;
 
@@ -122,6 +132,14 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     private IDppEtlTaskExtService dppEtlTaskExtService;
     @Resource
     private IRedisService redisService;
+    @Resource
+    private ISchedulerAdapter schedulerAdapter;
+    @Resource
+    private DppTaskQuartzService dppTaskQuartzService;
+    @Resource
+    private DppEtlTaskDataIntegrationRunner dppEtlTaskDataIntegrationRunner;
+    @Resource
+    private DataDevelopmentJdbcTaskRunner dataDevelopmentJdbcTaskRunner;
 
     @Override
     public PageResult<DppEtlTaskDO> getDppEtlTaskPage(DppEtlTaskPageReqVO pageReqVO) {
@@ -188,8 +206,11 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             if (StringUtils.equals("1", dppEtlTaskDO.getStatus())) {
                 throw new ServiceException("dpp.error.task.online.delete", "上线任务，不允删除，请先下线！");
             }
-            if (dppEtlTaskDO.getDsId() != null || (taskExt != null && StringUtils.isNotEmpty(taskExt.getEtlTaskCode()))) {
-                dsEtlTaskService.deleteTask(dppEtlTaskDO.getProjectCode(), dppEtlTaskDO.getCode());
+            if (dppEtlTaskDO.getDsId() != null && dppEtlTaskDO.getQuartzId() != null || (taskExt != null && StringUtils.isNotEmpty(taskExt.getEtlTaskCode()))) {
+                if (dppEtlTaskDO.getQuartzId() > 0 && ScheduleConstants.QUARTZ.equals(dppEtlTaskDO.getScheduler())) {
+                    schedulerAdapter.delete(ScheduleCommand.builder().jobName(dppEtlTaskDO.getName()).id(dppEtlTaskDO.getQuartzId()).build());
+                } else if (dppEtlTaskDO.getDsId() != null && dppEtlTaskDO.getDsId() > 0)
+                    dsEtlTaskService.deleteTask(dppEtlTaskDO.getProjectCode(), dppEtlTaskDO.getCode());
                 sum += dppEtlTaskMapper.deleteById(id);
             } else {
                 sum += dppEtlTaskMapper.deleteById(id);
@@ -318,6 +339,9 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
     @Override
     public Long getNodeUniqueKey(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (ScheduleConstants.QUARTZ.equals(dppEtlNewNodeSaveReqVO.getScheduler())) {
+            return dppTaskQuartzService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
+        }
         DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
         return dsNodeGenCodeRespDTO.getData().get(0);
     }
@@ -382,30 +406,32 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             dppEtlTaskDO.setCode(taskExt.getEtlTaskCode());
         }
 
-        // 下线操作
-        if (StringUtils.equals("0", dppEtlNewNodeSaveReqVO.getReleaseState())) {
-            DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
+        if (ScheduleConstants.DOLPHINSCHEDULER.equals(dppEtlTaskDO.getScheduler())) {
+            // 下线操作
+            if (StringUtils.equals("0", dppEtlNewNodeSaveReqVO.getReleaseState())) {
+                DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
+                if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
+                    throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
+                }
+
+                // 更新任务状态
+                if (!StringUtils.equals("-2", dppEtlTaskDO.getStatus()) && !StringUtils.equals("-3", dppEtlTaskDO.getStatus())) {
+                    updateTaskStatus(dppEtlTaskDO.getId(), dppEtlNewNodeSaveReqVO.getReleaseState());
+                } else {
+                    updateTaskStatus(dppEtlTaskDO.getId(), "-2");
+                }
+                return new HashMap<>();
+            }
+
+            // 上线操作
+            DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
+            String responseMsg = dsStatusRespDTO.getMsg();
+            if (responseMsg.contains("SubWorkflowDefinition") && responseMsg.contains("is not online")) {
+                throw new RuntimeException("存在未上线的子工作流，请先将所有子工作流上线");
+            }
             if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-                throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
+                throw new ServiceException("发布任务失败！");
             }
-
-            // 更新任务状态
-            if (!StringUtils.equals("-2", dppEtlTaskDO.getStatus()) && !StringUtils.equals("-3", dppEtlTaskDO.getStatus())) {
-                updateTaskStatus(dppEtlTaskDO.getId(), dppEtlNewNodeSaveReqVO.getReleaseState());
-            } else {
-                updateTaskStatus(dppEtlTaskDO.getId(), "-2");
-            }
-            return new HashMap<>();
-        }
-
-        // 上线操作
-        DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE", String.valueOf(dppEtlTaskDO.getProjectCode()), dppEtlTaskDO.getCode());
-        String responseMsg = dsStatusRespDTO.getMsg();
-        if (responseMsg.contains("SubWorkflowDefinition") && responseMsg.contains("is not online")) {
-            throw new RuntimeException("存在未上线的子工作流，请先将所有子工作流上线");
-        }
-        if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("发布任务失败！");
         }
 
         // 更新任务状态
@@ -425,6 +451,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlSchedulerPageReqVO.setTaskId(dppEtlTaskDO.getId());
         dppEtlSchedulerPageReqVO.setTaskCode(dppEtlTaskDO.getCode());
         DppEtlSchedulerDO dppEtlSchedulerById = iDppEtlSchedulerService.getDppEtlSchedulerById(dppEtlSchedulerPageReqVO);
+        dppEtlTaskDO.setCronExpression(dppEtlSchedulerById.getCronExpression());
 
         // 若任务状态未变化，则直接返回
         if (StringUtils.equals(dppEtlSchedulerById.getStatus(), dppEtlNewNodeSaveReqVO.getSchedulerState())) {
@@ -455,10 +482,14 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
         // 下线操作
         if (StringUtils.equals("0", dppEtlNewNodeSaveReqVO.getSchedulerState())) {
-            if (dppEtlSchedulerById.getDsId() != null && dppEtlSchedulerById.getDsId() > 0) {
-                DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.offlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerById.getDsId());
-                if (!dsStatusRespDTO1.getData()) {
-                    throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
+            if (ScheduleConstants.QUARTZ.equals(dppEtlTaskDO.getScheduler())) {
+                dppTaskQuartzService.offline(dppEtlSchedulerById.getQuartzId());
+            } else {
+                if (dppEtlSchedulerById.getDsId() != null && dppEtlSchedulerById.getDsId() > 0) {
+                    DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.offlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerById.getDsId());
+                    if (!dsStatusRespDTO1.getData()) {
+                        throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
+                    }
                 }
             }
 
@@ -472,22 +503,34 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         }
 
         DsSchedulerRespDTO dsSchedulerRespDTO;
-        if (dppEtlSchedulerById.getDsId() == null || dppEtlSchedulerById.getDsId() < 1) {
-            dsSchedulerRespDTO = createOrUpdateScheduler(dppEtlSchedulerById, dppEtlTaskDO);
+        // 更新调度器并上线
+        DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO;
+        if (ScheduleConstants.QUARTZ.equals(dppEtlSchedulerById.getTaskScheduler())) {
+            Long quartzId;
+            dppEtlSchedulerSaveReqVO = new DppEtlSchedulerSaveReqVO();
+            if (dppEtlSchedulerById.getQuartzId() == null || dppEtlSchedulerById.getQuartzId() < 1) {
+                quartzId = dppTaskQuartzService.create(dppEtlTaskDO, "dppQuartzJob.dataIntegration(%sL)");
+                dppEtlSchedulerSaveReqVO.setQuartzId(quartzId);
+            } else {
+                quartzId = dppEtlSchedulerById.getQuartzId();
+            }
+            dppTaskQuartzService.online(quartzId);
         } else {
-            dsSchedulerRespDTO = updateExistingScheduler(dppEtlSchedulerById, dppEtlTaskDO);
+            if (dppEtlSchedulerById.getDsId() == null || dppEtlSchedulerById.getDsId() < 1) {
+                dsSchedulerRespDTO = createOrUpdateScheduler(dppEtlSchedulerById, dppEtlTaskDO);
+            } else {
+                dsSchedulerRespDTO = updateExistingScheduler(dppEtlSchedulerById, dppEtlTaskDO);
+            }
+            dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(dsSchedulerRespDTO, dppEtlTaskDO);
+
+            DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerSaveReqVO.getDsId());
+            if (!dsStatusRespDTO1.getData()) {
+                throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
+            }
         }
 
-        // 更新调度器并上线
-        DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(dsSchedulerRespDTO, dppEtlTaskDO);
         dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
         dppEtlSchedulerSaveReqVO.setStatus(dppEtlNewNodeSaveReqVO.getSchedulerState());
-
-        DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(dppEtlTaskDO.getProjectCode(), dppEtlSchedulerSaveReqVO.getDsId());
-        if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
-        }
-
         // 更新调度器
         iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
         return null;
@@ -499,6 +542,9 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
      */
     @Override
     public DppEtlTaskSaveReqVO createEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (ScheduleConstants.QUARTZ.equals(dppEtlNewNodeSaveReqVO.getScheduler())) {
+            return createLocalDataXEtlTask(dppEtlNewNodeSaveReqVO);
+        }
         //兼容先创建任务，再丰满信息
         String saveReqVOId = dppEtlNewNodeSaveReqVO.getId();
         boolean isUpdate = StringUtils.isNotEmpty(saveReqVOId);
@@ -611,6 +657,151 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         return taskSaveReqVO; // 返回创建结果
     }
 
+    /**
+     * 创建 Quartz + DataX 数据集成任务
+     */
+    private DppEtlTaskSaveReqVO createLocalDataXEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        String saveReqVOId = dppEtlNewNodeSaveReqVO.getId();
+        boolean isUpdate = StringUtils.isNotEmpty(saveReqVOId);
+
+        // 创建调度器
+        DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectById(Long.valueOf(saveReqVOId));
+        dppEtlTaskDO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
+        Long quartzId = dppTaskQuartzService.create(dppEtlTaskDO, "dppQuartzJob.dataIntegration(%sL)");
+
+        //生成节点名称
+        String taskCode = String.valueOf(dppEtlTaskDO.getCode());
+        String nodeName = dppEtlNewNodeSaveReqVO.getName() + "-" + DateUtil.today();
+
+        // 创建或者更新调度器信息
+        Long taskId = JSONUtils.convertToLong(saveReqVOId);
+        DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO = BeanUtil.copyProperties(dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO.class);
+        dppEtlTaskSaveReqVO.setVersion(1);
+        dppEtlTaskSaveReqVO.setCode(taskCode);
+        dppEtlTaskSaveReqVO.setStatus("0");
+        dppEtlTaskSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
+        if (isUpdate) {
+            dppEtlTaskSaveReqVO.setQuartzId(quartzId);
+            this.updateDppEtlTask(dppEtlTaskSaveReqVO);
+        } else {
+            taskId = this.createDppEtlTask(dppEtlTaskSaveReqVO);
+        }
+        dppEtlTaskSaveReqVO.setId(taskId);
+        dppEtlTaskSaveReqVO.setDsId((long) -1);
+
+        DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(taskId, dppEtlTaskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO);
+        if (isUpdate) {
+            // 更新任务时复用原来的调度记录，只把调度器和执行引擎等配置刷新掉。
+            DppEtlSchedulerDO dppEtlSchedulerById = getDppEtlScheduler(dppEtlTaskSaveReqVO.getCode(), dppEtlTaskSaveReqVO.getId());
+            dppEtlSchedulerSaveReqVO.setTaskCode(taskCode);
+            dppEtlSchedulerSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId());
+            dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
+            dppEtlSchedulerSaveReqVO.setQuartzId(quartzId);
+            iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+        } else {
+            // 新任务第一次保存时，需要同步创建一条 DPP 调度配置。
+            iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+        }
+
+        // 保存一份任务日志快照，后面版本追溯和执行记录会用到。
+        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskSaveReqVO(dppEtlTaskSaveReqVO);
+        dppEtlTaskLogSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
+        dppEtlTaskLogSaveReqVO.setCode(taskCode);
+        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+
+        if (isUpdate) {
+            // 更新本地 DataX 任务时，先清掉旧节点和旧关系，再按这次画布重新保存。
+            List<String> nodeCodeList = getLocalNodeCodeList(dppEtlNewNodeSaveReqVO);
+            if (CollectionUtils.isNotEmpty(nodeCodeList)) {
+                // 有节点编码才删除旧节点，避免空集合生成无效 SQL。
+                iDppEtlNodeService.removeOldDppEtlNode(nodeCodeList);
+            }
+            iDppEtlTaskNodeRelService.removeOldDppEtlTaskNodeRel(taskCode);
+        }
+
+        //创建etl任务扩展数据
+        dppEtlTaskExtService.createDppEtlTaskExt(DppEtlTaskExtSaveReqVO.builder()
+                .taskId(taskId)
+                .etlTaskCode(taskCode)
+                .etlNodeCode(taskCode)
+                .etlNodeName(nodeName)
+                .build());
+
+        // 把前端画布里的节点保存到 DPP 自己的节点表，DataX 执行时会读取这些配置生成 job.json。
+        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(dppEtlNewNodeSaveReqVO, 1);
+        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+        // 节点日志表也保存一份，方便后续看历史版本。
+        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(dppEtlNodeSaveReqVOList);
+        iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
+
+        // 保存节点之间的连线关系，详情页和执行链路都要靠它还原任务结构。
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(dppEtlNodeBatch, dppEtlNewNodeSaveReqVO, dppEtlTaskSaveReqVO);
+        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+        // 关系日志也保存一份，和节点日志一样用于历史追溯。
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(dppEtlTaskNodeRelSaveReqVOS);
+        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
+        return dppEtlTaskSaveReqVO;
+    }
+
+    /**
+     * 组装本地 DataX 任务保存对象。
+     */
+    private DppEtlTaskSaveReqVO buildLocalDataXTaskSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        DppEtlTaskSaveReqVO createReqVO = new DppEtlTaskSaveReqVO();
+        createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
+        createReqVO.setName(dppEtlNewNodeSaveReqVO.getName());
+        createReqVO.setVersion(1);
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId());
+        createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode()));
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription());
+        createReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
+        createReqVO.setDsId((long) -1);
+        createReqVO.setStatus(resolveLocalTaskStatus(dppEtlNewNodeSaveReqVO.getReleaseState()));
+        createReqVO.setRemark("");
+        createReqVO.setExecutionType(dppEtlNewNodeSaveReqVO.getExecutionType());
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId());
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy());
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime());
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId());
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy());
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime());
+        createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
+        createReqVO.setContactNumber(dppEtlNewNodeSaveReqVO.getContactNumber());
+        createReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
+        createReqVO.setScheduler(ScheduleConstants.QUARTZ);
+        createReqVO.setActuator(dppEtlNewNodeSaveReqVO.getActuator());
+        createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
+        createReqVO.setDraftJson(dppEtlNewNodeSaveReqVO.getDraftJson());
+        return createReqVO;
+    }
+
+    private String resolveLocalTaskStatus(String releaseState) {
+        if (StringUtils.equals("-2", releaseState) || StringUtils.equals("-3", releaseState)) {
+            // -2/-3 是系统已有的特殊上下线状态，传进来时要原样保留。
+            return releaseState;
+        }
+        // 新建本地 DataX 任务默认先不上线，等用户显式上线任务和调度。
+        return "0";
+    }
+
+    /**
+     * 从画布节点里取出节点编码。
+     * 更新本地 DataX 任务时，需要用这些编码删除旧节点。
+     */
+    private List<String> getLocalNodeCodeList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        List<DppEtlNodeSaveReqVO> nodeList = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskDefinitionList(), DppEtlNodeSaveReqVO.class);
+        if (CollectionUtils.isEmpty(nodeList)) {
+            // 没有节点就返回空列表，上层会跳过删除，避免生成 where in ()。
+            return Collections.emptyList();
+        }
+        return nodeList.stream()
+                .map(DppEtlNodeSaveReqVO::getCode)
+                .filter(StringUtils::isNotEmpty)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public DppEtlTaskSaveReqVO updateEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
@@ -836,19 +1027,21 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dsTaskSaveReqDTO.setTaskRelationJson(taskRelation);
         dsTaskSaveReqDTO.setLocations(locations);
 
-        DsTaskSaveRespDTO task = dsEtlTaskService.updateTask(dsTaskSaveReqDTO, String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode()), taskCode);
+        if (ScheduleConstants.DOLPHINSCHEDULER.equals(dppEtlTaskSaveReqVO.getScheduler())) {
+            DsTaskSaveRespDTO task = dsEtlTaskService.updateTask(dsTaskSaveReqDTO, String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode()), taskCode);
 
-        if (!task.getSuccess()) {
-            throw new ServiceException("修改任务错误:" + task.getMsg().toString()); // 抛出任务定义创建错误的异常
+            if (!task.getSuccess()) {
+                throw new ServiceException("修改任务错误:" + task.getMsg().toString()); // 抛出任务定义创建错误的异常
+            }
+
+            ProcessDefinition data = task.getData();
+
+            //更新扩展数据
+            taskExt.setEtlTaskVersion(data.getVersion());
+            taskExt.setEtlNodeVersion(data.getTaskDefinitionList().get(0).getVersion());
+            taskExt.setEtlRelationId(data.getTaskRelationList().get(0).getId());
+            dppEtlTaskExtService.updateById(taskExt);
         }
-
-        ProcessDefinition data = task.getData();
-
-        //更新扩展数据
-        taskExt.setEtlTaskVersion(data.getVersion());
-        taskExt.setEtlNodeVersion(data.getTaskDefinitionList().get(0).getVersion());
-        taskExt.setEtlRelationId(data.getTaskRelationList().get(0).getId());
-        dppEtlTaskExtService.updateById(taskExt);
         return dppEtlTaskSaveReqVO; // 返回创建结果
     }
 
@@ -1057,6 +1250,9 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     @Override
     @Transactional
     public DppEtlTaskSaveReqVO createProcessDefinition(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        if (ScheduleConstants.QUARTZ.equals(dppEtlNewNodeSaveReqVO.getScheduler())) {
+            return createProcessDefinitionQuartz(dppEtlNewNodeSaveReqVO);
+        }
         //兼容先创建任务，再丰满信息
         String saveReqVOId = dppEtlNewNodeSaveReqVO.getId();
         boolean isUpdate = StringUtils.isNotEmpty(saveReqVOId);
@@ -1104,21 +1300,100 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
         List<DppEtlNodeLogDO> dppEtlNodeLogBatch = iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
 
-        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data, dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO);
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, data.getCode(), data.getVersion());
         iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
 
-        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data, dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO);
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, data.getCode(), data.getVersion());
         iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
 
         return dppEtlTaskSaveReqVO; // 返回创建结果
     }
 
+    /**
+     * 创建任务
+     *
+     * @param dppEtlNewNodeSaveReqVO
+     * @return
+     */
+    private DppEtlTaskSaveReqVO createProcessDefinitionQuartz(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        //兼容先创建任务，再丰满信息
+        String saveReqVOId = dppEtlNewNodeSaveReqVO.getId();
+        boolean isUpdate = StringUtils.isNotEmpty(saveReqVOId);
+        // 创建调度器
+        DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectById(Long.valueOf(saveReqVOId));
+        dppEtlTaskDO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
+        Long quartzId = dppTaskQuartzService.create(dppEtlTaskDO, "dppQuartzJob.dataDevelopment(%sL)");
+
+        // 创建或者更新调度器信息
+        Long taskId = JSONUtils.convertToLong(saveReqVOId);
+        DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO = BeanUtil.copyProperties(dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO.class);
+        dppEtlTaskSaveReqVO.setStatus("0");
+        dppEtlTaskSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
+        if (isUpdate) {
+            dppEtlTaskSaveReqVO.setQuartzId(quartzId);
+            this.updateDppEtlTask(dppEtlTaskSaveReqVO);
+        } else {
+            taskId = this.createDppEtlTask(dppEtlTaskSaveReqVO);
+        }
+        dppEtlTaskSaveReqVO.setId(taskId);
+
+        // 创建调度信息
+        DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(taskId, dppEtlTaskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO);
+        if (isUpdate) {
+            DppEtlSchedulerDO dppEtlSchedulerById = getDppEtlScheduler(dppEtlTaskSaveReqVO.getCode(), dppEtlTaskSaveReqVO.getId());
+            dppEtlSchedulerSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode());
+            dppEtlSchedulerSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId());
+            dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
+            dppEtlSchedulerById.setQuartzId(quartzId);
+            iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+        } else {
+            iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+        }
+
+        // 创建任务日志
+        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = BeanUtils.toBean(dppEtlNewNodeSaveReqVO, DppEtlTaskLogSaveReqVO.class);
+        dppEtlTaskLogSaveReqVO.setId(null);
+        dppEtlTaskLogSaveReqVO.setDsId(0L);
+        dppEtlTaskLogSaveReqVO.setQuartzId(quartzId);
+        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+
+        // 创建节点
+        List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
+        List<TaskDefinition> taskDefinitionList = BeanUtil.copyToList(list, TaskDefinition.class);
+        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(taskDefinitionList, dppEtlNewNodeSaveReqVO);
+        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+        // 创建节点日志
+        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = BeanUtil.copyToList(dppEtlNodeSaveReqVOList, DppEtlNodeLogSaveReqVO.class);
+        List<DppEtlNodeLogDO> dppEtlNodeLogBatch = iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
+
+        Integer version = dppEtlNewNodeSaveReqVO.getVersion();
+        String code = dppEtlNewNodeSaveReqVO.getCode();
+
+        // 创建节点关系信息
+        list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskRelationJson());
+        List<ProcessTaskRelation> processTaskRelations = BeanUtil.copyToList(list, ProcessTaskRelation.class);
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(processTaskRelations, dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, code, version);
+        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+        // 创建节点关系日志
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(processTaskRelations, dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, code, version);
+        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
+
+        return dppEtlTaskSaveReqVO; // 返回创建结果
+    }
 
     @Override
     public DppEtlTaskSaveReqVO updateProcessDefinition(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectById(dppEtlNewNodeSaveReqVO.getId());
         if (StringUtils.equals("1", dppEtlTaskDO.getStatus()) || StringUtils.equals("-3", dppEtlTaskDO.getStatus())) {
             throw new ServiceException("上线任务，不允许修改，请先下线！");
+        }
+
+        // 兼容创建任务，再丰满信息
+        if (ScheduleConstants.QUARTZ.equals(dppEtlTaskDO.getScheduler())) {
+            return updateProcessDefinitionQuartz(dppEtlNewNodeSaveReqVO, dppEtlTaskDO);
         }
 
         DsTaskSaveReqDTO dsTaskSaveReqDTO = TaskConverter.buildDsTaskSaveReq(dppEtlNewNodeSaveReqVO);
@@ -1146,7 +1421,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(data, dppEtlNewNodeSaveReqVO);
         List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
         //新增
-        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data, dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO);
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, data.getCode(), data.getVersion());
         iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
 
 
@@ -1171,7 +1446,69 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             dppEtlNodeLogBatch.add(dppEtlNodeLogRespVOByReqVO);
         }
 
-        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data, dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO);
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, data.getCode(), data.getVersion());
+        for (DppEtlTaskNodeRelLogSaveReqVO dppEtlTaskNodeRelLogSaveReqVO : dppEtlTaskNodeRelLogSaveReqVOS) {
+            DppEtlTaskNodeRelLogRespVO dppEtlTaskNodeRelLogById = this.getDppEtlTaskNodeRelLogByRequest(dppEtlTaskNodeRelLogSaveReqVO);
+            if (dppEtlTaskNodeRelLogById == null) {
+                iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLog(dppEtlTaskNodeRelLogSaveReqVO);
+
+            }
+        }
+        return dppEtlTaskSaveReqVO;
+    }
+
+    private DppEtlTaskSaveReqVO updateProcessDefinitionQuartz(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, DppEtlTaskDO dppEtlTaskDO) {
+
+        this.releaseTaskCrontab(dppEtlNewNodeSaveReqVO);
+
+        DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO = BeanUtil.copyProperties(dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO.class);
+        dppEtlTaskSaveReqVO.setId(dppEtlTaskDO.getId());
+        dppEtlTaskSaveReqVO.setLocations(JSONUtils.toJson(dppEtlNewNodeSaveReqVO.getLocations()));
+        this.updateDppEtlTask(dppEtlTaskSaveReqVO);
+
+        //rel 先删除，再新增
+        List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList = iDppEtlTaskNodeRelService.removeOldDppEtlTaskNodeRel(dppEtlTaskDO.getCode());
+        //node 先删除，再新增
+        iDppEtlNodeService.removeOldDppEtlNode(TaskConverter.getPreAndPostNodeCodeList(dppEtlTaskNodeRelRespVOList));
+
+        // 创建节点
+        List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
+        List<TaskDefinition> taskDefinitionList = BeanUtil.copyToList(list, TaskDefinition.class);
+        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(taskDefinitionList, dppEtlNewNodeSaveReqVO);
+        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+        // 创建节点关系信息
+        Integer version = dppEtlNewNodeSaveReqVO.getVersion();
+        String code = dppEtlNewNodeSaveReqVO.getCode();
+        list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskRelationJson());
+        List<ProcessTaskRelation> processTaskRelations = BeanUtil.copyToList(list, ProcessTaskRelation.class);
+        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(processTaskRelations, dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, code, version);
+        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+        // 创建任务日志
+        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = BeanUtils.toBean(dppEtlNewNodeSaveReqVO, DppEtlTaskLogSaveReqVO.class);
+        DppEtlTaskLogRespVO dppEtlTaskLogByRequest = this.getDppEtlTaskLogByRequest(dppEtlTaskLogSaveReqVO);
+        if (dppEtlTaskLogByRequest == null) {
+            Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+            dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+        } else {
+            dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLogByRequest.getId());
+            iDppEtlTaskLogService.updateDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+        }
+
+        // 创建节点日志
+        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = BeanUtil.copyToList(dppEtlNodeSaveReqVOList, DppEtlNodeLogSaveReqVO.class);
+        List<DppEtlNodeLogDO> dppEtlNodeLogBatch = new ArrayList<>();
+        for (DppEtlNodeLogSaveReqVO dppEtlNodeLogSaveReqVO : dppEtlNodeLogSaveReqVOS) {
+            DppEtlNodeLogDO dppEtlNodeLogRespVOByReqVO = this.getDppEtlNodeLogByCodeAndVersion(dppEtlNodeLogSaveReqVO);
+            if (dppEtlNodeLogRespVOByReqVO == null) {
+                dppEtlNodeLogRespVOByReqVO = iDppEtlNodeLogService.createDppEtlNodeLogNew(dppEtlNodeLogSaveReqVO);
+            }
+            dppEtlNodeLogBatch.add(dppEtlNodeLogRespVOByReqVO);
+        }
+
+        // 创建节点关系日志
+        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(processTaskRelations, dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, code, version);
         for (DppEtlTaskNodeRelLogSaveReqVO dppEtlTaskNodeRelLogSaveReqVO : dppEtlTaskNodeRelLogSaveReqVOS) {
             DppEtlTaskNodeRelLogRespVO dppEtlTaskNodeRelLogById = this.getDppEtlTaskNodeRelLogByRequest(dppEtlTaskNodeRelLogSaveReqVO);
             if (dppEtlTaskNodeRelLogById == null) {
@@ -1225,6 +1562,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             dppEtlSchedulerSaveReqVO = new DppEtlSchedulerSaveReqVO();
             dppEtlSchedulerSaveReqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         }
+        // 更新Quartz调度任务
+        if (dppEtlSchedulerById.getQuartzId() != null && dppEtlSchedulerById.getQuartzId() > 0) {
+            dppTaskQuartzService.update(dppEtlSchedulerById.getQuartzId(), dppEtlNewNodeSaveReqVO.getCrontab());
+        }
         dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
         iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
 
@@ -1267,20 +1608,20 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             for (DppEtlNodeRespVO dppEtlNodeRespVO : etlNodeLogRespVOList) {
                 if (StringUtils.equals(TaskComponentTypeEnum.DB_READER.getCode(), dppEtlNodeRespVO.getComponentType())) {
                     String nodeCode = dppEtlNodeRespVO.getCode();
-                    com.alibaba.fastjson2.JSONObject taskParams = com.alibaba.fastjson2.JSONObject.parse(dppEtlNodeRespVO.getParameters());
+                    JSONObject taskParams = JSONObject.parse(dppEtlNodeRespVO.getParameters());
                     //读取方式 1:全量 2:id增量 3:时间范围增量 默认全量
                     String readModeType = taskParams.getString("readModeType");
                     if (StringUtils.equals("2", readModeType)) {
-                        com.alibaba.fastjson2.JSONObject idIncrementConfig = taskParams.getJSONObject("idIncrementConfig");
+                        JSONObject idIncrementConfig = taskParams.getJSONObject("idIncrementConfig");
                         String incrementColumn = idIncrementConfig.getString("incrementColumn");
                         String cacheKey = TaskConverter.ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
                         if (redisService.hasKey(cacheKey)) {
                             idIncrementConfig.put("incrementStart", redisService.get(cacheKey));
                         }
                     } else if (StringUtils.equals("3", readModeType)) {
-                        com.alibaba.fastjson2.JSONObject dateIncrementConfig = taskParams.getJSONObject("dateIncrementConfig");
-                        List<com.alibaba.fastjson2.JSONObject> columnList = dateIncrementConfig.getJSONArray("column").stream().map(e -> {
-                            return (com.alibaba.fastjson2.JSONObject) e;
+                        JSONObject dateIncrementConfig = taskParams.getJSONObject("dateIncrementConfig");
+                        List<JSONObject> columnList = dateIncrementConfig.getJSONArray("column").stream().map(e -> {
+                            return (JSONObject) e;
                         }).collect(Collectors.toList());
                         for (int i = 0; i < columnList.size(); i++) {
                             JSONObject jsonObject = columnList.get(i);
@@ -1433,6 +1774,11 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             this.updateReleaseJobTask(nodeSaveReqVO);
 //            return error("任务状态错误，请刷新后重试！");
         }
+        if (StringUtils.equals(dppEtlTaskDO.getScheduler(), ScheduleConstants.QUARTZ)) {
+            // Quartz + DataX 是本地执行，不再调用 DS 的 startTask。
+            return startLocalDataXTask(dppEtlTaskDO);
+        }
+
         //1：离线任务 2：实时任务 3：数据开发任务 4：作业任务
         String type = dppEtlTaskDO.getType();
 
@@ -1449,11 +1795,83 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
 
         DsStartTaskReqDTO dsStartTaskReqDTO = TaskConverter.createDsStartTaskReqDTO(dppEtlTaskDO.getCode());
 
-        DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(dsStartTaskReqDTO, dppEtlTaskDO.getProjectCode());
-
-        return dsStatusRespDTO.getSuccess() ? success() : error(dsStatusRespDTO.getMsg());
+        try {
+            DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(dsStartTaskReqDTO, dppEtlTaskDO.getProjectCode());
+            return dsStatusRespDTO.getSuccess() ? success() : error(dsStatusRespDTO.getMsg());
+        } catch (Exception e) {
+            throw new ServiceException("dpp.error.scheduler.start", "执行调度器，失败！");
+        }
     }
 
+    /**
+     * 启动 Quartz + DataX 本地任务。
+     * 这里是页面手动执行一次 DataX，会生成 DataX JSON、调用 datax.py、采集日志，并把状态写回任务实例。
+     */
+    private AjaxResult startLocalDataXTask(DppEtlTaskDO dppEtlTaskDO) {
+        try {
+            schedulerAdapter.trigger(ScheduleCommand.builder().id(dppEtlTaskDO.getQuartzId()).build());
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
+        return success("DataX任务执行成功");
+    }
+
+    /**
+     * 启动数据集成任务
+     *
+     * @param id
+     */
+    @Override
+    public void startDppEtlTaskDataIntegration(Long id) {
+        // 数据集成任务由本地创建 JSON 调用datax.py 执行器处理，先查询完整任务信息和节点配置。
+        DppEtlTaskDO dppEtlTaskDO = dppEtlTaskMapper.selectById(id);
+        if (dppEtlTaskDO == null) {
+            throw new ServiceException("任务不存在，请刷新后重试！");
+        }
+
+        // 先创建任务实例，保证后续状态和日志都能关联到同一次执行。
+        DppEtlTaskInstanceDO instance = dppEtlTaskDataIntegrationRunner.createLocalDataXTaskInstance(dppEtlTaskDO);
+        StringBuilder taskLog = new StringBuilder();
+        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
+        LogUtils.appendLocalLogLine(taskLog, "********************************* Initialize DataX task context *******************************");
+        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
+        LogUtils.appendLocalLogLine(taskLog, "Begin to initialize task");
+        LogUtils.appendLocalLogLine(taskLog, "Set task startTime: " + instance.getStartTime().getTime());
+        LogUtils.appendLocalLogLine(taskLog, "Set task appId: " + dppEtlTaskDO.getId() + "_" + instance.getId());
+
+        // 启动数据集成任务
+        dppEtlTaskDataIntegrationRunner.startDppEtlTaskDataIntegration(dppEtlTaskDO, instance, taskLog);
+    }
+
+    /**
+     * 启动数据开发任务
+     *
+     * @param id 任务id
+     */
+    @Override
+    public void startDppEtlTaskDataDevelopment(Long id) {
+        // 数据开发任务由本地 JDBC 执行器处理，先查询完整任务信息和节点配置。
+        DppEtlTaskDO task = dppEtlTaskMapper.selectById(id);
+        // 任务不存在时直接返回错误，避免执行器创建无效实例。
+        if (task == null) {
+            error("任务不存在，请刷新后重试！");
+            return;
+        }
+        // 将 JDBC 执行、实例记录、日志记录等细节封装到 dpp.jdbc 包中。
+        // 先落任务实例，再开始执行，确保后续所有日志都有实例可以挂载。
+        DppEtlTaskInstanceDO instance = dataDevelopmentJdbcTaskRunner.createDataDevelopmentTaskInstance(task);
+        StringBuilder taskLog = new StringBuilder();
+        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
+        LogUtils.appendLocalLogLine(taskLog, "********************************* Initialize task context ***********************************");
+        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
+        LogUtils.appendLocalLogLine(taskLog, "Begin to initialize task");
+        LogUtils.appendLocalLogLine(taskLog, "Set task startTime: " + instance.getStartTime().getTime());
+        LogUtils.appendLocalLogLine(taskLog, "Set task appId: " + task.getId() + "_" + instance.getId());
+        LogUtils.appendLocalLogLine(taskLog, "End initialize task " + JSONUtils.formatJson(JSONUtils.toJson(task)));
+        LogUtils.appendLocalLogLine(taskLog, "End initialize instance " + JSONUtils.formatJson(JSONUtils.toJson(instance)));
+
+        dataDevelopmentJdbcTaskRunner.run(task, instance, taskLog);
+    }
 
     @Override
     public List<DppEtlTaskTreeRespVO> getDppEtlTaskListTree(DppEtlTaskPageReqVO reqVO) {
@@ -1462,7 +1880,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 .ne(DppEtlTaskDO::getStatus, "-2")
                 .ne(DppEtlTaskDO::getStatus, "-3")
                 .eq(reqVO.getProjectId() != null, DppEtlTaskDO::getProjectId, reqVO.getProjectId())
-                .eq(StringUtils.isNotBlank(reqVO.getProjectCode()), DppEtlTaskDO::getProjectCode, reqVO.getProjectCode())
+                .eq(StringUtils.isNotEmpty(reqVO.getProjectCode()), DppEtlTaskDO::getProjectCode, reqVO.getProjectCode())
                 .ne(DppEtlTaskDO::getType, "4");
         List<DppEtlTaskDO> dppEtlTaskDOS = dppEtlTaskMapper.selectList(wrapper);
         List<DppEtlTaskRespVO> dppEtlTaskRespVOList = BeanUtils.toBean(dppEtlTaskDOS, DppEtlTaskRespVO.class);
@@ -1741,9 +2159,11 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     public DppEtlNewNodeSaveReqVO createEtlTaskFront(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
 
         //生成任务编码
-        DsNodeGenCodeRespDTO dsTaskGenCodeRespDTO = dsEtlNodeService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
-        String taskCode = String.valueOf(dsTaskGenCodeRespDTO.getData().get(0));
-
+        String taskCode = String.valueOf(schedulerAdapter.generateTaskCode(dppEtlNewNodeSaveReqVO.getProjectCode()));
+        if (ScheduleConstants.DOLPHINSCHEDULER.equals(dppEtlNewNodeSaveReqVO.getScheduler())) {
+            DsNodeGenCodeRespDTO dsTaskGenCodeRespDTO = dsEtlNodeService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
+            taskCode = String.valueOf(dsTaskGenCodeRespDTO.getData().get(0));
+        }
 
         DppEtlTaskSaveReqVO createReqVO = new DppEtlTaskSaveReqVO();
         createReqVO.setName(dppEtlNewNodeSaveReqVO.getName());
@@ -1756,6 +2176,8 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription());
         createReqVO.setExecutionType(dppEtlNewNodeSaveReqVO.getExecutionType());
         createReqVO.setDraftJson(dppEtlNewNodeSaveReqVO.getDraftJson());
+        createReqVO.setScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        createReqVO.setActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
         //默认
         createReqVO.setCode(taskCode);
@@ -1763,6 +2185,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         createReqVO.setLocations("");
         createReqVO.setTimeout(0L);
         createReqVO.setDsId(0L);
+        createReqVO.setQuartzId(0L);
 
         Long dppEtlTask = this.createDppEtlTask(createReqVO);
 
@@ -1778,6 +2201,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlSchedulerSaveReqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         dppEtlSchedulerSaveReqVO.setFailureStrategy("1");
         dppEtlSchedulerSaveReqVO.setStatus("0");
+        // 调度表也要保存调度器和执行引擎，后面上线、执行才能按 Quartz 或 DS 分流。
+        dppEtlSchedulerSaveReqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        dppEtlSchedulerSaveReqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
+        // 草稿阶段还没有真正创建外部调度，Quartz 和 DS 都先不绑定外部调度 id。
         dppEtlSchedulerSaveReqVO.setDsId((long) -1);
         iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
 
@@ -2007,7 +2434,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         // 2) 解析 taskRelationJson
         String relJson = vo.getTaskRelationJson();
         if (relJson != null && !relJson.isEmpty()) {
-            java.util.List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList =
+            List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList =
                     JSON.parseArray(relJson, DppEtlTaskNodeRelRespVO.class);
 
             List<ProcessTaskRelation> relList = new ArrayList<>();

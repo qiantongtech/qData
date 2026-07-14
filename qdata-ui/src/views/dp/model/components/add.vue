@@ -382,7 +382,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
+        <el-button type="primary" :loading="loading" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -453,7 +453,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:dialogFormVisible", "confirm", "submit"]);
 
-// --- Reactive variable declaration (advance to top) ---
+// --- 响应式变量声明 (提前至顶部) ---
 let loading = ref(false);
 let layerLoading = ref(false);
 let businessLoading = ref(false);
@@ -505,7 +505,7 @@ const form = ref({
 const formatTreeData = (list) => {
   return list.map((item) => {
     const newItem = { ...item };
-    newItem.id = Number(item.id); // Cast to number to match echo
+    newItem.id = Number(item.id); // 强制转换为数字以匹配回显
     const abbreviation = item.engName || item.shortName;
     newItem.displayName = abbreviation
       ? `${item.name} / ${abbreviation}`
@@ -519,7 +519,7 @@ const formatTreeData = (list) => {
 
 const fetchAllOptions = (currentType) => {
   const targetType = currentType || props.type || form.value.tableType;
-  // Data warehouse stratification
+  // 数仓分层
   layerLoading.value = true;
   const p1 = treeDataLayer()
     .then((res) => {
@@ -527,7 +527,7 @@ const fetchAllOptions = (currentType) => {
       const processTree = (list) => {
         return list.map((item) => {
           const newItem = { ...item };
-          newItem.id = Number(item.id); // Cast to number to match echo
+          newItem.id = Number(item.id); // 强制转换为数字以匹配回显
           const abbreviation = item.engName || item.shortName;
           newItem.displayName = abbreviation
             ? `${item.name} / ${abbreviation}`
@@ -549,7 +549,7 @@ const fetchAllOptions = (currentType) => {
 
   let p2;
   if (targetType == "4") {
-    // subject area
+    // 主题域
     themeLoading.value = true;
     p2 = listThemeDomain({ pageNum: 1, pageSize: 1000, validFlag: true })
       .then((res) => {
@@ -564,7 +564,7 @@ const fetchAllOptions = (currentType) => {
         themeLoading.value = false;
       });
   } else {
-    // Business classification
+    // 业务分类
     businessLoading.value = true;
     p2 = listBusinessCategory({
       pageNum: 1,
@@ -620,7 +620,7 @@ const generateModelName = (initialRow = null) => {
   if (isResetting.value) return;
 
   if (initialRow) {
-    // To modify the first echo in mode, directly use formatModelName to pass parameters and splice the English name of the table
+    // 修改模式下的第一次回显，直接使用 formatModelName 传参并拼接表英文名
     form.value.namingSpec = formatModelName(form.value);
     return;
   }
@@ -643,7 +643,7 @@ const generateModelName = (initialRow = null) => {
 
   form.value.namingSpec = formatModelName(options);
 
-  // Sync business/topic codes
+  // 同步业务/主题代码
   if (form.value.tableType === "4") {
     const theme = findInTree(themeDomainList.value, form.value.themeDomainId);
     form.value.themeDomainCode = theme ? theme.code : "";
@@ -690,17 +690,17 @@ watch(
     getDaDatasourceListList();
     if (newVal) {
       isInitializing.value = true;
-      // In modification mode, props.dataList.tableType is used first
+      // 修改模式下，优先使用 props.dataList.tableType
       const currentType =
         props.dataList && props.dataList.tableType
           ? String(props.dataList.tableType)
           : props.type;
-      // Parallel requests without await blocking
+      // 并行请求，不使用 await 阻塞
       fetchAllOptions(currentType);
 
       if (props.dataList && props.dataList.id) {
         const echoData = { ...props.dataList };
-        // Map the business category ID and process the businessCategoryId returned by the details interface
+        // 映射业务分类 ID，处理详情接口返回的 businessCategoryId
         if (echoData.businessCategoryId) {
           echoData.businessDomainId = echoData.businessCategoryId;
         }
@@ -717,7 +717,7 @@ watch(
 
         Object.assign(form.value, echoData);
 
-        // Initialize naming case mode
+        // 初始化命名大小写模式
         if (echoData.tableCase !== undefined && echoData.tableCase !== null) {
           form.value.tableCase = Number(echoData.tableCase);
         } else if (form.value.modelName) {
@@ -738,7 +738,7 @@ watch(
           fetchSecondLevelDocs(form.value.documentType, true);
         }
 
-        // Get column information
+        // 获取列信息
         getDpModelColumnList({ modelId: form.value.id }).then((res) => {
           tableData.value = res.data || [];
         });
@@ -746,11 +746,11 @@ watch(
         reset();
       }
 
-      // Delay the end of the initialization state to ensure that the watch caused by echo assignment will not trigger generateModelName
+      // 延迟结束初始化状态，确保 echo 赋值引起的 watch 不会触发 generateModelName
       setTimeout(() => {
         isInitializing.value = false;
-        // After the initialization is completed, manually trigger a name generation to ensure that the namingSpec is correct when echoed.
-        // In the modification mode, pass in props.dataList and use formatHierarchyName to pass parameters and echo.
+        // 初始化完成后手动触发一次名称生成，确保回显时 namingSpec 正确
+        // 修改模式下传入 props.dataList 使用 formatHierarchyName 传参回显
         generateModelName(
           props.dataList && props.dataList.id ? props.dataList : null
         );
@@ -801,10 +801,10 @@ const getDaDatasourceListList = async () => {
     createTypeList.value = getAvailableDatasource(response, "dpModel");
     console.log("createTypeList.value", createTypeList.value);
   } catch (error) {
-    console.error("Request failed:", error);
+    console.error("请求失败:", error);
   }
 };
-// table
+// 表
 let TablesByDataSource = ref([]);
 const remoteSearchTables = async (query) => {
   if (!form.value.datasourceId) {
@@ -823,25 +823,30 @@ const fetchDpModelColumnList = async () => {
   try {
     loading.value = true;
     console.log("props.dataList.id", form.value.id);
-    const response = await getDpModelColumnList({ modelId: form.value.id }); // Pass `form` data
+    const response = await getDpModelColumnList({ modelId: form.value.id }); // 传递 `form` 数据
     tableData.value = response.data;
     loading.value = false;
-    // Process the returned data
+    // 处理返回的数据
   } catch (error) {
-    console.error("Request failed:", error);
+    console.error("请求失败:", error);
+    loading.value = false;
   }
 };
 const getColumnByAssetIdList = async (isOld) => {
   loading.value = true;
-  const response = await columnsList({
-    modelId: form.value.id,
-    id: form.value.datasourceId,
-    tableName: form.value.tableName,
-    type: form.value.datasourceType,
-    isOld: isOld,
-  });
-  tableData.value = response.data;
-  loading.value = false;
+  try {
+    const response = await columnsList({
+      modelId: form.value.id,
+      id: form.value.datasourceId,
+      tableName: form.value.tableName,
+      type: form.value.datasourceType,
+      isOld: isOld,
+    });
+    tableData.value = response.data;
+    loading.value = false;
+  } catch (error) {
+    loading.value = false;
+  }
 };
 const handleDatasourceChange = (value, selectedDatasource) => {
   if (selectedDatasource) {
@@ -882,7 +887,7 @@ const visibleDialog = computed({
     return props.visible;
   },
   set(newValue) {
-    emit("update:visible", newValue); // Use emit to trigger parent component updates
+    emit("update:visible", newValue); // 使用 emit 触发父组件更新
   },
 });
 
@@ -1001,7 +1006,7 @@ const handleContactChange = (selectedValue) => {
   form.value.contactNumber = selectedUser?.phonenumber || "";
 };
 function getDeptLabel(row) {
-  // Recursively find matching nodes in a tree structure
+  // 递归查找树形结构中匹配的节点
   const findLabel = (tree) => {
     for (let node of tree) {
       if (node.id == row.authorityDept) {
@@ -1018,20 +1023,20 @@ function getDeptLabel(row) {
   };
   return findLabel(props.deptList) || "-";
 }
-//New table fields
+//表字段的新增
 function handleFormSubmit(formData) {
-  console.log("Submitted form data:", formData);
+  console.log("提交的表单数据:", formData);
   if (formData.index !== undefined && formData.index !== null) {
-    // If an index exists, directly modify the data of the corresponding index.
+    // 如果存在 index，则直接修改对应索引的数据
     tableData.value[formData.index] = { ...formData };
-    console.log("Data updated:", tableData.value[formData.index]);
+    console.log("数据已修改:", tableData.value[formData.index]);
   } else {
-    // If there is no index, add new data
+    // 如果没有 index，则新增数据
     tableData.value.push({ ...formData });
-    console.log("New data added:", formData);
+    console.log("新数据已新增:", formData);
   }
 
-  console.log("Current table data:", tableData.value);
+  console.log("当前表格数据:", tableData.value);
 }
 
 function handleAdd() {
@@ -1110,15 +1115,18 @@ const closeDialog = () => {
 };
 
 const confirmDialog = () => {
+  if (loading.value) return;
   if (!proxy || !proxy.$refs["dpModelRef"]) return;
   proxy.$refs["dpModelRef"].validate((valid) => {
     if (valid) {
+      loading.value = true;
       if (!tableData.value || tableData.value.length === 0) {
         proxy.$message.warning(td('dp.modelForm.addFieldWarning'));
+        loading.value = false;
         return;
       }
 
-      // Make sure tableType and tableCase are in the correct format
+      // 确保 tableType 和 tableCase 格式正确
       const { namingSpec, ...restForm } = form.value;
       const submitForm = {
         ...restForm,
@@ -1145,6 +1153,7 @@ const confirmDialog = () => {
         });
       }
       closeDialog();
+      loading.value = false;
     }
   });
 };

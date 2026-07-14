@@ -356,7 +356,7 @@
           <el-button size="mini" @click="cancel">{{
             td("common.button.cancel")
           }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{
             td("common.button.confirm")
           }}</el-button>
         </div>
@@ -533,6 +533,7 @@ import useUserStore from "@/store/system/user";
 const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const AttDataDevCatList = ref([]);
 
@@ -812,6 +813,8 @@ function handleStatusChange(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["AttDataDevCatRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -820,8 +823,11 @@ function submitForm() {
             proxy.$modal.msgSuccess(td("common.message.editSuccess"));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
@@ -830,9 +836,14 @@ function submitForm() {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

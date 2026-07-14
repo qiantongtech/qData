@@ -105,7 +105,7 @@ function handleok() {
         )
         const oldValue = originalJson[originKey]
 
-        // ⚠️ Use field.label as key
+        // Use field.label as key
         if (newValue != oldValue) {
             keyWordData[field.label] = newValue
         }
@@ -116,7 +116,7 @@ function handleok() {
         return
     }
 
-    // Finally formData is converted to label-key object
+    // Final formData converted to label-key object
     const result = Object.entries(formData.value).reduce((acc, [key, val]) => {
         const field = parsedFields.value.find(f => f.name === key)
         if (field) {

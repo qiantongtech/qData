@@ -48,7 +48,7 @@
             >
               <el-button type="primary" plain>
                 <el-icon><Plus /></el-icon>
-                <span>Create table</span>
+                <span>创建表</span>
                 <div class="divider"></div>
                 <el-icon
                   class="arrow-icon el-icon--right"
@@ -61,19 +61,19 @@
                 <el-dropdown-menu class="create-table-dropdown-menu">
                   <el-dropdown-item command="1">
                     <svg-icon iconClass="btn-model-detail-table" />
-                    <span>Details list</span>
+                    <span>明细表</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="2">
                     <svg-icon iconClass="btn-model-summary-table" />
-                    <span>Summary table</span>
+                    <span>汇总表</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="3">
                     <svg-icon iconClass="btn-model-dimension-table" />
-                    <span>Dimension table</span>
+                    <span>维度表</span>
                   </el-dropdown-item>
                   <el-dropdown-item command="4">
                     <svg-icon iconClass="btn-model-progress-table" />
-                    <span>Application table</span>
+                    <span>应用表</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -224,6 +224,7 @@ import { ref, reactive, getCurrentInstance } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const projectStore = useProjectStore();
 const {
   dp_model_status,
@@ -247,7 +248,7 @@ const DeptTreeRef = ref(null);
 
 let Materialization = ref(false);
 
-/** Query the hierarchical tree structure of the data warehouse */
+/** 查询数仓分层树结构 */
 function getDataLayerTree() {
   treeDataLayer().then((res) => {
     const tree = res.data || res.rows || [];
@@ -269,13 +270,13 @@ function getDataLayerTree() {
   });
 }
 
-/** Query department drop-down tree structure */
+/** 查询部门下拉树结构 */
 function getDeptTree() {
   getDataLayerTree();
   projectStore.getModelDeptTree().then((data) => {
     deptOptions.value = data;
   });
-  // Department
+  // 部门
   deptTreeSelectNoPermi().then((response) => {
     deptList.value = response.data;
   });
@@ -295,23 +296,23 @@ const title = ref("");
 const router = useRouter();
 const selectedType = ref("");
 
-/*** User import parameters */
+/*** 用户导入参数 */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
+  // 是否显示弹出层（用户导入）
   open: false,
-  // Popup layer title (user imported)
+  // 弹出层标题（用户导入）
   title: "",
-  // Whether to disable uploading
+  // 是否禁用上传
   isUploading: false,
-  // Whether to update existing user data
+  // 是否更新已经存在的用户数据
   updateSupport: 0,
-  // Set upload request headers
+  // 设置上传的请求头部
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
+  // 上传的地址
   url: import.meta.env.VITE_APP_BASE_API + "/dp/model/importData",
 });
 
-/** Enable disable switch */
+/** 启用禁用开关 */
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
@@ -473,7 +474,7 @@ const searchStore = reactive({
       component: { is: "select", options: table_type },
     },
     // {
-    //   label: "Name case",
+    //   label: "命名大小写",
     //   prop: "tableCase",
     //   type: "select",
     //   component: { is: "select", options: dp_model_table_case },
@@ -510,14 +511,14 @@ function handleNodeClick(data) {
   handleQuery();
 }
 
-// Cancel button
+// 取消按钮
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// form reset
+// 表单重置
 function reset() {
   form.value = {
     ID: null,
@@ -543,12 +544,12 @@ function reset() {
   proxy.resetForm("dpModelRef");
 }
 
-/** Search button action */
+/** 搜索按钮操作 */
 function handleQuery() {
   tableRef.value && tableRef.value.getList();
 }
 
-/** reset button action */
+/** 重置按钮操作 */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -562,7 +563,7 @@ function resetQuery() {
   handleQuery();
 }
 
-// Multiple selection box selected data
+// 多选框选中数据
 function handleSelectionChange(selection) {
   console.log("selection", selection);
   ids.value = selection.map((item) => item.id);
@@ -571,7 +572,7 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** Add button operation */
+/** 新增按钮操作 */
 function handleAdd(type) {
   selectedType.value = typeof type === "string" ? type : "1";
   dataList.value = {};
@@ -580,7 +581,7 @@ function handleAdd(type) {
   title.value = td('dp.model.addTitle');
 }
 let dataList = ref({});
-/** Modify button actions */
+/** 修改按钮操作 */
 function handleUpdate(row) {
   console.log("row", row);
   reset();
@@ -593,27 +594,29 @@ function handleUpdate(row) {
   });
 }
 
-/** Publish model button action */
+/** 发布模型按钮操作 */
 function handleMaterialization() {
   const _ID = ids.value;
   Materialization.value = true;
   title.value = td('dp.materializedModel.publishModelTitle');
 }
 
-/** Publish/republish button actions */
+/** 发布/重新发布按钮操作 */
 function handleRelease(row) {
   ids.value = [row.id];
   Materialization.value = true;
   title.value = row.releaseStatus == 1 ? td('dp.materializedModel.publishModelTitle') : td('dp.materializedModel.reReleaseModelTitle');
 }
 
-/** Detail button operation */
+/** 详情按钮操作 */
 function handleDetail(row) {
   routeTo("/dm/model/materializedModel/detail", row);
 }
 
-/** submit button */
+/** 提交按钮 */
 function submitForm(obj) {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   console.log("obj", obj);
   if (obj.form.id != null) {
     updateDpModel(obj.form)
@@ -622,9 +625,14 @@ function submitForm(obj) {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           handleQuery();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        submitLoading.value = false;
+      });
   } else {
     addDpModel(obj.form)
       .then((response) => {
@@ -638,16 +646,20 @@ function submitForm(obj) {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQuery();
+            submitLoading.value = false;
           })
-          .catch((dpModelColumnError) => {});
+          .catch((dpModelColumnError) => {
+            submitLoading.value = false;
+          });
       })
       .catch((error) => {
-        console.error("Failed to add:", error);
+        console.error("新增失败:", error);
+        submitLoading.value = false;
       });
   }
 }
 
-/** Delete button action */
+/** 删除按钮操作 */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
@@ -681,7 +693,7 @@ function routeTo(link, row) {
   }
 }
 
-/** Parse a list of published data sources */
+/** 解析已发布数据源列表 */
 function parseReleaseDatabaseList(json) {
   try {
     const list = JSON.parse(json);

@@ -114,32 +114,32 @@
 import { useI18n } from 'vue-i18n'
 
 /**
- * CatEditDialog component usage instructions
+ * CatEditDialog component usage guide
  *
- * This component is used for editing and adding operations to categories.
- * No longer use props to pass data, but call it through the exposed open method.
+ * This component handles category (Category) edit and add operations.
+ * Instead of passing data via props, it is called through the exposed open method.
  *
- * How to use:
- * 1. Introduce and place the component in the parent component:
+ * Usage:
+ * 1. Import and place the component in the parent:
  *    <CatEditDialog ref="catEditDialogRef" @submit="handleDialogSubmit" />
  *
  * 2. Define ref in script:
  *    const catEditDialogRef = ref();
  *
- * 3. Call the open method to open the pop-up window:
+ * 3. Call open method to show the dialog:
  *    catEditDialogRef.value.open({
- * title: "New Category", // Pop-up window title
- * nameLabel: "Category name", // label of the name field
- * treeOptions: [...], // Parent category tree data
- * form: { ... }, // Initial data of the form (if it is modified, pass in the current row data; if it is added, pass in the default value or part of the preset value)
- * rules: { ... } // (optional) form validation rules, if not passed, the default rules will be used
+ *      title: "Add Category",          // Dialog title
+ *      nameLabel: "Category Name",     // Label for the name field
+ *      treeOptions: [...],             // Parent category tree data
+ *      form: { ... },                  // Initial form data (pass current row data for edit, or defaults for add)
+ *      rules: { ... }                  // (Optional) Validation rules, uses defaults if not provided
  *    });
  *
- * 4. Listen to the @submit event to get the results:
+ * 4. Listen to @submit event for results:
  *    const handleDialogSubmit = (formData) => {
- * // Call the interface to save formData
- * // There is no need to manually close the pop-up window after successful saving. The pop-up window will automatically close after clicking OK and passing the verification (or adjust according to business needs)
- * // Note: The current implementation is to automatically close the pop-up window and emit submit after the verification is passed.
+ *      // Call API to save formData
+ *      // No need to manually close the dialog after saving — it auto-closes on successful validation
+ *      // Note: current implementation auto-closes and emits submit after validation passes
  *    };
  */
 
@@ -184,12 +184,12 @@ const defaultRules = {
   code: [{ required: true, message: td('att.common.codeRequired'), trigger: "blur" }],
 };
 
-// Calculate the final rules used, giving priority to the passed customRules
+// Compute final rules to use, preferring passed-in customRules
 const currentRules = computed(() => {
   if (customRules.value) {
     return customRules.value;
   }
-  // Dynamically update the message in the default rule
+  // Dynamically update messages in default rules
   const rules = JSON.parse(JSON.stringify(defaultRules));
   if (rules.name && rules.name[0]) {
     rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
@@ -198,8 +198,8 @@ const currentRules = computed(() => {
 });
 
 /**
- * How to open a pop-up window
- * @param {Object} options configuration items
+ * Open dialog method
+ * @param {Object} options Configuration options
  */
 const open = (options = {}) => {
   title.value = options.title || td('att.common.edit');
@@ -209,8 +209,8 @@ const open = (options = {}) => {
   dialogType.value = options.type || "";
 
   // Initialize form data
-  // If form is passed in, it will be merged into defaultForm (deep copy to avoid reference problems)
-  // Note: This assumes that options.form contains the data that needs to be echoed
+  // If form is provided, merge into defaultForm (deep copy to avoid reference issues)
+  // Note: this assumes options.form contains the data to populate
   if (options.form) {
     form.value = JSON.parse(
       JSON.stringify({ ...defaultForm, ...options.form })
@@ -221,7 +221,7 @@ const open = (options = {}) => {
 
   visible.value = true;
 
-  // Reset verification status
+  // Reset validation state
   nextTick(() => {
     formRef.value?.clearValidate();
   });
@@ -250,7 +250,7 @@ const stopLoading = () => {
   loading.value = false;
 };
 
-// Expose the open method to the parent component
+// Expose open method to parent component
 defineExpose({
   open,
   close,

@@ -241,7 +241,7 @@
               <div class="item-con">
                 <div class="item-con-left">
                   <div class="flex-wrap">
-                    <!-- Library table type -->
+                    <!-- Table type -->
                     <template v-if="item.type == 1">
                       <div class="item-form item-form1">
                         <div class="form-label">{{ td('da.asset.tableName') }}:</div>
@@ -484,7 +484,7 @@
         </div>
       </el-main>
     </el-container>
-    <!-- Data Asset Details Dialog -->
+    <!-- Data asset detail dialog -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -647,11 +647,11 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="tagMultiple = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitTag">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitTagLoading" @click="submitTag">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
-    <!-- Apply for data assets dialog box -->
+    <!-- Apply data asset dialog -->
     <el-dialog
       :title="titleApply"
       v-model="openApply"
@@ -759,7 +759,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitApplyLoading" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -795,6 +795,8 @@ import { addAttTagAssetRel } from "@/api/att/tag/tagAssetRel.js";
 import { formatHierarchyDisplayName } from "@/utils/dm/utils";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 const { proxy } = getCurrentInstance();
+const submitTagLoading = ref(false);
+const submitApplyLoading = ref(false);
 const { da_assets_status, da_asset_type, table_type } = proxy.useDict(
   "da_assets_status",
   "da_asset_type",
@@ -833,7 +835,7 @@ const titleBtns = [
     icon: "da-document",
   },
 ];
-// Show hidden information
+// Column visibility information
 const columns = ref([
   { key: 0, label: td('da.asset.columnVisibility.id'), visible: true },
   { key: 1, label: td('da.asset.columnVisibility.assetName'), visible: true },
@@ -923,6 +925,8 @@ const data = reactive({
 const { queryParams, form, formApply, rules, rulesApply } = toRefs(data);
 
 function submitApplyForm() {
+  if (submitApplyLoading.value) return;
+  submitApplyLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       formApply.value.id = null;
@@ -938,7 +942,12 @@ function submitApplyForm() {
         proxy.$modal.msgSuccess(td('da.asset.applySuccess'));
         openApply.value = false;
         getList();
+        submitApplyLoading.value = false;
+      }).catch(() => {
+        submitApplyLoading.value = false;
       });
+    } else {
+      submitApplyLoading.value = false;
     }
   });
 }
@@ -1038,7 +1047,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -1065,13 +1074,13 @@ function reset() {
   proxy.resetForm("daAssetRef");
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -1090,7 +1099,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** Query department drop-down tree structure */
+/** Query department dropdown tree structure */
 function getAssetCat() {
   console.log(`getAssetCat->`);
   projectStore.getAssetDeptTree().then((data) => {
@@ -1108,7 +1117,7 @@ function handleAdd(command) {
   return proxy.$modal.msgWarning(td('da.asset.developing'));
 }
 
-/** Modify button actions */
+/** Edit button operation */
 function handleUpdate(row, register) {
   if (register == "register") {
     isRegister.value = true;
@@ -1124,7 +1133,7 @@ function handleUpdate(row, register) {
   });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -1180,7 +1189,7 @@ function routeTo(link, row) {
 }
 
 /**
- * tag management
+ * Tag management
  */
 function getListTag() {
   listDict().then((response) => {
@@ -1192,6 +1201,8 @@ function getListTag() {
 }
 
 function submitTag() {
+  if (submitTagLoading.value) return;
+  submitTagLoading.value = true;
   let map = {
     tagIds: tagIds.value,
     assetId: assetId.value,
@@ -1201,9 +1212,12 @@ function submitTag() {
     tagMultiple.value = false;
     proxy.$modal.msgSuccess(td('da.asset.operationSuccess'));
     getList();
+    submitTagLoading.value = false;
+  }).catch(() => {
+    submitTagLoading.value = false;
   });
   // proxy.$modal
-  //   .confirm("Are you sure you want to mark this asset?")
+  //   .confirm("Are you sure to tag this asset?")
   //   .then(function () {
   //
   //   })
@@ -1221,7 +1235,7 @@ const themeNames = (item) => {
   }
   return "-";
 };
-/** Enable disable switch */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.status === "2" ? td('da.asset.revokePublish') : td('da.asset.publish');
   const status = row.status === "2" ? "1" : "2";
@@ -1303,7 +1317,7 @@ getAssetThemeList();
 }
 
 .fix-icon {
-  //width: 16px; /* Fixed icon occupancy width to align icon text consistently */
+  //width: 16px; /* Fixed icon width for alignment */
   //text-align: center;
   margin-left: -10px;
 }
@@ -1325,7 +1339,7 @@ getAssetThemeList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//Upload attachment style adjustment
+// Upload attachment style adjustment
 ::v-deep {
   // .el-upload-list{
   //    display: flex;
@@ -1357,12 +1371,12 @@ getAssetThemeList();
 .page-list {
   height: 69.6vh;
   height: auto;
-  /* Or just delete this line */
+  /* Or remove this line */
   max-height: none;
-  /* Guaranteed not to be restricted in height */
+  /* Ensure height not restricted */
   overflow: visible;
 
-  /* Do not generate internal scroll bars */
+  /* No internal scrollbar */
   &::-webkit-scrollbar {
     width: 2px;
   }

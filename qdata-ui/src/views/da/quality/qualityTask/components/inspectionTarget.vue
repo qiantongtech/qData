@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- Audit object information Added modification pop-up window Step 2 -->
+    <!-- Inspection object info add/edit popup step 2 -->
     <el-dialog v-model="dialogVisible" draggable class="dialog" :title="dialogTitle" destroy-on-close width="800px"
         :append-to="$refs['app-container']">
         <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent :label-position="labelPosition">
@@ -139,7 +139,7 @@ const loadDatasourceOptions = async () => {
         const res = await getDaDatasourceList()
         datasourceOptions.value = res.data
     } catch (error) {
-        console.error("Failed to fetch data source:", error)
+        console.error('Failed to fetch datasource:', error)
     }
 }
 

@@ -126,9 +126,9 @@
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
                             v-hasPermi="['da:sensitiveLevel:remove']">{{ td('common.button.delete') }}</el-button>
                         <!--           <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"-->
-                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Details</el-button>-->
+                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Detail</el-button>-->
                         <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/sensitiveLevel/daSensitiveLevelDetail',scope.row)"-->
-                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Complex details</el-button>-->
+                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Detailed Info</el-button>-->
                     </template>
                 </el-table-column>
 
@@ -144,7 +144,7 @@
                 v-model:limit="queryParams.pageSize" @pagination="getList" />
         </div>
 
-        <!-- Add or modify sensitivity level dialog box -->
+        <!-- Add or edit sensitive level dialog -->
         <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
             <template #header="{ close, titleId, titleClass }">
                 <span role="heading" aria-level="2" class="el-dialog__title">
@@ -170,12 +170,12 @@
                 <el-row :gutter="20" v-if="form.sensitiveRule != '1' && form.sensitiveRule != null">
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
-                            <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" />
+                            <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" @input="form.startCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
-                            <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" />
+                            <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" @input="form.endCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -214,12 +214,12 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
 
-        <!-- Sensitivity level details dialog box -->
+        <!-- Sensitive level detail dialog -->
         <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
             <template #header="{ close, titleId, titleClass }">
                 <span role="heading" aria-level="2" class="el-dialog__title">
@@ -344,13 +344,14 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',
     'da_sensitive_status'
 );
 const daSensitiveLevelList = ref([]);
 
-// Show hidden information
+// Column visibility information
 const columns = ref([
     { key: 1, label: td('da.security.columnVisibility.id'), visible: true },
     { key: 2, label: td('da.security.columnVisibility.sensitiveLevelName'), visible: true },
@@ -366,9 +367,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
     const column = columns.value.find((col) => col.key === key);
-    // If the corresponding column configuration is not found, it will be displayed by default.
+    // If no corresponding column configuration found, default to showing it
     if (!column) return true;
-    // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
+    // If corresponding column configuration found, control visibility based on the visible property
     return column.visible;
 };
 
@@ -386,17 +387,17 @@ const router = useRouter();
 
 /*** User import parameters */
 const upload = reactive({
-    // Whether to display the pop-up layer (user import)
+    // Whether to show the popup layer (user import)
     open: false,
-    // Popup layer title (user imported)
+    // Popup layer title (user import)
     title: '',
-    // Whether to disable uploading
+    // Whether to disable upload
     isUploading: false,
     // Whether to update existing user data
     updateSupport: 0,
     // Set upload request headers
     headers: { Authorization: 'Bearer ' + getToken() },
-    // Upload address
+    // Upload URL
     url: import.meta.env.VITE_APP_BASE_API + '/da/daSensitiveLevel/importData'
 });
 
@@ -419,13 +420,31 @@ const data = reactive({
     rules: {
         sensitiveLevel: [{ required: true, message: td('da.security.levelNameRequired'), trigger: 'blur' }],
         maskCharacter: [{ required: true, message: td('da.security.replaceContentRequired'), trigger: 'blur' }],
-        sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }]
+        sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }],
+        startCharLoc: [
+            { required: true, message: td('da.security.startCharPosRequired'), trigger: 'blur' },
+            { pattern: /^\d+$/, message: td('da.security.startCharPosPattern'), trigger: 'blur' }
+        ],
+        endCharLoc: [
+            { required: true, message: td('da.security.endCharPosRequired'), trigger: 'blur' },
+            { pattern: /^\d+$/, message: td('da.security.endCharPosPattern'), trigger: 'blur' },
+            {
+                validator: (rule, value, callback) => {
+                    if (value && form.value.startCharLoc && Number(value) <= Number(form.value.startCharLoc)) {
+                        callback(new Error(td('da.security.endCharPosLessThanStart')));
+                    } else {
+                        callback();
+                    }
+                },
+                trigger: 'blur'
+            }
+        ]
     }
 });
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** Query sensitivity level list */
+/** Query sensitive level list */
 function getList() {
     loading.value = true;
     listDaSensitiveLevel(queryParams.value).then((response) => {
@@ -442,7 +461,7 @@ function cancel() {
     reset();
 }
 
-// form reset
+// Reset form
 function reset() {
     form.value = {
         id: null,
@@ -466,26 +485,26 @@ function reset() {
     proxy.resetForm('daSensitiveLevelRef');
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-// Multiple selection box selected data
+// Checkbox selection data
 function handleSelectionChange(selection) {
     ids.value = selection.map((item) => item.id);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
     queryParams.value.orderByColumn = column?.columnKey || prop;
     queryParams.value.isAsc = column.order;
@@ -499,7 +518,7 @@ function handleAdd() {
     title.value = td('da.security.addTitle');
 }
 
-/** Modify button actions */
+/** Edit button operation */
 function handleUpdate(row) {
     reset();
     const _id = row.id || ids.value;
@@ -521,8 +540,10 @@ function handleDetail(row) {
     });
 }
 
-/** submit button */
+/** Submit button */
 function submitForm() {
+    if (submitLoading.value) return;
+    submitLoading.value = true;
     proxy.$refs['daSensitiveLevelRef'].validate((valid) => {
         if (valid) {
             if (form.value.id != null) {
@@ -531,22 +552,30 @@ function submitForm() {
                         proxy.$modal.msgSuccess(td('da.security.editSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                        submitLoading.value = false;
+                    });
             } else {
                 addDaSensitiveLevel(form.value)
                     .then((response) => {
                         proxy.$modal.msgSuccess(td('da.security.addSuccess'));
                         open.value = false;
                         getList();
+                        submitLoading.value = false;
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                        submitLoading.value = false;
+                    });
             }
+        } else {
+            submitLoading.value = false;
         }
     });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
@@ -561,7 +590,7 @@ function handleDelete(row) {
         .catch(() => { });
 }
 
-/** Export button action */
+/** Export button operation */
 function handleExport() {
     proxy.download(
         'da/daSensitiveLevel/export',
@@ -572,8 +601,8 @@ function handleExport() {
     );
 }
 
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
+/** ---------------- Import related operations -----------------**/
+/** Import button operation */
 function handleImport() {
     upload.title = td('da.security.importTitle');
     upload.open = true;
@@ -593,12 +622,12 @@ function submitFileForm() {
     proxy.$refs['uploadRef'].submit();
 }
 
-/**File upload is being processed */
+/** File upload in progress handler */
 const handleFileUploadProgress = (event, file, fileList) => {
     upload.isUploading = true;
 };
 
-/** File upload successfully processed */
+/** File upload success handler */
 const handleFileSuccess = (response, file, fileList) => {
     upload.open = false;
     upload.isUploading = false;
@@ -633,7 +662,7 @@ function routeTo(link, row) {
     }
 }
 
-/** Enable disable switch */
+/** Toggle enable status value */
 function handleStatusChange(row) {
     const text = row.onlineFlag === '1' ? td('da.security.online') : td('da.security.offline');
     proxy.$modal

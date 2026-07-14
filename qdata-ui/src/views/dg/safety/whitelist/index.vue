@@ -248,7 +248,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -548,6 +548,7 @@
           <el-button
             type="primary"
             size="mini"
+            :loading="submitLoading"
             @click="confirmEffectiveAccount"
           >
             {{ td('common.button.confirm') }}
@@ -581,6 +582,7 @@ import {
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { effective_category_type } = proxy.useDict(
   "dp_model_status",
   "effective_category_type"
@@ -1195,77 +1197,92 @@ async function openEffectiveAccountPicker() {
 }
 
 async function confirmEffectiveAccount() {
-  const c = String(form.value.effectiveCategory || "1");
-  if (c == "1") {
-    const rows = userSelection.value || [];
-    form.value.effectiveAccount = rows.map((u) => u.userName).filter(Boolean);
-    form.value.userList = rows
-      .map((u) => {
-        const userId = u?.userId ?? null;
-        const userName = u?.nickName || u?.userName || null;
-        if (userId == null && (userName == null || userName === ""))
-          return null;
+  if (submitLoading.value) return;
+  submitLoading.value = true;
+  try {
+    const c = String(form.value.effectiveCategory || "1");
+    if (c == "1") {
+      const rows = userSelection.value || [];
+      form.value.effectiveAccount = rows.map((u) => u.userName).filter(Boolean);
+      form.value.userList = rows
+        .map((u) => {
+          const userId = u?.userId ?? null;
+          const userName = u?.nickName || u?.userName || null;
+          if (userId == null && (userName == null || userName === ""))
+            return null;
+          return { userId, userName, effectiveCategory: c };
+        })
+        .filter(Boolean);
+      form.value.effectiveAccountNameList = rows
+        .map((u) => u.nickName || u.userName)
+        .filter(Boolean)
+        .join("、");
+      effectiveAccountPickerOpen.value = false;
+      return;
+    }
+    if (c == "2") {
+      const rows = roleSelection.value || [];
+      form.value.effectiveAccount = rows
+        .map((r) => String(r.roleId))
+        .filter(Boolean);
+      form.value.userList = rows
+        .map((r) => {
+          const userId = String(r.roleId);
+          const userName = r.roleName || r.roleKey || r.roleId;
+          return { userId, userName, effectiveCategory: c };
+        })
+        .filter(Boolean);
+      form.value.effectiveAccountNameList = rows
+        .map((r) => r.roleName || r.roleKey || r.roleId)
+        .filter(Boolean)
+        .join("、");
+      effectiveAccountPickerOpen.value = false;
+      return;
+    }
+    const tree = effectiveDeptTreeRef.value;
+    const nodes = tree?.getCheckedNodes?.(true, false) || [];
+    form.value.effectiveAccount = nodes.map((n) => String(n.id)).filter(Boolean);
+    form.value.userList = nodes
+      .map((n) => {
+        const userId = String(n.id);
+        const userName = n.label || n.name || n.id;
         return { userId, userName, effectiveCategory: c };
       })
       .filter(Boolean);
-    form.value.effectiveAccountNameList = rows
-      .map((u) => u.nickName || u.userName)
+    form.value.effectiveAccountNameList = nodes
+      .map((n) => n.label || n.name || n.id)
       .filter(Boolean)
       .join("、");
     effectiveAccountPickerOpen.value = false;
-    return;
+  } finally {
+    submitLoading.value = false;
   }
-  if (c == "2") {
-    const rows = roleSelection.value || [];
-    form.value.effectiveAccount = rows
-      .map((r) => String(r.roleId))
-      .filter(Boolean);
-    form.value.userList = rows
-      .map((r) => {
-        const userId = String(r.roleId);
-        const userName = r.roleName || r.roleKey || r.roleId;
-        return { userId, userName, effectiveCategory: c };
-      })
-      .filter(Boolean);
-    form.value.effectiveAccountNameList = rows
-      .map((r) => r.roleName || r.roleKey || r.roleId)
-      .filter(Boolean)
-      .join("、");
-    effectiveAccountPickerOpen.value = false;
-    return;
-  }
-  const tree = effectiveDeptTreeRef.value;
-  const nodes = tree?.getCheckedNodes?.(true, false) || [];
-  form.value.effectiveAccount = nodes.map((n) => String(n.id)).filter(Boolean);
-  form.value.userList = nodes
-    .map((n) => {
-      const userId = String(n.id);
-      const userName = n.label || n.name || n.id;
-      return { userId, userName, effectiveCategory: c };
-    })
-    .filter(Boolean);
-  form.value.effectiveAccountNameList = nodes
-    .map((n) => n.label || n.name || n.id)
-    .filter(Boolean)
-    .join("、");
-  effectiveAccountPickerOpen.value = false;
 }
 
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["whitelistRef"].validate(async (valid) => {
-    if (!valid) return;
-    const payload = buildSubmitPayload();
-    if (form.value.id != null) {
-      await updateDesensitizeWhitelist(payload);
-      proxy.$modal.msgSuccess(td('common.message.editSuccess'));
-      open.value = false;
-      tableRef.value.getList();
+    if (!valid) {
+      submitLoading.value = false;
       return;
     }
-    await addDesensitizeWhitelist(payload);
-    proxy.$modal.msgSuccess(td('common.message.addSuccess'));
-    open.value = false;
-    tableRef.value.getList();
+    const payload = buildSubmitPayload();
+    try {
+      if (form.value.id != null) {
+        await updateDesensitizeWhitelist(payload);
+        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
+        open.value = false;
+        tableRef.value.getList();
+      } else {
+        await addDesensitizeWhitelist(payload);
+        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
+        open.value = false;
+        tableRef.value.getList();
+      }
+    } finally {
+      submitLoading.value = false;
+    }
   });
 }
 

@@ -86,13 +86,13 @@
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:dataSource:edit']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-xiugai--copy mr5"></i>Modify-->
+          <!--             <i class="iconfont-mini icon-xiugai&#45;&#45;copy mr5"></i>修改-->
           <!--           </el-button>-->
           <!--         </el-col>-->
           <!--         <el-col :span="1.5">-->
           <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:dataSource:remove']"-->
           <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>Delete-->
+          <!--             <i class="iconfont-mini icon-shanchu-huise mr5"></i>删除-->
           <!--           </el-button>-->
           <!--         </el-col>-->
         </el-row>
@@ -297,7 +297,7 @@
               </div>
             </el-popover>
             <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/datasource/daDatasourceDetail',scope.row)"-->
-            <!--                      v-hasPermi="['da:dataSource:edit']">Complex details</el-button>-->
+            <!--                      v-hasPermi="['da:dataSource:edit']">Complex Detail</el-button>-->
           </template>
         </el-table-column>
 
@@ -318,7 +318,7 @@
       />
     </div>
 
-    <!-- Add or modify data source dialog box -->
+    <!-- Add or edit data source dialog -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -371,12 +371,12 @@
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
             <el-form-item :label="td('da.datasource.ip')" prop="ip" >
-              <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" />
+              <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" @input="form.ip = $event.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="td('da.datasource.port')" prop="port" >
-              <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" />
+              <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" @input="form.port = $event.replace(/\D/g, '')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -519,8 +519,8 @@
                 v-model="form.config"
                 :placeholder="
                   form.datasourceType === 'Kafka'
-                    ? '例如: {&quot;security.protocol&quot;&colon;&quot;SASL_PLAINTEXT&quot;}'
-                    : '例如: {&quot;kerberosKeytabFilePath&quot;&colon;&quot;/path/to/keytab/file&quot;}'
+                    ? 'For example: {&quot;security.protocol&quot;&colon;&quot;SASL_PLAINTEXT&quot;}'
+                    : 'For example: {&quot;kerberosKeytabFilePath&quot;&colon;&quot;/path/to/keytab/file&quot;}'
                 "
               />
             </el-form-item>
@@ -599,7 +599,7 @@
       </template>
     </el-dialog>
 
-    <!-- Details -->
+    <!-- Detail -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -822,7 +822,7 @@
           {{ td('da.datasource.projectDialogTitle') }}
         </span>
       </template>
-      <!--User data-->
+      <!-- User data -->
       <el-form
         class="btn-style"
         :model="queryParamsProject"
@@ -954,7 +954,7 @@ const { datasource_type, sys_disable } = proxy.useDict(
 );
 const daDatasourceList = ref([]);
 
-// Show hidden information
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('da.datasource.columnVisibility.id'), visible: true },
   { key: 2, label: td('da.datasource.columnVisibility.dataSourceName'), visible: true },
@@ -969,9 +969,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
+  // If no corresponding column configuration found, default to showing it
   if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
+  // If corresponding column configuration found, control visibility based on the visible property
   return column.visible;
 };
 
@@ -996,19 +996,19 @@ const projectIdAndCodeList = ref([]);
 const route = useRoute();
 let type = route.query.type || null;
 
-/*** User import parameters */
+/*** 用户导入参数 */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
+  // Whether to show the popup layer (user import)
   open: false,
-  // Popup layer title (user imported)
+  // Popup layer title (user import)
   title: "",
-  // Whether to disable uploading
+  // Whether to disable upload
   isUploading: false,
   // Whether to update existing user data
   updateSupport: 0,
   // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
+  // Upload URL
   url: import.meta.env.VITE_APP_BASE_API + "/da/daDatasource/importData",
 });
 
@@ -1057,7 +1057,7 @@ const data = reactive({
     ip: [
       { required: true, message: td('da.datasource.ipRequired'), trigger: "blur" },
       {
-        pattern: /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$/,
+        pattern: /^\d{1,3}(\.\d{1,3}){3}$/,
         message: td('da.datasource.ipInvalid'),
         trigger: "blur",
       },
@@ -1065,13 +1065,7 @@ const data = reactive({
     port: [
       { required: true, message: td('da.datasource.portRequired'), trigger: "blur" },
       {
-        validator: (rule, value, callback) => {
-          if (/^\d+$/.test(String(value)) && Number(value) >= 1 && Number(value) <= 65535) {
-            callback();
-          } else {
-            callback(new Error(td('da.datasource.portInvalid')));
-          }
-        },
+        pattern: /^\d{1,9}$/,
         message: td('da.datasource.portInvalid'),
         trigger: "blur",
       },
@@ -1090,7 +1084,7 @@ const data = reactive({
       { required: true, message: td('da.datasource.dbNameRequired'), trigger: "blur" },
       // {
       //   pattern: /^[^\u4e00-\u9fa5]+$/,
-      //   message: 'Database name cannot contain Chinese',
+      //   message: '数据库名称cannot contain Chinese characters',
       //   trigger: 'blur'
       // }
     ],
@@ -1126,13 +1120,13 @@ const data = reactive({
 
 const { queryParams, form, rules, queryParamsProject } = toRefs(data);
 const selectable = (row) => !row.dppAssigned;
-// Monitor id changes
+// Watch id changes
 watch(
   () => userStore.projectCode,
   (newCode) => {
     getList();
   },
-  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
+  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
 );
 
 function getProjectOptions() {
@@ -1141,7 +1135,7 @@ function getProjectOptions() {
   });
 }
 
-//Data connection type change event
+//数据连接类型change事件
 function handleDatasourceChange(type) {
   if (type == "Hive") {
     rules.value.password[0].required = false;
@@ -1159,7 +1153,7 @@ function getListProject() {
     totalProject.value = response.data.total;
     loadingProject.value = false;
 
-    // After the table is loaded, set the previously selected items
+    // Set previously selected items after table loading completes
     nextTick(() => {
       projectList.value.forEach((project) => {
         form.value.projectList.forEach((item) => {
@@ -1231,7 +1225,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -1259,26 +1253,26 @@ function reset() {
   proxy.resetForm("daDatasourceRef");
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// Multiple selection box selected data
+// Checkbox selection data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
@@ -1305,7 +1299,7 @@ function handleAdd() {
   title.value = td('da.datasource.addDatasource');
 }
 
-/** Modify button actions */
+/** Edit button operation */
 let old_password;
 
 function handleUpdate(row, type) {
@@ -1322,7 +1316,7 @@ function handleUpdate(row, type) {
         (item) => item.projectName
       );
 
-      // Disassemble datasourceConfig
+      // Parse datasourceConfig
       if (form.value.datasourceConfig) {
         const config = JSON.parse(form.value.datasourceConfig);
         form.value.username = config.username;
@@ -1347,7 +1341,7 @@ function handleUpdate(row, type) {
       }
     })
     .finally(() => {
-      loading.value = false; // Loading ends regardless of success or failure.
+      loading.value = false; // End loading regardless of success or failure
     });
 }
 
@@ -1398,17 +1392,12 @@ function handleTestConnection(row) {
       proxy.$modal.msgSuccess(response.msg);
     })
     .finally(() => {
-      loading.value = false; // end loading
+      loading.value = false; // End loading
     });
 }
 const btnLoading = ref(false);
-/** submit button */
+/** Submit button */
 function submitForm() {
-  ["datasourceName", "ip", "username", "password", "dbname", "sid"].forEach((key) => {
-    if (typeof form.value[key] === "string") {
-      form.value[key] = form.value[key].trim();
-    }
-  });
   proxy.$refs["daDatasourceRef"].validate((valid) => {
     if (valid) {
       btnLoading.value = true;
@@ -1474,7 +1463,7 @@ function submitForm() {
   });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -1489,7 +1478,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** Export button action */
+/** Export button operation */
 function handleExport() {
   proxy.download(
     "da/daDatasource/export",
@@ -1500,8 +1489,8 @@ function handleExport() {
   );
 }
 
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
+/** ---------------- Import related operations -----------------**/
+/** Import button operation */
 function handleImport() {
   upload.title = td('da.datasource.importTitle');
   upload.open = true;
@@ -1521,12 +1510,12 @@ function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**File upload is being processed */
+/** File upload in progress handler */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
+/** File upload success handler */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -1562,22 +1551,20 @@ function routeTo(link, row) {
   }
 }
 
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('da.datasource.enable') : td('da.datasource.disable');
   const status = row.validFlag === true ? 1 : 0;
   proxy.$modal
     .confirm(td('da.datasource.confirmStatusChange', '', { text: text, name: row.datasourceName }))
     .then(function () {
-      return editDatasourceStatus(row.id, status).then(() => {
+      editDatasourceStatus(row.id, status).then((response) => {
         proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
+        getList();
       });
     })
     .catch(function () {
       row.validFlag = !row.validFlag;
-    })
-    .finally(function () {
-      getList();
     });
 }
 

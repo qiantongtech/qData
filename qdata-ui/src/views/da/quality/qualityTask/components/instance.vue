@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- List of execution records -->
+  <!-- Execution records list -->
   <el-dialog
     v-model="visibleDialog"
     draggable
@@ -163,7 +163,7 @@
         </div>
 </template> -->
   </el-dialog>
-  <!-- Scheduling log details -->
+  <!-- Schedule log details -->
   <el-dialog
     :title="td('da.qualityTask.instanceComponent.viewLogTitle')"
     v-model="open"
@@ -221,7 +221,7 @@ const formattedText = computed(() => {
 });
 const router = useRouter();
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -268,7 +268,7 @@ const total = ref(0);
 const dateRange = ref([]);
 let jobLogList = ref([]);
 let loading = ref(false);
-/** Query scheduling log list */
+/** Query schedule log list */
 function getList() {
   loading.value = true;
   queryParams.value.qualityId = props.data.id;
@@ -293,7 +293,7 @@ watch(
   }
 );
 
-// Computed property handling v-model
+// Computed property for v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -303,14 +303,14 @@ const visibleDialog = computed({
   },
 });
 
-// How to close a dialog box
+// Method to close dialog
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// How to save data
+// Method to save data
 const saveData = () => {
-  emit("confirm", localNode.value); // Submit local data to parent component
+  emit("confirm", localNode.value); // Submit local data to parent
   emit("update:visible", false);
 };
 </script>

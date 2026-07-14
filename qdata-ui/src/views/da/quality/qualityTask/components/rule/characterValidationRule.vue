@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- String type check -->
+  <!-- String type validation -->
   <el-form
     ref="formRef"
     :model="form"
@@ -26,7 +26,7 @@
   >
     <el-row :gutter="20">
       <el-col :span="12">
-        <!-- Evaluation object drop-down -->
+        <!-- Evaluation object dropdown -->
         <el-form-item :label="td('da.qualityTaskRules.ruleCommon.useRegex')" prop="useRegexFlag">
           <el-checkbox
             v-if="!falg"

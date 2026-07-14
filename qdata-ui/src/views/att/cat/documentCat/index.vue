@@ -116,7 +116,7 @@
               v-hasPermi="['att:documentCat:edit']">{{ td('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
               v-hasPermi="['att:documentCat:add']">{{ td('common.button.add') }}</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+            <el-button link type="danger" icon="Delete" :disabled="scope.row.validFlag == true" @click="handleDelete(scope.row)"
               v-hasPermi="['att:documentCat:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
@@ -124,7 +124,7 @@
       <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
         @pagination="getList" />
     </div>
-    <!-- Add or modify tag category management dialog box -->
+    <!-- Add or edit document category management dialog -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="AttTagCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -176,7 +176,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -191,6 +191,7 @@ import { listAttDocumentCat, getAttDocumentCat, delAttDocumentCat, addAttDocumen
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const AttTagCatList = ref([]);
 const AttTagCatOptions = ref([]);
 const open = ref(false);
@@ -220,7 +221,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** Query data document management list */
+/** Query document category management list */
 function getList() {
   loading.value = true;
   listAttDocumentCat(queryParams.value).then((response) => {
@@ -237,7 +238,7 @@ function getDataTree() {
     AttTagCatOptions.value.push(data);
   });
 }
-/** Query data document management drop-down tree structure 1 */
+/** Query document category dropdown tree structure 1 */
 
 // Cancel button
 function cancel() {
@@ -245,7 +246,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -267,11 +268,11 @@ function reset() {
   proxy.resetForm('AttTagCatRef');
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -289,7 +290,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm('queryRef');
   handleQuery();
@@ -314,7 +315,7 @@ function handleAdd(row) {
   title.value = td('att.documentCat.title.add');
 }
 
-/** Expand/collapse operations */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -323,15 +324,15 @@ function toggleExpandAll() {
   });
 }
 
-/** Modify button actions */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDocumentCat();
   AttTagCatOptions.value = [];
-  // Filter computed properties of nodes
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
+    // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };
@@ -341,7 +342,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDocumentCat(row.id).then((response) => {
-    //Filter out createTime
+    //把createTime过滤掉
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -350,8 +351,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** submit button */
+/** 提交按钮 */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs['AttTagCatRef'].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -359,19 +362,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttDocumentCat(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** Delete button action */
+/** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete').replace('<ids>', row.id))
     .then(function () {

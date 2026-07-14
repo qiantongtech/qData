@@ -210,6 +210,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:dataElemCat:remove']"
+              :disabled="scope.row.validFlag"
               >{{ td('common.button.delete') }}</el-button
             >
           </template>
@@ -224,7 +225,7 @@
       />
     </div>
 
-    <!-- Add or modify the data element category management dialog box -->
+    <!-- Add or edit data element category management dialog -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -311,7 +312,7 @@
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
 
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -332,6 +333,7 @@ import {
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const attDataElemCatList = ref([]);
 const attDataElemCatOptions = ref([]);
@@ -363,7 +365,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** Query the data element category management list */
+/** Query data element category management list */
 function getList() {
   loading.value = true;
   listAttDataElemCat(queryParams.value).then((response) => {
@@ -384,7 +386,7 @@ function getDataTree() {
     attDataElemCatOptions.value.push(data);
   });
 }
-/** Query data element category management drop-down tree structure 1 */
+/** Query data element category management dropdown tree structure 1 */
 
 // Cancel button
 function cancel() {
@@ -392,7 +394,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -414,11 +416,11 @@ function reset() {
   proxy.resetForm("attDataElemCatRef");
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -438,7 +440,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
@@ -463,7 +465,7 @@ function handleAdd(row) {
   title.value = td('att.dataElemCat.title.add');
 }
 
-/** Expand/collapse operations */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -472,15 +474,15 @@ function toggleExpandAll() {
   });
 }
 
-/** Modify button actions */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDataElemCat();
   attDataElemCatOptions.value = [];
-  // Filter computed properties of nodes
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
+    // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
     return (
       d.ID !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -493,7 +495,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDataElemCat(row.id).then((response) => {
-    //Filter out createTime
+    // Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -502,8 +504,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** submit button */
+/** Submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["attDataElemCatRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -511,19 +515,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttDataElemCat(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   proxy.$modal
     .confirm(td('att.dataElemCat.messages.confirmDelete').replace('<name>', row.name))

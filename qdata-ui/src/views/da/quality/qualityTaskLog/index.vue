@@ -99,7 +99,7 @@
                             " v-hasPermi="['dp:qualityLog:edit']">{{ td('common.button.details') }}</el-button>
                         <!-- <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
                             v-hasPermi="['dp:qualityLog:edit']" :disabled="scope.row.status == 1">
-                            <svg-icon iconClass="damessage" style="margin-right: 6px;" />Notification processing
+                            <svg-icon iconClass="damessage" style="margin-right: 6px;" />Notification Handling
                         </el-button> -->
                     </template>
                 </el-table-column>
@@ -132,7 +132,7 @@ const { quality_log_success_flag } = proxy.useDict(
     'quality_log_success_flag'
 );
 const DppQualityLogList = ref([]);
-// Show hidden information
+// Column visibility information
 const columns = ref([
     { key: 0, label: td('da.qualityTaskLog.columnLabels.id'), visible: true },
     { key: 1, label: td('da.qualityTaskLog.columnLabels.taskName'), visible: true },
@@ -170,14 +170,14 @@ const data = reactive({
 
 const { queryParams, } = toRefs(data);
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
     queryParams.value.orderByColumn = column?.columnKey || prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
 
-/** Query the data quality log list */
+/** Query data quality log list */
 function getList() {
     loading.value = true;
     listDppQualityLog(queryParams.value).then(response => {
@@ -186,12 +186,12 @@ function getList() {
         loading.value = false;
     });
 }
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
     proxy.resetForm("queryRef");
     handleQuery();

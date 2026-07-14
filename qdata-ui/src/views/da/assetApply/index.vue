@@ -142,7 +142,7 @@
       </el-main>
     </el-container>
 
-    <!-- Add or modify data asset application dialog box -->
+    <!-- Add or edit data asset application dialog -->
     <el-dialog :title="title" v-model="open" width="1000px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -245,12 +245,12 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- Data Asset Request Details Dialog Box -->
+    <!-- Data asset application detail dialog -->
     <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
       <el-form :model="form" :label-position="labelPosition">
         <el-row :gutter="20">
@@ -413,13 +413,14 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_asset_apply_status, datasource_type } = proxy.useDict(
   "da_asset_apply_status",
   "datasource_type"
 );
 const daAssetApplyList = ref([]);
 
-// Show hidden information
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('da.assetApply.assetName'), visible: true },
   { key: 2, label: td('da.assetApply.englishName'), visible: true },
@@ -434,9 +435,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
+  // If no corresponding column configuration found, default to showing it
   if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
+  // If corresponding column configuration found, control visibility based on the visible property
   return column.visible;
 };
 
@@ -453,22 +454,22 @@ const defaultSort = ref({ columnKey: "create_time", order: "desc" });
 const router = useRouter();
 const deptOptions = ref(undefined);
 const leftWidth = ref(300); // Initial left width
-const isResizing = ref(false); // Determine whether dragging is in progress
+const isResizing = ref(false); // Whether currently dragging
 const projectOptions = ref([]);
 let startX = 0; // Initial position when mouse is pressed
-/*** User import parameters */
+/*** 用户导入参数 */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
+  // Whether to show the popup layer (user import)
   open: false,
-  // Popup layer title (user imported)
+  // Popup layer title (user import)
   title: "",
-  // Whether to disable uploading
+  // Whether to disable upload
   isUploading: false,
   // Whether to update existing user data
   updateSupport: 0,
   // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
+  // Upload URL
   url: import.meta.env.VITE_APP_BASE_API + "/da/daAssetApply/importData",
 });
 
@@ -519,7 +520,7 @@ const updateResize = (event) => {
   if (isResizing.value) {
     const delta = event.clientX - startX; // Calculate mouse movement distance
     leftWidth.value += delta; // Modify left width
-    startX = event.clientX; // Update starting position
+    startX = event.clientX; // Update start position
     // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
@@ -560,7 +561,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -584,13 +585,13 @@ function reset() {
   proxy.resetForm("daAssetApplyRef");
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -600,14 +601,14 @@ function resetQuery() {
   handleQuery();
 }
 
-// Multiple selection box selected data
+// Checkbox selection data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -621,7 +622,7 @@ function handleAdd() {
   title.value = td('da.assetApply.addTitle');
 }
 
-/** Modify button actions */
+/** Edit button operation */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -647,8 +648,10 @@ function handleDetail(row) {
   });
 }
 
-/** submit button */
+/** Submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -657,22 +660,30 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('da.assetApply.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addDaAssetApply(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('da.assetApply.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -687,7 +698,7 @@ function handleDelete(row) {
     .catch(() => { });
 }
 
-/** Export button action */
+/** Export button operation */
 function handleExport() {
   proxy.download(
     "da/daAssetApply/export",
@@ -698,8 +709,8 @@ function handleExport() {
   );
 }
 
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
+/** ---------------- Import related operations -----------------**/
+/** Import button operation */
 function handleImport() {
   upload.title = td('da.assetApply.importTitle');
   upload.open = true;
@@ -719,12 +730,12 @@ function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**File upload is being processed */
+/** File upload in progress handler */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
+/** File upload success handler */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -779,7 +790,7 @@ getList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//Upload attachment style adjustment
+// Upload attachment style adjustment
 ::v-deep {
 
   // .el-upload-list{

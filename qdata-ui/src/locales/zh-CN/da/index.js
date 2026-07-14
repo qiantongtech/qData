@@ -155,7 +155,7 @@ export default {
       status: '状态',
       remark: '备注'
     },
-    // Quality Rules Registration Center
+    // 质量规则注册中心
     ruleRegistry: {
       DECIMAL_PRECISION_VALIDATION: '数值精度校验',
       CHARACTER_VALIDATION: '字符串类型校验',
@@ -165,7 +165,7 @@ export default {
       GROUP_FIELD_COMPLETENESS: '字段组完整性校验',
       TIME_ORDER_VALIDATION: '时间字段先后顺序校验'
     },
-    // Data query result component
+    // 数据查询结果组件
     dataQuery: {
       queryResult: {
         export: '导出',
@@ -181,7 +181,7 @@ export default {
         }
       }
     },
-    // Data source management
+    // 数据源管理
     datasource: {
       columnVisibility: {
         id: '编号',
@@ -195,7 +195,7 @@ export default {
       },
       belongProject: '所属项目'
     },
-    // Asset application
+    // 资产申请
     assetApply: {
       columnVisibility: {
         assetName: '资产名称',
@@ -208,7 +208,7 @@ export default {
         auditStatus: '审核状态'
       }
     },
-    // Asset list
+    // 资产列表
     asset: {
       columnVisibility: {
         id: '编号',
@@ -555,9 +555,9 @@ export default {
     datasourceTypeRequired: '数据连接类型不能为空',
     configRequired: '数据源配置(json字符串)不能为空',
     ipRequired: 'IP不能为空',
-    ipInvalid: 'IP/域名格式不正确，请检查',
+    ipInvalid: 'IP地址格式不正确，例如192.168.1.1',
     portRequired: '端口号不能为空',
-    portInvalid: '端口号需为 1-65535 的数字',
+    portInvalid: '端口号必须为1-9位数字',
     accountRequired: '账号不能为空',
     passwordRequired: '密码不能为空',
     keyIDRequired: 'keyID不能为空',
@@ -605,6 +605,11 @@ export default {
     startCharPosPlaceholder: '请输入起始字符位置',
     endCharPos: '截止字符位置',
     endCharPosPlaceholder: '请输入截止字符位置',
+    startCharPosRequired: '起始字符位置不能为空',
+    startCharPosPattern: '起始字符位置只能输入数字',
+    endCharPosRequired: '截止字符位置不能为空',
+    endCharPosPattern: '截止字符位置只能输入数字',
+    endCharPosLessThanStart: '截止字符位置必须大于起始字符位置',
     onlineFlag: '上下线标识',
     addTitle: '新增敏感等级',
     editTitle: '修改敏感等级',

@@ -143,7 +143,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -304,6 +304,7 @@ import {
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const tableRef = ref(null);
 
@@ -519,6 +520,8 @@ function handleDetail(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["dataDomainRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -527,17 +530,25 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
             open.value = false;
             tableRef.value.getList();
+            submitLoading.value = false;
           })
-          .catch(() => {});
+          .catch(() => {
+            submitLoading.value = false;
+          });
       } else {
         addDataDomain(form.value)
           .then(() => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
             open.value = false;
             tableRef.value.getList();
+            submitLoading.value = false;
           })
-          .catch(() => {});
+          .catch(() => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

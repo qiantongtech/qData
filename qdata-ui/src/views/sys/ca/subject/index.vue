@@ -103,7 +103,7 @@
       />
     </div>
 
-    <!-- Add or modify principal management dialog box -->
+    <!-- 添加或修改主体管理对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"   draggable destroy-on-close>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
         <el-row :gutter="20">
@@ -147,7 +147,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -168,25 +168,27 @@ export default {
   },
   data() {
     return {
-      // mask layer
+      // 遮罩层
       loading: true,
-      // Select array
+      // 选中数组
       ids: [],
-      // Not individually disabled
+      // 非单个禁用
       single: true,
-      // Not multiple disabled
+      // 非多个禁用
       multiple: true,
-      // Show search criteria
+      // 显示搜索条件
       showSearch: true,
-      // Total number of items
+      // 总条数
       total: 0,
-      // Subject management form data
+      // 主体管理表格数据
       subjectList: [],
-      // Popup layer title
+      // 弹出层标题
       title: "",
-      // Whether to display popup layer
+      // 是否显示弹出层
       open: false,
-      // query parameters
+      // 提交按钮防重复点击
+      submitLoading: false,
+      // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -202,9 +204,9 @@ export default {
         validFlag: null,
         creatorId: null,
       },
-      // form parameters
+      // 表单参数
       form: {},
-      // form validation
+      // 表单校验
       rules: {
         name: [
           { required: true, message: this.td('sys.subject.subjectNameRequired'), trigger: "blur" }
@@ -235,7 +237,7 @@ export default {
   },
   methods: {
     red,
-    /** Query the subject management list */
+    /** 查询主体管理列表 */
     getList() {
       this.loading = true;
       listSubject(this.queryParams).then(response => {
@@ -253,7 +255,7 @@ export default {
         const response = await fetch(fileUrl);
         const blob = await response.blob();
 
-        // Automatically get file name
+        // 自动获取文件名
         const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
         zip.file(fileName, blob);
       }
@@ -262,12 +264,12 @@ export default {
         saveAs(content, row.name + "_根证书" + '.zip');
       });
     },
-    // Cancel button
+    // 取消按钮
     cancel() {
       this.open = false;
       this.reset();
     },
-    // form reset
+    // 表单重置
     reset() {
       this.form = {
         id: null,
@@ -291,29 +293,29 @@ export default {
       };
       this.resetForm("form");
     },
-    /** Search button action */
+    /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /** reset button action */
+    /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // Multiple selection box selected data
+    // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    /** Add button operation */
+    /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = this.td('sys.subject.addTitle');
     },
-    /** Modify button actions */
+    /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
@@ -323,8 +325,10 @@ export default {
         this.title = this.td('sys.subject.editTitle');
       });
     },
-    /** submit button */
+    /** 提交按钮 */
     submitForm() {
+      if (this.submitLoading) return;
+      this.submitLoading = true;
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
@@ -332,18 +336,26 @@ export default {
               this.$modal.msgSuccess(td('common.message.editSuccess'));
               this.open = false;
               this.getList();
+              this.submitLoading = false;
+            }).catch(() => {
+              this.submitLoading = false;
             });
           } else {
             addSubject(this.form).then(response => {
               this.$modal.msgSuccess(td('common.message.addSuccess'));
               this.open = false;
               this.getList();
+              this.submitLoading = false;
+            }).catch(() => {
+              this.submitLoading = false;
             });
           }
+        } else {
+          this.submitLoading = false;
         }
       });
     },
-    /** Delete button action */
+    /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm(this.td('sys.subject.confirmDelete', { id: ids })).then(function() {
@@ -353,7 +365,7 @@ export default {
         this.$modal.msgSuccess(td('common.message.deleteSuccess'));
       }).catch(() => {});
     },
-    /** Export button action */
+    /** 导出按钮操作 */
     handleExport() {
       this.download('ca/subject/export', {
         ...this.queryParams

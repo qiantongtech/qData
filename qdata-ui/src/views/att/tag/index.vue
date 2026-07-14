@@ -203,7 +203,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
             >{{ td('common.button.confirm') }}</el-button
           >
         </div>
@@ -231,6 +231,7 @@ const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { dp_model_status } = proxy.useDict("dp_model_status");
+const submitLoading = ref(false);
 const router = useRouter();
 
 const deptOptions = ref(undefined);
@@ -478,22 +479,28 @@ function handleDetail(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["AttTagRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         form.value.status = null;
         updateAttTag(form.value).then((response) => {
+          submitLoading.value = false;
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       } else {
         addAttTag(form.value).then((response) => {
+          submitLoading.value = false;
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           tableRef.value.getList();
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

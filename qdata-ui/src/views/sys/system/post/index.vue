@@ -176,7 +176,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -189,6 +189,7 @@ import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/sy
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const postList = ref([]);
@@ -287,6 +288,8 @@ function handleUpdate(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["postRef"].validate(valid => {
     if (valid) {
       if (form.value.postId != undefined) {
@@ -294,14 +297,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addPost(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

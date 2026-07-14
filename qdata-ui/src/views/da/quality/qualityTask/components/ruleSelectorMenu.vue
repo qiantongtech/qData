@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--The first step of auditing rule information is to clean the rule cards  -->
+  <!-- Inspection rule info - Step 1: cleansing rule cards  -->
   <el-row>
     <el-col :span="5">
       <DeptTree
@@ -195,7 +195,7 @@ onMounted(() => {
   position: relative;
 }
 
-/* Right content */
+/* Right side content */
 .content-col {
   height: 75vh;
   overflow: hidden;
@@ -304,7 +304,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 
-  /* text style */
+  /* Text style */
   font-size: 16px;
   color: #999;
   user-select: none;

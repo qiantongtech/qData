@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * <P>
- * Purpose: Metadata field information - log DTO object MC_COLUMN
+ * Purpose: metadata field information - log DTO object MC_COLUMN
  * </p>
  *
  * @author: FXB
@@ -20,7 +20,7 @@ public class McColumnRespDTO {
     private Long id;
 
     /**
-     * Field id
+     * Field ID
      */
     private Long columnId;
 
@@ -30,7 +30,7 @@ public class McColumnRespDTO {
     private Integer version;
 
     /**
-     * Table information id
+     * Table information ID
      */
     private Long tableId;
 
@@ -40,7 +40,7 @@ public class McColumnRespDTO {
     private String columnName;
 
     /**
-     * Field annotation
+     * Field comment
      */
     private String columnComment;
 
@@ -55,32 +55,32 @@ public class McColumnRespDTO {
     private Integer columnLength;
 
     /**
-     * Data accuracy
+     * Data precision
      */
     private Integer columnPrecision;
 
     /**
-     * Data decimal places
+     * Data scale
      */
     private Integer columnScale;
 
     /**
-     * Data defaults
+     * Data default value
      */
     private String defaultValue;
 
     /**
-     * Whether it is the primary key; 0: No 1: Yes
+     * Whether it is a primary key; 0: no, 1: yes
      */
     private String pkFlag;
 
     /**
-     * Whether it is a foreign key; 0: No 1: Yes
+     * Whether it is a foreign key; 0: no, 1: yes
      */
     private String fkFlag;
 
     /**
-     * Whether it is nullable; 0: No 1: Yes
+     * Whether it is nullable; 0: no, 1: yes
      */
     private String nullableFlag;
 }

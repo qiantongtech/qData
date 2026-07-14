@@ -27,7 +27,7 @@
       </div>
       <div class="head-btns">
         <div class="head-select">
-          <!-- Append drop-down selection box after title -->
+          <!-- Dropdown select box attached after title -->
           <el-select v-model="queryParams.id" :placeholder="td('da.dataQuery.datasourcePlaceholder')" class="head-select-el" style="width: 300px;">
             <el-option v-for="item in TablesByDataSource" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
@@ -39,7 +39,7 @@
       </div>
     </div>
     <el-container style="90%">
-      <!-- Tree: Data source->Table->Field -->
+      <!-- Tree: data source -> table -> field -->
       <DeptTree :deptOptions="TablesByDataSource" :leftWidth="leftWidth" :placeholder="td('da.dataQuery.datasourceSearchPlaceholder')" ref="DeptTreeRef"
         @node-click="handleTreeNodeClick" @nodeload-click="loadTreeData" :loading="loading" />
       <el-main style="padding: 0;">
@@ -85,16 +85,16 @@ const queryParams = ref({
   pageNum: 1,
   pageSize: 20,
   sqlText: "",
-  id: "", // Select the data source id for query
+  id: "", // Selected data source ID for querying
   datasourceType: '',
 });
 let spl = ref('')
 
-const TablesByDataSource = ref([]); // The top level of the tree is the data source node
+const TablesByDataSource = ref([]); // Tree top level is data source node
 
 const editorRef = ref(null);
 const nodeData = ref({ name: "", taskConfig: {} });
-// 1. Obtain the data source list and construct the tree root node (data source)
+// 1. Get data source list, construct tree root nodes
 const getDatasourcesTree = async () => {
   loading.value = true;
   try {
@@ -122,7 +122,7 @@ const getDatasourcesTree = async () => {
   }
 };
 
-// 2. Lazy loading of tables or fields
+// 2. Lazy load tables or fields
 const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   console.log("🚀 ~ loadTreeData ~ node:", node)
   if (!node) {
@@ -173,7 +173,7 @@ const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   }
 };
 
-// 3. Click the tree node to insert SQL
+// 3. Click tree node to insert SQL
 function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
   queryParams.value.id = expandedRootId;
   if (type === 'node') {
@@ -184,7 +184,7 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
       return;
     }
 
-    // Click on the table or field to insert the corresponding name
+    // Click table or field to insert corresponding name
     const currentSql = queryParams.value.sqlText || "";
     const suffix = currentSql.endsWith(" ") || currentSql === "" ? "" : " ";
     queryParams.value.sqlText = currentSql + suffix + data.name;
@@ -199,7 +199,7 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
     queryParams.value.sqlText = currentSql + suffix + payload;
   }
 }
-// 4. Editor content changes
+// 4. Editor content change
 function handleChange(val) {
   queryParams.value.sqlText = val;
 }
@@ -216,7 +216,7 @@ async function handleQuery() {
     errors.push(td('da.dataQuery.sqlRequired'));
   }
 
-  // Verify data source id
+  // Validate data source ID
   if (!queryParams.value.id) {
     errors.push(td('da.dataQuery.datasourceRequired'));
   }
@@ -243,7 +243,7 @@ async function handleQuery() {
   }
 }
 
-// 6. Clear the editor
+// 6. Clear editor
 function handleClear() {
   queryParams.value.sqlText = "";
 }

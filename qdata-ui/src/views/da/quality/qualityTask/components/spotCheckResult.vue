@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- View the spot check results pop-up window. Add and modify the third step of audit rule information.  -->
+    <!-- View spot check result dialog - Step 3: inspection rule info  -->
     <el-dialog v-model="visible" :title="td('da.qualityTask.spotCheckResult.title')" width="1200px" :before-close="handleClose">
         <el-tabs v-model="activeTab" @tab-click="handleTabClick">
             <el-tab-pane :label="td('da.qualityTask.spotCheckResult.problemData')" name="problem">

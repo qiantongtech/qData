@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- Time field sequence verification -->
+  <!-- Time field order validation -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-form-item label="">
       <div
@@ -122,7 +122,7 @@ const timeColumns = computed(() =>
   })
 );
 
-// To splice the selected time field, refer to the implementation of evaColumn
+// Concatenate selected time fields, referencing evaColumn implementation
 const timeOrderFields = computed(() => {
   if (!form.conditions || form.conditions.length === 0) return "";
   // Get all unique field names
@@ -133,7 +133,7 @@ const timeOrderFields = computed(() => {
   });
   // Convert to array and sort
   const fieldsArray = Array.from(fieldNames);
-  // Use label in columnList to display, if not, display columnName
+  // Use label from columnList, fallback to columnName
   const map = new Map(
     (columnList.value || []).map((c) => [c.columnName, c.label || c.columnName])
   );
@@ -224,7 +224,7 @@ function validate() {
         valid: true,
         data: {
           conditions: JSON.parse(JSON.stringify(form.conditions)),
-          evaColumn: fieldsArray, // Directly returns the field array for assignment to the evaColumn of the parent component.
+          evaColumn: fieldsArray, // Return field array directly for parent's evaColumn
         },
       });
     });

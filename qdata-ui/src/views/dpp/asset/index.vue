@@ -622,7 +622,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -652,6 +652,7 @@ import useUserStore from "@/store/system/user";
 import { getThemeList } from "@/api/att/theme/theme.js";
 import OverflowTooltip from "@/components/OverflowTooltip";
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
   "da_asset_source",
@@ -828,6 +829,8 @@ watch(
 );
 
 function submitApplyForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       formApply.value.id = null;
@@ -840,7 +843,12 @@ function submitApplyForm() {
         proxy.$modal.msgSuccess(td('dpp.asset.applySuccess'));
         openApply.value = false;
         getList();
+        submitLoading.value = false;
+      }).catch(() => {
+        submitLoading.value = false;
       });
+    } else {
+      submitLoading.value = false;
     }
   });
 }

@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- Field length range check -->
+  <!-- Field length range validation -->
   <el-form ref="formRef" :model="form" :disabled="false">
     <el-row :gutter="20">
       <el-col :span="12">

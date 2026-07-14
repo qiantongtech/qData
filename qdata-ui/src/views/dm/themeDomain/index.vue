@@ -208,7 +208,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
             >{{ td('common.button.confirm', '确定') }}</el-button
           >
         </div>
@@ -234,6 +234,7 @@ import QtSearchBar from "@/components/QtSearchBar";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const attDataElemCatOptions = ref([]);
 const managerOptions = ref([]);
 const dataLayerOptions = ref([]);
@@ -562,6 +563,8 @@ async function handleUpdate(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["themeDomainRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -569,14 +572,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addThemeDomain(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

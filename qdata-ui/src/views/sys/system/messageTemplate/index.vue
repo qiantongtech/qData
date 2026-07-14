@@ -240,7 +240,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -253,6 +253,7 @@ import { listMessageTemplate, getMessageTemplate, delMessageTemplate, addMessage
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { message_category, message_level } = proxy.useDict("message_category", "message_level");
 
 const messageTemplateList = ref([]);
@@ -361,6 +362,8 @@ function handleUpdate(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["messageTemplateRef"].validate(valid => {
     if (valid) {
       if (form.value.id != null) {
@@ -368,14 +371,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addMessageTemplate(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

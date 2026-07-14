@@ -18,9 +18,9 @@
 
 <template>
     <div class="app-container stagingIndex" v-loading="loading">
-        <!-- Top area: Rating + Line Chart -->
+        <!-- Top area: score + line chart -->
         <el-row gutter="20" class="top-section">
-            <!-- Rating on the left -->
+            <!-- Left score -->
             <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -72,7 +72,7 @@
                 </div>
             </el-col>
 
-            <!-- Line chart on the right -->
+            <!-- Right line chart -->
             <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -147,7 +147,7 @@
             </div>
         </el-row>
 
-        <!-- Question data pop-up window -->
+        <!-- Problem data popup -->
         <ProblemDialog ref="problemDialogRef" />
     </div>
 </template>
@@ -224,7 +224,7 @@ function getLabelsByColumnName(row, columnName) {
             ? ruleObj.evaColumns
             : Object.values(ruleObj.evaColumns || {});
     } catch (err) {
-        console.warn("Failed to parse rule fields", err);
+        console.warn('Rule field parse failed', err);
         return '-';
     }
 
@@ -327,14 +327,14 @@ const loadChartWithData = (data = []) => {
 };
 
 
-// Summary of ratings and quality dimensions
-// Summary of ratings and quality dimensions
+// Score and quality dimension summary
+// Score and quality dimension summary
 const loadScoreAndSummary = async (id) => {
     try {
         const res = await statisticsEvaluateOne(id);
         const result = res?.data || [];
 
-        // Construct a dimensional map for quick search
+        // Build dimension mapping for quick lookup
         const resultMap = result.reduce((map, item) => {
             map[item.dimensionType] = item;
             return map;
@@ -349,7 +349,7 @@ const loadScoreAndSummary = async (id) => {
             };
         });
     } catch (err) {
-        console.warn("Failed to aggregate scores and dimensions", err);
+        console.warn('Score/dimension summary failed', err);
     }
 };
 // Rule list
@@ -367,7 +367,7 @@ const loadRuleTable = async (id) => {
             ruleList.value = [];
         }
     } catch (err) {
-        console.warn("Failed to load rule list", err);
+        console.warn('Rule list failed', err);
     } finally {
     }
 };
@@ -384,11 +384,11 @@ const loadTrendChart = async (id) => {
 
         loadChartWithData(res?.data || []);
     } catch (err) {
-        console.warn("Failed to load line chart data", err);
+        console.warn('Line chart data failed', err);
     }
 };
 
-// Monitor language changes and re-render charts
+// Watch language changes, re-render charts
 watch(locale, () => {
     if (chartInstance) {
         chartInstance.dispose();

@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- Numeric field range check -->
+  <!-- Numeric field range validation -->
   <el-form ref="formRef" :model="form" :disabled="false">
     <el-row :gutter="20">
       <el-col :span="12">
@@ -86,7 +86,7 @@ const includeBoundaryText = computed(() =>
     : "-"
 );
 const columnList = ref([]);
-// When the evaluation object changes, update the relevant fields and field list
+// When evaluation object changes, update related fields and field list
 async function handleTargetObjectChange(selectedName, falg) {
   const selected = props.auditTargets.find(
     (item) => item.datasourceName == selectedName
@@ -161,7 +161,7 @@ onMounted(() => {
   if (form.targetObject) {
     fetchColumns();
   }
-  console.log("Child component mounted hook");
+  console.log("Sub-component mounted hook");
 });
 
 defineExpose({ validate });

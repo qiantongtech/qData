@@ -247,7 +247,7 @@ const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
 const activeName = ref("0");
 function handleClick(tab) {
-  // Logic can be customized as needed
+  // Custom logic can be applied as needed
   console.log("Tab clicked:", tab);
 }
 
@@ -280,7 +280,7 @@ const descList = ref([
 
 ]);
 
-// Computed property generates tab pane array
+// Computed property to generate tab pane array
 const tabPanes = computed(() => {
   console.log("🚀 ~ tabPanes ~ daAssetDetail.value.type:", daAssetDetail.value.type);
   switch (daAssetDetail.value.type) {
@@ -324,16 +324,16 @@ const tabPanes = computed(() => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || null;
-// Monitor id changes
+// Watch id changes
 watch(
   () => route.query.id,
   (newId) => {
     if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/detail') {
-      id = newId || null; // If id is empty, the default value 1 is used
+      id = newId || null; // If ID is empty, use default value 1
       getDaAssetDetailById();
     }
   },
-  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
+  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
 );
 const data = reactive({
   daAssetDetail: {},
@@ -342,7 +342,7 @@ const data = reactive({
 
 const { daAssetDetail } = toRefs(data);
 
-/** Form query at the top of the complex details page */
+/** Complex detail page top form query */
 function getDaAssetDetailById() {
   if (!id) {
     return;
@@ -365,7 +365,7 @@ onActivated(() => {
   // listDaAssetColumn();
 });
 onBeforeUnmount(() => {
-  // Clear parameters or reset status
+  // Clear parameters or reset state
   data.daAssetDetail = {};
   data.form = {};
   activeName.value = "0"; // Reset tab page

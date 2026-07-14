@@ -174,7 +174,7 @@
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link type="primary" icon="VideoPlay" style="padding-left: 14px"
-                      @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
+                      :loading="executeOnceLoading" @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
                       :disabled="scope.row.status == 1">{{ td('da.qualityTask.executeOnce') }}</el-button>
                     <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
                       v-hasPermi="['da:qualityTask:edit']">{{ td('da.qualityTask.executionLog') }}</el-button>
@@ -242,6 +242,7 @@ import {
 } from "@/api/da/quality/qualityTask";;
 
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 const { da_discovery_task_status, dpp_etl_task_execution_type, datasource_type, dpp_etl_task_process_type } =
   proxy.useDict(
     "da_discovery_task_status",
@@ -257,7 +258,7 @@ const typaOptions = treeData.map((item) => {
   }
 })
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -289,7 +290,7 @@ const handleSave = (form) => {
     ...form,
 
     projectCode: userStore.projectCode,
-    type: "3",//New identifier for data development
+    type: "3",// Data dev add identifier
   }
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
@@ -300,7 +301,7 @@ const handleSave = (form) => {
 }
 const deptOptions = ref([]);
 const leftWidth = ref(300); // Initial left width
-/** Drop down tree structure */
+/** Dropdown tree structure */
 function getDeptTree() {
   listAttQualityCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
@@ -327,14 +328,14 @@ let openCron = ref(false);
 const DppQualityTaskEvaluateList = ref([]);
 let row = ref();
 let expression = ref("");
-/** Run instance button action */
+/** Run instance button operation */
 function handleJobLog(data) {
   row.value = "";
   row.value = data || "";
   openCron.value = true;
   expression.value = data.cycle || "";
 }
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row, e) {
   const text = row?.status == "1" ? td('da.qualityTask.offline') : td('da.qualityTask.online');
   proxy.$modal
@@ -372,11 +373,12 @@ function crontabFill(value) {
   });
 }
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(td('da.qualityTask.invalidTaskId'));
     return;
   }
-  loading.value = true;
+  executeOnceLoading.value = true;
   try {
     const res = await startDppQualityTask(row.id);
 
@@ -386,16 +388,16 @@ const handleExecuteOnce = async (row) => {
       proxy.$modal.msgWarning(res?.msg || td('da.qualityTask.executeFailed'));
     }
   } finally {
-    loading.value = false;
+    executeOnceLoading.value = false;
   }
 };
 let DataView = ref(false);
-/** Run instance interface */
+/** Run instance API */
 function handleDataView(row) {
   form.value = row;
   DataView.value = true;
 }
-// Show hidden information
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('da.qualityTask.columnVisibility.id'), visible: true },
   { key: 2, label: td('da.qualityTask.columnVisibility.taskName'), visible: true },
@@ -460,13 +462,13 @@ function getList() {
 }
 
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -476,7 +478,7 @@ function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal

@@ -38,7 +38,7 @@
                                 class="el-form-input-width" />
                         </el-form-item>
                     </template>
-                    <!-- More/Collapse button -->
+                    <!-- More/collapse button -->
                     <el-form-item v-if="columnFields.length > 3" :label-position="labelPosition">
                         <el-button type="text" @click="toggleMore">
                             {{ showMoreFields ? td('da.qualityTaskLog.problemData.collapse') : td('da.qualityTaskLog.problemData.more') }}
@@ -49,7 +49,7 @@
                         </el-button>
                     </el-form-item>
 
-                    <!-- Query/reset button -->
+                    <!-- Query/reset buttons -->
                     <el-form-item :label-position="labelPosition">
                         <el-button plain type="primary" @click="handleQuery" @mousedown.prevent>
                             <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
@@ -89,7 +89,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <!-- Comment field column -->
+            <!-- Evaluation field columns -->
             <el-table-column :label="td('da.qualityTaskLog.problemData.evaluationField')" align="center" :show-overflow-tooltip="{effect: 'light'}" width="300">
                 <template #default="scope">
                     <div v-for="(item, index) in getLabelAndValueFromStr(obj.columnName, obj.rule, scope.row.dataJsonStr)"
@@ -194,7 +194,7 @@ const { quality_warning_status, quality_log_data_repair } = proxy.useDict(
     'quality_warning_status',
     'quality_log_data_repair'
 )
-// Parse columnName as an array
+// Parse columnName to array
 const columnFields = computed(() => {
     return obj.value.columnName
         ? obj.value.columnName.split(',').map(name => name.trim())
@@ -253,7 +253,7 @@ const filters = ref({
 })
 const tableData = ref([])
 
-// query parameters
+// Query parameters
 let queryParams = ref({
     pageNum: 1,
     pageSize: 10,
@@ -272,7 +272,7 @@ function resetQuery() {
     handleQuery()
 }
 
-// Get list data
+// Fetch list data
 async function getList() {
     loading.value = true
     try {
@@ -287,7 +287,7 @@ async function getList() {
     }
 }
 
-// selection change
+// Selection change
 function handleSelectionChange(val) {
     selectedRows.value = val.map(item => item.id)
 }
@@ -311,7 +311,7 @@ async function addIgnore(row) {
     })
 }
 
-// Add notes
+// Add remark
 function addComment(obj) {
     row.value = obj
     commentForm.value.comment = obj.remark
@@ -334,7 +334,7 @@ async function submitComment() {
     commentDialogVisible.value = false
 }
 
-// save data
+// Save data
 async function onSave(updatedData, oldData, keyWordData) {
     await handleUpdateErrorData({
         keyWordData,
@@ -347,7 +347,7 @@ async function onSave(updatedData, oldData, keyWordData) {
     })
 }
 
-// Open details popup window
+// Open detail dialog
 async function openDetails(row) {
     detailDialogRef.value?.open(row, obj.value.rule)
 }
@@ -356,13 +356,13 @@ async function openupDetails(row) {
     updateDialogRef.value?.open(row, obj.value.rule, obj.value.columnName)
 }
 
-// Advanced filtering
+// Advanced filter
 const toggleAdvanced = () => {
     advancedVisible.value = !advancedVisible.value
 }
 
 const applyAdvancedFilters = () => {
-    console.log("Applying advanced filter conditions:", filters.value)
+    console.log('Apply advanced filters:', filters.value)
 }
 
 const resetFilters = () => {
@@ -380,7 +380,7 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
     try {
         jsonData = JSON.parse(dataJsonStr)
     } catch (e) {
-        console.warn("Failed to parse dataJsonStr:", e)
+        console.warn('dataJsonStr parse failed:', e)
         return ['-']
     }
 
@@ -390,7 +390,7 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
             ? rule.evaColumns
             : Object.values(rule.evaColumns || {})
     } catch (err) {
-        console.warn("Failed to parse rule.evaColumns", err)
+        console.warn('rule.evaColumns parse failed', err)
         return ['-']
     }
 
@@ -406,7 +406,7 @@ function getLabelAndValueFromStr(columnName, rule, dataJsonStr) {
     })
 }
 
-// Expand main popup window
+// Open main dialog
 async function open(row) {
     obj.value = {
         ...row,
@@ -440,7 +440,7 @@ const filteredData = computed(() => {
     })
 })
 
-// External exposure method
+// Expose methods
 defineExpose({ open, close })
 </script>
 

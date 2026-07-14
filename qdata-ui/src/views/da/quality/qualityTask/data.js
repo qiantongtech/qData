@@ -61,14 +61,14 @@ export const treeData =
       children: [],
       icon: new URL('@/assets/images/common/dpp/img-sr.png', import.meta.url).href,
     },
-    // disabled node
+    // Disabled nodes
     {
       id: 6,
       label: "Sqlerver",
       value: "Sqlerver",
       type: "SQLSERVER",
       children: [],
-      disabled: true // Disable the node
+      disabled: true // Disable this node
     },
     {
       id: 7,
@@ -76,7 +76,7 @@ export const treeData =
       value: "PostgreSql",
       type: "POSTGRESQL",
       children: [],
-      disabled: true // Disable the node
+      disabled: true // Disable this node
     },
     {
       id: 8,
@@ -84,7 +84,7 @@ export const treeData =
       value: "Hive",
       type: "HIVE",
       children: [],
-      disabled: false // Disable the node
+      disabled: false // Disable this node
     },
     {
       id: 9,

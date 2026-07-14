@@ -318,6 +318,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",
   "sys_disable",

@@ -119,7 +119,7 @@
                         <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
                             v-hasPermi="['att:modelCat:add']">{{ td('common.button.add') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:modelCat:remove']">{{ td('common.button.delete') }}</el-button>
+                            v-hasPermi="['att:modelCat:remove']" :disabled="scope.row.validFlag">{{ td('common.button.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -127,7 +127,7 @@
                 :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>
 
-        <!-- Add or modify the logical model category management dialog box -->
+        <!-- Add or edit logic model category management dialog -->
         <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
             destroy-on-close>
             <el-form ref="attModelCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -179,7 +179,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -200,6 +200,7 @@ import {
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_valid } = proxy.useDict('sys_valid');
 
 const attModelCatList = ref([]);
@@ -226,7 +227,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** Query the logical model category management list */
+/** Query logic model category list */
 function getList() {
     loading.value = true;
     listAttModelCat(queryParams.value).then((response) => {
@@ -245,7 +246,7 @@ function getDataTree() {
     });
 }
 
-/** Query logical model category management drop-down tree structure 1 */
+/** Query logic model category dropdown tree structure 1 */
 
 // Cancel button
 function cancel() {
@@ -253,7 +254,7 @@ function cancel() {
     reset();
 }
 
-// form reset
+// Reset form
 function reset() {
     form.value = {
         id: null,
@@ -275,17 +276,17 @@ function reset() {
     proxy.resetForm('attModelCatRef');
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
     getList();
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row) {
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
@@ -311,7 +312,7 @@ function handleAdd(row) {
         attModelCatOptions.value = [];
         const data = { id: 0, name: td('common.texts.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
-        console.log(data, "Child level");
+        console.log(data, 'children');
         attModelCatOptions.value.push(data);
     });
     if (row != null && row.id) {
@@ -323,7 +324,7 @@ function handleAdd(row) {
     title.value = td('att.modelCat.title.add');
 }
 
-/** Expand/collapse operations */
+/** Expand/collapse operation */
 function toggleExpandAll() {
     refreshTable.value = false;
     isExpandAll.value = !isExpandAll.value;
@@ -332,18 +333,18 @@ function toggleExpandAll() {
     });
 }
 
-/** Modify button actions */
+/** Edit button operation */
 async function handleUpdate(row) {
     reset();
     // await getTreeselect();
     const response = await listAttModelCat();
     attModelCatOptions.value = [];
-    // Filter computed properties of nodes
+    // Filter node computed property
     const filteredDepts = response.data.filter((d) => {
-        // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
+        // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
         return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
     });
-    console.log(filteredDepts, "Level 111");
+    console.log(filteredDepts, 'filtered');
     const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
     attModelCatOptions.value.push(data);
@@ -351,7 +352,7 @@ async function handleUpdate(row) {
         form.value.parentId = row.parentId;
     }
     getAttModelCat(row.id).then((response) => {
-        //Filter out createTime
+        // Filter out createTime
         delete response.data.createTime;
         delete response.data.updateTime;
         form.value = response.data;
@@ -361,8 +362,10 @@ async function handleUpdate(row) {
     });
 }
 
-/** submit button */
+/** Submit button */
 function submitForm() {
+    if (submitLoading.value) return;
+    submitLoading.value = true;
     proxy.$refs['attModelCatRef'].validate((valid) => {
         if (valid) {
             if (form.value.id != null) {
@@ -370,19 +373,27 @@ function submitForm() {
                     proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                     open.value = false;
                     getList();
+                    submitLoading.value = false;
+                }).catch(error => {
+                    submitLoading.value = false;
                 });
             } else {
                 addAttModelCat(form.value).then((response) => {
                     proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                     open.value = false;
                     getList();
+                    submitLoading.value = false;
+                }).catch(error => {
+                    submitLoading.value = false;
                 });
             }
+        } else {
+            submitLoading.value = false;
         }
     });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
     proxy.$modal
         .confirm(td('att.modelCat.messages.confirmDelete').replace('<name>', row.name))

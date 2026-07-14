@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- Configuration of each rule of new evaluation rules -->
+  <!-- Add evaluation rule config for each rule -->
   <el-dialog
     v-model="dialogVisible"
     draggable
@@ -305,7 +305,7 @@
           <el-col :span="12">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData" :label-position="labelPosition">
               <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />
-              <!-- <span class="msg">Samples must comply with the rules, if not, they cannot contain special characters</span> -->
+              <!-- <span class="msg">Sample must comply with rule; cannot contain special characters if non-compliant</span> -->
               <div style="margin-top: 6px; display: inline-block">
                 <el-tag
                   v-if="sampleCheckMsg"
@@ -348,7 +348,7 @@ import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
-// Load rule subcomponents on demand through the registration center to reduce the size of the first screen caused by static imports
+// Load rule subcomponents on demand via registry to reduce first-screen bundle size
 import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 
@@ -357,7 +357,7 @@ let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
-// The parent component passes in the evaluation object list
+// Evaluation object list from parent component
 const props = defineProps({
   dppQualityTaskObjSaveReqVO: {
     type: Array,
@@ -380,8 +380,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //Audit rule name:
-  ruleCode: "", //Audit rule number:
+  ruleName: "", // Inspection rule name:
+  ruleCode: "", // Inspection rule code:
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -394,26 +394,26 @@ let form = reactive({
   tableName: "",
 
   rule: {
-    // String type check
+    // String type validation
     allowedChars: ["1"], // Allowed character types
-    useRegexFlag: 0, // Use regular
-    regex: "", // regular expression
-    // Ignore null values:, keep one
-    ignoreNullValue: "0", //Ignore null values:
-    // Field length range check
-    minLength: null, //minimum length
-    maxLength: null, //maximum length
-    // field precision
+    useRegexFlag: 0, // Use regex
+    regex: "", // Regex
+    // Ignore null value, keep one
+    ignoreNullValue: "0", // Ignore null value
+    // Field length range validation
+    minLength: null, // Min length
+    maxLength: null, // Max length
+    // Field precision
     scale: "2", // Decimal places
-    skipInteger: "1", // Ignore integer values
-    // Field group integrity check
+    skipInteger: "1", // Skip integer value
+    // Field group integrity validation
     fillStrategy: "1",
 
-    // Numeric field range check
+    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
-    //  Enumeration value verification
+    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
@@ -449,12 +449,12 @@ const evaColumnLabel = computed(() => {
 });
 let title = ref();
 
-// Computed property: current rule configuration
+// Computed: current rule configuration
 const currentRuleConfig = computed(() => {
   return getRuleConfig(form.ruleType);
 });
 
-// Computed property: current rule component
+// Computed: current rule component
 const currentRuleComponent = computed(() => {
   return getRuleComponent(form.ruleType) || null;
 });
@@ -466,7 +466,7 @@ const columnsCache = new Map();
 
 const spotCheckRef = ref();
 
-//Monitor
+// Watch
 async function handleSpotCheck() {
   console.log(
     "🚀 ~ handleSpotCheck ~  selectedRef.value:",
@@ -483,7 +483,7 @@ async function handleSpotCheck() {
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
-    // If the subcomponent returns the evaColumn field (such as the timeOrderRule component), assign it directly to form.evaColumn
+    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
     }
@@ -530,7 +530,7 @@ function handleTargetObjectChange(tableName) {
     } else {
       form.evaColumn = "";
     }
-    // Clear the cache of the current table to ensure that it is requested again every time you switch
+    // Clear current table cache to ensure fresh request on each switch
     const cacheKey = `${selected.datasourceId}|${tableName}`;
     columnsCache.delete(cacheKey);
     fetchColumns();
@@ -601,7 +601,7 @@ async function handleSave() {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
 
-    // If the subcomponent returns the evaColumn field (such as the timeOrderRule component), assign it directly to form.evaColumn
+    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
     }
@@ -610,7 +610,7 @@ async function handleSave() {
     name: col.columnName,
     label: col.label,
   }));
-  // First convert the evaColumn array into a comma separated string
+  // Convert evaColumn array to comma-separated string first
   if (Array.isArray(form.evaColumn)) {
     form.evaColumn = form.evaColumn.join(",");
   }
@@ -732,8 +732,8 @@ async function openDialog(record, index, fg) {
 
 const initialForm = () => ({
   name: "",
-  ruleName: "", //Audit rule name:
-  ruleCode: "", //Audit rule number:
+  ruleName: "", // Inspection rule name:
+  ruleCode: "", // Inspection rule code:
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -745,29 +745,29 @@ const initialForm = () => ({
   evaColumn: undefined,
   tableName: "",
   rule: {
-    // String type check
+    // String type validation
     allowedChars: ["1"], // Allowed character types
-    useRegexFlag: 0, // Use regular
-    regex: "", // regular expression
-    ignoreNullValue: "1", // Ignore null values:
+    useRegexFlag: 0, // Use regex
+    regex: "", // Regex
+    ignoreNullValue: "1", // Ignore null value
 
-    // Field length range check
-    minLength: null, // minimum length
-    maxLength: null, // maximum length
+    // Field length range validation
+    minLength: null, // Min length
+    maxLength: null, // Max length
 
-    // field precision
+    // Field precision
     scale: "2", // Decimal places
-    skipInteger: "1", // Ignore integer values
+    skipInteger: "1", // Skip integer value
 
-    // Field group integrity check
+    // Field group integrity validation
     fillStrategy: "1",
 
-    // Numeric field range check
+    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
 
-    // Enumeration value verification
+    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
@@ -775,10 +775,10 @@ const initialForm = () => ({
     validValues: [],
     calculationGroups: [],
 
-    // time field
+    // Time field
     allowPartialEmpty: "1",
 
-    // Multiple condition fields
+    // Multi-condition field
     conditions: [],
   },
 });

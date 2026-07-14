@@ -271,6 +271,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status != 1"
+                    :loading="executeOnceLoading"
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.developTask.executeOnce", "执行一次")
@@ -384,6 +385,7 @@ import { ref, reactive, getCurrentInstance, watch, toRefs } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 
 const api = {
   list: listAttDataDevCat,
@@ -631,13 +633,14 @@ function crontabFill(value) {
   });
 }
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(
       td("dpp.developTask.invalidTaskId", "无效的任务id，请刷新后重试")
     );
     return;
   }
-  loading.value = true;
+  executeOnceLoading.value = true;
   try {
     const res = await startDppEtlTask(row.id);
 
@@ -650,10 +653,8 @@ const handleExecuteOnce = async (row) => {
       );
     }
   } finally {
-    setTimeout(() => {
-      loading.value = false;
-      handleQuery();
-    }, 1000);
+    executeOnceLoading.value = false;
+    handleQuery();
   }
 };
 

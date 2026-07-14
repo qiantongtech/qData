@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- Enumeration value verification -->
+  <!-- Enum value validation -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-row :gutter="20">
       <el-col :span="8">
@@ -51,7 +51,7 @@
       </el-col>
     </el-row>
 
-    <!-- 👇 Displayed when "Associated Code Table" is selected as "Yes" -->
+    <!-- Show when “Associate code table” is “Yes” -->
     <el-row v-if="form.useCodeTable == '1'" :gutter="20">
       <el-col :span="8">
         <el-form-item
@@ -202,7 +202,7 @@ function handleDelete(row, index) {
   form.codeList.splice(Number(index) - 1, 1);
 }
 function opencodeDialog() {
-  // Add a new row of empty data
+  // Add a new empty row
   form.codeList.push({
     codeValue: "",
     codeName: "",

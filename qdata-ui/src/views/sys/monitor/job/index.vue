@@ -263,7 +263,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -350,6 +350,7 @@ import Crontab from '@/components/Crontab/index.vue'
 const { td } = useDefaultLang();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_job_group, sys_job_status } = proxy.useDict("sys_job_group", "sys_job_status");
 
 const jobList = ref([]);
@@ -521,6 +522,8 @@ function handleUpdate(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["jobRef"].validate(valid => {
     if (valid) {
       if (form.value.jobId != undefined) {
@@ -528,14 +531,22 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addJob(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

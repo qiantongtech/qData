@@ -223,7 +223,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -343,7 +343,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="upload.open = false">{{td('common.button.cancel')}}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{td('common.button.confirm')}}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitFileForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -366,6 +366,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { ds_api_log_res_status, ds_api_bas_info_api_method_type } = proxy.useDict(
   'ds_api_log_res_status',
   'ds_api_bas_info_api_method_type'
@@ -601,6 +602,8 @@ function handleDetail(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["apiLogRef"].validate((valid) => {
     if (valid) {
       if (form.value.ID != null) {
@@ -609,17 +612,21 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('ds.apiLog.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => { submitLoading.value = false; });
       } else {
         addApiLog(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('ds.apiLog.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => { submitLoading.value = false; });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
@@ -668,6 +675,8 @@ function importTemplate() {
 
 /** Submit upload file */
 function submitFileForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["uploadRef"].submit();
 }
 
@@ -680,6 +689,7 @@ const handleFileUploadProgress = (event, file, fileList) => {
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
+  submitLoading.value = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +

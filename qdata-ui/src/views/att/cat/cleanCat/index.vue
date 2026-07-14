@@ -109,7 +109,7 @@
               v-hasPermi="['att:cleanCat:edit']">{{ td('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
               v-hasPermi="['att:cleanCat:add']">{{ td('common.button.add') }}</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+            <el-button link type="danger" icon="Delete" :disabled="scope.row.validFlag == true" @click="handleDelete(scope.row)"
               v-hasPermi="['att:cleanCat:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
@@ -118,7 +118,7 @@
         @pagination="getList" />
     </div>
 
-    <!-- Add or modify the cleaning rule category management dialog box -->
+    <!-- Add or edit cleaning rule category management dialog -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="attCleanCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -128,9 +128,9 @@
               <el-input v-model="form.name" :placeholder="td('att.common.cleanCatNamePlaceholder')" />
             </el-form-item>
           </el-col>
-          <!--            <el-form-item label="category sorting" prop="sortOrder" :label-position="labelPosition">-->
-          <!--<!– <el-input v-model="form.sortOrder" placeholder="Please enter the category to sort" />–>-->
-          <!--              <el-input-number v-model="form.sortOrder" steps="1" :min="0" placeholder="Please enter the category to sort" />-->
+          <!--            <el-form-item label="Category Sort" prop="sortOrder" :label-position="labelPosition">-->
+          <!--&lt;!&ndash;              <el-input v-model="form.sortOrder" placeholder="Please enter category sort" />&ndash;&gt;-->
+          <!--              <el-input-number v-model="form.sortOrder"  steps="1" :min="0"  placeholder="Please enter category sort" />-->
           <!--            </el-form-item>-->
           <el-col :span="12">
             <el-form-item :label="td('att.common.parentCat')" prop="parentId" :label-position="labelPosition">
@@ -172,7 +172,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -188,9 +188,10 @@ import { getToken } from "@/utils/auth.js";
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const AttCleanCatList = ref([]);
 const attAssetCatOptions = ref([]);
-// Show hidden information
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('att.cleanCat.texts.name'), visible: true },
   { key: 2, label: td('att.common.parentCat'), visible: true },
@@ -204,9 +205,9 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find(col => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
+  // If no corresponding column configuration found, default to showing it
   if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
+  // If corresponding column configuration found, control visibility based on the visible property
   return column.visible;
 };
 
@@ -226,17 +227,17 @@ const isExpandAll = ref(false);
 
 /*** User import parameters */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
+  // Whether to show the popup layer (user import)
   open: false,
-  // Popup layer title (user imported)
+  // Popup layer title (user import)
   title: "",
-  // Whether to disable uploading
+  // Whether to disable upload
   isUploading: false,
   // Whether to update existing user data
   updateSupport: 0,
   // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
+  // Upload URL
   url: import.meta.env.VITE_APP_BASE_API + "/att/attCleanCat/importData"
 });
 
@@ -260,7 +261,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** Query the cleaning rule category list */
+/** Query cleaning rule category list */
 function getList() {
   loading.value = true;
   listAttCleanCat(queryParams.value).then(response => {
@@ -277,7 +278,7 @@ function cancel() {
   reset();
 }
 
-// form reset
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -299,26 +300,26 @@ function reset() {
   proxy.resetForm("attCleanCatRef");
 }
 
-/** Search button action */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** reset button action */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// Multiple selection box selected data
+// Checkbox selection data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.ID);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** Change enabled status value */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -336,7 +337,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** Expand/collapse operations */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -345,7 +346,7 @@ function toggleExpandAll() {
   });
 }
 
-/** Sorting trigger events */
+/** Sort trigger event */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
@@ -379,14 +380,14 @@ function getDataTree() {
   });
 }
 
-/** Modify button actions */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   const response = await listAttCleanCat();
   attAssetCatOptions.value = [];
-  // Filter computed properties of nodes
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
+    // Filter condition: remove items with target department ID or ancestors containing target department ID
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };
@@ -413,8 +414,10 @@ function handleDetail(row) {
   });
 }
 
-/** submit button */
+/** Submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["attCleanCatRef"].validate(valid => {
     if (valid) {
       if (form.value.id != null) {
@@ -422,21 +425,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
         }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttCleanCat(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
         }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** Delete button action */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal.confirm(td('att.cleanCat.messages.confirmDelete').replace('<ids>', _ids)).then(function () {
@@ -447,15 +456,15 @@ function handleDelete(row) {
   }).catch(() => { });
 }
 
-/** Export button action */
+/** Export button operation */
 function handleExport() {
   proxy.download('att/attCleanCat/export', {
     ...queryParams.value
   }, `AttCleanCat_${new Date().getTime()}.xlsx`)
 }
 
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
+/** ---------------- Import related operations -----------------**/
+/** Import button operation */
 function handleImport() {
   upload.title = td('att.cleanCat.importTitle');
   upload.open = true;
@@ -472,12 +481,12 @@ function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
 
-/**File upload is being processed */
+/** File upload in progress handler */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
+/** File upload success handler */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

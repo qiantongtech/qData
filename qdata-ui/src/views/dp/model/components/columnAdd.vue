@@ -129,7 +129,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item :label="td('dp.modelForm.defaultValue')" prop="defaultValue" :label-position="labelPosition">
-            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" />
+            <el-input v-model="form.defaultValue" :placeholder="td('dp.modelForm.defaultValuePlaceholder')" @input="handleDefaultValueInput" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -202,7 +202,7 @@ const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
     "dp_model_column_nullable_flag"
   );
 
-// Receive properties passed by parent component
+// 接收父组件传递的属性
 const props = defineProps({
   visible: { type: Boolean, default: true },
   deptOptions: { type: Array, default: () => [] },
@@ -220,35 +220,52 @@ watch(
     if (newVal) {
       getDpDataElem();
       if (props.row && props.row.index !== undefined) {
-        // Edit status
+        // 编辑状态
         title.value = td('dp.modelForm.editColumnTitle');
         Object.assign(form.value, props.row);
         form.value.authorityDept = Number(form.value.authorityDept);
       } else {
-        // Add status
+        // 新增状态
         title.value = td('dp.modelForm.addColumnTitle');
-        // Reset form
+        // 重置表单
         form.value = {
           id: "",
           dataElemId: "",
-          cnName: "", // Use optional chaining operator
+          cnName: "", // 使用可选链操作符
           engName: "",
           columnType: "",
           columnLength: "",
-          pkFlag: "0", // Set default value
+          pkFlag: "0", // 设置默认值
           authorityDept: null,
           modelComment: "",
-          nullableFlag: "0", // Set default value
+          nullableFlag: "0", // 设置默认值
           defaultValue: "",
           columnScale: "",
-          modelId: props.data?.id, // Save model ID
+          modelId: props.data?.id, // 保存模型ID
         };
       }
     }
   },
-  { immediate: true } // Add an immediate attribute to ensure that it is executed once when the component is mounted.
+  { immediate: true } // 新增immediate属性，确保组件挂载时就执行一次
 );
 let DpData = ref([]);
+const intTypes = ['TINYINT', 'INTEGER', 'BIGINT'];
+const decimalTypes = ['DECIMAL', 'NUMERIC', 'FLOAT', 'DOUBLE', 'NUMBER'];
+const stringTypes = ['CHAR', 'VARCHAR', 'VARCHAR2', 'TEXT'];
+const dateTypes = ['DATE'];
+const datetimeTypes = ['TIMESTAMP', 'DATETIME'];
+
+const handleDefaultValueInput = (val) => {
+  if (intTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d-]/g, '').replace(/(?!^\-)-/g, '');
+  } else if (decimalTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d.\-]/g, '').replace(/(\..*)\./g, '$1').replace(/(?!^\-)-/g, '');
+  } else if (dateTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d-]/g, '');
+  } else if (datetimeTypes.includes(form.value.columnType)) {
+    form.value.defaultValue = val.replace(/[^\d: -]/g, '');
+  }
+};
 const handlePkFlagChange = (value) => {
   if (value == 1) {
     form.value.nullableFlag = "1";
@@ -260,7 +277,7 @@ const getDpDataElem = async () => {
     DpData.value = response.data;
     console.log("DpData", DpData.value);
   } catch (error) {
-    console.error("Request failed:", error);
+    console.error("请求失败:", error);
   }
 };
 const handleDatasourceChange = (value) => {
@@ -272,10 +289,10 @@ const handleDatasourceChange = (value) => {
     form.value.columnType = selectedDatasource.columnType;
   }
 };
-// Define the interface for sending events to the parent component
+// 定义向父组件发送事件的接口
 const emit = defineEmits(["update:dialogFormVisible", "confirm"]);
 
-// Handle pop-up window display status
+// 处理弹窗显示状态
 const localVisible = computed({
   get() {
     return props.visible;
@@ -285,7 +302,7 @@ const localVisible = computed({
   },
 });
 
-// Form data and validation rules
+// 表单数据和验证规则
 const form = ref({
   id: "",
   dataElemId: "",
@@ -322,32 +339,75 @@ const rules = ref({
           return;
         }
 
-        // Remove the leading and trailing single quotes and then calculate the length.
         let actualValue = value;
         if (value.startsWith("'") && value.endsWith("'")) {
           actualValue = value.slice(1, -1);
         }
 
-        // For numeric types, check the numeric length
-        if (
-          ["NUMBER", "DECIMAL", "NUMERIC", "FLOAT", "DOUBLE"].includes(
-            form.value.columnType
-          )
-        ) {
-          const numStr = actualValue.toString().replace(".", ""); // Remove the decimal point and calculate the length
-          if (numStr.length > form.value.columnLength) {
-            callback(
-              new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
-            );
+        // 整数类型
+        if (intTypes.includes(form.value.columnType)) {
+          if (!/^-?\d+$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueIntegerError')));
             return;
           }
-        }
-        // For character types, check the string length directly
-        else if (actualValue.length > form.value.columnLength) {
-          callback(
-            new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength))
-          );
-          return;
+          if (actualValue.length > form.value.columnLength) {
+            callback(new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength)));
+            return;
+          }
+        // 小数类型
+        } else if (decimalTypes.includes(form.value.columnType)) {
+          if (!/^-?\d+(\.\d+)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueNumericOnly')));
+            return;
+          }
+          const parts = actualValue.split('.');
+          const intPart = parts[0].replace(/^-/, '');
+          const decPart = parts[1] || '';
+          const intLimit = form.value.columnLength - (form.value.columnScale || 0);
+          if (intPart.length > intLimit) {
+            callback(new Error(td('dp.modelForm.defaultValueIntPartError').replace('<int>', intLimit)));
+            return;
+          }
+          if (decPart.length > (form.value.columnScale || 0)) {
+            callback(new Error(td('dp.modelForm.defaultValueDecPartError').replace('<scale>', form.value.columnScale || 0)));
+            return;
+          }
+        // 字符串类型
+        } else if (stringTypes.includes(form.value.columnType)) {
+          if (actualValue.length > form.value.columnLength) {
+            callback(new Error(td('dp.modelForm.defaultStringMaxLengthError').replace('<length>', form.value.columnLength)));
+            return;
+          }
+        // DATE 类型
+        } else if (dateTypes.includes(form.value.columnType)) {
+          if (!/^\d{4}(-\d{2}(-\d{2})?)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueDateError')));
+            return;
+          }
+          const y = parseInt(actualValue.substring(0, 4));
+          const m = parseInt(actualValue.substring(5, 7)) || 1;
+          const d = parseInt(actualValue.substring(8, 10)) || 1;
+          if (m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > 9999) {
+            callback(new Error(td('dp.modelForm.defaultValueDateInvalid')));
+            return;
+          }
+        // TIMESTAMP / DATETIME 类型
+        } else if (datetimeTypes.includes(form.value.columnType)) {
+          if (!/^\d{4}(-\d{2}(-\d{2}( \d{2}(:\d{2}(:\d{2}(\.\d{1,3})?)?)?)?)?)?$/.test(actualValue)) {
+            callback(new Error(td('dp.modelForm.defaultValueDatetimeError')));
+            return;
+          }
+          const y = parseInt(actualValue.substring(0, 4));
+          const mo = parseInt(actualValue.substring(5, 7)) || 1;
+          const d = parseInt(actualValue.substring(8, 10)) || 1;
+          const hh = parseInt(actualValue.substring(11, 13)) || 0;
+          const mi = parseInt(actualValue.substring(14, 16)) || 0;
+          const ss = parseInt(actualValue.substring(17, 19)) || 0;
+          if (mo < 1 || mo > 12 || d < 1 || d > 31 || y < 1900 || y > 9999
+            || hh > 23 || mi > 59 || ss > 59) {
+            callback(new Error(td('dp.modelForm.defaultValueDatetimeInvalid')));
+            return;
+          }
         }
         callback();
       },
@@ -356,18 +416,18 @@ const rules = ref({
   ],
 });
 
-// Add a listener for attribute length changes
+// 添加对属性长度改变的监听
 watch(
   () => form.value.columnLength,
   (newVal) => {
-    // When the attribute length changes, trigger the verification of the default value
+    // 当属性长度改变时，触发默认值的校验
     if (form.value.defaultValue) {
       proxy.$refs["dpModelRefs"]?.validateField("defaultValue");
     }
   }
 );
 
-// Close dialog
+// 关闭对话框
 const closeDialog = () => {
   proxy.resetForm("dpModelRefs");
   localVisible.value = false;
@@ -386,7 +446,7 @@ const closeDialog = () => {
     columnScale: "",
   };
 };
-// Convert input value to uppercase
+// 转换输入值为大写
 const convertToUpperCase = (key, value) => {
   const uppercasedValue = value.replace(/[a-z]/g, (char) => char.toUpperCase());
 
@@ -395,14 +455,14 @@ const convertToUpperCase = (key, value) => {
   console.log("🚀 ~ convertToUpperCase ~ form.value[key]:", form.value[key]);
 };
 
-// Confirm action
+// 确认操作
 const confirmDialog = () => {
   proxy.$refs["dpModelRefs"].validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       closeDialog();
     } else {
-      console.log("Form validation failed");
+      console.log("表单验证失败");
     }
   });
 };

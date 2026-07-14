@@ -305,7 +305,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
             >{{ td('common.button.confirm') }}</el-button
           >
         </div>
@@ -329,6 +329,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { att_rule_audit_type, att_rule_level, att_rule_audit_q_dimension } =
   proxy.useDict(
     "att_rule_audit_type",
@@ -556,25 +557,35 @@ function handleDetail(row) {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["attAuditRuleRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         updateAttAuditRule(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addAttAuditRule(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }

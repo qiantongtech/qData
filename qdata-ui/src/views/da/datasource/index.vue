@@ -1558,13 +1558,15 @@ function handleStatusChange(row) {
   proxy.$modal
     .confirm(td('da.datasource.confirmStatusChange', '', { text: text, name: row.datasourceName }))
     .then(function () {
-      editDatasourceStatus(row.id, status).then((response) => {
+      return editDatasourceStatus(row.id, status).then(() => {
         proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
-        getList();
       });
     })
     .catch(function () {
       row.validFlag = !row.validFlag;
+    })
+    .finally(function () {
+      getList();
     });
 }
 

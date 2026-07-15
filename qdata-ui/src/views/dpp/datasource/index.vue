@@ -1760,13 +1760,15 @@ function handleStatusChange(row) {
           })
       )
     .then(function () {
-      editDatasourceStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(td("common.message.operationSuccess"));
-        getList();
+      return editDatasourceStatus(row.id, status).then(() => {
+        proxy.$modal.msgSuccess(td("da.datasource.statusSuccess", '', { text: text }));
       });
     })
     .catch(function () {
       row.validFlag = !row.validFlag;
+    })
+    .finally(function () {
+      getList();
     });
 }
 

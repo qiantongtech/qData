@@ -76,13 +76,7 @@ public class McTaskInstanceDO extends BaseEntity {
     /** status */
     private String status;
 
-    /** 调度引擎 */
-    private String taskScheduler;
-
-    /** Quartz调度任务id */
-    private Long quartzId;
-
-    /** 是否有效 */
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
     /** Delete flag */

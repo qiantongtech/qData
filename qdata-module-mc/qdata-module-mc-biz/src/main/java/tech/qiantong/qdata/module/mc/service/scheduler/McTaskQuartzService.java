@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tech.qiantong.qdata.api.ds.api.etl.*;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.module.mc.dal.dataobject.task.McTaskDO;
+import tech.qiantong.qdata.module.mc.dal.dataobject.task.McTaskSchedulerDO;
 import tech.qiantong.qdata.quartz.domain.ScheduleCommand;
 import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 
@@ -37,9 +38,23 @@ public class McTaskQuartzService {
             schedule = schedulerAdapter.createSchedule(ScheduleCommand.builder().jobName(taskCode.getName()).jobGroup(taskCode.getName())
                     .cronExpression(taskCode.getCronExpression()).invokeTarget("mcTaskExecutorJob.runExecuteTask(" + taskCode.getId() + "L)").remark(taskCode.getRemark()).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.scheduler.createSchedulerQuartz", "创建调度器失败！");
+            throw new ServiceException("mc.error.scheduler.create", "创建调度器失败！");
         }
         return schedule;
+    }
+
+    /**
+     * update Quartz
+     * @param taskCode
+     * @param scheduler
+     */
+    public void updateScheduleQuartz(McTaskDO taskCode, McTaskSchedulerDO scheduler, String cronExpression) {
+        try {
+            schedulerAdapter.updateSchedule(ScheduleCommand.builder().id(Long.valueOf(scheduler.getJobId())).remark(taskCode.getRemark()).jobId(Long.valueOf(scheduler.getJobId()))
+                    .jobName(taskCode.getName()).jobGroup(taskCode.getName()).status(scheduler.getStatus()).invokeTarget("mcTaskExecutorJob.runExecuteTask(" + taskCode.getId() + "L)").cronExpression(cronExpression).build());
+        } catch (Exception e) {
+            throw new ServiceException("mc.error.scheduler.update", "更新调度器失败！");
+        }
     }
 
     /**
@@ -76,11 +91,23 @@ public class McTaskQuartzService {
      *
      * @param taskId 任务编码
      */
-    public void startTaskQuartz(String taskId) {
+    public void startTaskQuartz(Long taskId) {
         try {
-            schedulerAdapter.trigger(ScheduleCommand.builder().id(Long.valueOf(taskId)).build());
+            schedulerAdapter.trigger(ScheduleCommand.builder().id(taskId).build());
         } catch (Exception e) {
             throw new ServiceException("mc.error.task.start", "启动任务失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * delete quartz
+     * @param taskId
+     */
+    public void deleteSchedulerQuartz(Long taskId) {
+        try {
+            schedulerAdapter.delete(ScheduleCommand.builder().id(taskId).build());
+        } catch (Exception e) {
+            throw new ServiceException("mc.error.task.delete", "删除任务失败：" + e.getMessage());
         }
     }
 }

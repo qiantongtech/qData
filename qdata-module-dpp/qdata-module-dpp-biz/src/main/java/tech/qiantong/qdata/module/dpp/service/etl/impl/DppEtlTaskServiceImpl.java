@@ -1344,7 +1344,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             dppEtlSchedulerSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode());
             dppEtlSchedulerSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId());
             dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
-            dppEtlSchedulerById.setQuartzId(quartzId);
+            dppEtlSchedulerSaveReqVO.setQuartzId(quartzId);
             iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
         } else {
             iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);

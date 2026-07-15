@@ -197,6 +197,18 @@ ds:
     # 密码
     password:
 
+datax:
+  # DataX根目录，可通过 QDATA_DATAX_HOME 覆盖
+  home: ${user.dir}/datax
+  # Python命令；
+  python-command: python3
+  # datax.py调用文件路径
+  datax-py-path: ${user.dir}/datax/bin/datax.py
+  # DataX lib目录
+  lib-dir: ${user.dir}/datax/lib
+  # qData生成DataX Job JSON的目录
+  job-dir: ${user.dir}/upload/datax/job
+
 path:
   # 数据质量服务前缀
   quality_url: http://127.0.0.1:8083/quality/qualityTaskExecutor

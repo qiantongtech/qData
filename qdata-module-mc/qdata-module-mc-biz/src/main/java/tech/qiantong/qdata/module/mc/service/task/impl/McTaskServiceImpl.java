@@ -261,7 +261,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 // Get task encoding (from schedule)
                 String taskCode = scheduler.getTaskCode();
 
-                if (StringUtils.isNotEmpty(taskCode)) {
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                    mcTaskQuartzService.updateScheduleQuartz(updateObj, scheduler, cronExpression);
+                } else if (StringUtils.isNotEmpty(taskCode)) {
                     // Update the DolphinScheduler scheduler
                     Long newSchedulerId = mcTaskDolphinSchedulerService.updateScheduler(
                             Long.parseLong(scheduler.getJobId()), taskCode, cronExpression);
@@ -306,19 +308,24 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // Offline tasks and schedulers first
             if (task != null && scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
-                try {
-                    Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
-                            Long.parseLong(scheduler.getJobId()) : null;
-                    mcTaskDolphinSchedulerService.offlineTaskAndScheduler(scheduler.getTaskCode(), schedulerId);
-                } catch (Exception e) {
-                    log.warn("下线任务失败，taskId={}", id, e);
-                }
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                    Long jobId = Long.valueOf(scheduler.getJobId());
+                    mcTaskQuartzService.offlineSchedulerOnlyQuartz(jobId);
+                    mcTaskQuartzService.deleteSchedulerQuartz(jobId);
+                } else {
+                    try {
+                        Long schedulerId = StringUtils.isNotEmpty(scheduler.getJobId()) ?
+                                Long.parseLong(scheduler.getJobId()) : null;
+                        mcTaskDolphinSchedulerService.offlineTaskAndScheduler(scheduler.getTaskCode(), schedulerId);
+                    } catch (Exception e) {
+                        log.warn("下线任务失败，taskId={}", id, e);
+                    }
 
-                // Delete task
+                    // Delete task
                 try {
                     mcTaskDolphinSchedulerService.deleteTask(scheduler.getTaskCode());
                 } catch (Exception e) {
-                    log.warn("删除DolphinScheduler任务失败，taskId={}", id, e);
+                    log.warn("Failed to delete the DolphinScheduler task, taskId={}", id, e);
                 }
             }
         }
@@ -580,10 +587,10 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             // Get taskCode from scheduling information
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
             if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
-                if (ScheduleConstants.DOLPHINSCHEDULER.equals(scheduler.getTaskScheduler())) {
-                    mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                    mcTaskQuartzService.startTaskQuartz(Long.valueOf(scheduler.getJobId()));
                 } else {
-                    mcTaskQuartzService.startTaskQuartz(scheduler.getJobId());
+                    mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());
                 }
             }
         }

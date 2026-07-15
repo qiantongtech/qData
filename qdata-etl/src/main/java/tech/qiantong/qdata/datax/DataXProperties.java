@@ -14,7 +14,7 @@ import java.util.List;
  * datax.py 脚本、扩展依赖目录以及临时 job.json 存放目录。
  */
 @Component
-@ConfigurationProperties(prefix = "qdata.datax")
+@ConfigurationProperties(prefix = "datax")
 public class DataXProperties {
 
     /**

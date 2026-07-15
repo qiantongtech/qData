@@ -36,7 +36,6 @@ import tech.qiantong.qdata.quartz.service.ISysJobService;
 import tech.qiantong.qdata.quartz.util.CronUtils;
 import tech.qiantong.qdata.quartz.util.ScheduleUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -51,18 +50,6 @@ public class SysJobServiceImpl implements ISysJobService {
 
     @Autowired
     private SysJobMapper jobMapper;
-
-    /**
-     * When the project starts, the timer is initialized mainly to prevent manual modification of the database from being synchronized to the scheduled task processing (note: the database ID and task group name cannot be modified manually, otherwise dirty data will result)
-     */
-    @PostConstruct
-    public void init() throws SchedulerException, TaskException {
-        scheduler.clear();
-        List<SysJob> jobList = jobMapper.selectJobAll();
-        for (SysJob job : jobList) {
-            ScheduleUtils.createScheduleJob(scheduler, job);
-        }
-    }
 
     /**
      * Get the scheduled task list of the quartz scheduler

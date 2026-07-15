@@ -19,6 +19,8 @@
 package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -26,6 +28,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -70,6 +73,9 @@ public class DsApiController extends BaseController {
     @Resource
     private IDsApiService dsApiService;
 
+    @Value("${ds.base_url:}")
+    private String dsBaseUrl;
+
     @Operation(summary = "查询API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:list')")
     @GetMapping("/list")
@@ -99,6 +105,19 @@ public class DsApiController extends BaseController {
         String operName = getUsername();
         String message = dsApiService.importDsApi(importExcelList, updateSupport, operName);
         return success(message);
+    }
+
+    @Operation(summary = "检查DolphinScheduler是否可访问")
+    @GetMapping("/checkApi")
+    public CommonResult<Boolean> check() {
+        if (StringUtils.isBlank(dsBaseUrl)) {
+            return CommonResult.success(false);
+        }
+        try (HttpResponse response = HttpRequest.get(dsBaseUrl+"/login/sso").timeout(2000).execute()) {
+            return CommonResult.success(response.getStatus() == 200);
+        } catch (Exception e) {
+            return CommonResult.success(false);
+        }
     }
 
     @Operation(summary = "获取API服务详细信息")

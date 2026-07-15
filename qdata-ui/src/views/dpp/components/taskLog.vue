@@ -26,7 +26,33 @@
             <div class="divider" @mousedown="startDrag"></div>
             <!-- Log below -->
             <div class="log-container" :style="{ height: logHeight + 'px' }">
-                <el-scrollbar :style="{ height: logHeight + 'px' }">
+                <div v-if="hasLogSummary" class="log-summary">
+                    <div class="summary-item">
+                        <span>{{ td('dpp.taskLog.inputRecords', '输入') }}</span>
+                        <strong>{{ displayMetric(logSummary.inputRecords) }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>{{ td('dpp.taskLog.outputRecords', '输出') }}</span>
+                        <strong>{{ displayMetric(logSummary.outputRecords) }}</strong>
+                    </div>
+                    <div class="summary-item summary-node">
+                        <span>{{ td('dpp.taskLog.nodeNames', '节点') }}</span>
+                        <strong>{{ displayNodes(logSummary.nodeNames) }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>{{ td('dpp.taskLog.successCount', '成功') }}</span>
+                        <strong>{{ displayMetric(logSummary.successCount) }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>{{ td('dpp.taskLog.failedCount', '失败') }}</span>
+                        <strong>{{ displayMetric(logSummary.failedCount) }}</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>{{ td('dpp.taskLog.stoppedCount', '停止') }}</span>
+                        <strong>{{ displayMetric(logSummary.stoppedCount) }}</strong>
+                    </div>
+                </div>
+                <el-scrollbar :style="{ height: logBodyHeight + 'px' }">
                     <pre class="log-text">{{ logContent }}</pre>
                 </el-scrollbar>
             </div>
@@ -41,7 +67,7 @@
 
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang"
-import { ref, onBeforeUnmount, nextTick, defineComponent } from "vue";
+import { ref, computed, onBeforeUnmount, nextTick, defineComponent } from "vue";
 import { Graph } from "@antv/x6";
 import { ElMessage } from "element-plus";
 import NodeView from "@/views/dpp/components/nodeView";
@@ -58,6 +84,7 @@ const visible = ref(false);
 const containerRef = ref(null);
 const graphRef = ref(null);
 const logContent = ref("");
+const logSummary = ref({});
 const polling = ref(false);
 const graphHeight = ref(450);
 const logHeight = ref(300);
@@ -66,6 +93,38 @@ let graph = null;
 // Drag to adjust height
 let startY = 0;
 let startGraphHeight = 0;
+
+const hasLogSummary = computed(() => {
+    const summary = logSummary.value || {};
+    return [
+        summary.inputRecords,
+        summary.outputRecords,
+        summary.successCount,
+        summary.failedCount,
+        summary.stoppedCount,
+    ].some((item) => item !== undefined && item !== null) || (Array.isArray(summary.nodeNames) && summary.nodeNames.length > 0);
+});
+
+const logBodyHeight = computed(() => Math.max(logHeight.value - (hasLogSummary.value ? 48 : 0), 120));
+
+const displayMetric = (value) => {
+    return value === undefined || value === null || value === "" ? "-" : value;
+};
+
+const displayNodes = (nodeNames) => {
+    return Array.isArray(nodeNames) && nodeNames.length > 0 ? nodeNames.join(" / ") : "-";
+};
+
+const updateLogSummary = (data = {}) => {
+    logSummary.value = {
+        inputRecords: data.inputRecords,
+        outputRecords: data.outputRecords,
+        nodeNames: data.nodeNames,
+        successCount: data.successCount,
+        failedCount: data.failedCount,
+        stoppedCount: data.stoppedCount,
+    };
+};
 
 const startDrag = (e) => {
     e.preventDefault();
@@ -121,7 +180,6 @@ const initGraph = () => {
         });
     }
 };
-
 
 const renderGraph = (graph, savedData) => {
     if (!graph) return;
@@ -245,6 +303,7 @@ const fetchLog = async (taskId) => {
     const res = await getLogByTaskInstanceId({ taskInstanceId: taskId });
     const { status, log, nodeInstanceList } = res.data;
     logContent.value = log;
+    updateLogSummary(res.data);
     updateGraphNodes(graph, nodeInstanceList);
     const s = Number(status);
     if ([5, 6, 7].includes(s)) {
@@ -273,6 +332,7 @@ const handleClose = () => {
     visible.value = false;
     polling.value = false;
     logContent.value = "";
+    logSummary.value = {};
     if (graph) {
         graph.getEdges().forEach((e) => e.remove());
         graph.getNodes().forEach((n) => n.remove());
@@ -325,8 +385,61 @@ defineExpose({ open });
     overflow: hidden;
 }
 
+.log-summary {
+    display: grid;
+    grid-template-columns: 88px 88px minmax(160px, 1fr) 76px 76px 76px;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #1f2937;
+    background: #111827;
+    color: #d1d5db;
+    font-family: Arial, sans-serif;
+}
+
+.summary-item {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.summary-item span {
+    color: #9ca3af;
+    white-space: nowrap;
+}
+
+.summary-item strong {
+    min-width: 0;
+    color: #f9fafb;
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.summary-node {
+    min-width: 0;
+}
+
 .log-text {
+    margin: 0;
+    padding: 10px;
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+@media (max-width: 900px) {
+    .log-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-node {
+        grid-column: 1 / -1;
+    }
 }
 </style>

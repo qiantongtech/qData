@@ -37,6 +37,9 @@
         <div v-else-if="item.key == 'crontab'">
           {{ cronToZh(dppEtlTaskDetail.crontab) || "-" }}
         </div>
+        <div v-else-if="item.key == 'scheduler'">
+          {{ getSchedulerLabel(dppEtlTaskDetail.scheduler) }}
+        </div>
         <div v-else>{{ getDescValue(item) }}</div>
       </el-descriptions-item>
     </el-descriptions>
@@ -51,6 +54,11 @@ const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { auth_public, auth_app_type } = proxy.useDict("auth_public", "auth_app_type");
 
+const schedulerOptions = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+
 const props = defineProps({
   dppEtlTaskDetail: {
     type: Object,
@@ -63,6 +71,7 @@ const baseTable = [
   { key: "status", label: td('dpp.info.configStatus', '配置状态'), value: "" },
   { key: "crontab", label: td('dpp.info.scheduleCycle', '调度周期'), value: "" },
   { key: "executionType", label: td('dpp.info.executionStrategy', '执行策略'), value: "" },
+  { key: "scheduler", label: td('dpp.info.scheduler', '调度器'), value: "" },
   { key: "lastExecuteTime", label: td('dpp.info.recentRunTime', '最近运行时间'), value: "" },
   { key: "lastExecuteStatus", label: td('dpp.info.recentExecutionResult', '最近执行结果'), value: "" },
   { key: "taskPriority", label: td('dpp.info.taskPriority', '任务优先级'), value: "" },
@@ -114,6 +123,9 @@ const getDescValue = (row) => {
     row.value = detail[row.key];
   }
   return row.value !== null && row.value !== undefined && row.value !== "" ? row.value : "-";
+};
+const getSchedulerLabel = (value) => {
+  return schedulerOptions.find((item) => item.value == value)?.label || value || "-";
 };
 </script>
 <style lang="scss" scoped>

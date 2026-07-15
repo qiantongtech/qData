@@ -8,6 +8,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="ID"    />
         <result property="taskId"    column="TASK_ID"    />
         <result property="jobId"    column="JOB_ID"    />
+        <result property="taskCode"    column="TASK_CODE"    />
+        <!-- TASK_SCHEDULER 是隐藏执行引擎：Quartz 保存 DATAX，DS 保存 SPARK。 -->
+        <result property="taskScheduler"    column="TASK_SCHEDULER"    />
         <result property="startTime"    column="START_TIME"    />
         <result property="endTime"    column="END_TIME"    />
         <result property="timezoneId"    column="TIMEZONE_ID"    />
@@ -26,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMcTaskSchedulerVo">
-        select ID, TASK_ID, JOB_ID, START_TIME, END_TIME, TIMEZONE_ID, CRON_EXPRESSION, FAILURE_STRATEGY, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from MC_TASK_SCHEDULER
+        select ID, TASK_ID, JOB_ID, TASK_CODE, TASK_SCHEDULER, START_TIME, END_TIME, TIMEZONE_ID, CRON_EXPRESSION, FAILURE_STRATEGY, STATUS, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from MC_TASK_SCHEDULER
     </sql>
 
     <select id="selectMcTaskSchedulerList" parameterType="McTaskSchedulerDO" resultMap="McTaskSchedulerResult">
@@ -55,6 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">ID,</if>
             <if test="taskId != null">TASK_ID,</if>
             <if test="jobId != null">JOB_ID,</if>
+            <if test="taskCode != null">TASK_CODE,</if>
+            <if test="taskScheduler != null">TASK_SCHEDULER,</if>
             <if test="startTime != null">START_TIME,</if>
             <if test="endTime != null">END_TIME,</if>
             <if test="timezoneId != null">TIMEZONE_ID,</if>
@@ -75,6 +80,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="taskId != null">#{taskId},</if>
             <if test="jobId != null">#{jobId},</if>
+            <if test="taskCode != null">#{taskCode},</if>
+            <if test="taskScheduler != null">#{taskScheduler},</if>
             <if test="startTime != null">#{startTime},</if>
             <if test="endTime != null">#{endTime},</if>
             <if test="timezoneId != null">#{timezoneId},</if>
@@ -98,6 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="taskId != null">TASK_ID = #{taskId},</if>
             <if test="jobId != null">JOB_ID = #{jobId},</if>
+            <if test="taskCode != null">TASK_CODE = #{taskCode},</if>
+            <if test="taskScheduler != null">TASK_SCHEDULER = #{taskScheduler},</if>
             <if test="startTime != null">START_TIME = #{startTime},</if>
             <if test="endTime != null">END_TIME = #{endTime},</if>
             <if test="timezoneId != null">TIMEZONE_ID = #{timezoneId},</if>

@@ -957,6 +957,11 @@ export default {
     executeFailed: 'Execution failed, please contact administrator',
     confirmClone: 'Are you sure to clone task "{name}"?',
     confirmDelete: 'Are you sure to delete data integration task with ID "{ids}"?',
+    unsupportedEngineSwitch: 'Currently, switching is not supported！',
+    upDs: 'Please start the DolphinScheduler scheduler！',
+    viewDeployDocs: "Review the deployment document",
+    dolphinSchedulerGuideDescription: 'please ensure that the DolphinScheduler service is running',
+    quartzGuideDescription: "The task is executed by the built-in components of the system"
   },
   metadataSelect: {
     selectMetadata: 'Select Metadata',

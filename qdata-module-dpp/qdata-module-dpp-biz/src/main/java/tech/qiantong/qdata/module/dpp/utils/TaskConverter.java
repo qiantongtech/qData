@@ -43,6 +43,7 @@ import tech.qiantong.qdata.module.dpp.utils.model.DsResource;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TaskConverter {
@@ -314,6 +315,8 @@ public class TaskConverter {
         createReqVO.setContactNumber(dppEtlNewNodeSaveReqVO.getContactNumber());
         createReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
+        createReqVO.setScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        createReqVO.setActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
         // Temporarily meaningless parameter
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
@@ -500,6 +503,41 @@ public class TaskConverter {
         return resultList;
     }
 
+    public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(List<TaskDefinition> taskDefinitionList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
+        //取出入参数的信息
+        List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
+        return taskDefinitionList.stream()
+                .map(taskDefinition -> {
+                    DppEtlNodeSaveReqVO createReqVO = new DppEtlNodeSaveReqVO();
+                    createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());
+                    createReqVO.setType(taskDefinition.getTaskType());
+                    createReqVO.setName(taskDefinition.getName());
+                    createReqVO.setCode(String.valueOf(taskDefinition.getCode()));
+                    createReqVO.setVersion(taskDefinition.getVersion());
+                    createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId());
+                    createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode()));
+                    createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));
+                    createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
+                    createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
+                    createReqVO.setTimeout((long) taskDefinition.getTimeout());
+                    createReqVO.setDelayTime((long) taskDefinition.getDelayTime());
+                    createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
+                    createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
+                    createReqVO.setDescription(taskDefinition.getDescription());
+                    createReqVO.setDsId(taskDefinition.getId());
+                    createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode())));
+                    createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId());
+                    createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy());
+                    createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime());
+                    createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId());
+                    createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy());
+                    createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime());
+
+                    return createReqVO;
+                })
+                .collect(Collectors.toList());
+    }
+
     public static String getTaskParamsAsJson(List<Map<String, Object>> list, String code) {
         // Find matching taskParams
         Optional<Map<String, Object>> matchingTaskParams = list.stream()
@@ -573,11 +611,11 @@ public class TaskConverter {
                 .orElse(-1L);  // If no match found, return default value -1
     }
 
-    public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
+    public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
 
         // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
-        for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
+        for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
             // 1. Populate task-node relation fields
@@ -586,8 +624,8 @@ public class TaskConverter {
 
             // Task-related fields
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // Task code
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // Task version
+            taskNodeRelSaveReqVO.setTaskCode(code); // Task code
+            taskNodeRelSaveReqVO.setTaskVersion(version); // Task version
 
             // Pre-node related fields
             taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
@@ -595,7 +633,7 @@ public class TaskConverter {
             taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
             // Post-node related fields
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Post-node ID
             taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
             taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
@@ -617,12 +655,11 @@ public class TaskConverter {
         return resultList;
     }
 
-
-    public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(ProcessDefinition data, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO) {
+    public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelLogSaveReqVO> resultList = new ArrayList<>();
 
         // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
-        for (ProcessTaskRelation taskRelation : data.getTaskRelationList()) {
+        for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelLogSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelLogSaveReqVO();
 
             // 1. Populate task-node relation fields
@@ -631,8 +668,8 @@ public class TaskConverter {
 
             // Task-related fields
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
-            taskNodeRelSaveReqVO.setTaskCode(String.valueOf(data.getCode())); // Task code
-            taskNodeRelSaveReqVO.setTaskVersion(data.getVersion()); // Task version
+            taskNodeRelSaveReqVO.setTaskCode(code); // Task code
+            taskNodeRelSaveReqVO.setTaskVersion(version); // Task version
 
             // Pre-node related fields
             taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
@@ -640,7 +677,7 @@ public class TaskConverter {
             taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
             // Post-node related fields
-            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(data.getCode()), taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Post-node ID
             taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
             taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
@@ -772,10 +809,7 @@ public class TaskConverter {
         reqVO.setTaskId(taskId);
         reqVO.setTaskCode(taskCode);
 
-        // Get current time
-        String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        // Get time 100 years later
+        // 获取100年后的时间
         long currentTime = System.currentTimeMillis();
         Date date = new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000);
 
@@ -786,7 +820,8 @@ public class TaskConverter {
         reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
-
+        reqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
+        reqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
         // Populate dsId, assuming dsId is the same as ID
         reqVO.setDsId((long) -1);

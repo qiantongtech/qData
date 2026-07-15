@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 /**
  * Data Integration Task-Node Relation Service business layer processing
  *
@@ -87,6 +88,9 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
      * @return Collection<Long> list of IDs
      */
     public static Collection<Long> getIdListFromTaskNodeRel(List<DppEtlTaskNodeRelDO> dppEtlTaskNodeRelDOS) {
+        if (dppEtlTaskNodeRelDOS == null || dppEtlTaskNodeRelDOS.isEmpty()) {
+            return new ArrayList<>();
+        }
         return dppEtlTaskNodeRelDOS.stream()
                 .map(DppEtlTaskNodeRelDO::getId) // Extract ID
                 .collect(Collectors.toList());   // Collect into List
@@ -116,6 +120,9 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
     }
     @Override
     public int removeDppEtlTaskNodeRel(Collection<Long> idList) {
+        if (idList == null || idList.isEmpty()) {
+            return 0;
+        }
         // Batch delete Data Integration Task-Node Relation
         return dppEtlTaskNodeRelMapper.deleteBatchIds(idList);
     }

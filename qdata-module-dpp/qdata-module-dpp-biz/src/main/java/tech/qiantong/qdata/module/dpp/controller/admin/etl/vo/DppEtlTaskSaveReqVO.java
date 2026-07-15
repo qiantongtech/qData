@@ -105,6 +105,16 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
+    // 任务表里保存 Quartz Job id，后端后续可以按任务直接操作 Quartz 调度。
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
+
     @Schema(description = "Remark", example = "")
     @Size(max = 256, message = "Remark length cannot exceed 256 characters")
     private String remark;

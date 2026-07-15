@@ -18,7 +18,7 @@
 
 // Data source configuration table (icon + label type)
 const DATASOURCE_CONFIG = {
-  DM: { icon: "datasource/dimg-m.png" },
+  DM: { icon: "datasource/img-dm.png" },
   DM8: { icon: "datasource/img-dm.png" },
   ORACLE: { icon: "datasource/img-oracle.png" },
   ORACLE11: { icon: "datasource/img-oracle.png" },

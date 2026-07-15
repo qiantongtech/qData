@@ -186,18 +186,58 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.developTask.contactNumber', '联系电话')"
-            prop="contactNumber"
-           :label-position="labelPosition">
+              :label="td('dpp.developTask.contactNumber', '联系电话')"
+              prop="contactNumber"
+              :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-              v-model="form.contactNumber"
-              :placeholder="
+                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+                v-model="form.contactNumber"
+                :placeholder="
                 td('dpp.developTask.inputContactNumber', '请输入联系电话')
               "
-              disabled
+                disabled
             />
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-form-item
+              :label="td('dpp.developTask.scheduler', '调度器')"
+              prop="scheduler"
+              :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td('dpp.developTask.selectScheduler', '请选择调度器'),
+                trigger: 'change',
+              },
+            ]"
+              :label-position="labelPosition"
+          >
+            <el-radio-group
+                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+                v-model="form.scheduler"
+                class="el-form-input-width"
+                @change="handleSchedulerChange"
+                style="width: 100%"
+            >
+              <el-radio
+                  v-for="(item, index) in scheduler_type"
+                  :key="index"
+                  :value="item.value"
+                  :label="item.label"
+              >
+                {{ item.label }}
+              </el-radio>
+            </el-radio-group>
+            <div class="form-readonly" v-else>
+              {{ getOptionLabel(schedulerOptions, form.scheduler) }}
+            </div>
+            <p style="display: flex;align-items: center;line-height: 1;font-size: 12px;color: #888; margin-top: 10px;">
+              {{ schedulerGuide.description }}
+            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -362,10 +402,11 @@ const route = useRoute();
 const { proxy } = getCurrentInstance();
 import { dppEtlSqlTemp, getNodeUniqueKey } from "@/api/dpp/task/index.js";
 import { listDaDatasourceNoKafkaByProjectCode } from "@/api/da/dataSource/dataSource";
-const { dpp_etl_task_status } = proxy.useDict("dpp_etl_task_status");
+const { dpp_etl_task_status, scheduler_type } = proxy.useDict("dpp_etl_task_status","scheduler_type");
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { treeData } from "@/views/dpp/task/developTask/data";
+import {checkApi} from "@/api/ds/api/api.js";
 const props = defineProps({
   visible: { type: Boolean, default: true },
   title: { type: String, default: "表单标题" },
@@ -376,7 +417,15 @@ const props = defineProps({
 });
 const effectiveTitle = computed(() => props.title || td('dpp.developTask.formTitle'));
 
-const emit = defineEmits(["update:visible", "confirm"]);
+const emit = defineEmits(["update:visible", "confirm", "save"]);
+
+const schedulerOptions = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+const getOptionLabel = (options, value) => {
+  return options.find((item) => item.value == value)?.label || value || "-";
+};
 
 const form = ref({
   // form data
@@ -385,6 +434,8 @@ const form = ref({
   personCharge: "",
   contactNumber: "",
   crontab: "",
+  scheduler: "QUARTZ",
+  actuator: "JDBC",
   releaseState: "0",
   description: "",
   // json value
@@ -394,6 +445,25 @@ const form = ref({
   status: "0",
   datasources: { datasourceId: "" },
 });
+
+const schedulerGuide = computed(() => {
+  if (form.value.scheduler === "DOLPHINSCHEDULER") {
+    return {
+      description: td(
+          "dpp.integratioTask.dolphinSchedulerGuideDescription",
+          "使用前请确保 DolphinScheduler 服务已启动。"
+      ),
+    };
+  }
+
+  return {
+    description: td(
+        "dpp.integratioTask.quartzGuideDescription",
+        "由系统内置组件执行任务。"
+    ),
+  };
+});
+
 const total = ref(0);
 const queryParams = ref({
   pageNum: 1,
@@ -462,6 +532,9 @@ watch(
   (newVal) => {
     if (newVal) {
       form.value = { ...form.value, ...props.data };
+      form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
+      form.value.actuator = form.value.actuator || "SPARK";
+      enforceQuartzJDBC();
       // Template
       templateAct.value = form.value.draftJson
         ? JSON.parse(form.value.draftJson)
@@ -494,6 +567,24 @@ const visibleDialog = computed({
   },
 });
 
+/**
+ * DolphinScheduler
+ * @returns {Promise<void>}
+ */
+const handleSchedulerChange = async () => {
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.actuator = "JDBC";
+  } else {
+    form.value.actuator = "SPARK";
+  }
+};
+
+const enforceQuartzJDBC = () => {
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.actuator = "JDBC";
+  }
+};
+
 let daDiscoveryTaskRef = ref();
 // How to close a dialog box
 const closeDialog = () => {
@@ -501,10 +592,15 @@ const closeDialog = () => {
 };
 const saveClose = async () => {
   try {
+    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+      return;
+    }
     const valid = await daDiscoveryTaskRef.value.validate();
     if (valid) {
+      enforceQuartzJDBC();
       if (!form.value.code) {
         const response = await getNodeUniqueKey({
+          scheduler: form.value.scheduler,
           projectCode: userStore.projectCode || "133545087166112",
           projectId: userStore.projectId,
         });
@@ -527,8 +623,12 @@ const saveClose = async () => {
 // How to save data
 const saveData = async () => {
   try {
+    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+      return;
+    }
     const valid = await daDiscoveryTaskRef.value.validate();
     if (valid) {
+      enforceQuartzJDBC();
       if (!form.value.code) {
         const response = await getNodeUniqueKey({
           projectCode: userStore.projectCode || "133545087166112",
@@ -550,6 +650,18 @@ const saveData = async () => {
     console.error("Error while saving data:", error);
   }
 };
+
+/**
+ * check dolphinscheduler api
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const checkDSUpStart = async () => {
+  const resp = await checkApi();
+  if (!resp.data) {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+  }
+  return resp.data;
+}
 
 let openCron = ref(false);
 const expression = ref("");

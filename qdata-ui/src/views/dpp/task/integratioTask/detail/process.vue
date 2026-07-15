@@ -76,6 +76,8 @@ import { useRoute, useRouter } from "vue-router";
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
+// src/views/dpp/task/integratioTask/components/transform/dedupFilter.vue
+import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
 // Transform component
 // Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";

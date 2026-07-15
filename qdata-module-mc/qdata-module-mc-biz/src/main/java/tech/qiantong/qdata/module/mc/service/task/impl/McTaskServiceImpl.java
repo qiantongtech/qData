@@ -322,10 +322,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                     }
 
                     // Delete task
-                try {
-                    mcTaskDolphinSchedulerService.deleteTask(scheduler.getTaskCode());
-                } catch (Exception e) {
-                    log.warn("Failed to delete the DolphinScheduler task, taskId={}", id, e);
+                    try {
+                        mcTaskDolphinSchedulerService.deleteTask(scheduler.getTaskCode());
+                    } catch (Exception e) {
+                        log.warn("Failed to delete the DolphinScheduler task, taskId={}", id, e);
+                    }
                 }
             }
         }
@@ -407,7 +408,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
      *
      * @param importExcelList collection task data list
      * @param isUpdateSupport Whether to update support, if it already exists, update the data
-     * @param operName operating user
+     * @param operName        operating user
      * @return result
      */
     @Override
@@ -461,7 +462,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageEnWithFallback("mc.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }

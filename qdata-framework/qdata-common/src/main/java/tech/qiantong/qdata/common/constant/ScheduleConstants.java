@@ -33,6 +33,8 @@ public class ScheduleConstants
 
     public static final String TASK_CLASS_NAME = "TASK_CLASS_NAME";
 
+    public static final String QUARTZ_JOB_NAMESPACE = "_QUARTZ_JOB_";
+
     /** Implementation details. */
     public static final String TASK_PROPERTIES = "TASK_PROPERTIES";
 

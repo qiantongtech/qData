@@ -29,8 +29,10 @@ import tech.qiantong.qdata.common.utils.ExceptionUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.bean.BeanUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
+import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import tech.qiantong.qdata.quartz.domain.SysJob;
 import tech.qiantong.qdata.quartz.domain.SysJobLog;
+import tech.qiantong.qdata.quartz.service.IQuartzJobLogService;
 import tech.qiantong.qdata.quartz.service.ISysJobLogService;
 
 import java.util.Date;
@@ -52,8 +54,17 @@ public abstract class AbstractQuartzJob implements Job
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException
     {
-        SysJob sysJob = new SysJob();
-        BeanUtils.copyBeanProp(sysJob, context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES));
+        Object taskProperties = context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES);
+        SysJob sysJob;
+        if (taskProperties instanceof SysJob)
+        {
+            sysJob = (SysJob) taskProperties;
+        }
+        else
+        {
+            sysJob = new SysJob();
+            BeanUtils.copyBeanProp(sysJob, taskProperties);
+        }
         try
         {
             before(context, sysJob);
@@ -111,8 +122,15 @@ public abstract class AbstractQuartzJob implements Job
             sysJobLog.setStatus(Constants.SUCCESS);
         }
 
-        // 写入数据库当中
-        SpringUtils.getBean(ISysJobLogService.class).addJobLog(sysJobLog);
+        // system_job 与 quartz_job 使用独立日志表。
+        if (sysJob instanceof QuartzJob)
+        {
+            SpringUtils.getBean(IQuartzJobLogService.class).addJobLog(sysJobLog);
+        }
+        else
+        {
+            SpringUtils.getBean(ISysJobLogService.class).addJobLog(sysJobLog);
+        }
     }
 
     /**

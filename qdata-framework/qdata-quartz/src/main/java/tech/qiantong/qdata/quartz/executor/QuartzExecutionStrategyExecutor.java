@@ -23,6 +23,7 @@ import org.quartz.SchedulerException;
 import org.springframework.data.redis.core.RedisTemplate;
 import tech.qiantong.qdata.common.core.redis.RedisCache;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
+import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import tech.qiantong.qdata.quartz.domain.SysJob;
 import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 import tech.qiantong.qdata.quartz.util.JobInvokeUtil;
@@ -50,9 +51,11 @@ public class QuartzExecutionStrategyExecutor {
     }
 
     public ExecutionOutcome execute(JobExecutionContext context, SysJob sysJob) throws Exception {
+        String executionTypeValue = sysJob instanceof QuartzJob
+                ? ((QuartzJob) sysJob).getExecutionType() : null;
         ScheduleExecutionTypeEnum executionType = ScheduleExecutionTypeEnum.resolve(
-                sysJob.getExecutionType(), sysJob.getConcurrent());
-        String key = buildKey(sysJob);
+                executionTypeValue, sysJob.getConcurrent());
+        String key = buildKey(context, sysJob);
         return executeWithPolicy(executionType, key, () -> JobInvokeUtil.invokeMethod(sysJob),
                 () -> triggerAgain(context));
     }
@@ -97,9 +100,13 @@ public class QuartzExecutionStrategyExecutor {
         }
     }
 
-    private String buildKey(SysJob sysJob) {
+    private String buildKey(JobExecutionContext context, SysJob sysJob) {
+        if (context != null && context.getJobDetail() != null
+                && context.getJobDetail().getKey() != null) {
+            return context.getJobDetail().getKey().toString();
+        }
         if (sysJob.getJobId() != null) {
-            return String.valueOf(sysJob.getJobId());
+            return sysJob.getJobGroup() + ":" + sysJob.getJobId();
         }
         return sysJob.getJobGroup() + ":" + sysJob.getJobName();
     }

@@ -7,11 +7,12 @@ import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.exception.job.TaskException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
-import tech.qiantong.qdata.quartz.domain.SysJob;
+import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import tech.qiantong.qdata.quartz.domain.ScheduleCommand;
 import tech.qiantong.qdata.quartz.domain.ScheduleRespDTO;
-import tech.qiantong.qdata.quartz.service.ISysJobService;
+import tech.qiantong.qdata.quartz.enums.JobErrorEnum;
+import tech.qiantong.qdata.quartz.service.IQuartzJobService;
 
 /**
  * Handle Quartz scheduling operations.
@@ -22,43 +23,47 @@ public class QuartzSchedulerAdapterImpl implements ISchedulerAdapter {
 
     private static final String DEFAULT_CONCURRENT = "1";
 
-    private final ISysJobService sysJobService;
+    private final IQuartzJobService quartzJobService;
 
-    public QuartzSchedulerAdapterImpl(ISysJobService sysJobService) {
-        this.sysJobService = sysJobService;
+    public QuartzSchedulerAdapterImpl(IQuartzJobService quartzJobService) {
+        this.quartzJobService = quartzJobService;
     }
     @Override
     public ScheduleRespDTO selectScheduleById(ScheduleCommand command) {
-        SysJob sysJob = sysJobService.selectJobById(command.getId());
-        return BeanUtils.toBean(sysJob, ScheduleRespDTO.class);
+        QuartzJob quartzJob = quartzJobService.selectJobById(command.getId());
+        ScheduleRespDTO response = BeanUtils.toBean(quartzJob, ScheduleRespDTO.class);
+        if (response != null) {
+            response.setQuartzId(quartzJob.getJobId());
+        }
+        return response;
     }
     @Override
     public Long createSchedule(ScheduleCommand command) throws SchedulerException, TaskException {
-        // Handle Quartz scheduling operations.
-        return sysJobService.insertJobReturnId(toSysJob(command));
+        QuartzJob job = toQuartzJob(command);
+        return checkJobResult(quartzJobService.insertJobReturnId(job), job, "创建");
     }
     @Override
     public Long updateSchedule(ScheduleCommand command) throws SchedulerException, TaskException {
-        SysJob job = toSysJob(command);
+        QuartzJob job = toQuartzJob(command);
         job.setJobId(command.getId());
-        return (long) sysJobService.updateJob(job);
+        return checkJobResult(quartzJobService.updateJobReturnId(job), job, "修改");
     }
     @Override
     public void online(ScheduleCommand command) throws SchedulerException {
-        sysJobService.resumeJob(loadJob(command));
+        quartzJobService.resumeJob(loadJob(command));
     }
     @Override
     public void offline(ScheduleCommand command) throws SchedulerException {
-        sysJobService.pauseJob(loadJob(command));
+        quartzJobService.pauseJob(loadJob(command));
     }
     @Override
     public void trigger(ScheduleCommand command) throws SchedulerException {
-        sysJobService.run(loadJob(command));
+        quartzJobService.run(loadJob(command));
     }
     @Override
     public void delete(ScheduleCommand command) {
         try {
-            sysJobService.deleteJob(loadJob(command));
+            quartzJobService.deleteJob(loadJob(command));
         } catch (SchedulerException e) {
             throw new ServiceException("删除Quartz调度任务失败：" + e.getMessage());
         }
@@ -68,20 +73,19 @@ public class QuartzSchedulerAdapterImpl implements ISchedulerAdapter {
         return System.currentTimeMillis() ^ (projectCode << 10);
     }
 
-    private SysJob loadJob(ScheduleCommand command) {
+    private QuartzJob loadJob(ScheduleCommand command) {
         if (command == null || command.getId() == null) {
             throw new IllegalArgumentException("Quartz调度任务id不能为空");
         }
-        // Handle task-related data and operations.
-        SysJob job = sysJobService.selectJobById(command.getId());
+        QuartzJob job = quartzJobService.selectJobById(command.getId());
         if (job == null) {
             throw new ServiceException("Quartz调度任务不存在：" + command.getId());
         }
         return job;
     }
 
-    private SysJob toSysJob(ScheduleCommand command) {
-        SysJob job = new SysJob();
+    private QuartzJob toQuartzJob(ScheduleCommand command) {
+        QuartzJob job = new QuartzJob();
         job.setJobName(command.getJobName());
         job.setJobGroup(command.getJobGroup());
         job.setInvokeTarget(command.getInvokeTarget());
@@ -97,5 +101,16 @@ public class QuartzSchedulerAdapterImpl implements ISchedulerAdapter {
 
     private String defaultIfBlank(String value, String defaultValue) {
         return StringUtils.isBlank(value) ? defaultValue : value;
+    }
+
+    private Long checkJobResult(Long result, QuartzJob job, String operationType) {
+        JobErrorEnum error = JobErrorEnum.getByCode(result);
+        if (error != null) {
+            throw new ServiceException(error.getMessage(job.getJobName(), operationType));
+        }
+        if (result == null || result <= 0) {
+            throw new ServiceException(operationType + "Quartz调度任务失败：任务不存在或数据未写入");
+        }
+        return result;
     }
 }

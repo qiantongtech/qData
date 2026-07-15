@@ -14,7 +14,7 @@ import java.util.List;
  * Implementation details.
  */
 @Component
-@ConfigurationProperties(prefix = "qdata.datax")
+@ConfigurationProperties(prefix = "datax")
 public class DataXProperties {
 
     /**

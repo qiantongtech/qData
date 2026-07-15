@@ -69,9 +69,6 @@ public class SysJob extends BaseEntity
     @Excel(name = "并发执行", readConverterExp = "0=允许,1=禁止")
     private String concurrent;
 
-    /** Implementation details. */
-    @Excel(name = "执行策略")
-    private String executionType;
 
     /** Handle task-related data and operations. */
     @Excel(name = "任务状态", readConverterExp = "0=正常,1=暂停")
@@ -163,16 +160,6 @@ public class SysJob extends BaseEntity
         this.concurrent = concurrent;
     }
 
-    public String getExecutionType()
-    {
-        return executionType;
-    }
-
-    public void setExecutionType(String executionType)
-    {
-        this.executionType = executionType;
-    }
-
     public String getStatus()
     {
         return status;
@@ -193,7 +180,6 @@ public class SysJob extends BaseEntity
             .append("nextValidTime", getNextValidTime())
             .append("misfirePolicy", getMisfirePolicy())
             .append("concurrent", getConcurrent())
-            .append("executionType", getExecutionType())
             .append("status", getStatus())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())

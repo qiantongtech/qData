@@ -25,6 +25,7 @@ import tech.qiantong.qdata.common.exception.job.TaskException;
 import tech.qiantong.qdata.common.exception.job.TaskException.Code;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
+import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import tech.qiantong.qdata.quartz.domain.SysJob;
 import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 
@@ -44,8 +45,10 @@ public class ScheduleUtils
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
+        String executionTypeValue = sysJob instanceof QuartzJob
+                ? ((QuartzJob) sysJob).getExecutionType() : null;
         ScheduleExecutionTypeEnum executionType = ScheduleExecutionTypeEnum.resolve(
-                sysJob.getExecutionType(), sysJob.getConcurrent());
+                executionTypeValue, sysJob.getConcurrent());
         return executionType.shouldUseDisallowConcurrentJob()
                 ? QuartzDisallowConcurrentExecution.class
                 : QuartzJobExecution.class;
@@ -56,7 +59,15 @@ public class ScheduleUtils
      */
     public static TriggerKey getTriggerKey(Long jobId, String jobGroup)
     {
-        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+        return getTriggerKey(jobId, jobGroup, "");
+    }
+
+    /**
+     * 构建任务触发对象
+     */
+    public static TriggerKey getTriggerKey(Long jobId, String jobGroup, String namespace)
+    {
+        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + namespace + jobId, jobGroup);
     }
 
     /**
@@ -64,7 +75,15 @@ public class ScheduleUtils
      */
     public static JobKey getJobKey(Long jobId, String jobGroup)
     {
-        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+        return getJobKey(jobId, jobGroup, "");
+    }
+
+    /**
+     * 构建带命名空间的任务键，避免不同任务表的自增ID互相冲突。
+     */
+    public static JobKey getJobKey(Long jobId, String jobGroup, String namespace)
+    {
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + namespace + jobId, jobGroup);
     }
 
     /**
@@ -72,28 +91,39 @@ public class ScheduleUtils
      */
     public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, TaskException
     {
+        createScheduleJob(scheduler, job, "");
+    }
+
+    /**
+     * 创建带命名空间的定时任务。
+     */
+    public static void createScheduleJob(Scheduler scheduler, SysJob job, String namespace)
+            throws SchedulerException, TaskException
+    {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
         // Implementation details.
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass)
+                .withIdentity(getJobKey(jobId, jobGroup, namespace)).build();
 
         // Handle scheduling configuration and operations.
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
         cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
         // Implementation details.
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
+        CronTrigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(getTriggerKey(jobId, jobGroup, namespace))
                 .withSchedule(cronScheduleBuilder).build();
 
         // Retrieve the required data.
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
         // Implementation details.
-        if (scheduler.checkExists(getJobKey(jobId, jobGroup)))
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup, namespace)))
         {
             // Create the required record.
-            scheduler.deleteJob(getJobKey(jobId, jobGroup));
+            scheduler.deleteJob(getJobKey(jobId, jobGroup, namespace));
         }
 
         // Handle task-related data and operations.
@@ -106,7 +136,7 @@ public class ScheduleUtils
         // Handle task-related data and operations.
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
         {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup, namespace));
         }
     }
 

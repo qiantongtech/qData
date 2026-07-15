@@ -36,7 +36,6 @@ import tech.qiantong.qdata.quartz.service.ISysJobService;
 import tech.qiantong.qdata.quartz.util.CronUtils;
 import tech.qiantong.qdata.quartz.util.ScheduleUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -51,18 +50,6 @@ public class SysJobServiceImpl implements ISysJobService {
 
     @Autowired
     private SysJobMapper jobMapper;
-
-    /**
-     * 项目启动时，初始化定时器 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库ID和任务组名，否则会导致脏数据）
-     */
-    @PostConstruct
-    public void init() throws SchedulerException, TaskException {
-        scheduler.clear();
-        List<SysJob> jobList = jobMapper.selectJobAll();
-        for (SysJob job : jobList) {
-            ScheduleUtils.createScheduleJob(scheduler, job);
-        }
-    }
 
     /**
      * 获取quartz调度器的计划任务列表

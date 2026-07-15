@@ -120,7 +120,7 @@ public class DataXExecutor {
 
         // Handle DataX task configuration and execution.
         validateJson(dataJson);
-        Path jobDir = Paths.get(required(properties.getJobDir(), "qdata.datax.job-dir"));
+        Path jobDir = Paths.get(required(properties.getJobDir(), "datax.job-dir"));
         Files.createDirectories(jobDir);
         Path runDir = jobDir.resolve("datax_job_" + nowText() + "_" + UUID.randomUUID().toString().replace("-", ""));
         Files.createDirectories(runDir);
@@ -164,9 +164,9 @@ public class DataXExecutor {
      * Handle DataX task configuration and execution.
      */
     private void checkConfig() {
-        required(properties.getPythonCommand(), "qdata.datax.python-command");
-        required(properties.getDataxPyPath(), "qdata.datax.datax-py-path");
-        required(properties.getJobDir(), "qdata.datax.job-dir");
+        required(properties.getPythonCommand(), "datax.python-command");
+        required(properties.getDataxPyPath(), "datax.datax-py-path");
+        required(properties.getJobDir(), "datax.job-dir");
     }
 
     /**
@@ -269,7 +269,7 @@ public class DataXExecutor {
         if (jobFile == null || jobFile.getParent() == null) {
             return false;
         }
-        Path jobDir = Paths.get(required(properties.getJobDir(), "qdata.datax.job-dir")).toAbsolutePath().normalize();
+        Path jobDir = Paths.get(required(properties.getJobDir(), "datax.job-dir")).toAbsolutePath().normalize();
         Path runDir = jobFile.getParent().toAbsolutePath().normalize();
         // Create the required record.
         return "job.json".equals(jobFile.getFileName().toString())

@@ -76,12 +76,6 @@ public class McTaskInstanceDO extends BaseEntity {
     /** Implementation details. */
     private String status;
 
-    /** Scheduling engine */
-    private String taskScheduler;
-
-    /** Handle Quartz scheduling operations. */
-    private Long quartzId;
-
     /** Whether the record is valid. */
     private Boolean validFlag;
 

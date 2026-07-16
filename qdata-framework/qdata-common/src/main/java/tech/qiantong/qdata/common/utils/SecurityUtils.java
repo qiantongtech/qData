@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 安全服务工具类
+ * Security service tools
  *
  * @author qdata
  */
@@ -41,7 +41,7 @@ public class SecurityUtils
 {
 
     /**
-     * 用户ID
+     * User ID
      **/
     public static Long getUserId()
     {
@@ -56,7 +56,7 @@ public class SecurityUtils
     }
 
     /**
-     * 获取部门ID
+     * Get department ID
      **/
     public static Long getDeptId()
     {
@@ -71,7 +71,7 @@ public class SecurityUtils
     }
 
     /**
-     * 获取用户账户
+     * Get user account
      **/
     public static String getUsername()
     {
@@ -86,7 +86,7 @@ public class SecurityUtils
     }
 
     /**
-     * 获取用户
+     * Get user
      **/
     public static LoginUser getLoginUser()
     {
@@ -101,7 +101,7 @@ public class SecurityUtils
     }
 
     /**
-     * 获取Authentication
+     * GetAuthentication
      */
     public static Authentication getAuthentication()
     {
@@ -109,10 +109,10 @@ public class SecurityUtils
     }
 
     /**
-     * 生成BCryptPasswordEncoder密码
+     * Generate BCryptPasswordEncoder password
      *
-     * @param password 密码
-     * @return 加密字符串
+     * @param password password
+     * @return encrypted string
      */
     public static String encryptPassword(String password)
     {
@@ -121,11 +121,11 @@ public class SecurityUtils
     }
 
     /**
-     * 判断密码是否相同
+     * Determine whether the password is the same
      *
-     * @param rawPassword 真实密码
-     * @param encodedPassword 加密后字符
-     * @return 结果
+     * @param rawPassword real password
+     * @param encodedPassword characters after encryption
+     * @return result
      */
     public static boolean matchesPassword(String rawPassword, String encodedPassword)
     {
@@ -134,10 +134,10 @@ public class SecurityUtils
     }
 
     /**
-     * 是否为管理员
+     * Is it an administrator?
      *
-     * @param userId 用户ID
-     * @return 结果
+     * @param userId user ID
+     * @return result
      */
     public static boolean isAdmin(Long userId)
     {
@@ -145,10 +145,10 @@ public class SecurityUtils
     }
 
     /**
-     * 验证用户是否具备某权限
+     * Verify whether the user has certain permissions
      *
-     * @param permission 权限字符串
-     * @return 用户是否具备某权限
+     * @param permission permission string
+     * @return Whether the user has certain permissions
      */
     public static boolean hasPermi(String permission)
     {
@@ -156,11 +156,11 @@ public class SecurityUtils
     }
 
     /**
-     * 判断是否包含权限
+     * Determine whether permissions are included
      *
-     * @param authorities 权限列表
-     * @param permission 权限字符串
-     * @return 用户是否具备某权限
+     * @param authorities permission list
+     * @param permission permission string
+     * @return Whether the user has certain permissions
      */
     public static boolean hasPermi(Collection<String> authorities, String permission)
     {
@@ -169,10 +169,10 @@ public class SecurityUtils
     }
 
     /**
-     * 验证用户是否拥有某个角色
+     * Verify that a user has a role
      *
-     * @param role 角色标识
-     * @return 用户是否具备某角色
+     * @param role role identifier
+     * @return Whether the user has a certain role
      */
     public static boolean hasRole(String role)
     {
@@ -182,11 +182,11 @@ public class SecurityUtils
     }
 
     /**
-     * 判断是否包含角色
+     * Determine whether a role is included
      *
-     * @param roles 角色列表
-     * @param role 角色
-     * @return 用户是否具备某角色权限
+     * @param roles role list
+     * @param role role
+     * @return Whether the user has certain role permissions
      */
     public static boolean hasRole(Collection<String> roles, String role)
     {

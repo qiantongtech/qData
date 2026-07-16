@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 标签管理 创建/修改 Request VO ATT_TAG
+ * Tag Management Create/Update Request VO ATT_TAG
  *
  * @author qdata
  * @date 2025-07-11

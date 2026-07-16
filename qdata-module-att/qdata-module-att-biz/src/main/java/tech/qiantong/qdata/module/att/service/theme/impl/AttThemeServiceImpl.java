@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 主题Service业务层处理
+ * Theme Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -77,15 +77,15 @@ public class AttThemeServiceImpl  extends ServiceImpl<AttThemeMapper,AttThemeDO>
 
     @Override
     public int updateAttTheme(AttThemeSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新主题
+        // Update Theme
         AttThemeDO updateObj = BeanUtils.toBean(updateReqVO, AttThemeDO.class);
         return attThemeMapper.updateById(updateObj);
     }
     @Override
     public int removeAttTheme(Collection<Long> idList) {
-        // 批量删除主题
+        // Batch Delete Theme
         return attThemeMapper.deleteBatchIds(idList);
     }
 
@@ -106,19 +106,19 @@ public class AttThemeServiceImpl  extends ServiceImpl<AttThemeMapper,AttThemeDO>
                 .collect(Collectors.toMap(
                         AttThemeDO::getId,
                         attThemeDO -> attThemeDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入主题数据
+     * Import Theme data
      *
-     * @param importExcelList 主题数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     *  importExcelList Theme data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  @return Result
      */
     @Override
     public String importAttTheme(List<AttThemeRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -142,16 +142,16 @@ public class AttThemeServiceImpl  extends ServiceImpl<AttThemeMapper,AttThemeDO>
                             attThemeMapper.updateById(attThemeDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attThemeId + " 的主题记录。", attThemeId, "主题"));
+                                    "数据Update 成功，ID为 " + attThemeId + " 的主题记录。", attThemeId, "主题"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attThemeId + " 的主题记录不存在。", attThemeId, "主题"));
+                                    "数据Update 失败，ID为 " + attThemeId + " 的主题记录不存在。", attThemeId, "主题"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttThemeDO> queryWrapper = new QueryWrapper<>();

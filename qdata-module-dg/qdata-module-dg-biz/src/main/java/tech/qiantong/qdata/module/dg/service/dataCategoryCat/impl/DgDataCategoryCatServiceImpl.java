@@ -49,7 +49,7 @@ import tech.qiantong.qdata.module.dg.service.dataCategory.IDgDataCategoryService
 import tech.qiantong.qdata.module.dg.service.dataCategoryCat.IDgDataCategoryCatService;
 
 /**
- * 数据分类-类目Service业务层处理
+ * Data Category - Category Service Business Layer Processing
  *
  * @author FXB
  * @date 2026-04-07
@@ -83,25 +83,25 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
         if (catDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        //Check if it selected itself
         if (catDO.getId().equals(updateReqVO.getParentId())) {
             throw new ServiceException("dg.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
-        //修改上下级判断
+        //Check parent-child relationship change
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId())) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
             flag = true;
         }
 
-        // 更新数据服务类目管理
+        // Update data service category management
         DgDataCategoryCatDO updateObj = BeanUtils.toBean(updateReqVO, DgDataCategoryCatDO.class);
         int i = dgDataCategoryCatMapper.updateById(updateObj);
 
         dgDataCategoryService.updateCatCode(catDO.getCode(), updateObj.getCode());
-        //判断上下级是否发生了改变
+        //Check if parent-child relationship has changed
         if (flag) {
-            //更改所有下级
+            //Update all children
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
         return i;
@@ -116,7 +116,7 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
                 throw new ServiceException("dg.error.delete.category", "存在分类，不允许删除");
             }
         }
-        // 批量删除数据分类-类目
+        // Batch delete data category-category
         return dgDataCategoryCatMapper.deleteBatchIds(idList);
     }
 
@@ -137,19 +137,19 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
                 .collect(Collectors.toMap(
                         DgDataCategoryCatDO::getId,
                         dgDataCategoryCatDO -> dgDataCategoryCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据分类-类目数据
+     * Import data category-category data
      *
-     * @param importExcelList 数据分类-类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data category-category data list
+     * @param isUpdateSupport Whether to update support, if exists then update data
+     * @param operName        Operator user
+     * @return Result
      */
     @Override
     public String importDgDataCategoryCat(List<DgDataCategoryCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -225,12 +225,12 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Divided into three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Add child node without sibling, YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Add child node with sibling, YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        //Find the largest code value among siblings
         LambdaQueryWrapper<DgDataCategoryCatDO> query = new LambdaQueryWrapper<DgDataCategoryCatDO>()
                 .eq(DgDataCategoryCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), DgDataCategoryCatDO::getCode, parentCode)
@@ -239,15 +239,15 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
         List<DgDataCategoryCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                //Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                //Case 2
                 DgDataCategoryCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            //Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

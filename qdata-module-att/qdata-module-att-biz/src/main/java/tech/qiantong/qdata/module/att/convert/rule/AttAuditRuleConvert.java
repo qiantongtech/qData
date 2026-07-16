@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.rule.AttAuditRuleDO;
 import java.util.List;
 
 /**
- * 稽查规则 Convert
+ * Audit Rule Convert
  *
  * @author qdata
  * @date 2025-01-20
@@ -38,29 +38,29 @@ public interface AttAuditRuleConvert {
     AttAuditRuleConvert INSTANCE = Mappers.getMapper(AttAuditRuleConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attAuditRulePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attAuditRulePageReqVO Request parameters
      * @return AttAuditRuleDO
      */
      AttAuditRuleDO convertToDO(AttAuditRulePageReqVO attAuditRulePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attAuditRuleSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attAuditRuleSaveReqVO Save request parameters
      * @return AttAuditRuleDO
      */
      AttAuditRuleDO convertToDO(AttAuditRuleSaveReqVO attAuditRuleSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attAuditRuleDO 实体对象
+     * Convert DO to RespVO
+     * @param attAuditRuleDO Entity object
      * @return AttAuditRuleRespVO
      */
      AttAuditRuleRespVO convertToRespVO(AttAuditRuleDO attAuditRuleDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attAuditRuleDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attAuditRuleDOList Entity object list
      * @return List<AttAuditRuleRespVO>
      */
      List<AttAuditRuleRespVO> convertToRespVOList(List<AttAuditRuleDO> attAuditRuleDOList);

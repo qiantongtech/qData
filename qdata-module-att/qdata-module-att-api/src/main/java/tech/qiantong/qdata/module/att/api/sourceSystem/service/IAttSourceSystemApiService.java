@@ -23,7 +23,7 @@ import tech.qiantong.qdata.module.att.api.sourceSystem.dto.AttSourceSystemRespDT
 import java.util.List;
 
 /**
- * 来源系统 API 服务接口
+ * Source System API Service Interface
  *
  * @author qdata
  * @date 2026-04-30
@@ -31,9 +31,9 @@ import java.util.List;
 public interface IAttSourceSystemApiService {
 
     /**
-     * 获取所有有效的来源系统列表
+     * Get all valid source system list
      *
-     * @return 有效来源系统列表
+     * @return valid source system list
      */
     List<AttSourceSystemRespDTO> getValidSourceSystems();
 }

@@ -268,9 +268,9 @@ const handleView = (e) => {
     updateMessage(e);
     msgList.value = msgList.value.map(item => {
         if (e.id == item.id) {
-            return { ...item, hasRead: '1' }; // 创建一个新对象，修改 hasRead
+            return { ...item, hasRead: '1' }; // Create a new object and modify hasRead
         }
-        return item; // 保持其他项不变
+        return item; // Keep everything else unchanged
     });
     openView.value = true;
     viewData.value = e;
@@ -296,20 +296,20 @@ const getList = () => {
 };
 getList();
 
-/** 全部已读 */
+/** All read */
 function readAllMsg() {
     ElMessageBox.confirm(td('sys.system.message.confirmSetAllRead'))
         .then(() => {
             return readAll();
         })
         .then((res) => {
-            console.log('------设置为已读----',res)
+            console.log("------Mark as read----",res)
             getList();
             ElMessage.success(td('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }
-/** 删除 */
+/** Delete */
 function deleteMsg(id) {
     ElMessageBox.confirm(td('sys.system.message.confirmDelete'))
         .then(() => {
@@ -323,7 +323,7 @@ function deleteMsg(id) {
 }
 
 // /**
-//  * 修改状态为已读
+//  * Change status to read
 //  * @param id
 //  */
 // function updateMsg(row) {

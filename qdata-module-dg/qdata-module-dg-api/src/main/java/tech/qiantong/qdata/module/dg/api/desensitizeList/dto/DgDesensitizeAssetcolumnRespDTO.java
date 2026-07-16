@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.desensitizeList.dto;
 import lombok.*;
 
 /**
- * 脱敏清单关联关系 DTO 对象 DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitization List Relationship DTO Object DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12
@@ -34,25 +34,25 @@ public class DgDesensitizeAssetcolumnRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 资产字段ID */
+    /** Asset Column ID */
     private Long assetcolumnId;
 
-    /** 数据分类ID */
+    /** Data Category ID */
     private Long dataCategoryId;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

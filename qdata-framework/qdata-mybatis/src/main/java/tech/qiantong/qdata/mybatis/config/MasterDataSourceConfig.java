@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * 主数据源配置文件
+ * Master data source configuration file
  * @author qdata
  */
 @Component

@@ -50,14 +50,14 @@
         >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <!-- 第一级 -->
+              <!-- first level -->
               <!-- <el-icon class="iconimg colorxz" v-if="node.expanded && node.level === 1">
                 <FolderOpened />
               </el-icon>
               <el-icon class="iconimg colorxz" v-if="!node.expanded && node.level === 1">
                 <Folder />
               </el-icon> -->
-              <!-- 第二级 -->
+              <!-- Level 2 -->
               <!-- <el-icon class="iconimg colorxz" v-if="node.expanded && node.childNodes.length && node.level == 2">
                 <FolderOpened />
               </el-icon>
@@ -76,7 +76,7 @@
                 alt=""
                 v-if="!node.expanded && node.childNodes.length"
               />
-              <!-- 子级 -->
+              <!-- child -->
               <img
                 class="child-icon"
                 src="../../../../../../../assets/images/da/asset/icon-file.svg"
@@ -99,7 +99,7 @@
     </div>
   </el-aside>
 
-  <!-- 拖拽栏 -->
+  <!-- drag bar -->
   <div class="resize-bar" @mousedown="startResize">
     <div class="resize-handle-sx">
       <span class="zjsx"></span>
@@ -155,19 +155,19 @@ const deptTreeRef = ref(null);
 const leftWidth = ref(props.leftWidth);
 const expandedKeys = ref([]);
 
-// 等 deptOptions 加载后设置一级节点展开
+// After deptOptions is loaded, set the first-level node expansion
 watch(
   () => props.deptOptions,
   (val) => {
     if (Array.isArray(val) && val.length > 0) {
       console.log(val);
-      expandedKeys.value = val.map((item) => item.id); // 只展开第一层
+      expandedKeys.value = val.map((item) => item.id); // Expand only the first layer
     }
   },
   { immediate: true }
 );
 
-// 过滤节点
+// Filter nodes
 const filterNode = (value, data) => {
   if (!value) return true;
   return data.name.indexOf(value) !== -1;
@@ -186,7 +186,7 @@ watch(
   }
 );
 
-// 拖拽逻辑
+// Drag and drop logic
 const isResizing = ref(false);
 let startX = 0;
 const startResize = (event) => {
@@ -202,15 +202,15 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => {});
   }
 };
 
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
   if (leftWidth.value === 0) {
     leftWidth.value = 300;
@@ -320,7 +320,7 @@ defineExpose({ resetTree });
   width: 15px;
   text-align: center;
   position: relative;
-  /* 必须加，用来定位 collapse-icon */
+  /* Must be added to locate collapse-icon */
 }
 
 .zjsx {
@@ -336,7 +336,7 @@ defineExpose({ resetTree });
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* 真正的居中 */
+  /* true center */
   font-size: 28px;
   color: #aaa;
   cursor: pointer;
@@ -357,7 +357,7 @@ defineExpose({ resetTree });
 }
 
 :deep(.dept-tree) {
-  //组织树 背景颜色 及右边线颜色
+  //Organization tree background color and right line color
   &.el-tree--highlight-current
     .el-tree-node.is-current
     > .el-tree-node__content {

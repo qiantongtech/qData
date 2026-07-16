@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询服务资源门户部门列表
+// Query Service Resource Portal Department List
 export function listRpDept(query) {
   return request({
     url: '/rp/rpDept/list',
@@ -27,7 +27,7 @@ export function listRpDept(query) {
   })
 }
 
-// 查询服务资源门户部门列表
+// Query Service Resource Portal Department List
 export function listRpDeptList(query) {
   return request({
     url: '/rp/rpDept/deptList',
@@ -36,7 +36,7 @@ export function listRpDeptList(query) {
   })
 }
 
-// 查询服务资源门户部门详细
+// Query service resource portal department details
 export function getRpDept(deptId) {
   return request({
     url: '/rp/rpDept/' + deptId,
@@ -44,7 +44,7 @@ export function getRpDept(deptId) {
   })
 }
 
-// 新增服务资源门户部门
+// Added new service resource portal department
 export function addRpDept(data) {
   return request({
     url: '/rp/rpDept',
@@ -53,7 +53,7 @@ export function addRpDept(data) {
   })
 }
 
-// 修改服务资源门户部门
+// Modify Service Resource Portal Department
 export function updateRpDept(data) {
   return request({
     url: '/rp/rpDept',
@@ -62,7 +62,7 @@ export function updateRpDept(data) {
   })
 }
 
-// 删除服务资源门户部门
+// Delete Service Resource Portal Department
 export function delRpDept(deptId) {
   return request({
     url: '/rp/rpDept/' + deptId,

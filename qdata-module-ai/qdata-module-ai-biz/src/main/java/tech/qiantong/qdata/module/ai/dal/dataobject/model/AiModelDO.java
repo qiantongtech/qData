@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 模型管理 DO 对象 AI_MODEL
+ * Model management DO object AI_MODEL
  *
  * @author FXB
  * @date 2026-04-01
  */
 @Data
 @TableName(value = "AI_MODEL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("AI_MODEL_seq")
 @Builder
 @NoArgsConstructor
@@ -48,28 +48,28 @@ public class AiModelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 模型名称;例如 qwen-max */
+    /** Model name; for example qwen-max */
     private String name;
 
-    /** 平台;1:通义千问 2:DeepSeek */
+    /** Platform; 1: Tongyi Qianwen 2: DeepSeek */
     private String platform;
 
-    /** API地址 */
+    /** API address */
     private String apiUrl;
 
-    /** API秘钥 */
+    /** API key */
     private String apiKey;
 
-    /** 排序 */
+    /** Sort */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 

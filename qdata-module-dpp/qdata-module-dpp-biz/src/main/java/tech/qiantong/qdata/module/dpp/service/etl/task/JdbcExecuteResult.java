@@ -21,9 +21,9 @@ package tech.qiantong.qdata.module.dpp.service.etl.task;
 import lombok.Getter;
 
 /**
- * Handle JDBC SQL execution.
+ * 数据开发 JDBC SQL 执行结果
  * <p>
- * Handle JDBC SQL execution.
+ * 用于在执行器和调用方之间传递单个 SQL 节点的执行统计信息
  *
  * @author qdata
  */
@@ -31,24 +31,24 @@ import lombok.Getter;
 public class JdbcExecuteResult {
 
     /**
-     * Implementation details.
+     * DML 语句累计影响行数
      * -- GETTER --
-     * Retrieve the required data.
+     *  获取影响行数
      */
     private final int updateCount;
 
     /**
-     * Retrieve the required data.
+     * 查询语句或带结果集调用返回的结果行数
      * -- GETTER --
-     * Retrieve the required data.
+     *  获取结果行数
      */
     private final int resultCount;
 
     /**
-     * Handle JDBC SQL execution.
+     * 创建 JDBC 执行结果。
      *
-     * @param updateCount parameter value
-     * @param resultCount parameter value
+     * @param updateCount 影响行数
+     * @param resultCount 结果行数
      */
     public JdbcExecuteResult(int updateCount, int resultCount) {
         this.updateCount = updateCount;

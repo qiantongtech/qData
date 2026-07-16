@@ -65,7 +65,7 @@
           <el-button link type="primary" icon="View" @click="handleDetail(row)">
             {{ td('common.button.details') }}
           </el-button>
-          <!-- <el-button link type="primary" icon="Edit">编辑</el-button> -->
+          <!-- <el-button link type="primary" icon="Edit">Edit</el-button> -->
           <el-button
             link
             type="danger"

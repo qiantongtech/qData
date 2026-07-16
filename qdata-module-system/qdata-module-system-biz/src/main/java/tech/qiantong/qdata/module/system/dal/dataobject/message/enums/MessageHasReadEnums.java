@@ -21,8 +21,8 @@ package tech.qiantong.qdata.module.system.dal.dataobject.message.enums;
 import java.util.Objects;
 
 public enum MessageHasReadEnums {
-    WD(0, "未读"),
-    YD(1, "已读");
+    WD(0, "Unread"),
+    YD(1, "Read");
     public final Integer code;
     public final String info;
 
@@ -40,7 +40,7 @@ public enum MessageHasReadEnums {
         return null;
     }
 
-    // 根据code返回县市名称
+    // Return enum by info string
     public static MessageHasReadEnums getName(String info) {
         for (MessageHasReadEnums v : values()) {
             if (v.like(info)) {

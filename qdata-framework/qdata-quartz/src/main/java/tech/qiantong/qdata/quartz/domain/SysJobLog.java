@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 定时任务调度日志表 sys_job_log
+ * Scheduled task scheduling log table sys_job_log
  *
  * @author qdata
  */
@@ -38,34 +38,34 @@ public class SysJobLog extends BaseEntity
     @Excel(name = "日志序号")
     private Long jobLogId;
 
-    /** 任务名称 */
+    /** Task name */
     @Excel(name = "任务名称")
     private String jobName;
 
-    /** 任务组名 */
+    /** Task group name */
     @Excel(name = "任务组名")
     private String jobGroup;
 
-    /** 调用目标字符串 */
+    /** Call target string */
     @Excel(name = "调用目标字符串")
     private String invokeTarget;
 
-    /** 日志信息 */
+    /** Log information */
     @Excel(name = "日志信息")
     private String jobMessage;
 
-    /** 执行状态（0正常 1失败） */
+    /** Execution status (0 normal, 1 failed) */
     @Excel(name = "执行状态", readConverterExp = "0=正常,1=失败")
     private String status;
 
-    /** 异常信息 */
+    /** Exception information */
     @Excel(name = "异常信息")
     private String exceptionInfo;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 停止时间 */
+    /** Stop time */
     private Date stopTime;
 
     public Long getJobLogId()

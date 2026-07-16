@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据发现库信息 Response VO 对象 DA_DISCOVERY_TABLE
+ * Data Discovery Database Table Response VO object DA_DISCOVERY_TABLE
  *
  * @author qdata
  * @date 2025-02-11

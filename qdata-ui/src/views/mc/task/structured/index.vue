@@ -115,6 +115,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status == '0'"
+                    :loading="runClickLoading"
                     @click="handleRunClick(row)"
                   >
                     {{ td("mc.task.structured.executeOnce") }}
@@ -136,7 +137,7 @@
       </el-main>
     </el-container>
 
-    <!-- 调度周期弹窗 -->
+    <!-- Scheduling cycle pop-up window -->
     <el-dialog
       :title="td('mc.task.structured.cronGenerator')"
       v-model="cronDialog.open"
@@ -150,7 +151,7 @@
       />
     </el-dialog>
 
-    <!-- 新增/修改弹窗 -->
+    <!-- Add/modify pop-up window -->
     <el-dialog
       v-model="dialog.open"
       :title="dialog.title"
@@ -418,7 +419,7 @@
           <el-button @click="handleCancelClick">{{
             td("common.button.cancel")
           }}</el-button>
-          <el-button type="primary" @click="handleConfirmClick">
+          <el-button type="primary" :loading="dialog.loading" @click="handleConfirmClick">
             {{ td("common.button.confirm") }}
           </el-button>
         </div>
@@ -567,6 +568,7 @@ const rules = {
 const DETAIL_PATH = "/dg/meta/task/detail";
 
 const { proxy } = getCurrentInstance();
+const runClickLoading = ref(false);
 const dicts = proxy.useDict(
   "datasource_type",
   "mc_collect_scope",
@@ -592,7 +594,7 @@ const store = reactive({
 function getAllSourceSystems() {
   listValidSourceSystem().then((res) => {
     store.sourceSystems = res.data;
-    // 扁平化数据用于查找
+    // Flatten data for lookups
     const flatten = (list) => {
       if (!Array.isArray(list)) return [];
       let result = [];
@@ -613,9 +615,9 @@ function handleTreeDataLoaded({ treeData, flatData }) {
   store.domains = flatData;
 }
 
-// 节点单击事件
+// Node click event
 function handleNodeClick(data) {
-  // 清除之前的筛选
+  // Clear previous filters
   tableStore.params.sourceSystemId = undefined;
   tableStore.params.datasourceId = undefined;
   tableStore.params.id = undefined;
@@ -632,7 +634,7 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-// 列表
+// list
 const tableRef = ref(null);
 const tableStore = reactive({
   config: {
@@ -781,7 +783,7 @@ const tableStore = reactive({
   },
 });
 
-// 搜索项
+// search terms
 const searchStore = reactive({
   items: [
     {
@@ -808,7 +810,7 @@ const searchStore = reactive({
   ],
 });
 
-// 新增/修改弹窗
+// Add/modify pop-up window
 const DEFAULT_FORM = {
   collectionMode: "1",
   collectionScope: "2",
@@ -844,13 +846,13 @@ const schedulerGuide = computed(() => {
   };
 });
 
-// 调度周期弹窗
+// Scheduling cycle pop-up window
 const cronDialog = reactive({
   open: false,
   data: "",
 });
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.sourceSystems, id, {
@@ -863,7 +865,7 @@ const getDomainPath = computed(() => {
   };
 });
 
-// 获取数据源列表
+// Get a list of data sources
 function getDatasources() {
   listDaDatasource().then((res) => {
     res.data.rows.forEach((item) => {
@@ -875,12 +877,12 @@ function getDatasources() {
   });
 }
 
-// 搜索按钮操作
+// Search button action
 function handleQueryClick() {
   tableRef.value?.getList();
 }
 
-// 重置按钮操作
+// reset button action
 function handleResetQueryClick() {
   if (sourceSystemTreeRef.value?.resetTree) {
     sourceSystemTreeRef.value.resetTree();
@@ -891,20 +893,20 @@ function handleResetQueryClick() {
   tableRef.value?.resetQuery();
 }
 
-// 获取用户列表
+// Get user list
 function getUserList() {
   deptUserTree().then((res) => {
     store.userList = res.data;
   });
 }
 
-// 切换用户
+// Switch user
 function handleUserChange(id) {
   const data = store.userList.find((item) => item.userId === id);
   dialog.form.leaderPhone = data.phonenumber;
 }
 
-// 切换数据源
+// Switch data source
 function handleDatasourceChange(id, falg = true) {
   const data = store.datasources.find((item) => item.id === id);
   dialog.form.ip = data.ip;
@@ -924,7 +926,7 @@ function handleDatasourceChange(id, falg = true) {
   });
 }
 
-// 切换来源系统
+// Switch source system
 function handleDomainChange(id) {
   const data = store.flatSourceSystems.find((item) => item.id === id);
   if (data) {
@@ -933,32 +935,36 @@ function handleDomainChange(id) {
   }
 }
 function handleRunClick(val) {
+  if (runClickLoading.value) return;
+  runClickLoading.value = true;
   runJobOnce({ id: val.id }).then((res) => {
+    runClickLoading.value = false;
     if (res.code == 200) {
       ElMessage.success(td("mc.task.structured.executeSuccess"));
-    } else {
     }
+  }).catch(() => {
+    runClickLoading.value = false;
   });
 }
-// 打开调度周期弹窗
+// Open the scheduling cycle pop-up window
 function handleOpenCronClick() {
   cronDialog.data = dialog.form.cronExpression;
   cronDialog.open = true;
 }
 
-// 关闭调度周期弹窗
+// Close the scheduling cycle pop-up window
 function handleCloseCronClick() {
   cronDialog.open = false;
   cronDialog.data = "";
 }
 
-// 确认调度周期弹窗
+// Confirm scheduling cycle pop-up window
 function handleConfirmCronClick(data) {
   dialog.form.cronExpression = data;
   cronDialog.open = false;
 }
 
-// 点击详情
+// Click for details
 function handleDetailClick(row) {
   router.push({
     path: DETAIL_PATH,
@@ -968,7 +974,7 @@ function handleDetailClick(row) {
   });
 }
 
-// 点击新增
+// Click to add
 function handleAddClick() {
   dialog.title = td("mc.task.structured.addTask");
   // 打开新增弹窗时兜底一次，避免上次编辑留下空值。
@@ -977,7 +983,7 @@ function handleAddClick() {
   dialog.func = addTask;
 }
 
-// 取消新增/修改
+// Cancel addition/modification
 function handleCancelClick() {
   formRef.value.resetFields();
   dialog.form = {
@@ -988,14 +994,18 @@ function handleCancelClick() {
   dialog.open = false;
 }
 
-// 确认新增/修改
+// Confirm addition/modification
 async function handleConfirmClick() {
+  if (dialog.loading) return;
+  dialog.loading = true;
   if(!await handleSchedulerChange()){
     return;
   }
   const valid = await formRef.value.validate();
-  if (!valid) return;
-  dialog.loading = true;
+  if (!valid) {
+    dialog.loading = false;
+    return;
+  }
   const { tables, ...params } = dialog.form;
   if (params.collectionScope == "1") {
     params.scopeSaveReqVOS = dialog.tableList.filter((item) =>
@@ -1013,7 +1023,7 @@ async function handleConfirmClick() {
   }
 }
 
-// 打开修改弹窗
+// Open the modification pop-up window
 function handleEditClick(row) {
   dialog.open = true;
   dialog.func = updateTask;
@@ -1022,7 +1032,7 @@ function handleEditClick(row) {
     if (res.data.scopeSaveReqVOS) {
       res.data.tables = res.data.scopeSaveReqVOS.map((item) => item.dbName);
     }
-    // 确保回显时包含来源系统名称
+    // Make sure the source system name is included in the echo
     if (res.data.sourceSystemId && !res.data.sourceSystemName) {
       const system = store.flatSourceSystems.find(
         (item) => item.id === res.data.sourceSystemId
@@ -1049,7 +1059,7 @@ function getSchedulerLabel(value) {
   );
 }
 
-// 删除
+// Delete
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
     td("mc.task.structured.confirmDelete", '', { id: row.id }),
@@ -1069,7 +1079,7 @@ function handleDeleteClick(row) {
     });
 }
 
-// 采集实例
+// Collection examples
 function handleInstanceClick(row) {
   router.push({
     path: DETAIL_PATH,
@@ -1080,7 +1090,7 @@ function handleInstanceClick(row) {
   });
 }
 
-// 删除选中行
+// Delete selected row
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   const ids = store.rows.map((item) => item.id);
@@ -1115,14 +1125,14 @@ function handleDeleteColumnClick() {
   });
 }
 
-// 筛选表
+// filter table
 function onFilterTransfer(value, item) {
   if (!value) return item;
   const txt = (item.label || item.dbName || "").toLowerCase();
   return txt.includes(value.toLowerCase());
 }
 
-// 切换任务状态
+// Switch task status
 function handleTaskStatusChange(row, status) {
   const action =
     status == 1
@@ -1160,7 +1170,7 @@ function handleTaskStatusChange(row, status) {
     });
 }
 
-// 切换调度状态
+// Switch scheduling status
 function handleSchedulerStatusChange(row, status) {
   const action =
     status == 1

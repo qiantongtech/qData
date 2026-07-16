@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 逻辑模型属性信息Service接口
+ * Logical Model Column/Property Information Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,54 +38,54 @@ import java.util.Map;
 public interface IDpModelColumnService extends IService<DpModelColumnDO> {
 
     /**
-     * 获得逻辑模型属性信息分页列表
+     * Get Logical Model Column/Property Information Paginated List
      *
-     * @param pageReqVO 分页请求
-     * @return 逻辑模型属性信息分页列表
+     * @param pageReqVO Pagination Request
+     * @return Logical Model Column/Property Information Paginated List
      */
     PageResult<DpModelColumnDO> getDpModelColumnPage(DpModelColumnPageReqVO pageReqVO);
 
     /**
-     * 创建逻辑模型属性信息
+     * Create Logical Model Column/Property Information
      *
-     * @param createReqVO 逻辑模型属性信息信息
-     * @return 逻辑模型属性信息编号
+     * @param createReqVO Logical Model Column/Property Information
+     * @return Logical Model Column/Property Information ID
      */
     Long createDpModelColumn(DpModelColumnSaveReqVO createReqVO);
 
     /**
-     * 更新逻辑模型属性信息
+     * Update Logical Model Column/Property Information
      *
-     * @param updateReqVO 逻辑模型属性信息信息
+     * @param updateReqVO Logical Model Column/Property Information
      */
     int updateDpModelColumn(DpModelColumnSaveReqVO updateReqVO);
 
     /**
-     * 删除逻辑模型属性信息
+     * Delete Logical Model Column/Property Information
      *
-     * @param idList 逻辑模型属性信息编号
+     * @param idList Logical Model Column/Property Information ID
      */
     int removeDpModelColumn(Collection<Long> idList);
 
     /**
-     * 批量删除逻辑模型属性信息
+     * Batch Delete Logical Model Column/Property Information
      *
-     * @param modelIdList 逻辑模型编号
+     * @param modelIdList Logical Model ID
      */
     int removeDpModelColumnByModelId(Collection<Long> modelIdList);
 
     /**
-     * 获得逻辑模型属性信息详情
+     * Get Logical Model Column/Property Information Details
      *
-     * @param id 逻辑模型属性信息编号
-     * @return 逻辑模型属性信息
+     * @param id Logical Model Column/Property Information ID
+     * @return Logical Model Column/Property Information
      */
     DpModelColumnDO getDpModelColumnById(Long id);
 
     /**
-     * 获得全部逻辑模型属性信息列表
+     * Get All Logical Model Column/Property Information List
      *
-     * @return 逻辑模型属性信息列表
+     * @return Logical Model Column/Property Information List
      */
     List<DpModelColumnDO> getDpModelColumnList();
     List<DpModelColumnDO> getDpModelColumnList(DpModelColumnSaveReqVO createReqVO);
@@ -93,36 +93,36 @@ public interface IDpModelColumnService extends IService<DpModelColumnDO> {
     long countByDpModelColumn(DpModelColumnSaveReqVO createReqVO);
 
     /**
-     * 获得全部逻辑模型属性信息 Map
+     * Get All Logical Model Column/Property Information Map
      *
-     * @return 逻辑模型属性信息 Map
+     * @return Logical Model Column/Property Information Map
      */
     Map<Long, DpModelColumnDO> getDpModelColumnMap();
 
 
     /**
-     * 导入逻辑模型属性信息数据
+     * Import Logical Model Column/Property Information Data
      *
-     * @param importExcelList 逻辑模型属性信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Logical Model Column/Property Information Data List
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDpModelColumn(List<DpModelColumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 批量插入逻辑模型属性信息数据
+     * Batch Insert Logical Model Column/Property Information Data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical Model Column/Property Information Data List
+     * @return Result
      */
     Boolean createDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList);
 
     /**
-     * 批量修改和插入逻辑模型属性信息数据
+     * Batch Update and Insert Logical Model Column/Property Information Data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical Model Column/Property Information Data List
+     * @return Result
      */
     Boolean updateDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList);
 }

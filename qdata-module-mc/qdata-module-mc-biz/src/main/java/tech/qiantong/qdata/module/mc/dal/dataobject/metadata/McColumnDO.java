@@ -8,14 +8,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 元数据字段信息 DO 对象 MC_COLUMN
+ * Metadata field information DO object MC_COLUMN
  *
  * @author qdata
  * @date 2026-02-11
  */
 @Data
 @TableName(value = "MC_COLUMN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_COLUMN_seq")
 @Builder
 @NoArgsConstructor
@@ -29,87 +29,87 @@ public class McColumnDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 采集任务id;预留字段，暂时不用 */
+    /** Collection task id; reserved field, not used temporarily */
     private Long taskId;
 
-    /** 库id */
+    /** Database ID */
     private Long dbId;
 
-    /** 表信息id */
+    /** Table information id */
     private Long tableId;
 
-    /** 数据源id;冗余字段 */
+    /** Data source id; redundant field */
     private Long datasourceId;
 
-    /** 版本 */
+    /** version */
     private Integer version;
 
-    /** 安全等级id */
+    /** Security level id */
     private Long safetyLevelId;
 
-    /** 数据元id */
+    /** Data element id */
     private Long dataElemId;
 
-    /** 字段名称 */
+    /** Field name */
     private String columnName;
 
-    /** 字段注释 */
+    /** Field comments */
     private String columnComment;
 
-    /** 字段类型 */
+    /** Field type */
     private String columnType;
 
-    /** 数据长度 */
+    /** Data length */
     private Integer columnLength;
 
-    /** 数据精度 */
+    /** Data accuracy */
     private Integer columnPrecision;
 
-    /** 数据小数位 */
+    /** Data decimal places */
     private Integer columnScale;
 
-    /** 数据默认值 */
+    /** Data default value */
     private String defaultValue;
 
-    /** 是否主键;0:否 1:是 */
+    /** Whether it is the primary key; 0: No 1: Yes */
     private String pkFlag;
 
-    /** 是否外键;0:否 1:是 */
+    /** Whether it is a foreign key; 0: No 1: Yes */
     private String fkFlag;
 
-    /** 是否可空;0:否 1:是 */
+    /** Whether it is nullable; 0: No 1: Yes */
     private String nullableFlag;
 
-    /** 业务定义 */
+    /** Business definition */
     private String businessDefinition;
 
-    /** 度量单位 */
+    /** Unit of measurement */
     private String measuringUnit;
 
-    /** 数据质量 */
+    /** Data quality */
     private Integer dataQuality;
 
-    /** 审核状态;1：审批中，2：审批通过，3：审批拒绝，4：审批撤回，5：审批异常 */
+    /** Review status; 1: Approval in progress, 2: Approval passed, 3: Approval rejected, 4: Approval withdrawn, 5: Approval abnormal */
     private String auditStatus;
 
-    /** 审核时间 */
+    /** Review time */
     private Date auditTime;
 
-    /** 状态;0：未发布，1：已发布 */
+    /** Status; 0: not released, 1: released */
     private String status;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
@@ -129,7 +129,7 @@ public class McColumnDO extends BaseEntity {
     private String tableName;
 
     /**
-     * 安全等级名称
+     * Security level name
      */
     @TableField(exist = false)
     private String safetyLevelName;
@@ -137,44 +137,44 @@ public class McColumnDO extends BaseEntity {
     @TableField(exist = false)
     private Long mcTableLogId;
 
-    //字段变更内容
+    //Field changes
     @TableField(exist = false)
     private String updateMsg;
 
-    //字段变更类型 - 数字代码表示不同变更类型：1-字段注释变更, 2-字段类型变更, 3-字段长度变更, 4-字段精度变更, 5-字段小数位数变更, 6-字段默认值变更, 7-主键标识变更, 8-外键标识变更, 9-可空标识变更
+    //Field change type - Numeric code represents different change types: 1-Field comment change, 2-Field type change, 3-Field length change, 4-Field precision change, 5-Field decimal place change, 6-Field default value change, 7-Primary key identification change, 8-Foreign key identification change, 9-Nullable identification change
     @TableField(exist = false)
     private String updateType;
 
     /**
-     * 是否自增
+     * Whether to increment automatically
      */
     private String autoIncrementFlag;
 
     /**
-     * 是否分区字段
+     * Whether to partition fields
      */
     private String partitionFlag;
 
     /**
-     * 字段规范
+     * Field specification
      */
     private String columnStandard;
 
     /**
-     * 取值逻辑
+     * Value logic
      */
     private String valueRule;
 
-    /** 责任人 */
+    /** Responsible person */
     private Long businessLeader;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     private Long responsibleDept;
 
     /**
-     * 是否唯一
+     * Is it unique?
      */
     private String uniqueFlag;
 }

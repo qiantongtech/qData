@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 来源系统Mapper接口
+ * Source System Mapper Interface
  *
  * @author qdata
  * @date 2026-04-03
@@ -39,7 +39,7 @@ public interface AttSourceSystemMapper extends BaseMapperX<AttSourceSystemDO> {
 
 
     default PageResult<AttSourceSystemDO> selectPage(AttSourceSystemPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
         MPJLambdaWrapper<AttSourceSystemDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(AttSourceSystemDO.class)

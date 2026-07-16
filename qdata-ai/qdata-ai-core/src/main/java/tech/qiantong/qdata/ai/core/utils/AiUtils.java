@@ -22,19 +22,19 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
 
 /**
- * AI常用工具类
+ * Commonly used AI tools
  * @author wang
  * @date 2025/12/22 09:45
  **/
 public class AiUtils {
 
     /**
-     * 删除深度思考块 (默认深度思考标签)
-     * @param content 原文内容
-     * @return 处理后的内容
+     * Delete Deep Thoughts block (Default Deep Thoughts tag)
+     * @param content original content
+     * @return processed content
      */
     public static String deleteDeepThinkingBlock(String content) {
-        // 默认的深度思考块标签
+        // Default Deep Thought block tags
         String startTag = "<think";
         String endTag = "</think>";
 
@@ -42,11 +42,11 @@ public class AiUtils {
     }
 
     /**
-     * 删除深度思考块 (自定义标签)
-     * @param content 原文内容
-     * @param startTag 开始标签
-     * @param endTag 结束标签
-     * @return 处理后的内容
+     * Delete deep thinking block (custom label)
+     * @param content original content
+     * @param startTag start tag
+     * @param endTag end tag
+     * @return processed content
      */
     public static String deleteDeepThinkingBlock(String content, String startTag, String endTag) {
         if (content == null) {
@@ -56,7 +56,7 @@ public class AiUtils {
         int startIndex = content.indexOf(startTag);
 
         if (startIndex == -1) {
-            // 如果没有深度思考块，则直接返回原文
+            // If there is no deep thinking block, return directly to the original text
             return content;
         }
 
@@ -73,9 +73,9 @@ public class AiUtils {
     }
 
     /**
-     * 获取 ChatResponse 内容
-     * @param response 响应
-     * @return 内容
+     * Get ChatResponse content
+     * @param response response
+     * @return content
      */
     @SuppressWarnings("ConstantValue")
     public static String getChatResponseContent(ChatResponse response) {
@@ -88,9 +88,9 @@ public class AiUtils {
     }
 
     /**
-     * 获取深度思考块内容
-     * @param response 响应
-     * @return 深度思考块内容
+     * Get Deep Thought Block Content
+     * @param response response
+     * @return deep thinking block content
      */
     @SuppressWarnings("ConstantValue")
     public static String getChatResponseReasoningContent(ChatResponse response) {

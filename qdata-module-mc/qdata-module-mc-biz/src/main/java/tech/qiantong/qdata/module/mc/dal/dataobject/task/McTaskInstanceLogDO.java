@@ -10,14 +10,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 采集任务实例-日志 DO 对象 MC_TASK_INSTANCE_LOG
+ * Collection task instance-log DO object MC_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_INSTANCE_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_INSTANCE_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -27,22 +27,22 @@ public class McTaskInstanceLogDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** 任务实例id */
+    /** Task instance id */
     private Long taskInstanceId;
 
-    /** 时间 */
+    /** time */
     private Date time;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 日志内容 */
+    /** Log content */
     private String logContent;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

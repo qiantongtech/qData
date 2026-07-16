@@ -293,8 +293,8 @@
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.developTask.remark', '备注')" prop="remark" :label-position="labelPosition">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', '请输入备注')" />
+          <el-form-item :label="td('dpp.developTask.remark', 'Remarks')" prop="remark" :label-position="labelPosition">
+            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', 'Please enter remarks')" />
           </el-form-item>
         </el-col>
       </el-row> -->
@@ -428,7 +428,7 @@ const getOptionLabel = (options, value) => {
 };
 
 const form = ref({
-  // 表单数据
+  // form data
   name: "",
   catCode: "",
   personCharge: "",
@@ -438,10 +438,10 @@ const form = ref({
   actuator: "JDBC",
   releaseState: "0",
   description: "",
-  // json值
+  // json value
   typaCode: "DM",
-  // 固定值
-  executionType: "PARALLEL", // 初始化为空或默认值
+  // fixed value
+  executionType: "PARALLEL", // Initialized to empty or default value
   status: "0",
   datasources: { datasourceId: "" },
 });
@@ -508,10 +508,10 @@ const handleTemplate = (item) => {
 let loading = ref(false);
 let createTypeList = ref([]);
 
-/** 查询数据开发任务列表 */
+/** Query data development task list */
 function getDaDatasource(flag) {
   templateAct.value.typaCode = form.value.typaCode;
-  // 刷新模板列表
+  // Refresh template list
   getList();
   loading.value = true;
   listDaDatasourceNoKafkaByProjectCode({
@@ -532,22 +532,21 @@ watch(
   (newVal) => {
     if (newVal) {
       form.value = { ...form.value, ...props.data };
-      // 兼容老任务：没有调度器和执行引擎时，默认仍按 DS 处理。
       form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
       form.value.actuator = form.value.actuator || "SPARK";
       enforceQuartzJDBC();
-      // 模版
+      // Template
       templateAct.value = form.value.draftJson
         ? JSON.parse(form.value.draftJson)
         : { ...templateAct.value };
-      // 获取模版列表
+      // Get template list
       queryParams.value = templateAct.value.queryParams || queryParams.value;
-      // 执行引擎
+      // execution engine
       form.value.typaCode = templateAct.value.typaCode;
       getDaDatasource();
       getList();
       form.value.personCharge = Number(form.value.personCharge) || "";
-      // 任务状态
+      // Task status
       if (form.value.status != null && form.value.status != undefined) {
         form.value.releaseState =
           form.value.status == "-1" ? "0" : form.value.status;
@@ -558,7 +557,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -569,29 +568,25 @@ const visibleDialog = computed({
 });
 
 /**
- * DolphinScheduler调度器状态检查
+ * DolphinScheduler
  * @returns {Promise<void>}
  */
 const handleSchedulerChange = async () => {
   if (form.value.scheduler == "QUARTZ") {
-    // Quartz 当前只允许 JDBC。
     form.value.actuator = "JDBC";
   } else {
-    // Quartz 当前只允许 JDBC。
     form.value.actuator = "SPARK";
   }
 };
 
-// 保存前兜底，保证最终提交值符合 Quartz + JDBC 规则。
 const enforceQuartzJDBC = () => {
-  // 保存前兜底，保证最终提交值符合 Quartz + JDBC 规则。
   if (form.value.scheduler == "QUARTZ") {
     form.value.actuator = "JDBC";
   }
 };
 
 let daDiscoveryTaskRef = ref();
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
@@ -619,13 +614,13 @@ const saveClose = async () => {
       emit("save", formData);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   } catch (error) {
-    console.error("保存数据时出错:", error);
+    console.error("Error while saving data:", error);
   }
 };
-// 保存数据的方法
+// How to save data
 const saveData = async () => {
   try {
     if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
@@ -649,15 +644,15 @@ const saveData = async () => {
       emit("confirm", formData);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   } catch (error) {
-    console.error("保存数据时出错:", error);
+    console.error("Error while saving data:", error);
   }
 };
 
 /**
- * 检查 dolphinscheduler api
+ * check dolphinscheduler api
  * @returns {Promise<AxiosResponse<any>>}
  */
 const checkDSUpStart = async () => {
@@ -670,12 +665,12 @@ const checkDSUpStart = async () => {
 
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 function handleShowCron() {
   expression.value = form.value.crontab;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   form.value.crontab = value;
 }
@@ -687,7 +682,7 @@ const handleContactChange = (selectedValue) => {
   console.log("🚀 ~ handleContactChange ~ selectedUser:", selectedUser);
   form.value.contactNumber = selectedUser?.phonenumber || "";
 };
-// 定义表单验证规则额
+// Define form validation rules
 </script>
 <style scoped lang="less">
 .blue-text {

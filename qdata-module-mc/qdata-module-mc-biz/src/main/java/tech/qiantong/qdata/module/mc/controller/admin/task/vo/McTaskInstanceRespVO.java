@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Collection task instance Response VO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
@@ -142,30 +142,30 @@ public class McTaskInstanceRespVO implements Serializable {
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Task name
      */
     @TableField(exist = false)
     private String name;
     /**
-     * Handle task-related data and operations.
+     * Task status
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * Create the required record.
+     * Creator phone number
      */
     private String createPhoneNumber;
 
     /**
-     * Handle database and data source configuration.
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * Handle database and data source configuration.
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

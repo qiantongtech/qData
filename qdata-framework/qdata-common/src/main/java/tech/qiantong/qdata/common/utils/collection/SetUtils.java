@@ -23,9 +23,9 @@ import cn.hutool.core.collection.CollUtil;
 import java.util.Set;
 
 /**
- * Set 工具类
+ * Set tool class
  *
- * @author 芋道源码
+ * @author taro source code
  */
 public class SetUtils {
 

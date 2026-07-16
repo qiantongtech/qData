@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import tech.qiantong.qdata.module.da.service.assetchild.audit.IDaAssetAuditScheduleService;
 
 /**
- * 资产稽查调度Controller
+ * Asset Audit Schedule Controller
  *
  * @author qdata
  * @date 2025-05-09
@@ -71,7 +71,7 @@ public class DaAssetAuditScheduleController extends BaseController {
 
     @Operation(summary = "导出资产稽查调度列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditSchedule:export')")
-    @Log(title = "资产稽查调度", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.audit.schedule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetAuditSchedulePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetAuditScheduleController extends BaseController {
 
     @Operation(summary = "导入资产稽查调度列表")
     @PreAuthorize("@ss.hasPermi('da:assetAuditSchedule:import')")
-    @Log(title = "资产稽查调度", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.audit.schedule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetAuditScheduleRespVO> util = new ExcelUtil<>(DaAssetAuditScheduleRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetAuditScheduleController extends BaseController {
 
     @Operation(summary = "新增资产稽查调度")
     @PreAuthorize("@ss.hasPermi('da:assetAuditSchedule:add')")
-    @Log(title = "资产稽查调度", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.audit.schedule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetAuditScheduleSaveReqVO daAssetAuditSchedule) {
         daAssetAuditSchedule.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetAuditScheduleController extends BaseController {
 
     @Operation(summary = "修改资产稽查调度")
     @PreAuthorize("@ss.hasPermi('da:assetAuditSchedule:edit')")
-    @Log(title = "资产稽查调度", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.audit.schedule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetAuditScheduleSaveReqVO daAssetAuditSchedule) {
         daAssetAuditSchedule.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetAuditScheduleController extends BaseController {
 
     @Operation(summary = "删除资产稽查调度")
     @PreAuthorize("@ss.hasPermi('da:assetAuditSchedule:remove')")
-    @Log(title = "资产稽查调度", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.audit.schedule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetAuditScheduleService.removeDaAssetAuditSchedule(Arrays.asList(ids)));

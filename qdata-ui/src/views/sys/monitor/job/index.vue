@@ -177,7 +177,7 @@
          />
       </div>
 
-      <!-- 添加或修改定时任务对话框 -->
+      <!-- Add or modify scheduled task dialog box -->
       <el-dialog :title="title" v-model="open" width="850px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form ref="jobRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -263,7 +263,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -272,7 +272,7 @@
        <crontab ref="crontabRef" @hide="openCron=false" @fill="crontabFill" :expression="expression"></crontab>
      </el-dialog>
 
-      <!-- 任务日志详细 -->
+      <!-- Task log details -->
       <el-dialog :title="td('sys.monitor.job.taskDetail')" v-model="openView" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form :model="form" label-width="120px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -350,6 +350,7 @@ import Crontab from '@/components/Crontab/index.vue'
 const { td } = useDefaultLang();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_job_group, sys_job_status } = proxy.useDict("sys_job_group", "sys_job_status");
 
 const jobList = ref([]);
@@ -383,7 +384,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询定时任务列表 */
+/** Query scheduled task list */
 function getList() {
   loading.value = true;
   listJob(queryParams.value).then(response => {
@@ -393,18 +394,18 @@ function getList() {
   });
 }
 
-/** 任务组名字典翻译 */
+/** Task team name dictionary translation */
 function jobGroupFormat(row, column) {
   return proxy.selectDictLabel(sys_job_group.value, row.jobGroup);
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     jobId: undefined,
@@ -419,26 +420,26 @@ function reset() {
   proxy.resetForm("jobRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.jobId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-// 更多操作触发
+// More action triggers
 function handleCommand(command, row) {
   switch (command) {
     case "handleRun":
@@ -455,7 +456,7 @@ function handleCommand(command, row) {
   }
 }
 
-// 任务状态修改
+// Task status modification
 function handleStatusChange(row) {
   let text = row.status === "0" ? td('sys.monitor.job.enable') : td('sys.monitor.job.disable');
   proxy.$modal.confirm(td('sys.monitor.job.confirmStatusChange', { text: text, name: row.jobName })).then(function () {
@@ -467,7 +468,7 @@ function handleStatusChange(row) {
   });
 }
 
-/* 立即执行一次 */
+/* Execute once immediately */
 function handleRun(row) {
   proxy.$modal.confirm(td('sys.monitor.job.confirmImmediateExec', { name: row.jobName })).then(function () {
     return runJob(row.jobId, row.jobGroup);
@@ -476,7 +477,7 @@ function handleRun(row) {
   .catch(() => {});
 }
 
-/** 任务详细信息 */
+/** Task details */
 function handleView(row) {
   getJob(row.jobId).then(response => {
     form.value = response.data;
@@ -484,31 +485,31 @@ function handleView(row) {
   });
 }
 
-/** cron表达式按钮操作 */
+/** cron expression button action */
 function handleShowCron() {
   expression.value = form.value.cronExpression;
   openCron.value = true;
 }
 
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   form.value.cronExpression = value;
 }
 
-/** 任务日志列表查询 */
+/** Task log list query */
 function handleJobLog(row) {
   const jobId = row.jobId || 0;
   router.push('/monitor/job-log/index/' + jobId)
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('sys.monitor.job.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const jobId = row.jobId || ids.value;
@@ -519,8 +520,10 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["jobRef"].validate(valid => {
     if (valid) {
       if (form.value.jobId != undefined) {
@@ -528,19 +531,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addJob(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const jobIds = row.jobId || ids.value;
   proxy.$modal.confirm(td('sys.monitor.job.confirmDelete', { ids: jobIds })).then(function () {
@@ -551,7 +562,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("monitor/job/export", {
     ...queryParams.value,

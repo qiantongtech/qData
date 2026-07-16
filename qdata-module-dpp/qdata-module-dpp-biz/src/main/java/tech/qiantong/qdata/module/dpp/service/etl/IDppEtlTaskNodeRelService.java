@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成任务节点关系Service接口
+ * Data Integration Task Node Relation Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,68 +37,68 @@ import java.util.Map;
 public interface IDppEtlTaskNodeRelService extends IService<DppEtlTaskNodeRelDO> {
 
     /**
-     * 获得数据集成任务节点关系分页列表
+     * Get data integration task node relation pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务节点关系分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task node relation pagination list
      */
     PageResult<DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelPage(DppEtlTaskNodeRelPageReqVO pageReqVO);
     List<DppEtlTaskNodeRelRespVO> getDppEtlTaskNodeRelRespVOList(DppEtlTaskNodeRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务节点关系
+     * Create data integration task node relation
      *
-     * @param createReqVO 数据集成任务节点关系信息
-     * @return 数据集成任务节点关系编号
+     * @param createReqVO Data integration task node relation info
+     * @return Data integration task node relation ID
      */
     Long createDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO createReqVO);
 
     void createDppEtlTaskNodeRelBatch(List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS);
 
     /**
-     * 更新数据集成任务节点关系
+     * Update data integration task node relation
      *
-     * @param updateReqVO 数据集成任务节点关系信息
+     * @param updateReqVO Data integration task node relation info
      */
     int updateDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务节点关系
+     * Delete data integration task node relation
      *
-     * @param idList 数据集成任务节点关系编号
+     * @param idList Data integration task node relation ID list
      */
     int removeDppEtlTaskNodeRel(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务节点关系详情
+     * Get data integration task node relation detail
      *
-     * @param id 数据集成任务节点关系编号
-     * @return 数据集成任务节点关系
+     * @param id Data integration task node relation ID
+     * @return Data integration task node relation
      */
     DppEtlTaskNodeRelDO getDppEtlTaskNodeRelById(Long id);
 
     /**
-     * 获得全部数据集成任务节点关系列表
+     * Get all data integration task node relation list
      *
-     * @return 数据集成任务节点关系列表
+     * @return Data integration task node relation list
      */
     List<DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelList();
 
     /**
-     * 获得全部数据集成任务节点关系 Map
+     * Get all data integration task node relation Map
      *
-     * @return 数据集成任务节点关系 Map
+     * @return Data integration task node relation Map
      */
     Map<Long, DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelMap();
 
 
     /**
-     * 导入数据集成任务节点关系数据
+     * Import data integration task node relation data
      *
-     * @param importExcelList 数据集成任务节点关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration task node relation data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlTaskNodeRel(List<DppEtlTaskNodeRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

@@ -33,46 +33,46 @@ public class FlinkxJson {
 
     public static String buildJobJsonMasterdata(Map<String, Object> taskParams) {
 
-        // Create the required record.
+        // Create outermost jobJson Map
         Map<String, Object> jobJson = new HashMap<>();
 
-        // Implementation details.
+        // Set job-related setting config
         Map<String, Object> setting = new HashMap<>();
 
-        // Implementation details.
+        // Speed config, default values assigned directly
         Map<String, Object> speed = new HashMap<>();
-        speed.put("channel", 1);  // Implementation details.
-        speed.put("bytes", 0);    // Implementation details.
+        speed.put("channel", 1);  // Default value
+        speed.put("bytes", 0);    // Default value
         setting.put("speed", speed);
 
-        // Implementation details.
+        // ErrorLimit config, default values assigned directly
         Map<String, Object> errorLimit = new HashMap<>();
-        errorLimit.put("record", 999999999);  // Implementation details.
+        errorLimit.put("record", 999999999);  // Default value
         setting.put("errorLimit", errorLimit);
 
-        // Implementation details.
+        // Restore config, default values assigned directly
         Map<String, Object> restore = new HashMap<>();
-        restore.put("maxRowNumForCheckpoint", 0);   // Implementation details.
-        restore.put("isRestore", false);            // Implementation details.
-        restore.put("restoreColumnName", "");       // Implementation details.
-        restore.put("restoreColumnIndex", 0);       // Implementation details.
+        restore.put("maxRowNumForCheckpoint", 0);   // Default value
+        restore.put("isRestore", false);            // Default value
+        restore.put("restoreColumnName", "");       // Default value
+        restore.put("restoreColumnIndex", 0);       // Default value
         setting.put("restore", restore);
 
-        // Implementation details.
+        // Log config, default values assigned directly
         Map<String, Object> log = new HashMap<>();
-        log.put("isLogger", false);  // Implementation details.
-        log.put("level", "debug");   // Implementation details.
-        log.put("path", "");         // Implementation details.
-        log.put("pattern", "");      // Implementation details.
+        log.put("isLogger", false);  // Default value
+        log.put("level", "debug");   // Default value
+        log.put("path", "");         // Default value
+        log.put("pattern", "");      // Default value
         setting.put("log", log);
 
         jobJson.put("setting", setting);
 
 
-        // Handle database and data source configuration.
-        // Implementation details.
+        //Extract datasource connection
+        // Output readerDatasource
         Map<String, Object> readerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "readerDatasource");
-        // Implementation details.
+        //Input writerDatasource
         Map<String, Object> writerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "writerDatasource");
 
         DbQueryProperty readerProperty = MD5Util.buildJobDatasource(readerDatasource);
@@ -87,8 +87,8 @@ public class FlinkxJson {
         String target_table_name = MapUtils.getString(taskParams, "target_table_name", "");
         Object columns = MapUtils.getObject(taskParams, "columns");
         Object target_columns = MapUtils.getObject(taskParams, "target_columns");
-        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");// Implementation details.
-        // Handle node-related data and operations.
+        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");//Primary key
+        //Node type: 1=input node, 2=output node
         String type = MapUtils.getString(taskParams, "type", "");
         String writeModeType = MapUtils.getString(taskParams, "writeModeType", "");
         if (StringUtils.equals("1", type)) {
@@ -96,17 +96,17 @@ public class FlinkxJson {
         }
         if (StringUtils.equals("2", type)) {
             writeMode = readerProperty.trainToJdbcWriteMode(writeKeySet, writeModeType,writerProperty.getDbType());
-            // Delete the related record.
+            //When write mode is full, prepend delete SQL
             if (StringUtils.equals("1", writeModeType)) {
                 preSql = readerProperty.trainToJdbcTruncateTable(writerProperty.getDbNameTableName(target_table_name));
             }
         }
 
-        // Create the required record.
+        // Create job-related content config
         List<Map<String, Object>> content = new ArrayList<>();
         Map<String, Object> contentItem = new HashMap<>();
 
-        // Implementation details.
+        // Reader config
         Map<String, Object> reader = new HashMap<>();
         reader.put("name", readerProperty.trainToJdbcReaderName());
         Map<String, Object> readerParameter = new HashMap<>();
@@ -123,13 +123,13 @@ public class FlinkxJson {
         readerParameter.put("connection", readerConnection);
         reader.put("parameter", readerParameter);
 
-        // Implementation details.
+        // Writer config
         Map<String, Object> writer = new HashMap<>();
         writer.put("name", writerProperty.trainToJdbcWriterName());
         Map<String, Object> writerParameter = new HashMap<>();
         writerParameter.put("username", writerProperty.getUsername());
         writerParameter.put("password", writerProperty.getPassword());
-        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // Implementation details.
+        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // Default 1024
         //
         writerParameter.put("writeMode", writeMode);
         writerParameter.put("column", target_columns);
@@ -147,7 +147,7 @@ public class FlinkxJson {
         writerParameter.put("connection", writerConnection);
         writer.put("parameter", writerParameter);
 
-        // Implementation details.
+        // Add reader and writer to content
         contentItem.put("reader", reader);
         contentItem.put("writer", writer);
         content.add(contentItem);
@@ -155,21 +155,21 @@ public class FlinkxJson {
         jobJson.put("content", content);
         Map<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("job", jobJson);
-        // Handle JSON data for this operation.
+        // Convert to JSON string and return
         return JSON.toJSONString(objectObjectHashMap);
     }
 
     /**
-     * Handle node-related data and operations.
-     * Handle DataX task configuration and execution.
+     * 从节点列表里找到指定组件类型的节点。
+     * 本地 DataX 一期只认数据库输入和数据库输出，所以这里只按组件类型查。
      */
     public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
         for (DppEtlNodeRespVO node : nodeList) {
-            // Handle node-related data and operations.
+            // 节点为空时跳过，避免脏数据导致空指针。
             if (node == null) {
                 continue;
             }
-            // Handle node-related data and operations.
+            // 组件类型匹配时，这个节点就是我们要找的 reader 或 writer。
             if (StringUtils.equals(componentType, node.getComponentType())) {
                 return node;
             }

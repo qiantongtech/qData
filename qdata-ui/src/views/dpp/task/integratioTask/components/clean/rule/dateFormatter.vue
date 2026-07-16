@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 日期格式统一 -->
+<!-- Date format normalization -->
 <template>
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
@@ -101,14 +101,14 @@ const emit = defineEmits(["update:form"]);
 
 const formRef = ref(null);
 
-// 初始化 selectedOption
+// Initialize selectedOption
 // const getInitialSelectedOption = (targetFormat) => {
 //   if (!targetFormat) return "yyyy-MM-dd";
-//   // 判断是否为预设值
+//   // Determine whether it is the default value
 //   if (targetFormat === "yyyy-MM-dd" || targetFormat === "YYYY-MM-DD HH:mm:ss") {
 //     return targetFormat;
 //   }
-//   // 否则为自定义值，选择配置模板
+//   // Otherwise, it is a custom value, select the configuration template
 //   return "1";
 // };
 
@@ -124,10 +124,10 @@ watch(
   () => form.selectedOption,
   (newVal, oldVal) => {
     if (newVal === "1" && oldVal !== "1") {
-      // 从预设值切换到配置模板时，清空 targetFormat，让用户输入自定义格式
+      // When switching from the default value to the configuration template, clear the targetFormat to allow the user to enter a custom format
       form.targetFormat = "";
     } else if (newVal !== "1") {
-      // 选择预设值时，targetFormat 设置为选中的值
+      // When selecting a preset, targetFormat is set to the selected value
       form.targetFormat = newVal;
     }
   }

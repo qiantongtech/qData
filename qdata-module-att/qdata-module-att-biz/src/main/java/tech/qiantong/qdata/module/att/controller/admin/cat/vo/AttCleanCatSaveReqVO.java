@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 清洗规则类目 创建/修改 Request VO ATT_CLEAN_CAT
+ * Cleaning Rule Category Create/Update Request VO ATT_CLEAN_CAT
  *
  * @author qdata
  * @date 2025-08-11

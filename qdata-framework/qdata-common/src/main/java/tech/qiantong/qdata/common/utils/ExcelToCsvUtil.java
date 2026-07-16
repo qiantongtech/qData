@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -44,12 +44,12 @@ import java.util.List;
 public class ExcelToCsvUtil {
 
     /**
-     * excel转csv并解析出字段
+     * Convert excel to csv and parse out the fields
      *
      * @param excelPath
      * @param csvPath
-     * @param startColumn 字段名行 （这里第一行就是1 不是0）
-     * @param startData   数据开始行
+     * @param startColumn field name line (the first line here is 1, not 0)
+     * @param startData data start row
      * @return
      * @throws IOException
      */
@@ -64,31 +64,31 @@ public class ExcelToCsvUtil {
                 workbook = new HSSFWorkbook(inputStream);
             }
 
-            Sheet sheet = workbook.getSheetAt(0); // 选择第一个工作表
+            Sheet sheet = workbook.getSheetAt(0); // Select the first worksheet
             List<String> csvLines = new ArrayList<>();
 
             if (startColumn > sheet.getLastRowNum() + 1) {
                 throw new ServiceException("startColumn大于最后一行的行号，请检查startColumn的值");
             }
 
-            //读取列
+            //Read columns
             Row columnRow = sheet.getRow(startColumn - 1);
             String columnStr = toStr(columnRow);
             csvLines.add(columnStr);
 
-            //读取数据
+            //Read data
             for (int i = startData - 1; i <= sheet.getLastRowNum(); i++) {
                 csvLines.add(toStr(sheet.getRow(i)));
             }
 
             File csvFile = new File(csvPath);
 
-            // 检查父目录是否存在，如果不存在则创建
+            // Check if the parent directory exists, if not create it
             if (!csvFile.getParentFile().exists()) {
-                csvFile.getParentFile().mkdirs(); // 创建所有必要的父目录
+                csvFile.getParentFile().mkdirs(); // Create all necessary parent directories
             }
 
-            // 写入CSV文件
+            // Write to CSV file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvPath))) {
                 for (String line : csvLines) {
                     writer.write(line);
@@ -96,7 +96,7 @@ public class ExcelToCsvUtil {
                 }
             }
 
-            //解析字段
+            //Parse fields
             columnList = Arrays.asList(columnStr.split(","));
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,7 +106,7 @@ public class ExcelToCsvUtil {
     }
 
     /**
-     * 读取一行数据
+     * Read a row of data
      *
      * @param row
      * @return
@@ -119,7 +119,7 @@ public class ExcelToCsvUtil {
             Cell cell = row.getCell(cellIdx, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
             String cellValue = dataFormatter.formatCellValue(cell);
 
-            // 处理包含逗号、换行或双引号的情况
+            // Handles cases containing commas, newlines, or double quotes
             if (cellValue.contains(",") || cellValue.contains("\"") || cellValue.contains("\n")) {
                 cellValue = "\"" + cellValue.replace("\"", "\"\"") + "\"";
             }
@@ -134,7 +134,7 @@ public class ExcelToCsvUtil {
 
 
     /**
-     * csv解析出字段
+     * csv parses out fields
      *
      * @param csvPath
      * @return
@@ -160,7 +160,7 @@ public class ExcelToCsvUtil {
     }
 
     /**
-     * 校验字段是否符合条件
+     * Check whether the field meets the conditions
      *
      * @param columnList
      * @return

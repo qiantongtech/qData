@@ -28,12 +28,12 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏清单关联关系 创建/修改 Request VO DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitize List Relationship Create/Update Request VO DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12
  */
-@Schema(description = "脱敏清单关联关系 Response VO")
+@Schema(description = "Desensitize List Association Response VO")
 @Data
 public class DgDesensitizeAssetcolumnSaveReqVO extends BaseEntity {
 
@@ -42,27 +42,27 @@ public class DgDesensitizeAssetcolumnSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "资产ID", example = "")
+    @Schema(description = "Asset ID", example = "")
     private Long assetId;
 
-    @Schema(description = "资产字段ID", example = "")
+    @Schema(description = "Asset Column ID", example = "")
     private Long assetcolumnId;
 
-    @Schema(description = "数据分类ID", example = "")
+    @Schema(description = "Data Category ID", example = "")
     private Long dataCategoryId;
 
-    @Schema(description = "排序", example = "")
+    @Schema(description = "Sort order", example = "")
     private Long sortOrder;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 256, message = "描述长度不能超过256个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 256, message = "{dg.desensitize.assetcolumn.description.length}")
     private String description;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "{dg.desensitize.assetcolumn.remark.length}")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
 

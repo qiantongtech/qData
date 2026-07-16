@@ -31,10 +31,10 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 通用返回
+ * Generic return
  *
  * @author Ming
- * @param <T> 数据泛型
+ * @param <T> Data generics
  */
 @Schema(description = "通用返回")
 @Data
@@ -43,19 +43,19 @@ public class CommonResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 错误码
+     * Error code
      *
      * @see ErrorCode#getCode()
      */
     @Schema(description = "错误码")
     private Integer code;
     /**
-     * 返回数据
+     * Return data
      */
     @Schema(description = "返回数据")
     private T data;
     /**
-     * 错误提示，用户可阅读
+     * Error message, user can read
      *
      * @see ErrorCode#getMsg() ()
      */
@@ -63,13 +63,13 @@ public class CommonResult<T> implements Serializable {
     private String msg;
 
     /**
-     * 将传入的 result 对象，转换成另外一个泛型结果的对象
+     * Convert the incoming result object into another generic result object
      *
-     * 因为 A 方法返回的 CommonResult 对象，不满足调用其的 B 方法的返回，所以需要进行转换。
+     * Because the CommonResult object returned by method A does not satisfy the return of method B that calls it, conversion needs to be performed.
      *
-     * @param result 传入的 result 对象
-     * @param <T>    返回的泛型
-     * @return 新的 CommonResult 对象
+     * @param result the incoming result object
+     * @param <T> the returned generic
+     * @return new CommonResult object
      */
     public static <T> CommonResult<T> error(CommonResult<?> result) {
         return error(result.getCode(), result.getMsg());
@@ -111,34 +111,34 @@ public class CommonResult<T> implements Serializable {
         return Objects.equals(code, GlobalErrorCodeConstants.SUCCESS.getCode());
     }
 
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public boolean isSuccess() {
         return isSuccess(code);
     }
 
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public boolean isError() {
         return !isSuccess();
     }
 
-    // ========= 和 Exception 异常体系集成 =========
+    // ========= Integrated with Exception exception system =========
 
     /**
-     * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
+     * Determine whether there is any abnormality. If so, throw {@link ServiceException} exception
      */
     public void checkError() throws ServiceException {
         if (isSuccess()) {
             return;
         }
-        // 业务异常
+        // Business abnormality
         throw new ServiceException(msg, code);
     }
 
     /**
-     * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
-     * 如果没有，则返回 {@link #data} 数据
+     * Determine whether there is any abnormality. If so, throw {@link ServiceException} exception
+     * If not, return {@link #data} data
      */
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public T getCheckedData() {
         checkError();
         return data;

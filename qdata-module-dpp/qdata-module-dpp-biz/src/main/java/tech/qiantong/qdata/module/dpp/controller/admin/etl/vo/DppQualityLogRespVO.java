@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量日志 Response VO 对象 DPP_QUALITY_LOG
+ * Data Quality Log Response VO Object DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19
  */
-@Schema(description = "数据质量日志 Response VO")
+@Schema(description = "Data Quality Log Response VO")
 @Data
 public class DppQualityLogRespVO implements Serializable {
 
@@ -42,77 +42,77 @@ public class DppQualityLogRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "名称")
-    @Schema(description = "名称", example = "")
+    @Excel(name = "Name")
+    @Schema(description = "Name", example = "")
     private String name;
 
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
+    @Excel(name = "Status")
+    @Schema(description = "Status", example = "")
     private String successFlag;
 
-    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Start Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "开始时间", example = "")
+    @Schema(description = "Start Time", example = "")
     private Date startTime;
 
-    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "End Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "结束时间", example = "")
+    @Schema(description = "End Time", example = "")
     private Date endTime;
 
-    @Excel(name = "任务id")
-    @Schema(description = "任务id", example = "")
+    @Excel(name = "Task ID")
+    @Schema(description = "Task ID", example = "")
     private String qualityId;
 
-    @Excel(name = "评分")
-    @Schema(description = "评分", example = "")
+    @Excel(name = "Score")
+    @Schema(description = "Score", example = "")
     private Long score;
 
-    @Excel(name = "问题数据")
-    @Schema(description = "问题数据", example = "")
+    @Excel(name = "Problem Data")
+    @Schema(description = "Problem Data", example = "")
     private Long problemData;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Valid")
+    @Schema(description = "Valid", example = "")
     private Boolean validFlag;
 
-    @Excel(name = "删除标志")
-    @Schema(description = "删除标志", example = "")
+    @Excel(name = "Delete Flag")
+    @Schema(description = "Delete Flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Create Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Schema(description = "Create Time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Update Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "更新时间", example = "")
+    @Schema(description = "Update Time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
     private String path;
 
-    //总数
+    // Total
     private Long totalSum;
 
 }

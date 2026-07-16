@@ -56,7 +56,7 @@
                      </li>
 <!--                     <li class="list-group-item vertical-center">-->
 <!--                        <i class="iconfont icon-a-suoshujiaosexianxing mr5"></i>-->
-<!--                        所属角色-->
+<!--                        Role-->
 <!--                        <div class="pull-right label-text">{{ state.roleGroup }}</div>-->
 <!--                     </li>-->
                      <li class="list-group-item vertical-center">
@@ -130,9 +130,9 @@ getUser();
 
    .el-tabs__item:hover {
       background-color: transparent !important;
-      /* 去掉背景色变化 */
+      /* Remove background color changes */
       color: var(--el-color-primary);
-      /* 字体颜色不变 */
+      /* Font color remains unchanged */
    }
 
    .el-tabs__active-bar {

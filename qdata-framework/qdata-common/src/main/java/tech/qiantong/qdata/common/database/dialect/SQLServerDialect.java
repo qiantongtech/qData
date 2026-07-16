@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Handle JDBC SQL execution.
+ * SQLServer database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -95,22 +95,22 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // Implementation details.
+            // Generate CREATE TABLE statement
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // Handle JDBC SQL execution.
+                // Convert data types to types supported by SQL Server
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // Handle JDBC SQL execution.
+                    case "VARCHAR2": // SQL Server does not support VARCHAR2, mapping to VARCHAR
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
                         } else {
-                            sql.append("(MAX)"); // Handle JDBC SQL execution.
+                            sql.append("(MAX)"); // VARCHAR in SQL Server supports maximum length by default
                         }
                         break;
                     case "CHAR":
@@ -146,7 +146,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("FLOAT");
                         break;
                     case "DOUBLE":
-                        sql.append("FLOAT"); // Handle JDBC SQL execution.
+                        sql.append("FLOAT"); // There is no DOUBLE in SQL Server, use FLOAT
                         break;
                     case "DATE":
                         sql.append("DATE");
@@ -158,16 +158,16 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // Implementation details.
+                        sql.append(columnType); // Handle unknown types by default
                         break;
                 }
 
-                // Validate the input and configuration.
+                // Check if required
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // Implementation details.
+                // Default value handling
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -176,7 +176,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                     }
                 }
 
-                // Implementation details.
+                // Add the field to the primary key list, if it is a primary key
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -184,17 +184,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 sql.append(",\n");
             }
 
-            // Implementation details.
+            // Remove final comma and newline
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // Implementation details.
+            // Add primary key constraints
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // Implementation details.
+                sql.setLength(sql.length() - 2); // Remove final comma and space
                 sql.append(")");
             }
 
@@ -203,7 +203,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         }
 
 
-        // Handle JDBC SQL execution.
+        // Add table comments (SQL Server does not directly support table comments, but you can use extended attributes, etc.)
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
@@ -212,7 +212,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
             sqlList.add(sql.toString());
         }
 
-        // Implementation details.
+        // Add field notes
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -229,17 +229,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // Retrieve the required data.
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // Retrieve the required data.
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // Handle JDBC SQL execution.
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -355,7 +355,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        // Implementation details.
+        //Determine whether to enable ssl
         if (checkUseSSL(property)) {
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
             url = url.replace("encrypt=false", "encrypt=true")

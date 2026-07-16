@@ -52,7 +52,7 @@ import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeRule
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 数据分类Service业务层处理
+ * Data Category Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-07
@@ -84,21 +84,21 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
 
     @Override
     public int updateDgDataCategory(DgDataCategorySaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据分类
+        // Update data category
         DgDataCategoryDO updateObj = BeanUtils.toBean(updateReqVO, DgDataCategoryDO.class);
         return dgDataCategoryMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDgDataCategory(Collection<Long> idList) {
-        //判断在规则中是否被使用
+        //Check if it is used in rules
         Long count = dgDesensitizeRuleService.getCountByCategoryIds(idList);
         if (count > 0) {
             throw new ServiceException("dg.error.delete.sensitive", "存在敏感规则，不允许删除");
         }
-        // 批量删除数据分类
+        // Batch delete data categories
         return dgDataCategoryMapper.deleteBatchIds(idList);
     }
 
@@ -127,19 +127,19 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
                 .collect(Collectors.toMap(
                         DgDataCategoryDO::getId,
                         dgDataCategoryDO -> dgDataCategoryDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据分类数据
+     * Import data category data
      *
-     * @param importExcelList 数据分类数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data category data list
+     * @param isUpdateSupport Whether to update support, if exists then update data
+     * @param operName        Operator user
+     * @return Result
      */
     @Override
     public String importDgDataCategory(List<DgDataCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -213,7 +213,7 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
 
     @Override
     public List<DgDataCategoryTreeRespVO> selectTree(String type) {
-        //获取分类类目数据
+        //Get category data
         List<DgDataCategoryCatDO> dataCategoryCatDOList = dgDataCategoryCatMapper.selectList();
         List<DgDataCategoryTreeRespVO> dataCategoryTreeRespVOList = dataCategoryCatDOList.stream()
                 .map(dataCategoryCatDO -> {
@@ -242,7 +242,7 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
         }
         Map<String, DgDataCategoryTreeRespVO> dataCategoryCatCodeMap = dataCategoryTreeRespVOList.stream().collect(Collectors.toMap(k -> k.getCatCode(), v -> v));
 
-        //获取所有有效的分类
+        //Get all valid categories
 
 
         MPJLambdaWrapperX<DgDataCategoryDO> lambdaWrapper = new MPJLambdaWrapperX<>();
@@ -298,7 +298,7 @@ public class DgDataCategoryServiceImpl extends ServiceImpl<DgDataCategoryMapper,
 
     @Override
     public List<DgDataCategoryDO> getDgDataCategoryList(DgDataCategoryPageReqVO dgDataCategory) {
-         //根据参数 dgDataCategory 只查询validFlag为true的 数据分类列表不分页
+         //Query only data categories with validFlag=true based on dgDataCategory parameter, no pagination
        List<DgDataCategoryDO> dataCategoryDOList = dgDataCategoryMapper.selectList(Wrappers.lambdaQuery(DgDataCategoryDO.class)
                 .eq(DgDataCategoryDO::getValidFlag, true));
        return dataCategoryDOList;

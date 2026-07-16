@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 稽查规则 Request VO 对象 ATT_AUDIT_RULE
+ * Audit Rule Request VO ATT_AUDIT_RULE
  *
  * @author qdata
  * @date 2025-01-20
@@ -61,7 +61,7 @@ public class AttAuditRulePageReqVO extends PageParam {
     private String strategyKey;
 
 
-    /** 是否有效 */
+    /** Whether valid */
     private String validFlag;
 
 

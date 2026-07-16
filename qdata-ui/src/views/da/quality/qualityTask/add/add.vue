@@ -45,7 +45,7 @@
               <span>{{ index + 1 }}</span>
             </div>
 
-            <!-- 步骤名称 -->
+            <!-- step name -->
             <span class="step-name">{{ item.name }}</span>
           </li>
         </ul>
@@ -224,7 +224,7 @@
               </el-col>
             </el-row>
             <!--                        <el-divider content-position="center">-->
-            <!--                            <span class="blue-text">属性信息</span>-->
+            <!--                            <span class="blue-text">Attribute information</span>-->
             <!--                        </el-divider>-->
             <!-- <div class="clearfix header-text">
                             <div class="header-left">
@@ -583,7 +583,7 @@
               >
                 <template #default="scope">
                   <!--                                    <el-button link type="primary" icon="view"-->
-                  <!--                                        @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button>-->
+                  <!--                                        @click="openRuleDialog(scope.row, scope.$index + 1, true)">View</el-button>-->
                   <el-button
                     link
                     type="primary"
@@ -677,7 +677,7 @@ const {
   "dpp_etl_task_execution_type"
 );
 let dppQualityTaskObjSaveReqVO = ref([]);
-// 图标
+// icon
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM8":
@@ -713,7 +713,7 @@ const getDatasourceIcon = (type) => {
   }
 };
 
-let loadingInstance = ref(null); // 全局 loading 实例
+let loadingInstance = ref(null); // Global loading instance
 let originList = ref([]);
 
 const dppQualityTaskEvaluateSaveReqVO = ref([...originList.value]);
@@ -747,7 +747,7 @@ function renameRuleToRuleConfig(data, obj) {
         try {
           parsedRule = JSON.parse(item.rule || "{}");
         } catch (e) {
-          console.warn(`rule JSON 解析失败: ${item.rule}`, e);
+          console.warn(`Failed to parse rule JSON: ${item.rule}`, e);
         }
 
         const evaColumnStr = col.columnName;
@@ -791,17 +791,17 @@ async function selectInspectionRule() {
 
           let addedCount = 0;
           obj.forEach((newRule) => {
-            // 规则唯一标识
+            // Rule unique identifier
             const key = `${newRule.tableName}_${newRule.evaColumn}_${newRule.ruleName}`;
-            // 查找是否已存在相同规则
+            // Find if the same rule already exists
             const existIndex = originList.value.findIndex(
               (r) => `${r.tableName}_${r.evaColumn}_${r.ruleName}` === key
             );
             if (existIndex > -1) {
-              // 覆盖
+              // Cover
               originList.value.splice(existIndex, 1, newRule);
             } else {
-              // 追加
+              // Append
               originList.value.push(newRule);
               addedCount++;
             }
@@ -813,12 +813,12 @@ async function selectInspectionRule() {
               td('da.qualityTask.rulesAdded', { count: addedCount, tableName: item.tableName })
             );
           } else {
-            // ElMessage.info(`表 ${item.tableName} 没有新规则追加`);
+            // ElMessage.info(`No new rules added to table ${item.tableName}`);
           }
         }
       } catch (err) {
         console.warn(
-          `获取规则失败: datasourceId=${item.datasourceId}, tableName=${item.tableName}`,
+          `Failed to fetch rules: datasourceId=${item.datasourceId}, tableName=${item.tableName}`,
           err
         );
       }
@@ -841,12 +841,12 @@ let deptOptions = ref([]);
 let userList = ref([]);
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 function handleShowCron() {
   expression.value = form.value.cycle;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 async function crontabFill(value) {
   form.value.cycle = value;
   await nextTick();
@@ -938,7 +938,7 @@ async function handleNextStep() {
   try {
     await formRef.value?.validate();
   } catch (err) {
-    console.warn("表单校验未通过：", err);
+    console.warn("Form validation failed:", err);
     ElMessage.warning(td('da.qualityTask.validationFailed'));
     loadingInstance.value = false;
     return;
@@ -1004,7 +1004,7 @@ function RuleSelectorconfirm(obj, mode) {
   ruleSelectorDialog.value.closeDialog();
 }
 
-// 页面跳转
+// Page jump
 const handleSuccess = () => {
   router.push("/da/quality/qualityTask");
 };
@@ -1013,7 +1013,7 @@ async function submitForm() {
   try {
     await formRef.value?.validate();
   } catch (err) {
-    console.warn("表单校验未通过：", err);
+    console.warn("Form validation failed:", err);
     ElMessage.warning(td('da.qualityTask.validationFailed'));
     loadingInstance.value = false;
     return;
@@ -1033,7 +1033,7 @@ async function submitForm() {
             dppQualityTaskEvaluateSaveReqVO.value,
         });
 
-    // 响应处理
+    // response handling
     if (res.code == "200") {
       proxy.$modal.msgSuccess(res.msg);
       handleSuccess();
@@ -1056,8 +1056,8 @@ async function getDppQualityTaskinfo() {
   try {
     const response = await getDppQualityTask(_id);
     const {
-      dppQualityTaskObjSaveReqVO, //对象
-      dppQualityTaskEvaluateRespVOS, // 规则
+      dppQualityTaskObjSaveReqVO, //object
+      dppQualityTaskEvaluateRespVOS, // rules
 
       ...obj
     } = response.data;
@@ -1067,18 +1067,18 @@ async function getDppQualityTaskinfo() {
     Object.assign(form.value, obj);
     form.value.contactId = Number(form.value.contactId);
   } catch (error) {
-    console.error("获取质量任务失败:", error);
+    console.error("Failed to fetch quality task:", error);
     ElMessage.warning(td('da.qualityTask.getTaskFailed'));
   } finally {
     loadingInstance.value = false;
   }
 }
 
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
-    id = newId; // 如果 id 为空，使用默认值 1
+    id = newId; // If id is empty, the default value 1 is used
     if (id) {
       getDppQualityTaskinfo();
     }
@@ -1307,10 +1307,10 @@ getDeptTree();
   }
 
   .blue-bar {
-    background-color: #2666fb; // 蓝条颜色
-    width: 5px; // 宽度5px
-    height: 20px; // 高度20px
-    margin-right: 10px; // 图片与文字之间的间距
+    background-color: #2666fb; // Blue bar color
+    width: 5px; // Width 5px
+    height: 20px; // Height 20px
+    margin-right: 10px; // Space between image and text
   }
 }
 

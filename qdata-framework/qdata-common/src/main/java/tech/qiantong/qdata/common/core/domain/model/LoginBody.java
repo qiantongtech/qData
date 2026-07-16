@@ -19,29 +19,29 @@
 package tech.qiantong.qdata.common.core.domain.model;
 
 /**
- * 用户登录对象
+ * User login object
  *
  * @author qdata
  */
 public class LoginBody
 {
     /**
-     * 用户名
+     * Username
      */
     private String username;
 
     /**
-     * 用户密码
+     * User password
      */
     private String password;
 
     /**
-     * 验证码
+     * Verification code
      */
     private String code;
 
     /**
-     * 唯一标识
+     * Unique identifier
      */
     private String uuid;
 

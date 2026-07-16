@@ -27,7 +27,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据分类 Response VO 对象 DG_DATA_CATEGORY
+ * Data Category Response VO - DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07
@@ -54,7 +54,7 @@ public class DgDataCategoryRespVO implements Serializable {
     @Schema(description = "分类名称", example = "")
     private String name;
 
-    /** 分类名称缩写名 */
+    /** Category Name Abbreviation */
     @Schema(description = "分类名称缩写名", example = "")
     private String shortName;
 
@@ -110,19 +110,19 @@ public class DgDataCategoryRespVO implements Serializable {
 
 
     /**
-     * 类目名称
+     * Category Name
      */
     @Schema(description = "类目名称", example = "")
     private String catName;
 
     /**
-     * 数据分级缩写
+     * Data Level Abbreviation
      */
     @Schema(description = "数据分级缩写", example = "")
     private String dataLevelShortName;
 
     /**
-     * 脱敏配置（0:否 1:是）
+     * Desensitization Config (0:No 1:Yes)
      */
     @Schema(description = "脱敏配置（0:否 1:是）", example = "")
     private String desensitizationRulesFlag;

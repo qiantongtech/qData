@@ -29,7 +29,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.Arrays;
 
 /**
- * 数据资产申请Mapper接口
+ * Data Asset Application Mapper Interface
  *
  * @author shu
  * @date 2025-03-19

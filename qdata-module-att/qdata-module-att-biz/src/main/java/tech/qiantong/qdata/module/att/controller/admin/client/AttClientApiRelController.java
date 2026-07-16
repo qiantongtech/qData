@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientApiRelDO;
 import tech.qiantong.qdata.module.att.service.client.IAttClientApiRelService;
 
 /**
- * 应用API服务关联Controller
+ * App API Service Association Controller
  *
  * @author FXB
  * @date 2025-08-21
@@ -65,7 +65,7 @@ public class AttClientApiRelController extends BaseController {
 
     @Operation(summary = "新增应用API服务关联")
 //    @PreAuthorize("@ss.hasPermi('att:clientApiRel:add')")
-    @Log(title = "应用API服务关联", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.client.api.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttClientApiRelSaveReqVO attClientApiRel) {
         attClientApiRel.setCreatorId(getUserId());
@@ -76,7 +76,7 @@ public class AttClientApiRelController extends BaseController {
 
     @Operation(summary = "修改应用API服务关联")
 //    @PreAuthorize("@ss.hasPermi('att:clientApiRel:edit')")
-    @Log(title = "应用API服务关联", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.client.api.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttClientApiRelSaveReqVO attClientApiRel) {
         attClientApiRel.setUpdatorId(getUserId());
@@ -87,7 +87,7 @@ public class AttClientApiRelController extends BaseController {
 
     @Operation(summary = "删除应用API服务关联")
 //    @PreAuthorize("@ss.hasPermi('att:clientApiRel:remove')")
-    @Log(title = "应用API服务关联", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.client.api.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attClientApiRelService.removeAttClientApiRel(Arrays.asList(ids)));

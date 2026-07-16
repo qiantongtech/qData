@@ -174,7 +174,7 @@
       </div>
     </template>
   </el-dialog>
-  <!-- 调度日志详细 -->
+  <!-- Scheduling log details -->
   <el-dialog
     :title="td('dpp.instance.integratioTask.detail', '查看日志')"
     v-model="open"
@@ -229,9 +229,9 @@ let queryParams = ref({
   taskId: undefined,
 });
 const formattedText = computed(() => {
-  return msg.value ? msg.value.replace(/\n/g, "<br>") : ""; // 将换行符替换为 <br> 标签
+  return msg.value ? msg.value.replace(/\n/g, "<br>") : ""; // Replace newlines with <br> tags
 });
-/** 导出按钮操作 */
+/** Export button action */
 async function handleExport(row) {
   proxy.download(
     "/dpp/etlTaskInstance/downloadLog",
@@ -250,7 +250,7 @@ async function logDetailCatList(row) {
 }
 const logDialogRef = ref(null);
 
-// 打开日志弹窗
+// Open the log pop-up window
 // const logDetailCatList = (row) => {
 //     logDialogRef.value.open(row.id);
 // };
@@ -258,7 +258,7 @@ const total = ref(0);
 const dateRange = ref([]);
 let jobLogList = ref([]);
 let loading = ref(false);
-/** 查询调度日志列表 */
+/** Query scheduling log list */
 function getList() {
   loading.value = true;
   queryParams.value.taskId = props.data.id;
@@ -288,7 +288,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -298,12 +298,12 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// 保存数据的方法
+// How to save data
 const saveData = () => {
   emit("confirm", localNode.value);
   emit("update:visible", false);

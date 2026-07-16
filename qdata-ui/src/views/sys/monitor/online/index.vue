@@ -90,7 +90,7 @@ const queryParams = ref({
    userName: undefined
 });
 
-/** 查询登录日志列表 */
+/** Query login log list */
 function getList() {
    loading.value = true;
    initData(queryParams.value).then(response => {
@@ -100,19 +100,19 @@ function getList() {
    });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
    pageNum.value = 1;
    getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
    proxy.resetForm("queryRef");
    handleQuery();
 }
 
-/** 强退按钮操作 */
+/** Forced back button operation */
 function handleForceLogout(row) {
    proxy.$modal.confirm(td('sys.monitor.online.confirmForceLogout', { name: row.userName })).then(function () {
       return forceLogout(row.tokenId);

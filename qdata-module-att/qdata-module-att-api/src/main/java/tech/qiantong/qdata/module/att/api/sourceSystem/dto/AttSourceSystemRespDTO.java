@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.sourceSystem.dto;
 import lombok.Data;
 
 /**
- * 来源系统 DTO 对象 ATT_SOURCE_SYSTEM
+ * Source System DTO ATT_SOURCE_SYSTEM
  *
  * @author qdata
  * @date 2026-04-03
@@ -34,28 +34,28 @@ public class AttSourceSystemRespDTO {
     /** ID */
     private Long id;
 
-    /** 系统名称 */
+    /** System Name */
     private String name;
 
-    /** 系统类型 */
+    /** System Type */
     private String type;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 负责人 */
+    /** Person in Charge */
     private String responsiblePerson;
 
-    /** 对接人 */
+    /** Contact Person */
     private String contactPerson;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

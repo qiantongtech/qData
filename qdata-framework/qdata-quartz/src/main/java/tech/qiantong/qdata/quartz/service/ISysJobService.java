@@ -25,113 +25,113 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import java.util.List;
 
 /**
- * 定时任务调度信息信息 服务层
+ * Scheduled task scheduling information service layer
  *
  * @author qdata
  */
 public interface ISysJobService
 {
     /**
-     * 获取quartz调度器的计划任务
+     * Get the scheduled task of the quartz scheduler
      *
-     * @param job 调度信息
-     * @return 调度任务集合
+     * @param job scheduling information
+     * @return Scheduled task collection
      */
     public List<SysJob> selectJobList(SysJob job);
 
     /**
-     * 通过调度任务ID查询调度信息
+     * Query scheduling information by scheduling task ID
      *
-     * @param jobId 调度任务ID
-     * @return 调度任务对象信息
+     * @param jobId scheduling task ID
+     * @return Scheduling task object information
      */
     public SysJob selectJobById(Long jobId);
 
     /**
-     * 暂停任务
+     * Pause task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int pauseJob(SysJob job) throws SchedulerException;
 
     /**
-     * 恢复任务
+     * Recovery task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int resumeJob(SysJob job) throws SchedulerException;
 
     /**
-     * 删除任务后，所对应的trigger也将被删除
+     * After deleting a task, the corresponding trigger will also be deleted.
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int deleteJob(SysJob job) throws SchedulerException;
 
     /**
-     * 批量删除调度信息
+     * Delete scheduling information in batches
      *
-     * @param jobIds 需要删除的任务ID
-     * @return 结果
+     * @param jobIds The task ID to be deleted
+     * @return result
      */
     public void deleteJobByIds(Long[] jobIds) throws SchedulerException;
 
     /**
-     * 任务调度状态修改
+     * Task scheduling status modification
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int changeStatus(SysJob job) throws SchedulerException;
 
     /**
-     * 立即运行任务
+     * Run task now
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public boolean run(SysJob job) throws SchedulerException;
 
     /**
-     * 新增任务
+     * Add new task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int insertJob(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 新增任务带有校验验证
+     * Added new tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public Long insertJobReturnId(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 更新任务
+     * Update task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int updateJob(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 更新任务带有校验验证
+     * Update tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果 返回任务主键ID
+     * @param job scheduling information
+     * @return result returns the task primary key ID
      */
     public Long updateJobReturnId(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 校验cron表达式是否有效
+     * Verify whether cron expression is valid
      *
-     * @param cronExpression 表达式
-     * @return 结果
+     * @param cronExpression expression
+     * @return result
      */
     public boolean checkCronExpressionIsValid(String cronExpression);
 }

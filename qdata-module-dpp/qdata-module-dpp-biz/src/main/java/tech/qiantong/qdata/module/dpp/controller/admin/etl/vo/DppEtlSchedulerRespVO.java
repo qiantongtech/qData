@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data Integration Scheduler Information Response VO Object DPP_ETL_SCHEDULER
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成调度信息 Response VO")
+@Schema(description = "Data Integration Scheduler Information Response VO")
 @Data
 public class DppEtlSchedulerRespVO implements Serializable {
 

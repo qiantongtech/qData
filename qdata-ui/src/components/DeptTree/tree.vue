@@ -74,18 +74,18 @@ const deptTreeRef = ref(null);
 const leftWidth = ref(props.leftWidth);
 const expandedKeys = ref([]);
 
-// 等 deptOptions 加载后设置一级节点展开
+// After deptOptions is loaded, set the first-level node expansion
 watch(
     () => props.deptOptions,
     (val) => {
         if (Array.isArray(val) && val.length > 0) {
-            expandedKeys.value = val.map((item) => item.id); // 展开第一层
+            expandedKeys.value = val.map((item) => item.id); // Expand the first layer
         }
     },
     { immediate: true }
 );
 
-// 过滤节点
+// Filter nodes
 const filterNode = (value, data) => {
     if (!value) return true;
     return data.name.indexOf(value) !== -1;
@@ -104,7 +104,7 @@ watch(
     }
 );
 
-// 拖拽逻辑
+// Drag and drop logic
 const isResizing = ref(false);
 let startX = 0;
 const startResize = (event) => {
@@ -127,7 +127,7 @@ const updateResize = (event) => {
     }
 };
 
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
     if (leftWidth.value === 0) {
         leftWidth.value = 300;
@@ -167,7 +167,7 @@ defineExpose({ resetTree });
     padding: 15px;
     flex: 1;
     overflow-y: auto;
-    /* 超出显示滚动条 */
+    /* Exceeding display scroll bar */
     scrollbar-width: thin;
 }
 

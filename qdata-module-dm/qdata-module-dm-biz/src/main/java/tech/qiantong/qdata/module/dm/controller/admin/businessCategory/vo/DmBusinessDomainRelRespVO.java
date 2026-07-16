@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 业务分类数据域关联关系 Response VO 对象 DM_BUSINESS_DOMAIN_REL
+ * Business Category Domain Relation Response VO - DM_BUSINESS_DOMAIN_REL
  *
  * @author qdata
  * @date 2026-04-12

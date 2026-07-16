@@ -27,7 +27,7 @@
         </el-row>
     </div>
 
-    <!-- 表格部分 -->
+    <!-- table part -->
     <el-table stripe height="300px" v-loading="loading" :data="dpCodeMapList">
         <el-table-column :label="td('dpp.integration.originalValue', '原始值')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue">
             <template #default="scope">
@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right">
             <template #default="scope">
-                <!-- 修改时传递行索引，用于后续的 local 编辑 -->
+                <!-- Pass the row index when modifying, for subsequent local editing -->
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, scope.$index)">{{ td('common.button.update') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.$index)">{{ td('common.button.delete') }}</el-button>
             </template>
@@ -58,7 +58,7 @@
         </template>
     </el-table>
 
-    <!-- 新增/修改对话框 -->
+    <!-- Add/modify dialog box -->
     <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable destroy-on-close>
         <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -109,17 +109,17 @@ const dpCodeMapList = ref(props.row || []);
 watch(
     () => props.row,
     (newValue) => {
-        dpCodeMapList.value = newValue || []; // 如果新值是 undefined 或 null，则赋为空数组
+        dpCodeMapList.value = newValue || []; // If the new value is undefined or null, assign an empty array
     },
     { deep: true }
 );
 
-// 其他状态变量
+// Other state variables
 const loading = ref(false);
 const total = ref(dpCodeMapList.value.length);
 const open = ref(false);
 const title = ref('');
-// 表单和验证规则
+// Forms and validation rules
 const data = reactive({
     oldOriginalValue: null,
     form: {
@@ -136,21 +136,21 @@ const data = reactive({
 
 const { oldOriginalValue, form, rules } = toRefs(data);
 const emit = defineEmits(["dpCodeMapList",]);
-/** 表单重置 */
+/** form reset */
 function reset() {
     form.value = { index: null, id: null, originalValue: null, dictName: null, dictValue: null };
     oldOriginalValue.value = null;
     // proxy.resetForm('dpCodeMapRef');
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
     reset();
     open.value = true;
     title.value = td('common.button.add');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row, index) {
     reset();
     form.value = { ...row, index };
@@ -159,7 +159,7 @@ function handleUpdate(row, index) {
     title.value = td('common.button.update');
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(index) {
     proxy.$modal.confirm(td('dpp.integration.confirmDeleteData', '是否确认删除该数据项？'))
         .then(() => {
@@ -171,18 +171,18 @@ function handleDelete(index) {
         .catch(() => { });
 }
 
-/** 提交按钮：新增或修改 */
+/** Submit button: add or modify */
 function submitForm() {
     proxy.$refs['dpCodeMapRef'].validate((valid) => {
         if (valid) {
-            // 检查 originalValue 是否已经存在
+            // Check if originalValue already exists
             const isDuplicate = dpCodeMapList.value.some(item => item.originalValue === form.value.originalValue);
             if (!(oldOriginalValue.value !== null && oldOriginalValue.value === form.value.originalValue) && isDuplicate) {
                 proxy.$modal.msgWarning(td('dpp.integration.originalValueDuplicate', '原始值已存在，不能新增'));
-                return; // 阻止继续执行
+                return; // Prevent execution from continuing
             }
 
-            // 如果是修改操作
+            // If it is a modification operation
             if (form.value.index !== null && form.value.index !== undefined) {
                 dpCodeMapList.value.splice(form.value.index, 1, { ...form.value });
                 proxy.$modal.msgSuccess(td('common.message.editSuccess'));

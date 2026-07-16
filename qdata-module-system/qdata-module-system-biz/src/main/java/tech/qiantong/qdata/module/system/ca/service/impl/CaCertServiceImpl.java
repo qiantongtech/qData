@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.system.ca.service.ICaCertService;
 import java.util.List;
 
 /**
- * 证书管理Service业务层处理
+ * Certificate management service implementation
  *
  * @author qdata
  * @date 2024-08-18
@@ -40,10 +40,10 @@ public class CaCertServiceImpl implements ICaCertService
     private CaCertMapper caCertMapper;
 
     /**
-     * 查询证书管理
+     * Query certificate
      *
-     * @param id 证书管理主键
-     * @return 证书管理
+     * @param id certificate primary key
+     * @return certificate
      */
     @Override
     public CaCert selectCaCertById(Long id)
@@ -52,10 +52,10 @@ public class CaCertServiceImpl implements ICaCertService
     }
 
     /**
-     * 查询证书管理列表
+     * Query certificate list
      *
-     * @param caCert 证书管理
-     * @return 证书管理
+     * @param caCert certificate
+     * @return certificate collection
      */
     @Override
     public List<CaCert> selectCaCertList(CaCert caCert)
@@ -64,10 +64,10 @@ public class CaCertServiceImpl implements ICaCertService
     }
 
     /**
-     * 新增证书管理
+     * Insert certificate
      *
-     * @param caCert 证书管理
-     * @return 结果
+     * @param caCert certificate
+     * @return result
      */
     @Override
     public int insertCaCert(CaCert caCert)
@@ -77,10 +77,10 @@ public class CaCertServiceImpl implements ICaCertService
     }
 
     /**
-     * 修改证书管理
+     * Update certificate
      *
-     * @param caCert 证书管理
-     * @return 结果
+     * @param caCert certificate
+     * @return result
      */
     @Override
     public int updateCaCert(CaCert caCert)
@@ -90,10 +90,10 @@ public class CaCertServiceImpl implements ICaCertService
     }
 
     /**
-     * 批量删除证书管理
+     * Batch delete certificates
      *
-     * @param ids 需要删除的证书管理主键
-     * @return 结果
+     * @param ids primary keys to delete
+     * @return result
      */
     @Override
     public int deleteCaCertByIds(Long[] ids)
@@ -102,10 +102,10 @@ public class CaCertServiceImpl implements ICaCertService
     }
 
     /**
-     * 删除证书管理信息
+     * Delete certificate
      *
-     * @param id 证书管理主键
-     * @return 结果
+     * @param id certificate primary key
+     * @return result
      */
     @Override
     public int deleteCaCertById(Long id)

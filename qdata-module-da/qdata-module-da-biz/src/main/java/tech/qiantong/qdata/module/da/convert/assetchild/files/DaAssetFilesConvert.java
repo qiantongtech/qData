@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.files.DaAssetFile
 import java.util.List;
 
 /**
- * 数据资产-文件服务 Convert
+ * Data Asset - File Service Convert
  *
  * @author qdata
  * @date 2025-06-26
@@ -38,29 +38,29 @@ public interface DaAssetFilesConvert {
     DaAssetFilesConvert INSTANCE = Mappers.getMapper(DaAssetFilesConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetFilesPageReqVO 请求参数
+     * PageReqVO Convert to DO
+     * @param daAssetFilesPageReqVO request parameters
      * @return DaAssetFilesDO
      */
      DaAssetFilesDO convertToDO(DaAssetFilesPageReqVO daAssetFilesPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetFilesSaveReqVO 保存请求参数
+     * SaveReqVO Convert to DO
+     * @param daAssetFilesSaveReqVO save request parameters
      * @return DaAssetFilesDO
      */
      DaAssetFilesDO convertToDO(DaAssetFilesSaveReqVO daAssetFilesSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetFilesDO 实体对象
+     * DO Convert to RespVO
+     * @param daAssetFilesDO entity object
      * @return DaAssetFilesRespVO
      */
      DaAssetFilesRespVO convertToRespVO(DaAssetFilesDO daAssetFilesDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetFilesDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param daAssetFilesDOList entity object list
      * @return List<DaAssetFilesRespVO>
      */
      List<DaAssetFilesRespVO> convertToRespVOList(List<DaAssetFilesDO> daAssetFilesDOList);

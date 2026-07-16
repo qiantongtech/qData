@@ -26,8 +26,8 @@ import tech.qiantong.qdata.module.mc.service.task.IMcTaskService;
 import javax.annotation.Resource;
 
 /**
- * Handle Quartz scheduling operations.
- * Handle Quartz scheduling operations.
+ * DPP 的 Quartz 调用入口。
+ * Quartz 到点后只负责调用这里，真正的数据集成执行逻辑仍然交给 DPP 任务服务处理。
  */
 @Component("mcTaskExecutorJob")
 public class McTaskExecutorJob {
@@ -36,10 +36,10 @@ public class McTaskExecutorJob {
 
     /**
      * Quartz
-     * Handle task-related data and operations.
+     * 回调执行采集任务
      *
-     * @param id parameter value
-     * @return the operation result
+     * @param id 任务ID
+     * @return 执行结果
      */
     public void runExecuteTask(Long id) {
         try {

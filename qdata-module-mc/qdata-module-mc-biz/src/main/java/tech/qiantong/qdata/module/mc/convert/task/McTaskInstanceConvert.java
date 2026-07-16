@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.task.McTaskInstanceDO;
 import java.util.List;
 
 /**
- * 采集任务实例 Convert
+ * Collection task instance Convert
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,29 +20,29 @@ public interface McTaskInstanceConvert {
     McTaskInstanceConvert INSTANCE = Mappers.getMapper(McTaskInstanceConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcTaskInstancePageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcTaskInstancePageReqVO request parameters
      * @return McTaskInstanceDO
      */
      McTaskInstanceDO convertToDO(McTaskInstancePageReqVO mcTaskInstancePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcTaskInstanceSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcTaskInstanceSaveReqVO Save request parameters
      * @return McTaskInstanceDO
      */
      McTaskInstanceDO convertToDO(McTaskInstanceSaveReqVO mcTaskInstanceSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcTaskInstanceDO 实体对象
+     * DO to RespVO
+     * @param mcTaskInstanceDO entity object
      * @return McTaskInstanceRespVO
      */
      McTaskInstanceRespVO convertToRespVO(McTaskInstanceDO mcTaskInstanceDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcTaskInstanceDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcTaskInstanceDOList entity object list
      * @return List<McTaskInstanceRespVO>
      */
      List<McTaskInstanceRespVO> convertToRespVOList(List<McTaskInstanceDO> mcTaskInstanceDOList);

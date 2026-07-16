@@ -20,11 +20,11 @@ import CryptoJS from 'crypto-js'
 
 const aesKey = import.meta.env.VITE_APP_AES_KEY
 
-// 解密
+// Decrypt
 export function  decrypt(data) {
   const key = CryptoJS.enc.Utf8.parse(aesKey);
   const iv = CryptoJS.enc.Utf8.parse(aesKey);
-  // 解密数据
+  // Decrypt data
   const decryptedBytes = CryptoJS.AES.decrypt({
     ciphertext: CryptoJS.enc.Base64.parse(data)
   }, key, {
@@ -36,11 +36,11 @@ export function  decrypt(data) {
   return decryptedData
 }
 
-// 加密
+// Encryption
 export function encrypt(data) {
   const key = CryptoJS.enc.Utf8.parse(aesKey);
   const iv = CryptoJS.enc.Utf8.parse(aesKey);
-  // 加密数据
+  // Encrypt data
   const encryptedBytes = CryptoJS.AES.encrypt(data, key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,

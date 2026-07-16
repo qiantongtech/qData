@@ -23,63 +23,63 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * 表示发起支付请求时的请求数据。
- * 该类包含支付网关处理支付所需的所有必要信息。
+ * Represents the request data when initiating a payment request.
+ * This class contains all the necessary information required by the payment gateway to process the payment.
  */
 @Data
 public class PaymentRequest {
 
     /**
-     * 商户系统中的订单唯一标识符。
-     * 用于将支付交易与商户订单关联。
+     * The order's unique identifier in the merchant's system.
+     * Used to associate payment transactions with merchant orders.
      */
     private String orderId;
 
     /**
-     * 支付的总金额，以货币的最小单位表示（例如人民币的分）。
-     * 使用整数表示，以避免浮点数精度问题。
+     * The total amount paid, expressed in the smallest unit of currency (for example, RMB cents).
+     * Use integer representation to avoid floating point precision issues.
      */
     private long amount;
 
     /**
-     * 用户选择的支付方式，例如支付宝（ALIPAY）或微信支付（WECHAT）。
-     * 决定使用哪个支付网关处理交易。
+     * The payment method selected by the user, such as Alipay (ALIPAY) or WeChat Pay (WECHAT).
+     * Decide which payment gateway to use to process the transaction.
      */
     private PaymentType paymentType;
 
     /**
-     * 购买的商品或服务的简要描述。
-     * 通常会显示在支付页面或凭证中，便于用户识别支付内容。
+     * A brief description of the goods or services purchased.
+     * It is usually displayed on the payment page or voucher to facilitate users to identify the payment content.
      */
     private String description;
 
     /**
-     * 用户在商户系统中的唯一标识符。
-     * 用于将支付记录与用户进行关联。
+     * The user's unique identifier in the merchant's system.
+     * Used to associate payment records with users.
      */
     private String userId;
 
     /**
-     * 发起支付请求的客户端IP地址。
-     * 用于安全校验和防欺诈分析。
+     * The IP address of the client that initiated the payment request.
+     * Used for security verification and anti-fraud analysis.
      */
     private String clientIp;
 
     /**
-     * 支付成功后的异步回调通知URL。
-     * 支付完成后通过此URL通知商户系统支付结果。
+     * Asynchronous callback notification URL after successful payment.
+     * After the payment is completed, the merchant system will be notified of the payment result through this URL.
      */
     private String notifyUrl;
 
     /**
-     * 支付成功后用户跳转的页面URL。
-     * 支付成功后，支付网关会引导用户跳转至此URL。
+     * The URL of the page that the user will jump to after successful payment.
+     * After the payment is successful, the payment gateway will direct the user to jump to this URL.
      */
     private String returnUrl;
 
     /**
-     * 扩展参数，允许传递额外的自定义业务信息。
-     * 可用于在支付过程中传递特殊的业务需求。
+     * Extension parameters allow passing additional custom business information.
+     * Can be used to convey special business requirements during the payment process.
      */
     private Map<String, String> extraParams;
 

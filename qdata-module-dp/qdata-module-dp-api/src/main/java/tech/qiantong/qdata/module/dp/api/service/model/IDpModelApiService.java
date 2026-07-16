@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 逻辑模型Service接口
+ * Logical Model Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,7 +37,7 @@ import java.util.Set;
 public interface IDpModelApiService {
 
     /**
-     * 根据逻辑模型ID获取逻辑模型信息
+     * Get logical model info by logical model ID
      *
      * @param id
      * @return
@@ -45,15 +45,15 @@ public interface IDpModelApiService {
     DpModelRespDTO getDpModelByIdApi(Long id);
 
     /**
-     * 根据逻辑模型ID获取逻辑模型列信息
+     * Get logical model column list by logical model ID
      *
-     * @param modelId 逻辑模型ID
-     * @return 逻辑模型列信息
+     * @param modelId Logical Model ID
+     * @return Logical Model Column List
      */
     List<DpModelColumnRespDTO> getDpModelColumnListByModelIdApi(Long modelId);
 
     /**
-     * 根据数据元id查询数据元信息
+     * Query data element info by data element IDs
      *
      * @param ids
      * @return
@@ -61,7 +61,7 @@ public interface IDpModelApiService {
     List<DpDataElemRespDTO> getDpDataElemListByIdsApi(Set<Long> ids);
 
     /**
-     * 根据资产id获取数据元id集合
+     * Get data element ID set by asset ID
      *
      * @param assetId
      * @return
@@ -71,7 +71,7 @@ public interface IDpModelApiService {
     List<DpDataElemAssetRelRespDTO> getDpDataElemListByColumnIdInApi(Collection<Long> columnIds);
 
     /**
-     * 根据资产id及字段id获取数据元id集合
+     * Get data element ID set by asset ID and column ID
      *
      * @param assetId
      * @return
@@ -79,7 +79,7 @@ public interface IDpModelApiService {
     Set<Long> getDpDataElemListByAssetIdAndColumnId(Long assetId, Long columnId);
 
     /**
-     * 插入数据元和资产关系数据
+     * Insert data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -87,14 +87,14 @@ public interface IDpModelApiService {
     boolean insertElementAssetRelation(List<DpDataElemAssetRelReqDTO> dpDataElemAssetRel);
 
     /**
-     * 根据类目编码查询数量
+     * Get count by category code
      *
      * @return
      */
     Long getCountByCatCode(String catCode);
 
     /**
-     * 更新数据元和资产关系数据
+     * Update data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -102,7 +102,7 @@ public interface IDpModelApiService {
     boolean updateElementAssetRelation(DpDataElemAssetRelReqDTO dpDataElemAssetRel);
 
     /**
-     * 根据资产id和代码表id查询数据元信息
+     * Query data element info by asset ID and code table ID
      *
      * @param assetId
      * @param codeId
@@ -111,18 +111,18 @@ public interface IDpModelApiService {
     List<DpDataElemRespDTO> getDpDataElemListByAssetId(Long assetId, Set<Long> codeId);
 
     /**
-     * 更具模型id查询模型下的字段集合
+     * Query column list under model by model ID
      *
-     * @param modelId 模型id
+     * @param modelId Model ID
      */
     List<DpModelColumnRespDTO> getModelIdColumnList(Long modelId);
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old Category Code
+     * @param newCatCode New Category Code
+     * @return Affected row count
      */
     int updateCatCode(String oldCatCode, String newCatCode);
 }

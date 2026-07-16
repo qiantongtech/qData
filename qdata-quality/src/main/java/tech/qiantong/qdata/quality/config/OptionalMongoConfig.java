@@ -39,15 +39,15 @@ public class OptionalMongoConfig {
 //    @Bean
 //    public MongoTemplate mongoTemplate() {
 //        try {
-//            log.info("✅ 正在初始化自定义 MongoTemplate（OptionalMongoConfig）...");
-//            System.out.println("✅ 初始化 OptionalMongoConfig 中的 MongoTemplate...");
+// log.info("✅ Initializing custom MongoTemplate (OptionalMongoConfig)...");
+// System.out.println("✅Initialize MongoTemplate in OptionalMongoConfig...");
 //            MongoClientSettings settings = MongoClientSettings.builder()
 //                .applyConnectionString(new ConnectionString("mongodb://sjzt:Desl9Y4eIQP1BHh7@110.42.38.62:40004/data?authSource=admin"))
 //                .build();
 //            MongoClient client = MongoClients.create(settings);
 //            return new MongoTemplate(client, "qdata");
 //        } catch (Exception e) {
-//            System.err.println("⚠️ MongoDB 初始化失败：" + e.getMessage());
+// System.err.println("⚠️ MongoDB initialization failed: " + e.getMessage());
 //            return null;
 //        }
 //    }

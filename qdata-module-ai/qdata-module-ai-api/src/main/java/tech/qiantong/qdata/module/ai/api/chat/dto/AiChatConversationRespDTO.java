@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 /**
- * ai聊天对话 DTO 对象 AI_CHAT_CONVERSATION
+ * ai chat conversation DTO object AI_CHAT_CONVERSATION
  *
  * @author FXB
  * @date 2026-04-01
@@ -36,60 +36,60 @@ public class AiChatConversationRespDTO {
     /** ID */
     private Long id;
 
-    /** 用户id */
+    /** User ID */
     private Long userId;
 
-    /** 对话标题 */
+    /** Conversation title */
     private String title;
 
-    /** 是否置顶;0：不置顶，1：置顶 */
+    /** Whether the conversation is pinned; 0: not pinned, 1: pinned */
     private Boolean pinned;
 
-    /** 置顶时间 */
+    /** Pinned time */
     private Date pinnedTime;
 
-    /** 数据源id */
+    /** Data source ID */
     private Long datasourceId;
 
     /**
-     * 数据源类型
+     * Data source type
      */
     private String datasourceType;
 
-    /** 事实表名称 */
+    /** Fact table name */
     private String factTableName;
 
-    /** 事实表注释/事实表描述 */
+    /** Fact table annotation/fact table description */
     private String factTableComment;
 
-    /** 维度表;格式 [{"tableName":"表名","tableComment":"表注释","columnName":"关联字段","factColumnName":"关联的维度字段"}] */
+    /** Dimension table; format [{"tableName":"table name","tableComment":"table comment","columnName":"associated field","factColumnName":"associated dimension field"}] */
     private String dimensionTable;
 
     /**
-     * 关联信息,格式如下
+     * Related information, the format is as follows
      * [{
-     * "dimensionTable": "维度表名",
-     * "factColumnName": "事实表外键字段名",
-     * "dimensionColumnName": "维度表主键字段名",
-     * "matchReason": "匹配依据"
+     * "dimensionTable": "Dimension table name",
+     * "factColumnName": "Fact table foreign key field name",
+     * "dimensionColumnName": "Dimension table primary key field name",
+     * "matchReason": "matching basis"
      * }]
      */
     private String associations;
 
     /**
-     * 关联条件匹配状态;0：未匹配，1：已匹配
+     * Association condition matching status; 0: not matched, 1: matched
      */
     private Boolean joinConditionMatchFlag;
 
     /**
-     * 关联条件匹配类型;1：自动匹配 2:手动匹配
+     * Association condition matching type; 1: automatic matching 2: manual matching
      */
     private String joinConditionMatchType;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

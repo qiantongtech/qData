@@ -51,13 +51,13 @@ public class Schedule {
     private String processDefinitionCode;
 
     /**
-     * 开始时间
+     * Start time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
-     * 结束时间
+     * End time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
@@ -69,12 +69,12 @@ public class Schedule {
     private String timezoneId;
 
     /**
-     * cron表达式
+     * Cron expression
      */
     private String crontab;
 
     /**
-     * 失败策略
+     * Failure strategy
      */
     private String failureStrategy;
 

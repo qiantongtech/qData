@@ -60,19 +60,19 @@ public enum DbDataType {
 
 
     /**
-     * 数据源类型
-     * 1:MySql数据库
-     * 2:MariaDB数据库
-     * 3:Oracle11g及以下数据库
-     * 4:Oracle12c+数据库
-     * 5:PostgreSql数据库
-     * 6:SQLServer2008及以下数据库
-     * 7:SQLServer2012+数据库
+     * Datasource type
+     * 1: MySQL database
+     * 2: MariaDB database
+     * 3: Oracle 11g and below
+     * 4: Oracle 12c+ database
+     * 5: PostgreSQL database
+     * 6: SQLServer 2008 and below
+     * 7: SQLServer 2012+ database
      */
     private final String dbType;
 
     /**
-     * 字段类型 DATE DATETIME TIME TIMESTAMP
+     * Field type: DATE DATETIME TIME TIMESTAMP
      */
     private final String fieldType;
 
@@ -88,7 +88,7 @@ public enum DbDataType {
     }
 
     /**
-     * 通过数据源类型及字段类型获取枚举数据
+     * Get enum data by datasource type and field type
      *
      * @param dbType
      * @param fieldType

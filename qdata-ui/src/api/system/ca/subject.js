@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询主体管理列表
+// Query the subject management list
 export function listSubject(query) {
   return request({
     url: '/ca/subject/list',
@@ -27,7 +27,7 @@ export function listSubject(query) {
   })
 }
 
-// 查询主体管理详细
+// Query subject management details
 export function getSubject(id) {
   return request({
     url: '/ca/subject/' + id,
@@ -35,7 +35,7 @@ export function getSubject(id) {
   })
 }
 
-// 新增主体管理
+// Add new entity management
 export function addSubject(data) {
   return request({
     url: '/ca/subject',
@@ -44,7 +44,7 @@ export function addSubject(data) {
   })
 }
 
-// 修改主体管理
+// Modify subject management
 export function updateSubject(data) {
   return request({
     url: '/ca/subject',
@@ -53,7 +53,7 @@ export function updateSubject(data) {
   })
 }
 
-// 删除主体管理
+// Delete subject management
 export function delSubject(id) {
   return request({
     url: '/ca/subject/' + id,

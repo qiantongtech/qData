@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 脱敏清单关联关系 Request VO 对象 DG_DESENSITIZE_ASSETCOLUMN
+ * Desensitize List Relationship Request VO DG_DESENSITIZE_ASSETCOLUMN
  *
  * @author qdata
  * @date 2026-04-12
  */
-@Schema(description = "脱敏清单关联关系 Request VO")
+@Schema(description = "Desensitize List Association Request VO")
 @Data
 public class DgDesensitizeAssetcolumnPageReqVO extends PageParam {
 

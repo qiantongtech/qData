@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询公告列表
+// Query announcement list
 export function listNotice(query) {
   return request({
     url: '/system/notice/list',
@@ -27,7 +27,7 @@ export function listNotice(query) {
   })
 }
 
-// 查询公告详细
+// Check the announcement details
 export function getNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -35,7 +35,7 @@ export function getNotice(noticeId) {
   })
 }
 
-// 新增公告
+// New announcement
 export function addNotice(data) {
   return request({
     url: '/system/notice',
@@ -44,7 +44,7 @@ export function addNotice(data) {
   })
 }
 
-// 修改公告
+// Modification notice
 export function updateNotice(data) {
   return request({
     url: '/system/notice',
@@ -53,7 +53,7 @@ export function updateNotice(data) {
   })
 }
 
-// 删除公告
+// Delete announcement
 export function delNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -61,7 +61,7 @@ export function delNotice(noticeId) {
   })
 }
 
-// 首页公告列表
+// Home Announcement List
 export function sortListNotice(query) {
   return request({
     url: '/system/notice/sortList',
@@ -70,7 +70,7 @@ export function sortListNotice(query) {
   })
 }
 
-// 首页特殊提示
+// Home page special tips
 export function alertNotice() {
   return request({
     url: '/system/notice/alertNotice',
@@ -78,7 +78,7 @@ export function alertNotice() {
   })
 }
 
-// 查询公告详细-new
+// Check the announcement details-new
 export function getNoticeOne(noticeId) {
   return request({
     url: `/system/notice/one?noticeId=${noticeId}`,

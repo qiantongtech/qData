@@ -1,5 +1,5 @@
 export default {
-  // ============ Whitelist (脱敏白名单) ============
+  // ============ Whitelist (desensitization whitelist) ============
   whitelist: {
     nameDesc: '白名单名称/描述',
     whitelistName: '白名单名称',
@@ -42,7 +42,7 @@ export default {
     accountDisabled: '(禁用)',
     dataCategoryRoot: '数据分类',
   },
-  // ============ Desens Whitelist (脱敏白名单-新) ============
+  // ============ Desens Whitelist (Desensitization Whitelist-New) ============
   desensWhitelist: {
     nameDesc: '白名单名称/描述',
     whitelistName: '白名单名称',
@@ -66,7 +66,7 @@ export default {
     confirmDeleteCount: '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分',
     confirmStatus: '确认要"{text}","{name}"吗？',
   },
-  // ============ Data Category (数据分类) ============
+  // ============ Data Category ============
   dataCategory: {
     treeTitle: '数据分类类目',
     treePlaceholder: '请输入数据分类类目',
@@ -105,7 +105,7 @@ export default {
     viewDesensRule: '查看脱敏规则',
     editDesensRule: '修改脱敏规则',
   },
-  // ============ Data Level (数据分级) ============
+  // ============ Data Level ============
   dataLevel: {
     levelName: '分级名称',
     levelNamePlaceholder: '请输入分级名称',
@@ -128,7 +128,7 @@ export default {
     detailTitle: '数据分级详情',
     confirmDelete: '是否确认删除数据分级"{name}"？',
   },
-  // ============ Desensitization Rules (脱敏规则) ============
+  // ============ Desensitization Rules ============
   desensitizationRules: {
     nameDesc: '脱敏规则名称/描述',
     ruleName: '脱敏规则名称',
@@ -173,7 +173,7 @@ export default {
     intervalEnd: '截止位置',
     intervalRequired: '脱敏区间不能为空',
   },
-  // ============ Sensitive List (脱敏清单) ============
+  // ============ Sensitive List (desensitization list) ============
   sensitiveList: {
     nameDesc: '资产名称/描述',
     assetName: '资产名称',

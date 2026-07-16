@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据发现任务日志Service业务层处理
+ * Data Discovery Task Log Service business layer processing
  *
  * @author qdata
  * @date 2025-02-17
@@ -77,15 +77,15 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
 
     @Override
     public int updateDaDiscoveryTaskLog(DaDiscoveryTaskLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现任务日志
+        // Update data discovery task log
         DaDiscoveryTaskLogDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryTaskLogDO.class);
         return daDiscoveryTaskLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDaDiscoveryTaskLog(Collection<Long> idList) {
-        // 批量删除数据发现任务日志
+        // Batch delete data discovery task logs
         int i = daDiscoveryTaskLogMapper.deleteBatchIds(idList);
         for (Long id : idList) {
             iDaDiscoveryLogBodyService.deleteByPk(id);
@@ -110,19 +110,19 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
                 .collect(Collectors.toMap(
                         DaDiscoveryTaskLogDO::getId,
                         daDiscoveryTaskLogDO -> daDiscoveryTaskLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据发现任务日志数据
+         * Import data discovery task log data
          *
-         * @param importExcelList 数据发现任务日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data discovery task log data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operating user
+         * @return result
          */
         @Override
         public String importDaDiscoveryTaskLog(List<DaDiscoveryTaskLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -202,7 +202,7 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
         if (redisService.hasKey(taskInstanceLogKey)) {
             content += redisService.get(taskInstanceLogKey) + "\n";
         } else {
-            //获取表中的日志
+            //Fetch log from table
             String logContent = iDaDiscoveryLogBodyService.getLog(id);
             if (logContent != null) {
                 content += logContent + "\n";

@@ -34,7 +34,7 @@ import java.util.Set;
 
 
 /**
- * 数据资产字段Mapper接口
+ * Data Asset Column Mapper Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -42,7 +42,7 @@ import java.util.Set;
 public interface DaAssetColumnMapper extends BaseMapperX<DaAssetColumnDO> {
 
     default PageResult<DaAssetColumnDO> selectPage(DaAssetColumnPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
         MPJLambdaWrapper<DaAssetColumnDO> lambdaQueryWrapper = new MPJLambdaWrapper();
         lambdaQueryWrapper.selectAll(DaAssetColumnDO.class)
@@ -50,7 +50,7 @@ public interface DaAssetColumnMapper extends BaseMapperX<DaAssetColumnDO> {
                 .leftJoin("DA_SENSITIVE_LEVEL t2 on t.SENSITIVE_LEVEL_ID = t2.ID AND t2.DEL_FLAG = '0'")
                 .eq(StringUtils.isNotBlank(reqVO.getAssetId()),DaAssetColumnDO::getAssetId, reqVO.getAssetId())
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectJoinPage(reqVO, DaAssetColumnDO.class, lambdaQueryWrapper);
     }
 
@@ -60,7 +60,7 @@ public interface DaAssetColumnMapper extends BaseMapperX<DaAssetColumnDO> {
 
 
     /**
-     * 根据资产详情进行查询字段属性
+     * Query column attributes by asset details
      */
     default List<DaAssetColumnDO> findByAssetId(Long assetId) {
         LambdaQueryWrapper<DaAssetColumnDO> queryWrapper = Wrappers.<DaAssetColumnDO>lambdaQuery()

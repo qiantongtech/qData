@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据发现任务日志列表
+// Query the data discovery task log list
 export function listDaDiscoveryTaskLog(query) {
   return request({
     url: '/da/discoveryTaskLog/list',
@@ -26,7 +26,7 @@ export function listDaDiscoveryTaskLog(query) {
     params: query
   })
 }
-// 查看
+// View
 export function logDetailCat(query) {
   return request({
     url: '/da/discoveryTaskLog/logDetailCat',
@@ -44,7 +44,7 @@ export function downloadLog(query) {
 }
 
 
-// 查询数据发现任务日志详细
+// Query data discovery task log details
 export function getDaDiscoveryTaskLog(id) {
   return request({
     url: '/da/discoveryTaskLog/' + id,
@@ -52,7 +52,7 @@ export function getDaDiscoveryTaskLog(id) {
   })
 }
 
-// 新增数据发现任务日志
+// Added data discovery task log
 export function addDaDiscoveryTaskLog(data) {
   return request({
     url: '/da/discoveryTaskLog',
@@ -61,7 +61,7 @@ export function addDaDiscoveryTaskLog(data) {
   })
 }
 
-// 修改数据发现任务日志
+// Modify data discovery task log
 export function updateDaDiscoveryTaskLog(data) {
   return request({
     url: '/da/discoveryTaskLog',
@@ -70,7 +70,7 @@ export function updateDaDiscoveryTaskLog(data) {
   })
 }
 
-// 删除数据发现任务日志
+// Delete data discovery task logs
 export function delDaDiscoveryTaskLog(id) {
   return request({
     url: '/da/discoveryTaskLog/' + id,

@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 业务域Service业务层处理
+ * Business domain Service business layer processing
  *
  * @author qdata
  * @date 2026-02-12
@@ -58,12 +58,12 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Divided into three situations
+         * 1. There is no data in the database. Call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Add child nodes, no sibling elements YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Add child nodes with sibling elements YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        //Find similar ones and determine the previous largest code value
         LambdaQueryWrapper<McDomainDO> query = new LambdaQueryWrapper<McDomainDO>()
                 .eq(McDomainDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), McDomainDO::getCode, parentCode)
@@ -72,15 +72,15 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
         List<McDomainDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                //Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                //Case 2
                 McDomainDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            //Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
@@ -89,20 +89,20 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
 
     @Override
     public int updateMcDomain(McDomainSaveReqVO updateReqVO) {
-//        // 相关校验
+// //Relevant verification
 //
-//        // 更新业务域
+// //Update business domain
 //        McDomainDO updateDomainDO = BeanUtils.toBean(updateReqVO, McDomainDO.class);
 //        return mcDomainMapper.updateById(updateDomainDO);
         McDomainDO mcDomainDO = mcDomainMapper.selectById(updateReqVO.getId());
         if (mcDomainDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        //Determine whether he has chosen himself
         if (mcDomainDO.getId().equals(updateReqVO.getParentId())) {
             throw new ServiceException("mc.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
-        // 更新业务域管理
+        // Update business domain management
         McDomainDO updateObj = BeanUtils.toBean(updateReqVO, McDomainDO.class);
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             mcDomainMapper.updateValidFlag(mcDomainDO.getCode(), updateReqVO.getValidFlag());
@@ -112,7 +112,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
                 throw new ServiceException("mc.error.parent.disabled", "须先启用父级");
             }
         }
-        //修改上下级判断
+        //Modify the judgment of superiors and subordinates
         boolean flag = false;
         if (updateReqVO.getParentId() != null && !mcDomainDO.getParentId().equals(updateReqVO.getParentId())) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
@@ -121,9 +121,9 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
 
         int i = mcDomainMapper.updateById(updateObj);
 
-        //判断上下级是否发生了改变
+        //Determine whether changes have occurred between superiors and subordinates
         if (flag) {
-            //更改所有下级
+            //Change all subordinates
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
 
@@ -147,13 +147,13 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
 
     @Override
     public int removeMcDomain(Collection<Long> idList) {
-        // 批量删除业务域
+        // Delete business domains in batches
        // return mcDomainMapper.deleteBatchIds(idList);
         int count = 0;
         List<McDomainDO> list = baseMapper.selectBatchIds(idList);
         for (McDomainDO one : list) {
 //            if (mcTaskApiService.existsByDomainCode(one.getCode())) {
-//                throw new ServiceException("被元数据采集引用，不可删除");
+// throw new ServiceException("Referenced by metadata collection and cannot be deleted");
 //            }
             if (dbMapper.existsBySourceSystemName(one.getCode())) {
                 throw new ServiceException("mc.error.ref.db", "被库元数据引用，不可删除");
@@ -183,7 +183,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
                 .collect(Collectors.toMap(
                         McDomainDO::getId,
                         mcDomainDO -> mcDomainDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }

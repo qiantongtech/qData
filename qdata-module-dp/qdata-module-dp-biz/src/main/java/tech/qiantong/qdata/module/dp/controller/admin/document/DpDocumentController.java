@@ -45,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 标准信息登记Controller
+ * Document Registration Controller
  *
  * @author qdata
  * @date 2025-08-21
@@ -74,7 +74,7 @@ public class DpDocumentController extends BaseController {
     }
 
     @Operation(summary = "导出标准信息登记列表")
-    @Log(title = "标准信息登记", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.document", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpDocumentPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -84,7 +84,7 @@ public class DpDocumentController extends BaseController {
     }
 
     @Operation(summary = "导入标准信息登记列表")
-    @Log(title = "标准信息登记", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.document", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpDocumentRespVO> util = new ExcelUtil<>(DpDocumentRespVO.class);
@@ -102,7 +102,7 @@ public class DpDocumentController extends BaseController {
     }
 
     @Operation(summary = "新增标准信息登记")
-    @Log(title = "标准信息登记", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.document", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpDocumentSaveReqVO dpDocument) {
         dpDocument.setCreatorId(getUserId());
@@ -112,7 +112,7 @@ public class DpDocumentController extends BaseController {
     }
 
     @Operation(summary = "修改标准信息登记")
-    @Log(title = "标准信息登记", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.document", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpDocumentSaveReqVO dpDocument) {
         dpDocument.setUpdatorId(getUserId());
@@ -123,14 +123,14 @@ public class DpDocumentController extends BaseController {
 //
 //    @Operation(summary = "删除标准信息登记")
 //    @PreAuthorize("@ss.hasPermi('dp:document:document:remove')")
-//    @Log(title = "标准信息登记", businessType = BusinessType.DELETE)
+//    @Log(title = "log.op.title.dp.document", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{IDs}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(dpDocumentService.removeDpDocument(Arrays.asList(ids)));
 //    }
 
     @Operation(summary = "删除标准信息登记")
-    @Log(title = "标准信息登记", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.document", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long id) {
         return CommonResult.toAjax(dpDocumentService.removeDpDocument(Arrays.asList(id)));

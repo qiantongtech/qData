@@ -43,33 +43,33 @@ function authRole(role) {
 }
 
 export default {
-  // 验证用户是否具备某权限
+  // Verify whether the user has certain permissions
   hasPermi(permission) {
     return authPermission(permission);
   },
-  // 验证用户是否含有指定权限，只需包含其中一个
+  // Verify whether the user has the specified permissions, only need to include one of them
   hasPermiOr(permissions) {
     return permissions.some(item => {
       return authPermission(item)
     })
   },
-  // 验证用户是否含有指定权限，必须全部拥有
+  // Verify whether the user has the specified permissions, which must all be owned
   hasPermiAnd(permissions) {
     return permissions.every(item => {
       return authPermission(item)
     })
   },
-  // 验证用户是否具备某角色
+  // Verify whether the user has a certain role
   hasRole(role) {
     return authRole(role);
   },
-  // 验证用户是否含有指定角色，只需包含其中一个
+  // Verify whether the user has the specified role, only one of them needs to be included
   hasRoleOr(roles) {
     return roles.some(item => {
       return authRole(item)
     })
   },
-  // 验证用户是否含有指定角色，必须全部拥有
+  // Verify whether the user has the specified role, which must all be owned
   hasRoleAnd(roles) {
     return roles.every(item => {
       return authRole(item)

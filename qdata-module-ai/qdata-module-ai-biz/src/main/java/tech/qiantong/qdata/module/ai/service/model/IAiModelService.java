@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.model.vo.AiModelPageReqVO;
 import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 
 /**
- * 模型管理Service接口
+ * Model management service interface
  *
  * @author FXB
  * @date 2026-04-01
@@ -38,54 +38,54 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 public interface IAiModelService extends IService<AiModelDO> {
 
     /**
-     * 获得模型管理分页列表
+     * Get the model management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 模型管理分页列表
+     * @param pageReqVO paging request
+     * @return model management paginated list
      */
     PageResult<AiModelDO> getAiModelPage(AiModelPageReqVO pageReqVO);
 
     /**
-     * 创建模型管理
+     * Create model management
      *
-     * @param createReqVO 模型管理信息
-     * @return 模型管理编号
+     * @param createReqVO model management information
+     * @return model ID
      */
     Long createAiModel(AiModelSaveReqVO createReqVO);
 
     /**
-     * 更新模型管理
+     * Update model management
      *
-     * @param updateReqVO 模型管理信息
+     * @param updateReqVO model management information
      */
     int updateAiModel(AiModelSaveReqVO updateReqVO);
 
     /**
-     * 删除模型管理
+     * Delete model management
      *
-     * @param idList 模型管理编号
+     * @param idList model IDs
      */
     int removeAiModel(Collection<Long> idList);
 
     /**
-     * 获得模型管理详情
+     * Get model management details
      *
-     * @param id 模型管理编号
-     * @return 模型管理
+     * @param id model ID
+     * @return model management
      */
     AiModelDO getAiModelById(Long id);
 
     /**
-     * 获得全部模型管理列表
+     * Get a list of all model management
      *
-     * @return 模型管理列表
+     * @return model management list
      */
     List<AiModelDO> getAiModelList();
 
     /**
-     * 获得全部模型管理 Map
+     * Get all model management maps
      *
-     * @return 模型管理 Map
+     * @return model management map
      */
     Map<Long, AiModelDO> getAiModelMap();
 }

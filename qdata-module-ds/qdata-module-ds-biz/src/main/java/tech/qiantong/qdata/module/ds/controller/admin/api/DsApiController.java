@@ -86,7 +86,7 @@ public class DsApiController extends BaseController {
 
     @Operation(summary = "导出API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:export')")
-    @Log(title = "API服务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DsApiPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -97,7 +97,7 @@ public class DsApiController extends BaseController {
 
     @Operation(summary = "导入API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:import')")
-    @Log(title = "API服务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DsApiRespVO> util = new ExcelUtil<>(DsApiRespVO.class);
@@ -151,7 +151,7 @@ public class DsApiController extends BaseController {
 
     @Operation(summary = "删除API服务")
     @PreAuthorize("@ss.hasPermi('ds:api:remove')")
-    @Log(title = "API服务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable(name = "id") Long[] id) {
         return CommonResult.toAjax(dsApiService.removeDsApi(Arrays.asList(id)));

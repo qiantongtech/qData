@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatConversation
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 
 /**
- * ai聊天对话Service接口
+ * ai chat conversation service interface
  *
  * @author FXB
  * @date 2026-04-01
@@ -38,59 +38,59 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 public interface IAiChatConversationService extends IService<AiChatConversationDO> {
 
     /**
-     * 获得ai聊天对话分页列表
+     * Get a paginated list of ai chat conversations
      *
-     * @param pageReqVO 分页请求
-     * @return ai聊天对话分页列表
+     * @param pageReqVO paging request
+     * @return ai chat conversation paginated list
      */
     PageResult<AiChatConversationDO> getAiChatConversationPage(AiChatConversationPageReqVO pageReqVO);
 
     /**
-     * 创建ai聊天对话
+     * Create ai chat conversation
      *
-     * @param createReqVO ai聊天对话信息
-     * @return ai聊天对话编号
+     * @param createReqVO ai chat conversation information
+     * @return AI chat conversation ID
      */
     Long createAiChatConversation(AiChatConversationSaveReqVO createReqVO);
 
     /**
-     * 更新ai聊天对话
+     * Update ai chat conversation
      *
-     * @param updateReqVO ai聊天对话信息
+     * @param updateReqVO ai chat conversation information
      */
     int updateAiChatConversation(AiChatConversationSaveReqVO updateReqVO);
 
     /**
-     * 删除ai聊天对话
+     * Delete ai chat conversation
      *
-     * @param idList ai聊天对话编号
+     * @param idList AI chat conversation IDs
      */
     int removeAiChatConversation(Collection<Long> idList);
 
     /**
-     * 获得ai聊天对话详情
+     * Get ai chat conversation details
      *
-     * @param id ai聊天对话编号
-     * @return ai聊天对话
+     * @param id AI chat conversation ID
+     * @return ai chat conversation
      */
     AiChatConversationDO getAiChatConversationById(Long id);
 
     /**
-     * 获得全部ai聊天对话列表
+     * Get a list of all ai chat conversations
      *
-     * @return ai聊天对话列表
+     * @return ai chat conversation list
      */
     List<AiChatConversationDO> getAiChatConversationList();
 
     /**
-     * 获得全部ai聊天对话 Map
+     * Get all ai chat conversation map
      *
-     * @return ai聊天对话 Map
+     * @return ai chat conversation map
      */
     Map<Long, AiChatConversationDO> getAiChatConversationMap();
 
     /**
-     * 通过用户id获取ai聊天对话列表
+     * Get the AI chat conversation list by user ID
      *
      * @param userId
      * @return

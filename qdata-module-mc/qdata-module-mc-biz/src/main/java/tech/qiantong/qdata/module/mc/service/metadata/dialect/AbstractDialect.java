@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McDbDO;
 
 /**
- * 抽象数据库方言实现
- * 作为其他数据库类型的占位实现
+ * Abstract database dialect implementation
+ * Implemented as a placeholder for other database types
  */
 @Slf4j
 public class AbstractDialect implements DatabaseDialect {
@@ -58,7 +58,7 @@ public class AbstractDialect implements DatabaseDialect {
         metadata.setRowCount(getTableRowCount(mcDbDO, tableName));
         metadata.setIndexes(getTableIndexes(mcDbDO, tableName));
         metadata.setPartitionFields(getTablePartitionFields(mcDbDO, tableName));
-        metadata.setTableSize(0); // 默认为0
+        metadata.setTableSize(0); // Default is 0
         metadata.setStorageEngine(getStorageEngine(mcDbDO));
         return metadata;
     }

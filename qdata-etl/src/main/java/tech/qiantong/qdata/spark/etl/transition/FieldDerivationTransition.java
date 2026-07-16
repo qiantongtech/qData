@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
- * 字段派生器
+ * Field Derivator
  */
 public class FieldDerivationTransition implements Transition {
 
@@ -62,10 +62,10 @@ public class FieldDerivationTransition implements Transition {
         LogUtils.writeLog(logPath, "任务参数：" + transition.toJSONString(PrettyFormat));
         JSONObject parameter = transition.getJSONObject("parameter");
 
-        //字段派生类型
+        //Field derived type
         String fieldDerivationType = MapUtils.getString(parameter,"fieldDerivationType");
 
-        // 校验
+        // Verification
         if (StringUtils.isEmpty(fieldDerivationType)) {
             throw new IllegalArgumentException("字段派生类型不能为空！");
         }
@@ -74,25 +74,25 @@ public class FieldDerivationTransition implements Transition {
 
         switch (typeEnum) {
             case FIELD_DERIVE_CONCAT:
-                // 拼接处理逻辑
+                // Splicing processing logic
                 return handleConcat(parameter,dataset,logPath);
             case FIELD_DERIVE_SUBSTRING:
-                // 截取处理逻辑
+                // Interception processing logic
                 return handleSubstring(parameter,dataset,logPath);
             case FIELD_DERIVE_REPLACE:
-                // 替换处理逻辑
+                // Replace processing logic
                 return handleReplace();
             case FIELD_DERIVE_EXPRESSION:
-                // 表达式处理逻辑
+                // Expression processing logic
                 return handleExpression();
             case FIELD_DERIVE_HASH:
-                // 哈希处理逻辑
+                // Hash processing logic
                 return handleHash();
             case FIELD_DERIVE_REGEX:
-                // 正则提取处理逻辑
+                // Regular extraction processing logic
                 return handleRegex();
             case FIELD_DERIVE_CONSTANT:
-                // 常量赋值处理逻辑
+                // Constant assignment processing logic
                 return handleConstant();
             default:
                 throw new IllegalArgumentException("未知的字段派生类型: " + fieldDerivationType);
@@ -126,7 +126,7 @@ public class FieldDerivationTransition implements Transition {
      *   "fieldDerivationName": "phone_suffix",
      *   "direction": "FROM_END",                // FROM_START | FROM_END
      *   "startIndex": 4,
-     *   "endIndex": 8,                          // 可选，endIndex 不填表示截取到末尾
+     * "endIndex": 8, // Optional, leaving endIndex blank means cutting to the end
      *   "tableFields": [
      *     { "columnName": "phone" }
      *   ]
@@ -137,19 +137,19 @@ public class FieldDerivationTransition implements Transition {
         LogUtils.writeLog(logParams, "开始字段派生-截取处理");
         LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
 
-        //规则配置的合并后存储的字段名字存入
+        //The field names stored after merging the rule configuration are stored in
         String fieldDerivationName = MapUtils.getString(parameter,"fieldDerivationName");
-        //截取标识符：  1 从前开始  ｜  2 从后开始
+        //Interception identifier: 1 starts from the front | 2 starts from the back
         String direction = MapUtils.getString(parameter,"direction");
 
-        //前缀符号
+        //Prefix symbol
         Integer startIndex = MapUtils.getInteger(parameter,"startIndex",null);
         Integer endIndex = MapUtils.getInteger(parameter,"endIndex",null);
 
-        //选择的字段---只存储了一个，可以直接区 0下标
+        //The selected field---only one is stored, you can directly enter the 0 subscript
         List<Map<String, Object>> tableFields = (List<Map<String, Object>>) MapUtils.getObject(parameter, "tableFields");
 
-        //检验
+        //Inspect
         if (CollectionUtils.isEmpty(tableFields)) {
             throw new IllegalArgumentException("进行计算的字段不能为空！");
         }
@@ -173,7 +173,7 @@ public class FieldDerivationTransition implements Transition {
         Column derivedCol;
 
         if ("1".equalsIgnoreCase(direction)) {
-            // 从前开始： substring(col, start, length)
+            // Start from before: substring(col, start, length)
             if (endIndex != null) {
                 int length = endIndex - startIndex;
                 if (length < 0) {
@@ -181,12 +181,12 @@ public class FieldDerivationTransition implements Transition {
                 }
                 derivedCol = functions.expr("substring(" + columnName + ", " + (startIndex + 1) + ", " + length + ")");
             } else {
-                // 到结尾：length 无穷大
+                // To the end: length is infinity
                 derivedCol = functions.expr("substring(" + columnName + ", " + (startIndex + 1) + ")");
             }
         } else if ("2".equalsIgnoreCase(direction)) {
-            // 从后开始：先计算字符串长度减去 startIndex，然后截取 length
-            // 例：substr(phone, length(phone) - startIndex + 1, length)
+            // Starting from the end: first calculate the string length minus startIndex, then intercept length
+            // Example: substr(phone, length(phone) - startIndex + 1, length)
             Column lengthCol = functions.length(sourceCol);
             Column startPos = lengthCol.minus(startIndex).plus(1);
 
@@ -205,7 +205,7 @@ public class FieldDerivationTransition implements Transition {
 
         Dataset<Row> result = dataset.withColumn(fieldDerivationName, derivedCol);
 
-        // 打印结果以便调试
+        // Print results for debugging
         result.printSchema();
         result.show(10, false);
 
@@ -213,16 +213,16 @@ public class FieldDerivationTransition implements Transition {
     }
 
     /**
-     * 拼接处理逻辑
+     * Splicing processing logic
      * {
-     * "fieldDerivationType":"传递的字段名字"
-     *   ,"fieldDerivationName":"规则配置的合并后存储的字段名字存入"
-     *   ,"delimiter":"连接符"
+     * "fieldDerivationType":"The passed field name"
+     * ,"fieldDerivationName":"Save the field name stored after merging the rule configuration"
+     * ,"delimiter":"connector"
      *   ,"tableFields":[
-     *     {"columnName":"进行拼接的字段名称"}
+     * {"columnName":"Field name for splicing"}
      *   ]
-     *   ,"fieldDerivationPrefix":"前缀符"
-     *   ,"fieldDerivationSuffix":"后缀符"
+     * ,"fieldDerivationPrefix":"prefix"
+     * ,"fieldDerivationSuffix":"Suffix"
      * }
      * @return
      */
@@ -230,18 +230,18 @@ public class FieldDerivationTransition implements Transition {
         LogUtils.writeLog(logPath, "开始字段派生-拼接处理");
         LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
 
-        //规则配置的合并后存储的字段名字存入
+        //The field names stored after merging the rule configuration are stored in
         String fieldDerivationName = MapUtils.getString(parameter,"fieldDerivationName");
-        //链接符
+        //Linker
         String delimiter = MapUtils.getString(parameter,"delimiter","");
-        //前缀符号
+        //Prefix symbol
         String prefix = MapUtils.getString(parameter,"fieldDerivationPrefix","");
-        //后缀符号
+        //Suffix symbol
         String suffix = MapUtils.getString(parameter,"fieldDerivationSuffix","");
-        //选择的字段
+        //Selected fields
         List<Map<String, Object>> tableFields = (List<Map<String, Object>>) MapUtils.getObject(parameter, "tableFields");
 
-        //检验
+        //Inspect
         if (CollectionUtils.isEmpty(tableFields)) {
             throw new IllegalArgumentException("进行计算的字段不能为空！");
         }
@@ -249,7 +249,7 @@ public class FieldDerivationTransition implements Transition {
             throw new IllegalArgumentException("需要存储的字段名称不能为空！");
         }
 
-        // 构造字段列表，转换为字符串，并用 "null" 占位
+        // Construct a field list, convert it to a string, and use "null" as a placeholder
         List<Column> columns = tableFields.stream()
                 .map(field -> {
                     String colName = MapUtils.getString(field, "columnName");
@@ -264,16 +264,16 @@ public class FieldDerivationTransition implements Transition {
             throw new IllegalArgumentException("未获取到任何有效字段用于拼接！");
         }
 
-        // 用 delimiter 拼接字段值
+        // Use delimiter to splice field values
         Column concatCol = functions.concat_ws(delimiter, columns.toArray(new Column[0]));
 
-        // 添加前缀和后缀
+        // Add prefixes and suffixes
         concatCol = functions.concat_ws("", functions.lit(prefix), concatCol, functions.lit(suffix));
 
-        // 添加派生字段列
+        // Add derived field column
         Dataset<Row> rowDataset = dataset.withColumn(fieldDerivationName, concatCol);
 
-        // 调试日志
+        // Debug log
         System.out.println("拼接后的字段结构：");
         rowDataset.printSchema();
 

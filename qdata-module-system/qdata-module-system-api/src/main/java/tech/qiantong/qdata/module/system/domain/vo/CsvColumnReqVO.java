@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -35,6 +35,6 @@ import java.io.Serializable;
 public class CsvColumnReqVO implements Serializable {
     private static final long serialVersionUID = 5343220360439610872L;
 
-    @Schema(description = "csv文件路径")
+    @Schema(description = "CSV File Path")
     private String file;
 }

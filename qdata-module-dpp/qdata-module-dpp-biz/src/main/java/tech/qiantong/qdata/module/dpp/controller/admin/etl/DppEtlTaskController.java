@@ -44,12 +44,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
 
 /**
- * 数据集成任务Controller
+ * Data Integration Task Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成任务")
+@Tag(name = "Data Integration Task")
 @RestController
 @RequestMapping("/dpp/etlTask")
 @Validated
@@ -62,7 +62,7 @@ public class DppEtlTaskController extends BaseController {
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlTaskRespVO>> list(DppEtlTaskPageReqVO dppEtlTask) {
         if (StringUtils.isBlank(dppEtlTask.getType())) {
-            dppEtlTask.setType("1");//默认离线数据集成
+            dppEtlTask.setType("1");// Default offline data integration
         }
         PageResult<DppEtlTaskDO> page = dppEtlTaskService.getDppEtlTaskPage(dppEtlTask);
         return CommonResult.success(BeanUtils.toBean(page, DppEtlTaskRespVO.class));
@@ -73,7 +73,7 @@ public class DppEtlTaskController extends BaseController {
     @GetMapping("/getDppEtlTaskPage")
     public CommonResult<PageResult<DppEtlTaskRespVO>> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask) {
         if (StringUtils.isBlank(dppEtlTask.getType())) {
-            dppEtlTask.setType("1");//默认离线数据集成
+            dppEtlTask.setType("1");// Default offline data integration
         }
         return CommonResult.success(dppEtlTaskService.getDppEtlTaskPageList(dppEtlTask));
     }
@@ -81,14 +81,14 @@ public class DppEtlTaskController extends BaseController {
 
     @Operation(summary = "删除数据集成任务")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTask:remove')")
-    @Log(title = "数据集成任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.etl", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskService.removeDppEtlTask(Arrays.asList(ids)));
     }
 
     /**
-     * 2025-06-18改版，此为历史版本
+     * 2025-06-18 revision, this is the historical version
      *
      * @param dppEtlNewNodeSaveReqVO
      * @return
@@ -98,7 +98,7 @@ public class DppEtlTaskController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult createProcessDefinition(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
-            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+            dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         }
         DppEtlTaskSaveReqVO result = dppEtlTaskService.createProcessDefinition(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
@@ -184,7 +184,7 @@ public class DppEtlTaskController extends BaseController {
     }
 
 
-    @Log(title = "触发一次定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.trigger", businessType = BusinessType.UPDATE)
     @PutMapping("/startDppEtlTask/{id}")
     public AjaxResult startDppEtlTask(@PathVariable("id") Long id) {
         return dppEtlTaskService.startDppEtlTask(id);
@@ -195,7 +195,7 @@ public class DppEtlTaskController extends BaseController {
     @PostMapping("/createEtlTask")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult createEtlTask(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+        dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         DppEtlTaskSaveReqVO result = dppEtlTaskService.createEtlTask(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
     }
@@ -204,7 +204,7 @@ public class DppEtlTaskController extends BaseController {
     @PostMapping("/updateEtlTask")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult updateEtlTask(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+        dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         DppEtlTaskSaveReqVO result = dppEtlTaskService.updateEtlTask(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
     }
@@ -214,7 +214,7 @@ public class DppEtlTaskController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult createEtlTaskFront(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
-            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+            dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         }
         DppEtlNewNodeSaveReqVO result = dppEtlTaskService.createEtlTaskFront(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
@@ -225,7 +225,7 @@ public class DppEtlTaskController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult createEtlTaskFrontPostposition(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
-            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+            dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         }
         DppEtlTaskSaveReqVO result = dppEtlTaskService.createEtlTaskFrontPostposition(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);
@@ -236,7 +236,7 @@ public class DppEtlTaskController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResult copyCreateEtl(@Valid @RequestBody DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         if (StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getType())) {
-            dppEtlNewNodeSaveReqVO.setType("1");//默认离线数据集成
+            dppEtlNewNodeSaveReqVO.setType("1");// Default offline data integration
         }
         DppEtlTaskSaveReqVO result = dppEtlTaskService.copyCreateEtl(dppEtlNewNodeSaveReqVO);
         return CommonResult.success(result);

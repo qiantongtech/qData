@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 消息模板 Response VO 对象 message_template
+ * Message Template Response VO
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Schema(description = "消息模板 Response VO")
+@Schema(description = "Message Template Response VO")
 @Data
 public class MessageTemplateRespVO implements Serializable {
 
@@ -41,57 +41,57 @@ public class MessageTemplateRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "消息标题")
-    @Schema(description = "消息标题", example = "")
+    @Excel(name = "Message Title")
+    @Schema(description = "Message Title", example = "")
     private String title;
 
-    @Excel(name = "消息模板内容")
-    @Schema(description = "消息模板内容", example = "")
+    @Excel(name = "Message Template Content")
+    @Schema(description = "Message Template Content", example = "")
     private String content;
 
-    @Excel(name = "消息类别")
-    @Schema(description = "消息类别", example = "")
+    @Excel(name = "Message Category")
+    @Schema(description = "Message Category", example = "")
     private Integer category;
 
-    @Excel(name = "消息等级")
-    @Schema(description = "消息等级", example = "")
+    @Excel(name = "Message Level")
+    @Schema(description = "Message Level", example = "")
     private Integer msgLevel;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Active Status")
+    @Schema(description = "Active Status", example = "")
     private Boolean validFlag;
 
-    @Schema(description = "删除标识")
+    @Schema(description = "Delete Flag")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Created By ID")
+    @Schema(description = "Created By ID", example = "")
     private Long creatorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
-    @Schema(description = "创建时间", example = "")
+    @Excel(name = "Created Time", width = 30, dateFormat = "yyyy-MM-dd")
+    @Schema(description = "Created Time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updated By ID")
+    @Schema(description = "Updated By ID", example = "")
     private Long updaterId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    @Schema(description = "更新时间", example = "")
+    @Excel(name = "Updated Time", width = 30, dateFormat = "yyyy-MM-dd")
+    @Schema(description = "Updated Time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
 }

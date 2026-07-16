@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.assetchild.theme.dto;
 import lombok.Data;
 
 /**
- * 数据资产-主题关联关系 DTO 对象 DA_ASSET_THEME_REL
+ * Data Asset - Theme Relation DTO DA_ASSET_THEME_REL
  *
  * @author qdata
  * @date 2025-04-14
@@ -34,16 +34,16 @@ public class DaAssetThemeRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 主题id */
+    /** Theme ID */
     private Long themeId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

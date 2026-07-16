@@ -18,7 +18,7 @@
 
 import request from "@/utils/rpRequest";
 
-// 资料类型
+// Data type
 export function catApiList(query) {
   return request({
     url: "/rp/attDoc/catApi/list",
@@ -26,7 +26,7 @@ export function catApiList(query) {
     params: query,
   });
 }
-// 左侧树
+// tree on left
 export function rpDictList(query) {
   return request({
     url: `/rp/rpDict/list`,
@@ -35,7 +35,7 @@ export function rpDictList(query) {
   });
 }
 
-// 列表
+// list
 export function rpDocList(query) {
   return request({
     url: "/rp/rpDoc/list",
@@ -44,7 +44,7 @@ export function rpDocList(query) {
   });
 }
 
-// 新增
+// New
 export function rpDocAdd(data) {
   return request({
     url: "/rp/rpDoc",
@@ -52,14 +52,14 @@ export function rpDocAdd(data) {
     data: data,
   });
 }
-// 删除
+// Delete
 export function rpDocDel(id) {
   return request({
     url: "/rp/rpDoc/" + id,
     method: "delete",
   });
 }
-// 字典
+// dictionary
 export function dictDataList(dictType) {
   return request({
     url: `/rp/dictData/type/${dictType}`,

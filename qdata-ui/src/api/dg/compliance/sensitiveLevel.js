@@ -1,6 +1,6 @@
 import request from '@/utils/request.js';
 
-// 查询敏感等级列表
+// Query sensitivity level list
 export function listDgSensitiveLevel(query) {
     return request({
         url: '/dg/sensitiveLevel/list',
@@ -9,7 +9,7 @@ export function listDgSensitiveLevel(query) {
     });
 }
 
-// 查询敏感等级详细
+// Query sensitivity level details
 export function getDgSensitiveLevel(id) {
     return request({
         url: '/dg/sensitiveLevel/' + id,
@@ -17,7 +17,7 @@ export function getDgSensitiveLevel(id) {
     });
 }
 
-// 新增敏感等级
+// Add sensitivity level
 export function addDgSensitiveLevel(data) {
     return request({
         url: '/dg/sensitiveLevel',
@@ -26,7 +26,7 @@ export function addDgSensitiveLevel(data) {
     });
 }
 
-// 修改状态 上线/下线
+// Modify status online/offline
 export function updateStatus(id, status) {
     return request({
         url: `/dg/sensitiveLevel/updateStatus/${id}/${status}`,
@@ -34,7 +34,7 @@ export function updateStatus(id, status) {
     });
 }
 
-// 修改敏感等级
+// Modify sensitivity level
 export function updateDgSensitiveLevel(data) {
     return request({
         url: '/dg/sensitiveLevel',
@@ -43,7 +43,7 @@ export function updateDgSensitiveLevel(data) {
     });
 }
 
-// 删除敏感等级
+// Delete sensitivity level
 export function delDgSensitiveLevel(id) {
     return request({
         url: '/dg/sensitiveLevel/' + id,

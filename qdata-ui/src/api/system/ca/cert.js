@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询证书管理列表
+// Query certificate management list
 export function listCert(query) {
   return request({
     url: '/ca/cert/list',
@@ -27,7 +27,7 @@ export function listCert(query) {
   })
 }
 
-// 查询证书管理详细
+// Query certificate management details
 export function getCert(id) {
   return request({
     url: '/ca/cert/' + id,
@@ -35,7 +35,7 @@ export function getCert(id) {
   })
 }
 
-// 新增证书管理
+// Added certificate management
 export function addCert(data) {
   return request({
     url: '/ca/cert',
@@ -44,7 +44,7 @@ export function addCert(data) {
   })
 }
 
-// 修改证书管理
+// Modify certificate management
 export function updateCert(data) {
   return request({
     url: '/ca/cert',
@@ -53,7 +53,7 @@ export function updateCert(data) {
   })
 }
 
-// 删除证书管理
+// Remove certificate management
 export function delCert(id) {
   return request({
     url: '/ca/cert/' + id,

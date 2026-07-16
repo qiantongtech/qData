@@ -21,7 +21,7 @@ import {i18n} from '@/plugins/vueI18n'
 import useSettingsStore from '@/store/system/settings'
 
 /**
- * 动态修改标题
+ * Dynamically modify title
  */
 const title = () => i18n.global.t('common.html.appTitle') || defaultSettings.title;
 

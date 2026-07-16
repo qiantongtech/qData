@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 import tech.qiantong.qdata.module.dm.service.dm.IDmDataDomainService;
 
 /**
- * 数据域管理Controller
+ * Data Domain Controller
  *
  * @author FXB
  * @date 2026-03-24
@@ -71,7 +71,7 @@ public class DmDataDomainController extends BaseController {
 
     @Operation(summary = "导出数据域管理列表")
     @PreAuthorize("@ss.hasPermi('dm:dataDomain:export')")
-    @Log(title = "数据域管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dm.data.domain", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmDataDomainPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DmDataDomainController extends BaseController {
 
     @Operation(summary = "导入数据域管理列表")
     @PreAuthorize("@ss.hasPermi('dm:dataDomain:import')")
-    @Log(title = "数据域管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dm.data.domain", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DmDataDomainRespVO> util = new ExcelUtil<>(DmDataDomainRespVO.class);
@@ -102,7 +102,7 @@ public class DmDataDomainController extends BaseController {
 
     @Operation(summary = "新增数据域管理")
     @PreAuthorize("@ss.hasPermi('dm:dataDomain:add')")
-    @Log(title = "数据域管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.data.domain", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmDataDomainSaveReqVO dmDataDomain) {
         dmDataDomain.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DmDataDomainController extends BaseController {
 
     @Operation(summary = "修改数据域管理")
     @PreAuthorize("@ss.hasPermi('dm:dataDomain:edit')")
-    @Log(title = "数据域管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.data.domain", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmDataDomainSaveReqVO dmDataDomain) {
         dmDataDomain.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DmDataDomainController extends BaseController {
 
     @Operation(summary = "删除数据域管理")
     @PreAuthorize("@ss.hasPermi('dm:dataDomain:remove')")
-    @Log(title = "数据域管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.data.domain", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmDataDomainService.removeDmDataDomain(Arrays.asList(ids)));

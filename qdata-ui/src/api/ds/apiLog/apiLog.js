@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询API服务调用日志列表
+// Query API service call log list
 export function listApiLog(query) {
   return request({
     url: '/ds/apiLog/list',
@@ -27,7 +27,7 @@ export function listApiLog(query) {
   })
 }
 
-// 查询API服务调用日志详细
+// Query API service call log details
 export function getApiLog(ID) {
   return request({
     url: '/ds/apiLog/' + ID,
@@ -35,7 +35,7 @@ export function getApiLog(ID) {
   })
 }
 
-// 新增API服务调用日志
+// Added API service call log
 export function addApiLog(data) {
   return request({
     url: '/ds/apiLog',
@@ -44,7 +44,7 @@ export function addApiLog(data) {
   })
 }
 
-// 修改API服务调用日志
+// Modify API service call log
 export function updateApiLog(data) {
   return request({
     url: '/ds/apiLog',
@@ -53,7 +53,7 @@ export function updateApiLog(data) {
   })
 }
 
-// 删除API服务调用日志
+// Delete API service call logs
 export function delApiLog(ID) {
   return request({
     url: '/ds/apiLog/' + ID,

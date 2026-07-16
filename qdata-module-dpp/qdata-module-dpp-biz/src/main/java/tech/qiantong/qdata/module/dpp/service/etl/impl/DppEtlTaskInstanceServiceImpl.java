@@ -70,7 +70,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 
 /**
- * 数据集成任务实例Service业务层处理
+ * Data Integration Task Instance Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -148,16 +148,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Override
     public int updateDppEtlTaskInstance(DppEtlTaskInstanceSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成任务实例
+        // Update data integration task instance
         DppEtlTaskInstanceDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskInstanceDO.class);
         return dppEtlTaskInstanceMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDppEtlTaskInstance(Collection<Long> idList) {
-        // 批量删除数据集成任务实例
+        // Batch delete data integration task instance
         return dppEtlTaskInstanceMapper.deleteBatchIds(idList);
     }
 
@@ -178,19 +178,19 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .collect(Collectors.toMap(
                         DppEtlTaskInstanceDO::getId,
                         dppEtlTaskInstanceDO -> dppEtlTaskInstanceDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成任务实例数据
+     * Import data integration task instance data
      *
-     * @param importExcelList 数据集成任务实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data integration task instance data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName        operator user
+     * @return result
      */
     @Override
     public String importDppEtlTaskInstance(List<DppEtlTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -373,7 +373,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                         if (child.getStartTime() != null && child.getEndTime() != null) {
                             child.setDuration(DateUtils.format2Duration(child.getEndTime().getTime() - child.getStartTime().getTime()));
                         }
-                        //判断是否是子任务
+                        // Check if it is a sub-task
                         if (StringUtils.equals(String.valueOf(TaskComponentTypeEnum.SUB_PROCESS), child.getNodeType())) {
                             child.setHasChildren(true);
                         }
@@ -432,7 +432,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
         String log = "";
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
-        //获取任务信息
+        // Get task info
         DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
                 .code(dppEtlTaskInstanceDO.getTaskCode())
                 .version(dppEtlTaskInstanceDO.getTaskVersion())
@@ -440,9 +440,9 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         if (dppEtlTaskLogRespVO == null) {
             throw new RuntimeException("任务不存在");
         }
-        //获取节点关系数据
+        // Get node relation data
         JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
-        //获取节点数据
+        // Get node data
         List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
                 .select(DppEtlNodeInstanceDO::getId,
                         DppEtlNodeInstanceDO::getNodeCode,
@@ -451,11 +451,11 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
 
         String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + taskInstanceId;
-        if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {//判断是否是离线任务
+        if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {// Check if it is an offline task
             if (redisService.hasKey(processInstanceLogKey)) {
                 log = redisService.get(processInstanceLogKey);
             } else {
-                //获取表中的日志
+                // Get logs from the table
                 String logContent = dppEtlTaskInstanceLogService.getLog(taskInstanceId);
                 if (logContent != null) {
                     log = logContent;
@@ -474,7 +474,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                     if (redisService.hasKey(taskInstanceLogKey)) {
                         log += redisService.get(taskInstanceLogKey) + "\n";
                     } else {
-                        //获取表中的日志
+                        // Get logs from the table
                         String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
                         if (logContent != null) {
                             log += logContent + "\n";
@@ -506,7 +506,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Override
     public DppEtlTaskUpdateQueryRespVO getTaskInfo(Long id) {
-        //根据任务实例id获取任务信息
+        // Get task info by task instance ID
         MPJLambdaWrapper<DppEtlTaskInstanceDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(DppEtlTaskInstanceDO.class)
                 .select("t3.NICK_NAME AS personChargeName")
@@ -514,7 +514,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .eq(DppEtlTaskInstanceDO::getId, id);
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceMapper.selectJoinOne(DppEtlTaskInstanceDO.class, lambdaWrapper);
 
-        //获取任务信息
+        // Get task info
         DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
                 .code(dppEtlTaskInstanceDO.getTaskCode())
                 .version(dppEtlTaskInstanceDO.getTaskVersion())
@@ -524,14 +524,14 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         }
         DppEtlTaskUpdateQueryRespVO bean = new DppEtlTaskUpdateQueryRespVO(BeanUtils.toBean(dppEtlTaskLogRespVO, DppEtlTaskDO.class));
         bean.setTaskInstance(dppEtlTaskInstanceDO);
-        //获取关系数据
+        // Get relation data
         List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList = iDppEtlTaskNodeRelService.getDppEtlTaskNodeRelRespVOList(DppEtlTaskNodeRelPageReqVO.builder()
                 .taskCode(bean.getCode())
                 .taskVersion(bean.getVersion())
                 .build());
         bean.setTaskRelationJsonFromNodeRelList(dppEtlTaskNodeRelRespVOList);
 
-        //获取捷信信息
+        // Get node info
         List<DppEtlNodeLogDO> dppEtlNodeLogDOList = dppEtlNodeLogService.listByTaskCode(dppEtlTaskInstanceDO.getTaskCode(), dppEtlTaskInstanceDO.getTaskVersion());
         bean.setTaskDefinitionList(BeanUtils.toBean(dppEtlNodeLogDOList, DppEtlNodeRespVO.class));
         bean.createTaskConfig();

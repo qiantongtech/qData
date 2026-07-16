@@ -53,7 +53,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据源Service业务层处理
+ * Data source Service business layer processing
  *
  * @author lhs
  * @date 2025-01-21
@@ -69,7 +69,7 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     private DataSourceFactory dataSourceFactory;
 
     /**
-     * 查询数据资产的数据源连接信息
+     * Query the data source connection information of data assets
      *
      * @param daAsset
      * @return
@@ -105,7 +105,7 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
 
     @Override
     public int removeDaDatasource(Collection<Long> idList) {
-        // 批量删除数据源
+        // Delete data sources in batches
         return daDatasourceMapper.deleteBatchIds(idList);
     }
 
@@ -143,19 +143,19 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
                 .collect(Collectors.toMap(
                         DaDatasourceDO::getId,
                         daDatasourceDO -> daDatasourceDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据源数据
+     * Import data source data
      *
-     * @param importExcelList 数据源数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data source data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -255,7 +255,7 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     }
 
     /**
-     * @param id 数据源id
+     * @param id data source id
      * @return
      */
     @Override
@@ -277,8 +277,8 @@ public class DaDatasourceQualityServiceImpl extends ServiceImpl<DaDatasourceMapp
     }
 
     /**
-     * @param id        数据源id
-     * @param tableName 表名称
+     * @param id data source id
+     * @param tableName table name
      * @return
      */
     @Override

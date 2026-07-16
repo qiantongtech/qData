@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据质量任务-评测规则 DO 对象 DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task-Evaluate Rule DO - DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21
  */
 @Data
 @TableName(value = "DPP_QUALITY_TASK_EVALUATE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_QUALITY_TASK_EVALUATE_seq")
 @Builder
 @NoArgsConstructor
@@ -44,61 +44,61 @@ public class DppQualityTaskEvaluateDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据质量任务ID */
+    /** Data quality task ID */
     private Long taskId;
 
-    /** 评测名称 */
+    /** Evaluate name */
     private String name;
 
-    /** 稽查规则编号 */
+    /** Audit rule code */
     private String ruleCode;
 
-    /** 稽查规则名称 */
+    /** Audit rule name */
     private String ruleName;
 
-    /** 告警等级 */
+    /** Warning level */
     private String warningLevel;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 质量维度*/
+    /** Quality dimension */
     private String dimensionType;
 
-     /** 规则类型*/
+     /** Rule type */
     private String ruleType;
 
-    /** 规则描述 */
+    /** Rule description */
     private String ruleDescription;
 
-    /** 错误描述 */
+    /** Error description */
     private String errDescription;
 
-    /** 修复建议 */
+    /** Suggestion */
     private String suggestion;
 
-    /** where条件 */
+    /** Where clause */
     private String whereClause;
 
-    /** 评测对象ID */
+    /** Evaluate object ID */
     private Long objId;
 
-    /** 稽查对象名称 */
+    /** Audit object name */
     private String objName;
 
-    /** 表名称 */
+    /** Table name */
     private String tableName;
 
-    /** 检查字段，多个时逗号隔开 */
+    /** Check columns, comma separated for multiple */
     private String evaColumn;
 
-    /** 不同规则的自定义,JSON形式 */
+    /** Custom per rule, in JSON format */
     private String rule;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

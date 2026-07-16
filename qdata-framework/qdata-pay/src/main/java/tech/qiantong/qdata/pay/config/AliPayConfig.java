@@ -39,7 +39,7 @@ public class AliPayConfig {
 
     @PostConstruct
     public void init() {
-        // 设置参数（全局只需设置一次）
+        // Set parameters (only need to be set once globally)
         Config config = new Config();
         config.protocol = "https";
         config.gatewayHost = this.gatewayHost;

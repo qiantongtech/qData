@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttApiCatDO;
 import java.util.List;
 
 /**
- * 数据服务类目管理 Convert
+ * Data Service Category Management Convert
  *
  * @author qdata
  * @date 2025-03-11
@@ -38,29 +38,29 @@ public interface AttApiCatConvert {
     AttApiCatConvert INSTANCE = Mappers.getMapper(AttApiCatConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attApiCatPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attApiCatPageReqVO Request parameters
      * @return AttApiCatDO
      */
      AttApiCatDO convertToDO(AttApiCatPageReqVO attApiCatPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attApiCatSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attApiCatSaveReqVO Save request parameters
      * @return AttApiCatDO
      */
      AttApiCatDO convertToDO(AttApiCatSaveReqVO attApiCatSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attApiCatDO 实体对象
+     * Convert DO to RespVO
+     * @param attApiCatDO Entity object
      * @return AttApiCatRespVO
      */
      AttApiCatRespVO convertToRespVO(AttApiCatDO attApiCatDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attApiCatDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attApiCatDOList Entity object list
      * @return List<AttApiCatRespVO>
      */
      List<AttApiCatRespVO> convertToRespVOList(List<AttApiCatDO> attApiCatDOList);

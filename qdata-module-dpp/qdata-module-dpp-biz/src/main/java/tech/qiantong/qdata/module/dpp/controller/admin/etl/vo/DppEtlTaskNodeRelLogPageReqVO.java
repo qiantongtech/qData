@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成任务节点关系-日志 Request VO 对象 DPP_ETL_TASK_NODE_REL_LOG
+ * Data Integration Task Node Relation-Log Request VO Object DPP_ETL_TASK_NODE_REL_LOG
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务节点关系-日志 Request VO")
+@Schema(description = "Data Integration Task Node Relation-Log Request VO")
 @Data
 public class DppEtlTaskNodeRelLogPageReqVO extends PageParam {
 

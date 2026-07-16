@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.user;
 
 /**
- * 验证码失效异常类
+ * Verification code invalid exception class
  *
  * @author qdata
  */

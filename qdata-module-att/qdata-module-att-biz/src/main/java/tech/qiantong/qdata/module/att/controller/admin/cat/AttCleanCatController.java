@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 
 /**
- * 清洗规则类目Controller
+ * Cleaning Rule Category Controller
  *
  * @author qdata
  * @date 2025-08-11
@@ -74,7 +74,7 @@ public class AttCleanCatController extends BaseController {
 
     @Operation(summary = "导出清洗规则类目列表")
     @PreAuthorize("@ss.hasPermi('att:cleanCat:export')")
-    @Log(title = "清洗规则类目", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.clean.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttCleanCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -85,7 +85,7 @@ public class AttCleanCatController extends BaseController {
 
     @Operation(summary = "导入清洗规则类目列表")
     @PreAuthorize("@ss.hasPermi('att:cleanCat:import')")
-    @Log(title = "清洗规则类目", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.clean.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttCleanCatRespVO> util = new ExcelUtil<>(AttCleanCatRespVO.class);
@@ -104,7 +104,7 @@ public class AttCleanCatController extends BaseController {
 
     @Operation(summary = "新增清洗规则类目")
     @PreAuthorize("@ss.hasPermi('att:cleanCat:add')")
-    @Log(title = "清洗规则类目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.clean.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttCleanCatSaveReqVO attCleanCat) {
         attCleanCat.setCreatorId(getUserId());
@@ -115,7 +115,7 @@ public class AttCleanCatController extends BaseController {
 
     @Operation(summary = "修改清洗规则类目")
     @PreAuthorize("@ss.hasPermi('att:cleanCat:edit')")
-    @Log(title = "清洗规则类目", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.clean.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttCleanCatSaveReqVO attCleanCat) {
         attCleanCat.setUpdatorId(getUserId());
@@ -126,7 +126,7 @@ public class AttCleanCatController extends BaseController {
 
     @Operation(summary = "删除清洗规则类目")
     @PreAuthorize("@ss.hasPermi('att:cleanCat:remove')")
-    @Log(title = "清洗规则类目", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.clean.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long ids) {
         return CommonResult.toAjax(attCleanCatService.removeAttCleanCat(ids));

@@ -37,7 +37,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 模型管理Controller
+ * Model ManagementController
  *
  * @author FXB
  * @date 2026-04-01

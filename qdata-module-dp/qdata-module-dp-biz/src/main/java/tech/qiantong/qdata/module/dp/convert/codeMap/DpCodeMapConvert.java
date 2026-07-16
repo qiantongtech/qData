@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.codeMap.DpCodeMapDO;
 import java.util.List;
 
 /**
- * 数据元代码映射 Convert
+ * Data Element Code Map Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DpCodeMapConvert {
     DpCodeMapConvert INSTANCE = Mappers.getMapper(DpCodeMapConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpCodeMapPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpCodeMapPageReqVO Request params
      * @return DpCodeMapDO
      */
      DpCodeMapDO convertToDO(DpCodeMapPageReqVO dpCodeMapPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpCodeMapSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpCodeMapSaveReqVO Save request params
      * @return DpCodeMapDO
      */
      DpCodeMapDO convertToDO(DpCodeMapSaveReqVO dpCodeMapSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpCodeMapDO 实体对象
+     * Convert DO to RespVO
+     * @param dpCodeMapDO Entity object
      * @return DpCodeMapRespVO
      */
      DpCodeMapRespVO convertToRespVO(DpCodeMapDO dpCodeMapDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpCodeMapDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpCodeMapDOList Entity object list
      * @return List<DpCodeMapRespVO>
      */
      List<DpCodeMapRespVO> convertToRespVOList(List<DpCodeMapDO> dpCodeMapDOList);

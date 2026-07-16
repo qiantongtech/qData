@@ -29,7 +29,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据质量日志 创建/修改 Request VO DPP_QUALITY_LOG
+ * Data Quality Log Create/Modify Request VO DPP_QUALITY_LOG
  *
  * @author qdata
  * @date 2025-07-19

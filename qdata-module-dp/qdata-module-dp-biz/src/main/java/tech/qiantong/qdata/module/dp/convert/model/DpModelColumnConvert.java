@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.model.DpModelColumnDO;
 import java.util.List;
 
 /**
- * 逻辑模型属性信息 Convert
+ * Logical Model Column Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DpModelColumnConvert {
     DpModelColumnConvert INSTANCE = Mappers.getMapper(DpModelColumnConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpModelColumnPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpModelColumnPageReqVO Request params
      * @return DpModelColumnDO
      */
      DpModelColumnDO convertToDO(DpModelColumnPageReqVO dpModelColumnPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpModelColumnSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpModelColumnSaveReqVO Save request params
      * @return DpModelColumnDO
      */
      DpModelColumnDO convertToDO(DpModelColumnSaveReqVO dpModelColumnSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpModelColumnDO 实体对象
+     * Convert DO to RespVO
+     * @param dpModelColumnDO Entity object
      * @return DpModelColumnRespVO
      */
      DpModelColumnRespVO convertToRespVO(DpModelColumnDO dpModelColumnDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpModelColumnDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpModelColumnDOList Entity object list
      * @return List<DpModelColumnRespVO>
      */
      List<DpModelColumnRespVO> convertToRespVOList(List<DpModelColumnDO> dpModelColumnDOList);

@@ -30,7 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 针对 MyBatis Plus 的 {@link DbType} 增强，补充更多信息
+ * {@link DbType} enhancement for MyBatis Plus, add more information
  */
 @Getter
 @AllArgsConstructor
@@ -49,7 +49,7 @@ public enum DbTypeEnum {
     /**
      * PostgreSQL
      *
-     * 华为 openGauss 使用 ProductName 与 PostgreSQL 相同
+     * Huawei openGauss uses the same ProductName as PostgreSQL
      */
     POSTGRE_SQL(DbType.POSTGRE_SQL,"PostgreSQL", "POSITION('#{value}' IN #{column}) <> 0"),
 
@@ -59,12 +59,12 @@ public enum DbTypeEnum {
     SQL_SERVER(DbType.SQL_SERVER, "Microsoft SQL Server", "CHARINDEX(',' + #{value} + ',', ',' + #{column} + ',') <> 0"),
 
     /**
-     * 达梦
+     * Dameng
      */
     DM(DbType.DM, "DM DBMS", "FIND_IN_SET('#{value}', #{column}) <> 0"),
 
     /**
-     * 人大金仓
+     * Renmin University of Finance and Economics
      */
     KINGBASE_ES(DbType.KINGBASE_ES, "KingbaseES", "POSITION('#{value}' IN #{column}) <> 0"),
     ;
@@ -76,15 +76,15 @@ public enum DbTypeEnum {
             .collect(Collectors.toMap(DbTypeEnum::getMpDbType, Function.identity()));
 
     /**
-     * MyBatis Plus 类型
+     * MyBatis Plus type
      */
     private final DbType mpDbType;
     /**
-     * 数据库产品名
+     * Database product name
      */
     private final String productName;
     /**
-     * SQL FIND_IN_SET 模板
+     * SQL FIND_IN_SET template
      */
     private final String findInSetTemplate;
 

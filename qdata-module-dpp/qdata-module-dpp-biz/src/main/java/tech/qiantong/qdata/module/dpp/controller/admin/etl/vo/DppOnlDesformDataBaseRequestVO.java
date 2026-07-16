@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -38,18 +38,18 @@ import java.io.Serializable;
 @Data
 public class DppOnlDesformDataBaseRequestVO implements Serializable {
 
-//    @ApiModelProperty(value = "关联数据源id")
+//    @ApiModelProperty(value = "Associated data source ID")
     protected Integer datasourceId;
 
-//    @ApiModelProperty(value = "数据库名")
+//    @ApiModelProperty(value = "Database name")
     protected String databaseName;
 
-//    @ApiModelProperty(value = "数据库表名称")
+//    @ApiModelProperty(value = "Database table name")
     protected String tableNames;
 
-//    @ApiModelProperty(value = "字段")
+//    @ApiModelProperty(value = "Field")
     protected JSONArray fieldName;
 
-//    @ApiModelProperty(value = "唯一标识字段(用于更新、删除)")
+//    @ApiModelProperty(value = "Unique identifier field (for update and delete)")
     protected String uniFieldName;
 }

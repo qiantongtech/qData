@@ -292,7 +292,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -307,7 +307,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.columnName)
         );
       },
@@ -316,7 +316,7 @@ function setSort() {
 }
 
 function handleAddField() {
-  // 1. 校验已有行的目标值是否都有填写
+  // 1. Verify whether the target values of existing rows are filled in
   const incompleteRow = tableFields.value.find(
     (row) => !row.source || !row.target
   );
@@ -325,18 +325,18 @@ function handleAddField() {
     return;
   }
 
-  // 最后一行名称
+  // last line name
   let isRepeat = hasDuplicateObjects(tableFields.value, "source");
   if (isRepeat) {
     proxy.$message.warning(td("dpp.integration.noRepeatSourceValues", "新增失败，请不要填写重复的原值"));
     return;
   }
 
-  // 4. 新增字段对象（可以根据需要扩展属性）
+  // 4. Add a new field object (attributes can be extended as needed)
   tableFields.value.push({
     columnName: "",
-    source: "", // 也可以初始化为 nextField.columnName 或其他默认值
-    target: "", // 目标值默认空，需用户填写
+    source: "", // Can also be initialized to nextField.columnName or other default value
+    target: "", // The target value is empty by default and needs to be filled in by the user.
     order: "asc",
     caseSensitive: false,
     locale: true,
@@ -344,7 +344,7 @@ function handleAddField() {
     presorted: false,
   });
 
-  // 5. 重新初始化拖拽排序
+  // 5. Reinitialize drag sorting
   setSort();
 }
 
@@ -354,10 +354,10 @@ function onResolveFields(payload) {
   if (!payload) return;
   switch (payload.action) {
     case "addNewOnly":
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
       break;
     case "addAll":
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       break;
     case "clearAndAddAll":
       tableFields.value = deepCopy(originalTableFieldsBackup.value);
@@ -365,11 +365,11 @@ function onResolveFields(payload) {
         "🚀 ~ onResolveFields ~  tableFields.value:",
         tableFields.value
       );
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
       setSort();
       break;
     case "cancel":
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
   }
 }
@@ -416,16 +416,16 @@ const off = () => {
 
 const saveData = async () => {
   try {
-    // 表单校验
+    // form validation
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
-    // 校验 tableFields 不为空
+    // Verify tableFields is not empty
     if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
       proxy.$message.warning(td("dpp.integration.atLeastOneFieldValue", "校验未通过，请至少一个字段值"));
       return;
     }
 
-    // 1. 校验已有行的目标值是否都有填写
+    // 1. Verify whether the target values of existing rows are filled in
     const incompleteRow = tableFields.value.find(
       (row) => !row.source || !row.target
     );
@@ -434,14 +434,14 @@ const saveData = async () => {
       return;
     }
 
-    // 最后一行名称
+    // last line name
     let isRepeat = hasDuplicateObjects(tableFields.value, "source");
     if (isRepeat) {
       proxy.$message.warning(td("dpp.integration.validateFailedNoRepeatSourceValues", "校验未通，请不要填写重复的原值"));
       return;
     }
 
-    // 没有 code 时生成唯一 code
+    // Generate unique code when there is no code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
@@ -456,7 +456,7 @@ const saveData = async () => {
     taskParams.tableFields = tableFields.value;
     taskParams.mainArgs = taskParams.mainArgs || {};
 
-    // 输出字段拼接目标字段
+    // Output field splicing target field
     taskParams.outputFields = [
       ...inputFields.value,
       {
@@ -467,7 +467,7 @@ const saveData = async () => {
 
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
@@ -497,7 +497,7 @@ watchEffect(() => {
   }
   form.value = deepCopy(props.currentNode?.data || {});
   nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  // 备份初始表字段，避免被篡改
+  // Back up initial table fields to avoid tampering
   originalTableFieldsBackup.value = deepCopy(
     props.currentNode?.data?.taskParams?.inputFields || []
   );

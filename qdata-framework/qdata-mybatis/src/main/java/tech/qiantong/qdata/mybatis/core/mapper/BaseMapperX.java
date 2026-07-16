@@ -43,10 +43,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 在 MyBatis Plus 的 BaseMapper 的基础上拓展，提供更多的能力
+ * Expand on the BaseMapper of MyBatis Plus to provide more capabilities
  *
- * 1. {@link BaseMapper} 为 MyBatis Plus 的基础接口，提供基础的 CRUD 能力
- * 2. {@link MPJBaseMapper} 为 MyBatis Plus Join 的基础接口，提供连表 Join 能力
+ * 1. {@link BaseMapper} is the basic interface of MyBatis Plus and provides basic CRUD capabilities.
+ * 2. {@link MPJBaseMapper} is the basic interface of MyBatis Plus Join, providing table join capabilities
  */
 public interface BaseMapperX<T> extends MPJBaseMapper<T> {
 
@@ -59,37 +59,37 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     default PageResult<T> selectPage(PageParam pageParam, Collection<SortingField> sortingFields, @Param("ew") Wrapper<T> queryWrapper) {
-        // 特殊：不分页，直接查询全部
+        // Special: No paging, query all directly
         if (PageParam.PAGE_SIZE_NONE.equals(pageParam.getPageSize())) {
             List<T> list = selectList(queryWrapper);
             return new PageResult<>(list, (long) list.size());
         }
 
-        // MyBatis Plus 查询
+        // MyBatis Plus query
         IPage<T> mpPage = MyBatisUtils.buildPage(pageParam, sortingFields);
         selectPage(mpPage, queryWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
     default <D> PageResult<D> selectJoinPage(PageParam pageParam, Class<D> clazz, MPJLambdaWrapper<T> lambdaWrapper) {
-        // 特殊：不分页，直接查询全部
+        // Special: No paging, query all directly
         if (PageParam.PAGE_SIZE_NONE.equals(pageParam.getPageSize())) {
             List<D> list = selectJoinList(clazz, lambdaWrapper);
             return new PageResult<>(list, (long) list.size());
         }
 
-        // MyBatis Plus Join 查询
+        // MyBatis Plus Join Query
         IPage<D> mpPage = MyBatisUtils.buildPage(pageParam);
         mpPage = selectJoinPage(mpPage, clazz, lambdaWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
     default <DTO> PageResult<DTO> selectJoinPage(PageParam pageParam, Class<DTO> resultTypeClass, MPJBaseJoin<T> joinQueryWrapper) {
         IPage<DTO> mpPage = MyBatisUtils.buildPage(pageParam);
         selectJoinPage(mpPage, resultTypeClass, joinQueryWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
@@ -163,12 +163,12 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     /**
-     * 批量插入，适合大量数据插入
+     * Batch insertion, suitable for inserting large amounts of data
      *
-     * @param entities 实体们
+     * @param entities entities
      */
     default Boolean insertBatch(Collection<T> entities) {
-        // 特殊：SQL Server 批量插入后，获取 id 会报错，因此通过循环处理
+        // Special: After SQL Server batch inserts, an error will be reported when obtaining the id, so it is processed through a loop.
         if (Objects.equals(SqlConstants.DB_TYPE, DbType.SQL_SERVER)) {
             entities.forEach(this::insert);
             return CollUtil.isNotEmpty(entities);
@@ -177,13 +177,13 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     /**
-     * 批量插入，适合大量数据插入
+     * Batch insertion, suitable for inserting large amounts of data
      *
-     * @param entities 实体们
-     * @param size     插入数量 Db.saveBatch 默认为 1000
+     * @param entities entities
+     * @param size insert quantity Db.saveBatch default is 1000
      */
     default Boolean insertBatch(Collection<T> entities, int size) {
-        // 特殊：SQL Server 批量插入后，获取 id 会报错，因此通过循环处理
+        // Special: After SQL Server batch inserts, an error will be reported when obtaining the id, so it is processed through a loop.
         if (Objects.equals(SqlConstants.DB_TYPE, DbType.SQL_SERVER)) {
             entities.forEach(this::insert);
             return CollUtil.isNotEmpty(entities);

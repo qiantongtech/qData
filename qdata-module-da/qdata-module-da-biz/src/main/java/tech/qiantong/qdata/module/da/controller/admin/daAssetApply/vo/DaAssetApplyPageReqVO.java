@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Set;
 
 /**
- * 数据资产申请 Request VO 对象 DA_ASSET_APPLY
+ * Data Asset Application Request VO DA_ASSET_APPLY
  *
  * @author shu
  * @date 2025-03-19

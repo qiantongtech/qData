@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据资产操作申请Service业务层处理
+ * Data asset operation application Service business layer processing
  *
  * @author qdata
  * @date 2025-05-09
@@ -68,15 +68,15 @@ public class DaAssetOperateApplyServiceImpl  extends ServiceImpl<DaAssetOperateA
 
     @Override
     public int updateDaAssetOperateApply(DaAssetOperateApplySaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产操作申请
+        // Update data asset operation application
         DaAssetOperateApplyDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetOperateApplyDO.class);
         return daAssetOperateApplyMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetOperateApply(Collection<Long> idList) {
-        // 批量删除数据资产操作申请
+        // Batch delete data asset operation applications
         return daAssetOperateApplyMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DaAssetOperateApplyServiceImpl  extends ServiceImpl<DaAssetOperateA
                 .collect(Collectors.toMap(
                         DaAssetOperateApplyDO::getId,
                         daAssetOperateApplyDO -> daAssetOperateApplyDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据资产操作申请数据
+         * Import data asset operation application data
          *
-         * @param importExcelList 数据资产操作申请数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data asset operation application data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operating user
+         * @return Result
          */
         @Override
         public String importDaAssetOperateApply(List<DaAssetOperateApplyRespVO> importExcelList, boolean isUpdateSupport, String operName) {

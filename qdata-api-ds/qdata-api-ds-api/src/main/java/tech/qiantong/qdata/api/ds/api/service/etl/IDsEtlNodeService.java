@@ -22,7 +22,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DsNodeGenCodeRespDTO;
 
 /**
  * <P>
- * 用途:ds数据集成节点相关接口
+ * Description: DS data integration node related interfaces
  * </p>
  *
  * @author: FXB
@@ -30,7 +30,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DsNodeGenCodeRespDTO;
  **/
 public interface IDsEtlNodeService {
     /**
-     * 生成节点编码
+     * Generate node code
      */
     DsNodeGenCodeRespDTO genCode(Long projectCode);
 }

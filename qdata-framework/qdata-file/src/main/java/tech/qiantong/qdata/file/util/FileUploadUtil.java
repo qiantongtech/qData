@@ -30,35 +30,36 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 文件上传工具类
- * 提供文件上传的静态方法，便于在项目的其他部分调用。
- * 该类使用静态方法操作 FileStorageService 实例，支持多种上传方式。
+ * File upload utility class
+ * Provides static methods for file upload, convenient for calling from other parts of the project.
+ * This class operates on the FileStorageService instance using static methods, supporting multiple upload methods.
  *
  * @author qdata
  */
 public class FileUploadUtil {
 
     /**
-     * 文件存储服务
+     * File storage service
      */
     private static FileStorageService fileStorageService;
 
     /**
-     * 文件配置
+     * File configuration
      */
     private static ServerConfig serverConfig;
 
     /**
-     * 文件存储地址
+     * File storage path
      */
     private static String storagePath;
 
 
     /**
-     * 初始化工具类
-     * 该方法用于初始化 FileStorageService 实例。必须在使用其他方法之前调用该方法。
+     * Initialize the utility class
+     * This method is used to initialize the FileStorageService instance.
+     * Must be called before using other methods.
      *
-     * @param service FileStorageService 实例，用于文件的上传和存储操作
+     * @param service FileStorageService instance for file upload and storage operations
      */
     public static void init(FileStorageService service, ServerConfig config, String path) {
         fileStorageService = service;
@@ -67,12 +68,12 @@ public class FileUploadUtil {
     }
 
     /**
-     * 上传文件
-     * 将 MultipartFile 文件上传到默认的存储平台。
+     * Upload file
+     * Upload MultipartFile file to the default storage platform.
      *
-     * @param file 要上传的文件
-     * @param basePath 最前面没有 / 结尾带有 /
-     * @return 返回上传后的文件信息（FileInfo 对象）
+     * @param file file to upload
+     * @param basePath no leading / and ending with /
+     * @return uploaded file information (FileInfo object)
      */
     public static FileInfo upload(MultipartFile file, String basePath) {
 
@@ -94,18 +95,18 @@ public class FileUploadUtil {
     }
 
     /**
-     * 上传文件
-     * 将 MultipartFile 根据请求参数上传到入参指定的存储平台。
+     * Upload file
+     * Upload MultipartFile to the specified storage platform based on request parameters.
      *
-     * @param file 要上传的文件
-     * @param basePath 最前面没有 / 结尾带有 /
-     * @param platform 存储平台名称
-     * @return 返回上传后的文件信息（FileInfo 对象）
+     * @param file file to upload
+     * @param basePath no leading / and ending with /
+     * @param platform storage platform name
+     * @return uploaded file information (FileInfo object)
      */
     public static FileInfo uploadByParam(MultipartFile file, String basePath, String platform) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/");
 
-        // 构造路径
+        // Build path
         String path;
         if (StringUtils.isNotEmpty(basePath)) {
             path = basePath + formatter.format(new Date());
@@ -113,7 +114,7 @@ public class FileUploadUtil {
             path = formatter.format(new Date());
         }
         FileInfo fileInfo;
-        // 如果指定了存储平台，上传到对应平台
+        // If a storage platform is specified, upload to the corresponding platform
         if (StringUtils.isNotEmpty(platform)) {
              fileInfo = fileStorageService.of(file)
                     .setPlatform(platform)
@@ -132,56 +133,56 @@ public class FileUploadUtil {
 
 
     /**
-     * 上传文件并返回文件 URL
-     * 该方法将文件上传到指定路径，并返回上传后的文件 URL。
+     * Upload file and return file URL
+     * This method uploads the file to the specified path and returns the uploaded file URL.
      *
-     * @param file 要上传的文件
-     * @return 上传成功后返回文件的 URL，失败则返回 "上传失败！"
+     * @param file file to upload
+     * @return uploaded file URL, or "Upload failed!" on failure
      */
 /*    public static String upload2(MultipartFile file) {
         FileInfo fileInfo = fileStorageService.of(file)
-                .setPath("upload/")               // 设置文件保存的相对路径
-                .setSaveFilename("image.jpg")     // 设置保存的文件名，如果不设置将随机生成
-                .setObjectId("0")                 // 关联对象 ID，用于管理，不需要可以不写
-                .setObjectType("0")               // 关联对象类型，用于管理，不需要可以不写
-                .putAttr("role", "admin")         // 设置自定义属性，用于在其他地方获取使用
+                .setPath("upload/") //Set the relative path for file saving
+                .setSaveFilename("image.jpg") //Set the saved file name. If not set, it will be randomly generated.
+                .setObjectId("0") //Associated object ID, used for management, don't write it if not needed
+                .setObjectType("0") // Associated object type, used for management, don’t write it if not needed
+                .putAttr("role", "admin") // Set custom attributes for use elsewhere
                 .upload();
-        return fileInfo == null ? "上传失败！" : fileInfo.getUrl();
+        return fileInfo == null? "Upload failed!": fileInfo.getUrl();
     }*/
 
     /**
-     * 上传图片并生成缩略图
-     * 该方法将图片文件上传并自动生成缩略图。
+     * Upload image and generate thumbnail
+     * This method uploads an image file and automatically generates a thumbnail.
      *
-     * @param file 要上传的图片文件
-     * @return 返回上传后的文件信息（FileInfo 对象）
+     * @param file image file to upload
+     * @return uploaded file information (FileInfo object)
      */
     public static FileInfo uploadImage(MultipartFile file) {
         return fileStorageService.of(file)
-                .image(img -> img.size(1000, 1000))  // 调整图片大小到 1000*1000
-                .thumbnail(th -> th.size(200, 200))  // 生成 200*200 的缩略图
+                .image(img -> img.size(1000, 1000))  // Resize image to 1000*1000
+                .thumbnail(th -> th.size(200, 200))  // Generate 200*200 thumbnail
                 .upload();
     }
 
     /**
-     * 上传文件到指定存储平台
-     * 该方法将文件上传到指定的平台，如阿里云 OSS。
+     * Upload file to specified storage platform
+     * This method uploads the file to the specified platform, such as Alibaba Cloud OSS.
      *
-     * @param file 要上传的文件
-     * @return 返回上传后的文件信息（FileInfo 对象）
+     * @param file file to upload
+     * @return uploaded file information (FileInfo object)
      */
     public static FileInfo uploadPlatform(MultipartFile file) {
         return fileStorageService.of(file)
-                .setPlatform("aliyun-oss-1")    // 使用指定的存储平台
+                .setPlatform("aliyun-oss-1")    // Use specified storage platform
                 .upload();
     }
 
     /**
-     * 通过 HttpServletRequest 上传文件
-     * 直接从 HttpServletRequest 对象中读取文件并上传。
+     * Upload file via HttpServletRequest
+     * Directly read and upload file from the HttpServletRequest object.
      *
-     * @param request HttpServletRequest 对象，包含上传的文件数据
-     * @return 返回上传后的文件信息（FileInfo 对象）
+     * @param request HttpServletRequest object containing the uploaded file data
+     * @return uploaded file information (FileInfo object)
      */
     public static FileInfo uploadRequest(HttpServletRequest request) {
         return fileStorageService.of(request).upload();

@@ -17,7 +17,7 @@
 -->
 
 <template>
-   <!-- 授权用户 -->
+   <!-- authorized user -->
    <el-dialog :title="td('sys.system.roleAuth.selectUser')" v-model="visible" width="830px" top="5vh" append-to-body>
       <el-form :model="queryParams" ref="queryRef" :inline="true">
          <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName">
@@ -91,24 +91,24 @@ const queryParams = reactive({
    phonenumber: undefined
 });
 
-// 显示弹框
+// Show popup
 function show() {
    queryParams.roleId = props.roleId;
    getList();
    visible.value = true;
 }
 
-/**选择行 */
+/**Select row */
 function clickRow(row) {
    proxy.$refs["refTable"].toggleRowSelection(row);
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
    userIds.value = selection.map(item => item.userId);
 }
 
-// 查询表数据
+// Query table data
 function getList() {
    unallocatedUserList(queryParams).then(res => {
       userList.value = res.rows;
@@ -116,20 +116,20 @@ function getList() {
    });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
    queryParams.pageNum = 1;
    getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
    proxy.resetForm("queryRef");
    handleQuery();
 }
 
 const emit = defineEmits(["ok"]);
-/** 选择授权用户操作 */
+/** Select authorized user operations */
 function handleSelectUser() {
    const roleId = queryParams.roleId;
    const uIds = userIds.value.join(",");

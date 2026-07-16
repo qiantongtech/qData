@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 物化模型记录Mapper接口
+ * Materialized Model Record Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DpModelMaterializedMapper extends BaseMapperX<DpModelMaterializedDO> {
 
     default PageResult<DpModelMaterializedDO> selectPage(DpModelMaterializedPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DpModelMaterializedDO>()
                 .likeIfPresent(DpModelMaterializedDO::getModelName, reqVO.getModelName())
                 .eqIfPresent(DpModelMaterializedDO::getModelAlias, reqVO.getModelAlias())
@@ -53,9 +53,9 @@ public interface DpModelMaterializedMapper extends BaseMapperX<DpModelMaterializ
                 .likeIfPresent(DpModelMaterializedDO::getDatasourceName, reqVO.getDatasourceName())
                 .eqIfPresent(DpModelMaterializedDO::getAssetId, reqVO.getAssetId())
                 .eqIfPresent(DpModelMaterializedDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DpModelMaterializedDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort in descending order by createTime field
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

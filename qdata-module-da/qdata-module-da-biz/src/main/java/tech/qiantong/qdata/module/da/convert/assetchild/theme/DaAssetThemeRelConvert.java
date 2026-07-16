@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.theme.DaAssetThem
 import java.util.List;
 
 /**
- * 数据资产-主题关联关系 Convert
+ * Data Asset-Theme Relationship Convert
  *
  * @author qdata
  * @date 2025-04-14
@@ -38,29 +38,29 @@ public interface DaAssetThemeRelConvert {
     DaAssetThemeRelConvert INSTANCE = Mappers.getMapper(DaAssetThemeRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetThemeRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetThemeRelPageReqVO request parameters
      * @return DaAssetThemeRelDO
      */
      DaAssetThemeRelDO convertToDO(DaAssetThemeRelPageReqVO daAssetThemeRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetThemeRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetThemeRelSaveReqVO save request parameters
      * @return DaAssetThemeRelDO
      */
      DaAssetThemeRelDO convertToDO(DaAssetThemeRelSaveReqVO daAssetThemeRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetThemeRelDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetThemeRelDO entity object
      * @return DaAssetThemeRelRespVO
      */
      DaAssetThemeRelRespVO convertToRespVO(DaAssetThemeRelDO daAssetThemeRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetThemeRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetThemeRelDOList entity object list
      * @return List<DaAssetThemeRelRespVO>
      */
      List<DaAssetThemeRelRespVO> convertToRespVOList(List<DaAssetThemeRelDO> daAssetThemeRelDOList);

@@ -29,7 +29,7 @@ import tech.qiantong.qdata.module.system.service.message.IMessageTemplateService
 import javax.annotation.Resource;
 
 /**
- * 消息模板Service业务层处理
+ * Message Template Service business layer handler
  *
  * @author qdata
  * @date 2024-10-31

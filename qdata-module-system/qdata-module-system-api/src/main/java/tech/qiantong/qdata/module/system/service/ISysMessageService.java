@@ -24,7 +24,7 @@ public interface ISysMessageService {
     public Boolean send(Long templateId, MessageSaveReqDTO messageSaveReqDTO, Object entity);
 
     /**
-     * 数据发现使用
+     * Used for data discovery
      * @param receiverId
      * @param entity
      * @return

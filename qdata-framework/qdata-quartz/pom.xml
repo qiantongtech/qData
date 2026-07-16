@@ -35,7 +35,7 @@
 
     <dependencies>
 
-        <!-- 定时任务 -->
+        <!-- Scheduled tasks -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
@@ -47,7 +47,7 @@
             </exclusions>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- General tools-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

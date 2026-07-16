@@ -21,7 +21,7 @@ package tech.qiantong.qdata.quartz.enums;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * Handle Quartz scheduling operations.
+ * Quartz执行策略。
  */
 public enum ScheduleExecutionTypeEnum {
     PARALLEL,

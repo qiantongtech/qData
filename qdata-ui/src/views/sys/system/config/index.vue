@@ -161,7 +161,7 @@
          />
       </div>
 
-      <!-- 添加或修改参数配置对话框 -->
+      <!-- Add or modify parameter configuration dialog box -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
          <el-form ref="configRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -201,7 +201,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -214,6 +214,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
 const configList = ref([]);
@@ -245,7 +246,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询参数列表 */
+/** Query parameter list */
 function getList() {
   loading.value = true;
   listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -255,13 +256,13 @@ function getList() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     configId: undefined,
@@ -274,34 +275,34 @@ function reset() {
   proxy.resetForm("configRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.configId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('sys.system.config.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const configId = row.configId || ids.value;
@@ -312,8 +313,10 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["configRef"].validate(valid => {
     if (valid) {
       if (form.value.configId != undefined) {
@@ -321,19 +324,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addConfig(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const configIds = row.configId || ids.value;
   proxy.$modal.confirm(td('sys.system.config.confirmDelete', { id: configIds })).then(function () {
@@ -344,14 +355,14 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("system/config/export", {
     ...queryParams.value
   }, `config_${new Date().getTime()}.xlsx`);
 }
 
-/** 刷新缓存按钮操作 */
+/** Refresh cache button action */
 function handleRefreshCache() {
   refreshCache().then(() => {
     proxy.$modal.msgSuccess(td('sys.system.config.refreshCacheSuccess'));

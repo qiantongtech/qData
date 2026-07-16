@@ -160,7 +160,7 @@
          />
       </div>
 
-      <!-- 调度日志详细 -->
+      <!-- Scheduling log details -->
       <el-dialog :title="td('sys.monitor.jobLog.scheduleLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form :model="form" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -248,7 +248,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询调度日志列表 */
+/** Query scheduling log list */
 function getList() {
   loading.value = true;
   listJobLog(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -258,38 +258,38 @@ function getList() {
   });
 }
 
-// 返回按钮
+// back button
 function handleClose() {
   const obj = { path: "/monitor/job" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.jobLogId);
   multiple.value = !selection.length;
 }
 
-/** 详细按钮操作 */
+/** Detailed button operations */
 function handleView(row) {
   open.value = true;
   form.value = row;
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal.confirm(td('sys.monitor.jobLog.confirmDelete', { ids: ids.value })).then(function () {
     return delJobLog(ids.value);
@@ -299,7 +299,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 清空按钮操作 */
+/** Clear button action */
 function handleClean() {
   proxy.$modal.confirm(td('sys.monitor.jobLog.confirmClearAll')).then(function () {
     return cleanJobLog();
@@ -309,7 +309,7 @@ function handleClean() {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("monitor/jobLog/export", {
     ...queryParams.value,

@@ -36,7 +36,7 @@ import tech.qiantong.qdata.module.system.service.ISysOperLogService;
 import java.util.TimerTask;
 
 /**
- * 异步工厂（产生任务用）
+ * Async factory (generates tasks)
  *
  * @author qdata
  */
@@ -45,13 +45,13 @@ public class AsyncFactory
     private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
 
     /**
-     * 记录登录信息
+     * Record login information
      *
-     * @param username 用户名
-     * @param status 状态
-     * @param message 消息
-     * @param args 列表
-     * @return 任务task
+     * @param username username
+     * @param status status
+     * @param message message
+     * @param args argument list
+     * @return task
      */
     public static TimerTask recordLogininfor(final String username, final String status, final String message,
             final Object... args)
@@ -70,13 +70,13 @@ public class AsyncFactory
                 s.append(LogUtils.getBlock(username));
                 s.append(LogUtils.getBlock(status));
                 s.append(LogUtils.getBlock(message));
-                // 打印信息到日志
+                // Print information to log
                 sys_user_logger.info(s.toString(), args);
-                // 获取客户端操作系统
+                // Get client OS
                 String os = userAgent.getOperatingSystem().getName();
-                // 获取客户端浏览器
+                // Get client browser
                 String browser = userAgent.getBrowser().getName();
-                // 封装对象
+                // Build object
                 SysLogininfor logininfor = new SysLogininfor();
                 logininfor.setUserName(username);
                 logininfor.setIpaddr(ip);
@@ -84,7 +84,7 @@ public class AsyncFactory
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);
                 logininfor.setMsg(message);
-                // 日志状态
+                // Log status
                 if (StringUtils.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER))
                 {
                     logininfor.setStatus(Constants.SUCCESS);
@@ -93,17 +93,17 @@ public class AsyncFactory
                 {
                     logininfor.setStatus(Constants.FAIL);
                 }
-                // 插入数据
+                // Insert data
                 SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
             }
         };
     }
 
     /**
-     * 操作日志记录
+     * Operation log record
      *
-     * @param operLog 操作日志信息
-     * @return 任务task
+     * @param operLog operation log information
+     * @return task
      */
     public static TimerTask recordOper(final SysOperLog operLog)
     {
@@ -112,7 +112,7 @@ public class AsyncFactory
             @Override
             public void run()
             {
-                // 远程查询操作地点
+                // Remote query operation location
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }

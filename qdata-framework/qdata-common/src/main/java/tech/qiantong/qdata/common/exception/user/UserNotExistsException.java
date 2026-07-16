@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.user;
 
 /**
- * 用户不存在异常类
+ * The user does not have an exception class
  *
  * @author qdata
  */

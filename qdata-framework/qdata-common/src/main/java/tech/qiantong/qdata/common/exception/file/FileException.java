@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.exception.file;
 import tech.qiantong.qdata.common.exception.base.BaseException;
 
 /**
- * 文件信息异常类
+ * File information exception class
  *
  * @author qdata
  */

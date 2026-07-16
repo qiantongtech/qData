@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 业务分类 Request VO 对象 DM_BUSINESS_CATEGORY
+ * Business Category Request VO - DM_BUSINESS_CATEGORY
  *
  * @author qdata
  * @date 2026-04-08

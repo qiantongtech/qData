@@ -20,7 +20,7 @@ package tech.qiantong.qdata.common.database.constants;
 
 /**
  * <P>
- * 用途:判断类型
+ * Purpose: Interpretation type
  * </p>
  *
  * @author: FXB
@@ -38,12 +38,12 @@ public enum InterpretationType {
     OUTSIDE_RANGE("10", "范围外", "");
 
     /**
-     * 数据库名称
+     * Value
      */
     private final String value;
 
     /**
-     * 描述
+     * Description
      */
     private final String desc;
 
@@ -72,7 +72,7 @@ public enum InterpretationType {
     }
 
     /**
-     * 获取判断类型
+     * Get interpretation type
      */
     public static InterpretationType getInterpretationType(String dbType) {
         for (InterpretationType type : InterpretationType.values()) {

@@ -28,18 +28,18 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:开发任务 组件
+ * Purpose: Development task component
  * </p>
  **/
 public class SubProcessComponent implements ComponentItem {
 
     /**
      *
-     * taskParams SUB_PROCESS（子任务，开发任务也是这个）
+     * taskParams SUB_PROCESS (subtask, same for development tasks)
      * {
-     *     "localParams": [],//默认 []
-     *     "resourceList": [],//默认 []
-     *     "processDefinitionCode": 135576103357024//子任务编码
+     *     "localParams": [],//default []
+     *     "resourceList": [],//default []
+     *     "processDefinitionCode": 135576103357024//subtask code
      * }
      * @param params
      * @return
@@ -47,10 +47,10 @@ public class SubProcessComponent implements ComponentItem {
     @Override
     public Map<String, Object> parse(Map<String, Object> params) {
         Map<String, Object> taskParams = new LinkedHashMap<>();
-        taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>())); // 默认空列表
-        taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>())); // 默认空列表
+        taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>())); // default empty list
+        taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>())); // default empty list
         String processDefinitionCode = MapUtils.getString(params,"processDefinitionCode", "");
-        taskParams.put("processDefinitionCode", JSONUtils.convertToLong(processDefinitionCode)); // 默认空字符串
+        taskParams.put("processDefinitionCode", JSONUtils.convertToLong(processDefinitionCode)); // default empty string
         return taskParams;
     }
 
@@ -61,10 +61,10 @@ public class SubProcessComponent implements ComponentItem {
 
 
     /**
-     * 将字符串转换为 long 类型
+     * Convert string to long type
      *
-     * @param processDefinitionCode 要转换的字符串
-     * @return 转换后的 long 值，若转换失败返回 -1
+     * @param processDefinitionCode string to convert
+     * @return converted long value, returns -1 if conversion fails
      */
     public static long convertToLong(String processDefinitionCode) {
         if (processDefinitionCode == null || processDefinitionCode.trim().isEmpty()) {

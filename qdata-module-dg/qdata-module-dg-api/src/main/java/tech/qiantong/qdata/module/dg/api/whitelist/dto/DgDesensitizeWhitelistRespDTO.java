@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 /**
- * 脱敏白名单 DTO 对象 DG_DESENSITIZE_WHITELIST
+ * Desensitization Whitelist DTO Object DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09
@@ -36,31 +36,31 @@ public class DgDesensitizeWhitelistRespDTO {
     /** ID */
     private Long id;
 
-    /** 白名单名称 */
+    /** Whitelist Name */
     private String name;
 
-    /** 数据分类 */
+    /** Data Category */
     private Long dataCategoryId;
 
-    /** 生效分类;1：用户 2：角色 3：部门 */
+    /** Effective Category; 1: User 2: Role 3: Department */
     private String effectiveCategory;
 
-    /** 开始时间 */
+    /** Start Time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     private Date endTime;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

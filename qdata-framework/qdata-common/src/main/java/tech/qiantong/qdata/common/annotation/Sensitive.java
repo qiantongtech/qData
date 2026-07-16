@@ -29,7 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 数据脱敏注解
+ * Data desensitization annotation
  *
  * @author qdata
  */

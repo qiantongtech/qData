@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 应用API服务关联Service接口
+ * App API Service Association Service Interface
  *
  * @author FXB
  * @date 2025-08-21
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IAttClientApiRelService extends IService<AttClientApiRelDO> {
 
     /**
-     * 获得应用API服务关联分页列表
+     * Get App API Service Association paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 应用API服务关联分页列表
+     * @param pageReqVO Page request
+     * @return App API Service Association paginated list
      */
     PageResult<AttClientApiRelDO> getAttClientApiRelPage(AttClientApiRelPageReqVO pageReqVO);
 
     /**
-     * 创建应用API服务关联
+     * Create App API Service Association
      *
-     * @param createReqVO 应用API服务关联信息
-     * @return 应用API服务关联编号
+     * @param createReqVO App API Service Association info
+     * @return App API Service Association ID
      */
     Long createAttClientApiRel(AttClientApiRelSaveReqVO createReqVO);
 
     /**
-     * 更新应用API服务关联
+     * Update App API Service Association
      *
-     * @param updateReqVO 应用API服务关联信息
+     * @param updateReqVO App API Service Association info
      */
     int updateAttClientApiRel(AttClientApiRelSaveReqVO updateReqVO);
 
     /**
-     * 删除应用API服务关联
+     * Delete App API Service Association
      *
-     * @param idList 应用API服务关联编号
+     * @param idList App API Service Association ID list
      */
     int removeAttClientApiRel(Collection<Long> idList);
 
     /**
-     * 获得应用API服务关联详情
+     * Get App API Service Association details
      *
-     * @param id 应用API服务关联编号
-     * @return 应用API服务关联
+     * @param id App API Service Association ID
+     * @return App API Service Association
      */
     AttClientApiRelDO getAttClientApiRelById(Long id);
 
     /**
-     * 获得全部应用API服务关联列表
+     * Get all App API Service Association list
      *
-     * @return 应用API服务关联列表
+     * @return App API Service Association list
      */
     List<AttClientApiRelDO> getAttClientApiRelList();
 
     /**
-     * 获得全部应用API服务关联 Map
+     * Get all App API Service Association Map
      *
-     * @return 应用API服务关联 Map
+     * @return App API Service Association Map
      */
     Map<Long, AttClientApiRelDO> getAttClientApiRelMap();
 
 
     /**
-     * 导入应用API服务关联数据
+     * Import App API Service Association data
      *
-     * @param importExcelList 应用API服务关联数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList App API Service Association data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator name
+     * @return Result
      */
     String importAttClientApiRel(List<AttClientApiRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

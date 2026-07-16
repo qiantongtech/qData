@@ -22,7 +22,7 @@ import com.github.yulichang.base.MPJBaseMapper;
 import tech.qiantong.qdata.module.system.dal.dataobject.auth.RelUserAuthProductDO;
 
 /**
- * 用户与认证中心关系Mapper接口
+ * User and Authentication Center Relationship Mapper interface
  *
  * @author qdata
  * @date 2024-11-07

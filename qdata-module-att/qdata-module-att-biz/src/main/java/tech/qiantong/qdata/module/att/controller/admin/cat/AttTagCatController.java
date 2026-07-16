@@ -46,7 +46,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 标签类目管理Controller
+ * Tag Category Management Controller
  *
  * @author qdata
  * @date 2025-07-11
@@ -69,7 +69,7 @@ public class AttTagCatController extends BaseController {
 
     @Operation(summary = "导出标签类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:tagCat:export')")
-    @Log(title = "标签类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttTagCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -80,7 +80,7 @@ public class AttTagCatController extends BaseController {
 
     @Operation(summary = "导入标签类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:tagCat:import')")
-    @Log(title = "标签类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttTagCatRespVO> util = new ExcelUtil<>(AttTagCatRespVO.class);
@@ -100,7 +100,7 @@ public class AttTagCatController extends BaseController {
 
     @Operation(summary = "新增标签类目管理")
     @PreAuthorize("@ss.hasPermi('att:tagCat:add')")
-    @Log(title = "标签类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttTagCatSaveReqVO attTagCat) {
         attTagCat.setCreatorId(getUserId());
@@ -111,7 +111,7 @@ public class AttTagCatController extends BaseController {
 
     @Operation(summary = "修改标签类目管理")
     @PreAuthorize("@ss.hasPermi('att:tagCat:edit')")
-    @Log(title = "标签类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttTagCatSaveReqVO attTagCat) {
         attTagCat.setUpdatorId(getUserId());
@@ -122,16 +122,16 @@ public class AttTagCatController extends BaseController {
 
 //    @Operation(summary = "删除标签类目管理")
 //    @PreAuthorize("@ss.hasPermi('att:tagCat:remove')")
-//    @Log(title = "标签类目管理", businessType = BusinessType.DELETE)
+//    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{ids}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(attTagCatService.removeAttTagCat(Arrays.asList(ids)));
 //    }
 
-    //删除
+    // Delete
     @Operation(summary = "删除标签类目管理")
     @PreAuthorize("@ss.hasPermi('att:tagCat:remove')")
-    @Log(title = "标签类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ID}")
     public CommonResult<Integer> remove(@PathVariable Long ID) {
         return CommonResult.toAjax(attTagCatService.removeAttTagCat(ID));

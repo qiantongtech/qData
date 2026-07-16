@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据资产-地理空间服务 Request VO 对象 DA_ASSET_GIS
+ * Data Asset - Geospatial Service Request VO Object DA_ASSET_GIS
  *
  * @author qdata
  * @date 2025-04-14

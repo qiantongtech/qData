@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 读取项目相关配置
+ * Read project related configuration
  *
  * @author qdata
  */
@@ -30,22 +30,22 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "qdata")
 public class AniviaConfig
 {
-    /** 项目名称 */
+    /** Project name */
     private String name;
 
-    /** 版本 */
+    /** version */
     private String version;
 
-    /** 版权年份 */
+    /** Copyright year */
     private String copyrightYear;
 
-    /** 上传路径 */
+    /** Upload path */
     private static String profile;
 
-    /** 获取地址开关 */
+    /** Get address switch */
     private static boolean addressEnabled;
 
-    /** 验证码类型 */
+    /** Verification code type */
     private static String captchaType;
 
     public String getName()
@@ -107,7 +107,7 @@ public class AniviaConfig
     }
 
     /**
-     * 获取导入上传路径
+     * Get the import upload path
      */
     public static String getImportPath()
     {
@@ -115,7 +115,7 @@ public class AniviaConfig
     }
 
     /**
-     * 获取头像上传路径
+     * Get the avatar upload path
      */
     public static String getAvatarPath()
     {
@@ -123,7 +123,7 @@ public class AniviaConfig
     }
 
     /**
-     * 获取下载路径
+     * Get download path
      */
     public static String getDownloadPath()
     {
@@ -131,7 +131,7 @@ public class AniviaConfig
     }
 
     /**
-     * 获取上传路径
+     * Get upload path
      */
     public static String getUploadPath()
     {

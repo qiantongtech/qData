@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据库 创建/修改 Request VO MC_DB
+ * Database Create/Modify Request VO MC_DB
  *
  * @author qdata
  * @date 2026-02-11
@@ -112,7 +112,7 @@ public class McDbSaveReqVO extends BaseEntity {
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
@@ -121,7 +121,7 @@ public class McDbSaveReqVO extends BaseEntity {
     private Long responsibleDept;
 
     /**
-     * 数据行数
+     * Number of data rows
      */
     @Schema(description = "数据行数", example = "")
     private Long dataRowCount;

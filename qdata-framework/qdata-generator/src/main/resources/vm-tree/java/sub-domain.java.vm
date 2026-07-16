@@ -24,7 +24,7 @@ import ${import};
 import tech.qiantong.qdata.common.annotation.Excel;
 
 /**
- * ${subTable.functionName}对象 ${subTableName}
+ * ${subTable.functionName} object ${subTableName}
  *
  * @author ${author}
  * @date ${datetime}

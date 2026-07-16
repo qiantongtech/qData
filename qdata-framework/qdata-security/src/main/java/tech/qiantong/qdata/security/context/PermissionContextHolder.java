@@ -23,7 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import tech.qiantong.qdata.common.core.text.Convert;
 
 /**
- * 权限信息
+ * Permission information
  *
  * @author qdata
  */

@@ -5,12 +5,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据元类目管理 Request VO 对象 DG_DATA_ELEM_CAT
+ * Data Element Category Management Request VO Object DG_DATA_ELEM_CAT
  *
  * @author qdata
  * @date 2025-01-20
  */
-@Schema(description = "数据元类目管理 Request VO")
+@Schema(description = "Data Element Category Request VO")
 @Data
 public class DgDataElemCatPageReqVO extends PageParam {
 

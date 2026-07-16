@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据集成任务类目管理Mapper接口
+ * Data Integration Task Category Management Mapper Interface
  *
  * @author qdata
  * @date 2025-03-11
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface AttTaskCatMapper extends BaseMapperX<AttTaskCatDO> {
 
     default PageResult<AttTaskCatDO> selectPage(AttTaskCatPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttTaskCatDO>()
                 .likeIfPresent(AttTaskCatDO::getName, reqVO.getName())
                 .eqIfPresent(AttTaskCatDO::getParentId, reqVO.getParentId())
@@ -50,9 +50,9 @@ public interface AttTaskCatMapper extends BaseMapperX<AttTaskCatDO> {
                 .eqIfPresent(AttTaskCatDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(AttTaskCatDO::getProjectId,reqVO.getProjectId())
                 .eqIfPresent(AttTaskCatDO::getProjectCode,reqVO.getProjectCode())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttTaskCatDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

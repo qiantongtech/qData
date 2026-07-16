@@ -33,7 +33,7 @@ const useUserStore = defineStore('user', {
         projectId: ''
     }),
     actions: {
-        // 登录
+        // Login
         login(userInfo) {
             const username = userInfo.username.trim();
             const password = userInfo.password;
@@ -51,7 +51,7 @@ const useUserStore = defineStore('user', {
                     });
             });
         },
-        // 获取用户信息
+        // Get user information
         getInfo() {
             return new Promise((resolve, reject) => {
                 getInfo()
@@ -81,7 +81,7 @@ const useUserStore = defineStore('user', {
                     });
             });
         },
-        // 退出系统
+        // Exit the system
         logOut() {
             return new Promise((resolve, reject) => {
                 logout(this.token)
@@ -98,7 +98,7 @@ const useUserStore = defineStore('user', {
                     });
             });
         },
-        // 设置 Token
+        // Set Token
         setToken(token) {
             return new Promise((resolve, reject) => {
                 setToken(token);

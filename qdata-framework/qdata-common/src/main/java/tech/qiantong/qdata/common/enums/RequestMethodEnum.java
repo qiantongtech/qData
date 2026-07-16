@@ -27,7 +27,7 @@ public enum RequestMethodEnum {
 
     private final String val;
 
-    //根据value获取key
+    //Get key based on value
 
     RequestMethodEnum(String key, String val) {
         this.key = key;
@@ -43,8 +43,8 @@ public enum RequestMethodEnum {
     }
 
     /**
-     * 根据给定的key查找对应的val。
-     * 如果找不到与给定key匹配的枚举实例，则返回null。
+     * Find the corresponding val based on the given key.
+     * If no enumeration instance matching the given key is found, null is returned.
      */
     public static String getValByKey(String key) {
         for (RequestMethodEnum method : RequestMethodEnum.values()) {
@@ -52,18 +52,18 @@ public enum RequestMethodEnum {
                 return method.getVal();
             }
         }
-        // 如果没有找到匹配的键，则返回null
+        // Returns null if no matching key is found
         return null;
     }
 
-    //根据key，找value
+    //Find value based on key
     public static String getKeyByVal(String val) {
         for (RequestMethodEnum method : RequestMethodEnum.values()) {
             if (method.getVal().equals(val)) {
                 return method.getKey();
             }
         }
-        // 如果没有找到匹配的键，则返回null
+        // Returns null if no matching key is found
         return null;
     }
 }

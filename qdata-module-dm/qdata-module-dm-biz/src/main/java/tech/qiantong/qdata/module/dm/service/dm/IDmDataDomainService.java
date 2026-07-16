@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据域管理Service接口
+ * Data Domain Service Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -38,70 +38,70 @@ import java.util.Map;
 public interface IDmDataDomainService extends IService<DmDataDomainDO> {
 
     /**
-     * 获得数据域管理分页列表
+     * Get data domain page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据域管理分页列表
+     * @param pageReqVO Page request
+     * @return Data domain page list
      */
     PageResult<DmDataDomainDO> getDmDataDomainPage(DmDataDomainPageReqVO pageReqVO);
 
     /**
-     * 创建数据域管理
+     * Create data domain
      *
-     * @param createReqVO 数据域管理信息
-     * @return 数据域管理编号
+     * @param createReqVO Data domain information
+     * @return Data domain ID
      */
     Long createDmDataDomain(DmDataDomainSaveReqVO createReqVO);
 
     /**
-     * 更新数据域管理
+     * Update data domain
      *
-     * @param updateReqVO 数据域管理信息
+     * @param updateReqVO Data domain information
      */
     int updateDmDataDomain(DmDataDomainSaveReqVO updateReqVO);
 
     /**
-     * 删除数据域管理
+     * Delete data domain
      *
-     * @param idList 数据域管理编号
+     * @param idList Data domain IDs
      */
     int removeDmDataDomain(Collection<Long> idList);
 
     /**
-     * 获得数据域管理详情
+     * Get data domain details
      *
-     * @param id 数据域管理编号
-     * @return 数据域管理
+     * @param id Data domain ID
+     * @return Data domain
      */
     DmDataDomainDO getDmDataDomainById(Long id);
 
     /**
-     * 获得全部数据域管理列表
+     * Get all data domains
      *
-     * @return 数据域管理列表
+     * @return Data domain list
      */
     List<DmDataDomainDO> getDmDataDomainList();
 
     /**
-     * 获得全部数据域管理 Map
+     * Get all data domains as Map
      *
-     * @return 数据域管理 Map
+     * @return Data domain Map
      */
     Map<Long, DmDataDomainDO> getDmDataDomainMap();
 
 
     /**
-     * 导入数据域管理数据
+     * Import data domain data
      *
-     * @param importExcelList 数据域管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data domain data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName Operation user
+     * @return Result
      */
     String importDmDataDomain(List<DmDataDomainRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 根据业务分类id查询数据域
+     * Query data domain by business category ID
      *
      * @param dmDataDomain
      * @return

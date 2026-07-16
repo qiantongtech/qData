@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据质量任务-稽查对象 Request VO 对象 DPP_QUALITY_TASK_OBJ
+ * Data quality task-audit object Request VO object DPP_QUALITY_TASK_OBJ
  *
  * @author Chaos
  * @date 2025-07-21

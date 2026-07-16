@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据质量日志Service业务层处理
+ * Data quality log Service business layer processing
  *
  * @author qdata
  * @date 2025-07-19
@@ -68,15 +68,15 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper, 
 
     @Override
     public int updateDppQualityLog(DppQualityLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据质量日志
+        // Update data quality log
         DppQualityLogDO updateObj = BeanUtils.toBean(updateReqVO, DppQualityLogDO.class);
         return dppQualityLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppQualityLog(Collection<Long> idList) {
-        // 批量删除数据质量日志
+        // Delete data quality logs in batches
         return dppQualityLogMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DppQualityLogServiceImpl  extends ServiceImpl<DppQualityLogMapper, 
                 .collect(Collectors.toMap(
                         DppQualityLogDO::getId,
                         dppQualityLogDO -> dppQualityLogDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据质量日志数据
+         * Import data quality log data
          *
-         * @param importExcelList 数据质量日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data quality log data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {

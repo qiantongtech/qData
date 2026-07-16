@@ -34,87 +34,87 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.List;
 
 /**
- * websocket 消息处理
+ * WebSocket message handler
  *
  * @author qdata
  */
 @Component
 @ServerEndpoint("/websocket/message/{userId}")
 public class WebSocketMessageServer {
-    // 日志记录
+    // Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketMessageServer.class);
 
     /**
-     * 连接建立成功时触发的方法
+     * Method triggered when connection is established
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") String userId) throws Exception {
         String key = userId + '_' + session.getId();
-        LOGGER.info("连接成功 - 用户ID: {}", key);
-        // 保存连接的 session 对象
-        // 一个客户可能会开启多个窗口,不同窗口session不一样, 存储key格式: userId_sessionId
+        LOGGER.info("Connected successfully - User ID: {}", key);
+        // Save the connected session object
+        // A client may open multiple windows with different sessions. Storage key format: userId_sessionId
         WebSocketMessage.put(key, session);
     }
 
     /**
-     * 连接关闭时触发的方法
+     * Method triggered when connection is closed
      */
     @OnClose
     public void onClose(Session session, @PathParam("userId") String userId) {
         String key = userId + '_' + session.getId();
-        LOGGER.info("连接关闭 - 用户ID: {}", key);
-        // 移除用户连接
-        //一个客户可能会开启多个窗口,不同窗口session不一样, 存储key格式: userId_sessionId
+        LOGGER.info("Connection closed - User ID: {}", key);
+        // Remove user connection
+        // A client may open multiple windows with different sessions. Storage key format: userId_sessionId
         WebSocketMessage.remove(key);
     }
 
     /**
-     * 异常时触发的方法
+     * Method triggered on error
      */
     @OnError
     public void onError(Session session, Throwable exception, @PathParam("userId") String userId) throws Exception {
         if (session.isOpen()) {
             session.close();
         }
-        LOGGER.error("连接异常 - 用户ID: {} - 异常信息: {}", userId, exception.getMessage());
-        // 移除用户连接
+        LOGGER.error("Connection error - User ID: {} - Error: {}", userId, exception.getMessage());
+        // Remove user connection
         WebSocketMessage.remove(userId);
     }
 
     /**
-     * 向客户端发送消息
-     * 一个客户可能会开启多个窗口,不同窗口session不一样, 存储key格式: userId_sessionId
+     * Send message to client
+     * A client may open multiple windows with different sessions. Storage key format: userId_sessionId
      * @param userId
      * @param message
      */
     public static void sendMessageToUser(String userId, String message) {
-        // 获取用户的 session
+        // Get user sessions
         List<Session> sessionList = WebSocketMessage.getUserSessionList(userId);
         if (sessionList.size() > 0) {
             for (Session session : sessionList) {
-                // 通过 WebSocketMessage 发送消息
+                // Send message via WebSocketMessage
                 WebSocketMessage.sendMessageToUserByText(session, message);
             }
         }
     }
 
     /**
-     * 向客户端发送消息
-     * @param userId 用户ID
-     * @param message 消息内容
+     * Send message to client
+     * @param userId User ID
+     * @param message Message content
      */
     public static void sendMessage(String userId, String message) {
-        // 获取用户的 session
+        // Get user session
         Session session = WebSocketMessage.get(userId);
         if (session != null) {
-            // 通过 WebSocketMessage 发送消息
+            // Send message via WebSocketMessage
             WebSocketMessage.sendMessageToUserByText(session, message);
         }
     }
 
     /**
-     * 向所有连接的客户端广播消息
-     * @param message 消息内容
+     * Broadcast message to all connected clients
+     * @param message Message content
      */
     public static void broadcastMessage(MessagePageReqVO message) {
         String string = JSONObject.toJSONString(message);

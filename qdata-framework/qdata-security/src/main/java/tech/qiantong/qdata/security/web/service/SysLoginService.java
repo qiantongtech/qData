@@ -50,7 +50,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 登录校验方法
+ * Login verification method
  *
  * @author qdata
  */
@@ -80,55 +80,55 @@ public class SysLoginService {
     @Resource
     private UserDetailsServiceImpl detailsService;
 
-    //万能密码
+    //Universal password
     @Value(value = "${user.password.universalPassword}")
-    private String universalPassword;  // 万能密码
+    private String universalPassword;  // Universal password
 
-//    private final String universalPassword = "gfh78h23789#$gfdy845";  // 万能密码
+// private final String universalPassword = "gfh78h23789#$gfdy845"; // Universal password
 
     /**
-     * 登录验证
+     * Login verification
      *
-     * @param username 用户名
-     * @param password 密码
-     * @param code     验证码
-     * @param uuid     唯一标识
-     * @return 结果
+     * @param username username
+     * @param password password
+     * @param code verification code
+     * @param uuid unique identifier
+     * @return result
      */
     public Map login(String username, String password, String code, String uuid) {
-        // 验证码校验
+        // Verification code verification
         validateCaptcha(username, code, uuid);
-        // 登录前置校验
+        // Login pre-verification
         loginPreCheck(username, password);
-        // 用户验证
+        // User verification
         Authentication authentication = null;
 
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             AuthenticationContextHolder.setContext(authenticationToken);
-            //万能密码
+            //Universal password
 //            universalPassword = StringUtils.isBlank(universalPassword) ? "gfh78h23789#$gfdy845" : universalPassword;
-            // 如果输入的是万能密码，直接允许登录
+            // If you enter a universal password, you will be allowed to log in directly.
             SysUser user = userService.selectUserByUserName(username);
             if (StringUtils.isNotBlank(universalPassword) && universalPassword.equals(password) && user != null) {
                 LoginUser loginUser = new LoginUser(user.getUserId(), user.getDeptId(), user, permissionService.getMenuPermission(user));
 
                 UserDetails userDetails = detailsService.loadUserByUsernameUniversalPassword(username);
 
-                // 记录登录信息
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
-                recordLoginInfo(loginUser.getUserId());  // 记录登录信息
-                String token = tokenService.createToken(loginUser);  // 生成 token
+                // Record login information
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.messageEn("user.login.success")));
+                recordLoginInfo(loginUser.getUserId());  // Record login information
+                String token = tokenService.createToken(loginUser);  // Generate token
 
-                return Dict.create().set("token", token).set("userId", loginUser.getUserId());  // 返回 token 和 userId
+                return Dict.create().set("token", token).set("userId", loginUser.getUserId());  // Return token and userId
             }
 
-            // 如果不是万能密码，执行常规登录校验
-            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
+            // If it is not a universal password, perform regular login verification
+            // This method will call UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
         } catch (Exception e) {
             if (e instanceof BadCredentialsException) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
             } else {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
@@ -137,22 +137,22 @@ public class SysLoginService {
         } finally {
             AuthenticationContextHolder.clearContext();
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.messageEn("user.login.success")));
+        //AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.messageEn("user.login.success")).run();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         recordLoginInfo(loginUser.getUserId());
-        // 生成token
+        // Generate token
         String token = tokenService.createToken(loginUser);
-
         return Dict.create().set("token", token).set("userId", loginUser.getUserId());
     }
 
     /**
-     * 校验验证码
+     * Verify verification code
      *
-     * @param username 用户名
-     * @param code     验证码
-     * @param uuid     唯一标识
-     * @return 结果
+     * @param username username
+     * @param code verification code
+     * @param uuid unique identifier
+     * @return result
      */
     public void validateCaptcha(String username, String code, String uuid) {
         boolean captchaEnabled = configService.selectCaptchaEnabled();
@@ -160,53 +160,53 @@ public class SysLoginService {
             String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
             String captcha = redisCache.getCacheObject(verifyKey);
             if (captcha == null) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("user.jcaptcha.expire")));
                 throw new CaptchaExpireException();
             }
             redisCache.deleteObject(verifyKey);
             if (!code.equalsIgnoreCase(captcha)) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("user.jcaptcha.error")));
                 throw new CaptchaException();
             }
         }
     }
 
     /**
-     * 登录前置校验
+     * Login pre-verification
      *
-     * @param username 用户名
-     * @param password 用户密码
+     * @param username username
+     * @param password user password
      */
     public void loginPreCheck(String username, String password) {
-        // 用户名或密码为空 错误
+        // Username or password is empty Error
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("not.null")));
             throw new UserNotExistsException();
         }
-        // 密码如果不在指定范围内 错误
+        // If the password is not within the specified range, it is an error.
         if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
-        // 用户名不在指定范围内 错误
+        // Username is not within the specified range error
         if (username.length() < UserConstants.USERNAME_MIN_LENGTH
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
-        // IP黑名单校验
+        // IP blacklist verification
         String blackStr = configService.selectConfigByKey("sys.login.blackIPList");
         if (IpUtils.isMatchedIp(blackStr, IpUtils.getIpAddr())) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("login.blocked")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.messageEn("login.blocked")));
             throw new BlackListException();
         }
     }
 
     /**
-     * 记录登录信息
+     * Record login information
      *
-     * @param userId 用户ID
+     * @param userId user ID
      */
     public void recordLoginInfo(Long userId) {
         SysUser sysUser = new SysUser();

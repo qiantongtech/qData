@@ -30,7 +30,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据分类 创建/修改 Request VO DG_DATA_CATEGORY
+ * Data Category Create/Update Request VO - DG_DATA_CATEGORY
  *
  * @author qdata
  * @date 2026-04-07
@@ -55,7 +55,7 @@ public class DgDataCategorySaveReqVO extends BaseEntity {
     @Size(max = 256, message = "分类名称长度不能超过256个字符")
     private String name;
 
-    /** 分类名称缩写名 */
+    /** Category Name Abbreviation */
     @Schema(description = "分类名称缩写名", example = "")
     private String shortName;
 

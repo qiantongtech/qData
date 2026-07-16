@@ -22,39 +22,39 @@ import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.utils.ServletUtils;
 
 /**
- * 表格数据处理
+ * Table data processing
  *
  * @author qdata
  */
 public class TableSupport
 {
     /**
-     * 当前记录起始索引
+     * Current record starting index
      */
     public static final String PAGE_NUM = "pageNum";
 
     /**
-     * 每页显示记录数
+     * Display number of records per page
      */
     public static final String PAGE_SIZE = "pageSize";
 
     /**
-     * 排序列
+     * Sort column
      */
     public static final String ORDER_BY_COLUMN = "orderByColumn";
 
     /**
-     * 排序的方向 "desc" 或者 "asc".
+     * Sorting direction "desc" or "asc".
      */
     public static final String IS_ASC = "isAsc";
 
     /**
-     * 分页参数合理化
+     * Paging parameter rationalization
      */
     public static final String REASONABLE = "reasonable";
 
     /**
-     * 封装分页对象
+     * Encapsulate paging object
      */
     public static PageDomain getPageDomain()
     {

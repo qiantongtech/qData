@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McDbDO;
 import java.util.List;
 
 /**
- * 数据库 Convert
+ * Database Convert
  *
  * @author qdata
  * @date 2026-02-11
@@ -20,29 +20,29 @@ public interface McDbConvert {
     McDbConvert INSTANCE = Mappers.getMapper(McDbConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcDbPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcDbPageReqVO request parameters
      * @return McDbDO
      */
      McDbDO convertToDO(McDbPageReqVO mcDbPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcDbSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcDbSaveReqVO save request parameters
      * @return McDbDO
      */
      McDbDO convertToDO(McDbSaveReqVO mcDbSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcDbDO 实体对象
+     * DO to RespVO
+     * @param mcDbDO entity object
      * @return McDbRespVO
      */
      McDbRespVO convertToRespVO(McDbDO mcDbDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcDbDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcDbDOList entity object list
      * @return List<McDbRespVO>
      */
      List<McDbRespVO> convertToRespVOList(List<McDbDO> mcDbDOList);

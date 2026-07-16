@@ -26,7 +26,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 应用管理 创建/修改 Request VO ATT_CLIENT
+ * App Management Create/Update Request VO ATT_CLIENT
  *
  * @author qdata
  * @date 2025-02-18

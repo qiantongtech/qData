@@ -28,24 +28,24 @@ import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 /**
- * 自定义语言解析器
+ * Custom language parser
  *
- * 优先级：
- *   1. lang 参数（用户手动切换，由 LocaleChangeInterceptor 触发 setLocale 存入 Session）
- *   2. Accept-Language 请求头（前端 axios 自动携带）
- *   3. 默认简体中文
+ * Priority:
+ * 1. lang parameter (user manually switches, setLocale is triggered by LocaleChangeInterceptor and stored in Session)
+ * 2. Accept-Language request header (automatically carried by front-end axios)
+ * 3. Default Simplified Chinese
  *
  * @author qdata
  */
 public class HeaderLocaleResolver implements LocaleResolver
 {
-    /** Session 中存储语言属性的 key */
+    /** The key to store language attributes in Session */
     private static final String LOCALE_SESSION_ATTRIBUTE = "QDATA_LOCALE";
 
     @Override
     public Locale resolveLocale(HttpServletRequest request)
     {
-        // ① 优先从 Session 读取（用户通过 ?lang= 参数手动切换后存入）
+        // ① Prioritize reading from Session (user saves after manually switching through?lang= parameter)
         HttpSession session = request.getSession(false);
         if (session != null)
         {
@@ -56,7 +56,7 @@ public class HeaderLocaleResolver implements LocaleResolver
             }
         }
 
-        // ② 从 Accept-Language 请求头解析
+        // ② Parse from Accept-Language request header
         String acceptLanguage = request.getHeader("Accept-Language");
         if (StringUtils.hasText(acceptLanguage))
         {
@@ -67,14 +67,14 @@ public class HeaderLocaleResolver implements LocaleResolver
             }
         }
 
-        // ③ 兜底默认简体中文
+        // ③ The default setting is Simplified Chinese
         return Constants.DEFAULT_LOCALE;
     }
 
     @Override
     public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale)
     {
-        // 将手动切换的语言存入 Session（由 LocaleChangeInterceptor 调用）
+        // Store the manually switched language in Session (called by LocaleChangeInterceptor)
         HttpSession session = request.getSession();
         if (session != null)
         {
@@ -83,32 +83,32 @@ public class HeaderLocaleResolver implements LocaleResolver
     }
 
     /**
-     * 从 Accept-Language 头解析 Locale
-     * 支持格式：zh-CN,zh;q=0.9,en;q=0.8 → 取权重最高的 zh-CN
+     * Parse Locale from Accept-Language header
+     * Supported formats: zh-CN,zh;q=0.9,en;q=0.8 → Take the zh-CN with the highest weight
      */
     private Locale parseAcceptLanguage(String acceptLanguage)
     {
         try
         {
-            // Accept-Language 格式示例: "zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7"
+            // Accept-Language format example: "zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7"
             String[] locales = acceptLanguage.split(",");
             if (locales.length > 0)
             {
-                // 取第一个（权重最高）
+                // Take the first one (highest weight)
                 String primaryLang = locales[0].trim();
-                // 去掉 q 值部分（如 "zh-CN;q=0.9" → "zh-CN"）
+                // Remove the q value part (such as "zh-CN;q=0.9" → "zh-CN")
                 int qIndex = primaryLang.indexOf(';');
                 if (qIndex > 0)
                 {
                     primaryLang = primaryLang.substring(0, qIndex);
                 }
-                // 转换 "zh-CN" → Locale
+                // Convert "zh-CN" → Locale
                 return Locale.forLanguageTag(primaryLang.replace('_', '-'));
             }
         }
         catch (Exception e)
         {
-            // 解析失败，返回 null 走兜底
+            // Parsing fails and null is returned.
         }
         return null;
     }

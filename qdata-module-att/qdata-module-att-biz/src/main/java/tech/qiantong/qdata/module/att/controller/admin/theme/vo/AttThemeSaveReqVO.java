@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 主题 创建/修改 Request VO ATT_THEME
+ * Theme Create/Update Request VO ATT_THEME
  *
  * @author qdata
  * @date 2025-01-20

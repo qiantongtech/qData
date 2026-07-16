@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据质量任务-稽查对象Mapper接口
+ * Data Quality Task-Audit Object Mapper
  *
  * @author Chaos
  * @date 2025-07-21
@@ -37,18 +37,18 @@ import java.util.Set;
 public interface DppQualityTaskObjMapper extends BaseMapperX<DppQualityTaskObjDO> {
 
     default PageResult<DppQualityTaskObjDO> selectPage(DppQualityTaskObjPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppQualityTaskObjDO>()
                 .likeIfPresent(DppQualityTaskObjDO::getName, reqVO.getName())
                 .eqIfPresent(DppQualityTaskObjDO::getDatasourceId, reqVO.getDatasourceId())
                 .likeIfPresent(DppQualityTaskObjDO::getTableName, reqVO.getTableName())
                 .eqIfPresent(DppQualityTaskObjDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppQualityTaskObjDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

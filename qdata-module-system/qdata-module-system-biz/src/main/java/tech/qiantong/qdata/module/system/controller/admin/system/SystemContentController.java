@@ -40,19 +40,19 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
- * 系统配置Controller
+ * System Configuration Controller
  *
  * @author qdata
  * @date 2024-12-31
  */
-@Tag(name = "系统配置")
+@Tag(name = "System Configuration")
 @RestController
 @Validated
 public class SystemContentController extends BaseController {
     @Resource
     private ISystemContentService systemContentService;
 
-    @Operation(summary = "查询系统配置列表")
+    @Operation(summary = "Query system configuration list")
     @PreAuthorize("@ss.hasPermi('system:system:content:list')")
     @GetMapping("/system/content/list")
     public CommonResult<PageResult<SystemContentRespVO>> list(SystemContentPageReqVO systemContent) {
@@ -60,8 +60,8 @@ public class SystemContentController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, SystemContentRespVO.class));
     }
 
-    @Operation(summary = "获取系统配置详细信息")
-    //首页不登录时要获取logo信息
+    @Operation(summary = "Get system configuration details")
+    //Logo info needs to be fetched when the homepage is accessed without login
 //    @PreAuthorize("@ss.hasPermi('system:system:content:query')")
     @GetMapping(value = "sys/content/{id}")
     public CommonResult<SystemContentRespVO> getInfo(@PathVariable("id") Long id) {
@@ -69,9 +69,9 @@ public class SystemContentController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(systemContentDO, SystemContentRespVO.class));
     }
 
-//    @Operation(summary = "新增系统配置")
+//    @Operation(summary = "Add system configuration")
 //    @PreAuthorize("@ss.hasPermi('system:system:content:add')")
-//    @Log(title = "系统配置", businessType = BusinessType.INSERT)
+//    @Log(title = "log.op.title.system.config", businessType = BusinessType.INSERT)
 //    @PostMapping
 //    public CommonResult<Long> add(@Valid @RequestBody SystemContentSaveReqVO systemContent) {
 //        systemContent.setCreatorId(getUserId());
@@ -80,9 +80,9 @@ public class SystemContentController extends BaseController {
 //        return CommonResult.toAjax(systemContentService.createSystemContent(systemContent));
 //    }
 
-    @Operation(summary = "修改系统配置")
+    @Operation(summary = "Modify system configuration")
     @PreAuthorize("@ss.hasPermi('system:system:content:edit')")
-    @Log(title = "系统配置", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.config", businessType = BusinessType.UPDATE)
     @PostMapping("/system/content/edit")
     public CommonResult<Integer> edit(@Valid @RequestBody SystemContentSaveReqVO systemContent) {
         systemContent.setUpdatorId(getUserId());
@@ -91,9 +91,9 @@ public class SystemContentController extends BaseController {
         return CommonResult.toAjax(systemContentService.updateSystemContent(systemContent));
     }
 
-//    @Operation(summary = "删除系统配置")
+//    @Operation(summary = "Delete system configuration")
 //    @PreAuthorize("@ss.hasPermi('system:system:content:remove')")
-//    @Log(title = "系统配置", businessType = BusinessType.DELETE)
+//    @Log(title = "log.op.title.system.config", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{ids}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(systemContentService.removeSystemContent(Arrays.asList(ids)));

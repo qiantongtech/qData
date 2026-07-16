@@ -86,7 +86,7 @@
         </div>
       </el-form-item>
     </el-form>
-    <!--  底部  -->
+    <!--  bottom  -->
     <div class="el-register-footer">
       <span>Copyright © 2018-2024 qdata.vip All Rights Reserved.</span>
     </div>

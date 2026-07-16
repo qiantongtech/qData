@@ -38,13 +38,13 @@ import javax.annotation.Resource;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
  * @create: 2025-03-27 14:39
  **/
-@Tag(name = "调度执行")
+@Tag(name = "Schedule Execution")
 @RestController
 @RequestMapping("/dpp/etlExecutors")
 public class DppEtlExecutorController {

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.assetColumn.dto;
 import lombok.Data;
 
 /**
- * 数据资产字段 DTO 对象 DA_ASSET_COLUMN
+ * Data Asset Column DTO DA_ASSET_COLUMN
  *
  * @author lhs
  * @date 2025-01-21
@@ -34,58 +34,58 @@ public class DaAssetColumnRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private String assetId;
 
-    /** 字段名称/英文名称 */
+    /** Column Name / English Name */
     private String columnName;
 
-    /** 字段注释/中文名称 */
+    /** Column Comment / Chinese Name */
     private String columnComment;
 
-    /** 数据类型 */
+    /** Data Type */
     private String columnType;
 
-    /** 长度 */
+    /** Length */
     private Long columnLength;
 
-    /** 小数位 */
+    /** Decimal Places */
     private Long columnScale;
 
-    /** 是否必填 */
+    /** Required Flag */
     private String nullableFlag;
 
-    /** 是否主键 */
+    /** Primary Key Flag */
     private String pkFlag;
 
-    /** 默认值 */
+    /** Default Value */
     private String defaultValue;
 
-    /** 是否代码 */
+    /** Code Flag */
     private String dataElemCodeFlag;
 
-    /** 代码id */
+    /** Code ID */
     private String dataElemCodeId;
 
-    /** 敏感等级id */
+    /** Sensitive Level ID */
     private String sensitiveLevelId;
 
-    /** 关联数据元 */
+    /** Related Data Element Flag */
     private String relDataElmeFlag;
 
-    /** 关联清洗规则 */
+    /** Related Clean Rule Flag */
     private String relCleanFlag;
 
-    /** 关联稽查规则 */
+    /** Related Audit Rule Flag */
     private String relAuditFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

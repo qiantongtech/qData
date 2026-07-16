@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 标准
+// Standard
 export default [
     {
         path: '/dm/document/national/detail',

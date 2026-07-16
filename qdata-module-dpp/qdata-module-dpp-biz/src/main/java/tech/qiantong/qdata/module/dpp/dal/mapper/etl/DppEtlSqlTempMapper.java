@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据集成SQL模版Mapper接口
+ * Data Integration SQL Template Mapper
  *
  * @author FXB
  * @date 2025-06-25
@@ -37,19 +37,19 @@ import java.util.Set;
 public interface DppEtlSqlTempMapper extends BaseMapperX<DppEtlSqlTempDO> {
 
     default PageResult<DppEtlSqlTempDO> selectPage(DppEtlSqlTempPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppEtlSqlTempDO>()
                 .likeIfPresent(DppEtlSqlTempDO::getName, reqVO.getName())
                 .eqIfPresent(DppEtlSqlTempDO::getType, reqVO.getType())
                 .eqIfPresent(DppEtlSqlTempDO::getContent, reqVO.getContent())
                 .eqIfPresent(DppEtlSqlTempDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DppEtlSqlTempDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppEtlSqlTempDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

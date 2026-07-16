@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据元代码 创建/修改 Request VO DP_DATA_ELEM_CODE
+ * Data Element Code Save Request VO - DP_DATA_ELEM_CODE
  *
  * @author qdata
  * @date 2025-01-21

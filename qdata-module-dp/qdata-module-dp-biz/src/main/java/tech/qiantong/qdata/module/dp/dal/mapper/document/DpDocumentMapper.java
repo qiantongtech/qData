@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 标准信息登记Mapper接口
+ * Standard Document Registration Mapper Interface
  *
  * @author qdata
  * @date 2025-08-21
@@ -44,7 +44,7 @@ public interface DpDocumentMapper extends BaseMapperX<DpDocumentDO> {
 
 
     default PageResult<DpDocumentDO> selectPage(DpDocumentPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DpDocumentDO> lambdaWrapper = new MPJLambdaWrapper();
@@ -74,7 +74,7 @@ public interface DpDocumentMapper extends BaseMapperX<DpDocumentDO> {
     }
 
     /**
-     * 标准检索分页列表
+     * Standard document search paginated list
      *
      * @param page
      * @param dpDocument

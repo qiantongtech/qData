@@ -43,7 +43,7 @@
     </qt-table>
   </qt-wrap>
 
-  <!-- 添加或修改标签管理对话框 -->
+  <!-- Add or modify the tag management dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -131,14 +131,14 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm"
+        <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
           >{{ td('common.button.confirm') }}</el-button
         >
       </div>
     </template>
   </el-dialog>
 
-  <!-- 标签管理详情对话框 -->
+  <!-- Tag management details dialog box -->
   <el-dialog
     :title="title"
     v-model="openDetail"
@@ -253,6 +253,7 @@ import { pageListByIds } from "@/api/da/asset/asset.js";
 import { defineProps } from "vue";
 import { delByTagIdAndAesstId } from "@/api/att/tag/tagAssetRel.js";
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 import { useRoute } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang.js";
 
@@ -361,14 +362,14 @@ function handleQueryClick() {
   tableRef.value && tableRef.value.getList();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -394,40 +395,40 @@ function reset() {
   proxy.resetForm("AttTagRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   handleQueryClick();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   handleQueryClick();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('att.tag.title.add');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -438,7 +439,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -449,32 +450,42 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["AttTagRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         updateAttTag(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             handleQueryClick();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addAttTag(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             handleQueryClick();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   let map = {
@@ -511,7 +522,7 @@ function handleDeleteAll() {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/AttTag/export",
@@ -527,6 +538,6 @@ watch(
   (newId) => {
     handleQueryClick();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 </script>

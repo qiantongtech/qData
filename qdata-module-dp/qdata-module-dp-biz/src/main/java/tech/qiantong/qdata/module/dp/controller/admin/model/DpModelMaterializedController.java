@@ -41,7 +41,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 /**
- * 物化模型记录Controller
+ * Materialized Model Record Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -72,7 +72,7 @@ public class DpModelMaterializedController extends BaseController {
 
     @Operation(summary = "新增物化模型记录")
 //    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
-    @Log(title = "物化模型记录", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.model.materialized", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpModelMaterializedSaveReqVO dpModelMaterialized) {
         dpModelMaterialized.setCreatorId(getUserId());
@@ -83,7 +83,7 @@ public class DpModelMaterializedController extends BaseController {
 
     @Operation(summary = "新增物化模型记录")
 //    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:add')")
-    @Log(title = "物化模型记录", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.model.materialized", businessType = BusinessType.INSERT)
     @PostMapping("/createMaterializedTable")
     public CommonResult<Long> createMaterializedTable(@Valid @RequestBody DpMaterializedMethodReqVO dpModelMaterialized) {
         dpModelMaterialized.setCreatorId(getUserId());
@@ -94,7 +94,7 @@ public class DpModelMaterializedController extends BaseController {
 
     @Operation(summary = "修改物化模型记录")
 //    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:edit')")
-    @Log(title = "物化模型记录", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model.materialized", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpModelMaterializedSaveReqVO dpModelMaterialized) {
         dpModelMaterialized.setUpdatorId(getUserId());
@@ -105,7 +105,7 @@ public class DpModelMaterializedController extends BaseController {
 
     @Operation(summary = "删除物化模型记录")
 //    @PreAuthorize("@ss.hasPermi('dp:modelMaterialized:remove')")
-    @Log(title = "物化模型记录", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.model.materialized", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpModelMaterializedService.removeDpModelMaterialized(Arrays.asList(ids)));

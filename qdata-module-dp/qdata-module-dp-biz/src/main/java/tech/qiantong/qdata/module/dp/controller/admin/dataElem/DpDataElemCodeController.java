@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemCodeDO;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemCodeService;
 
 /**
- * 数据元代码Controller
+ * Data Element Code Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -73,7 +73,7 @@ public class DpDataElemCodeController extends BaseController {
 
     @Operation(summary = "导出数据元代码列表")
     @PreAuthorize("@ss.hasPermi('dp:dataElemCode:export')")
-    @Log(title = "数据元代码", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.data.elem.code", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpDataElemCodePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -84,7 +84,7 @@ public class DpDataElemCodeController extends BaseController {
 
     @Operation(summary = "导入数据元代码列表")
     @PreAuthorize("@ss.hasPermi('dp:dataElemCode:import')")
-    @Log(title = "数据元代码", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.data.elem.code", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpDataElemCodeRespVO> util = new ExcelUtil<>(DpDataElemCodeRespVO.class);
@@ -104,7 +104,7 @@ public class DpDataElemCodeController extends BaseController {
 
     @Operation(summary = "新增数据元代码")
     @PreAuthorize("@ss.hasPermi('dp:dataElemCode:add')")
-    @Log(title = "数据元代码", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.data.elem.code", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpDataElemCodeSaveReqVO dpDataElemCode) {
         dpDataElemCode.setCreatorId(getUserId());
@@ -115,7 +115,7 @@ public class DpDataElemCodeController extends BaseController {
 
     @Operation(summary = "修改数据元代码")
     @PreAuthorize("@ss.hasPermi('dp:dataElemCode:edit')")
-    @Log(title = "数据元代码", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.data.elem.code", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpDataElemCodeSaveReqVO dpDataElemCode) {
         dpDataElemCode.setUpdatorId(getUserId());
@@ -126,7 +126,7 @@ public class DpDataElemCodeController extends BaseController {
 
     @Operation(summary = "删除数据元代码")
     @PreAuthorize("@ss.hasPermi('dp:dataElemCode:remove')")
-    @Log(title = "数据元代码", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.data.elem.code", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpDataElemCodeService.removeDpDataElemCode(Arrays.asList(ids)));

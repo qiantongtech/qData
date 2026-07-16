@@ -1,4 +1,4 @@
-// 通用翻译（按钮、消息、表单、展示标签）
+// Universal translation (buttons, messages, forms, display tags)
 export default {
   license: {
     title: '开源协议',
@@ -149,7 +149,7 @@ export default {
   html: {
     appTitle: 'qData开源数据中台'
   },
-  // 展示
+  // show
   display: {
     index: '序号',
     status: '状态',
@@ -170,7 +170,7 @@ export default {
     componentOne:'组件一',
     componentTwo:'组件二'
   },
-  //规则
+  //rules
   rules:{
     node:'节点不能为空',
     title:'标题不能为空',

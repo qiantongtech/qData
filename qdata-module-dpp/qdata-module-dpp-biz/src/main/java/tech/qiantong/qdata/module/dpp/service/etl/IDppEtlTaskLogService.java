@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成任务-日志Service接口
+ * Data Integration Task Log Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -38,72 +38,72 @@ import java.util.Map;
 public interface IDppEtlTaskLogService extends IService<DppEtlTaskLogDO> {
 
     /**
-     * 获得数据集成任务-日志分页列表
+     * Get data integration task log pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务-日志分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task log pagination list
      */
     PageResult<DppEtlTaskLogDO> getDppEtlTaskLogPage(DppEtlTaskLogPageReqVO pageReqVO);
 
     DppEtlTaskLogRespVO getDppEtlTaskLogById(DppEtlTaskLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务-日志
+     * Create data integration task log
      *
-     * @param createReqVO 数据集成任务-日志信息
-     * @return 数据集成任务-日志编号
+     * @param createReqVO Data integration task log info
+     * @return Data integration task log ID
      */
     Long createDppEtlTaskLog(DppEtlTaskLogSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成任务-日志
+     * Update data integration task log
      *
-     * @param updateReqVO 数据集成任务-日志信息
+     * @param updateReqVO Data integration task log info
      */
     int updateDppEtlTaskLog(DppEtlTaskLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务-日志
+     * Delete data integration task log
      *
-     * @param idList 数据集成任务-日志编号
+     * @param idList Data integration task log ID list
      */
     int removeDppEtlTaskLog(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务-日志详情
+     * Get data integration task log detail
      *
-     * @param id 数据集成任务-日志编号
-     * @return 数据集成任务-日志
+     * @param id Data integration task log ID
+     * @return Data integration task log
      */
     DppEtlTaskLogDO getDppEtlTaskLogById(Long id);
 
     /**
-     * 获得全部数据集成任务-日志列表
+     * Get all data integration task log list
      *
-     * @return 数据集成任务-日志列表
+     * @return Data integration task log list
      */
     List<DppEtlTaskLogDO> getDppEtlTaskLogList();
 
     /**
-     * 获得全部数据集成任务-日志 Map
+     * Get all data integration task log Map
      *
-     * @return 数据集成任务-日志 Map
+     * @return Data integration task log Map
      */
     Map<Long, DppEtlTaskLogDO> getDppEtlTaskLogMap();
 
 
     /**
-     * 导入数据集成任务-日志数据
+     * Import data integration task log data
      *
-     * @param importExcelList 数据集成任务-日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration task log data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDppEtlTaskLog(List<DppEtlTaskLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 根据任务编码获取最大版本号
+     * Get max version number by task code
      *
      * @param taskCode
      * @return

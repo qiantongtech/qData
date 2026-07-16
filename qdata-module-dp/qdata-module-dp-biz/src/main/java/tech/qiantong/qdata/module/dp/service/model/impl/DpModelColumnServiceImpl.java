@@ -42,7 +42,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 逻辑模型属性信息Service业务层处理
+ * Logical Model Column Information Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -69,16 +69,16 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
 
     @Override
     public int updateDpModelColumn(DpModelColumnSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新逻辑模型属性信息
+        // Update logical model column information
         DpModelColumnDO updateObj = BeanUtils.toBean(updateReqVO, DpModelColumnDO.class);
         return dpModelColumnMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpModelColumn(Collection<Long> idList) {
-        // 批量删除逻辑模型属性信息
+        // Batch delete logical model column information
         return dpModelColumnMapper.deleteBatchIds(idList);
     }
 
@@ -160,17 +160,17 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
                 .collect(Collectors.toMap(
                         DpModelColumnDO::getId,
                         dpModelColumnDO -> dpModelColumnDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
     /**
-     * 导入逻辑模型属性信息数据
+     * Import logical model column information data
      *
-     * @param importExcelList 逻辑模型属性信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Logical model column information data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpModelColumn(List<DpModelColumnRespVO> importExcelList, boolean isUpdateSupport,
@@ -244,10 +244,10 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
     }
 
     /**
-     * 批量插入逻辑模型属性信息数据
+     * Batch insert logical model column information data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical model column information data list
+     * @return Result
      */
     @Override
     public Boolean createDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList) {
@@ -260,10 +260,10 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
     }
 
     /**
-     * 批量修改和插入逻辑模型属性信息数据
+     * Batch update and insert logical model column information data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical model column information data list
+     * @return Result
      */
     @Override
     public Boolean updateDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList) {
@@ -272,7 +272,7 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
         DpModelColumnSaveReqVO dpModelColumnSaveReqVO = new DpModelColumnSaveReqVO();
         dpModelColumnSaveReqVO.setModelId(modelId);
         List<DpModelColumnDO> modelColumnList = this.getDpModelColumnList(dpModelColumnSaveReqVO);
-        // 用于存储dpModelColumnDOList中的所有ID
+        // Used to store all IDs from dpModelColumnDOList
         Set<Long> newIds = new HashSet<>();
         for (DpModelColumnDO dpModelColumnDO : dpModelColumnDOList) {
             if (dpModelColumnDO.getId() != null) {
@@ -282,7 +282,7 @@ public class DpModelColumnServiceImpl extends ServiceImpl<DpModelColumnMapper, D
                 dpModelColumnMapper.insert(dpModelColumnDO);
             }
         }
-        // 删除modelColumnList中存在但dpModelColumnDOList中不存在的记录
+        // Delete records that exist in modelColumnList but not in dpModelColumnDOList
         for (DpModelColumnDO existingColumn : modelColumnList) {
             if (!newIds.contains(existingColumn.getId())) {
                 dpModelColumnMapper.deleteById(existingColumn.getId());

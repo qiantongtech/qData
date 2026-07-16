@@ -31,7 +31,7 @@ import java.util.Optional;
 public class CacheDbQueryFactoryBean extends AbstractDbQueryFactory {
 
     /**
-     * 默认缓存5分钟
+     * Default cache is 5 minutes
      */
     private static long DEFAULT_EXPIRE = 5 * 60 * 1000;
     private static DefaultSqlCache sqlCache = new DefaultSqlCache(100, DEFAULT_EXPIRE);

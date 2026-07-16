@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据资产操作申请 创建/修改 Request VO DA_ASSET_OPERATE_APPLY
+ * Data Asset Operate Apply Create/Update Request VO DA_ASSET_OPERATE_APPLY
  *
  * @author qdata
  * @date 2025-05-09

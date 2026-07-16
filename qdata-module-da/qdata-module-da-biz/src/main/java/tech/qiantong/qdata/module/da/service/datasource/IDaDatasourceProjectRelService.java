@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据源与项目关联关系Service接口
+ * Datasource - Project Relation Service Interface
  *
  * @author qdata
  * @date 2025-03-13
@@ -37,79 +37,79 @@ import java.util.Map;
 public interface IDaDatasourceProjectRelService extends IService<DaDatasourceProjectRelDO> {
 
     /**
-     * 获得数据源与项目关联关系分页列表
+     * Get datasource-project relation page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据源与项目关联关系分页列表
+     * @param pageReqVO page request
+     * @return datasource-project relation page list
      */
     PageResult<DaDatasourceProjectRelDO> getDaDatasourceProjectRelPage(DaDatasourceProjectRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据源与项目关联关系
+     * Create datasource-project relation
      *
-     * @param createReqVO 数据源与项目关联关系信息
-     * @return 数据源与项目关联关系编号
+     * @param createReqVO datasource-project relation info
+     * @return datasource-project relation ID
      */
     Long createDaDatasourceProjectRel(DaDatasourceProjectRelSaveReqVO createReqVO);
 
     /**
-     * 更新数据源与项目关联关系
+     * Update datasource-project relation
      *
-     * @param updateReqVO 数据源与项目关联关系信息
+     * @param updateReqVO datasource-project relation info
      */
     int updateDaDatasourceProjectRel(DaDatasourceProjectRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据源与项目关联关系
+     * Delete datasource-project relation
      *
-     * @param idList 数据源与项目关联关系编号
+     * @param idList datasource-project relation ID list
      */
     int removeDaDatasourceProjectRel(Collection<Long> idList);
 
     /**
-     * 获得数据源与项目关联关系详情
+     * Get datasource-project relation details
      *
-     * @param id 数据源与项目关联关系编号
-     * @return 数据源与项目关联关系
+     * @param id datasource-project relation ID
+     * @return datasource-project relation
      */
     DaDatasourceProjectRelDO getDaDatasourceProjectRelById(Long id);
 
     /**
-     * 获得全部数据源与项目关联关系列表
+     * Get all datasource-project relation list
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getDaDatasourceProjectRelList();
 
     /**
-     * 获得全部数据源与项目关联关系列表
+     * Get all datasource-project relation list
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getDaDatasourceProjectRelList(DaDatasourceProjectRelDO daDatasourceProjectRelDO);
 
     /**
-     * 获得全部数据源与项目关联关系列表关联数据源表和项目表
+     * Get all datasource-project relation list joined with datasource table and project table
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getJoinProjectAndDatasource(DaDatasourceProjectRelDO daDatasourceProjectRelDO);
 
     /**
-     * 获得全部数据源与项目关联关系 Map
+     * Get all datasource-project relation Map
      *
-     * @return 数据源与项目关联关系 Map
+     * @return datasource-project relation Map
      */
     Map<Long, DaDatasourceProjectRelDO> getDaDatasourceProjectRelMap();
 
 
     /**
-     * 导入数据源与项目关联关系数据
+     * Import datasource-project relation data
      *
-     * @param importExcelList 数据源与项目关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList datasource-project relation data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDatasourceProjectRel(List<DaDatasourceProjectRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

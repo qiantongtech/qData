@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 /**
- * 防止重复提交拦截器
+ * Prevent duplicate submission interceptor
  *
  * @author qdata
  */
@@ -64,11 +64,11 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
     }
 
     /**
-     * 验证是否重复提交由子类实现具体的防重复提交的规则
+     * Verify whether repeated submissions are made by subclasses to implement specific anti-recurring submission rules.
      *
-     * @param request 请求信息
-     * @param annotation 防重复注解参数
-     * @return 结果
+     * @param request request information
+     * @param annotation prevents duplication of annotation parameters
+     * @return result
      * @throws Exception
      */
     public abstract boolean isRepeatSubmit(HttpServletRequest request, RepeatSubmit annotation);

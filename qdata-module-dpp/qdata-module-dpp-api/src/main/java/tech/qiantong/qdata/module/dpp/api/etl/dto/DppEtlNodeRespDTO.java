@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dpp.api.etl.dto;
 import lombok.Data;
 
 /**
- * 数据集成节点 DTO 对象 DPP_ETL_NODE
+ * Data Integration Node DTO - DPP_ETL_NODE
  *
  * @author qdata
  * @date 2025-02-13
@@ -34,64 +34,64 @@ public class DppEtlNodeRespDTO {
     /** ID */
     private Long id;
 
-    /** 任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务 */
+    /** Task Type; 1: Offline Task 2: Real-time Task 3: Data Development Task 4: Job Task */
     private String taskType;
 
-    /** 节点类型 */
+    /** Node Type */
     private String type;
 
-    /** 节点名称 */
+    /** Node Name */
     private String name;
 
-    /** 节点编码 */
+    /** Node Code */
     private String code;
 
-    /** 节点版本 */
+    /** Node Version */
     private Long version;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 节点参数 */
+    /** Node Parameters */
     private String parameters;
 
-    /** 任务优先级 */
+    /** Task Priority */
     private String priority;
 
-    /** 失败重试次数 */
+    /** Fail Retry Times */
     private Long failRetryTimes;
 
-    /** 失败重试间隔（分钟） */
+    /** Fail Retry Interval (Minutes) */
     private Long failRetryInterval;
 
-    /** 超时时间 */
+    /** Timeout */
     private Long timeout;
 
-    /** 延迟执行时间（分钟） */
+    /** Delay Execution Time (Minutes) */
     private Long delayTime;
 
-    /** CPU配额 */
+    /** CPU Quota */
     private Long cpuQuota;
 
-    /** 最大内存 */
+    /** Max Memory */
     private Long memoryMax;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 组件类型 */
+    /** Component Type */
     private String componentType;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -24,7 +24,7 @@ import java.util.Locale;
 
 /**
  * <P>
- * 用途:任务组件类型枚举
+ * Purpose: Task component type enumeration
  * </p>
  *
  * @author: FXB
@@ -33,13 +33,13 @@ import java.util.Locale;
 
 public enum TaskComponentTypeEnum {
 
-    //输入
+    //Input
     DB_READER("1", "数据库输入"),
     EXCEL_READER("2", "Excel输入"),
     KAFKA_READER("3", "Kafka输入"),
     CSV_READER("4", "csv输入"),
 
-    //清洗
+    //Clean
     SELECT_FIELDS("22", "字段选择"),
 
     SPARK_CLEAN("31", "SPARK清洗"),
@@ -49,16 +49,16 @@ public enum TaskComponentTypeEnum {
     VALUE_MAP("47", "值映射"),
     ADD_CONSTANT("48", "增加常量"),
 
-    //开发
+    //Develop
     SQL_DEV("51", "SQL开发"),
     PROCEDURE_DEV("52", "存储过程开发"),
     SPARK_SQL_DEV("53", "SparkSql开发"),
     SHELL_DEV("54", "SHELL开发"),
 
-    //子任务
+    //Subtask
     SUB_PROCESS("71", "子任务"),
 
-    //输出
+    //Output
     DB_WRITER("91", "数据库输出");
 
     @Getter

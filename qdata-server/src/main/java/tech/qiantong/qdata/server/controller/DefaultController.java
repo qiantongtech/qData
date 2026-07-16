@@ -24,8 +24,8 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 
 
 /**
- * 默认 Controller，解决部分 module 未开启时的 404 提示。
- * 例如说，/bpm/** 路径，工作流
+ * The default Controller solves the 404 prompt when some modules are not enabled.
+ * For example, /bpm/** path, workflow
  *
  * @author qdata
  */

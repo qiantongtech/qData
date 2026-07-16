@@ -42,7 +42,7 @@
           </el-col>
           <!-- <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">中文名称</div>
+              <div class="infotop-row-lable">Chinese name</div>
               <div class="infotop-row-value">
                 {{ form.name || "-" }}
               </div>
@@ -92,7 +92,7 @@
         </el-row>
       </div>
     </div>
-    <!-- 标签页部分 -->
+    <!-- Tab section -->
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane :label="td('dp.dataElem.detail.cleanRule')" name="1" lazy>
@@ -145,7 +145,7 @@ const dataElemId = ref("");
 const route = useRoute();
 dataElemId.value = route.query.id;
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function getDetail() {
   const id = dataElemId.value;
   if (!id) return;
@@ -154,12 +154,12 @@ function getDetail() {
   });
 }
 
-// 页面加载时获取数据
+// Get data when page loads
 onMounted(() => {
   getDetail();
 });
 
-// 返回列表页
+// Return to list page
 function goBack() {
   router.go(-1);
 }

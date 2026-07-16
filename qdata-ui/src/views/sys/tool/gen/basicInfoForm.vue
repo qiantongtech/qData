@@ -58,7 +58,7 @@ const { td } = useDefaultLang();defineProps({
   }
 });
 
-// 表单校验
+// form validation
 const rules = ref({
   tableName: [{ required: true, message: td('sys.tool.genBasic.tableNameRequired'), trigger: "blur" }],
   tableComment: [{ required: true, message: td('sys.tool.genBasic.tableDescRequired'), trigger: "blur" }],

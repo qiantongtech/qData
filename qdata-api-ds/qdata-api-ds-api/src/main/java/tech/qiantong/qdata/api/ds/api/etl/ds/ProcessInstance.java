@@ -46,7 +46,7 @@ import tech.qiantong.qdata.common.enums.*;
 import java.util.Date;
 
 /**
- * 流程实例
+ * Process instance
  */
 @Builder
 @NoArgsConstructor
@@ -60,78 +60,78 @@ public class ProcessInstance {
     private Long id;
 
     /**
-     * 流程编码
+     * Process definition code
      */
     private String processDefinitionCode;
     /**
-     * 流程版本
+     * Process version
      */
     private int processDefinitionVersion;
     /**
-     * 项目编码
+     * Project code
      */
     private String projectCode;
     /**
-     * 状态
+     * State
      */
     private WorkflowExecutionStatus state;
     /**
-     * 状态历史
+     * State history
      */
     private String stateHistory;
     /**
-     * 调度时间
+     * Schedule time
      */
     private Date scheduleTime;
     /**
-     * 执行开始时间
+     * Command start time
      */
     private Date commandStartTime;
 
     /**
-     * 开始时间
+     * Start time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
     /**
-     * 结束时间
+     * End time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
-     * 运行次数
+     * Run times
      */
     private Integer runTimes;
     /**
-     * 任务实例名称
+     * Task instance name
      */
     private String name;
     /**
-     * 流程定义
+     * Process definition
      */
     @TableField(exist = false)
     private ProcessDefinition processDefinition;
     /**
-     * 运行类型
+     * Command type
      */
     private CommandType commandType;
 
     private String commandParam;
     /**
-     * 最大重试次数
+     * Maximum retry times
      */
     private int maxTryTimes;
     /**
-     * 是否是子流程
+     * Whether it is a sub-process
      */
     private Flag isSubProcess;
     /**
-     * 优先级
+     * Priority
      */
     private Priority processInstancePriority;
     /**
-     * 失败策略
+     * Failure strategy
      */
     private FailureStrategy failureStrategy;
 

@@ -22,8 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * 类表示退款请求的响应数据。
- * 该类包含支付网关返回的退款结果信息。
+ * Class represents the response data for a refund request.
+ * This class contains the refund result information returned by the payment gateway.
  * @author qdata
  */
 @Data
@@ -31,12 +31,12 @@ import lombok.Data;
 public class RefundResponse {
 
     /**
-     * 退款状态，表示退款操作是否成功或失败。
+     * Refund status, indicating whether the refund operation is successful or failed.
      */
     private String status;
 
     /**
-     * 商户系统中的订单唯一标识符。
+     * The order's unique identifier in the merchant's system.
      */
     private String orderId;
 

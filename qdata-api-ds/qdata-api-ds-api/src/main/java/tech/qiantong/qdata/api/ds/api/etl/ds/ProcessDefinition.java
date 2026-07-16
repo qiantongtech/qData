@@ -56,27 +56,27 @@ public class ProcessDefinition {
     private Long id;
 
     /**
-     * 编码
+     * Code
      */
     private String code;
 
     /**
-     * 名称
+     * Name
      */
     private String name;
 
     /**
-     * 版本号
+     * Version
      */
     private int version;
 
     /**
-     * 发布状态 : online/offline
+     * Release state : online/offline
      */
     private String releaseState;
 
     /**
-     * 项目编码
+     * Project code
      */
     private String projectCode;
 
@@ -106,36 +106,36 @@ public class ProcessDefinition {
 //    private ReleaseState scheduleReleaseState;
 
     /**
-     * 流程定义日志列表
+     * Process definition log list
      */
     ProcessDefinitionLog processDefinitionLog;
 
     /**
-     * 任务定义日志列表
+     * Task definition log list
      */
     List<TaskDefinitionLog> taskDefinitionLogList;
 
     /**
-     * 任务关系日志列表
+     * Task relation log list
      */
     @TableField(exist = false)
     List<ProcessTaskRelationLog> taskRelationLogList;
 
 
     /**
-     * 任务定义列表
+     * Task definition list
      */
     @TableField(exist = false)
     List<TaskDefinition> taskDefinitionList;
 
     /**
-     * 任务关系日志列表
+     * Task relation list
      */
     @TableField(exist = false)
     List<ProcessTaskRelation> taskRelationList;
 
     /**
-     * 执行策略
+     * Execution type
      */
     private String executionType;
 }

@@ -104,7 +104,7 @@ const fileDesc = ref([
   { key: "releaseDate", label: td('dp.document.releaseDate') },
   { key: "implementationDate", label: td('dp.document.implementationDate') },
   { key: "abolitionDate", label: td('dp.document.abolitionDate') },
-  // { key: "fileName", label: "文件名称" },
+  // { key: "fileName", label: "filename" },
   { key: "fileUrl", label: td('dp.document.file') },
   { key: "createBy", label: td('common.texts.createdBy') },
   { key: "createTime", label: td('common.texts.createdTime') },

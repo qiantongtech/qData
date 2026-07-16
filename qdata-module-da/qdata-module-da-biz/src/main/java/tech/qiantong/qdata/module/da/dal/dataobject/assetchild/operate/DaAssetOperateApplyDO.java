@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据资产操作申请 DO 对象 DA_ASSET_OPERATE_APPLY
+ * Data Asset Operation Application DO - DA_ASSET_OPERATE_APPLY
  *
  * @author qdata
  * @date 2025-05-09
  */
 @Data
 @TableName(value = "DA_ASSET_OPERATE_APPLY")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_OPERATE_APPLY_seq")
 @Builder
 @NoArgsConstructor
@@ -46,37 +46,37 @@ public class DaAssetOperateApplyDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 数据连接id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 表注释/表描述 */
+    /** Table Comment / Table Description */
     private String tableComment;
 
-    /** 操作类型 */
+    /** Operation Type */
     private String operateType;
 
-    /** 操作JSON数据 */
+    /** Operation JSON Data */
     private String operateJson;
 
-    /** 操作时间 */
+    /** Operation Time */
     private Date operateTime;
 
-    /** 是否已执行 */
+    /** Executed Flag */
     private String executeFlag;
 
-    /** 执行时间 */
+    /** Execution Time */
     private Date executeTime;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

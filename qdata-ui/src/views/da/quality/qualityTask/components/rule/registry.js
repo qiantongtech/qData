@@ -1,11 +1,11 @@
-// 质量规则异步注册中心
-// 用途：
-// - 统一维护“规则类型键 → 子组件路径”的映射
-// - 通过 import.meta.glob 与 defineAsyncComponent 按需加载子组件，降低首屏体积
-// 扩展步骤：
-// 1) 在 components/rule 目录新增子组件文件
-// 2) 在 ruleRegistry 中追加键与 componentPath 的映射
-// 3) 规则类型键需与后端/页面使用的 form.ruleType 保持一致
+// Quality Rules Asynchronous Registration Center
+// Purpose:
+// - Uniformly maintain the mapping of "rule type key → subcomponent path"
+// - Load subcomponents on demand through import.meta.glob and defineAsyncComponent to reduce the size of the first screen
+// Extension steps:
+// 1) Add subcomponent files in the components/rule directory
+// 2) Add the mapping between key and componentPath in ruleRegistry
+// 3) The rule type key needs to be consistent with the form.ruleType used by the backend/page
 import { defineAsyncComponent } from "vue"
 const modules = import.meta.glob("./**/*.vue")
 
@@ -19,14 +19,14 @@ export const ruleRegistry = {
   TIME_ORDER_VALIDATION: { label: '时间字段先后顺序校验', componentPath: "./timeOrderRule.vue" },
 }
 
-// 获取规则元信息：用于展示 label 等基础描述
+// Obtain rule meta-information: used to display basic descriptions such as label
 export function getRuleConfig(key) {
   return ruleRegistry[key] || null
 }
 
-// 获取规则异步组件：
-// - 若路径未在 modules 中出现（文件不存在或路径不匹配）返回 null
-// - 使用 defineAsyncComponent 包裹以实现懒加载
+// Get the rule asynchronous component:
+// - If the path does not appear in modules (the file does not exist or the path does not match), return null
+// - Use defineAsyncComponent wrapper to achieve lazy loading
 export function getRuleComponent(key) {
   const cfg = getRuleConfig(key)
   const path = cfg?.componentPath

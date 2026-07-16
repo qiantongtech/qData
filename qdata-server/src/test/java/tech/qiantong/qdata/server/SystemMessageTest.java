@@ -38,7 +38,7 @@ public class SystemMessageTest {
     private MessageServiceImpl iMessageService;
     /**
      *
-     * 消息测试
+     * Message test
      * Long templateId, MessageSaveReqVO messageSaveReqVO, Object entity
      */
     @Test

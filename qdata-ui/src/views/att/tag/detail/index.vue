@@ -62,15 +62,15 @@ const showSearch = ref(true);
 const route = useRoute();
 const activeName = ref("0");
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
-    id = newId || 1; // 如果 id 为空，使用默认值 1
+    id = newId || 1; // If id is empty, the default value 1 is used
     activeName.value = "0";
     getAttTagDetailById();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   AttTagDetail: {},
@@ -91,7 +91,7 @@ const detailItems = computed(() => [
   },
 ]);
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getAttTagDetailById() {
   const _id = id;
   getAttTag(_id).then((response) => {

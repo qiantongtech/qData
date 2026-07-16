@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data integration scheduling information DTO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,40 +18,40 @@ public class McTaskSchedulerReqDTO {
     /** ID */
     private Long id;
 
-    /** Task ID */
+    /** task id */
     private Long taskId;
 
-    /** Handle scheduling configuration and operations. */
+    /** scheduler id */
     private String jobId;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id */
     private Long quartzId;
 
-    /** Implementation details. */
+    /** 开始时间 */
     private Date startTime;
 
-    /** Implementation details. */
+    /** End time */
     private Date endTime;
 
-    /** Implementation details. */
+    /** Time zone */
     private String timezoneId;
 
-    /** Implementation details. */
+    /** cron expression */
     private String cronExpression;
 
-    /** Implementation details. */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** Handle scheduling configuration and operations. */
+    /** Scheduling status */
     private String status;
 
-    /** Whether the record is valid. */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     private Boolean delFlag;
 
 

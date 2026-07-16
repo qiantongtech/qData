@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据集成调度信息Controller
+ * Data Integration Scheduling Information Controller
  *
  * @author qdata
  * @date 2025-12-16
@@ -50,7 +50,7 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "导出数据集成调度信息列表")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task.scheduler", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskSchedulerPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -60,7 +60,7 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "导入数据集成调度信息列表")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.mc.task.scheduler", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<McTaskSchedulerRespVO> util = new ExcelUtil<>(McTaskSchedulerRespVO.class);
@@ -78,7 +78,7 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "新增数据集成调度信息")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task.scheduler", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskSchedulerSaveReqVO mcTaskScheduler) {
         mcTaskScheduler.setCreatorId(getUserId());
@@ -88,7 +88,7 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "修改数据集成调度信息")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task.scheduler", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskSchedulerSaveReqVO mcTaskScheduler) {
         mcTaskScheduler.setUpdatorId(getUserId());
@@ -98,7 +98,7 @@ public class McTaskSchedulerController extends BaseController {
     }
 
     @Operation(summary = "删除数据集成调度信息")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task.scheduler", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskSchedulerService.removeMcTaskScheduler(Arrays.asList(ids)));

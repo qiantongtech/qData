@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -32,7 +32,7 @@ import java.util.List;
  **/
 public interface DppEtlTaskInstanceService {
     /**
-     * 获取最新的任务实例
+     * Get the latest task instance
      * @param taskIdList
      * @return
      */

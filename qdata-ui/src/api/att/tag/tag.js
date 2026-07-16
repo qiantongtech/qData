@@ -17,7 +17,7 @@
  */
 
 import request from '@/utils/request'
-// 查询标签管理列表
+// Query tag management list
 export function listAttTag(query) {
   return request({
     url: '/att/tag/list',
@@ -33,7 +33,7 @@ export function listDict(query) {
   })
 }
 
-// 查询标签管理详细
+// Query tag management details
 export function getAttTag(id) {
   return request({
     url: '/att/tag/' + id,
@@ -41,7 +41,7 @@ export function getAttTag(id) {
   })
 }
 
-// 新增标签管理
+// Add tag management
 export function addAttTag(data) {
   return request({
     url: '/att/tag',
@@ -50,7 +50,7 @@ export function addAttTag(data) {
   })
 }
 
-// 修改标签管理
+// Modify tag management
 export function updateAttTag(data) {
   return request({
     url: '/att/tag',
@@ -59,7 +59,7 @@ export function updateAttTag(data) {
   })
 }
 
-// 删除标签管理
+// Delete tag management
 export function delAttTag(id) {
   return request({
     url: '/att/tag/' + id,

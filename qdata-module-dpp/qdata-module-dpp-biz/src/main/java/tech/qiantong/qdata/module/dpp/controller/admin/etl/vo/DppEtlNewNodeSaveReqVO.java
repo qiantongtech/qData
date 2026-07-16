@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation details.
+ * New Data Integration Request VO
  *
  * @author qdata
  * @date 2025-02-19
@@ -43,16 +43,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class DppEtlNewNodeSaveReqVO extends BaseEntity {
 
-    /** Implementation details. */
+    /** Category Code */
     @Parameter(name = "catCode", description = "类目编码")
     private String catCode;
     private Long catId;
 
-    /** Implementation details. */
+    /** Person in Charge */
     @Parameter(name = "catCode", description = "责任人")
     private String personCharge;
 
-    /** Implementation details. */
+    /** Contact Number */
     @Parameter(name = "catCode", description = "联系电话")
     private String contactNumber;
 
@@ -75,13 +75,13 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     private String description;
 
     @Parameter(name = "globalParams", description = "全局参数", required = false)
-    private String globalParams = "[]";  // Implementation details.
+    private String globalParams = "[]";  // Default value
 
     @Parameter(name = "locations", description = "位置参数", required = false)
     private List<Map<String,Object>> locations;
 
     @Parameter(name = "timeout", description = "超时时间", required = false)
-    private Long timeout = 0L;  // Implementation details.
+    private Long timeout = 0L;  // Default value
 
     @Parameter(name = "taskRelationJson", description = "任务关系的 JSON", required = true)
     private String taskRelationJson;
@@ -95,9 +95,9 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     @Parameter(name = "executionType", description = "执行类型", required = false)
     private String executionType;
 
-    // Implementation details.
+    // Online status 0:Offline, 1:Online
     private String releaseState;
-    // Implementation details.
+    // Online status 0:Offline, 1:Online
     private String schedulerState;
     private String status;
     private String code;
@@ -112,30 +112,30 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     private String actuator;
 
     /**
-     * taskType（SPARK、FINK）
-     * Handle task-related data and operations.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
+     * taskType (SPARK, FINK)
+     * taskPriority - Task Priority
+     * workerGroup - Group
+     * failRetryTimes - Fail Retry Count
+     * delayTime - Delay Execution Time
+     * failRetryInterval - Fail Retry Interval
      *
      *
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
+     * SPARK:
+     * driverCores - Driver Cores
+     * driverMemory - Driver Memory
+     * numExecutors - Number of Executors
+     * executorMemory - Executor Memory
+     * executorCores - Executor Cores
+     * yarnQueue    -----Yarn Queue
      *
      *
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
-     * Implementation details.
+     * FINK:
+     * jobManagerMemory----JobManager Memory
+     * taskManagerMemory------TaskManager Memory
+     * slot-----Slot Count
+     * taskManager-----TaskManager Count
+     * parallelism - Parallelism
+     * yarnQueue    -----Yarn Queue
      */
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
@@ -160,7 +160,7 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
         this.crontab = src.getCrontab();
         this.draftJson = src.getDraftJson();
 
-        // Handle JSON data for this operation.
+        // Fields that need JSON conversion
         if (src.getTaskRelationJson() != null) {
             this.taskRelationJson = JSONUtils.toJson(src.getTaskRelationJson());
         }
@@ -168,7 +168,7 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
             this.taskDefinitionList = JSONUtils.toJson(src.getTaskDefinitionList());
         }
 
-        // Implementation details.
+        // Fixed to offline
         this.releaseState = "0";
         this.schedulerState = "0";
         this.status = "0";

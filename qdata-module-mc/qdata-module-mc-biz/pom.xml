@@ -16,55 +16,55 @@
     </description>
 
     <dependencies>
-        <!-- 核心模块 config-->
+        <!-- Core module config-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 定时任务 config-->
+        <!-- Scheduled task config-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-quartz</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系統模块 websocket-->
+        <!-- System module websocket-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-websocket</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 qdata-security -->
+        <!-- System module qdata-security -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-security</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 mybatis -->
+        <!-- System module mybatis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 redis -->
+        <!-- System module redis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- 文件上传-->
+        <!-- File upload -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.annotation;
 import java.lang.annotation.*;
 
 /**
- * 数据权限过滤注解
+ * Data permission filtering annotations
  *
  * @author qdata
  */
@@ -31,17 +31,17 @@ import java.lang.annotation.*;
 public @interface DataScope
 {
     /**
-     * 部门表的别名
+     * Alias for department table
      */
     public String deptAlias() default "";
 
     /**
-     * 用户表的别名
+     * User table alias
      */
     public String userAlias() default "";
 
     /**
-     * 权限字符（用于多个角色匹配符合要求的权限）默认根据权限注解@ss获取，多个权限用逗号分隔开来
+     * Permission characters (used for multiple roles to match required permissions) are obtained by default according to the permission annotation @ss. Multiple permissions are separated by commas.
      */
     public String permission() default "";
 }

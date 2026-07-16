@@ -61,7 +61,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产操作记录Service业务层处理
+ * Data asset operation log Service business layer processing
  *
  * @author qdata
  * @date 2025-05-09
@@ -110,7 +110,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
 
     @Override
     public int removeDaAssetOperateLog(Collection<Long> idList) {
-        // 批量删除数据资产操作记录
+        // Batch delete data asset operation logs
         return daAssetOperateLogMapper.deleteBatchIds(idList);
     }
 
@@ -131,19 +131,19 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
                 .collect(Collectors.toMap(
                         DaAssetOperateLogDO::getId,
                         daAssetOperateLogDO -> daAssetOperateLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产操作记录数据
+     * Import data asset operation log data
      *
-     * @param importExcelList 数据资产操作记录数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset operation log data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName        Operating user
+     * @return Result
      */
     @Override
     public String importDaAssetOperateLog(List<DaAssetOperateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -221,7 +221,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
         if (daAssetOperateLogById == null || daAssetOperateLogById.getDelFlag()) {
             throw new AssetOperateException("未查询操作信息，请刷新后重试！");
         }
-        //判断状态 状态;1:执行中  2:失败  3:成功   4:回滚失败  5:回滚成功
+        // Check status; status: 1: running, 2: failed, 3: success, 4: rollback failed, 5: rollback success
         String status = daAssetOperateLogById.getStatus();
         if (StringUtils.equals("1", status)
                 || StringUtils.equals("2", status)
@@ -235,9 +235,9 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * @param bean        待封装的 VO 对象
-     * @param operateType 操作类型，"1"、"2"、"3"、"4"
-     * @return 处理后的 VO 对象
+     * @param bean        VO object to encapsulate
+     * @param operateType Operation type: "1", "2", "3", "4"
+     * @return Processed VO object
      */
     public static DaAssetOperateLogSaveReqVO applyOperateTypeLogic(
             DaAssetOperateLogSaveReqVO bean,
@@ -251,29 +251,29 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             bean.setUpdateBefore(bean.getUpdateAfter());
             bean.setUpdateAfter(before);
         }
-        // 对于 "1"、"3"、"4" 不做额外处理，直接返回原 bean
+        // For "1", "3", "4", no additional processing needed, return the bean as is
         return bean;
     }
 
     /**
-     * 根据 operateType 返回对应字符串：
-     * 新增 (1) -> "3"
-     * 修改 (2) -> "2"
-     * 删除 (3) -> "1"
-     * 其他      -> ""
+     * Returns the corresponding string based on operateType:
+     * Add (1) -> "3"
+     * Modify (2) -> "2"
+     * Delete (3) -> "1"
+     * Other      -> ""
      */
     public static String mapOperateType(String operateType) {
         if (operateType == null) {
             return "";
         }
         switch (operateType) {
-            case "1": // 新增
+            case "1": // Add
                 return "3";
-            case "2": // 修改
+            case "2": // Modify
                 return "2";
-            case "3": // 删除
+            case "3": // Delete
                 return "1";
-            default:  // 导入(4) 或未知类型
+            default:  // Import (4) or unknown type
                 return "0";
         }
     }
@@ -281,8 +281,8 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateDaAssetOperateLog(DaAssetOperateLogSaveReqVO updateReqVO) {
-        // 相关校验
-        // 1. 校验资产和数据源
+        // Related validation
+        // 1. Validate asset and datasource
         DaAssetRespVO asset = iDaAssetService.getDaAssetByIdSimple(updateReqVO.getAssetId());
         if (asset == null || asset.getDelFlag()) {
             throw new AssetOperateException("未查询到资产信息，请刷新后重试！");
@@ -292,7 +292,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             throw new AssetOperateException("未查询到数据源信息，请刷新后重试！");
         }
 
-        // 2. 分发到具体操作
+        // 2. Dispatch to specific operation
         String type = StringUtils.trimToNull(updateReqVO.getOperateType());
         if (type == null) {
             throw new AssetOperateException("未获取到变动类型，请刷新后重试！");
@@ -302,7 +302,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             throw new AssetOperateException("不支持的操作类型: " + type);
         }).accept(updateReqVO, ctx);
 
-        // 更新数据资产操作记录
+        // Update data asset operation log
         DaAssetOperateLogDO updateObj = new DaAssetOperateLogDO();
         updateObj.setId(updateReqVO.getId());
         updateObj.setStatus(updateReqVO.getStatus());
@@ -314,7 +314,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createDaAssetOperateLog(DaAssetOperateLogSaveReqVO reqVO) {
-        // 1. 校验资产和数据源
+        // 1. Validate asset and datasource
         DaAssetRespVO asset = iDaAssetService.getDaAssetByIdSimple(reqVO.getAssetId());
         if (asset == null || asset.getDelFlag()) {
             throw new AssetOperateException("未查询到资产信息，请刷新后重试！");
@@ -324,7 +324,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             throw new AssetOperateException("未查询到数据源信息，请刷新后重试！");
         }
 
-        // 2. 分发到具体操作
+        // 2. Dispatch to specific operation
         String type = StringUtils.trimToNull(reqVO.getOperateType());
         if (type == null) {
             throw new AssetOperateException("未获取到变动类型，请刷新后重试！");
@@ -334,14 +334,14 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
             throw new AssetOperateException("不支持的操作类型: " + type);
         }).accept(reqVO, ctx);
 
-        // 3. 写入日志
+        // 3. Write log
         DaAssetOperateLogDO logDo = BeanUtils.toBean(reqVO, DaAssetOperateLogDO.class);
         daAssetOperateLogMapper.insert(logDo);
         return logDo.getId();
     }
 
     /**
-     * 公共：校验表，构造查询上下文
+     * Common: validate table, construct query context
      */
     private PreContext prepareContext(DaDatasourceRespVO ds, String tableName) {
         if (StringUtils.isBlank(tableName)) {
@@ -372,26 +372,26 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 根据 keys 中的 commentKeyList，从 after 中取值，
-     * 构造一个有序 Map，然后计算其 JSON 的 MD5 并设置到 req 中。
+     * Based on commentKeyList in keys, extract values from after,
+     * construct an ordered Map, then compute the MD5 of its JSON and set it in req.
      *
-     * @param req       需要设置 updateWhereMd5 的请求对象
-     * @param after     原始值 Map
-     * @param whereCols 包含 commentKeyList 的 Map
+     * @param req       Request object that needs updateWhereMd5 set
+     * @param after     Original value Map
+     * @param whereCols Map containing commentKeyList
      */
     public static void fillUpdateWhereMd5(DaAssetOperateLogSaveReqVO req,
                                           Map<String, Object> after,
                                           List<String> whereCols) {
-        // 2. 按顺序从 after 中取值
+        // 2. Extract values from after in order
         Map<String, Object> whereMap = new LinkedHashMap<>(whereCols.size());
         for (String col : whereCols) {
             if (after.containsKey(col)) {
                 whereMap.put(col, after.get(col));
             }
         }
-        // 3. 序列化成 JSON
+        // 3. Serialize to JSON
         String json = JSON.toJSONString(whereMap);
-        // 4. 计算 MD5 并设置
+        // 4. Compute MD5 and set
         String md5 = null;
         try {
             md5 = MD5Util.getInstance().encode(json);
@@ -403,7 +403,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
 
 
     /**
-     * 新增逻辑
+     * Add logic
      */
     private void doAdd(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
@@ -436,7 +436,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 更新逻辑
+     * Update logic
      */
     private void doUpdate(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
@@ -468,12 +468,12 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 删除逻辑占位
+     * Delete logic placeholder
      */
     private void doDelete(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
         Map<String, Object> after = JSONUtils.convertTaskDefinitionJsonMap(req.getUpdateAfter());
         Map<String, Object> keys = JSONUtils.convertTaskDefinitionJsonMap(req.getFieldNames());
-        // TODO: 按需补充
+        // TODO: supplement as needed
         List<String> whereCols = JSONUtils.splitListByString(keys.get("commentKeyList"));
         String whereClause = whereCols.stream()
                 .map(colName -> formatExpression(colName, after.get(colName), findColumn(colName, ctx.columns), ctx.prop))
@@ -493,14 +493,14 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 导入逻辑占位
+     * Import logic placeholder
      */
     private void doImport(DaAssetOperateLogSaveReqVO req, PreContext ctx) {
-        // TODO: 按需补充
+        // TODO: supplement as needed
     }
 
     /**
-     * 格式化单个列的 SET/WHERE 表达式
+     * Format a single column's SET/WHERE expression
      */
     private static String formatExpression(String colName, Object val, DbColumn col, DbQueryProperty prop) {
         String expr;
@@ -538,7 +538,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 数据库与列的上下文
+     * Database and column context
      */
     private static class PreContext {
         final DbQuery query;
@@ -555,7 +555,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     }
 
     /**
-     * 自定义业务异常
+     * Custom business exception
      */
     public static class AssetOperateException extends RuntimeException {
         public AssetOperateException(String msg) {

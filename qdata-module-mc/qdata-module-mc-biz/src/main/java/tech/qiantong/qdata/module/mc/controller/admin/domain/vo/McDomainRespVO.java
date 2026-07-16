@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 业务域 Response VO 对象 MC_DOMAIN
+ * Business domain Response VO object MC_DOMAIN
  *
  * @author qdata
  * @date 2026-02-12

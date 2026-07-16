@@ -22,8 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * 类表示支付状态查询的响应数据。
- * 该类包含支付网关返回的订单支付状态信息。
+ * Class representing response data for payment status queries.
+ * This class contains order payment status information returned by the payment gateway.
  *
  * @author qdata
  */
@@ -32,14 +32,14 @@ import lombok.Data;
 public class PaymentStatusResponse {
 
     /**
-     * 支付状态，表示订单的当前支付状态。
-     * 例如，可以使用“SUCCESS”、“PENDING”、“FAILED”等状态来表示。
+     * Payment status, indicating the current payment status of the order.
+     * For example, it can be represented by states such as "SUCCESS", "PENDING", and "FAILED".
      */
     private String status;
 
     /**
-     * 商户系统中的订单唯一标识符。
-     * 用于标识该支付状态响应针对的订单。
+     * The order's unique identifier in the merchant's system.
+     * Used to identify the order for which this payment status response is directed.
      */
     private String orderId;
 }

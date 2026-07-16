@@ -26,12 +26,12 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据集成任务实例 Request VO 对象 DPP_ETL_TASK_INSTANCE
+ * Data Integration Task Instance Request VO Object DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务实例 Request VO")
+@Schema(description = "Data Integration Task Instance Request VO")
 @Data
 public class DppEtlTaskInstancePageReqVO extends PageParam {
 

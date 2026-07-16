@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 消息Service接口
+ * Message Service interface
  *
  * @author qdata
  * @date 2024-10-31
@@ -48,7 +48,7 @@ public interface IMessageService extends IService<MessageDO> {
 
         if (startTime != null || endTime != null) {
             if (startTime != null) {
-                // >= 当日 00:00:00
+                // >= current day 00:00:00
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(startTime);
                 cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -58,7 +58,7 @@ public interface IMessageService extends IService<MessageDO> {
                 qw.ge("create_time", cal.getTime());
             }
             if (endTime != null) {
-                // <= 当日 23:59:59.999
+                // <= current day 23:59:59.999
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(endTime);
                 cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -74,41 +74,41 @@ public interface IMessageService extends IService<MessageDO> {
     }
 
     /**
-     * 通过模版向某一个用户发送消息
-     * @param templateId 模版id
-     * @param messageSaveReqVO 消息创建
-     * @param entity 实体对象
-     * @return 是否发送成功
+     * Send a message to a specific user via template
+     * @param templateId template id
+     * @param messageSaveReqVO message creation request
+     * @param entity entity object
+     * @return whether send succeeded
      */
     public Boolean send(Long templateId, MessageSaveReqVO messageSaveReqVO, Object entity);
 
     /**
-     * 查询消息数量
-     * @param message 查询条件
-     * @return 数量
+     * Query message count
+     * @param message query criteria
+     * @return count
      */
     public Long getNum(MessagePageReqVO message);
 
     /**
-     * 设置已读
-     * @param id 消息id
-     * @return 是否成功
+     * Mark as read
+     * @param id message id
+     * @return whether succeeded
      */
     public Boolean read(Long id);
 
     /**
-     * 全部已读
-     * @param receiverId 接收人id
-     * @param category 消息类型
-     * @param module 消息模块
-     * @return 是否成功
+     * Mark all as read
+     * @param receiverId receiver id
+     * @param category message type
+     * @param module message module
+     * @return whether succeeded
      */
     public Boolean readAll(Long receiverId, Integer category, Integer module);
 
     /**
-     * 更新接收人未读消息
+     * Update receiver's unread message count
      *
-     * @param receiverId 接收人id
+     * @param receiverId receiver id
      */
     public void getReceiverWDNum(Long receiverId);
 

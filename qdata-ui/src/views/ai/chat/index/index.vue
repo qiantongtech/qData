@@ -18,7 +18,7 @@
 
 <template>
   <el-container class="ai-layout">
-    <!-- 左侧：对话列表 -->
+    <!-- Left: Conversation list -->
     <ConversationList
       :active-id="activeConversationId"
       :datasource-id="datasourceId"
@@ -31,7 +31,7 @@
       @on-conversation-clear="handleConversationClear"
       @on-conversation-delete="handlerConversationDelete"
     />
-    <!-- 右侧：对话详情 -->
+    <!-- Right: Conversation details -->
     <el-container class="detail-container app-container" direction="vertical">
       <DataScopeConfig
         v-model:datasourceId="datasourceId"
@@ -73,13 +73,13 @@
         </template>
       </DataScopeConfig>
 
-      <!-- main：消息列表 -->
+      <!-- main: message list -->
       <el-main class="main-container">
         <div>
           <div class="message-container">
-            <!-- 情况三：加载中展示骨架屏 -->
+            <!-- Scenario 3: Skeleton screen displayed during loading -->
             <MessageLoading v-if="activeMessageListLoading" />
-            <!-- 情况四：消息列表为空或无聊天对话时 -->
+            <!-- Situation 4: When the message list is empty or there is no chat conversation -->
             <MessageListEmpty
               v-else-if="!activeConversationId && messageList.length === 0"
               v-model="prompt"
@@ -93,7 +93,7 @@
               @enter="handleSendByKeydown"
               @shift-enter="addNewLine"
             />
-            <!-- 情况五：消息列表不为空 -->
+            <!-- Case 5: The message list is not empty -->
             <MessageList
               v-else
               ref="messageRef"
@@ -109,7 +109,7 @@
         </div>
       </el-main>
 
-      <!-- 底部 -->
+      <!-- bottom -->
       <el-footer
         class="footer-container"
         v-if="
@@ -248,29 +248,29 @@ import { getTablesByDataSourceId } from "@/api/dpp/task/index.js";
 import { Plus } from "@element-plus/icons-vue";
 import useDefaultLang from "@/composables/useDefaultLang";
 
-/** qData 智能问数聊天对话 列表 */
+/** qData intelligent question chat conversation list */
 defineOptions({ name: "AiChat" });
 
-const route = useRoute(); // 路由
+const route = useRoute(); // routing
 const { proxy } = getCurrentInstance();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 const { td } = useDefaultLang();
 
-// 聊天对话
+// chat conversation
 const conversationListRef = ref();
 const dataScopeConfigRef = ref();
-const activeConversationId = ref(null); // 选中的对话编号
-const activeConversation = ref(null); // 选中的 Conversation
-const conversationInProgress = ref(false); // 对话是否正在进行中。目前只有【发送】消息时，会更新为 true，避免切换对话、删除对话等操作
+const activeConversationId = ref(null); // Selected conversation number
+const activeConversation = ref(null); // Selected Conversation
+const conversationInProgress = ref(false); // Is the conversation ongoing? Currently, only when sending a message, it will be updated to true to avoid operations such as switching conversations and deleting conversations.
 
-// 消息列表
+// Message list
 const messageRef = ref();
-const activeMessageList = ref([]); // 选中对话的消息列表
-const activeMessageListLoading = ref(false); // activeMessageList 是否正在加载中
-const activeMessageListLoadingTimer = ref(); // activeMessageListLoading Timer 定时器。如果加载速度很快，就不进入加载中
-const suggestedList = ref([]); // 建议列表
+const activeMessageList = ref([]); // Message list of selected conversation
+const activeMessageListLoading = ref(false); // Is activeMessageList loading?
+const activeMessageListLoadingTimer = ref(); // activeMessageListLoading Timer timer. If the loading speed is very fast, it will not enter the loading process.
+const suggestedList = ref([]); // Suggestion list
 
-// 模型选择和问答类型
+// Model selection and question and answer type
 const modelList = ref([]);
 const selectedModelId = ref(null);
 const chatType = ref("chart");
@@ -307,7 +307,7 @@ const selectedModelIcon = computed(() =>
   getModelIconByPlatform(selectedModel.value?.platform)
 );
 
-/** 获取模型列表 */
+/** Get model list */
 const getModelList = async () => {
   const res = await getModelLists();
   if (res.code === 200) {
@@ -322,17 +322,17 @@ onMounted(() => {
   getModelList();
 });
 
-// 发送消息输入框
-const conversationInAbortController = ref(); // 对话进行中 abort 控制器(控制 stream 对话)
+// Send message input box
+const conversationInAbortController = ref(); // Conversation in progress abort controller (control stream conversation)
 const prompt = ref(); // prompt
-const enableContext = ref(true); // 是否开启上下文
+const enableContext = ref(true); // Whether to enable context
 const datasourceId = ref("");
 const factTableName = ref("");
 const factTableComment = ref("");
 const dimensionTableNames = ref([]);
 const dimensionTable = ref("[]");
 const tableCommentMap = ref({});
-const joinConditionMatchFlag = ref(1); // 0: 需要匹配，1: 不需要匹配
+const joinConditionMatchFlag = ref(1); // 0: Matching is required, 1: Matching is not required
 
 watch(
   dimensionTableNames,
@@ -359,14 +359,14 @@ const handleConfigConfirm = (config) => {
   }
 
   dimensionTableNames.value = config.dimensionTableNames;
-  // 可以根据需要添加其他逻辑，比如开始问答的提示等
+  // You can add other logic as needed, such as prompts to start Q&A, etc.
 };
 
 const handleAssociationsConfirm = async () => {
-  // 关联关系设置成功后，更新标志位
+  // After the association relationship is successfully set, update the flag bit
   joinConditionMatchFlag.value = true;
-  console.log("关联关系设置成功");
-  // 刷新会话信息
+  console.log("Association configured successfully");
+  // Refresh session information
   if (activeConversationId.value) {
     const res = await ChatConversationApi.getChatConversationMy(
       activeConversationId.value
@@ -375,7 +375,7 @@ const handleAssociationsConfirm = async () => {
       await handleConversationClick(res.data);
     }
   }
-  // 刷新左侧会话列表
+  // Refresh the conversation list on the left
   if (conversationListRef.value) {
     await conversationListRef.value.getChatConversationList();
   }
@@ -402,8 +402,8 @@ function toNumber(v) {
   return Number.isNaN(n) ? v : n;
 }
 
-// =========== 【聊天对话】相关 ===========
-/** 获取对话信息 */
+// =========== [Chat Dialogue] Related ===========
+/** Get conversation information */
 const getConversation = async (id) => {
   if (!id) {
     return;
@@ -418,13 +418,13 @@ const getConversation = async (id) => {
 };
 
 /**
- * 点击某个对话
+ * Click on a conversation
  *
- * @param conversation 选中的对话
- * @return 是否切换成功
+ * @param conversation selected conversation
+ * @return Whether the switch is successful
  */
 const handleConversationClick = async (conversation) => {
-  // 对话进行中，不允许切换
+  // Conversation in progress, switching is not allowed
   if (conversationInProgress.value) {
     message.alert(td('ai.chat.cannotSwitchDuringConversation'));
     return false;
@@ -435,7 +435,7 @@ const handleConversationClick = async (conversation) => {
   }
 
   console.log("handleConversationClick", conversation);
-  // 更新选中的对话 id
+  // Update selected conversation id
   activeConversationId.value = conversation.id;
   activeConversation.value = conversation;
   datasourceId.value = conversation.datasourceId || "";
@@ -443,7 +443,7 @@ const handleConversationClick = async (conversation) => {
   factTableComment.value = conversation.factTableComment || "";
   dimensionTable.value = conversation.dimensionTable || "[]";
 
-  // 解析维表并同步到 tableCommentMap
+  // Parse dimension tables and synchronize to tableCommentMap
   try {
     const arr = JSON.parse(dimensionTable.value);
     if (Array.isArray(arr)) {
@@ -454,7 +454,7 @@ const handleConversationClick = async (conversation) => {
       });
     }
   } catch (e) {
-    console.error("解析 dimensionTable 失败:", e);
+    console.error("Failed to parse dimensionTable:", e);
   }
 
   dimensionTableNames.value = parseDimensionTableNames(dimensionTable.value);
@@ -463,25 +463,25 @@ const handleConversationClick = async (conversation) => {
       ? conversation.joinConditionMatchFlag
       : true;
 
-  // 刷新 message 列表
+  // Refresh message list
   await getMessageList();
-  // 滚动底部
+  // scroll bottom
   scrollToBottom(true);
-  // 清空输入框
+  // Clear input box
   prompt.value = "";
   return true;
 };
 
-/** 删除某个对话*/
+/** Delete a conversation*/
 const handlerConversationDelete = async (delConversation) => {
-  // 删除的对话如果是当前选中的，那么就重置
+  // If the deleted conversation is currently selected, it will be reset.
   if (activeConversationId.value === delConversation.id) {
     await handleConversationClear();
   }
 };
-/** 清空选中的对话 */
+/** Clear selected conversations */
 const handleConversationClear = async () => {
-  // 对话进行中，不允许切换
+  // Conversation in progress, switching is not allowed
   if (conversationInProgress.value) {
     message.alert(td('ai.chat.cannotSwitchDuringConversation'));
     return false;
@@ -490,7 +490,7 @@ const handleConversationClear = async () => {
   activeConversation.value = null;
   activeMessageList.value = [];
   suggestedList.value = [];
-  // 清空配置
+  // Clear configuration
   datasourceId.value = "";
   factTableName.value = "";
   factTableComment.value = "";
@@ -501,9 +501,9 @@ const handleConversationClear = async () => {
   prompt.value = "";
 };
 
-/** 处理聊天对话的创建成功 */
+/** Handle chat conversation creation successfully */
 const handleConversationCreate = async (mId) => {
-  // 创建对话
+  // Create conversation
   return await conversationListRef.value.createConversation({
     datasourceId: datasourceId.value,
     factTableName: factTableName.value,
@@ -512,9 +512,9 @@ const handleConversationCreate = async (mId) => {
     modelId: mId || selectedModelId.value,
   });
 };
-/** 处理聊天对话的创建成功 */
+/** Handle chat conversation creation successfully */
 const handleConversationCreateSuccess = async (data) => {
-  // 创建新的对话，如果是10001就不清空输入框
+  // Create a new conversation. If it is 10001, the input box will not be cleared.
   if (data?.code !== 10001) {
     prompt.value = "";
     if (data?.id) {
@@ -529,7 +529,7 @@ const handleConversationCreateSuccess = async (data) => {
     joinConditionMatchFlag.value = data.joinConditionMatchFlag;
   }
   if (data?.code === 10001) {
-    // 创建会话返回 10001 时，停止会话并弹出“确认弹窗”
+    // When creating a session and returning 10001, stop the session and pop up a "confirmation pop-up window"
     stopStream();
     dataScopeConfigRef.value.handleOpenAssociationConfirm(
       data.id || activeConversationId.value
@@ -537,12 +537,12 @@ const handleConversationCreateSuccess = async (data) => {
   }
 };
 
-// =========== 【消息列表】相关 ===========
+// =========== [Message List] Related ===========
 
-/** 获取消息 message 列表 */
+/** Get message list */
 const getMessageList = async () => {
   try {
-    console.log("🚀 消息理你", activeConversationId);
+    console.log("🚀 Message:", activeConversationId);
     if (activeConversationId.value === null) {
       return;
     }
@@ -551,32 +551,32 @@ const getMessageList = async () => {
     const messageList = await ChatMessageApi.getChatMessageListByConversationId(
       activeConversationId.value
     );
-    // 获取消息列表
+    // Get message list
     activeMessageList.value = messageList.data;
     activeMessageListLoading.value = false;
 
-    // 滚动到最下面
+    // Scroll to the bottom
     await nextTick();
     await scrollToBottom();
 
-    // 获取建议
+    // Get advice
     // await getSuggested();
   } finally {
-    // time 定时器，如果加载速度很快，就不进入加载中
+    // time timer, if the loading speed is very fast, it will not enter the loading process
     if (activeMessageListLoadingTimer.value) {
       clearTimeout(activeMessageListLoadingTimer.value);
     }
-    // 加载结束
+    // Loading ends
     activeMessageListLoading.value = false;
   }
 };
 
 /**
- * 获取建议
+ * Get advice
  * @returns {Promise<void>}
  */
 const getSuggested = async () => {
-  // 获取建议 (接口暂缓调用)
+  // Get suggestions (interface is temporarily called)
   suggestedList.value = [];
   /*
   if (activeMessageList.value.length > 0) {
@@ -589,21 +589,21 @@ const getSuggested = async () => {
     }
   }
   */
-  // 滚动到最下面
+  // Scroll to the bottom
   await nextTick();
   await scrollToBottom();
 };
 
 /**
- * 消息列表
+ * Message list
  *
- * 和 {@link #getMessageList()} 的差异是，把 systemMessage 考虑进去
+ * The difference from {@link #getMessageList()} is that systemMessage is taken into account
  */
 const messageList = computed(() => {
   if (activeMessageList.value.length > 0) {
     return activeMessageList.value;
   }
-  // 没有消息时，如果有 systemMessage 则展示它
+  // When there is no message, if there is systemMessage, display it
   if (activeConversation.value?.systemMessage) {
     return [
       {
@@ -616,83 +616,83 @@ const messageList = computed(() => {
   return [];
 });
 
-/** 处理删除 message 消息 */
+/** Handle deletion of message messages */
 const handleMessageDelete = () => {
   if (conversationInProgress.value) {
     message.alert(td('ai.chat.cannotDeleteDuringAnswer'));
     return;
   }
-  // 刷新 message 列表
+  // Refresh message list
   getMessageList();
 };
 
-/** 处理 message 清空 */
+/** Process message clear */
 const handlerMessageClear = async () => {
   if (!activeConversationId.value) {
     return;
   }
   try {
-    // 确认提示
+    // Confirmation prompt
     await message.confirm(td('ai.chat.confirmClearMessages'));
-    // 清空对话
+    // Clear conversation
     await ChatMessageApi.deleteByConversationId(activeConversationId.value);
-    // 刷新 message 列表
+    // Refresh message list
     activeMessageList.value = [];
   } catch {
     return;
   }
 };
 
-/** 回到 message 列表的顶部 */
+/** Return to the top of the message list */
 const handleGoBottomMessage = () => {
   messageRef.value.handleGoBottom();
 };
 
-/** 回到 message 列表的顶部 */
+/** Return to the top of the message list */
 const handleGoTopMessage = () => {
   messageRef.value.handlerGoTop();
 };
 
-// =========== 【发送消息】相关 ===========
+// =========== [Send Message] Related ===========
 
-/** 处理来自 keydown 的发送消息 */
+/** Handle send messages from keydown */
 const handleSendByKeydown = async (event, mId, cType) => {
   if (event.shiftKey) {
-    return; // 如果 Shift 键被按下，不执行发送逻辑
+    return; // If the Shift key is pressed, the sending logic is not executed
   }
-  // 进行中不允许发送
+  // Not allowed to send while in progress
   if (conversationInProgress.value) {
     return;
   }
   const content = prompt.value?.trim();
-  // 发送消息
+  // Send message
   await doSendMessage(content, mId, cType);
-  // event.preventDefault(); //防止默认的换行行为
+  // event.preventDefault(); //Prevent default line wrapping behavior
 };
 
 const addNewLine = (event) => {
-  // 插入换行
+  // Insert newline
   prompt.value += "\r\n";
-  event.preventDefault(); //防止默认的换行行为
+  event.preventDefault(); //Prevent default newline behavior
 };
 
-/** 处理来自【发送】按钮的发送消息 */
+/** Process the send message from the [Send] button */
 const handleSendByButton = () => {
   doSendMessage(prompt.value?.trim());
 };
 
-/** 真正执行【发送】消息操作 */
+/** Actually execute the [Send] message operation */
 const doSendMessage = async (content, mId, cType) => {
-  // 增加一层保护：确保 content 是解开后的纯文本，且如果是递归嵌套也要解开
+  // Add a layer of protection: make sure content is unpacked plain text, and also unpack it if it is recursively nested
   const rawContent = getDisplayContent({ content: content });
 
-  // 校验
+  // Verification
   if (rawContent.length < 1) {
     message.msgError(td('ai.chat.sendFailedEmpty'));
     return;
   }
 
-  // 校验数据范围
+  // Check data range
   if (
     !datasourceId.value ||
     !factTableName.value ||
@@ -702,14 +702,14 @@ const doSendMessage = async (content, mId, cType) => {
     return;
   }
 
-  // 校验回答方式
+  // Verification answer method
   const currentChatType = cType || chatType.value;
   if (!currentChatType) {
     message.msgError(td('ai.chat.selectAnswerType'));
     return;
   }
 
-  // 校验关联关系
+  // Verify association
   if (
     joinConditionMatchFlag.value === false ||
     joinConditionMatchFlag.value === null
@@ -722,13 +722,13 @@ const doSendMessage = async (content, mId, cType) => {
 
   suggestedList.value = [];
   if (activeConversationId.value == null) {
-    // 首次发送：显示加载状态，用于 MessageListEmpty 展示骨架屏
+    // First send: display loading status, used for MessageListEmpty to display skeleton screen
     activeMessageListLoading.value = true;
     try {
       const createRes = await handleConversationCreate(mId);
       if (createRes && createRes.code === 10001) {
         conversationInProgress.value = false;
-        activeMessageListLoading.value = false; // 10001 状态需要恢复展示输入框
+        activeMessageListLoading.value = false; // 10001 status needs to restore the display of the input box
         return;
       }
       await getMessageList();
@@ -736,16 +736,16 @@ const doSendMessage = async (content, mId, cType) => {
       activeMessageListLoading.value = false;
       throw e;
     }
-    // message.msgError('还没创建对话，不能发送!')
+    // message.msgError('The conversation has not been created yet and cannot be sent!')
     // return
   }
   if (activeMessageList.value.length <= 0 && activeConversation.value) {
-    // 名称截取
+    // name truncation
     activeConversation.value.title = rawContent.substring(0, 10);
   }
-  // 清空输入框
+  // Clear input box
   prompt.value = "";
-  // 执行发送
+  // Execute send
   await doSendMessageStream({
     conversationId: activeConversationId.value,
     content: rawContent,
@@ -754,35 +754,35 @@ const doSendMessage = async (content, mId, cType) => {
   });
 };
 
-/** 真正执行【发送】消息操作 */
+/** Actually execute the [Send] message operation */
 const doSendMessageStream = async (userMessage) => {
-  // 创建 AbortController 实例，以便中止请求
+  // Create an AbortController instance to abort requests
   conversationInAbortController.value = new AbortController();
-  // 标记对话进行中
+  // Mark conversation in progress
   conversationInProgress.value = true;
 
   try {
-    // 情况一：本地先展示一条消息
+    // Scenario 1: Display a message locally first
     const newUserMessage = {
-      id: null, // 还没返回 id
+      id: null, // The id has not been returned yet
       type: 1,
       content: userMessage.content,
       createTime: Date.now(),
     };
     activeMessageList.value.push(newUserMessage);
     const newAssistantMessage = {
-      id: null, // 还没返回 id
+      id: null, // The id has not been returned yet
       type: 2,
       content: "loading",
       replyType: userMessage.chatType === "chart" ? 2 : 1,
       createTime: Date.now(),
     };
     activeMessageList.value.push(newAssistantMessage);
-    // 滚动底部
+    // scroll bottom
     scrollToBottom();
 
-    // 情况二：执行 Stream 发送
-    let isFirstChunk = true; // 是否是第一个 chunk 消息段
+    // Case 2: Execute Stream sending
+    let isFirstChunk = true; // Whether it is the first chunk message segment
     await ChatMessageApi.sendChatMessageStream(
       userMessage.conversationId,
       JSON.stringify({ msg: userMessage.content }),
@@ -792,12 +792,12 @@ const doSendMessageStream = async (userMessage) => {
         ? "1"
         : userMessage.chatType === "chart"
         ? "2"
-        : "1", // replyType: 1-知识问答, 2-知识图表
+        : "1", // replyType: 1-knowledge question and answer, 2-knowledge graph
       userMessage.modelId,
       async (res) => {
         const { code, data, msg } = JSON.parse(res.data);
         if (code !== 200) {
-          // 不再弹窗报错，改为在消息列表中展示错误提示
+          // No more error pop-up windows, instead display error prompts in the message list
           const lastMessage =
             activeMessageList.value[activeMessageList.value.length - 1];
           lastMessage.content = msg || td('ai.chat.dialogError');
@@ -809,25 +809,25 @@ const doSendMessageStream = async (userMessage) => {
         }
 
         const rt = toNumber(data.receive?.replyType);
-        // 如果是 reportCard 类型 (replyType === 2)
+        // If it is reportCard type (replyType === 2)
         if (rt === 2) {
-          // 如果 data.send 不为空，说明还在流式传输中，显示加载中
+          // If data.send is not empty, it means it is still streaming and loading is displayed.
           if (data.send !== null) {
             if (isFirstChunk) {
               isFirstChunk = false;
-              // 弹出两个假数据
+              // Two fake data pop up
               activeMessageList.value.pop();
               activeMessageList.value.pop();
-              // 添加正式的用户消息和助手的加载中消息
+              // Add formal user message and assistant loading message
               activeMessageList.value.push(data.send);
               activeMessageList.value.push({
                 ...data.receive,
-                content: "loading", // 特殊标记，用于前端显示加载中
+                content: "loading", // Special tag used to display loading on the front end
               });
             }
             return;
           }
-          // 如果 data.send 为空，说明传输完成，更新最终数据
+          // If data.send is empty, the transfer is completed and the final data is updated.
           if (data.send === null && data.receive.id !== null) {
             activeMessageList.value[activeMessageList.value.length - 1] =
               data.receive;
@@ -837,7 +837,7 @@ const doSendMessageStream = async (userMessage) => {
           }
         }
 
-        // 普通文本类型 (replyType !== 2)
+        // Normal text type (replyType !== 2)
         if (data.receive.id !== null) {
           activeMessageList.value[activeMessageList.value.length - 1] =
             data.receive;
@@ -845,18 +845,18 @@ const doSendMessageStream = async (userMessage) => {
           return;
         }
 
-        // 如果内容为空，就不处理。
+        // If the content is empty, it will not be processed.
         const chunkContent = data.receive.content || data.receive.msg || "";
         if (chunkContent === "") {
           return;
         }
-        // 首次返回需要添加一个 message 到页面，后面的都是更新
+        // When you return for the first time, you need to add a message to the page, and the rest will be updated.
         if (isFirstChunk) {
           isFirstChunk = false;
-          // 弹出两个假数据
+          // Two fake data pop up
           activeMessageList.value.pop();
           activeMessageList.value.pop();
-          // 更新返回的数据
+          // Update the returned data
           const receive = { ...data.receive, content: chunkContent };
           activeMessageList.value.push(data.send);
           activeMessageList.value.push(receive);
@@ -881,13 +881,13 @@ const doSendMessageStream = async (userMessage) => {
   }
 };
 
-/** 停止 stream 流式调用 */
+/** Stop stream streaming call */
 const stopStream = async () => {
-  // tip：如果 stream 进行中的 message，就需要调用 controller 结束
+  // Tip: If the stream is in progress, you need to call the controller to end it.
   if (conversationInAbortController.value) {
     conversationInAbortController.value.abort();
   }
-  // 设置为 false
+  // set to false
   conversationInProgress.value = false;
 };
 
@@ -902,7 +902,7 @@ function safeJsonParse(str, defVal = {}) {
 
 function getDisplayContent(item) {
   let content = item?.content || "";
-  // 递归解析，直到不再是包含 msg 的 JSON 字符串
+  // Parse recursively until it is no longer a JSON string containing msg
   while (true) {
     const raw = safeJsonParse(content, null);
     if (raw && typeof raw === "object" && raw.msg) {
@@ -914,19 +914,19 @@ function getDisplayContent(item) {
   return content;
 }
 
-/** 编辑 message：设置为 prompt，可以再次编辑 */
+/** Edit message: Set to prompt and can be edited again */
 const handleMessageEdit = (message) => {
   prompt.value = getDisplayContent(message);
 };
 
-/** 刷新 message：基于指定消息，再次发起对话 */
+/** Refresh message: Based on the specified message, initiate the conversation again */
 const handleMessageRefresh = (message) => {
   doSendMessage(getDisplayContent(message));
 };
 
-// ============== 【消息滚动】相关 =============
+// ============== [Message scrolling] related =============
 
-/** 滚动到 message 底部 */
+/** Scroll to bottom of message */
 const scrollToBottom = async (isIgnore) => {
   await nextTick();
   if (messageRef.value) {
@@ -934,23 +934,23 @@ const scrollToBottom = async (isIgnore) => {
   }
 };
 
-// 初始化
+// initialization
 onMounted(async () => {
-  // 如果有 conversationId 参数，则默认选中
+  // If there is a conversationId parameter, it is selected by default
   if (route.query.conversationId) {
     const id = route.query.conversationId;
     activeConversationId.value = id;
     await getConversation(id);
   }
 
-  // 如果没有 activeConversationId，则设置默认的数据范围
+  // If there is no activeConversationId, set the default data range
   if (!activeConversationId.value) {
     datasourceId.value = defaultDataScope.datasourceId;
     factTableName.value = defaultDataScope.factTableName;
     factTableComment.value = defaultDataScope.factTableComment;
     dimensionTable.value = defaultDataScope.dimensionTable;
 
-    // 解析维表并同步到 tableCommentMap
+    // Parse dimension tables and synchronize to tableCommentMap
     try {
       const arr = JSON.parse(dimensionTable.value);
       if (Array.isArray(arr)) {
@@ -961,12 +961,12 @@ onMounted(async () => {
         });
       }
     } catch (e) {
-      console.error("解析 dimensionTable 失败:", e);
+      console.error("Failed to parse dimensionTable:", e);
     }
     dimensionTableNames.value = parseDimensionTableNames(dimensionTable.value);
   }
 
-  // 获取列表数据
+  // Get list data
   activeMessageListLoading.value = true;
   await getMessageList();
 });
@@ -1061,7 +1061,7 @@ onMounted(async () => {
         justify-items: center;
       }
 
-      // 对话编辑、删除
+      // Conversation editing and deletion
       .button-wrapper {
         right: 2px;
         display: flex;
@@ -1076,7 +1076,7 @@ onMounted(async () => {
     }
   }
 
-  // 角色仓库、清空未设置对话
+  // Character warehouse, clear unset dialogues
   .tool-box {
     line-height: 35px;
     display: flex;
@@ -1099,7 +1099,7 @@ onMounted(async () => {
   }
 }
 
-// 头部
+// head
 .detail-container {
   background: #ffffff;
   flex-direction: column;
@@ -1124,7 +1124,7 @@ onMounted(async () => {
   }
 }
 
-// main 容器
+// main container
 .main-container {
   margin: 0 !important;
   padding: 0;

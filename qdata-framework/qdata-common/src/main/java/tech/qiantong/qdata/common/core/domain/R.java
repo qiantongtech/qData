@@ -23,7 +23,7 @@ import tech.qiantong.qdata.common.constant.HttpStatus;
 import java.io.Serializable;
 
 /**
- * 响应信息主体
+ * Response message body
  *
  * @author qdata
  */
@@ -31,10 +31,10 @@ public class R<T> implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    /** 成功 */
+    /** Success */
     public static final int SUCCESS = HttpStatus.SUCCESS;
 
-    /** 失败 */
+    /** failed */
     public static final int FAIL = HttpStatus.ERROR;
 
     private int code;

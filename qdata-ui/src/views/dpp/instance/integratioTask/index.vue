@@ -375,7 +375,7 @@ const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
 );
 const dppEtlTaskLogList = ref([]);
 
-// 列显隐状态
+// Show hidden status
 const columnVisible = ref({
   0: true,
   1: true,
@@ -388,7 +388,7 @@ const columnVisible = ref({
   11: true,
 });
 
-// 列配置（使用计算属性，确保国际化文本能响应语言切换）
+// Column configuration (use computed properties to ensure internationalized text responds to language switches)
 const columns = computed(() => [
   {
     key: 0,
@@ -437,7 +437,7 @@ const columns = computed(() => [
   },
 ]);
 
-// 监听 RightToolbar 对 columns 的修改，同步到 columnVisible
+// Monitor the modification of columns by RightToolbar and synchronize to columnVisible
 watch(
   columns,
   (newColumns) => {
@@ -469,19 +469,19 @@ const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const emit = defineEmits(["resetCat"]);
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dpp/dppEtlTaskLog/importData",
 });
 
@@ -529,7 +529,7 @@ function handleTimeClear() {
   queryParams.value.startTime = null;
   queryParams.value.endTime = null;
 }
-/** 查询数据集成任务-日志列表 */
+/** Query data integration tasks-log list */
 function getList() {
   loading.value = true;
   queryParams.value.projectCode = userStore.projectCode;
@@ -550,7 +550,7 @@ function getList() {
 // }
 const logDialogRef = ref(null);
 
-// 打开日志弹窗
+// Open the log pop-up window
 const logDetailCatList = (row) => {
   logDialogRef.value.open(row.id);
 };
@@ -558,14 +558,14 @@ const logDetailCatList = (row) => {
 const formattedText = computed(() => {
   console.log("msg.value", msg.value);
 
-  return msg.value.replace(/\n/g, "<br>"); // 将换行符替换为 <br> 标签
+  return msg.value.replace(/\n/g, "<br>"); // Replace newlines with <br> tags
 });
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
   queryParams.value.pageNum = 1;
   handleQuery();
 }
-/** 导出按钮操作 */
+/** Export button action */
 async function handleExport(row) {
   proxy.download(
     "/dpp/etlTaskInstance/downloadLog",
@@ -576,14 +576,14 @@ async function handleExport(row) {
   );
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -614,7 +614,7 @@ function reset() {
   proxy.resetForm("dppEtlTaskLogRef");
 }
 let deptOptions = ref([]);
-/** 下拉树结构 */
+/** Drop down tree structure */
 function getDeptTree() {
   listAttTaskCat({
     projectId: userStore.projectId,
@@ -635,12 +635,12 @@ function getDeptTree() {
     ];
   });
 }
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-const DeptTreeRef = ref(null); /** 重置按钮操作 */
+const DeptTreeRef = ref(null); /** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -652,28 +652,28 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('dpp.instance.integratioTask.addLogTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -684,7 +684,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -695,7 +695,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dppEtlTaskLogRef"].validate((valid) => {
     if (valid) {
@@ -720,7 +720,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -755,7 +755,7 @@ function routeTo(link, row) {
   }
 }
 
-// 监听projectCode数据变化
+// Monitor projectCode data changes
 watch(
   () => userStore.projectCode,
   (projectCode) => {
@@ -763,7 +763,7 @@ watch(
       getList();
     }
   },
-  { immediate: true } // 立即触发，防止数据已存在的情况
+  { immediate: true } // Trigger immediately to prevent data already existing
 );
 getDeptTree();
 getList();

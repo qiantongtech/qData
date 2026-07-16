@@ -430,7 +430,7 @@
       </template>
     </el-dialog>
 
-    <!-- ${functionName}详情对话框 -->
+    <!-- ${functionName} details dialog -->
     <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -626,7 +626,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px"  :append-to="$refs['app-container']" draggable destroy-on-close>
       <el-upload
           ref="uploadRef"
@@ -680,7 +680,7 @@ const { proxy } = getCurrentInstance();
       const ${subclassName}List = ref([]);
       #end
 
-  // 列显隐信息
+  // Show hidden information
   const columns = ref([
       #foreach($column in $columns)
           #if($column.list)
@@ -691,9 +691,9 @@ const { proxy } = getCurrentInstance();
 
   const getColumnVisibility = (key) => {
     const column = columns.value.find(col => col.key === key);
-    // 如果没有找到对应列配置，默认显示
+    // If the corresponding column configuration is not found, it will be displayed by default.
     if (!column) return true;
-    // 如果找到对应列配置，根据visible属性来控制显示
+    // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
     return column.visible;
   };
 
@@ -718,19 +718,19 @@ const { proxy } = getCurrentInstance();
   const defaultSort = ref({ prop: "createTime", order: "desc" });
   const router = useRouter();
 
-  /*** 用户导入参数 */
+  /*** User import parameters */
   const upload = reactive({
-    // 是否显示弹出层（用户导入）
+    // Whether to display the pop-up layer (user import)
     open: false,
-    // 弹出层标题（用户导入）
+    // Popup layer title (user imported)
     title: "",
-    // 是否禁用上传
+    // Whether to disable uploading
     isUploading: false,
-    // 是否更新已经存在的用户数据
+    // Whether to update existing user data
     updateSupport: 0,
-    // 设置上传的请求头部
+    // Set upload request headers
     headers: { Authorization: "Bearer " + getToken() },
-    // 上传的地址
+    // Upload address
     url: import.meta.env.VITE_APP_BASE_API + "/${controllerPrefix}/${businessName}/importData"
   });
 
@@ -762,7 +762,7 @@ const { proxy } = getCurrentInstance();
 
   const { queryParams, form, rules } = toRefs(data);
 
-  /** 查询${functionName}列表 */
+  /** Query ${functionName} list */
   function getList() {
     loading.value = true;
       #foreach ($column in $columns)
@@ -787,14 +787,14 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  // 取消按钮
+  // Cancel button
   function cancel() {
     open.value = false;
     openDetail.value = false;
     reset();
   }
 
-  // 表单重置
+  // Form reset
   function reset() {
     form.value = {
         #foreach ($column in $columns)
@@ -811,13 +811,13 @@ const { proxy } = getCurrentInstance();
     proxy.resetForm("${businessName}Ref");
   }
 
-  /** 搜索按钮操作 */
+  /** Search button operation */
   function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
   }
 
-  /** 重置按钮操作 */
+  /** Reset button operation */
   function resetQuery() {
       #foreach ($column in $columns)
           #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -829,7 +829,7 @@ const { proxy } = getCurrentInstance();
     handleQuery();
   }
 
-  // 多选框选中数据
+  // Multiple selection box selected data
   function handleSelectionChange(selection) {
     ids.value = selection.map(item => item.${pkColumn.javaField});
     single.value = selection.length != 1;
@@ -837,21 +837,21 @@ const { proxy } = getCurrentInstance();
   }
 
 
-  /** 排序触发事件 */
+  /** Sorting trigger event */
   function handleSortChange(column, prop, order) {
     queryParams.value.orderByColumn = column.prop;
     queryParams.value.isAsc = column.order;
     getList();
   }
 
-  /** 新增按钮操作 */
+  /** Add button operation */
   function handleAdd() {
     reset();
     open.value = true;
     title.value = td('${controllerPrefix}.${moduleName}.title.add');
   }
 
-  /** 修改按钮操作 */
+  /** Modify button operation */
   function handleUpdate(row) {
     reset();
     const _${pkColumn.javaField} = row.${pkColumn.javaField} || ids.value
@@ -871,7 +871,7 @@ const { proxy } = getCurrentInstance();
   }
 
 
-  /** 详情按钮操作 */
+  /** Details button operation */
   function handleDetail(row) {
     reset();
     const _${pkColumn.javaField} = row.${pkColumn.javaField} || ids.value
@@ -890,7 +890,7 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  /** 提交按钮 */
+  /** Submit button */
   function submitForm() {
     proxy.#[[$]]#refs["${businessName}Ref"].validate(valid => {
       if (valid) {
@@ -931,7 +931,7 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  /** 删除按钮操作 */
+  /** Delete button operation */
   function handleDelete(row) {
     const _${pkColumn.javaField}s = row.${pkColumn.javaField} || ids.value;
     proxy.#[[$modal]]#.confirm(td('${controllerPrefix}.${moduleName}.message.confirmDelete').replace('_${pkColumn.javaField}s', _${pkColumn.javaField}s) ).then(function() {
@@ -943,12 +943,12 @@ const { proxy } = getCurrentInstance();
   }
 
   #if($table.sub)
-  /** ${subTable.functionName}序号 */
+  /** ${subTable.functionName} serial number */
   function row${subClassName}Index({ row, rowIndex }) {
     row.index = rowIndex + 1;
   }
 
-  /** ${subTable.functionName}添加按钮操作 */
+  /** ${subTable.functionName}Add button operation */
   function handleAdd${subClassName}() {
     let obj = {};
     #foreach($column in $subTable.columns)
@@ -960,7 +960,7 @@ const { proxy } = getCurrentInstance();
     ${subclassName}List.value.push(obj);
   }
 
-  /** ${subTable.functionName}删除按钮操作 */
+  /** ${subTable.functionName} delete button operation */
   function handleDelete${subClassName}() {
     if (checked${subClassName}.value.length == 0) {
       proxy.#[[$modal]]#.msgError(td('${controllerPrefix}.${moduleName}.message.selectRecord'));
@@ -973,43 +973,43 @@ const { proxy } = getCurrentInstance();
     }
   }
 
-  /** 复选框选中数据 */
+  /** Check box selected data */
   function handle${subClassName}SelectionChange(selection) {
     checked${subClassName}.value = selection.map(item => item.index)
   }
 
   #end
-  /** 导出按钮操作 */
+  /** Export button operation */
   function handleExport() {
     proxy.download('${controllerPrefix}/${businessName}/export', {
       ...queryParams.value
     }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
   }
 
-  /** ---------------- 导入相关操作 -----------------**/
-  /** 导入按钮操作 */
+  /**---------------- Import related operations ------------------**/
+  /** Import button operation */
   function handleImport() {
     upload.title = td('${controllerPrefix}.${moduleName}.title.import');
     upload.open = true;
   }
 
-  /** 下载模板操作 */
+  /** Download template operation */
   function importTemplate() {
     proxy.download("system/user/importTemplate", {
     }, `${businessName}_template_#[[${new Date().getTime()}]]#.xlsx`)
   }
 
-  /** 提交上传文件 */
+  /** Submit upload file */
   function submitFileForm() {
     proxy.$refs["uploadRef"].submit();
   };
 
-  /**文件上传中处理 */
+  /**File upload processing */
   const handleFileUploadProgress = (event, file, fileList) => {
     upload.isUploading = true;
   };
 
-  /** 文件上传td('common.message.success')处理 */
+  /** File upload td('common.message.success') processing */
   const handleFileSuccess = (response, file, fileList) => {
     upload.open = false;
     upload.isUploading = false;

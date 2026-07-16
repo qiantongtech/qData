@@ -5,7 +5,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志 Request VO 对象 MC_TABLE_COLUMN_REL_LOG
+ * Metadata database and information and field information relationship - log Request VO object MC_TABLE_COLUMN_REL_LOG
  *
  * @author qdata
  * @date 2026-03-10

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.utils.uuid;
 import java.security.SecureRandom;
 
 /**
- * ID生成器工具类
+ * ID generator tool class
  *
  * @author qdata
  */
@@ -30,9 +30,9 @@ public class IdUtils
     private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
-     * 获取随机UUID
+     * Get random UUID
      *
-     * @return 随机UUID
+     * @return random UUID
      */
     public static String randomUUID()
     {
@@ -40,9 +40,9 @@ public class IdUtils
     }
 
     /**
-     * 简化的UUID，去掉了横线
+     * Simplified UUID, with horizontal lines removed
      *
-     * @return 简化的UUID，去掉了横线
+     * @return Simplified UUID, with horizontal lines removed
      */
     public static String simpleUUID()
     {
@@ -50,9 +50,9 @@ public class IdUtils
     }
 
     /**
-     * 获取随机UUID，使用性能更好的ThreadLocalRandom生成UUID
+     * Get a random UUID and use ThreadLocalRandom with better performance to generate UUID
      *
-     * @return 随机UUID
+     * @return random UUID
      */
     public static String fastUUID()
     {
@@ -60,9 +60,9 @@ public class IdUtils
     }
 
     /**
-     * 简化的UUID，去掉了横线，使用性能更好的ThreadLocalRandom生成UUID
+     * Simplified UUID, remove the horizontal lines, use ThreadLocalRandom with better performance to generate UUID
      *
-     * @return 简化的UUID，去掉了横线
+     * @return Simplified UUID, with horizontal lines removed
      */
     public static String fastSimpleUUID()
     {
@@ -72,16 +72,16 @@ public class IdUtils
 
 
     /**
-     * 生成一个长整型的人造ID，组合当前时间戳和随机数部分，确保较高的唯一性
+     * Generate a long integer artificial ID, combining the current timestamp and random number part to ensure high uniqueness
      *
-     * @return long类型的人工ID
+     * @return artificial ID of type long
      */
     public static long generateArtificialId() {
-        // 获取当前时间戳（毫秒）
+        // Get the current timestamp (milliseconds)
         long timestamp = System.currentTimeMillis();
-        // 随机生成一个 0-999 的数字，确保为三位数（不足3位则左侧补0，但在数值上直接相加即可）
+        // Randomly generate a number from 0-999, making sure it is a three-digit number (if there are less than 3 digits, add 0 on the left, but just add the values directly)
         int randomDigits = RANDOM.nextInt(1000);
-        // 将时间戳扩大 1000 倍后加上随机数，保证 ID 是一个长整型数字
+        // Expand the timestamp by 1000 times and add a random number to ensure that the ID is a long integer number
         return timestamp * 1000 + randomDigits;
     }
 }

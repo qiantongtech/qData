@@ -130,7 +130,7 @@ let id = route.query.id;
 
 const { queryParams, form } = toRefs(data);
 
-/** 查询数据元代码列表 */
+/** Query the data element code list */
 function getList(id) {
   if (id == -1) {
     return;
@@ -144,14 +144,14 @@ function getList(id) {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,

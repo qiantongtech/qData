@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-// 查询数据源列表
+// Query data source list
 export function listDaDatasource(query) {
     return request({
         url: '/da/dataSource/list',
@@ -16,7 +16,7 @@ export function daList(query) {
         params: query
     });
 }
-// 查询数据源列表
+// Query data source list
 export function sqlParse(data) {
     return request({
         url: '/mc/dataSource/sqlParse',
@@ -25,7 +25,7 @@ export function sqlParse(data) {
     });
 }
 
-// 数据集成中排除Kafka并且是当前项目的数据源列表
+// Kafka is excluded from data integration and is the data source list of the current project
 export function listDaDatasourceNoKafkaByProjectCode(query) {
     return request({
         url: '/mc/dataSource/dppNoKafka/list',
@@ -34,7 +34,7 @@ export function listDaDatasourceNoKafkaByProjectCode(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function listDaDatasourceByProjectCode(query) {
     return request({
         url: '/mc/dataSource/dpp/list',
@@ -43,7 +43,7 @@ export function listDaDatasourceByProjectCode(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function noDppAdd(query) {
     return request({
         url: '/mc/dataSource/noDppAdd/list',
@@ -52,7 +52,7 @@ export function noDppAdd(query) {
     });
 }
 
-// 查询数据源列表
+// Query data source list
 export function getDaDatasourceList(query) {
     return request({
         url: '/mc/dataSource/getDataSourceByAsset',
@@ -61,7 +61,7 @@ export function getDaDatasourceList(query) {
     });
 }
 
-// 查询数据源详细
+// Query data source details
 export function getDaDatasource(id) {
     return request({
         url: '/mc/dataSource/' + id,
@@ -71,14 +71,14 @@ export function getDaDatasource(id) {
 
 
 
-// 查询数据源详细
+// Query data source details
 export function clientsTest(id) {
     return request({
         url: '/mc/dataSource/clientsTest/' + id,
         method: 'get'
     });
 }
-// 新增数据源
+// Add new data source
 export function addDaDatasource(data) {
     return request({
         url: '/mc/dataSource',
@@ -87,7 +87,7 @@ export function addDaDatasource(data) {
     });
 }
 
-// 修改数据源
+// Modify data source
 export function updateDaDatasource(data) {
     return request({
         url: '/mc/dataSource',
@@ -96,7 +96,7 @@ export function updateDaDatasource(data) {
     });
 }
 
-// 删除数据源
+// Delete data source
 export function delDaDatasource(id) {
     return request({
         url: '/mc/dataSource/' + id,
@@ -104,7 +104,7 @@ export function delDaDatasource(id) {
     });
 }
 
-// 删除数据源
+// Delete data source
 export function removeDppOrDa(id, type) {
     return request({
         url: '/mc/dataSource/' + id + '/' + type,
@@ -112,7 +112,7 @@ export function removeDppOrDa(id, type) {
     });
 }
 
-// 修改状态
+// Modify status
 export function editDatasourceStatus(id, status) {
     return request({
         url: `/mc/dataSource/editDatasourceStatus/${id}/${status}`,
@@ -127,7 +127,7 @@ export function tableList(id) {
     });
 }
 
-// 表字段
+// table fields
 export function columnsList(data) {
     return request({
         url: `/mc/dataSource/columnsList`,
@@ -136,7 +136,7 @@ export function columnsList(data) {
     });
 }
 
-// 根据id获取表信息
+// Get table information based on id
 export function getTablesByDataSourceId(query) {
     return request({
         url: '/mc/asset/getTablesByDataSourceId',
@@ -145,7 +145,7 @@ export function getTablesByDataSourceId(query) {
     });
 }
 
-// 根据id获取表信息
+// Get table information based on id
 export function getColumnByAssetId(query) {
     return request({
         url: '/mc/assetColumn/getColumnByAssetId',
@@ -154,7 +154,7 @@ export function getColumnByAssetId(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function executeSqlQuery(query) {
     return request({
         url: '/mc/dataSource/executeSqlQuery',
@@ -162,7 +162,7 @@ export function executeSqlQuery(query) {
         params: query
     });
 }
-// 数据资产资产申请列表
+// Data asset asset application list
 export function getDaAssetRespList(query) {
     return request({
         url: '/mc/asset/getDaAssetRespList',
@@ -170,7 +170,7 @@ export function getDaAssetRespList(query) {
         params: query
     });
 }
-// 查询数据源详细
+// Query data source details
 export function clientsTestStatus(data) {
     return request({
         url: '/mc/dataSource/clientsTestStatus',

@@ -87,42 +87,42 @@ public class TaskConverter {
         this.dsRedisConfig = dsRedisConfig;
     }
 
-    // Implementation details.
-    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // Implementation details.
-    private static final String DEFAULT_WORKER_GROUP = "default"; // Implementation details.
-    private static final String DEFAULT_FLAG = "YES"; // Handle node-related data and operations.
-    private static final String DEFAULT_IS_CACHE = "NO"; // Implementation details.
-    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // Handle task-related data and operations.
-    private static final String DEFAULT_TASK_TYPE = "SPARK"; // Handle task-related data and operations.
-    private static final String DEFAULT_PROGRAM_TYPE = "JAVA"; // Implementation details.
-    private static final String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // Implementation details.
-    private static final String DEFAULT_DEPLOY_MODE = "client"; // Implementation details.
-    private static final int DEFAULT_DRIVER_CORES = 1; // Implementation details.
-    private static final String DEFAULT_DRIVER_MEMORY = "2G"; // Implementation details.
-    private static final int DEFAULT_NUM_EXECUTORS = 1; // Implementation details.
-    private static final String DEFAULT_EXECUTOR_MEMORY = "4G"; // Implementation details.
-    private static final int DEFAULT_EXECUTOR_CORES = 2; // Implementation details.
-    private static final String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // Handle JDBC SQL execution.
-    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // Implementation details.
+    // Default configuration constants
+    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // Default environment code
+    private static final String DEFAULT_WORKER_GROUP = "default"; // Default worker group
+    private static final String DEFAULT_FLAG = "YES"; // Default flag, indicates node is enabled
+    private static final String DEFAULT_IS_CACHE = "NO"; // Default cache disabled
+    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // Default task priority
+    private static final String DEFAULT_TASK_TYPE = "SPARK"; // Default task type, SPARK or DATAX etc.
+    private static final String DEFAULT_PROGRAM_TYPE = "JAVA"; // Default program type, JAVA
+    private static final String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // Default main Jar path
+    private static final String DEFAULT_DEPLOY_MODE = "client"; // Default deploy mode
+    private static final int DEFAULT_DRIVER_CORES = 1; // Default driver cores
+    private static final String DEFAULT_DRIVER_MEMORY = "2G"; // Default driver memory
+    private static final int DEFAULT_NUM_EXECUTORS = 1; // Default number of executors
+    private static final String DEFAULT_EXECUTOR_MEMORY = "4G"; // Default executor memory
+    private static final int DEFAULT_EXECUTOR_CORES = 2; // Default executor cores
+    private static final String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // Default SQL execution type
+    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // Default condition type is "NONE"
 
-    private static final int DEFAULT_TASK_failRetryTimes = 0; // Implementation details.
-    private static final int DEFAULT_TASK_delayTime = 0; // Implementation details.
-    private static final int DEFAULT_TASK_failRetryInterval = 1; // Implementation details.
+    private static final int DEFAULT_TASK_failRetryTimes = 0; // failRetryTimes: failure retry count
+    private static final int DEFAULT_TASK_delayTime = 0; // delayTime: delayed execution time
+    private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval: failure retry interval
 
 
 
-    public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";// Handle task-related data and operations.
+    public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";// Task instance log key
 
-    public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";// Handle execution logging.
+    public static final String PROCESS_INSTANCE_LOG_KEY = "log:processInstanceLog:";// Process instance log key
 
     public static final String ETL_READER_ID_KEY = "etl:reader:id:";
 
     public static final String ETL_READER_DATE_KEY = "etl:reader:date:";
 
-    public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {// Implementation details.
-        // Create the required record.
+    public static DsTaskSaveReqDTO buildDsTaskSaveReq(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {// name
+        // Create return entity
         DsTaskSaveReqDTO dsTaskSaveReqDTO = new DsTaskSaveReqDTO();
-        // Implementation details.
+        // 1. Wrap basic parameters
         dsTaskSaveReqDTO.setName(dppEtlNewNodeSaveReqVO.getName());
         if(StringUtils.isNotEmpty(dppEtlNewNodeSaveReqVO.getCode())){
             dsTaskSaveReqDTO.setProcessDefinitionCode(Long.parseLong(dppEtlNewNodeSaveReqVO.getCode()));
@@ -131,7 +131,7 @@ public class TaskConverter {
         dsTaskSaveReqDTO.setExecutionType(dppEtlNewNodeSaveReqVO.getExecutionType());
 
 
-        // Handle node-related data and operations.
+        // 2. Wrap node info DATAX, SPARK
         String taskDefinition = buildTaskDefinition(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
         String taskRelation = buildTaskRelationJson(dppEtlNewNodeSaveReqVO.getTaskRelationJson());
@@ -148,105 +148,105 @@ public class TaskConverter {
     }
 
     private static String buildTaskNodeLocations(List<Map<String, Object>> locations) {
-        // Handle JSON data for this operation.
+        // Parse the input JSON string into a List
         List<Map<String, Object>> list = locations;
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        // Handle node-related data and operations.
+        // Iterate over each node location info
         for (Map<String, Object> location : list) {
             Map<String, Object> locationMap = new HashMap<>();
 
-            // Implementation details.
-            locationMap.put("taskCode", Long.parseLong(String.valueOf(location.getOrDefault("taskCode", 0L)))); // Implementation details.
-            locationMap.put("x", location.getOrDefault("x", 0)); // Implementation details.
-            locationMap.put("y", location.getOrDefault("y", 0)); // Implementation details.
+            // Populate required fields
+            locationMap.put("taskCode", Long.parseLong(String.valueOf(location.getOrDefault("taskCode", 0L)))); // Default taskCode is 0
+            locationMap.put("x", location.getOrDefault("x", 0)); // Default x is 0
+            locationMap.put("y", location.getOrDefault("y", 0)); // Default y is 0
 
-            // Implementation details.
+            // Add the processed location info to the result list
             result.add(locationMap);
         }
 
-        // Handle JSON data for this operation.
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     private static String buildTaskRelationJson(String taskRelationJson) {
-        // Handle JSON data for this operation.
+        // Parse the input JSON string into a List
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(taskRelationJson);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        // Handle node-related data and operations.
+        // Iterate over each relation node
         for (Map<String, Object> relation : list) {
             Map<String, Object> relationMap = new HashMap<>();
 
-            // Implementation details.
-            relationMap.put("id", relation.getOrDefault("dsId", null)); // Implementation details.
-            relationMap.put("preTaskCode", relation.getOrDefault("preTaskCode", 0L)); // Implementation details.
-            relationMap.put("preTaskVersion", relation.getOrDefault("preTaskVersion", 0)); // Implementation details.
-            relationMap.put("postTaskCode", relation.getOrDefault("postTaskCode", 0L)); // Implementation details.
-            relationMap.put("postTaskVersion", relation.getOrDefault("postTaskVersion", 0)); // Implementation details.
-            relationMap.put("conditionType", relation.getOrDefault("conditionType", DEFAULT_CONDITION_TYPE)); // Implementation details.
+            // Populate default values and required fields
+            relationMap.put("id", relation.getOrDefault("dsId", null)); // Default id is 0
+            relationMap.put("preTaskCode", relation.getOrDefault("preTaskCode", 0L)); // Default preTaskCode is 0
+            relationMap.put("preTaskVersion", relation.getOrDefault("preTaskVersion", 0)); // Default preTaskVersion is 0
+            relationMap.put("postTaskCode", relation.getOrDefault("postTaskCode", 0L)); // Default postTaskCode is 0
+            relationMap.put("postTaskVersion", relation.getOrDefault("postTaskVersion", 0)); // Default postTaskVersion is 0
+            relationMap.put("conditionType", relation.getOrDefault("conditionType", DEFAULT_CONDITION_TYPE)); // Default condition type is "NONE"
 
-            // Handle node-related data and operations.
+            // Add the processed node relation to the result list
             result.add(relationMap);
         }
 
-        // Handle JSON data for this operation.
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     /**
-     * Handle task-related data and operations.
+     * Build task definition
      *
-     * @param taskDefinitionJson parameter value
-     * @return the operation result
+     * @param taskDefinitionJson Task definition JSON string
+     * @return Built task definition JSON string
      */
     public static String buildTaskDefinition(String taskDefinitionJson) {
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(taskDefinitionJson);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        // Implementation details.
+        // Custom parameters
 //        Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
 
 
-        // Handle task-related data and operations.
+        // Iterate over each task definition
         for (Map<String, Object> task : list) {
-            // Implementation details.
+            // Process default values and required fields for each task
             Map<String, Object> taskMap = new HashMap<>();
 
-            // Implementation details.
-            taskMap.put("id", task.getOrDefault("dsId", null)); // Implementation details.
-            taskMap.put("name", task.getOrDefault("name", "")); // Implementation details.
-            taskMap.put("code", task.getOrDefault("code", 0L)); // Implementation details.
-            taskMap.put("version", task.getOrDefault("version", 0)); // Implementation details.
-            taskMap.put("description", task.getOrDefault("description", "")); // Implementation details.
-            taskMap.put("workerGroup", task.getOrDefault("workerGroup", DEFAULT_WORKER_GROUP)); // Implementation details.
-            taskMap.put("environmentCode", task.getOrDefault("environmentCode", DEFAULT_ENVIRONMENT_CODE)); // Implementation details.
-            taskMap.put("flag", DEFAULT_FLAG); // Implementation details.
-            taskMap.put("isCache", task.getOrDefault("isCache", DEFAULT_IS_CACHE)); // Implementation details.
-            taskMap.put("taskPriority", task.getOrDefault("taskPriority", DEFAULT_TASK_PRIORITY)); // Handle task-related data and operations.
-            taskMap.put("taskType", task.getOrDefault("taskType", DEFAULT_TASK_TYPE)); // Handle task-related data and operations.
+            // Set basic info fields
+            taskMap.put("id", task.getOrDefault("dsId", null)); // Default id is 0
+            taskMap.put("name", task.getOrDefault("name", "")); // Default empty string
+            taskMap.put("code", task.getOrDefault("code", 0L)); // Default code is 0L
+            taskMap.put("version", task.getOrDefault("version", 0)); // Default version is 1
+            taskMap.put("description", task.getOrDefault("description", "")); // Default empty description
+            taskMap.put("workerGroup", task.getOrDefault("workerGroup", DEFAULT_WORKER_GROUP)); // Default workerGroup is "default"
+            taskMap.put("environmentCode", task.getOrDefault("environmentCode", DEFAULT_ENVIRONMENT_CODE)); // Default environment code
+            taskMap.put("flag", DEFAULT_FLAG); // Default flag is "YES"
+            taskMap.put("isCache", task.getOrDefault("isCache", DEFAULT_IS_CACHE)); // Default isCache is "NO"
+            taskMap.put("taskPriority", task.getOrDefault("taskPriority", DEFAULT_TASK_PRIORITY)); // Default task priority is "MEDIUM"
+            taskMap.put("taskType", task.getOrDefault("taskType", DEFAULT_TASK_TYPE)); // Default task type is "SPARK"
             taskMap.put("taskExecuteType", "BATCH");
 
-            // Implementation details.
+            // 2025-06-25 Added new config item defaults
             taskMap.put("failRetryTimes", MapUtils.getObject(task,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
             taskMap.put("delayTime", MapUtils.getObject(task,"delayTime",DEFAULT_TASK_delayTime));
             taskMap.put("failRetryInterval", MapUtils.getObject(task,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
-            // Implementation details.
-            String componentType = String.valueOf(task.get("componentType")); // Implementation details.
+            // Wrap component taskParams
+            String componentType = String.valueOf(task.get("componentType")); // Component type
             Map<String, Object> params = (Map<String, Object>) MapUtils.getObject(task, "taskParams");
 
-            // Implementation details.
+            // Store default data based on type
             if (StringUtils.equals(TaskComponentTypeEnum.SPARK_CLEAN.getCode(), componentType)
                     || StringUtils.equals(TaskComponentTypeEnum.SPARK_SQL_DEV.getCode(), componentType)) {
                 params.put("mainClass", defaultMainClass);
                 params.put("resourceName", resourceName);
                 params.put("master", defaultMaster);
             }
-            // Implementation details.
+            // Extract parameters
 //            params.put("driverCores", MapUtils.getObject(definitionJsonMap, "driverCores", DEFAULT_DRIVER_CORES));
 //            params.put("driverMemory", MapUtils.getObject(definitionJsonMap, "driverMemory", DEFAULT_DRIVER_MEMORY));
 //            params.put("numExecutors", MapUtils.getObject(definitionJsonMap, "numExecutors", DEFAULT_NUM_EXECUTORS));
@@ -254,62 +254,62 @@ public class TaskConverter {
 //            params.put("executorCores", MapUtils.getObject(definitionJsonMap, "executorCores", DEFAULT_EXECUTOR_CORES));
 //            params.put("yarnQueue", MapUtils.getObject(definitionJsonMap, "yarnQueue", ""));
 
-            // Handle task-related data and operations.
+            // Add the task's taskParams to taskMap
             taskMap.put("taskParams", ComponentFactory.getComponentItem(componentType).parse(params));
 
-            // Handle task-related data and operations.
+            // Add the populated task to the result list
             result.add(taskMap);
         }
 
-        // Handle JSON data for this operation.
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
 
     /**
-     * Implementation details.
+     * Convert DppEtlNewNodeSaveReqVO and ProcessDefinition to DppEtlTaskSaveReqVO
      *
-     * @param dppEtlNewNodeSaveReqVO parameter value
-     * @param data parameter value
-     * @return the operation result
+     * @param dppEtlNewNodeSaveReqVO Task data from external request
+     * @param data                   Process definition data
+     * @return Converted DppEtlTaskSaveReqVO
      */
     public static DppEtlTaskSaveReqVO convertToDppEtlTaskSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, ProcessDefinition data) {
-        // Create the required record.
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskSaveReqVO createReqVO = new DppEtlTaskSaveReqVO();
 
-        // Handle task-related data and operations.
-        createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());// Handle task-related data and operations.
-        createReqVO.setName(data.getName()); // Handle task-related data and operations.
+        // Populate task data
+        createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());// Task type
+        createReqVO.setName(data.getName()); // Task name
         createReqVO.setCode(String.valueOf(data.getCode())); // Task code
-        createReqVO.setVersion(data.getVersion()); // Implementation details.
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Implementation details.
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Implementation details.
-        createReqVO.setLocations(data.getLocations()); // Handle node-related data and operations.
-        createReqVO.setLocations(data.getLocations()); // Handle node-related data and operations.
-        createReqVO.setDsId(data.getId()); // Handle DolphinScheduler operations.
+        createReqVO.setVersion(data.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setDsId(data.getId()); // DolphinScheduler ID
 
         String releaseState = dppEtlNewNodeSaveReqVO.getReleaseState();
-        // Implementation details.
+        // Set status based on releaseState (0: offline, 1: online)
         if (StringUtils.equals("-2", releaseState) || StringUtils.equals("-3", releaseState)) {
-            createReqVO.setStatus(releaseState); // Implementation details.
+            createReqVO.setStatus(releaseState); // Online
         } else if ("offline".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         } else if ("online".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("1"); // Implementation details.
+            createReqVO.setStatus("1"); // Online
         } else {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // Implementation details.
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(data.getExecutionType());// Implementation details.
-        // Create the required record.
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+        createReqVO.setExecutionType(data.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setContactNumber(dppEtlNewNodeSaveReqVO.getContactNumber());
@@ -318,112 +318,112 @@ public class TaskConverter {
         createReqVO.setScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
         createReqVO.setActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
-        // Implementation details.
+        // Temporarily meaningless parameter
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // Return the operation result.
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskLogSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, ProcessDefinition processDefinition) {
-        // Create the required record.
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskLogSaveReqVO createReqVO = new DppEtlTaskLogSaveReqVO();
         ProcessDefinitionLog data = processDefinition.getProcessDefinitionLog();
-        // Handle task-related data and operations.
+        // Populate task data
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
-        createReqVO.setName(data.getName()); // Handle task-related data and operations.
+        createReqVO.setName(data.getName()); // Task name
         createReqVO.setCode(String.valueOf(data.getCode())); // Task code
-        createReqVO.setVersion(data.getVersion()); // Implementation details.
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Implementation details.
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Implementation details.
-        createReqVO.setLocations(data.getLocations()); // Handle node-related data and operations.
-        createReqVO.setDsId(data.getId()); // Handle DolphinScheduler operations.
+        createReqVO.setVersion(data.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(String.valueOf(data.getProjectCode())); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(data.getLocations()); // Node coordinate info
+        createReqVO.setDsId(data.getId()); // DolphinScheduler ID
 
-        // Implementation details.
+        // Set status based on releaseState (0: offline, 1: online)
         if ("online".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("1"); // Implementation details.
+            createReqVO.setStatus("1"); // Online
         } else if ("offline".equalsIgnoreCase(data.getReleaseState())) {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         } else {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // Implementation details.
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(data.getExecutionType());// Implementation details.
-        // Create the required record.
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+        createReqVO.setExecutionType(data.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-        // Implementation details.
+        // Temporarily meaningless parameter
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // Return the operation result.
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     /**
-     * Implementation details.
+     * Convert DppEtlNewNodeSaveReqVO and DppEtlTaskSaveReqVO to DppEtlTaskLogSaveReqVO
      *
-     * @param dppEtlNewNodeSaveReqVO parameter value
-     * @param task parameter value
-     * @return the operation result
+     * @param dppEtlNewNodeSaveReqVO Task data from external request
+     * @param task                   Process definition data
+     * @return Converted DppEtlTaskSaveReqVO
      */
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskLogSaveReqVO(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO task) {
-        // Create the required record.
+        // Create DppEtlTaskSaveReqVO object
         DppEtlTaskLogSaveReqVO createReqVO = new DppEtlTaskLogSaveReqVO();
-        // Handle task-related data and operations.
+        // Populate task data
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
-        createReqVO.setName(task.getName()); // Handle task-related data and operations.
+        createReqVO.setName(task.getName()); // Task name
         createReqVO.setCode(task.getCode()); // Task code
-        createReqVO.setVersion(task.getVersion()); // Implementation details.
-        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-        createReqVO.setProjectCode(task.getProjectCode()); // Implementation details.
-        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Implementation details.
-        createReqVO.setLocations(task.getLocations()); // Handle node-related data and operations.
-        createReqVO.setDsId(task.getId()); // Handle DolphinScheduler operations.
+        createReqVO.setVersion(task.getVersion()); // Version number
+        createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+        createReqVO.setProjectCode(task.getProjectCode()); // Project code
+        createReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription()); // Description
+        createReqVO.setLocations(task.getLocations()); // Node coordinate info
+        createReqVO.setDsId(task.getId()); // DolphinScheduler ID
 
-        // Implementation details.
+        // Set status based on releaseState (0: offline, 1: online)
         if ("online".equalsIgnoreCase(task.getStatus())) {
-            createReqVO.setStatus("1"); // Implementation details.
+            createReqVO.setStatus("1"); // Online
         } else if ("offline".equalsIgnoreCase(task.getStatus())) {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         } else {
-            createReqVO.setStatus("0"); // Implementation details.
+            createReqVO.setStatus("0"); // Offline
         }
-        createReqVO.setRemark(""); // Implementation details.
+        createReqVO.setRemark(""); // Default remark (adjustable as needed)
 
-        createReqVO.setExecutionType(task.getExecutionType());// Implementation details.
-        // Create the required record.
-        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+        createReqVO.setExecutionType(task.getExecutionType());// Execution strategy
+        // Populate creator and update time info
+        createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+        createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+        createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+        createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+        createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+        createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-        // Implementation details.
+        // Temporarily meaningless parameter
         createReqVO.setPersonCharge(dppEtlNewNodeSaveReqVO.getPersonCharge());
         createReqVO.setType(dppEtlNewNodeSaveReqVO.getType());
         createReqVO.setTimeout(dppEtlNewNodeSaveReqVO.getTimeout());
 
 
-        // Return the operation result.
+        // Return the generated DppEtlTaskSaveReqVO
         return createReqVO;
     }
 
     public static DppEtlTaskLogSaveReqVO fromDppEtlTaskSaveReqVO(DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
         DppEtlTaskLogSaveReqVO logSaveReqVO = new DppEtlTaskLogSaveReqVO();
 
-        // Implementation details.
+        // Direct mapping of basic fields
         logSaveReqVO.setType(dppEtlTaskSaveReqVO.getType());
         logSaveReqVO.setName(dppEtlTaskSaveReqVO.getName());
         logSaveReqVO.setCode(dppEtlTaskSaveReqVO.getCode());
@@ -441,13 +441,13 @@ public class TaskConverter {
         logSaveReqVO.setStatus(dppEtlTaskSaveReqVO.getStatus());
 
 
-        // Create the required record.
-        logSaveReqVO.setCreatorId(dppEtlTaskSaveReqVO.getProjectId()); // Create the required record.
-        logSaveReqVO.setCreateBy(dppEtlTaskSaveReqVO.getName()); // Handle task-related data and operations.
-        logSaveReqVO.setCreateTime(dppEtlTaskSaveReqVO.getCreateTime()); // Create the required record.
-        logSaveReqVO.setUpdatorId(dppEtlTaskSaveReqVO.getProjectId()); // Update the related record.
-        logSaveReqVO.setUpdateBy(dppEtlTaskSaveReqVO.getName()); // Handle task-related data and operations.
-        logSaveReqVO.setUpdateTime(dppEtlTaskSaveReqVO.getUpdateTime()); // Update the related record.
+        // Populate creator and update time info
+        logSaveReqVO.setCreatorId(dppEtlTaskSaveReqVO.getProjectId()); // Assuming project ID as creator ID (adjust as needed)
+        logSaveReqVO.setCreateBy(dppEtlTaskSaveReqVO.getName()); // Assuming task name as creator (adjust as needed)
+        logSaveReqVO.setCreateTime(dppEtlTaskSaveReqVO.getCreateTime()); // Set current time as creation time
+        logSaveReqVO.setUpdatorId(dppEtlTaskSaveReqVO.getProjectId()); // Assuming project ID as updater ID (adjust as needed)
+        logSaveReqVO.setUpdateBy(dppEtlTaskSaveReqVO.getName()); // Assuming task name as updater (adjust as needed)
+        logSaveReqVO.setUpdateTime(dppEtlTaskSaveReqVO.getUpdateTime()); // Set current time as update time
 
         return logSaveReqVO;
     }
@@ -456,28 +456,28 @@ public class TaskConverter {
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(ProcessDefinition processDefinition, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
 
-        // Implementation details.
+        // Extract input parameter info
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
-        // Implementation details.
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (TaskDefinition taskDefinition : processDefinition.getTaskDefinitionList()) {
-            // Handle node-related data and operations.
+            // Get the node definition data packaged by the frontend
             Map<String, Object> taskDefinitionMap = list.stream().filter(item -> {
                 String code = MapUtils.getString(item, "code", "");
                 return StringUtils.equals(taskDefinition.getCode(), code);
             }).findFirst().get();
             DppEtlNodeSaveReqVO createReqVO = new DppEtlNodeSaveReqVO();
-            // Handle task-related data and operations.
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Handle task-related data and operations.
-            createReqVO.setType(taskDefinition.getTaskType()); // Handle node-related data and operations.
-            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Implementation details.
-            createReqVO.setName(taskDefinition.getName()); // Handle task-related data and operations.
+            // 1. Task-related info
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setType(taskDefinition.getTaskType()); // Node type
+            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Component type
+            createReqVO.setName(taskDefinition.getName()); // Task name
             createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // Task code
             createReqVO.setVersion(taskDefinition.getVersion()); // Task version
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Implementation details.
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Project code
 
-            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Handle task-related data and operations.
+            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Task priority
             createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
             createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
             createReqVO.setTimeout((long) taskDefinition.getTimeout());
@@ -485,26 +485,26 @@ public class TaskConverter {
             createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
             createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
             createReqVO.setDescription(taskDefinition.getDescription());
-            createReqVO.setDsId(taskDefinition.getId()); // Handle task-related data and operations.
+            createReqVO.setDsId(taskDefinition.getId()); // Set the task's dsId as the node's dsId
 
-            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Handle node-related data and operations.
+            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Node parameters
 
-            // Create the required record.
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // Implementation details.
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
     }
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(List<TaskDefinition> taskDefinitionList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        // Implementation details.
+        //取出入参数的信息
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
         return taskDefinitionList.stream()
                 .map(taskDefinition -> {
@@ -539,45 +539,45 @@ public class TaskConverter {
     }
 
     public static String getTaskParamsAsJson(List<Map<String, Object>> list, String code) {
-        // Implementation details.
+        // Find matching taskParams
         Optional<Map<String, Object>> matchingTaskParams = list.stream()
                 .filter(task -> task != null && StringUtils.equals(code, MapUtils.getString(task, "code")))
                 .map(task -> (Map<String, Object>) MapUtils.getObject(task, "taskParams"))
                 .filter(taskParams -> taskParams != null)
                 .findFirst();
 
-        // Handle JSON data for this operation.
-        return matchingTaskParams.map(taskParams -> JSONUtils.toJson(taskParams))  // Handle JSON data for this operation.
-                .orElse(null);  // Return the operation result.
+        // If a matching taskParams is found, convert to JSON and return
+        return matchingTaskParams.map(taskParams -> JSONUtils.toJson(taskParams))  // Call JSONUtils to convert to JSON
+                .orElse(null);  // If no match found, return null
     }
 
 
     public static List<DppEtlNodeLogSaveReqVO> convertToDppEtlNodeLogSaveReqVOList(ProcessDefinition processDefinition, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
         List<DppEtlNodeLogSaveReqVO> resultList = new ArrayList<>();
 
-        // Implementation details.
+        // Extract input parameter info
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
 
-        // Implementation details.
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (TaskDefinition taskDefinition : processDefinition.getTaskDefinitionList()) {
-            // Handle node-related data and operations.
+            // Get the node definition data packaged by the frontend
             Map<String, Object> taskDefinitionMap = list.stream().filter(item -> {
                 String code = MapUtils.getString(item, "code", "");
                 return StringUtils.equals(taskDefinition.getCode(), code);
             }).findFirst().get();
             DppEtlNodeLogSaveReqVO createReqVO = new DppEtlNodeLogSaveReqVO();
 
-            // Handle task-related data and operations.
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Handle task-related data and operations.
-            createReqVO.setType(taskDefinition.getTaskType()); // Handle node-related data and operations.
-            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Implementation details.
-            createReqVO.setName(taskDefinition.getName()); // Handle task-related data and operations.
+            // 1. Task-related info
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setType(taskDefinition.getTaskType()); // Node type
+            createReqVO.setComponentType(String.valueOf(taskDefinitionMap.get("componentType")));// Component type
+            createReqVO.setName(taskDefinition.getName()); // Task name
             createReqVO.setCode(String.valueOf(taskDefinition.getCode())); // Task code
             createReqVO.setVersion((long) taskDefinition.getVersion()); // Task version
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Implementation details.
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(taskDefinition.getProjectCode())); // Project code
 
-            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Handle task-related data and operations.
+            createReqVO.setPriority(String.valueOf(taskDefinition.getTaskPriority()));// Task priority
             createReqVO.setFailRetryTimes((long) taskDefinition.getFailRetryTimes());
             createReqVO.setFailRetryInterval((long) taskDefinition.getFailRetryInterval());
             createReqVO.setTimeout((long) taskDefinition.getTimeout());
@@ -585,19 +585,19 @@ public class TaskConverter {
             createReqVO.setCpuQuota((long) taskDefinition.getCpuQuota());
             createReqVO.setMemoryMax((long) taskDefinition.getMemoryMax());
             createReqVO.setDescription(taskDefinition.getDescription());
-            createReqVO.setDsId(taskDefinition.getId()); // Handle task-related data and operations.
+            createReqVO.setDsId(taskDefinition.getId()); // Set the task's dsId as the node's dsId
 
-            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Handle node-related data and operations.
+            createReqVO.setParameters(getTaskParamsAsJson(list, String.valueOf(taskDefinition.getCode()))); // Node parameters
 
-            // Create the required record.
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // Implementation details.
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
@@ -605,50 +605,50 @@ public class TaskConverter {
 
     public static long getIdByCode(List<DppEtlNodeDO> dppEtlNodeDOList, String code, long preTaskVersion) {
         return dppEtlNodeDOList.stream()
-                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Implementation details.
-                .map(DppEtlNodeDO::getId)  // Retrieve the required data.
-                .findFirst()  // Return the operation result.
-                .orElse(-1L);  // Return the operation result.
+                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Match code
+                .map(DppEtlNodeDO::getId)  // Get the corresponding id
+                .findFirst()  // If a match is found, return the first one
+                .orElse(-1L);  // If no match found, return default value -1
     }
 
     public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
 
-        // Implementation details.
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
-            // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Implementation details.
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // Handle task-related data and operations.
+            // Task-related fields
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
             taskNodeRelSaveReqVO.setTaskCode(code); // Task code
             taskNodeRelSaveReqVO.setTaskVersion(version); // Task version
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Handle node-related data and operations.
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Handle node-related data and operations.
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
-            // Implementation details.
-            taskNodeRelSaveReqVO.setRemark(null); // Implementation details.
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // Update the related record.
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // Implementation details.
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
 
@@ -658,41 +658,41 @@ public class TaskConverter {
     public static List<DppEtlTaskNodeRelLogSaveReqVO> convertToDppEtlTaskNodeRelLogSaveReqVOList(List<ProcessTaskRelation> taskRelationList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, List<DppEtlNodeLogDO> dppEtlNodeBatch, DppEtlTaskLogSaveReqVO dppEtlTaskSaveReqVO, String code, Integer version) {
         List<DppEtlTaskNodeRelLogSaveReqVO> resultList = new ArrayList<>();
 
-        // Implementation details.
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : taskRelationList) {
             DppEtlTaskNodeRelLogSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelLogSaveReqVO();
 
-            // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Implementation details.
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // Handle task-related data and operations.
+            // Task-related fields
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
             taskNodeRelSaveReqVO.setTaskCode(code); // Task code
             taskNodeRelSaveReqVO.setTaskVersion(version); // Task version
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Handle node-related data and operations.
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, String.valueOf(taskRelation.getPreTaskCode()), taskRelation.getPreTaskVersion())); // Pre-node ID
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Handle node-related data and operations.
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeId(getDppEtlNodeLogDOIdByCode(dppEtlNodeBatch, code, taskRelation.getPreTaskVersion())); // Post-node ID
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
 
-            // Implementation details.
-            taskNodeRelSaveReqVO.setRemark(null); // Implementation details.
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // Update the related record.
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // Implementation details.
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
 
@@ -702,29 +702,29 @@ public class TaskConverter {
 
     public static long getDppEtlNodeLogDOIdByCode(List<DppEtlNodeLogDO> dppEtlNodeDOList, String code, long preTaskVersion) {
         return dppEtlNodeDOList.stream()
-                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Implementation details.
-                .map(DppEtlNodeLogDO::getId)  // Retrieve the required data.
-                .findFirst()  // Return the operation result.
-                .orElse(-1L);  // Return the operation result.
+                .filter(task -> StringUtils.equals(task.getCode(), code) && task.getVersion() == preTaskVersion)  // Match code
+                .map(DppEtlNodeLogDO::getId)  // Get the corresponding id
+                .findFirst()  // If a match is found, return the first one
+                .orElse(-1L);  // If no match found, return default value -1
     }
 
 
     /**
-     * Implementation details.
+     * Utility method to generate DsSchedulerSaveReqDTO.
      *
-     * @param crontab parameter value
-     * @param processDefinitionCode parameter value
+     * @param crontab               Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerSaveReqDTO
      */
     public static DsSchedulerSaveReqDTO createSchedulerRequest(String crontab, String processDefinitionCode) {
-        // Retrieve the required data.
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // Retrieve the required data.
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // Create the required record.
+        // Create DsSchedulerSaveReqDTO and set default values
         DsSchedulerSaveReqDTO dto = new DsSchedulerSaveReqDTO();
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
@@ -738,17 +738,17 @@ public class TaskConverter {
 
 
     /**
-     * Implementation details.
+     * Convert DsSchedulerRespDTO to DppEtlSchedulerSaveReqVO
      *
      * @param dsSchedulerRespDTO DsSchedulerRespDTO
      * @param dppEtlTaskDO
      * @return DppEtlSchedulerSaveReqVO
      */
     public static DppEtlSchedulerSaveReqVO convertToDppEtlSchedulerSaveReqVO(DsSchedulerRespDTO dsSchedulerRespDTO, DppEtlTaskDO dppEtlTaskDO) {
-        // Create the required record.
+        // Create DppEtlSchedulerSaveReqVO object
         DppEtlSchedulerSaveReqVO reqVO = new DppEtlSchedulerSaveReqVO();
 
-        // Implementation details.
+        // Extract data from dsSchedulerRespDTO and populate reqVO
         Schedule schedule = dsSchedulerRespDTO.getData();
 
         reqVO.setStartTime(schedule.getStartTime());
@@ -757,33 +757,33 @@ public class TaskConverter {
         reqVO.setCronExpression(schedule.getCrontab());
         reqVO.setFailureStrategy("1");
 
-        // Implementation details.
-        reqVO.setDsId(schedule.getId()); // Implementation details.
-        reqVO.setRemark(null); // Update the related record.
+        // You can fill in default values or handle dsId and remark fields as needed
+        reqVO.setDsId(schedule.getId()); // Assume dsId and id are the same
+        reqVO.setRemark(null); // Remark can be modified based on actual requirements
 
         return reqVO;
     }
 
 
     /**
-     * Implementation details.
+     * Utility method to generate DsSchedulerUpdateReqDTO.
      *
-     * @param id parameter value
-     * @param crontab parameter value
-     * @param processDefinitionCode parameter value
+     * @param id                    Schedule ID
+     * @param crontab               Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerUpdateReqDTO
      */
     public static DsSchedulerUpdateReqDTO createSchedulerUpdateRequest(Long id, String crontab, String processDefinitionCode) {
-        // Retrieve the required data.
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // Retrieve the required data.
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // Create the required record.
+        // Create DsSchedulerUpdateReqDTO and set default values
         DsSchedulerUpdateReqDTO dto = new DsSchedulerUpdateReqDTO();
-        dto.setId(id); // Handle scheduling configuration and operations.
+        dto.setId(id); // Set schedule ID
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
         dto.setProcessDefinitionCode(processDefinitionCode);
@@ -796,26 +796,26 @@ public class TaskConverter {
 
 
     /**
-     * Implementation details.
+     * Convert DsSchedulerSaveReqDTO to DppEtlSchedulerSaveReqVO
      *
      * @param dppEtlNewNodeSaveReqVO
      * @return DppEtlSchedulerSaveReqVO
      */
     public static DppEtlSchedulerSaveReqVO convertToDppEtlSchedulerSaveReqVO(Long taskId, String taskCode, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        // Create the required record.
+        // Create DppEtlSchedulerSaveReqVO object
         DppEtlSchedulerSaveReqVO reqVO = new DppEtlSchedulerSaveReqVO();
 
-        // Implementation details.
+        // Populate fields directly from dsSchedulerSaveReqDTO
         reqVO.setTaskId(taskId);
         reqVO.setTaskCode(taskCode);
 
-        // Retrieve the required data.
+        // 获取100年后的时间
         long currentTime = System.currentTimeMillis();
         Date date = new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000);
 
         reqVO.setStartTime(new Date());
         reqVO.setEndTime(date);
-        reqVO.setTimezoneId("Asia/Shanghai"); // Implementation details.
+        reqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
 
         reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
@@ -823,42 +823,42 @@ public class TaskConverter {
         reqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
         reqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
 
-        // Implementation details.
+        // Populate dsId, assuming dsId is the same as ID
         reqVO.setDsId((long) -1);
 
-        // Implementation details.
+        // Remark can be filled based on requirements
 
         return reqVO;
     }
 
-    // Implementation details.
+    // Method to parse the time portion from the schedule field
     private static Date parseStartTime(String scheduleJson) {
-        // Handle JSON data for this operation.
-        return new Date(); // Implementation details.
+        // Extract and parse start time (assuming you have a method to parse it from JSON)
+        return new Date(); // Example, actually need to extract the corresponding time
     }
 
     private static Date parseEndTime(String scheduleJson) {
-        // Handle JSON data for this operation.
-        return new Date(); // Implementation details.
+        // Extract and parse end time (assuming you have a method to parse it from JSON)
+        return new Date(); // Example, actually need to extract the corresponding time
     }
 
     public static List<String> getPreAndPostNodeCodeList(List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList) {
         List<String> result = new ArrayList<>();
         for (DppEtlTaskNodeRelRespVO vo : dppEtlTaskNodeRelRespVOList) {
-            result.add(vo.getPreNodeCode());  // Implementation details.
-            result.add(vo.getPostNodeCode()); // Implementation details.
+            result.add(vo.getPreNodeCode());  // Add preNodeCode
+            result.add(vo.getPostNodeCode()); // Add postNodeCode
         }
-        return result;  // Return the operation result.
+        return result;  // Return List<String>
     }
 
 
     public static DsStartTaskReqDTO createDsStartTaskReqDTO(String processDefinitionCode) {
-        // Retrieve the required data.
+        // Get current date in "yyyy-MM-dd" format
         String currentDate = DateUtil.today();
-        // Implementation details.
+        // Construct scheduleTime field, fixed format "yyyy-MM-dd 00:00:00"
         String scheduleTime = String.format("{\"complementStartDate\":\"%s 00:00:00\",\"complementEndDate\":\"%s 00:00:00\"}", currentDate, currentDate);
 
-        // Create the required record.
+        // Use builder pattern to create DsStartTaskReqDTO object, other fields are hardcoded values
         return DsStartTaskReqDTO.builder()
                 .processDefinitionCode(JSONUtils.convertToLong(processDefinitionCode))
                 .failureStrategy("CONTINUE")
@@ -870,7 +870,7 @@ public class TaskConverter {
 
 
     /**
-     * Implementation details.
+     * Build ETL location coordinate data
      *
      * @param locations
      * @param code
@@ -881,16 +881,16 @@ public class TaskConverter {
 
         Map<String, Object> location = locations.get(0);
         Map<String, Object> locationMap = new HashMap<>();
-        // Implementation details.
-        locationMap.put("taskCode", Long.parseLong(code)); // Implementation details.
-        locationMap.put("x", location.getOrDefault("x", 0)); // Implementation details.
-        locationMap.put("y", location.getOrDefault("y", 0)); // Implementation details.
+        // Populate required fields
+        locationMap.put("taskCode", Long.parseLong(code)); // Default taskCode is 0
+        locationMap.put("x", location.getOrDefault("x", 0)); // Default x is 0
+        locationMap.put("y", location.getOrDefault("y", 0)); // Default y is 0
         locationList.add(locationMap);
         return JSON.toJSONString(locationList);
     }
 
     /**
-     * Handle node-related data and operations.
+     * Build ETL node relation JSON data
      *
      * @param code
      * @return
@@ -910,98 +910,98 @@ public class TaskConverter {
 
 
     /**
-     * Handle node-related data and operations.
+     * Build ETL node definition JSON data
      *
-     * @param id parameter value
-     * @param name parameter value
-     * @param code parameter value
-     * @param version parameter value
-     * @param mainArgs parameter value
+     * @param id        ETL node id
+     * @param name      ETL node name
+     * @param code      ETL node code
+     * @param version   ETL node version
+     * @param mainArgs  ETL node parameters
      * @param draftJson
      * @return
      */
     public static String buildEtlTaskDefinitionJson(Long id, String name, String code, Integer version, Map<String, Object> mainArgs, String draftJson) {
         List<Map<String, Object>> result = new ArrayList<>();
-        // Implementation details.
+        // Custom parameters
         Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(draftJson);
 
-        // Implementation details.
+        // Process default values and required fields for each task
         Map<String, Object> taskMap = new HashMap<>();
 
-        // Implementation details.
-        taskMap.put("id", id); // Implementation details.
-        taskMap.put("name", name); // Implementation details.
-        taskMap.put("code", code); // Implementation details.
-        taskMap.put("version", version); // Implementation details.
-        taskMap.put("description", ""); // Implementation details.
-        taskMap.put("workerGroup", MapUtils.getObject(definitionJsonMap,"workerGroup",DEFAULT_WORKER_GROUP) ); // Implementation details.
-        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE); // Implementation details.
-        taskMap.put("flag", DEFAULT_FLAG); // Implementation details.
-        taskMap.put("isCache", DEFAULT_IS_CACHE); // Implementation details.
-        taskMap.put("taskPriority", MapUtils.getObject(definitionJsonMap,"taskPriority",DEFAULT_TASK_PRIORITY)); // Handle task-related data and operations.
-        taskMap.put("taskType", DEFAULT_TASK_TYPE); // Handle task-related data and operations.
+        // Set basic info fields
+        taskMap.put("id", id); // Default id is 0
+        taskMap.put("name", name); // Default empty string
+        taskMap.put("code", code); // Default code is 0L
+        taskMap.put("version", version); // Default version is 1
+        taskMap.put("description", ""); // Default empty description
+        taskMap.put("workerGroup", MapUtils.getObject(definitionJsonMap,"workerGroup",DEFAULT_WORKER_GROUP) ); // Default workerGroup is "default"
+        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE); // Default environment code
+        taskMap.put("flag", DEFAULT_FLAG); // Default flag is "YES"
+        taskMap.put("isCache", DEFAULT_IS_CACHE); // Default isCache is "NO"
+        taskMap.put("taskPriority", MapUtils.getObject(definitionJsonMap,"taskPriority",DEFAULT_TASK_PRIORITY)); // Default task priority is "MEDIUM"
+        taskMap.put("taskType", DEFAULT_TASK_TYPE); // Default task type is "SPARK"
         taskMap.put("taskExecuteType", "BATCH");
 
-        // Implementation details.
+        // 2025-06-25 Added new config item defaults
         taskMap.put("failRetryTimes", MapUtils.getObject(definitionJsonMap,"failRetryTimes",DEFAULT_TASK_failRetryTimes));
         taskMap.put("delayTime", MapUtils.getObject(definitionJsonMap,"delayTime",DEFAULT_TASK_delayTime));
         taskMap.put("failRetryInterval", MapUtils.getObject(definitionJsonMap,"failRetryInterval",DEFAULT_TASK_failRetryInterval));
 
         Map<String, Object> taskParams = new LinkedHashMap<>();
 
-        taskParams.put("localParams", new ArrayList<>()); // Implementation details.
-        taskParams.put("rawScript", ""); // Implementation details.
-        taskParams.put("resourceList", new ArrayList<>()); // Implementation details.
-        taskParams.put("programType", DEFAULT_PROGRAM_TYPE); // Implementation details.
+        taskParams.put("localParams", new ArrayList<>()); // Default empty list
+        taskParams.put("rawScript", ""); // Default empty string
+        taskParams.put("resourceList", new ArrayList<>()); // Default empty list
+        taskParams.put("programType", DEFAULT_PROGRAM_TYPE); // Default program type is "JAVA"
         taskParams.put("mainClass", defaultMainClass);
 
-        // Implementation details.
+        // mainJar is a Map, with resourceName field set to default value
         Map<String, Object> mainJar = new HashMap<>();
         mainJar.put("resourceName", resourceName);
         taskParams.put("mainJar", mainJar);
-        taskParams.put("deployMode", DEFAULT_DEPLOY_MODE); // Implementation details.
-        taskParams.put("mainArgs", Base64.encode(JSON.toJSONString(mainArgs))); // Implementation details.
-        taskParams.put("master", defaultMaster); // Implementation details.
-        taskParams.put("driverCores",MapUtils.getObject(definitionJsonMap,"driverCores",DEFAULT_DRIVER_CORES) ); // Implementation details.
-        taskParams.put("driverMemory",MapUtils.getObject(definitionJsonMap,"driverMemory",DEFAULT_DRIVER_MEMORY) ); // Implementation details.
-        taskParams.put("numExecutors", MapUtils.getObject(definitionJsonMap,"numExecutors",DEFAULT_NUM_EXECUTORS)); // Implementation details.
-        taskParams.put("executorMemory",MapUtils.getObject(definitionJsonMap,"executorMemory",DEFAULT_EXECUTOR_MEMORY) ); // Implementation details.
-        taskParams.put("executorCores",MapUtils.getObject(definitionJsonMap,"executorCores",DEFAULT_EXECUTOR_CORES) ); // Implementation details.
-        taskParams.put("yarnQueue",MapUtils.getObject(definitionJsonMap,"yarnQueue","") ); // Implementation details.
-        taskParams.put("sqlExecutionType", DEFAULT_SQL_EXECUTION_TYPE); // Handle JDBC SQL execution.
+        taskParams.put("deployMode", DEFAULT_DEPLOY_MODE); // Default deploy mode is "client"
+        taskParams.put("mainArgs", Base64.encode(JSON.toJSONString(mainArgs))); // Default empty string
+        taskParams.put("master", defaultMaster); // Default Spark master URL
+        taskParams.put("driverCores",MapUtils.getObject(definitionJsonMap,"driverCores",DEFAULT_DRIVER_CORES) ); // Default driver cores
+        taskParams.put("driverMemory",MapUtils.getObject(definitionJsonMap,"driverMemory",DEFAULT_DRIVER_MEMORY) ); // Default driver memory
+        taskParams.put("numExecutors", MapUtils.getObject(definitionJsonMap,"numExecutors",DEFAULT_NUM_EXECUTORS)); // Default number of executors
+        taskParams.put("executorMemory",MapUtils.getObject(definitionJsonMap,"executorMemory",DEFAULT_EXECUTOR_MEMORY) ); // Default executor memory
+        taskParams.put("executorCores",MapUtils.getObject(definitionJsonMap,"executorCores",DEFAULT_EXECUTOR_CORES) ); // Default executor cores
+        taskParams.put("yarnQueue",MapUtils.getObject(definitionJsonMap,"yarnQueue","") ); // Default YARN queue
+        taskParams.put("sqlExecutionType", DEFAULT_SQL_EXECUTION_TYPE); // Default SQL execution type is "SCRIPT"
 
-        // Handle task-related data and operations.
+        // Add the task's taskParams to taskMap
         taskMap.put("taskParams", taskParams);
 
-        // Handle task-related data and operations.
+        // Add the populated task to the result list
         result.add(taskMap);
-        // Handle JSON data for this operation.
+        // Return the processed JSON string
         return JSON.toJSONString(result);
     }
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, String taskDefinitionJson) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
 
-        // Implementation details.
+        // Extract input parameter info
         List<DppEtlNodeSaveReqVO> list = JSON.parseArray(taskDefinitionJson, DppEtlNodeSaveReqVO.class);
 
-        // Implementation details.
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (DppEtlNodeSaveReqVO createReqVO : list) {
-            // Handle task-related data and operations.
-            createReqVO.setType(createReqVO.getTaskType());// Handle node-related data and operations.
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Handle task-related data and operations.
+            // 1. Task-related info
+            createReqVO.setType(createReqVO.getTaskType());// Node type
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
             createReqVO.setVersion(1); // Task version
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Implementation details.
-            // Create the required record.
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
             createReqVO.setParameters(JSON.toJSONString(createReqVO.getTaskParams()));
-            // Implementation details.
+            // Add to result list
             resultList.add(createReqVO);
         }
         return resultList;
@@ -1009,25 +1009,25 @@ public class TaskConverter {
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, Integer nodeVersion) {
         List<DppEtlNodeSaveReqVO> resultList = new ArrayList<>();
-        // Implementation details.
+        // Extract input parameter info
         List<DppEtlNodeSaveReqVO> list = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskDefinitionList(), DppEtlNodeSaveReqVO.class);
 
-        // Implementation details.
+        // Iterate over taskDefinitionList in ProcessDefinition
         for (DppEtlNodeSaveReqVO createReqVO : list) {
-            // Handle task-related data and operations.
-            createReqVO.setType(createReqVO.getTaskType());// Handle node-related data and operations.
-            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Handle task-related data and operations.
-            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Implementation details.
-            // Create the required record.
-            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // 1. Task-related info
+            createReqVO.setType(createReqVO.getTaskType());// Node type
+            createReqVO.setTaskType(dppEtlNewNodeSaveReqVO.getType());// Task type
+            createReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            createReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
+            // Populate creator and update time info
+            createReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            createReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            createReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            createReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            createReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
             createReqVO.setParameters(JSON.toJSONString(createReqVO.getTaskParams()));
-            // Implementation details.
+            // Add to result list
             resultList.add(createReqVO);
         }
         if (nodeVersion != null) {
@@ -1048,48 +1048,48 @@ public class TaskConverter {
     public static List<DppEtlTaskNodeRelSaveReqVO> convertToDppEtlTaskNodeRelSaveReqVOList(List<DppEtlNodeDO> dppEtlNodeBatch, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO) {
         List<DppEtlTaskNodeRelSaveReqVO> resultList = new ArrayList<>();
         List<ProcessTaskRelation> list = JSON.parseArray(dppEtlNewNodeSaveReqVO.getTaskRelationJson(), ProcessTaskRelation.class);
-        // Implementation details.
+        // Iterate over taskRelationList in data, generate DppEtlTaskNodeRelSaveReqVO
         for (ProcessTaskRelation taskRelation : list) {
 
             DppEtlTaskNodeRelSaveReqVO taskNodeRelSaveReqVO = new DppEtlTaskNodeRelSaveReqVO();
 
-            // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Implementation details.
-            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Implementation details.
+            // 1. Populate task-node relation fields
+            taskNodeRelSaveReqVO.setProjectId(dppEtlNewNodeSaveReqVO.getProjectId()); // Project ID
+            taskNodeRelSaveReqVO.setProjectCode(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode())); // Project code
 
-            // Handle task-related data and operations.
+            // Task-related fields
             taskNodeRelSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId()); // Task ID
             taskNodeRelSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode()); // Task code
             taskNodeRelSaveReqVO.setTaskVersion(dppEtlTaskSaveReqVO.getVersion()); // Task version
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Handle node-related data and operations.
+            // Pre-node related fields
+            taskNodeRelSaveReqVO.setPreNodeCode(String.valueOf(taskRelation.getPreTaskCode())); // Pre-node code
+            taskNodeRelSaveReqVO.setPreNodeVersion(taskRelation.getPreTaskVersion()); // Pre-node version
             if (StringUtils.isNotEmpty(taskNodeRelSaveReqVO.getPreNodeCode()) && taskNodeRelSaveReqVO.getPreNodeVersion() == 0) {
                 taskNodeRelSaveReqVO.setPreNodeVersion(1);
             }
-            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPreNodeCode(), taskNodeRelSaveReqVO.getPreNodeVersion())); // Handle node-related data and operations.
+            taskNodeRelSaveReqVO.setPreNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPreNodeCode(), taskNodeRelSaveReqVO.getPreNodeVersion())); // Pre-node ID
 
-            // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Handle node-related data and operations.
-            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Handle node-related data and operations.
+            // Post-node related fields
+            taskNodeRelSaveReqVO.setPostNodeCode(String.valueOf(taskRelation.getPostTaskCode())); // Post-node code
+            taskNodeRelSaveReqVO.setPostNodeVersion(taskRelation.getPostTaskVersion()); // Post-node version
             if (StringUtils.isNotEmpty(taskNodeRelSaveReqVO.getPostNodeCode()) && taskNodeRelSaveReqVO.getPostNodeVersion() == 0) {
                 taskNodeRelSaveReqVO.setPostNodeVersion(1);
             }
-            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPostNodeCode(), taskNodeRelSaveReqVO.getPostNodeVersion())); // Handle node-related data and operations.
+            taskNodeRelSaveReqVO.setPostNodeId(getIdByCode(dppEtlNodeBatch, taskNodeRelSaveReqVO.getPostNodeCode(), taskNodeRelSaveReqVO.getPostNodeVersion())); // Post-node ID
 
-            // Implementation details.
-            taskNodeRelSaveReqVO.setRemark(null); // Implementation details.
+            // Optional fields
+            taskNodeRelSaveReqVO.setRemark(null); // Remark
 
-            // Update the related record.
-            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Create the required record.
-            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Create the required record.
-            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Update the related record.
-            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Handle task-related data and operations.
-            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Update the related record.
+            // 2. Populate create/modify info
+            taskNodeRelSaveReqVO.setCreatorId(dppEtlNewNodeSaveReqVO.getCreatorId()); // Assuming project ID as creator ID (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateBy(dppEtlNewNodeSaveReqVO.getCreateBy()); // Assuming task name as creator (adjust as needed)
+            taskNodeRelSaveReqVO.setCreateTime(dppEtlNewNodeSaveReqVO.getCreateTime()); // Set current time as creation time
+            taskNodeRelSaveReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assuming project ID as updater ID (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateBy(dppEtlNewNodeSaveReqVO.getUpdateBy()); // Assuming task name as updater (adjust as needed)
+            taskNodeRelSaveReqVO.setUpdateTime(dppEtlNewNodeSaveReqVO.getUpdateTime()); // Set current time as update time
 
-            // Implementation details.
+            // Add to result list
             resultList.add(taskNodeRelSaveReqVO);
         }
         return resultList;
@@ -1104,7 +1104,7 @@ public class TaskConverter {
     }
 
     /**
-     * Implementation details.
+     * Build ETL parameter data
      *
      * @return
      */
@@ -1117,7 +1117,7 @@ public class TaskConverter {
             if (nodeMap.containsKey(dppEtlNodeSaveReqVO.getCode())) {
                 version = nodeMap.get(dppEtlNodeSaveReqVO.getCode()).getVersion();
             }
-            // Implementation details.
+            // Component types in this method include DB_READER, EXCEL_READER, CSV_READER, SPARK_CLEAN, DB_WRITER
             String componentType = dppEtlNodeSaveReqVO.getComponentType();
             TaskComponentTypeEnum taskComponentTypeEnum = TaskComponentTypeEnum.findEnumByType(componentType);
             Map<String, Object> data = ComponentFactory.getComponentItem(componentType)
@@ -1144,10 +1144,10 @@ public class TaskConverter {
                     break;
             }
         }
-        // Implementation details.
+        // Configure config
         Map<String, Object> config = new HashMap<>();
         config.put("taskInfo", taskInfo);
-        // Handle Redis state for this operation.
+        // Redis config info used by EtlApplication.java (to get the latest data source info, ensuring task execution)
         config.put("redis", dsRedisConfig);
         config.put("rabbitmq", rabbitmqConfig);
         config.put("resourceUrl", resourceUrl);

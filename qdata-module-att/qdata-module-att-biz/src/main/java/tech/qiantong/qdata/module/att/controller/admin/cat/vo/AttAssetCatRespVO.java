@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产类目管理 Response VO 对象 ATT_ASSET_CAT
+ * Data Asset Category Management Response VO ATT_ASSET_CAT
  *
  * @author qdata
  * @date 2025-01-20

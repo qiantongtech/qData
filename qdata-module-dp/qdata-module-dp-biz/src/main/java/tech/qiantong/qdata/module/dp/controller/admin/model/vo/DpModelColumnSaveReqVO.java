@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 逻辑模型属性信息 创建/修改 Request VO DP_MODEL_COLUMN
+ * Logical Model Column Save Request VO - DP_MODEL_COLUMN
  *
  * @author qdata
  * @date 2025-01-21

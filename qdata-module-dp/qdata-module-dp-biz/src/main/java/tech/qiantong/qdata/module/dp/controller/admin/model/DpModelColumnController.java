@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 逻辑模型属性信息Controller
+ * Logical Model Column Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -78,7 +78,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "导出逻辑模型属性信息列表")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:export')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpModelColumnPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -89,7 +89,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "导入逻辑模型属性信息列表")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:import')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpModelColumnRespVO> util = new ExcelUtil<>(DpModelColumnRespVO.class);
@@ -109,7 +109,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "新增逻辑模型属性信息")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpModelColumnSaveReqVO dpModelColumn) {
         dpModelColumn.setCreatorId(getUserId());
@@ -120,7 +120,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "修改逻辑模型属性信息")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpModelColumnSaveReqVO dpModelColumn) {
         dpModelColumn.setUpdatorId(getUserId());
@@ -131,7 +131,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "批量新增逻辑模型属性信息")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:add')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.INSERT)
     @PostMapping(value = "/addList")
     public CommonResult<Boolean> addList(@Valid @RequestBody List<DpModelColumnSaveReqVO> dpModelColumnList) {
         for (DpModelColumnSaveReqVO dpModelColumnSaveReqVO : dpModelColumnList) {
@@ -144,7 +144,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "批量修改逻辑模型属性信息")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:edit')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.UPDATE)
     @PutMapping(value = "/editList")
     public CommonResult<Boolean> editList(@Valid @RequestBody List<DpModelColumnSaveReqVO> dpModelColumnList) {
         for (DpModelColumnSaveReqVO dpModelColumnSaveReqVO : dpModelColumnList) {
@@ -157,7 +157,7 @@ public class DpModelColumnController extends BaseController {
 
     @Operation(summary = "删除逻辑模型属性信息")
 //    @PreAuthorize("@ss.hasPermi('dp:modelColumn:remove')")
-    @Log(title = "逻辑模型属性信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.model.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpModelColumnService.removeDpModelColumn(Arrays.asList(ids)));

@@ -22,7 +22,7 @@ import lombok.Getter;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 
 /**
- * 人大金仓数据库字段类型枚举
+ * NPC Jincang database field type enumeration
  */
 @Getter
 public enum KingbaseColumnTypeEnum {
@@ -54,7 +54,7 @@ public enum KingbaseColumnTypeEnum {
     }
 
     /**
-     * 将人大金仓类型转换为达梦类型
+     * Convert Renmin University Jincang type to Dameng type
      */
     public static String convertToDmType(String type) {
         String kingbaseType = MD5Util.convertIfLowercase(type);
@@ -65,6 +65,6 @@ public enum KingbaseColumnTypeEnum {
             }
         }
         return kingbaseType;
-//        return DmColumnTypeEnum.VARCHAR.getType(); // 默认转为VARCHAR
+// return DmColumnTypeEnum.VARCHAR.getType(); // Convert to VARCHAR by default
     }
 }

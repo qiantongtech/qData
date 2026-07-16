@@ -6,14 +6,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * Handle task-related data and operations.
+ * Collection task DO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK")
-// Handle JDBC SQL execution.
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -27,107 +27,107 @@ public class McTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Implementation details. */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** Implementation details. */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** Handle task-related data and operations. */
+    /** Task name */
     private String name;
 
-    /** Implementation details. */
+    /** Data connection id */
     private Long datasourceId;
 
-    /** Handle database and data source configuration. */
+    /** Database type */
     private String dbType;
 
-    /** Implementation details. */
+    /** Responsible person */
     private Long leader;
 
-    /** Implementation details. */
+    /** Responsible person’s phone number */
     private String leaderPhone;
 
-    /** Implementation details. */
+    /** Collection mode */
     private String collectionMode;
 
-    /** Implementation details. */
+    /** Collection range */
     private String collectionScope;
 
-    /** Handle task-related data and operations. */
+    /** Task status */
     private String status;
 
-    /** Scheduler */
+    /** 调度器 */
     private String scheduler;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * Implementation details.
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
 
 
     /**
-     * Implementation details.
+     * cron expression
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * Handle scheduling configuration and operations.
+     * Scheduling status
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * Handle database and data source configuration.
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * Handle database and data source configuration.
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;
 
     /**
-     * Implementation details.
+     * Contact name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * Implementation details.
+     * Last execution time
      */
     @TableField(exist = false)
     private String lastExecuteTime;
 
     /**
-     * Implementation details.
+     * Contact phone number
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * Implementation details.
+     * Responsible department
      */
     private Long responsibleDept;
 }

@@ -73,7 +73,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:visible', 'confirm']);
-// 定义字段类型数组
+// Define field type array
 const columntype = [
     { value: 'long', label: 'long' },
     { value: 'boolean', label: 'boolean' },
@@ -106,7 +106,7 @@ watch(
     }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
     get() {
         return props.visible;
@@ -116,12 +116,12 @@ const visibleDialog = computed({
     }
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
     emit('update:visible', false);
 };
 let daDiscoveryTaskRef = ref();
-// 保存数据的方法
+// How to save data
 const saveData = () => {
     daDiscoveryTaskRef.value.validate((valid) => {
         if (valid) {
@@ -132,7 +132,7 @@ const saveData = () => {
             emit('update:visible', false);
         } else {
 
-            console.log('表单校验未通过');
+            console.log("Form validation failed");
         }
     });
 };

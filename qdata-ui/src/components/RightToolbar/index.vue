@@ -58,26 +58,26 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
 const props = defineProps({
-  /* 是否显示检索条件 */
+  /* Whether to display search conditions */
   showSearch: {
     type: Boolean,
     default: true,
   },
-  /* 显隐列信息 */
+  /* Show and hide column information */
   columns: {
     type: Array,
   },
-  /* 是否显示检索图标 */
+  /* Whether to display the search icon */
   search: {
     type: Boolean,
     default: true,
   },
-  /* 显隐列类型（transfer穿梭框、checkbox复选框） */
+  /* Show and hide column types (transfer shuttle box, checkbox checkbox) */
   showColumnsType: {
     type: String,
     default: "checkbox",
   },
-  /* 右外边距 */
+  /* right margin */
   gutter: {
     type: Number,
     default: 10,
@@ -86,9 +86,9 @@ const props = defineProps({
 
 const emits = defineEmits(['update:showSearch', 'queryTable']);
 
-// 显隐数据
+// Explicit data
 const value = ref([]);
-// 是否显示弹出层
+// Whether to display popup layer
 const open = ref(false);
 
 const style = computed(() => {
@@ -99,17 +99,17 @@ const style = computed(() => {
   return ret;
 });
 
-// 搜索
+// Search
 function toggleSearch() {
   emits("update:showSearch", !props.showSearch);
 }
 
-// 刷新
+// Refresh
 function refresh() {
   emits("queryTable");
 }
 
-// 右侧列表元素变化
+// Changes in list elements on the right
 function dataChange(data) {
   for (let item in props.columns) {
     const key = props.columns[item].key;
@@ -117,13 +117,13 @@ function dataChange(data) {
   }
 }
 
-// 打开显隐列dialog
+// Open the visible column dialog
 function showColumn() {
   open.value = true;
 }
 
 if (props.showColumnsType == 'transfer') {
-  // 显隐列初始默认隐藏列
+  // Show and hide columns. The columns are initially hidden by default.
   for (let item in props.columns) {
     if (props.columns[item].visible === false) {
       value.value.push(parseInt(item));
@@ -131,7 +131,7 @@ if (props.showColumnsType == 'transfer') {
   }
 }
 
-// 勾选
+// Check
 function checkboxChange(event, label) {
   props.columns.filter(item => item.label == label)[0].visible = event;
 }

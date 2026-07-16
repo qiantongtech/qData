@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询数据资产字段列表
+// Query data asset field list
 export function listDaAssetColumn(query) {
   return request({
     url: '/da/assetColumn/list',
@@ -27,7 +27,7 @@ export function listDaAssetColumn(query) {
   })
 }
 
-// 查询数据资产字段详细
+// Query data asset field details
 export function getDaAssetColumn(id) {
   return request({
     url: '/da/assetColumn/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetColumn(id) {
   })
 }
 
-// 新增数据资产字段
+// Add new data asset field
 export function addDaAssetColumn(data) {
   return request({
     url: '/da/assetColumn',
@@ -44,7 +44,7 @@ export function addDaAssetColumn(data) {
   })
 }
 
-// 修改数据资产字段
+// Modify data asset fields
 export function updateDaAssetColumn(data) {
   return request({
     url: '/da/assetColumn',
@@ -53,14 +53,14 @@ export function updateDaAssetColumn(data) {
   })
 }
 
-// 删除数据资产字段
+// Delete data asset fields
 export function delDaAssetColumn(id) {
   return request({
     url: '/da/assetColumn/' + id,
     method: 'delete'
   })
 }
-// 預覽
+// Preview
 
 export function preview(data) {
   return request({

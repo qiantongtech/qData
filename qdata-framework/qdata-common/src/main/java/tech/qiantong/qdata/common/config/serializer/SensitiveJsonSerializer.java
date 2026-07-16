@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * 数据脱敏序列化过滤
+ * Data desensitization serialization filtering
  *
  * @author qdata
  */
@@ -68,14 +68,14 @@ public class SensitiveJsonSerializer extends JsonSerializer<String> implements C
     }
 
     /**
-     * 是否需要脱敏处理
+     * Is desensitization treatment required?
      */
     private boolean desensitization()
     {
         try
         {
             LoginUser securityUser = SecurityUtils.getLoginUser();
-            // 管理员不脱敏
+            // Administrators are not desensitized
             return !securityUser.getUser().isAdmin();
         }
         catch (Exception e)

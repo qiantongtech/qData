@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.dataCategoryCat.vo.DgDataC
 import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategoryCat.DgDataCategoryCatDO;
 
 /**
- * 数据分类-类目Service接口
+ * Data Category - Category Service Interface
  *
  * @author FXB
  * @date 2026-04-07
@@ -38,69 +38,69 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategoryCat.DgDataCatego
 public interface IDgDataCategoryCatService extends IService<DgDataCategoryCatDO> {
 
     /**
-     * 获得数据分类-类目分页列表
+     * Get data category-category paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据分类-类目分页列表
+     * @param pageReqVO Pagination request
+     * @return Data category-category paginated list
      */
     PageResult<DgDataCategoryCatDO> getDgDataCategoryCatPage(DgDataCategoryCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据分类-类目
+     * Create data category-category
      *
-     * @param createReqVO 数据分类-类目信息
-     * @return 数据分类-类目编号
+     * @param createReqVO Data category-category information
+     * @return Data category-category ID
      */
     Long createDgDataCategoryCat(DgDataCategoryCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据分类-类目
+     * Update data category-category
      *
-     * @param updateReqVO 数据分类-类目信息
+     * @param updateReqVO Data category-category information
      */
     int updateDgDataCategoryCat(DgDataCategoryCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据分类-类目
+     * Delete data category-category
      *
-     * @param idList 数据分类-类目编号
+     * @param idList Data category-category IDs
      */
     int removeDgDataCategoryCat(Collection<Long> idList);
 
     /**
-     * 获得数据分类-类目详情
+     * Get data category-category details
      *
-     * @param id 数据分类-类目编号
-     * @return 数据分类-类目
+     * @param id Data category-category ID
+     * @return Data category-category
      */
     DgDataCategoryCatDO getDgDataCategoryCatById(Long id);
 
     /**
-     * 获得全部数据分类-类目列表
+     * Get all data category-category list
      *
-     * @return 数据分类-类目列表
+     * @return Data category-category list
      */
     List<DgDataCategoryCatDO> getDgDataCategoryCatList();
     /**
-     * 获得全部数据分类-类目 Map
+     * Get all data category-category Map
      *
-     * @return 数据分类-类目 Map
+     * @return Data category-category Map
      */
     Map<Long, DgDataCategoryCatDO> getDgDataCategoryCatMap();
 
 
     /**
-     * 导入数据分类-类目数据
+     * Import data category-category data
      *
-     * @param importExcelList 数据分类-类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data category-category data list
+     * @param isUpdateSupport Whether to update support, if exists then update data
+     * @param operName        Operator user
+     * @return Result
      */
     String importDgDataCategoryCat(List<DgDataCategoryCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode
@@ -109,7 +109,7 @@ public interface IDgDataCategoryCatService extends IService<DgDataCategoryCatDO>
     String createCode(Long parentId, String parentCode);
 
     /**
-     * 更改指定pid下的所有code
+     * Change all codes under the specified pid
      *
      * @param pid
      */

@@ -235,7 +235,7 @@ const dialog = reactive({
   content: "",
 });
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -252,9 +252,9 @@ function handleTreeDataLoaded({ treeData, flatData }) {
   store.treeDomains = treeData;
 }
 
-// 节点单击事件
+// Node click event
 function handleNodeClick(data) {
-  // 清除之前的筛选
+  // Clear previous filters
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
@@ -269,12 +269,12 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-// 搜索按钮操作
+// Search button action
 function handleQueryClick() {
   tableRef.value?.getList();
 }
 
-// 重置按钮操作
+// reset button action
 function handleResetQueryClick() {
   if (sourceSystemTreeRef.value?.resetTree) {
     sourceSystemTreeRef.value.resetTree();
@@ -292,7 +292,7 @@ function handleViewClick(row) {
   });
 }
 
-// 下载日志
+// Download log
 function handleDownloadClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
     const content = res.data?.logContent || td("common.noLog");
@@ -303,7 +303,7 @@ function handleDownloadClick(row) {
   });
 }
 
-// 删除选中行
+// Delete selected row
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(

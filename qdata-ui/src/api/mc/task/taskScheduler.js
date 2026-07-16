@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询数据集成调度信息列表
+// Query the data integration scheduling information list
 export function listTaskScheduler(query) {
   return request({
     url: '/mc/taskScheduler/list',
@@ -9,7 +9,7 @@ export function listTaskScheduler(query) {
   })
 }
 
-// 查询数据集成调度信息详细
+// Query detailed data integration scheduling information
 export function getTaskScheduler(id) {
   return request({
     url: '/mc/taskScheduler/' + id,
@@ -17,7 +17,7 @@ export function getTaskScheduler(id) {
   })
 }
 
-// 新增数据集成调度信息
+// Added data integration scheduling information
 export function addTaskScheduler(data) {
   return request({
     url: '/mc/taskScheduler',
@@ -26,7 +26,7 @@ export function addTaskScheduler(data) {
   })
 }
 
-// 修改数据集成调度信息
+// Modify data integration scheduling information
 export function updateTaskScheduler(data) {
   return request({
     url: '/mc/taskScheduler',
@@ -35,7 +35,7 @@ export function updateTaskScheduler(data) {
   })
 }
 
-// 删除数据集成调度信息
+// Delete data integration scheduling information
 export function delTaskScheduler(id) {
   return request({
     url: '/mc/taskScheduler/' + id,

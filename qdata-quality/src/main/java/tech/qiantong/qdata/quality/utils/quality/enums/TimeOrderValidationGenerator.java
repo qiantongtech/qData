@@ -24,7 +24,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 时间字段先后顺序校验
+// Time field sequence verification
 @Component("TIME_ORDER_VALIDATION")
 public class TimeOrderValidationGenerator implements QualitySqlGenerator {
     @Override

@@ -100,7 +100,7 @@ const config = computed(() => {
   return original;
 })
 
-// 获取存储对象
+// Get storage object
 function getGuideTipStorage() {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
@@ -109,12 +109,12 @@ function getGuideTipStorage() {
     return {}
 }
 
-// 生成存储 key，按用户区分
+// Generate storage keys, differentiated by user
 function getStorageKey() {
     return `${userStore.id}_${props.tipId}_v${config.value.version}`
 }
 
-// 当前 guideTip 是否显示
+// Whether the current guideTip is displayed
 function isGuideTipShown() {
     if (!config.value.version) return true
     const storage = getGuideTipStorage()
@@ -122,7 +122,7 @@ function isGuideTipShown() {
     return !storage[key] || storage[key].status === 'shown'
 }
 
-// 更新 guideTip 状态
+// Update guideTip status
 function setGuideTipStatus(status) {
     if (!config.value.version) return
     const storage = getGuideTipStorage()
@@ -131,7 +131,7 @@ function setGuideTipStatus(status) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(storage))
 }
 
-// 激活时检查显示状态
+// Check display status when activated
 function checkVisible() {
     visible.value = isGuideTipShown()
 }
@@ -143,7 +143,7 @@ onActivated(() => {
     checkVisible()
 })
 
-// 不再提醒
+// Don't remind again
 function neverShow() {
     setGuideTipStatus('hidden')
     visible.value = false
@@ -153,7 +153,7 @@ function close() {
     visible.value = false
 }
 
-// 点击内容处理
+// Click content processing
 function handleClick(event) {
     if (event.target.tagName.toLowerCase() === 'a') return
     const funcName = event.target.dataset.func
@@ -167,7 +167,7 @@ function handleClick(event) {
     }
 }
 
-// 在组件内定义的方法
+// Methods defined within components
 const methods = {
     routeTo(link, row) {
         if (link !== '' && link.indexOf('http') !== -1) {

@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 项目与用户关联关系 创建/修改 Request VO ATT_PROJECT_USER_REL
+ * Project-User Relationship Create/Update Request VO ATT_PROJECT_USER_REL
  *
  * @author qdata
  * @date 2025-02-11

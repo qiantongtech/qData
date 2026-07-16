@@ -34,19 +34,19 @@
     </description>
 
     <dependencies>
-        <!-- redis 缓存操作 -->
+        <!-- redis cache operation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- 阿里JSON解析器 -->
+        <!-- Alibaba JSON parser -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
         </dependency>
 
-        <!-- EhCache相关组件 -->
+        <!-- EhCache related components -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>

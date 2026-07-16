@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量类目 Response VO 对象 ATT_QUALITY_CAT
+ * Data Quality Category Response VO ATT_QUALITY_CAT
  *
  * @author qdata
  * @date 2025-07-19

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据发现节点实例-日志Mapper接口
+ * Data Discovery Node Instance - Log Mapper Interface
  *
  * @author qdata
  * @date 2025-10-15
@@ -37,7 +37,7 @@ import java.util.Set;
 public interface DaDiscoveryLogBodyMapper extends BaseMapperX<DaDiscoveryLogBodyDO> {
 
     default PageResult<DaDiscoveryLogBodyDO> selectPage(DaDiscoveryLogBodyPageReqVO reqVO) {
-        // 允许排序字段，防止 SQL 注入
+        // Allowed sort fields, prevent SQL injection
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("tm", "task_id", "create_time", "update_time"));
 
         return selectPage(reqVO, new LambdaQueryWrapperX<DaDiscoveryLogBodyDO>()

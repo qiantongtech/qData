@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 未知 数据库方言
+ * Unknown database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14

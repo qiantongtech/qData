@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据元代码Service业务层处理
+ * Data Element Code Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -70,16 +70,16 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
 
     @Override
     public int updateDpDataElemCode(DpDataElemCodeSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据元代码
+        // Update data element code
         DpDataElemCodeDO updateObj = BeanUtils.toBean(updateReqVO, DpDataElemCodeDO.class);
         return dpDataElemCodeMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpDataElemCode(Collection<Long> idList) {
-        // 批量删除数据元代码
+        // Batch delete data element code
         return dpDataElemCodeMapper.deleteBatchIds(idList);
     }
 
@@ -100,19 +100,19 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
                 .collect(Collectors.toMap(
                         DpDataElemCodeDO::getId,
                         dpDataElemCodeDO -> dpDataElemCodeDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据元代码数据
+     * Import data element code data
      *
-     * @param importExcelList 数据元代码数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element code data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpDataElemCode(List<DpDataElemCodeRespVO> importExcelList, boolean isUpdateSupport, String operName) {

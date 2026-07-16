@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 业务分类 创建/修改 Request VO DM_BUSINESS_CATEGORY
+ * Business Category Create/Update Request VO - DM_BUSINESS_CATEGORY
  *
  * @author qdata
  * @date 2026-04-08

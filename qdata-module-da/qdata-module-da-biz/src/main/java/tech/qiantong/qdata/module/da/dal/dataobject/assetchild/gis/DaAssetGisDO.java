@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产-地理空间服务 DO 对象 DA_ASSET_GIS
+ * Data Asset - Geospatial Service DO - DA_ASSET_GIS
  *
  * @author qdata
  * @date 2025-04-14
  */
 @Data
 @TableName(value = "DA_ASSET_GIS")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_GIS_seq")
 @Builder
 @NoArgsConstructor
@@ -44,25 +44,25 @@ public class DaAssetGisDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 服务地址 */
+    /** Service URL */
     private String url;
 
-    /** 服务类型 */
+    /** Service Type */
     private String type;
 
-    /** 请求方式 */
+    /** Request Method */
     private String httpMethod;
 
-    /** 坐标系 */
+    /** Coordinate System */
     private String coordinateSystem;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

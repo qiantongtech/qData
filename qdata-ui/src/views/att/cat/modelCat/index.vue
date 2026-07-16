@@ -119,7 +119,7 @@
                         <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
                             v-hasPermi="['att:modelCat:add']">{{ td('common.button.add') }}</el-button>
                         <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:modelCat:remove']">{{ td('common.button.delete') }}</el-button>
+                            v-hasPermi="['att:modelCat:remove']" :disabled="scope.row.validFlag">{{ td('common.button.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -127,7 +127,7 @@
                 :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>
 
-        <!-- 新增或修改逻辑模型类目管理对话框 -->
+        <!-- Add or edit logic model category management dialog -->
         <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
             destroy-on-close>
             <el-form ref="attModelCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -179,7 +179,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+                    <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
                 </div>
             </template>
         </el-dialog>
@@ -200,6 +200,7 @@ import {
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_valid } = proxy.useDict('sys_valid');
 
 const attModelCatList = ref([]);
@@ -226,7 +227,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询逻辑模型类目管理列表 */
+/** Query logic model category list */
 function getList() {
     loading.value = true;
     listAttModelCat(queryParams.value).then((response) => {
@@ -245,15 +246,15 @@ function getDataTree() {
     });
 }
 
-/** 查询逻辑模型类目管理下拉树结构1 */
+/** Query logic model category dropdown tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     reset();
 }
 
-// 表单重置
+// Reset form
 function reset() {
     form.value = {
         id: null,
@@ -275,17 +276,17 @@ function reset() {
     proxy.resetForm('attModelCatRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
     getList();
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
-/** 改变启用状态值 */
+/** Toggle enable status value */
 function handleStatusChange(row) {
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
@@ -303,7 +304,7 @@ function handleStatusChange(row) {
         });
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
     reset();
     // getTreeselect();
@@ -311,7 +312,7 @@ function handleAdd(row) {
         attModelCatOptions.value = [];
         const data = { id: 0, name: td('common.texts.topNode'), children: [] };
         data.children = proxy.handleTree(response.data, 'id', 'parentId');
-        console.log(data, '子级');
+        console.log(data, 'children');
         attModelCatOptions.value.push(data);
     });
     if (row != null && row.id) {
@@ -323,7 +324,7 @@ function handleAdd(row) {
     title.value = td('att.modelCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operation */
 function toggleExpandAll() {
     refreshTable.value = false;
     isExpandAll.value = !isExpandAll.value;
@@ -332,18 +333,18 @@ function toggleExpandAll() {
     });
 }
 
-/** 修改按钮操作 */
+/** Edit button operation */
 async function handleUpdate(row) {
     reset();
     // await getTreeselect();
     const response = await listAttModelCat();
     attModelCatOptions.value = [];
-    // 过滤节点的计算属性
+    // Filter node computed property
     const filteredDepts = response.data.filter((d) => {
-        // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+        // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
         return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
     });
-    console.log(filteredDepts, '111级');
+    console.log(filteredDepts, 'filtered');
     const data = { id: 0, name: td('common.texts.topNode'), children: [] };
     data.children = proxy.handleTree(filteredDepts, 'id', 'parentId');
     attModelCatOptions.value.push(data);
@@ -351,7 +352,7 @@ async function handleUpdate(row) {
         form.value.parentId = row.parentId;
     }
     getAttModelCat(row.id).then((response) => {
-        //把createTime过滤掉
+        // Filter out createTime
         delete response.data.createTime;
         delete response.data.updateTime;
         form.value = response.data;
@@ -361,8 +362,10 @@ async function handleUpdate(row) {
     });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
+    if (submitLoading.value) return;
+    submitLoading.value = true;
     proxy.$refs['attModelCatRef'].validate((valid) => {
         if (valid) {
             if (form.value.id != null) {
@@ -370,19 +373,27 @@ function submitForm() {
                     proxy.$modal.msgSuccess(td('common.message.editSuccess'));
                     open.value = false;
                     getList();
+                    submitLoading.value = false;
+                }).catch(error => {
+                    submitLoading.value = false;
                 });
             } else {
                 addAttModelCat(form.value).then((response) => {
                     proxy.$modal.msgSuccess(td('common.message.addSuccess'));
                     open.value = false;
                     getList();
+                    submitLoading.value = false;
+                }).catch(error => {
+                    submitLoading.value = false;
                 });
             }
+        } else {
+            submitLoading.value = false;
         }
     });
 }
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
     proxy.$modal
         .confirm(td('att.modelCat.messages.confirmDelete').replace('<name>', row.name))

@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 敏感等级 DO 对象 DA_SENSITIVE_LEVEL
+ * Sensitive Level DO - DA_SENSITIVE_LEVEL
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DA_SENSITIVE_LEVEL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_SENSITIVE_LEVEL_seq")
 @Builder
 @NoArgsConstructor
@@ -44,31 +44,31 @@ public class DaSensitiveLevelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 敏感级别 */
+    /** Sensitive Level */
     private String sensitiveLevel;
 
-    /** 敏感规则 */
+    /** Sensitive Rule */
     private String sensitiveRule;
 
-    /** 起始字符位置 */
+    /** Starting Character Position */
     private Long startCharLoc;
 
-    /** 截止字符位置 */
+    /** Ending Character Position */
     private Long endCharLoc;
 
-    /** 遮盖字符 */
+    /** Mask Character */
     private String maskCharacter;
 
-    /** 上下线标识 */
+    /** Online/Offline Flag */
     private String onlineFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

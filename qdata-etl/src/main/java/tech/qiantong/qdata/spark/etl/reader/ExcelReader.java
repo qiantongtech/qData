@@ -30,6 +30,7 @@ import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
  * <P>
- * 用途:Excel输入
+ * Usage:Excel input
  * </p>
  *
  * @author: FXB
@@ -52,30 +53,30 @@ public class ExcelReader implements Reader {
     @Override
     public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始Excel输入节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + reader.toJSONString(PrettyFormat));
-        //参数信息
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.reader.excel.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", reader.toJSONString(PrettyFormat)));
+        //Parameter information
         JSONObject parameter = reader.getJSONObject("parameter");
-        //字段
+        //Field
         List<Object> column = parameter.getJSONArray("column");
-        //csv 文件路径
+        //csv file path
         String path = parameter.getString("path");
 
         spark.conf().set("dfs.client.use.datanode.hostname", "true");
         Dataset<Row> dataset = spark.read()
                 .format("csv")
-                .option("header", "true") // 如果 CSV 文件有表头
-                .option("inferSchema", "true") // 自动推断数据类型
+                .option("header", "true") // If the CSV file has a header
+                .option("inferSchema", "true") // Automatically infer data types
                 .option("multiLine", "true")
                 .option("escape", "\"")
                 .load(path);
         dataset = dataset.select(column.stream().map(c -> new Column(((JSONObject) c).getString("columnName"))).toArray(Column[]::new));
         readerColumns.addAll(column.stream().map(c -> ((JSONObject) c).getString("columnName")).collect(Collectors.toList()));
-        LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
-        log.info("部分数据如下>>>>>>>>>>>>>>");
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.input.data.count", dataset.count()));
+        log.info(MessageUtils.message("log.etl.sample.data"));
         dataset.na().fill("Unknown").show(10);
-        LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.sample.data", dataset.na().fill("Unknown").showString(10, 0, false)));
         return dataset;
     }
 
@@ -86,7 +87,7 @@ public class ExcelReader implements Reader {
 
     private List<Row> readData(Sheet sheet, Integer startData, JSONArray column) {
         List<Row> rows = new ArrayList<>();
-        //读取数据
+        //Read data
         for (int i = startData - 1; i <= sheet.getLastRowNum(); i++) {
             org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
             List<Object> rowData = new ArrayList<>();
@@ -94,9 +95,9 @@ public class ExcelReader implements Reader {
             for (int c = 0; c < column.size(); c++) {
                 Cell cell = row.getCell(c);
                 JSONObject jsonObject = (JSONObject) column.get(c);
-                //字段类型
+                //Field type
                 String type = jsonObject.getString("type");
-                //格式化
+                //Format
                 String format = jsonObject.getString("format");
                 if (cell == null) {
                     rowData.add(null);
@@ -124,25 +125,25 @@ public class ExcelReader implements Reader {
                 }
 
             }
-            rows.add(RowFactory.create(rowData.toArray())); // 转换为Spark的Row类型
+            rows.add(RowFactory.create(rowData.toArray())); // Convert to Spark’s Row type
         }
         return rows;
     }
 
     /**
-     * 生成sparksql所需字段
+     * Generate fields required by sparksql
      *
      * @param column
      * @return
      */
     private List<StructField> createStructType(JSONArray column) {
         log.info("column:{}", column);
-        List<StructField> fields = new ArrayList<>(); // 定义字段结构，例如：fields.add(DataTypes.createStructField("column1", DataTypes.StringType, false));
+        List<StructField> fields = new ArrayList<>(); // Define the field structure, for example: fields.add(DataTypes.createStructField("column1", DataTypes.StringType, false));
         for (Object obj : column) {
             JSONObject jsonObject = (JSONObject) obj;
-            //字段类型
+            //Field type
             String type = jsonObject.getString("type");
-            //字段名称
+            //Field name
             String value = jsonObject.getString("value");
             if (StringUtils.isBlank(value)) {
                 value = jsonObject.getString("columnName");
@@ -169,7 +170,7 @@ public class ExcelReader implements Reader {
                     dataType = DataTypes.DoubleType;
                     break;
             }
-            // 定义字段结构，例如：
+            // Define the field structure, for example:
             fields.add(DataTypes.createStructField(value, dataType, true));
         }
         return fields;

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询${functionName}列表
+// Query ${functionName} list
 export function list${BusinessName}(query) {
   return request({
     url: '/${controllerPrefix}/${businessName}/list',
@@ -27,7 +27,7 @@ export function list${BusinessName}(query) {
   })
 }
 
-// 查询${functionName}详细
+// Query ${functionName} details
 export function get${BusinessName}(${pkColumn.javaField}) {
   return request({
     url: '/${controllerPrefix}/${businessName}/' + ${pkColumn.javaField},
@@ -35,7 +35,7 @@ export function get${BusinessName}(${pkColumn.javaField}) {
   })
 }
 
-// 新增${functionName}
+// Add ${functionName}
 export function add${BusinessName}(data) {
   return request({
     url: '/${controllerPrefix}/${businessName}',
@@ -44,7 +44,7 @@ export function add${BusinessName}(data) {
   })
 }
 
-// 修改${functionName}
+// Modify ${functionName}
 export function update${BusinessName}(data) {
   return request({
     url: '/${controllerPrefix}/${businessName}',
@@ -53,7 +53,7 @@ export function update${BusinessName}(data) {
   })
 }
 
-// 删除${functionName}
+// Delete ${functionName}
 export function del${BusinessName}(${pkColumn.javaField}) {
   return request({
     url: '/${controllerPrefix}/${businessName}/' + ${pkColumn.javaField},

@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据资产类目管理Controller
+ * Data Asset Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -69,7 +69,7 @@ public class AttAssetCatController extends BaseController {
 
     @Operation(summary = "导出数据资产类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:assetCat:export')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.asset.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttAssetCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -80,7 +80,7 @@ public class AttAssetCatController extends BaseController {
 
     @Operation(summary = "导入数据资产类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:assetCat:import')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.asset.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttAssetCatRespVO> util = new ExcelUtil<>(AttAssetCatRespVO.class);
@@ -100,7 +100,7 @@ public class AttAssetCatController extends BaseController {
 
     @Operation(summary = "新增数据资产类目管理")
     @PreAuthorize("@ss.hasPermi('att:assetCat:add')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.asset.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttAssetCatSaveReqVO attAssetCat) {
         attAssetCat.setCreatorId(getUserId());
@@ -111,7 +111,7 @@ public class AttAssetCatController extends BaseController {
 
     @Operation(summary = "修改数据资产类目管理")
     @PreAuthorize("@ss.hasPermi('att:assetCat:edit')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.asset.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttAssetCatSaveReqVO attAssetCat) {
         attAssetCat.setUpdatorId(getUserId());
@@ -122,7 +122,7 @@ public class AttAssetCatController extends BaseController {
 
     @Operation(summary = "删除数据资产类目管理")
     @PreAuthorize("@ss.hasPermi('att:assetCat:remove')")
-    @Log(title = "数据资产类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.asset.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attAssetCatService.removeAttAssetCat(Arrays.asList(ids)));

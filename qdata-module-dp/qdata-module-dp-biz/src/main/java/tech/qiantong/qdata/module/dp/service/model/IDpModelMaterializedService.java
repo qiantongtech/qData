@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 物化模型记录Service接口
+ * Materialized Model Record Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -39,65 +39,65 @@ import java.util.Map;
 public interface IDpModelMaterializedService extends IService<DpModelMaterializedDO> {
 
     /**
-     * 获得物化模型记录分页列表
+     * Get Materialized Model Record Paginated List
      *
-     * @param pageReqVO 分页请求
-     * @return 物化模型记录分页列表
+     * @param pageReqVO Pagination Request
+     * @return Materialized Model Record Paginated List
      */
     PageResult<DpModelMaterializedDO> getDpModelMaterializedPage(DpModelMaterializedPageReqVO pageReqVO);
 
     /**
-     * 创建物化模型记录
+     * Create Materialized Model Record
      *
-     * @param createReqVO 物化模型记录信息
-     * @return 物化模型记录编号
+     * @param createReqVO Materialized Model Record Information
+     * @return Materialized Model Record ID
      */
     Long createDpModelMaterialized(DpModelMaterializedSaveReqVO createReqVO);
 
     /**
-     * 更新物化模型记录
+     * Update Materialized Model Record
      *
-     * @param updateReqVO 物化模型记录信息
+     * @param updateReqVO Materialized Model Record Information
      */
     int updateDpModelMaterialized(DpModelMaterializedSaveReqVO updateReqVO);
 
     /**
-     * 删除物化模型记录
+     * Delete Materialized Model Record
      *
-     * @param idList 物化模型记录编号
+     * @param idList Materialized Model Record ID
      */
     int removeDpModelMaterialized(Collection<Long> idList);
 
     /**
-     * 获得物化模型记录详情
+     * Get Materialized Model Record Details
      *
-     * @param id 物化模型记录编号
-     * @return 物化模型记录
+     * @param id Materialized Model Record ID
+     * @return Materialized Model Record
      */
     DpModelMaterializedDO getDpModelMaterializedById(Long id);
 
     /**
-     * 获得全部物化模型记录列表
+     * Get All Materialized Model Record List
      *
-     * @return 物化模型记录列表
+     * @return Materialized Model Record List
      */
     List<DpModelMaterializedDO> getDpModelMaterializedList();
 
     /**
-     * 获得全部物化模型记录 Map
+     * Get All Materialized Model Record Map
      *
-     * @return 物化模型记录 Map
+     * @return Materialized Model Record Map
      */
     Map<Long, DpModelMaterializedDO> getDpModelMaterializedMap();
 
 
     /**
-     * 导入物化模型记录数据
+     * Import Materialized Model Record Data
      *
-     * @param importExcelList 物化模型记录数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Materialized Model Record Data List
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDpModelMaterialized(List<DpModelMaterializedRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

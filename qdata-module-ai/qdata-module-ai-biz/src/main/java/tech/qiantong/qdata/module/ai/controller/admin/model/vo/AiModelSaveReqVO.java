@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 模型管理 创建/修改 Request VO AI_MODEL
+ * Model Management Create/Modify Request VO AI_MODEL
  *
  * @author FXB
  * @date 2026-04-01

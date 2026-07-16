@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.daAssetApply.DaAssetApplyDO;
 import tech.qiantong.qdata.module.da.service.daAssetApply.IDaAssetApplyService;
 
 /**
- * 数据资产申请Controller
+ * Data Asset Application Controller
  *
  * @author shu
  * @date 2025-03-19
@@ -72,7 +72,7 @@ public class DaAssetApplyController extends BaseController {
 
     @Operation(summary = "导出数据资产申请列表")
     @PreAuthorize("@ss.hasPermi('da:assetApply:export')")
-    @Log(title = "数据资产申请", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.apply", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetApplyPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -83,7 +83,7 @@ public class DaAssetApplyController extends BaseController {
 
     @Operation(summary = "导入数据资产申请列表")
     @PreAuthorize("@ss.hasPermi('da:assetApply:import')")
-    @Log(title = "数据资产申请", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.apply", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetApplyRespVO> util = new ExcelUtil<>(DaAssetApplyRespVO.class);
@@ -103,7 +103,7 @@ public class DaAssetApplyController extends BaseController {
 
     @Operation(summary = "新增数据资产申请")
     @PreAuthorize("@ss.hasAnyPermi('da:assetApply:add,da:asset:asset:add')")
-    @Log(title = "数据资产申请", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.apply", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetApplySaveReqVO daAssetApply) {
         daAssetApply.setCreatorId(getUserId());
@@ -114,7 +114,7 @@ public class DaAssetApplyController extends BaseController {
 
     @Operation(summary = "修改数据资产申请")
     @PreAuthorize("@ss.hasPermi('da:assetApply:edit')")
-    @Log(title = "数据资产申请", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.apply", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetApplySaveReqVO daAssetApply) {
         daAssetApply.setUpdatorId(getUserId());
@@ -125,7 +125,7 @@ public class DaAssetApplyController extends BaseController {
 
     @Operation(summary = "删除数据资产申请")
     @PreAuthorize("@ss.hasPermi('da:assetApply:remove')")
-    @Log(title = "数据资产申请", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.apply", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetApplyService.removeDaAssetApply(Arrays.asList(ids)));

@@ -26,9 +26,9 @@ public class PageUtil implements Serializable {
 
     private static Integer DEFAULT_MAX_COUNT = 5000;
 
-    // 当前页码
+    // Current page number
     private Integer pageNum = 1;
-    // 分页条数
+    // Number of pagination items
     private Integer pageSize = 20;
 
     public Integer getPageNum() {

@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据资产操作记录 DO 对象 DA_ASSET_OPERATE_LOG
+ * Data Asset Operation Log DO - DA_ASSET_OPERATE_LOG
  *
  * @author qdata
  * @date 2025-05-09
  */
 @Data
 @TableName(value = "DA_ASSET_OPERATE_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_OPERATE_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -47,49 +47,49 @@ public class DaAssetOperateLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 数据连接id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 表注释/表描述 */
+    /** Table Comment / Table Description */
     private String tableComment;
 
-    /** 操作类型 */
+    /** Operation Type */
     private String operateType;
 
-    /** 操作时间 */
+    /** Operation Time */
     private Date operateTime;
 
-    /** 执行时间 */
+    /** Execution Time */
     private Date executeTime;
 
-    /** 修改前数据(JSON数据) */
+    /** Data Before Update (JSON) */
     private String updateBefore;
 
-    /** 修改后数据(JSON数据) */
+    /** Data After Update (JSON) */
     private String updateAfter;
 
-    /** 字段 */
+    /** Fields */
     private String fieldNames;
 
-    /** 导入文件URL */
+    /** Import File URL */
     private String fileUrl;
 
-    /** 导入文件名称 */
+    /** Import File Name */
     private String fileName;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 
@@ -98,15 +98,15 @@ public class DaAssetOperateLogDO extends BaseEntity {
 
 
 
-    /** 用户名称 */
+    /** User Name */
     @TableField(exist = false)
     private String userName;
 
-    /** 手机号码 */
+    /** Phone Number */
     @TableField(exist = false)
     private String phoneNumber;
 
-    /** 用户昵称 */
+    /** Nickname */
     @TableField(exist = false)
     private String nickName;
 }

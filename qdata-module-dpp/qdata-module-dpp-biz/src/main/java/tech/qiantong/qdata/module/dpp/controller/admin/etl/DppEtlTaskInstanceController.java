@@ -51,12 +51,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
 
 /**
- * 数据集成任务实例Controller
+ * Data Integration Task Instance Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成任务实例")
+@Tag(name = "Data Integration Task Instance")
 @RestController
 @RequestMapping("/dpp/etlTaskInstance")
 @Validated
@@ -69,7 +69,7 @@ public class DppEtlTaskInstanceController extends BaseController {
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlTaskInstanceRespVO>> list(DppEtlTaskInstancePageReqVO dppEtlTaskInstance) {
         if (StringUtils.isNotBlank(dppEtlTaskInstance.getTaskType())) {
-            dppEtlTaskInstance.setTaskType("1");//默认离线数据集成
+            dppEtlTaskInstance.setTaskType("1");// Default offline data integration
         }
         PageResult<DppEtlTaskInstanceDO> page = dppEtlTaskInstanceService.getDppEtlTaskInstancePage(dppEtlTaskInstance);
         return CommonResult.success(BeanUtils.toBean(page, DppEtlTaskInstanceRespVO.class));
@@ -77,7 +77,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "导出数据集成任务实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:export')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlTaskInstancePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "导入数据集成任务实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:import')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlTaskInstanceRespVO> util = new ExcelUtil<>(DppEtlTaskInstanceRespVO.class);
@@ -108,7 +108,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "新增数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:add')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
         dppEtlTaskInstance.setCreatorId(getUserId());
@@ -119,7 +119,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "修改数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:edit')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlTaskInstanceSaveReqVO dppEtlTaskInstance) {
         dppEtlTaskInstance.setUpdatorId(getUserId());
@@ -130,7 +130,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "删除数据集成任务实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:remove')")
-    @Log(title = "数据集成任务实例", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.task.instance", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlTaskInstanceService.removeDppEtlTaskInstance(Arrays.asList(ids)));
@@ -164,20 +164,20 @@ public class DppEtlTaskInstanceController extends BaseController {
     @Operation(summary = "下载日志文件")
     public void downloadLog(HttpServletResponse response, Long taskInstanceId, String name) {
         try {
-            // 获取文件路径
+            // Get file path
             DppEtlTaskInstanceLogStatusRespDTO dto = dppEtlTaskInstanceService.getLogByTaskInstanceId(taskInstanceId);
-            // 如果文件存在
-            // 设置响应的内容类型为文件下载
+            // If file exists
+            // Set response content type to file download
             response.setContentType("application/octet-stream");
-            // 设置下载文件名
+            // Set download filename
             response.setHeader("Content-Disposition", "attachment;filename=" + name + ".log");
 
-            // 创建文件输入流
+            // Create file input stream
             try (InputStream in = new ByteArrayInputStream(dto.getLog().getBytes("UTF-8"));
                  OutputStream out = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];
                 int length;
-                // 将文件内容写入输出流
+                // Write file content to output stream
                 while ((length = in.read(buffer)) != -1) {
                     out.write(buffer, 0, length);
                 }

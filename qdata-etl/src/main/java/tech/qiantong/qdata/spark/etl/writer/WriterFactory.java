@@ -24,7 +24,7 @@ import java.util.Optional;
 
 /**
  * <P>
- * 用途:输出组件工厂
+ * Purpose: Output component factory
  * </p>
  *
  * @author: FXB

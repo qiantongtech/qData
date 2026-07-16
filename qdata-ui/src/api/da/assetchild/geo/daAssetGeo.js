@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-矢量列表
+// Query data assets - vector list
 export function listDaAssetGeo(query) {
   return request({
     url: '/da/daAssetGeo/list',
@@ -27,7 +27,7 @@ export function listDaAssetGeo(query) {
   })
 }
 
-// 查询数据资产-矢量详细
+// Query data assets - vector detailed
 export function getDaAssetGeo(id) {
   return request({
     url: '/da/daAssetGeo/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetGeo(id) {
   })
 }
 
-// 新增数据资产-矢量
+// New data asset-vector
 export function addDaAssetGeo(data) {
   return request({
     url: '/da/daAssetGeo',
@@ -44,7 +44,7 @@ export function addDaAssetGeo(data) {
   })
 }
 
-// 修改数据资产-矢量
+// Modify data assets - vector
 export function updateDaAssetGeo(data) {
   return request({
     url: '/da/daAssetGeo',
@@ -53,7 +53,7 @@ export function updateDaAssetGeo(data) {
   })
 }
 
-// 删除数据资产-矢量
+// Delete data assets - vector
 export function delDaAssetGeo(id) {
   return request({
     url: '/da/daAssetGeo/' + id,

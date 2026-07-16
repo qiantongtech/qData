@@ -33,7 +33,7 @@ import tech.qiantong.qdata.common.httpClient.DsRequestUtils;
 
 /**
  * <P>
- * 用途:数据质量启动类
+ * Purpose: Data quality startup class
  * </p>
  *
  * @author: FXB
@@ -45,7 +45,7 @@ import tech.qiantong.qdata.common.httpClient.DsRequestUtils;
 })
 @ServletComponentScan(basePackages = {"tech.qiantong"})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class,
-        //临时加入，如遇到Mongo报错可以开启进行忽略
+        //Temporarily join. If you encounter an error from Mongo, you can enable it and ignore it.
 //        MongoAutoConfiguration.class,
 //        MongoDataAutoConfiguration.class
 })

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.audit.DaAssetAudi
 import java.util.List;
 
 /**
- * 资产稽查调度 Convert
+ * Asset Audit Schedule Convert
  *
  * @author qdata
  * @date 2025-05-09
@@ -38,29 +38,29 @@ public interface DaAssetAuditScheduleConvert {
     DaAssetAuditScheduleConvert INSTANCE = Mappers.getMapper(DaAssetAuditScheduleConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetAuditSchedulePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetAuditSchedulePageReqVO request parameters
      * @return DaAssetAuditScheduleDO
      */
      DaAssetAuditScheduleDO convertToDO(DaAssetAuditSchedulePageReqVO daAssetAuditSchedulePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetAuditScheduleSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetAuditScheduleSaveReqVO save request parameters
      * @return DaAssetAuditScheduleDO
      */
      DaAssetAuditScheduleDO convertToDO(DaAssetAuditScheduleSaveReqVO daAssetAuditScheduleSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetAuditScheduleDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetAuditScheduleDO entity object
      * @return DaAssetAuditScheduleRespVO
      */
      DaAssetAuditScheduleRespVO convertToRespVO(DaAssetAuditScheduleDO daAssetAuditScheduleDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetAuditScheduleDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetAuditScheduleDOList entity object list
      * @return List<DaAssetAuditScheduleRespVO>
      */
      List<DaAssetAuditScheduleRespVO> convertToRespVOList(List<DaAssetAuditScheduleDO> daAssetAuditScheduleDOList);

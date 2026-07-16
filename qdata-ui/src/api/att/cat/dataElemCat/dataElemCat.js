@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询数据元类目管理列表
+// Query the data element category management list
 export function listAttDataElemCat(query) {
   return request({
     url: '/att/dataElemCat/list',
@@ -27,7 +27,7 @@ export function listAttDataElemCat(query) {
   })
 }
 
-// 查询数据元类目管理详细
+// Query data element category management details
 export function getAttDataElemCat(id) {
   return request({
     url: '/att/dataElemCat/' + id,
@@ -35,7 +35,7 @@ export function getAttDataElemCat(id) {
   })
 }
 
-// 新增数据元类目管理
+// Added data element category management
 export function addAttDataElemCat(data) {
   return request({
     url: '/att/dataElemCat',
@@ -44,7 +44,7 @@ export function addAttDataElemCat(data) {
   })
 }
 
-// 修改数据元类目管理
+// Modify data element category management
 export function updateAttDataElemCat(data) {
   return request({
     url: '/att/dataElemCat',
@@ -53,7 +53,7 @@ export function updateAttDataElemCat(data) {
   })
 }
 
-// 删除数据元类目管理
+// Delete data element category management
 export function delAttDataElemCat(id) {
   return request({
     url: '/att/dataElemCat/' + id,

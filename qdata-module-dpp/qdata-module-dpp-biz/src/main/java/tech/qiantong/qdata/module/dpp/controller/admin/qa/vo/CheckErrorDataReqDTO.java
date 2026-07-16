@@ -32,14 +32,14 @@ import java.util.Map;
 public class CheckErrorDataReqDTO implements Serializable {
 
     /**
-     * 报告id
+     * Report ID
      */
     private String reportId;
 
     /**
-     * 1-修改数据
-     * 2-修改备注
-     * 3-修改状态（忽略）
+     * 1-Modify Data
+     * 2-Modify Remark
+     * 3-Modify Status (Ignore)
      */
     private String updateType;
     private String remark;
@@ -64,7 +64,7 @@ public class CheckErrorDataReqDTO implements Serializable {
     private List<String> errorDataId;
 
     /**
-     * 查询参数
+     * Query parameters
      */
     private Map<String,Object> keyWordData;
 

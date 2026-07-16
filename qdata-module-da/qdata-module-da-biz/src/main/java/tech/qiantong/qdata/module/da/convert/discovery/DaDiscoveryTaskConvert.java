@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryTaskDO;
 import java.util.List;
 
 /**
- * 数据发现任务 Convert
+ * Data Discovery Task Convert
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,29 +38,29 @@ public interface DaDiscoveryTaskConvert {
     DaDiscoveryTaskConvert INSTANCE = Mappers.getMapper(DaDiscoveryTaskConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daDiscoveryTaskPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daDiscoveryTaskPageReqVO request parameters
      * @return DaDiscoveryTaskDO
      */
      DaDiscoveryTaskDO convertToDO(DaDiscoveryTaskPageReqVO daDiscoveryTaskPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daDiscoveryTaskSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daDiscoveryTaskSaveReqVO save request parameters
      * @return DaDiscoveryTaskDO
      */
      DaDiscoveryTaskDO convertToDO(DaDiscoveryTaskSaveReqVO daDiscoveryTaskSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daDiscoveryTaskDO 实体对象
+     * Convert DO to RespVO
+     * @param daDiscoveryTaskDO entity object
      * @return DaDiscoveryTaskRespVO
      */
      DaDiscoveryTaskRespVO convertToRespVO(DaDiscoveryTaskDO daDiscoveryTaskDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daDiscoveryTaskDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daDiscoveryTaskDOList entity object list
      * @return List<DaDiscoveryTaskRespVO>
      */
      List<DaDiscoveryTaskRespVO> convertToRespVOList(List<DaDiscoveryTaskDO> daDiscoveryTaskDOList);

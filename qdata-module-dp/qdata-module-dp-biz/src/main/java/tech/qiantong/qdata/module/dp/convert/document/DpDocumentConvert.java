@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.document.DpDocumentDO;
 import java.util.List;
 
 /**
- * 标准信息登记 Convert
+ * Standard Document Registration Convert
  *
  * @author qdata
  * @date 2025-08-21
@@ -38,29 +38,29 @@ public interface DpDocumentConvert {
     DpDocumentConvert INSTANCE = Mappers.getMapper(DpDocumentConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpDocumentPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpDocumentPageReqVO Request params
      * @return DpDocumentDO
      */
      DpDocumentDO convertToDO(DpDocumentPageReqVO dpDocumentPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpDocumentSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpDocumentSaveReqVO Save request params
      * @return DpDocumentDO
      */
      DpDocumentDO convertToDO(DpDocumentSaveReqVO dpDocumentSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpDocumentDO 实体对象
+     * Convert DO to RespVO
+     * @param dpDocumentDO Entity object
      * @return DpDocumentRespVO
      */
      DpDocumentRespVO convertToRespVO(DpDocumentDO dpDocumentDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpDocumentDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpDocumentDOList Entity object list
      * @return List<DpDocumentRespVO>
      */
      List<DpDocumentRespVO> convertToRespVOList(List<DpDocumentDO> dpDocumentDOList);

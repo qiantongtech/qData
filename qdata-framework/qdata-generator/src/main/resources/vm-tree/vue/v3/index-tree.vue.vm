@@ -161,7 +161,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- {{ td('.pleaseEnter') + '内容' }} -->
+    <!-- {{ td('.pleaseEnter') + 'content' }} -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
@@ -341,7 +341,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询${functionName}列表 */
+/** Query ${functionName} list */
 function getList() {
   loading.value = true;
 #foreach ($column in $columns)
@@ -365,7 +365,7 @@ function getList() {
   });
 }
 
-/** 查询${functionName}下拉树结构 */
+/** Query ${functionName} drop-down tree structure */
 ## function getTreeselect() {
 ##   list${BusinessName}().then(response => {
 ##     ${businessName}Options.value = [];
@@ -375,13 +375,13 @@ function getList() {
 ##   });
 ## }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// Form reset
 function reset() {
   form.value = {
 #foreach ($column in $columns)
@@ -395,12 +395,12 @@ function reset() {
   proxy.resetForm("${businessName}Ref");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
 #foreach ($column in $columns)
 #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -412,7 +412,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -431,7 +431,7 @@ function handleAdd(row) {
   title.value = "添加${functionName}";
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -440,15 +440,15 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button operation */
 async function handleUpdate(row) {
     reset();
     // await getTreeselect();
     const response = await list${BusinessName}();
     ${businessName}Options.value = [];
-    // 过滤节点的计算属性
+    // Filter computed properties of nodes
     const filteredDepts = response.data.filter(d => {
-        // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+        // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
         return d.${treeCode} !== row.${treeCode} && !d.${treeParentCode}.toString().split(',').includes(row.${treeCode}.toString());
     });
     const data = { ${treeCode}: 0, ${treeName}: 'td('.topNode')', children: [] };
@@ -469,7 +469,7 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
   proxy.#[[$]]#refs["${businessName}Ref"].validate(valid => {
     if (valid) {
@@ -495,7 +495,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   proxy.#[[$modal]]#.confirm('是否确认删除${functionName}编号为"' + row.${pkColumn.javaField} + '"的数据项？').then(function() {
     return del${BusinessName}(row.${pkColumn.javaField});

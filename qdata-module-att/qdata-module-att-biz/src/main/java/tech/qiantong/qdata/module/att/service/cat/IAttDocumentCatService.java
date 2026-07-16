@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标准信息分类管理Service接口
+ * Standard Information Category Management Service Interface
  *
  * @author qdata
  * @date 2025-08-21
@@ -36,74 +36,75 @@ import java.util.Map;
 public interface IAttDocumentCatService extends IService<AttDocumentCatDO> {
 
     /**
-     * 获得标准信息分类管理分页列表
+     * Get Standard Information Category Management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 标准信息分类管理分页列表
+     * @param pageReqVO Pagination request
+     * @return Standard Information Category Management paginated list
      */
     PageResult<AttDocumentCatDO> getAttDocumentCatPage(AttDocumentCatPageReqVO pageReqVO);
 
     /**
-     * 获得全部标准信息分类管理列表
+     * Get all Standard Information Category Management list
      *
-     * @return 标准信息分类管理列表
+     * @param pageReqVO Pagination request
+     * @return Standard Information Category Management list
      */
     List<AttDocumentCatDO> getAttDocumentCatList(AttDocumentCatPageReqVO pageReqVO);
 
     /**
-     * 创建标准信息分类管理
+     * Create Standard Information Category Management
      *
-     * @param createReqVO 标准信息分类管理信息
-     * @return 标准信息分类管理编号
+     * @param createReqVO Standard Information Category Management info
+     * @return Standard Information Category Management ID
      */
     Long createAttDocumentCat(AttDocumentCatSaveReqVO createReqVO);
 
     /**
-     * 更新标准信息分类管理
+     * Update Standard Document Category Management
      *
-     * @param updateReqVO 标准信息分类管理信息
+     * @param updateReqVO Standard Document Category Management info
      */
     int updateAttDocumentCat(AttDocumentCatSaveReqVO updateReqVO);
 
     /**
-     * 删除标准信息分类管理
+     * Delete Standard Document Category Management
      *
-     * @param id 标准信息分类管理编号
+     * @param id Standard Document Category Management ID
      */
     int removeAttDocumentCat(Long id);
 
     /**
-     * 获得标准信息分类管理详情
+     * Get Standard Document Category Management details
      *
-     * @param id 标准信息分类管理编号
-     * @return 标准信息分类管理
+     * @param id Standard Document Category Management ID
+     * @return Standard Document Category Management
      */
     AttDocumentCatDO getAttDocumentCatById(Long id);
 
     /**
-     * 获得全部标准信息分类管理列表
+     * Get all Standard Document Category Management list
      *
-     * @return 标准信息分类管理列表
+     * @return Standard Document Category Management list
      */
     List<AttDocumentCatDO> getAttDocumentCatList();
 
     /**
-     * 获得全部标准信息分类管理 Map
+     * Get all Standard Document Category Management Map
      *
-     * @return 标准信息分类管理 Map
+     * @return Standard Document Category Management Map
      */
     Map<Long, AttDocumentCatDO> getAttDocumentCatMap();
 
     /**
-     * 是否存在标准信息分类管理子节点
+     * Check if Standard Document Category Management has child nodes
      *
-     * @param id 标准信息分类管理id
-     * @return 结果 true 存在 false 不存在
+     * @param id Standard Document Category Management ID
+     * @return true if exists, false otherwise
      */
     boolean hasChildByAttDocumentCatId(Long id);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

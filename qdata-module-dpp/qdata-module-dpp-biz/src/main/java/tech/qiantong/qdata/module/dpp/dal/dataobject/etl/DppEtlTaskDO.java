@@ -30,14 +30,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task DO - DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK")
-// Handle JDBC SQL execution.
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -51,23 +51,23 @@ public class DppEtlTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Implementation details. */
+    /** Category ID */
     private Long catId;
 
-    /** Implementation details. */
+    /** Category code */
     private String catCode;
 
     @TableField(exist = false)
     private String catName;
 
-    /** Handle database and data source configuration. */
+    /** Datasource type */
     @TableField(exist = false)
     private String datasourceType;
 
-    /** Handle task-related data and operations. */
+    /** 1: Offline task 2: Real-time task 3: Data development task 4: Job task */
     private String type;
 
-    /** Handle task-related data and operations. */
+    /** Task name */
     private String name;
 
     /** Task code */
@@ -76,74 +76,74 @@ public class DppEtlTaskDO extends BaseEntity {
     /** Task version */
     private Long version;
 
-    /** Implementation details. */
+    /** Project ID */
     private Long projectId;
 
-    /** Implementation details. */
+    /** Project code */
     private String projectCode;
 
-    /** Implementation details. */
+    /** Person in charge */
     private String personCharge;
 
-    /** Implementation details. */
+    /** Person in charge name */
     @TableField(exist = false)
     private String personChargeName;
 
-    /** Implementation details. */
+    /** Contact number */
     private String contactNumber;
 
-    /** Handle node-related data and operations. */
+    /** Node location info */
     private String locations;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task execution strategy", example = "")
     private String executionType;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
-    /** Implementation details. */
+    /** Timeout */
     private Long timeout;
 
-    /** Implementation details. */
+    /** Extraction count */
     private Long extractionCount;
 
-    /** Implementation details. */
+    /** Write count */
     private Long writeCount;
 
-    /** Handle task-related data and operations. */
+    /** Task status */
     private String status;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id，任务表也保存一份，方便按任务直接找到对应的 Quartz Job。 */
     private Long quartzId;
 
-    /** Scheduler */
+    /** 调度器 */
     private String scheduler;
 
-    /** Executor */
+    /** 执行器 */
     private String actuator;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** Implementation details. */
+    /** Cron expression */
     @TableField(exist = false)
     private String cronExpression;
 
-    /** Handle scheduling configuration and operations. */
+    /** Scheduler state */
     @TableField(exist = false)
     private String schedulerState;
 
-    /** Implementation details. */
+    /** Last execute time */
     @TableField(exist = false)
     private Date lastExecuteTime;
 
-    @Schema(description = "草稿任务配置信息", example = "")
+    @Schema(description = "Draft task configuration information", example = "")
     private String draftJson;
 }

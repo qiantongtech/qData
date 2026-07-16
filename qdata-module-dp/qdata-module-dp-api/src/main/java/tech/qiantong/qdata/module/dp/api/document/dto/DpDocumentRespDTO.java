@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 标准信息登记 DTO 对象 DP_DOCUMENT
+ * Standard Document Registration DTO - DP_DOCUMENT
  *
  * @author qdata
  * @date 2025-08-21
@@ -37,53 +37,53 @@ public class DpDocumentRespDTO {
     /** ID */
     private Long id;
 
-    /** 编码 */
+    /** Code */
     private String code;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 类目code */
+    /** Category Code */
     private String catCode;
     private String catName;
 
-    /** 文件标准类型字段， */
+    /** Document Standard Type */
     private String type;
 
-    /** 文件状态 */
+    /** Document Status */
     private String status;
 
-    /** 发布机构名称，例如“中国国家标准化管理委员会” */
+    /** Issuing Agency, e.g. “Standardization Administration of China” */
     private String issuingAgency;
 
-    /** 版本号 */
+    /** Version */
     private String version;
 
-    /** 发布日期 */
+    /** Release Date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date releaseDate;
 
-    /** 实施日期 */
+    /** Implementation Date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date implementationDate;
 
-    /** 废止日期 */
+    /** Abolition Date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date abolitionDate;
 
-    /** 文件url */
+    /** File URL */
 
     private String fileUrl;
     private String fileName;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 标准信息分类管理Mapper接口
+ * Standard Information Category Management Mapper Interface
  *
  * @author qdata
  * @date 2025-08-21
@@ -39,10 +39,10 @@ import java.util.Set;
 public interface AttDocumentCatMapper extends BaseMapperX<AttDocumentCatDO> {
 
     default PageResult<AttDocumentCatDO> selectPage(AttDocumentCatPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttDocumentCatDO>()
                 .likeIfPresent(AttDocumentCatDO::getName, reqVO.getName())
                 .eqIfPresent(AttDocumentCatDO::getParentId, reqVO.getParentId())
@@ -50,9 +50,9 @@ public interface AttDocumentCatMapper extends BaseMapperX<AttDocumentCatDO> {
                 .eqIfPresent(AttDocumentCatDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(AttDocumentCatDO::getCode, reqVO.getCode())
                 .eqIfPresent(AttDocumentCatDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttDocumentCatDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 

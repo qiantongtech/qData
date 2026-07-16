@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 业务域Controller
+ * Business domainController
  *
  * @author qdata
  * @date 2026-02-12
@@ -58,7 +58,7 @@ public class McDomainController extends BaseController {
 
 
     @Operation(summary = "导出业务域列表")
-    @Log(title = "业务域", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.domain", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McDomainPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -75,7 +75,7 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "新增业务域")
-    @Log(title = "业务域", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.domain", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McDomainSaveReqVO mcDomain) {
         mcDomain.setCreatorId(getUserId());
@@ -85,7 +85,7 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "修改业务域")
-    @Log(title = "业务域", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.domain", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McDomainSaveReqVO mcDomain) {
         mcDomain.setUpdatorId(getUserId());
@@ -95,14 +95,14 @@ public class McDomainController extends BaseController {
     }
 
     @Operation(summary = "删除业务域")
-    @Log(title = "业务域", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.domain", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcDomainService.removeMcDomain(Arrays.asList(ids)));
     }
 
     /**
-     * 批量删除检查,查询可删除数和不可删除数
+     * Batch deletion check, query the number that can be deleted and the number that cannot be deleted
      */
     @Operation(summary = "批量删除检查业务域")
     @GetMapping("/batchDeleteCheck/{ids}")

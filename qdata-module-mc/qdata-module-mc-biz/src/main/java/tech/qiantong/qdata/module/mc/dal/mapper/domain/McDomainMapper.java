@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 业务域Mapper接口
+ * Business domain Mapper interface
  *
  * @author qdata
  * @date 2026-02-12
@@ -22,10 +22,10 @@ import java.util.Set;
 public interface McDomainMapper extends BaseMapperX<McDomainDO> {
 
     default PageResult<McDomainDO> selectPage(McDomainPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<McDomainDO>()
                 .likeIfPresent(McDomainDO::getName, reqVO.getName())
                 .eqIfPresent(McDomainDO::getParentId, reqVO.getParentId())
@@ -35,9 +35,9 @@ public interface McDomainMapper extends BaseMapperX<McDomainDO> {
                 .eqIfPresent(McDomainDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(McDomainDO::getRemark, reqVO.getRemark())
                 .eqIfPresent(McDomainDO::getDescription, reqVO.getDescription())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(McDomainDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 
@@ -56,7 +56,7 @@ public interface McDomainMapper extends BaseMapperX<McDomainDO> {
                 .likeRightIfPresent(McDomainDO::getCode, reqVO.getCode())
                 .eqIfPresent(McDomainDO::getCreateTime, reqVO.getCreateTime())
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns);
-        // FIXME 迁移时候存在问题
+        // FIXME There is a problem during migration
         //queryWrapperX.orderBy(!reqVO.getOrderByColumn().contains("create_time") && !reqVO.getOrderByColumn().contains("createTime"),
         //        false, BaseEntity::getCreateTime);
         return selectList(queryWrapperX);

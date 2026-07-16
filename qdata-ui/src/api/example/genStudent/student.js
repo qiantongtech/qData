@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询学生列表
+// Query student list
 export function listStudent(query) {
   return request({
     url: '/example/student/list',
@@ -27,7 +27,7 @@ export function listStudent(query) {
   })
 }
 
-// 查询学生详细
+// Check student details
 export function getStudent(id) {
   return request({
     url: '/example/student/' + id,
@@ -35,7 +35,7 @@ export function getStudent(id) {
   })
 }
 
-// 新增学生
+// Add new student
 export function addStudent(data) {
   return request({
     url: '/example/student',
@@ -44,7 +44,7 @@ export function addStudent(data) {
   })
 }
 
-// 修改学生
+// Modify students
 export function updateStudent(data) {
   return request({
     url: '/example/student',
@@ -53,7 +53,7 @@ export function updateStudent(data) {
   })
 }
 
-// 删除学生
+// Delete students
 export function delStudent(id) {
   return request({
     url: '/example/student/' + id,

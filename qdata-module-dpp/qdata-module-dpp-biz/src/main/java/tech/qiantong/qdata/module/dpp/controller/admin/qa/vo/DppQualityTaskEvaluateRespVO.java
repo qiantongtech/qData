@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量任务-评测规则 Response VO 对象 DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task - Evaluation Rule Response VO DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务-评测规则 Response VO")
+@Schema(description = "Data Quality Task - Evaluation Rule Response VO")
 @Data
 public class DppQualityTaskEvaluateRespVO implements Serializable {
 

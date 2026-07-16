@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -32,7 +32,7 @@ import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.*;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 
 /**
- * 数据集成任务实例Service接口
+ * Data Integration Task Instance Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -40,79 +40,79 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceDO> {
 
     /**
-     * 获得数据集成任务实例分页列表
+     * Get data integration task instance pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务实例分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task instance pagination list
      */
     PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO);
 
     DppEtlTaskInstanceRespVO getDppEtlTaskInstanceById(DppEtlTaskInstancePageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务实例
+     * Create data integration task instance
      *
-     * @param createReqVO 数据集成任务实例信息
-     * @return 数据集成任务实例编号
+     * @param createReqVO Data integration task instance info
+     * @return Data integration task instance ID
      */
     Long createDppEtlTaskInstance(DppEtlTaskInstanceSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成任务实例
+     * Update data integration task instance
      *
-     * @param updateReqVO 数据集成任务实例信息
+     * @param updateReqVO Data integration task instance info
      */
     int updateDppEtlTaskInstance(DppEtlTaskInstanceSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务实例
+     * Delete data integration task instance
      *
-     * @param idList 数据集成任务实例编号
+     * @param idList Data integration task instance ID list
      */
     int removeDppEtlTaskInstance(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务实例详情
+     * Get data integration task instance detail
      *
-     * @param id 数据集成任务实例编号
-     * @return 数据集成任务实例
+     * @param id Data integration task instance ID
+     * @return Data integration task instance
      */
     DppEtlTaskInstanceDO getDppEtlTaskInstanceById(Long id);
 
     /**
-     * 获得全部数据集成任务实例列表
+     * Get all data integration task instance list
      *
-     * @return 数据集成任务实例列表
+     * @return Data integration task instance list
      */
     List<DppEtlTaskInstanceDO> getDppEtlTaskInstanceList();
 
     /**
-     * 获得全部数据集成任务实例 Map
+     * Get all data integration task instance Map
      *
-     * @return 数据集成任务实例 Map
+     * @return Data integration task instance Map
      */
     Map<Long, DppEtlTaskInstanceDO> getDppEtlTaskInstanceMap();
 
 
     /**
-     * 导入数据集成任务实例数据
+     * Import data integration task instance data
      *
-     * @param importExcelList 数据集成任务实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration task instance data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDppEtlTaskInstance(List<DppEtlTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 创建任务实例
+     * Create task instance
      *
      * @param processInstance
      */
     Boolean createTaskInstance(ProcessInstance processInstance);
 
     /**
-     * 更新任务实例
+     * Update task instance
      *
      * @param processInstance
      * @return
@@ -120,7 +120,7 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
     Boolean updateTaskInstance(ProcessInstance processInstance);
 
     /**
-     * 通过dsId获取数据
+     * Get data by dsId
      *
      * @param dsId
      * @return
@@ -128,7 +128,7 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
     DppEtlTaskInstanceDO getByDsId(Long dsId);
 
     /**
-     * 根据ds流程实例id获取中任务实例的id
+     * Get task instance ID by DS process instance ID
      *
      * @param dsId
      * @return
@@ -138,7 +138,7 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
     PageResult<DppEtlTaskInstanceTreeListRespVO> treeList(DppEtlTaskInstanceTreeListReqVO reqVO);
 
     /**
-     * 执行命令
+     * Execute command
      *
      * @param taskInstanceId
      * @param executeType
@@ -147,7 +147,7 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
     AjaxResult execute(Long taskInstanceId, ExecuteType executeType);
 
     /**
-     * 获取子任务列表
+     * Get sub-task list
      *
      * @param taskInstanceId
      * @param nodeInstanceId
@@ -156,28 +156,28 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
     List<DppEtlTaskInstanceTreeListRespVO> subNodelist(Long taskInstanceId, Long nodeInstanceId);
 
     /**
-     * 通过实例id获取日志
+     * Get log by instance ID
      * @param taskInstanceId
      * @return
      */
     DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId);
 
     /**
-     * 获取正在运行的任务实例
+     * Get running task instance
      * @param taskId
      * @return
      */
     Long getRunTaskInstance(Long taskId);
 
     /**
-     * 根据任务实例id获取数据集成任务详细信息
+     * Get data integration task detail info by task instance ID
      * @param id
      * @return
      */
     DppEtlTaskUpdateQueryRespVO getTaskInfo(Long id);
 
     /**
-     * 根据任务code获取最后一次任务实例
+     * Get the last task instance by task code
      * @param code
      * @return
      */

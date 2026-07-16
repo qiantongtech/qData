@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  数值边界调整  -->
+  <!--  Numerical boundary adjustment  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
@@ -132,6 +132,11 @@ function validate() {
   return new Promise((resolve) => {
     formRef.value.validate((valid) => {
       if (valid) {
+        if (Number(form.min) > Number(form.max)) {
+          ElMessage.warning('最小值不能大于最大值。');
+          resolve({ valid: false });
+          return;
+        }
         const data = Object.fromEntries(
           exposedFields.map((key) => [key, form[key]])
         );

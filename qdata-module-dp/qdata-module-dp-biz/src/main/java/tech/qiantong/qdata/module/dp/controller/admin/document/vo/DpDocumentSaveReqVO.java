@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 标准信息登记 创建/修改 Request VO DP_DOCUMENT
+ * Document Registration Save Request VO - DP_DOCUMENT
  *
  * @author qdata
  * @date 2025-08-21

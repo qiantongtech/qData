@@ -3,31 +3,31 @@ package tech.qiantong.qdata.datax;
 import java.nio.file.Path;
 
 /**
- * Handle DataX task configuration and execution.
+ * DataX 执行结果。
  * <p>
- * Handle DataX task configuration and execution.
+ * 保存 DataX 进程退出码、实际执行的 job.json 文件路径以及进程输出内容。
  */
 public class DataXResult {
 
     /**
-     * Handle DataX task configuration and execution.
+     * DataX 进程退出码，0 表示执行成功。
      */
     private final int exitCode;
     /**
-     * Implementation details.
+     * 本次执行使用的 job.json 文件路径。
      */
     private final Path jobFile;
     /**
-     * Handle DataX task configuration and execution.
+     * DataX 进程标准输出和标准错误合并后的文本。
      */
     private final String output;
 
     /**
-     * Handle DataX task configuration and execution.
+     * 创建 DataX 执行结果。
      *
-     * @param exitCode parameter value
-     * @param jobFile parameter value
-     * @param output parameter value
+     * @param exitCode DataX 进程退出码
+     * @param jobFile 本次执行使用的 job.json 文件路径
+     * @param output DataX 进程输出
      */
     public DataXResult(int exitCode, Path jobFile, String output) {
         this.exitCode = exitCode;
@@ -36,45 +36,45 @@ public class DataXResult {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 判断 DataX 是否执行成功。
      *
-     * @return the operation result
+     * @return true 表示退出码为 0
      */
     public boolean isSuccess() {
         return exitCode == 0;
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 获取 DataX 进程退出码。
      *
-     * @return the operation result
+     * @return DataX 进程退出码
      */
     public int getExitCode() {
         return exitCode;
     }
 
     /**
-     * Retrieve the required data.
+     * 获取本次执行使用的 job.json 文件路径。
      *
-     * @return the operation result
+     * @return job.json 文件路径
      */
     public Path getJobFile() {
         return jobFile;
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 获取 DataX 进程输出。
      *
-     * @return the operation result
+     * @return DataX 进程输出
      */
     public String getOutput() {
         return output;
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 返回便于日志查看的 DataX 执行结果文本。
      *
-     * @return the operation result
+     * @return DataX 执行结果文本
      */
     @Override
     public String toString() {

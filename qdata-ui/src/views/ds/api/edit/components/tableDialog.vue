@@ -27,7 +27,7 @@
             <el-table-column prop="engName" :label="td('ds.apiEdit.parameter.tableDialogColumn.columnName')" align="center" width="200" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="columnType" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataType')" align="center" width="120" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="columnLength" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataLength')" width="90" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-            <!--            <el-table-column prop="dataPrecision" label="数据精度" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
+            <!--            <el-table-column prop="dataPrecision" label="data precision" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
             <el-table-column prop="columnScale" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataDecimal')" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="pkFlag" :label="td('ds.apiEdit.parameter.tableDialogColumn.primaryKey')" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
@@ -83,7 +83,7 @@ const props = defineProps({
 })
 
 const data = reactive({
-    isInitialized: false, // 标识是否已初始化选中项
+    isInitialized: false, // Identifies whether the selected item has been initialized
     checkedTableColumns: [],
     total: 0,
     queryParams: {
@@ -95,7 +95,7 @@ const data = reactive({
     },
     loading: true,
     tableHeight: document.body.offsetHeight - 400 + 'px',
-    AddListRows: [], lastSqlText: '', // 存储上次的 SQL 文本，用于检测是否发生变化
+    AddListRows: [], lastSqlText: '', // Stores the last SQL text to detect whether changes have occurred
     firstDialogVisible: false,
     secondDialogVisible: false,
     sortDialogVisible: false,
@@ -108,7 +108,7 @@ const { queryParams, AddListRows, tableHeight, loading, isInitialized,
 
 const computedTitle = computed(() => props.dialogTitle || td('ds.apiEdit.tableDialog.tableData'));
 
-//添加计算属性
+//Add computed properties
 const dialogVisible = computed({
     get: () => props.visible,
     set: (newValue) => {
@@ -124,7 +124,7 @@ function handleClose() {
     isInitialized.value = false;
     AddListRows.value = [];
 }
-function echoSelected() { // 回显选中
+function echoSelected() { // echo selected
     this.$nextTick(() => {
         proxy.$refs.multipleTable.clearSelection();
         tableData.forEach(item => {

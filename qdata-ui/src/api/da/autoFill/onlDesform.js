@@ -19,7 +19,7 @@
 import request from "@/utils/request";
 
 /**
- * 分页列表
+ * Paginated list
  * @param params
  * @returns {AxiosPromise}
  */
@@ -32,7 +32,7 @@ export function pageData(params) {
 }
 
 /**
- * 添加
+ * add
  * @param data
  * @returns {AxiosPromise}
  */
@@ -45,7 +45,7 @@ export function add(data) {
 }
 
 /**
- * 编辑
+ * Edit
  * @param data
  * @returns {AxiosPromise}
  */
@@ -58,7 +58,7 @@ export function edit(data) {
 }
 
 /**
- * 删除
+ * Delete
  * @param params
  * @returns {AxiosPromise}
  */
@@ -71,7 +71,7 @@ export function deleted(params) {
 }
 
 /**
- * 通过表单编码查询
+ * Query via form encoding
  * @param params
  * @returns {AxiosPromise}
  */

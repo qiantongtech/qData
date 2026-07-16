@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据分类-类目 Request VO 对象 DG_DATA_CATEGORY_CAT
+ * Data Category - Cat Request VO - DG_DATA_CATEGORY_CAT
  *
  * @author FXB
  * @date 2026-04-07

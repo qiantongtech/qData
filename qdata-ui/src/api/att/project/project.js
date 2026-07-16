@@ -18,7 +18,7 @@
 
 import request from '@/utils/request';
 
-// 查询项目列表
+// Query project list
 export function listAttProject(query) {
     return request({
         url: '/att/project/list',
@@ -27,7 +27,7 @@ export function listAttProject(query) {
     });
 }
 
-// 查询当前用户所属的项目列表
+// Query the list of projects to which the current user belongs
 export function currentUser() {
     return request({
         url: '/att/project/currentUser/list',
@@ -35,7 +35,7 @@ export function currentUser() {
     });
 }
 
-// 查询当前用户所属的项目列表
+// Query the list of projects to which the current user belongs
 export function noProjectUser(query) {
     return request({
         url: '/att/project/noProjectUser/list',
@@ -44,7 +44,7 @@ export function noProjectUser(query) {
     });
 }
 
-// 查询项目详细
+// Query project details
 export function getAttProject(id) {
     return request({
         url: '/att/project/' + id,
@@ -52,7 +52,7 @@ export function getAttProject(id) {
     });
 }
 
-// 获取当前用户是非具备用户添加和项目管理员
+// Get whether the current user has user addition and project administrator
 export function addUserAndProject(id) {
     return request({
         url: '/att/project/addUserAndProject/' + id,
@@ -60,7 +60,7 @@ export function addUserAndProject(id) {
     });
 }
 
-// 修改状态
+// Modify status
 export function editProjectStatus(id, status) {
     return request({
         url: `/att/project/editProjectStatus/${id}/${status}`,
@@ -68,7 +68,7 @@ export function editProjectStatus(id, status) {
     });
 }
 
-// 新增项目
+// Add new items
 export function addAttProject(data) {
     return request({
         url: '/att/project',
@@ -77,7 +77,7 @@ export function addAttProject(data) {
     });
 }
 
-// 修改项目
+// Modify project
 export function updateAttProject(data) {
     return request({
         url: '/att/project',
@@ -86,7 +86,7 @@ export function updateAttProject(data) {
     });
 }
 
-// 删除项目
+// Delete project
 export function delAttProject(id) {
     return request({
         url: '/att/project/' + id,

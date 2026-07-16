@@ -29,7 +29,7 @@ import tech.qiantong.qdata.common.httpClient.constants.QianTongDCApiType;
 
 /**
  * <P>
- * 用途:执行相关相关接口实现类
+ * Description: Execution related interface implementation class
  * </p>
  *
  * @author: FXB

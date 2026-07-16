@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据质量任务 Response VO 对象 DPP_QUALITY_TASK
+ * Data Quality Task Response VO Object DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
@@ -144,10 +144,10 @@ public class DppQualityTaskRespVO implements Serializable {
     private Long assetId;
 
 
-    // 数据质量任务-稽查对象
+    // Data quality tasks-audit objects
     private List<DppQualityTaskObjRespVO> dppQualityTaskObjSaveReqVO;
 
-    // 规则对象
+    // Rule object
     private List<DppQualityTaskEvaluateRespVO> dppQualityTaskEvaluateRespVOS;
     @Excel(name = "稽查对象数")
     @Schema(description = "稽查对象数", example = "")

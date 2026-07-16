@@ -19,45 +19,45 @@
 package tech.qiantong.qdata.common.constant;
 
 /**
- * Handle task-related data and operations.
+ * Task scheduling common constants
  *
  * @author qdata
  */
 public class ScheduleConstants
 {
-    /** Handle Quartz scheduling operations. */
+    /** 调度器 Quartz */
     public static final String QUARTZ = "QUARTZ";
 
-    /** Handle DolphinScheduler operations. */
+    /** 调度器 DolphinScheduler */
     public static final String DOLPHINSCHEDULER = "DOLPHINSCHEDULER";
 
     public static final String TASK_CLASS_NAME = "TASK_CLASS_NAME";
 
     public static final String QUARTZ_JOB_NAMESPACE = "_QUARTZ_JOB_";
 
-    /** Implementation details. */
+    /** Execute target key */
     public static final String TASK_PROPERTIES = "TASK_PROPERTIES";
 
-    /** Implementation details. */
+    /** default */
     public static final String MISFIRE_DEFAULT = "0";
 
-    /** Implementation details. */
+    /** Trigger execution immediately */
     public static final String MISFIRE_IGNORE_MISFIRES = "1";
 
-    /** Implementation details. */
+    /** Trigger an execution */
     public static final String MISFIRE_FIRE_AND_PROCEED = "2";
 
-    /** Implementation details. */
+    /** Does not trigger immediate execution */
     public static final String MISFIRE_DO_NOTHING = "3";
 
     public enum Status
     {
         /**
-         * Implementation details.
+         * Normal
          */
         NORMAL("0"),
         /**
-         * Implementation details.
+         * Pause
          */
         PAUSE("1");
 

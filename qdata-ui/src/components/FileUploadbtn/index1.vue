@@ -27,7 +27,7 @@
             </el-button>
         </el-upload>
 
-        <!-- 上传提示 -->
+        <!-- Upload tips -->
         <div class="el-upload__tip" v-if="isShowTip">
             {{ t('common.upload.supportedFormat') }}
             <b style="color: #f56c6c">{{ fileType.join(', ') }}</b>
@@ -35,7 +35,7 @@
             <b style="color: #f56c6c">{{ fileSize }}{{ t('common.upload.fileSizeMB') }}</b>
         </div>
 
-        <!-- 自定义文件展示 -->
+        <!-- Customized file display -->
         <ul class="custom-file-list">
             <li v-for="(file, index) in fileList" :key="file.uid" class="file-item">
                 <el-icon>
@@ -123,7 +123,7 @@ function handleBeforeUpload(file) {
     }
     return true
 }
-// 上传成功回调
+// Upload success callback
 function handleUploadSuccess(res, file) {
     if (res.url) {
         fileList.value.push({
@@ -132,10 +132,10 @@ function handleUploadSuccess(res, file) {
         });
         emit('update:modelValue', fileList.value.map((f) => f.url).join(','))
         if (res.size) {
-            emit("update:fileSize", res.size); // 更新文件大小
+            emit("update:fileSize", res.size); // Update file size
         }
         if (res.ext) {
-            emit("update:fileExt", res.ext); // 更新文件后缀名
+            emit("update:fileExt", res.ext); // Update file extension
         }
         uploadedSuccessfully();
     } else {
@@ -170,16 +170,16 @@ const handleView = (row) => {
     const baseUrl = import.meta.env.VITE_APP_BASE_API;
     const fullUrl = `${baseUrl}${row.url.trim()}`;
     console.log(fullUrl);
-    // 获取屏幕尺寸
+    // Get screen size
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
-    // 设置窗口尺寸为屏幕尺寸的一部分，例如60%
+    // Set the window size to a fraction of the screen size, e.g. 60%
     const width = screenWidth * 0.7;
     const height = screenHeight * 0.7;
-    // 计算窗口居中时的左上角位置
+    // Calculate the position of the upper left corner when the window is centered
     const left = (screenWidth - width) / 2;
     const top = (screenHeight - height) / 2;
-    // 打开新窗口并居中
+    // Open new window and center
     const newWindow = window.open(rpUrl + "/onlinePreview?url=" + encodeURIComponent(base64Encode(fullUrl)), "", `scrollbars=yes, width=${width}, height=${height}, top=${top}, left=${left}`);
     if (window.focus) {
         newWindow.focus();

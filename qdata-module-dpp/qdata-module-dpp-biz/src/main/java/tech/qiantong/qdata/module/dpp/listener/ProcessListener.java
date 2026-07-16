@@ -39,7 +39,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -58,18 +58,18 @@ public class ProcessListener {
 //            key = {"ds.queue.processInstance.insert"},
 //            value = @Queue(value = "ds.queue.processInstance.insert", durable = "true", exclusive = "false", autoDelete = "false")))
 //    public void processInstanceInsert(Map map, Channel channel, Message message) {
-//        log.error("流程实例创建消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        log.error("Process instance creation message start>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //        ProcessInstance processInstance = JSON.parseObject(JSON.toJSONString(map), ProcessInstance.class);
 //        try {
 //            dppEtlTaskInstanceService.createTaskInstance(processInstance);
 //        } catch (ServiceException serviceException) {
-//            log.error("创建流程实例异常:{}", serviceException.getMessage());
+//            log.error("Create process instance exception:{}", serviceException.getMessage());
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//        // 手动确认
+//        // Manual acknowledgment
 //        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-//        log.info("流程实例创建消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        log.info("Process instance creation message end>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //    }
 
 
@@ -98,7 +98,7 @@ public class ProcessListener {
             return;
         }
         if (flag) {
-            // 手动确认
+            // Manual acknowledgment
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
         log.info(processInstance.getId() + "流程实例创建更新消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>" + flag);

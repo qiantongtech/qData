@@ -30,7 +30,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.*;
 
 /**
- * 数据元数据规则关联信息Mapper接口
+ * Data Element Rule Relationship Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,7 +38,7 @@ import java.util.*;
 public interface DpDataElemRuleRelMapper extends BaseMapperX<DpDataElemRuleRelDO> {
 
     default PageResult<DpDataElemRuleRelDO> selectPage(DpDataElemRuleRelPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DpDataElemRuleRelDO> lambdaWrapper = new MPJLambdaWrapper<>();

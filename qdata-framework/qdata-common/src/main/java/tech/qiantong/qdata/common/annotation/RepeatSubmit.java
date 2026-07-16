@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.annotation;
 import java.lang.annotation.*;
 
 /**
- * 自定义注解防止表单重复提交
+ * Custom annotations prevent repeated submission of forms
  *
  * @author qdata
  *
@@ -33,12 +33,12 @@ import java.lang.annotation.*;
 public @interface RepeatSubmit
 {
     /**
-     * 间隔时间(ms)，小于此时间视为重复提交
+     * Interval time (ms), less than this time is considered a duplicate submission
      */
     public int interval() default 5000;
 
     /**
-     * 提示消息
+     * Prompt message
      */
     public String message() default "不允许重复提交，请稍候再试";
 }

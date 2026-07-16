@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据资产操作申请 Request VO 对象 DA_ASSET_OPERATE_APPLY
+ * Data Asset Operate Apply Request VO Object DA_ASSET_OPERATE_APPLY
  *
  * @author qdata
  * @date 2025-05-09

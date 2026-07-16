@@ -24,7 +24,7 @@ import tech.qiantong.qdata.quality.dal.dataobject.quality.CheckErrorData;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB

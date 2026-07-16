@@ -29,7 +29,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.Semaphore;
 
 /**
- * websocket 消息处理
+ * WebSocket Message Handler
  *
  * @author qdata
  */
@@ -38,81 +38,81 @@ import java.util.concurrent.Semaphore;
 public class WebSocketServer
 {
     /**
-     * WebSocketServer 日志控制器
+     * WebSocketServer log controller
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
 
     /**
-     * 默认最多允许同时在线人数100
+     * Maximum concurrent online users allowed by default: 100
      */
     public static int socketMaxOnlineCount = 100;
 
     private static Semaphore socketSemaphore = new Semaphore(socketMaxOnlineCount);
 
     /**
-     * 连接建立成功调用的方法
+     * Method called when connection is established
      */
     @OnOpen
     public void onOpen(Session session) throws Exception
     {
         boolean semaphoreFlag = false;
-        // 尝试获取信号量
+        // Try to acquire semaphore
         semaphoreFlag = SemaphoreUtils.tryAcquire(socketSemaphore);
         if (!semaphoreFlag)
         {
-            // 未获取到信号量
-            LOGGER.error("\n 当前在线人数超过限制数- {}", socketMaxOnlineCount);
-            WebSocketUsers.sendMessageToUserByText(session, "当前在线人数超过限制数：" + socketMaxOnlineCount);
+            // Semaphore not acquired
+            LOGGER.error("\n Current online users exceed limit - {}", socketMaxOnlineCount);
+            WebSocketUsers.sendMessageToUserByText(session, "Current online users exceed limit: " + socketMaxOnlineCount);
             session.close();
         }
         else
         {
-            // 添加用户
+            // Add user
             WebSocketUsers.put(session.getId(), session);
-            LOGGER.info("\n 建立连接 - {}", session);
-            LOGGER.info("\n 当前人数 - {}", WebSocketUsers.getUsers().size());
-            WebSocketUsers.sendMessageToUserByText(session, "连接成功");
+            LOGGER.info("\n Connection established - {}", session);
+            LOGGER.info("\n Current users - {}", WebSocketUsers.getUsers().size());
+            WebSocketUsers.sendMessageToUserByText(session, "Connection successful");
         }
     }
 
     /**
-     * 连接关闭时处理
+     * Method called when connection is closed
      */
     @OnClose
     public void onClose(Session session)
     {
-        LOGGER.info("\n 关闭连接 - {}", session);
-        // 移除用户
+        LOGGER.info("\n Connection closed - {}", session);
+        // Remove user
         boolean removeFlag = WebSocketUsers.remove(session.getId());
         if (!removeFlag)
         {
-            // 获取到信号量则需释放
+            // Semaphore acquired, need to release
             SemaphoreUtils.release(socketSemaphore);
         }
     }
 
     /**
-     * 抛出异常时处理
+     * Method called when an exception is thrown
      */
     @OnError
     public void onError(Session session, Throwable exception) throws Exception
     {
         if (session.isOpen())
         {
-            // 关闭连接
+            // Close connection
             session.close();
         }
         String sessionId = session.getId();
-        LOGGER.info("\n 连接异常 - {}", sessionId);
-        LOGGER.info("\n 异常信息 - {}", exception);
-        // 移出用户
+        LOGGER.info("\n Connection error - {}", sessionId);
+        LOGGER.info("\n Error details - {}", exception);
+        // Remove user
         WebSocketUsers.remove(sessionId);
-        // 获取到信号量则需释放
+        // Semaphore acquired, need to release
         SemaphoreUtils.release(socketSemaphore);
     }
 
     /**
-     * 服务器接收到客户端消息时调用的方法
+     * Method called when server receives a client message
      */
     @OnMessage
     public void onMessage(String message, Session session)

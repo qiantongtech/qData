@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * 设置Anonymous注解允许匿名访问的url
+ * Set the Anonymous annotation to allow anonymous access to URLs
  *
  * @author qdata
  */
@@ -58,12 +58,12 @@ public class PermitAllUrlProperties implements InitializingBean, ApplicationCont
         map.keySet().forEach(info -> {
             HandlerMethod handlerMethod = map.get(info);
 
-            // 获取方法上边的注解 替代path variable 为 *
+            // Get the annotation on the method and replace the path variable with *
             Anonymous method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Anonymous.class);
             Optional.ofNullable(method).ifPresent(anonymous -> Objects.requireNonNull(info.getPatternsCondition().getPatterns())
                     .forEach(url -> urls.add(RegExUtils.replaceAll(url, PATTERN, ASTERISK))));
 
-            // 获取类上边的注解, 替代path variable 为 *
+            // Get the annotation on the class, replace path variable with *
             Anonymous controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Anonymous.class);
             Optional.ofNullable(controller).ifPresent(anonymous -> Objects.requireNonNull(info.getPatternsCondition().getPatterns())
                     .forEach(url -> urls.add(RegExUtils.replaceAll(url, PATTERN, ASTERISK))));

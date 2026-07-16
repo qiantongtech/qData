@@ -42,7 +42,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeRules.DgDesensitizeIntervalMapper;
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeIntervalService;
 /**
- * 脱敏区间Service业务层处理
+ * Desensitize Interval Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-10
@@ -68,15 +68,15 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
 
     @Override
     public int updateDgDesensitizeInterval(DgDesensitizeIntervalSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏区间
+        // Update desensitize interval
         DgDesensitizeIntervalDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeIntervalDO.class);
         return dgDesensitizeIntervalMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeInterval(Collection<Long> idList) {
-        // 批量删除脱敏区间
+        // Batch delete desensitize intervals
         return dgDesensitizeIntervalMapper.deleteBatchIds(idList);
     }
 
@@ -97,24 +97,24 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
                 .collect(Collectors.toMap(
                         DgDesensitizeIntervalDO::getId,
                         dgDesensitizeIntervalDO -> dgDesensitizeIntervalDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏区间数据
+         * Import desensitize interval data
          *
-         * @param importExcelList 脱敏区间数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize interval data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeInterval(List<DgDesensitizeIntervalRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "Imported data cannot be empty!");
             }
 
             int successNum = 0;
@@ -133,16 +133,16 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
                                 dgDesensitizeIntervalMapper.updateById(dgDesensitizeIntervalDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                        "数据更新成功，ID为 " + dgDesensitizeIntervalId + " 的脱敏区间记录。", dgDesensitizeIntervalId, "脱敏区间"));
+                                        "Data updated successfully, desensitization interval record with ID " + dgDesensitizeIntervalId + ".", dgDesensitizeIntervalId, "Desensitization Interval"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                        "数据更新失败，ID为 " + dgDesensitizeIntervalId + " 的脱敏区间记录不存在。", dgDesensitizeIntervalId, "脱敏区间"));
+                                        "Data update failed, desensitization interval record with ID " + dgDesensitizeIntervalId + " does not exist.", dgDesensitizeIntervalId, "Desensitization Interval"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, a record's ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DgDesensitizeIntervalDO> queryWrapper = new QueryWrapper<>();
@@ -152,17 +152,17 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
                             dgDesensitizeIntervalMapper.insert(dgDesensitizeIntervalDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                    "数据插入成功，ID为 " + dgDesensitizeIntervalId + " 的脱敏区间记录。", dgDesensitizeIntervalId, "脱敏区间"));
+                                    "Data inserted successfully, desensitization interval record with ID " + dgDesensitizeIntervalId + ".", dgDesensitizeIntervalId, "Desensitization Interval"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                    "数据插入失败，ID为 " + dgDesensitizeIntervalId + " 的脱敏区间记录已存在。", dgDesensitizeIntervalId, "脱敏区间"));
+                                    "Data insertion failed, desensitization interval record with ID " + dgDesensitizeIntervalId + " already exists.", dgDesensitizeIntervalId, "Desensitization Interval"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -171,12 +171,12 @@ public class DgDesensitizeIntervalServiceImpl  extends ServiceImpl<DgDesensitize
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records have incorrect format, errors as follows:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations, all data imported successfully! Total: " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

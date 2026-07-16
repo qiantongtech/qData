@@ -33,7 +33,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 数据元Mapper接口
+ * Data Element Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -41,7 +41,7 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 public interface DpDataElemMapper extends BaseMapperX<DpDataElemDO> {
 
     default PageResult<DpDataElemDO> selectPage(DpDataElemPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DpDataElemDO> lambdaWrapper = new MPJLambdaWrapper();
@@ -60,7 +60,7 @@ public interface DpDataElemMapper extends BaseMapperX<DpDataElemDO> {
     }
 
     /**
-     * 判断当前元数据是否被模型及资产使用
+     * Check if the current data element is used by models and assets
      *
      * @param idList
      * @return

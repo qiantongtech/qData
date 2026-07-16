@@ -32,14 +32,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 脱敏白名单 DO 对象 DG_DESENSITIZE_WHITELIST
+ * Desensitize Whitelist DO entity DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09
  */
 @Data
 @TableName(value = "DG_DESENSITIZE_WHITELIST")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DG_DESENSITIZE_WHITELIST_seq")
 @Builder
 @NoArgsConstructor
@@ -53,40 +53,40 @@ public class DgDesensitizeWhitelistDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 白名单名称 */
+    /** Whitelist Name */
     private String name;
 
-    /** 数据分类 */
+    /** Data Category */
     private Long dataCategoryId;
-    /** 数据分类名称 */
+    /** Data Category Name */
     @TableField(exist = false)
     private String dataCategoryName;
 
-    /** 用户集合 */
+    /** User List */
     @TableField(exist = false)
     private List<DgDesensitizeUserRelDO> userList;
 
-    /** 生效分类;1：用户 2：角色 3：部门 */
+    /** Effective Category; 1: User 2: Role 3: Department */
     private String effectiveCategory;
 
-    /** 开始时间 */
+    /** Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endTime;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 

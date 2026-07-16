@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task-Log DO - DPP_ETL_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_LOG")
-// Handle JDBC SQL execution.
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -45,10 +45,10 @@ public class DppEtlTaskLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Handle task-related data and operations. */
+    /** 1: Offline task 2: Real-time task 3: Data development task 4: Job task */
     private String type;
 
-    /** Handle task-related data and operations. */
+    /** Task name */
     private String name;
 
     /** Task code */
@@ -57,46 +57,46 @@ public class DppEtlTaskLogDO extends BaseEntity {
     /** Task version */
     private Long version;
 
-    /** Implementation details. */
+    /** Project ID */
     private Long projectId;
 
-    /** Implementation details. */
+    /** Project code */
     private String projectCode;
 
-    /** Implementation details. */
+    /** Person in charge */
     private String personCharge;
 
-    /** Handle node-related data and operations. */
+    /** Node location info */
     private String locations;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task execution strategy", example = "")
     private String executionType;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
-    /** Implementation details. */
+    /** Timeout */
     private Long timeout;
 
-    /** Implementation details. */
+    /** Extraction count */
     private Long extractionCount;
 
-    /** Implementation details. */
+    /** Write count */
     private Long writeCount;
 
-    /** Handle task-related data and operations. */
+    /** Task status */
     private String status;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Implementation details. */
+    /** quartId的id */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

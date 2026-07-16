@@ -71,7 +71,7 @@
       </qt-table>
     </qt-wrap>
 
-    <!-- 添加或修改数据域管理对话框 -->
+    <!-- Add or modify data field management dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -143,12 +143,12 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- 数据域管理详情对话框 -->
+    <!-- Data Domain Management Details Dialog Box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -230,7 +230,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
@@ -304,6 +304,7 @@ import {
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const tableRef = ref(null);
 
@@ -410,19 +411,19 @@ const searchStore = reactive({
   ],
 });
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dm/dataDomain/importData",
 });
 
@@ -452,14 +453,14 @@ onMounted(() => {
   getManagerOptions();
 });
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -481,17 +482,17 @@ function reset() {
   proxy.resetForm("dataDomainRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   getManagerOptions();
-  // 显式初始化负责人电话字段
+  // Explicitly initialize the person in charge phone field
   form.value.ownerUserPhoneNumber = null;
   open.value = true;
   title.value = td('dm.dataDomain.addTitle', '新增数据域');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   getManagerOptions();
@@ -504,7 +505,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   getManagerOptions();
@@ -517,8 +518,10 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["dataDomainRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -527,29 +530,37 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
             open.value = false;
             tableRef.value.getList();
+            submitLoading.value = false;
           })
-          .catch(() => {});
+          .catch(() => {
+            submitLoading.value = false;
+          });
       } else {
         addDataDomain(form.value)
           .then(() => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
             open.value = false;
             tableRef.value.getList();
+            submitLoading.value = false;
           })
-          .catch(() => {});
+          .catch(() => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-// 当负责人改变时，更新电话号码
+// Update phone number when person in charge changes
 const handleContactChange = (selectedValue) => {
   const selectedUser = managerOptions.value.find(
     (user) => user.userId == selectedValue
   );
   form.value.ownerUserPhoneNumber = selectedUser?.phonenumber || "";
 };
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
@@ -564,8 +575,8 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 下载模板操作 */
+/** ---------------- Import related operations ------------------**/
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -574,17 +585,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = () => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file) => {
   upload.open = false;
   upload.isUploading = false;

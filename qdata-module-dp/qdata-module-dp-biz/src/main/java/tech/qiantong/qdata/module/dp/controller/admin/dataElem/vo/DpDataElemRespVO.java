@@ -29,7 +29,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据元 Response VO 对象 DP_DATA_ELEM
+ * Data Element Response VO - DP_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
@@ -73,7 +73,7 @@ public class DpDataElemRespVO implements Serializable {
     private String personCharge;
 
     /**
-     * 责任人名称
+     * Person Charge Name
      */
     private String personChargeName;
 
@@ -133,15 +133,15 @@ public class DpDataElemRespVO implements Serializable {
 
     private Long documentId;
 
-    /** 名称 */
+    /** Name */
     @TableField(exist = false)
     private String documentName;
 
-    /** 名称 */
+    /** Name */
     @TableField(exist = false)
     private String documentCode;
 
-    /** 文件标准类型字段， */
+    /** Document standard type field */
     @TableField(exist = false)
     private String documentType;
 }

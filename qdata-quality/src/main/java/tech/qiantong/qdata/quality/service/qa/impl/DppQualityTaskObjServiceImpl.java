@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据质量任务-稽查对象Service业务层处理
+ * Data quality task-audit object Service business layer processing
  *
  * @author Chaos
  * @date 2025-07-21
@@ -69,15 +69,15 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
 
     @Override
     public int updateDppQualityTaskObj(DppQualityTaskObjSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据质量任务-稽查对象
+        // Update data quality task-audit object
         DppQualityTaskObjDO updateObj = BeanUtils.toBean(updateReqVO, DppQualityTaskObjDO.class);
         return dppQualityTaskObjMapper.updateById(updateObj);
     }
     @Override
     public int removeDppQualityTaskObj(Collection<Long> idList) {
-        // 批量删除数据质量任务-稽查对象
+        // Batch deletion of data quality tasks-audit objects
         return dppQualityTaskObjMapper.deleteBatchIds(idList);
     }
 
@@ -106,19 +106,19 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
                 .collect(Collectors.toMap(
                         DppQualityTaskObjDO::getId,
                         dppQualityTaskObjDO -> dppQualityTaskObjDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据质量任务-稽查对象数据
+         * Import data quality tasks-audit object data
          *
-         * @param importExcelList 数据质量任务-稽查对象数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data quality task-audit object data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String importDppQualityTaskObj(List<DppQualityTaskObjRespVO> importExcelList, boolean isUpdateSupport, String operName) {

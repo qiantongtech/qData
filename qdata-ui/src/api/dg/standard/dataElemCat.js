@@ -1,6 +1,6 @@
 import request from '@/utils/request.js'
 
-// 查询标准数据元类目管理列表
+// Query the standard data element category management list
 export function listElemCat(query) {
     return request({
         url: '/dg/dataElemCat/list',
@@ -9,7 +9,7 @@ export function listElemCat(query) {
     })
 }
 
-// 查询标准数据元类目管理详细
+// Query standard data element category management details
 export function getElemCat(id) {
     return request({
         url: '/dg/dataElemCat/' + id,
@@ -17,7 +17,7 @@ export function getElemCat(id) {
     })
 }
 
-// 新增标准数据元类目管理
+// Added standard data element category management
 export function addElemCat(data) {
     return request({
         url: '/dg/dataElemCat',
@@ -26,7 +26,7 @@ export function addElemCat(data) {
     })
 }
 
-// 修改标准数据元类目管理
+// Modify standard data element category management
 export function updateElemCat(data) {
     return request({
         url: '/dg/dataElemCat',
@@ -35,14 +35,14 @@ export function updateElemCat(data) {
     })
 }
 
-// 删除标准数据元类目管理
+// Delete standard data element category management
 export function delElemCat(id) {
     return request({
         url: '/dg/dataElemCat/' + id,
         method: 'delete'
     })
 }
-// 数据元分类 批量删除校验
+// Data element classification Batch deletion verification
 export function batchDeleteCheck(ids) {
     return request({
         url: '/dg/dataElemCat/batchDeleteCheck/' + ids,

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceDO;
 import java.util.List;
 
 /**
- * 数据源 Convert
+ * Datasource Convert
  *
  * @author lhs
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DaDatasourceConvert {
     DaDatasourceConvert INSTANCE = Mappers.getMapper(DaDatasourceConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daDatasourcePageReqVO 请求参数
+     * PageReqVO to DO
+     * @param daDatasourcePageReqVO request parameters
      * @return DaDatasourceDO
      */
      DaDatasourceDO convertToDO(DaDatasourcePageReqVO daDatasourcePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daDatasourceSaveReqVO 保存请求参数
+     * SaveReqVO to DO
+     * @param daDatasourceSaveReqVO save request parameters
      * @return DaDatasourceDO
      */
      DaDatasourceDO convertToDO(DaDatasourceSaveReqVO daDatasourceSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daDatasourceDO 实体对象
+     * DO to RespVO
+     * @param daDatasourceDO entity object
      * @return DaDatasourceRespVO
      */
      DaDatasourceRespVO convertToRespVO(DaDatasourceDO daDatasourceDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daDatasourceDOList 实体对象列表
+     * DOList to RespVOList
+     * @param daDatasourceDOList entity object list
      * @return List<DaDatasourceRespVO>
      */
      List<DaDatasourceRespVO> convertToRespVOList(List<DaDatasourceDO> daDatasourceDOList);

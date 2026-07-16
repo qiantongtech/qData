@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js';
 
-// 查询首页参数
+// Query home page parameters
 export function homeList(query) {
   console.log('query: ', query);
   return request({

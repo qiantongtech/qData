@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.database.dialect;
 
 /**
- * MariaDB 数据库方言
+ * MariaDB database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14

@@ -47,7 +47,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.codeMap.DpCodeMapDO;
 import tech.qiantong.qdata.module.dp.service.codeMap.IDpCodeMapService;
 
 /**
- * 数据元代码映射Controller
+ * Data Element Code Map Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -70,7 +70,7 @@ public class DpCodeMapController extends BaseController {
 
     @Operation(summary = "导出数据元代码映射列表")
     @PreAuthorize("@ss.hasPermi('dp:codeMap:export')")
-    @Log(title = "数据元代码映射", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.code.map", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpCodeMapPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -81,7 +81,7 @@ public class DpCodeMapController extends BaseController {
 
     @Operation(summary = "导入数据元代码映射列表")
     @PreAuthorize("@ss.hasPermi('dp:codeMap:import')")
-    @Log(title = "数据元代码映射", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.code.map", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpCodeMapRespVO> util = new ExcelUtil<>(DpCodeMapRespVO.class);
@@ -101,7 +101,7 @@ public class DpCodeMapController extends BaseController {
 
     @Operation(summary = "新增数据元代码映射")
     @PreAuthorize("@ss.hasPermi('dp:codeMap:add')")
-    @Log(title = "数据元代码映射", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.code.map", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpCodeMapSaveReqVO dpCodeMap) {
         dpCodeMap.setCreatorId(getUserId());
@@ -112,7 +112,7 @@ public class DpCodeMapController extends BaseController {
 
     @Operation(summary = "修改数据元代码映射")
     @PreAuthorize("@ss.hasPermi('dp:codeMap:edit')")
-    @Log(title = "数据元代码映射", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.code.map", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpCodeMapSaveReqVO dpCodeMap) {
         dpCodeMap.setUpdatorId(getUserId());
@@ -123,7 +123,7 @@ public class DpCodeMapController extends BaseController {
 
     @Operation(summary = "删除数据元代码映射")
     @PreAuthorize("@ss.hasPermi('dp:codeMap:remove')")
-    @Log(title = "数据元代码映射", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.code.map", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpCodeMapService.removeDpCodeMap(Arrays.asList(ids)));

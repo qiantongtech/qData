@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 列表的 执行记录 -->
+  <!-- Execution records list -->
   <el-dialog
     v-model="visibleDialog"
     draggable
@@ -125,7 +125,7 @@
             >{{ td("da.qualityTask.instanceComponent.view") }}</el-button
           >
           <!-- <el-button link type="warning" @click="handleExport(scope.row)" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-download-line mr5"></i>下载
+            <i class="iconfont-mini icon-download-line mr5"></i>Download
           </el-button> -->
           <el-button
             link
@@ -158,12 +158,12 @@
     />
     <!-- <template #footer>
             <div style="text-align: right">
-        <el-button @click="closeDialog">关闭</el-button>
-        <el-button type="primary" @click="saveData">保存</el-button>
+        <el-button @click="closeDialog">Close</el-button>
+        <el-button type="primary" @click="saveData">Save</el-button>
         </div>
 </template> -->
   </el-dialog>
-  <!-- 调度日志详细 -->
+  <!-- Schedule log details -->
   <el-dialog
     :title="td('da.qualityTask.instanceComponent.viewLogTitle')"
     v-model="open"
@@ -175,7 +175,7 @@
     <div v-html="formattedText"></div>
     <!-- <template #footer>
             <div class="dialog-footer">
-                <el-button @click="open = false">关 闭</el-button>
+                <el-button @click="open = false">Close</el-button>
             </div>
         </template> -->
   </el-dialog>
@@ -221,7 +221,7 @@ const formattedText = computed(() => {
 });
 const router = useRouter();
 
-/** 排序触发事件 */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -268,7 +268,7 @@ const total = ref(0);
 const dateRange = ref([]);
 let jobLogList = ref([]);
 let loading = ref(false);
-/** 查询调度日志列表 */
+/** Query schedule log list */
 function getList() {
   loading.value = true;
   queryParams.value.qualityId = props.data.id;
@@ -293,7 +293,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property for v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -303,14 +303,14 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// Method to close dialog
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// 保存数据的方法
+// Method to save data
 const saveData = () => {
-  emit("confirm", localNode.value); // 向父组件提交本地数据
+  emit("confirm", localNode.value); // Submit local data to parent
   emit("update:visible", false);
 };
 </script>

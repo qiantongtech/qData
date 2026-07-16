@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <P>
- * 用途:DS结果VO
+ * Description: DS result DTO
  * </p>
  *
  * @author: FXB
@@ -32,22 +32,22 @@ import lombok.Data;
 public class DsResultDTO {
 
     /**
-     * 状态码
+     * Status code
      */
     private Integer code;
 
     /**
-     * 信息
+     * Message
      */
     private String msg;
 
     /**
-     * 是否失败
+     * Whether failed
      */
     private Boolean failed;
 
     /**
-     * 是否成功
+     * Whether successful
      */
     private Boolean success;
 }

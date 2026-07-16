@@ -20,74 +20,74 @@
         xmlns="http://www.ehcache.org/v3"
         xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
-    <!-- 缓存持久化配置: 定义磁盘缓存位置 -->
+    <!-- Cache persistence configuration: Define disk cache location -->
 <!--    <persistence directory="D:/cache/system"/>-->
 
-    <!-- 缓存模板: 未填写缓存名时使用的默认缓存，同时也可被继承 -->
+    <!-- Cache template: The default cache used when the cache name is not filled in, and can also be inherited. -->
     <cache-template name="defaultCache">
         <expiry>
-            <ttl unit="seconds">300</ttl> <!-- 默认过期时间：5分钟 -->
+            <ttl unit="seconds">300</ttl> <!-- Default expiration time: 5 minutes -->
         </expiry>
         <resources>
-            <!-- 堆内存最大条目数 -->
+            <!-- Maximum number of entries in heap memory -->
             <heap unit="entries">1000</heap>
-            <!-- 堆外内存最大大小（MB） -->
+            <!-- Maximum size of off-heap memory (MB) -->
 <!--            <offheap unit="MB">200</offheap>-->
-            <!-- 可选：磁盘缓存大小 -->
+            <!-- Optional: disk cache size -->
 <!--            <disk unit="GB">1</disk>-->
         </resources>
     </cache-template>
 
-    <!-- 5分钟过期 -->
+    <!-- Expires in 5 minutes -->
     <cache alias="cache5Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">300</ttl>
         </expiry>
     </cache>
 
-    <!-- 10分钟过期 -->
+    <!-- Expires in 10 minutes -->
     <cache alias="cache10Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">600</ttl>
         </expiry>
     </cache>
 
-    <!-- 30分钟过期 -->
+    <!-- Expires in 30 minutes -->
     <cache alias="cache30Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">1800</ttl>
         </expiry>
     </cache>
 
-    <!-- 6小时过期 -->
+    <!-- Expires in 6 hours -->
     <cache alias="cache6Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">21600</ttl>
         </expiry>
     </cache>
 
-    <!-- 12小时过期 -->
+    <!-- Expires in 12 hours -->
     <cache alias="cache12Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">43200</ttl>
         </expiry>
     </cache>
 
-    <!-- 24小时过期 -->
+    <!-- Expires in 24 hours -->
     <cache alias="cache24Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">86400</ttl>
         </expiry>
     </cache>
 
-    <!-- 7天过期 -->
+    <!-- Expires in 7 days -->
     <cache alias="cache7Days" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">604800</ttl>
         </expiry>
     </cache>
 
-    <!-- 30天过期 -->
+    <!-- Expires in 30 days -->
     <cache alias="cache30Days" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">2592000</ttl>

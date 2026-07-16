@@ -18,9 +18,9 @@
 
 import request from "@/utils/requestAi.js";
 
-// AI 聊天对话 API
+// AI Chat Conversation API
 export const ChatConversationApi = {
-  // 获得【我的】聊天对话
+  // Get [my] chat conversation
   getChatConversationMy: (id) => {
     return request({
       url: `/chat/conversation/` + id,
@@ -28,7 +28,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 新增【我的】聊天对话
+  // Add [my] chat conversation
   createChatConversationMy: (data) => {
     return request({
       url: `/chat/conversation`,
@@ -37,7 +37,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 更新【我的】聊天对话
+  // Update [my] chat conversation
   updateChatConversationMy: (data) => {
     return request({
       url: `/chat/conversation`,
@@ -46,7 +46,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 删除【我的】聊天对话
+  // Delete [my] chat conversation
   deleteChatConversationMy: (id) => {
     return request({
       url: `/chat/conversation/` + id,
@@ -54,7 +54,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 获得【我的】聊天对话列表
+  // Get [my] chat conversation list
   getChatConversationMyList: () => {
     return request({
       url: `/chat/conversation/myList`,
@@ -62,7 +62,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 设置关联关系
+  // Set up relationships
   setAssociations: (data) => {
     return request({
       url: `/chat/conversation/setAssociations`,

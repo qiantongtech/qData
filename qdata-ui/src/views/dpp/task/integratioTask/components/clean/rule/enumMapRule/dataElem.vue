@@ -25,7 +25,7 @@
     width="90%"
   >
     <div class="flex-row">
-      <!-- 左侧树 -->
+      <!-- tree on left -->
       <div class="left-col">
         <DeptTree
           :deptOptions="deptOptions"
@@ -39,12 +39,12 @@
         />
       </div>
 
-      <!-- 分隔线 -->
+      <!-- divider -->
       <div class="divider"></div>
 
-      <!-- 右侧表格 + 分页 -->
+      <!-- Right table + pagination -->
       <div class="content-col" v-loading="loading">
-        <!-- 表格 -->
+        <!-- table -->
         <el-table
           :data="dpDataElemList"
           stripe
@@ -129,7 +129,7 @@
             </div>
           </template>
         </el-table>
-        <!-- 分页 -->
+        <!-- Pagination -->
         <div
           class="pagination-wrapper"
           style="margin-top: 10px; text-align: right"
@@ -144,7 +144,7 @@
       </div>
     </div>
 
-    <!-- 底部按钮 -->
+    <!-- bottom button -->
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="handleCancel">{{ td('common.button.cancel', '取消') }}</el-button>
@@ -177,10 +177,10 @@ import CodeValueInput from "./dataElemDetail.vue";
 
 const { td } = useDefaultLang();
 const deptOptions = ref(undefined);
-const leftWidth = ref(240); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
-/** 类型字典翻译 */
+const leftWidth = ref(240); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed // Initial left width
+/** type dictionary translation */
 function typeFormat(row) {
   return proxy.selectDictLabel(dp_data_elem_code_type.value, row.type);
 }
@@ -188,7 +188,7 @@ function typeFormat(row) {
 const dpDataElemList = ref([]);
 const dpDataElemRuleRelList = ref([]);
 
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 1, label: td('dpp.cleanRule.chineseName', '中文名称'), visible: true },
   { key: 2, label: td('dpp.cleanRule.englishName', '英文名称'), visible: true },
@@ -207,9 +207,9 @@ function showDialog(row) {
 }
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -235,7 +235,7 @@ const data = reactive({
 
 const { queryParams, form } = toRefs(data);
 const managerOptions = ref([]);
-/** 查询数据元列表 */
+/** Query data element list */
 function getList() {
   loading.value = true;
   listDpDataElem(queryParams.value).then((response) => {
@@ -247,13 +247,13 @@ function getList() {
     managerOptions.value = response.data;
   });
 }
-// 树组件 传值
+// tree component pass value
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
   handleQuery();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -282,7 +282,7 @@ function reset() {
 }
 
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -310,8 +310,8 @@ function getDeptTree() {
 
 const visible = ref(false);
 /**
- * 打开弹窗
- * @param {String} dialogTitle 弹窗标题
+ * Open pop-up window
+ * @param {String} dialogTitle pop-up window title
  */
 function openDialog(dialogTitle = td('dpp.cleanRule.selectData', '选择数据')) {
   title.value = dialogTitle;
@@ -324,17 +324,17 @@ const tableRef = ref(null);
 function handleRowClick(row) {
   selectedRow.value = row;
   if (tableRef.value) {
-    tableRef.value.setCurrentRow(row); // 高亮选中
+    tableRef.value.setCurrentRow(row); // Highlight
   }
-  console.log("选中行数据:", row);
+  console.log("Selected row data:", row);
 }
 /**
- * 取消
+ * Cancel
  */
 function handleCancel() {
   visible.value = false;
   if (tableRef.value) {
-    tableRef.value.setCurrentRow(null); // 清除表格选中行高亮
+    tableRef.value.setCurrentRow(null); // Clear selected row highlighting in table
   }
   resetQuery();
 }
@@ -351,7 +351,7 @@ async function ElemCode(id) {
     });
     return response.data.rows || [];
   } catch (error) {
-    console.error("请求失败", error);
+    console.error("Request failed", error);
     return [];
   } finally {
     loading.value = false;
@@ -359,7 +359,7 @@ async function ElemCode(id) {
 }
 
 /**
- * 保存
+ * save
  */
 async function handleConfirm() {
   if (!selectedRow.value) {
@@ -402,7 +402,7 @@ defineExpose({ openDialog });
 
 .el-table {
   flex: none;
-  /* 不占满父容器 */
+  /* Do not occupy the parent container */
 }
 
 .pagination-wrapper {

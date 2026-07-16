@@ -23,16 +23,16 @@ export default function handleFilePreview(fileUrl) {
 
     const fullUrl = `${appUrl}${baseUrl}${fileUrl.trim()}`;
     console.log(fullUrl);
-    // 获取屏幕尺寸
+    // Get screen size
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
-    // 设置窗口尺寸为屏幕尺寸的一部分，例如60%
+    // Set the window size to a fraction of the screen size, e.g. 60%
     const width = screenWidth * 0.7;
     const height = screenHeight * 0.7;
-    // 计算窗口居中时的左上角位置
+    // Calculate the position of the upper left corner when the window is centered
     const left = (screenWidth - width) / 2;
     const top = (screenHeight - height) / 2;
-    // 打开新窗口并居中
+    // Open new window and center
     const newWindow = window.open(rpUrl + "/onlinePreview?url=" + encodeURIComponent(base64Encode(fullUrl)), "", `scrollbars=yes, width=${width}, height=${height}, top=${top}, left=${left}`);
     if (window.focus) {
         newWindow.focus();

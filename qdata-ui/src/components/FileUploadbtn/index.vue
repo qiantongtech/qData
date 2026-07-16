@@ -26,7 +26,7 @@
         {{ t('common.upload.selectFile') }}
       </el-button>
     </el-upload>
-    <!-- 上传提示 -->
+    <!-- Upload tips -->
     <div class="el-upload__tip" v-if="isShowTip">
       {{ t('common.upload.supportedFormat') }}
       <b style="color: #f56c6c">{{
@@ -53,10 +53,10 @@ const props = defineProps({
     type: Number,
     default: 5,
   },
-  // 允许上传 exe, xls, xlsx 文件
+  // Allow uploading exe, xls, xlsx files
   fileType: {
     type: Array,
-    default: () => ["doc", "xls", "xlsx", "ppt", "txt", "pdf", "docx", "exe"], // 添加 xls 和 xlsx 格式
+    default: () => ["doc", "xls", "xlsx", "ppt", "txt", "pdf", "docx", "exe"], // Add xls and xlsx formats
   },
   isShowTip: {
     type: Boolean,
@@ -72,7 +72,7 @@ const props = defineProps({
   },
   showDelete: {
     type: Boolean,
-    default: true, // 默认显示删除按钮
+    default: true, // Delete button is shown by default
   },
 });
 
@@ -81,7 +81,7 @@ const emit = defineEmits();
 const number = ref(0);
 const uploadList = ref([]);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传文件服务器地址
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // Upload file server address
 const headers = ref({ Authorization: "Bearer " + getToken() });
 const fileList = ref([]);
 const uploadData = ref({
@@ -112,9 +112,9 @@ watch(
   { deep: true, immediate: true }
 );
 
-// 上传前校验文件类型
+// Verify file type before uploading
 function handleBeforeUpload(file) {
-  // 校验文件类型
+  // Verify file type
   if (props.fileType.length) {
     const fileName = file.name.split(".");
     const fileExt = fileName[fileName.length - 1];
@@ -125,29 +125,29 @@ function handleBeforeUpload(file) {
     }
   }
 
-  // 校验文件大小
+  // Check file size
   const fileSize = file.size / 1024 / 1024;
   if (fileSize > props.fileSize) {
     proxy.$modal.msgError(t('components.fileUploadbtn.fileSizeError', { fileSize: props.fileSize }));
     return false;
   }
 
-  // proxy.$modal.loading("正在上传文件，请稍候...");
+  // proxy.$modal.loading("Uploading files, please wait...");
   number.value++;
   return true;
 }
 
-// 文件个数超出
+// The number of files exceeds
 function handleExceed() {
   proxy.$modal.msgError(t('components.fileUpload2.exceedLimit', { limit: props.limit }));
 }
 
-// 上传失败
+// Upload failed
 function handleUploadError(err) {
   proxy.$modal.msgError(t('components.fileUploadbtn.uploadError'));
 }
 
-// 上传成功回调
+// Upload success callback
 function handleUploadSuccess(res, file) {
   if (res.url) {
     uploadList.value.push({
@@ -155,10 +155,10 @@ function handleUploadSuccess(res, file) {
       url: res.url,
     });
     if (res.size) {
-      emit("update:fileSize", res.size); // 更新文件大小
+      emit("update:fileSize", res.size); // Update file size
     }
     if (res.ext) {
-      emit("update:fileExt", res.ext); // 更新文件后缀名
+      emit("update:fileExt", res.ext); // Update file extension
     }
     uploadedSuccessfully();
   } else {
@@ -170,15 +170,15 @@ function handleUploadSuccess(res, file) {
   }
 }
 
-// 删除文件
+// Delete files
 function handleDelete(index) {
   fileList.value.splice(index, 1);
   emit("update:modelValue", listToString(fileList.value));
-  emit("update:fileExt", null); // 更新文件后缀名
-  emit("update:fileSize", null); // 更新文件大小
+  emit("update:fileExt", null); // Update file extension
+  emit("update:fileSize", null); // Update file size
 }
 
-// 上传结束处理
+// Upload end processing
 function uploadedSuccessfully() {
   if (number.value > 0 && uploadList.value.length === number.value) {
     fileList.value = fileList.value
@@ -191,7 +191,7 @@ function uploadedSuccessfully() {
   }
 }
 
-// 获取文件名称
+// Get file name
 function getFileName(name) {
   if (name.lastIndexOf("/") > -1) {
     return name.slice(name.lastIndexOf("/") + 1);
@@ -200,7 +200,7 @@ function getFileName(name) {
   }
 }
 
-// 对象转成指定字符串分隔
+// Convert the object to the specified string delimited
 function listToString(list, separator) {
   let strs = "";
   separator = separator || ",";
@@ -212,7 +212,7 @@ function listToString(list, separator) {
   return strs !== "" ? strs.substr(0, strs.length - 1) : "";
 }
 function handleRemove() {
-  emit("handleRemove"); // 更新文件后缀名
+  emit("handleRemove"); // Update file extension
 }
 </script>
 

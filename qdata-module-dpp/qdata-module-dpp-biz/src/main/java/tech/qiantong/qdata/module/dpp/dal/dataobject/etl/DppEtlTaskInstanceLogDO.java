@@ -27,14 +27,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据集成任务实例-日志 DO 对象 DPP_ETL_TASK_INSTANCE_LOG
+ * Data Integration Task Instance-Log DO - DPP_ETL_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_INSTANCE_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_INSTANCE_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -44,28 +44,28 @@ public class DppEtlTaskInstanceLogDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** 任务实例id */
+    /** Task instance ID */
     private Long taskInstanceId;
 
-    /** 时间 */
+    /** Time */
     private Date tm;
 
-    /** 任务类型 */
+    /** Task type */
     private String taskType;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task code */
     private String taskCode;
 
-    /** 日志内容 */
+    /** Log content */
     private String logContent;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 }

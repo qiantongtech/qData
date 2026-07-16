@@ -41,63 +41,63 @@ public class CheckErrorData implements Serializable {
     private String id;
 
     /**
-     * 报告id
+     * Report id
      */
     private String reportId;
 
 
     /**
-     * 错误数据数量
+     * Number of erroneous data
      */
     @Field("count")
     private Integer count;
 
 
     /**
-     * 错误数据数量
+     * Number of erroneous data
      */
     @Field("error_count")
     private Integer errorCount;
 
 
     /**
-     * 错误数据json列表
+     * Error data json list
      */
     @Field("data_json")
     private String dataJsonStr;
 
     /**
-     * 核查时间
+     * Check time
      */
     @Field("time")
     private Date time;
 
     /**
-     * 错误数据json列表
+     * Error data json list
      */
     @Field("json_data")
     private JSONObject jsonData;
 
     /**
-     * 错误数据json列表
+     * Error data json list
      */
     @Field("json_data_old")
     private JSONObject jsonDataOld;
     /**
-     * 错误数据json列表
+     * Error data json list
      */
     @Field("data_json_old")
     private String dataJsonStrOLd;
 
     /**
-     * 是否已修复 0:否 1:是 2:忽略
+     * Has it been fixed? 0: No 1: Yes 2: Ignore
      */
     @Field("repair")
     private Integer repair;
 
 
     /**
-     * 备注
+     * Remarks
      */
     @Field("remark")
     private String remark;

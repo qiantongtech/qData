@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据发现库信息列表
+// Query the data discovery library information list
 export function listDaDiscoveryTable(query) {
   return request({
     url: '/da/discoveryTable/list',
@@ -27,7 +27,7 @@ export function listDaDiscoveryTable(query) {
   })
 }
 
-// 查询数据发现库信息列表
+// Query the data discovery library information list
 export function getDaDiscoveryTableList(query) {
   return request({
     url: '/da/discoveryTable/getDaDiscoveryTableList',
@@ -36,7 +36,7 @@ export function getDaDiscoveryTableList(query) {
   })
 }
 
-// 查询数据发现库信息详细
+// Query data discovery database information details
 export function getDaDiscoveryTable(id) {
   return request({
     url: '/da/discoveryTable/' + id,
@@ -44,7 +44,7 @@ export function getDaDiscoveryTable(id) {
   })
 }
 
-// 新增数据发现库信息
+// Add new data discovery library information
 export function addDaDiscoveryTable(data) {
   return request({
     url: '/da/discoveryTable',
@@ -52,7 +52,7 @@ export function addDaDiscoveryTable(data) {
     data: data
   })
 }
-// 新增数据发现库信息
+// Add new data discovery library information
 export function commitOrRevokeDiscoveryInfo(data) {
   return request({
     url: '/da/discoveryTable/commitOrRevokeDiscoveryInfo',
@@ -61,7 +61,7 @@ export function commitOrRevokeDiscoveryInfo(data) {
   })
 }
 
-// 修改数据发现库信息
+// Modify data discovery library information
 export function updateDaDiscoveryTable(data) {
   return request({
     url: '/da/discoveryTable',
@@ -70,14 +70,14 @@ export function updateDaDiscoveryTable(data) {
   })
 }
 
-// 删除数据发现库信息
+// Delete data discovery library information
 export function delDaDiscoveryTable(id) {
   return request({
     url: '/da/discoveryTable/' + id,
     method: 'delete'
   })
 }
-// 表字段
+// table fields
 export function getDaDiscoveryColumnList(params) {
   return request({
     url: '/da/discoveryColumn/getDaDiscoveryColumnList',

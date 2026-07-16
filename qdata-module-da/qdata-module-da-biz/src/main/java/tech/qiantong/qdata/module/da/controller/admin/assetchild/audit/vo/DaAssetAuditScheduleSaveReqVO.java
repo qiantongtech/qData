@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 资产稽查调度 创建/修改 Request VO DA_ASSET_AUDIT_SCHEDULE
+ * Asset Audit Schedule Create/Update Request VO DA_ASSET_AUDIT_SCHEDULE
  *
  * @author qdata
  * @date 2025-05-09

@@ -55,12 +55,12 @@ import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskEvaluateService;
 import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskService;
 
 /**
- * 数据质量任务-评测规则Controller
+ * Data Quality Task - Evaluation Rule Controller
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Tag(name = "数据质量任务-评测规则")
+@Tag(name = "Data Quality Task - Evaluation Rule")
 @RestController
 @RequestMapping("/dpp/qualityTaskEvaluate")
 @Validated
@@ -78,7 +78,7 @@ public class DppQualityTaskEvaluateController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量任务-评测规则列表")
-    @Log(title = "数据质量任务-评测规则", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.quality.evaluate", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppQualityTaskEvaluatePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class DppQualityTaskEvaluateController extends BaseController {
     }
 
     @Operation(summary = "导入数据质量任务-评测规则列表")
-    @Log(title = "数据质量任务-评测规则", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.quality.evaluate", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppQualityTaskEvaluateRespVO> util = new ExcelUtil<>(DppQualityTaskEvaluateRespVO.class);
@@ -106,7 +106,7 @@ public class DppQualityTaskEvaluateController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量任务-评测规则")
-    @Log(title = "数据质量任务-评测规则", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.quality.evaluate", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppQualityTaskEvaluateSaveReqVO dppQualityTaskEvaluate) {
         dppQualityTaskEvaluate.setCreatorId(getUserId());
@@ -116,7 +116,7 @@ public class DppQualityTaskEvaluateController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量任务-评测规则")
-    @Log(title = "数据质量任务-评测规则", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality.evaluate", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppQualityTaskEvaluateSaveReqVO dppQualityTaskEvaluate) {
         dppQualityTaskEvaluate.setUpdatorId(getUserId());
@@ -126,14 +126,14 @@ public class DppQualityTaskEvaluateController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量任务-评测规则")
-    @Log(title = "数据质量任务-评测规则", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality.evaluate", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppQualityTaskEvaluateService.removeDppQualityTaskEvaluate(Arrays.asList(ids)));
     }
 
     @Operation(summary = "删除数据质量任务-检验功能")
-    @Log(title = "数据质量任务-检验功能", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality.check", businessType = BusinessType.DELETE)
     @GetMapping("/verifyInterfaceValue")
     public CommonResult<String> verifyInterfaceValue(DppQualityTaskEvaluateSaveReqVO dppQualityTaskEvaluate) {
 

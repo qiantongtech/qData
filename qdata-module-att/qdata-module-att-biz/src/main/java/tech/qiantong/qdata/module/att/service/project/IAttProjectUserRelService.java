@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 项目与用户关联关系Service接口
+ * Project-User Relationship Service Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,86 +38,86 @@ import java.util.Map;
 public interface IAttProjectUserRelService extends IService<AttProjectUserRelDO> {
 
     /**
-     * 获得项目与用户关联关系分页列表
+     * Get Project-User Relationship paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 项目与用户关联关系分页列表
+     * @param pageReqVO Page request
+     * @return Project-User Relationship paginated list
      */
     PageResult<AttProjectUserRelDO> getAttProjectUserRelPage(AttProjectUserRelPageReqVO pageReqVO);
 
     /**
-     * 创建项目与用户关联关系
+     * Create Project-User Relationship
      *
-     * @param createReqVO 项目与用户关联关系信息
-     * @return 项目与用户关联关系编号
+     * @param createReqVO Project-User Relationship info
+     * @return Project-User Relationship ID
      */
     Long createAttProjectUserRel(AttProjectUserRelSaveReqVO createReqVO);
 
     /**
-     * 更新项目与用户关联关系
+     * Update Project-User Relationship
      *
-     * @param updateReqVO 项目与用户关联关系信息
+     * @param updateReqVO Project-User Relationship info
      */
     int updateAttProjectUserRel(AttProjectUserRelSaveReqVO updateReqVO);
 
     /**
-     * 更新项目与用户关联关系
+     * Update Project-User Relationship
      *
-     * @param updateReqVO 项目与用户关联关系信息
+     * @param updateReqVO Project-User Relationship info
      */
     int updateUserListAndRoleList(AttProjectUserRelSaveReqVO updateReqVO);
 
     /**
-     * 删除项目与用户关联关系
+     * Delete Project-User Relationship
      *
-     * @param idList 项目与用户关联关系编号
+     * @param idList Project-User Relationship ID list
      */
     int removeAttProjectUserRel(Collection<Long> idList);
 
     /**
-     * 获得项目与用户关联关系详情
+     * Get Project-User Relationship details
      *
-     * @param id 项目与用户关联关系编号
-     * @return 项目与用户关联关系
+     * @param id Project-User Relationship ID
+     * @return Project-User Relationship
      */
     AttProjectUserRelDO getAttProjectUserRelById(Long id);
 
     /**
-     * 获得全部项目与用户关联关系列表
+     * Get all Project-User Relationship list
      *
-     * @return 项目与用户关联关系列表
+     * @return Project-User Relationship list
      */
     List<AttProjectUserRelDO> getAttProjectUserRelList();
 
     /**
-     * 获得全部项目与用户关联关系 Map
+     * Get all Project-User Relationship Map
      *
-     * @return 项目与用户关联关系 Map
+     * @return Project-User Relationship Map
      */
     Map<Long, AttProjectUserRelDO> getAttProjectUserRelMap();
 
 
     /**
-     * 导入项目与用户关联关系数据
+     * Import Project-User Relationship data
      *
-     * @param importExcelList 项目与用户关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Project-User Relationship data list
+     * @param isUpdateSupport Whether to support update, if already exists, then update data
+     * @param operName        Operator
+     * @return Result
      */
     String importAttProjectUserRel(List<AttProjectUserRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
 
     /**
-     * 创建项目与用户关联关系前端传用户集合和角色集合
+     * Create Project-User Relationship with user and role collections from frontend
      *
-     * @param attProject 项目信息
-     * @return 项目编号
+     * @param attProject Project info
+     * @return Project ID
      */
     Boolean createUserListAndRoleList(AttProjectUserRelSaveReqVO attProject);
 
     /**
-     * 获取项目与用户关联关系详细信息包括角色信息
+     * Get Project-User Relationship details including role info
      *
      * @param id
      * @return

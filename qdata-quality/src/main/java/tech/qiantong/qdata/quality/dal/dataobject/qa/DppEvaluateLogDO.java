@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 评测规则结果 DO 对象 DPP_EVALUATE_LOG
+ * Evaluation rule result DO object DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21
  */
 @Data
 @TableName(value = "DPP_EVALUATE_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("DPP_EVALUATE_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -46,43 +46,43 @@ public class DppEvaluateLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 表名称 */
+    /** table name */
     private String tableName;
 
-    /** 字段名 */
+    /** Field name */
     private String columnName;
 
-    /** 稽查规则编号 */
+    /** Audit rule number */
     private String ruleCode;
 
-    /** 稽查规则名称 */
+    /** Audit rule name */
     private String ruleName;
 
-    /** 质量维度 */
+    /** Quality dimension */
     private String dimensionType;
 
-    /** 规则描述 */
+    /** Rule description */
     private String ruleDescription;
 
-    /** 数据质量记录id */
+    /** Data quality record id */
     private String taskLogId;
 
-    /** 评测id */
+    /** Review id */
     private String evaluateId;
 
-    /** 总数 */
+    /** Total number */
     private Long total;
 
-    /** 问题总数 */
+    /** Total number of questions */
     private Long problemTotal;
 
-    /** 核查时间 */
+    /** Verification time */
     private Date checkDate;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

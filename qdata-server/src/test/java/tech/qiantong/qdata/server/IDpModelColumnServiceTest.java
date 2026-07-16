@@ -40,12 +40,12 @@ public class IDpModelColumnServiceTest {
 
 
     /**
-     * 批量新增测试
+     * Add tests in batches
      */
     @Test
     public void testCreateMaterializedTableDM8() {
 
-        // 创建测试用例列表
+        // Create a list of test cases
         List<DpModelColumnSaveReqVO> dpModelColumnList = generateTestCases();
 
 
@@ -60,7 +60,7 @@ public class IDpModelColumnServiceTest {
     private static List<DpModelColumnSaveReqVO> generateTestCases() {
         List<DpModelColumnSaveReqVO> dpModelColumnList = new ArrayList<>();
 
-        // 用例 1：普通字段测试
+        // Use Case 1: Common Field Test
         DpModelColumnSaveReqVO case1 = new DpModelColumnSaveReqVO();
         case1.setModelId(1001L);
         case1.setEngName("column_name_1");
@@ -83,7 +83,7 @@ public class IDpModelColumnServiceTest {
         case1.setRemark("测试用例 1");
         dpModelColumnList.add(case1);
 
-        // 用例 2：整型和默认值测试
+        // Use Case 2: Integer and Default Value Testing
         DpModelColumnSaveReqVO case2 = new DpModelColumnSaveReqVO();
         case2.setModelId(1002L);
         case2.setEngName("column_name_2");
@@ -106,7 +106,7 @@ public class IDpModelColumnServiceTest {
         case2.setRemark("测试用例 2");
         dpModelColumnList.add(case2);
 
-        // 用例 3：小数类型测试
+        // Use case 3: Decimal type testing
         DpModelColumnSaveReqVO case3 = new DpModelColumnSaveReqVO();
         case3.setModelId(1003L);
         case3.setEngName("column_name_3");

@@ -23,61 +23,61 @@ import tech.qiantong.qdata.quartz.domain.SysJobLog;
 import java.util.List;
 
 /**
- * 调度任务日志信息 数据层
+ * Scheduling task log information data layer
  *
  * @author qdata
  */
 public interface SysJobLogMapper
 {
     /**
-     * 获取quartz调度器日志的计划任务
+     * Get the scheduled task of the quartz scheduler log
      *
-     * @param jobLog 调度日志信息
-     * @return 调度任务日志集合
+     * @param jobLog scheduling log information
+     * @return Scheduling task log collection
      */
     public List<SysJobLog> selectJobLogList(SysJobLog jobLog);
 
     /**
-     * 查询所有调度任务日志
+     * Query all scheduled task logs
      *
-     * @return 调度任务日志列表
+     * @return Scheduling task log list
      */
     public List<SysJobLog> selectJobLogAll();
 
     /**
-     * 通过调度任务日志ID查询调度信息
+     * Query scheduling information by scheduling task log ID
      *
-     * @param jobLogId 调度任务日志ID
-     * @return 调度任务日志对象信息
+     * @param jobLogId Scheduling task log ID
+     * @return Scheduling task log object information
      */
     public SysJobLog selectJobLogById(Long jobLogId);
 
     /**
-     * 新增任务日志
+     * Added task log
      *
-     * @param jobLog 调度日志信息
-     * @return 结果
+     * @param jobLog scheduling log information
+     * @return result
      */
     public int insertJobLog(SysJobLog jobLog);
 
     /**
-     * 批量删除调度日志信息
+     * Delete scheduling log information in batches
      *
-     * @param logIds 需要删除的数据ID
-     * @return 结果
+     * @param logIds Data ID to be deleted
+     * @return result
      */
     public int deleteJobLogByIds(Long[] logIds);
 
     /**
-     * 删除任务日志
+     * Delete task log
      *
-     * @param jobId 调度日志ID
-     * @return 结果
+     * @param jobId scheduling log ID
+     * @return result
      */
     public int deleteJobLogById(Long jobId);
 
     /**
-     * 清空任务日志
+     * Clear task log
      */
     public void cleanJobLog();
 }

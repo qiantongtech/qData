@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task-Node Relation Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -82,18 +82,18 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
         return BeanUtils.toBean(dppEtlTaskNodeRelDOS, DppEtlTaskNodeRelRespVO.class);
     }
     /**
-     * Implementation details.
+     * Extract IDs from List<DppEtlTaskNodeRelDO> and wrap as Collection<Long>
      *
-     * @param dppEtlTaskNodeRelDOS parameter value
-     * @return the operation result
+     * @param dppEtlTaskNodeRelDOS List of DppEtlTaskNodeRelDO objects
+     * @return Collection<Long> list of IDs
      */
     public static Collection<Long> getIdListFromTaskNodeRel(List<DppEtlTaskNodeRelDO> dppEtlTaskNodeRelDOS) {
         if (dppEtlTaskNodeRelDOS == null || dppEtlTaskNodeRelDOS.isEmpty()) {
             return new ArrayList<>();
         }
         return dppEtlTaskNodeRelDOS.stream()
-                .map(DppEtlTaskNodeRelDO::getId) // Implementation details.
-                .collect(Collectors.toList());   // Implementation details.
+                .map(DppEtlTaskNodeRelDO::getId) // Extract ID
+                .collect(Collectors.toList());   // Collect into List
     }
 
     @Override
@@ -112,9 +112,9 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
 
     @Override
     public int updateDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO updateReqVO) {
-        // Validate the input and configuration.
+        // Validate
 
-        // Handle task-related data and operations.
+        // Update Data Integration Task-Node Relation
         DppEtlTaskNodeRelDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskNodeRelDO.class);
         return dppEtlTaskNodeRelMapper.updateById(updateObj);
     }
@@ -123,7 +123,7 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
         if (idList == null || idList.isEmpty()) {
             return 0;
         }
-        // Handle task-related data and operations.
+        // Batch delete Data Integration Task-Node Relation
         return dppEtlTaskNodeRelMapper.deleteBatchIds(idList);
     }
 
@@ -144,19 +144,19 @@ public class DppEtlTaskNodeRelServiceImpl  extends ServiceImpl<DppEtlTaskNodeRel
                 .collect(Collectors.toMap(
                         DppEtlTaskNodeRelDO::getId,
                         dppEtlTaskNodeRelDO -> dppEtlTaskNodeRelDO,
-                        // Implementation details.
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * Handle task-related data and operations.
+         * Import Data Integration Task-Node Relation data
          *
-         * @param importExcelList parameter value
-         * @param isUpdateSupport parameter value
-         * @param operName parameter value
-         * @return the operation result
+         * @param importExcelList Data Integration Task-Node Relation data list
+         * @param isUpdateSupport whether to support update; if already exists, update the data
+         * @param operName operator user
+         * @return result
          */
         @Override
         public String importDppEtlTaskNodeRel(List<DppEtlTaskNodeRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

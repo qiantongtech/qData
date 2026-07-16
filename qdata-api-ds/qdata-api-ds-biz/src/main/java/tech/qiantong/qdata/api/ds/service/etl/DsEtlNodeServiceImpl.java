@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:ds数据集成节点相关接口实现
+ * Description: DS data integration node related interface implementation
  * </p>
  *
  * @author: FXB

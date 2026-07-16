@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:业务分类ApiService接口
+ * Purpose: Business Category ApiService Interface
  * </p>
  *
  * @author: FXB
@@ -14,8 +14,8 @@ import java.util.List;
  **/
 public interface IDmBusinessCategoryApiService {
     /**
-     * 获取树形数据
-     * @param type 统计类型 1：统计资产数量
+     * Get tree data
+     * @param type Statistics type 1: count assets
      * @return
      */
     List<TreeData> getTreeData(String type);

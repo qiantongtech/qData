@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据域管理 Response VO 对象 DM_DATA_DOMAIN
+ * Data Domain Response VO - DM_DATA_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24

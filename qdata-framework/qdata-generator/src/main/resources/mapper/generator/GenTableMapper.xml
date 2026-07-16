@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectGenTableVo"/>
 		<where>
 			<choose>
-				<!-- 如果数据库是 kingBase -->
+				<!-- If the database is kingBase -->
 				<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 					<if test="tableName != null and tableName != ''">
 						AND lower(table_name) LIKE lower('%' || #{tableName} || '%')
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 				</when>
 
-				<!-- 如果是其他数据库（如 MySQL、 DM） -->
+				<!-- If it is other databases (such as MySQL, DM) -->
 				<otherwise>
 					<if test="tableName != null and tableName != ''">
 						AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
@@ -105,10 +105,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<if test="tableComment != null and tableComment != ''">
 						AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
 					</if>
-					<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+					<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 						AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 					</if>
-					<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+					<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 						AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 					</if>
 				</otherwise>
@@ -166,15 +166,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="tableComment != null and tableComment != ''">
 					AND lower(table_comment) LIKE lower('%' || #{tableComment} || '%')
 				</if>
-				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 					AND create_time &gt;= #{params.beginTime}
 				</if>
-				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 					AND create_time &lt;= #{params.endTime}
 				</if>
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- If it is other databases (such as MySQL, DM) -->
 			<otherwise>
 				<if test="tableName != null and tableName != ''">
 					AND lower(t.table_name) like lower(concat('%', #{tableName}, '%'))
@@ -182,10 +182,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="tableComment != null and tableComment != ''">
 					AND lower(c.table_comment) like lower(concat('%', #{tableComment}, '%'))
 				</if>
-				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 					AND date_format(t.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 				</if>
-				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 					AND date_format(t.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 				</if>
 			</otherwise>
@@ -212,7 +212,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND t.table_name NOT LIKE 'GEN_%'
 				AND t.table_name IN
 			</when>
-			<!-- 人大金仓 (KingbaseES) -->
+			<!-- KingbaseES -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				SELECT
 				t.table_name,

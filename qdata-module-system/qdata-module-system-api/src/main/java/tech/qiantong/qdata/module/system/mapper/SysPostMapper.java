@@ -23,96 +23,96 @@ import tech.qiantong.qdata.module.system.domain.SysPost;
 import java.util.List;
 
 /**
- * 岗位信息 数据层
+ * Post information data layer
  *
  * @author qdata
  */
 public interface SysPostMapper
 {
     /**
-     * 查询岗位数据集合
+     * Query post data collection
      *
-     * @param post 岗位信息
-     * @return 岗位数据集合
+     * @param post post information
+     * @return post data collection
      */
     public List<SysPost> selectPostList(SysPost post);
 
     /**
-     * 查询所有岗位
+     * Query all posts
      *
-     * @return 岗位列表
+     * @return post list
      */
     public List<SysPost> selectPostAll();
 
     /**
-     * 通过岗位ID查询岗位信息
+     * Query post information by post ID
      *
-     * @param postId 岗位ID
-     * @return 角色对象信息
+     * @param postId post ID
+     * @return post object information
      */
     public SysPost selectPostById(Long postId);
 
     /**
-     * 根据用户ID获取岗位选择框列表
+     * Get post selection list by user ID
      *
-     * @param userId 用户ID
-     * @return 选中岗位ID列表
+     * @param userId user ID
+     * @return selected post ID list
      */
     public List<Long> selectPostListByUserId(Long userId);
 
     /**
-     * 查询用户所属岗位组
+     * Query post group by username
      *
-     * @param userName 用户名
-     * @return 结果
+     * @param userName username
+     * @return result
      */
     public List<SysPost> selectPostsByUserName(String userName);
 
     /**
-     * 删除岗位信息
+     * Delete post information
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     public int deletePostById(Long postId);
 
     /**
-     * 批量删除岗位信息
+     * Batch delete post information
      *
-     * @param postIds 需要删除的岗位ID
-     * @return 结果
+     * @param postIds post IDs to delete
+     * @return result
      */
     public int deletePostByIds(Long[] postIds);
 
     /**
-     * 修改岗位信息
+     * Update post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public int updatePost(SysPost post);
 
     /**
-     * 新增岗位信息
+     * Insert post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public int insertPost(SysPost post);
 
     /**
-     * 校验岗位名称
+     * Validate post name
      *
-     * @param postName 岗位名称
-     * @return 结果
+     * @param postName post name
+     * @return result
      */
     public SysPost checkPostNameUnique(String postName);
 
     /**
-     * 校验岗位编码
+     * Validate post code
      *
-     * @param postCode 岗位编码
-     * @return 结果
+     * @param postCode post code
+     * @return result
      */
     public SysPost checkPostCodeUnique(String postCode);
 }

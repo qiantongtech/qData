@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途: 事实表结构
+ * Purpose: fact table structure
  * </p>
  *
  * @author: FXB
@@ -35,26 +35,26 @@ import java.util.List;
 @Builder
 public class FactTable {
     private String tableName;
-    //数据库名
+    //Database name
     private String databaseName;
-    //模式名
+    //Schema name
     private String schemaName;
     private String alias;
     private String description;
     private List<Column> columns;
     private List<String> primaryKeys;
-    private String timeColumn; // 时间维度字段
+    private String timeColumn; // Time dimension field
 
     @Data
     @Builder
     public static class Column {
-        //字段名称
+        //Field name
         private String name;
-        //字段类型
+        //Field type
         private String type;
-        //字段注释
+        //Field annotation
         private String description;
-        private String aggregation; // SUM, COUNT, AVG等
-//        private boolean isMeasure; // 是否度量值
+        private String aggregation; // SUM, COUNT, AVG, etc.
+// private boolean isMeasure; // Whether to measure the value
     }
 }

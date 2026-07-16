@@ -31,7 +31,7 @@
       label-width="150px"
      :label-position="labelPosition">
       <el-row :gutter="20">
-        <!-- 选择字段（单选） -->
+        <!-- Select field (single choice) -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.selectField', '选择字段')"
@@ -54,7 +54,7 @@
           </el-form-item>
         </el-col>
 
-        <!-- 合并字段（多选） -->
+        <!-- Merge fields (multiple selection) -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.mergeFields', '合并字段')"
@@ -76,7 +76,7 @@
           </el-form-item>
         </el-col>
 
-        <!-- 分隔符 -->
+        <!-- delimiter -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.separator', '分隔符')"
@@ -89,7 +89,7 @@
           </el-form-item>
         </el-col>
 
-        <!-- 空值处理 -->
+        <!-- Null value handling -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.nullHandling', '空值处理')"
@@ -107,7 +107,7 @@
           </el-form-item>
         </el-col>
 
-        <!-- 默认值（仅在选择 default 时显示） -->
+        <!-- Default value (only shown when default is selected) -->
         <el-col :span="12" v-if="form.ruleConfig.fieldMerge.handleNull === 'default'">
           <el-form-item
             :label="td('dpp.integration.defaultValueLabel', '默认值')"
@@ -120,7 +120,7 @@
           </el-form-item>
         </el-col>
 
-        <!-- 是否去除空格 -->
+        <!-- Whether to remove spaces -->
         <el-col :span="12">
           <el-form-item
             :label="td('dpp.integration.trimLeadingTrailingSpace', '是否去除首尾空格')"
@@ -168,13 +168,13 @@ const usedFields = computed(() => {
 // emits
 const emit = defineEmits(["update:visibleDialogs", "confirm"]);
 
-// dialog 显示状态响应式绑定
+// dialog display status responsive binding
 const dialogVisible = computed({
   get: () => props.visibleDialogs,
   set: (val) => emit("update:visibleDialogs", val),
 });
 
-// 表单数据
+// form data
 const form = ref({
   id: props.id,
   ruleConfig: {
@@ -189,10 +189,10 @@ const form = ref({
   },
 });
 
-// 表单引用
+// form reference
 const formRef = ref(null);
 
-// 表单校验规则
+// Form validation rules
 const formRules = {
   sourceField: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
   sourceFields: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
@@ -220,7 +220,7 @@ const formRules = {
   trimSpace: [{ required: true, message: td("dpp.integration.trimSpaceRequired", "请选择是否去除空格"), trigger: "change" }],
 };
 
-// 监听弹窗显示，弹出时初始化数据
+// Monitor the pop-up window display and initialize the data when it pops up
 watch(
   () => props.visibleDialogs,
   (val) => {
@@ -236,7 +236,7 @@ watch(
               ruleConfig: parsed,
             };
           } catch (err) {
-            console.error("ruleConfig JSON 解析失败:", err);
+            console.error("Failed to parse ruleConfig JSON:", err);
           }
         }
       } else {
@@ -258,7 +258,7 @@ watch(
   }
 );
 
-// 重置表单并清除校验状态
+// Reset the form and clear validation status
 function reset() {
   form.value = {
     id: props.id,
@@ -276,13 +276,13 @@ function reset() {
   if (formRef.value) formRef.value.clearValidate();
 }
 
-// 关闭弹窗事件，重置表单
+// Close the pop-up event and reset the form
 function closeDialog() {
-  dialogVisible.value = false; // 触发 update:visibleDialogs 通知父组件关闭弹窗
+  dialogVisible.value = false; // Trigger update:visibleDialogs to notify the parent component to close the pop-up window
   reset();
 }
 
-// 提交表单
+// Submit form
 function submitForm() {
   formRef.value.validate((valid) => {
     if (!valid) return;

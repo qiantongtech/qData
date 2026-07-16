@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产-视频数据 DO 对象 DA_ASSET_VIDEO
+ * Data Asset - Video Data DO - DA_ASSET_VIDEO
  *
  * @author qdata
  * @date 2025-04-14
  */
 @Data
 @TableName(value = "DA_ASSET_VIDEO")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_VIDEO_seq")
 @Builder
 @NoArgsConstructor
@@ -44,28 +44,28 @@ public class DaAssetVideoDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port */
     private Long port;
 
-    /** 协议 */
+    /** Protocol */
     private String protocol;
 
-    /** 平台 */
+    /** Platform */
     private String platform;
 
-    /** 配置JSON */
+    /** Config JSON */
     private String config;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

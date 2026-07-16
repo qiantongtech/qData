@@ -31,14 +31,14 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据资产字段 DO 对象 DA_ASSET_COLUMN
+ * Data Asset Column DO - DA_ASSET_COLUMN
  *
  * @author lhs
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DA_ASSET_COLUMN")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_COLUMN_seq")
 @Builder
 @NoArgsConstructor
@@ -55,92 +55,92 @@ public class DaAssetColumnDO extends BaseEntity {
     private Long id;
 
     /**
-     * 资产id
+     * Asset ID
      */
     private Long assetId;
 
     /**
-     * 字段名称/英文名称
+     * Column Name / English Name
      */
     private String columnName;
 
     /**
-     * 字段注释/中文名称
+     * Column Comment / Chinese Name
      */
     private String columnComment;
 
     /**
-     * 数据类型
+     * Data Type
      */
     private String columnType;
 
     /**
-     * 长度
+     * Length
      */
     private Long columnLength;
 
     /**
-     * 小数位
+     * Decimal Places
      */
     private Long columnScale;
 
     /**
-     * 是否必填
+     * Required Flag
      */
     private String nullableFlag;
 
     /**
-     * 是否主键
+     * Primary Key Flag
      */
     private String pkFlag;
 
     /**
-     * 默认值
+     * Default Value
      */
     private String defaultValue;
 
     /**
-     * 是否代码
+     * Data Element Code Flag
      */
     private String dataElemCodeFlag;
 
     /**
-     * 代码id
+     * Data Element Code ID
      */
     private Long dataElemCodeId;
 
     /**
-     * 敏感等级id
+     * Sensitive Level ID
      */
     private Long sensitiveLevelId;
 
     /**
-     * 关联数据元
+     * Associated Data Element
      */
     private String relDataElmeFlag;
 
     /**
-     * 关联清洗规则
+     * Associated Cleansing Rule
      */
     private String relCleanFlag;
 
     /**
-     * 关联稽查规则
+     * Associated Audit Rule
      */
     private String relAuditFlag;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;
@@ -164,7 +164,7 @@ public class DaAssetColumnDO extends BaseEntity {
     private String dataElemCodeName;
 
     /**
-     * 清洗规则列表
+     * Cleansing Rule List
      */
     @TableField(exist = false)
     private List<DpDataElemRuleRelRespDTO> cleanRuleList;

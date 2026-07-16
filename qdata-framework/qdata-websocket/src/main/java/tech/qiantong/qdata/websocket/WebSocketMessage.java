@@ -27,19 +27,19 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * websocket 客户端消息集
+ * WebSocket client message collection
  *
  * @author qdata
  */
 public class WebSocketMessage
 {
     /**
-     * WebSocketUsers 日志控制器
+     * WebSocketMessage logger
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketMessage.class);
 
     /**
-     * 消息集
+     * Message collection
      */
     private static Map<String, Session> MESSAGES = new ConcurrentHashMap<String, Session>();
 
@@ -47,14 +47,14 @@ public class WebSocketMessage
         return MESSAGES.get(key);
     }
 
-    //用户可能会开启多个窗口,不同窗口session不一样, 存储key格式: userId_sessionId
-    //获取此用户的所有窗口session
+    // Users may open multiple windows with different sessions, key format: userId_sessionId
+    // Get all window sessions for this user
     public static List<Session> getUserSessionList(String userId) {
         List<Session> sessions = new ArrayList<>();
-        // 遍历并使用 "_" 分割 key
+        // Iterate and split key by "_"
         for (Map.Entry<String, Session> entry : MESSAGES.entrySet()) {
             String key = entry.getKey();
-            // 使用 "_" 分割 key
+            // Split key by "_"
             String[] parts = key.split("_");
             if(userId.equals(parts[0])){
                 sessions.add(entry.getValue());
@@ -64,10 +64,10 @@ public class WebSocketMessage
     }
 
     /**
-     * 存储消息数量
+     * Store message count
      *
-     * @param key 唯一键
-     * @param session 消息信息
+     * @param key unique key
+     * @param session message session
      */
     public static void put(String key, Session session)
     {
@@ -75,11 +75,11 @@ public class WebSocketMessage
     }
 
     /**
-     * 移除用户消息
+     * Remove user message
      *
-     * @param session 消息信息
+     * @param session message session
      *
-     * @return 移除结果
+     * @return removal result
      */
     public static boolean remove(Session session)
     {
@@ -106,9 +106,9 @@ public class WebSocketMessage
     }
 
     /**
-     * 移出用户消息
+     * Remove user message by key
      *
-     * @param key 键
+     * @param key key
      */
     public static boolean remove(String key)
     {
@@ -127,9 +127,9 @@ public class WebSocketMessage
     }
 
     /**
-     * 获取在线用户消息列表
+     * Get online user message list
      *
-     * @return 返回用户集合
+     * @return user collection
      */
     public static Map<String, Session> getMessages()
     {
@@ -137,9 +137,9 @@ public class WebSocketMessage
     }
 
     /**
-     * 群发消息文本消息
+     * Broadcast text message to all users
      *
-     * @param message 消息内容
+     * @param message message content
      */
     public static void sendMessageToUsersByText(String message)
     {
@@ -151,9 +151,10 @@ public class WebSocketMessage
     }
 
     /**
-     * 发送文本消息
+     * Send text message
      *
-     * @param message 消息内容
+     * @param session user session
+     * @param message message content
      */
     public static void sendMessageToUserByText(Session session, String message)
     {
@@ -174,7 +175,7 @@ public class WebSocketMessage
         }
     }
 
-    // 向所有连接的用户广播消息
+    // Broadcast message to all connected users
     public static void broadcast(String message) {
         for (Session session : MESSAGES.values()) {
             sendMessageToUserByText(session, message);

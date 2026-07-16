@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产与项目关联关系 Response VO 对象 DA_ASSET_PROJECT_REL
+ * Data Asset and Project Relationship Response VO DA_ASSET_PROJECT_REL
  *
  * @author qdata
  * @date 2025-04-18

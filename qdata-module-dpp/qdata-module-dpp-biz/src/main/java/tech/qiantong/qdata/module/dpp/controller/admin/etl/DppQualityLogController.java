@@ -52,12 +52,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 
 /**
- * 数据质量日志Controller
+ * Data Quality Log Controller
  *
  * @author qdata
  * @date 2025-07-19
  */
-@Tag(name = "数据质量日志")
+@Tag(name = "Data Quality Log")
 @RestController
 @RequestMapping("/dpp/qualityLog")
 @Validated
@@ -73,7 +73,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量日志列表")
-    @Log(title = "数据质量日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppQualityLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -83,7 +83,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "导入数据质量日志列表")
-    @Log(title = "数据质量日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppQualityLogRespVO> util = new ExcelUtil<>(DppQualityLogRespVO.class);
@@ -101,7 +101,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppQualityLogSaveReqVO dppQualityLog) {
         dppQualityLog.setCreatorId(getUserId());
@@ -111,7 +111,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppQualityLogSaveReqVO dppQualityLog) {
         dppQualityLog.setUpdatorId(getUserId());
@@ -121,7 +121,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppQualityLogService.removeDppQualityLog(Arrays.asList(ids)));
@@ -131,7 +131,7 @@ public class DppQualityLogController extends BaseController {
     @RequestMapping(value = "/logDetailCat", method = RequestMethod.GET)
     @Operation(summary = "运行日志详情")
     public ReturnT<LogResult> logDetailCat(String handleMsg) {
-        // 添加日志审计功能
+        // Add log audit functionality
         try {
             InputStream in = new FileInputStream(handleMsg);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -147,7 +147,7 @@ public class DppQualityLogController extends BaseController {
             if (in != null) {
                 in.close();
             }
-            // @TODO 查看日志
+            // @TODO View log
             ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "查询日志成功");
             LogResult logResult = new LogResult(0, 0, logContent, true);
             returnT.setContent(logResult);

@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 主题域管理 Request VO 对象 DM_THEME_DOMAIN
+ * Theme Domain Request VO - DM_THEME_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24

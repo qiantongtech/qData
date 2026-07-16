@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现库信息Service接口
+ * Data Discovery Database Info Service Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -38,74 +38,74 @@ import java.util.Map;
 public interface IDaDiscoveryTableService extends IService<DaDiscoveryTableDO> {
 
     /**
-     * 获得数据发现库信息分页列表
+     * Get data discovery database info page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据发现库信息分页列表
+     * @param pageReqVO page request
+     * @return data discovery database info page list
      */
     PageResult<DaDiscoveryTableDO> getDaDiscoveryTablePage(DaDiscoveryTablePageReqVO pageReqVO);
 
     /**
-     * 获得全部数据发现库信息列表
+     * Get all data discovery database info list
      *
-     * @return 数据发现库信息列表
+     * @return data discovery database info list
      */
     List<DaDiscoveryTableDO> getDaDiscoveryTableList(DaDiscoveryTablePageReqVO discoveryTablePageReqVO);
 
     /**
-     * 创建数据发现库信息
+     * Create data discovery database info
      *
-     * @param createReqVO 数据发现库信息信息
-     * @return 数据发现库信息编号
+     * @param createReqVO data discovery database info
+     * @return data discovery database info ID
      */
     Long createDaDiscoveryTable(DaDiscoveryTableSaveReqVO createReqVO);
     Long createDaDiscoveryTable(DaDiscoveryTableDO createReqVO);
 
     /**
-     * 更新数据发现库信息
+     * Update data discovery database info
      *
-     * @param updateReqVO 数据发现库信息信息
+     * @param updateReqVO data discovery database info
      */
     int updateDaDiscoveryTable(DaDiscoveryTableSaveReqVO updateReqVO);
     int updateDaDiscoveryTable(DaDiscoveryTableDO updateReqVO);
 
     /**
-     * 删除数据发现库信息
+     * Delete data discovery database info
      *
-     * @param idList 数据发现库信息编号
+     * @param idList data discovery database info ID list
      */
     int removeDaDiscoveryTable(Collection<Long> idList);
 
     /**
-     * 获得数据发现库信息详情
+     * Get data discovery database info details
      *
-     * @param id 数据发现库信息编号
-     * @return 数据发现库信息
+     * @param id data discovery database info ID
+     * @return data discovery database info
      */
     DaDiscoveryTableDO getDaDiscoveryTableById(Long id);
 
     /**
-     * 获得全部数据发现库信息列表
+     * Get all data discovery database info list
      *
-     * @return 数据发现库信息列表
+     * @return data discovery database info list
      */
     List<DaDiscoveryTableDO> getDaDiscoveryTableList();
 
     /**
-     * 获得全部数据发现库信息 Map
+     * Get all data discovery database info Map
      *
-     * @return 数据发现库信息 Map
+     * @return data discovery database info Map
      */
     Map<Long, DaDiscoveryTableDO> getDaDiscoveryTableMap();
 
 
     /**
-     * 导入数据发现库信息数据
+     * Import data discovery database info data
      *
-     * @param importExcelList 数据发现库信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data discovery database info data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDiscoveryTable(List<DaDiscoveryTableRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

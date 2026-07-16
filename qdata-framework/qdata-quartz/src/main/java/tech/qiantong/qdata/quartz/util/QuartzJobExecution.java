@@ -23,7 +23,7 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import tech.qiantong.qdata.quartz.executor.QuartzExecutionStrategyExecutor;
 
 /**
- * Handle task-related data and operations.
+ * Scheduled task processing (allowing concurrent execution)
  *
  * @author qdata
  *

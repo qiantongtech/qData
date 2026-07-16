@@ -264,7 +264,7 @@ function getManagerOptions() {
   });
 }
 
-/** 获取树结构数据 */
+/** Get tree structure data */
 function getTreeData() {
   listBusinessCategory().then((response) => {
     const rows = response?.data || [];
@@ -334,7 +334,7 @@ function onDialogSubmit(payload) {
     .then(() => {
       proxy.$modal.msgSuccess(payload.id ? td('common.message.editSuccess', '修改成功') : td('common.message.addSuccess', '新增成功'));
       businessLayerEditDialogRef.value.close();
-      businessLayerEditDialogRef.value.refreshTreeData(); // 刷新弹窗内部树缓存
+      businessLayerEditDialogRef.value.refreshTreeData(); // Refresh the internal tree cache of the pop-up window
       tableRef.value?.getList();
       getTreeData();
     })
@@ -349,7 +349,7 @@ function handleDelete(row) {
     .then(() => {
       tableRef.value?.getList();
       getTreeData();
-      businessLayerEditDialogRef.value.refreshTreeData(); // 刷新弹窗内部树缓存
+      businessLayerEditDialogRef.value.refreshTreeData(); // Refresh the internal tree cache of the pop-up window
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
     })
     .catch(() => {});

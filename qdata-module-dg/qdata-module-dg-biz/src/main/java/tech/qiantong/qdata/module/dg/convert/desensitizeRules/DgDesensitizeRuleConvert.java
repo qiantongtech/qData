@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDese
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeRuleDO;
 
 /**
- * 脱敏规则 Convert
+ * Desensitization Rule Convert
  *
  * @author qdata
  * @date 2026-04-10
@@ -37,29 +37,29 @@ public interface DgDesensitizeRuleConvert {
     DgDesensitizeRuleConvert INSTANCE = Mappers.getMapper(DgDesensitizeRuleConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDesensitizeRulePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDesensitizeRulePageReqVO request parameters
      * @return DgDesensitizeRuleDO
      */
      DgDesensitizeRuleDO convertToDO(DgDesensitizeRulePageReqVO dgDesensitizeRulePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDesensitizeRuleSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDesensitizeRuleSaveReqVO save request parameters
      * @return DgDesensitizeRuleDO
      */
      DgDesensitizeRuleDO convertToDO(DgDesensitizeRuleSaveReqVO dgDesensitizeRuleSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDesensitizeRuleDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDesensitizeRuleDO entity object
      * @return DgDesensitizeRuleRespVO
      */
      DgDesensitizeRuleRespVO convertToRespVO(DgDesensitizeRuleDO dgDesensitizeRuleDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDesensitizeRuleDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDesensitizeRuleDOList entity object list
      * @return List<DgDesensitizeRuleRespVO>
      */
      List<DgDesensitizeRuleRespVO> convertToRespVOList(List<DgDesensitizeRuleDO> dgDesensitizeRuleDOList);

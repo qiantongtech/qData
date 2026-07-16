@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.system.service.ISysLogininforService;
 import java.util.List;
 
 /**
- * 系统访问日志情况信息 服务层处理
+ * System access log service layer implementation
  *
  * @author qdata
  */
@@ -39,9 +39,9 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     private SysLogininforMapper logininforMapper;
 
     /**
-     * 新增系统登录日志
+     * Insert system login log
      *
-     * @param logininfor 访问日志对象
+     * @param logininfor access log object
      */
     @Override
     public void insertLogininfor(SysLogininfor logininfor)
@@ -50,10 +50,10 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     }
 
     /**
-     * 查询系统登录日志集合
+     * Query system login log collection
      *
-     * @param logininfor 访问日志对象
-     * @return 登录记录集合
+     * @param logininfor access log object
+     * @return login record collection
      */
     @Override
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
@@ -62,10 +62,10 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     }
 
     /**
-     * 批量删除系统登录日志
+     * Batch delete system login logs
      *
-     * @param infoIds 需要删除的登录日志ID
-     * @return 结果
+     * @param infoIds login log IDs to delete
+     * @return result
      */
     @Override
     public int deleteLogininforByIds(Long[] infoIds)
@@ -74,7 +74,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
     }
 
     /**
-     * 清空系统登录日志
+     * Clear system login logs
      */
     @Override
     public void cleanLogininfor()

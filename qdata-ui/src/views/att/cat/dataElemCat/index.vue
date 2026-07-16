@@ -210,6 +210,7 @@
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:dataElemCat:remove']"
+              :disabled="scope.row.validFlag"
               >{{ td('common.button.delete') }}</el-button
             >
           </template>
@@ -224,7 +225,7 @@
       />
     </div>
 
-    <!-- 新增或修改数据元类目管理对话框 -->
+    <!-- Add or edit data element category management dialog -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -311,7 +312,7 @@
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
 
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -332,6 +333,7 @@ import {
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const attDataElemCatList = ref([]);
 const attDataElemCatOptions = ref([]);
@@ -363,7 +365,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询数据元类目管理列表 */
+/** Query data element category management list */
 function getList() {
   loading.value = true;
   listAttDataElemCat(queryParams.value).then((response) => {
@@ -384,15 +386,15 @@ function getDataTree() {
     attDataElemCatOptions.value.push(data);
   });
 }
-/** 查询数据元类目管理下拉树结构1 */
+/** Query data element category management dropdown tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -414,11 +416,11 @@ function reset() {
   proxy.resetForm("attDataElemCatRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -438,13 +440,13 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -463,7 +465,7 @@ function handleAdd(row) {
   title.value = td('att.dataElemCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -472,15 +474,15 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDataElemCat();
   attDataElemCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
     return (
       d.ID !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -493,7 +495,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDataElemCat(row.id).then((response) => {
-    //把createTime过滤掉
+    // Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -502,8 +504,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["attDataElemCatRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -511,19 +515,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttDataElemCat(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   proxy.$modal
     .confirm(td('att.dataElemCat.messages.confirmDelete').replace('<name>', row.name))

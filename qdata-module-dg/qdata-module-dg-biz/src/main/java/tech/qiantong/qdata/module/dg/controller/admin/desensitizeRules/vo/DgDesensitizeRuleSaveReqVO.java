@@ -31,12 +31,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeIntervalDO;
 
 /**
- * 脱敏规则 创建/修改 Request VO DG_DESENSITIZE_RULE
+ * Desensitize Rule Create/Update Request VO DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10
  */
-@Schema(description = "脱敏规则 Response VO")
+@Schema(description = "Desensitize Rule Save Request VO")
 @Data
 public class DgDesensitizeRuleSaveReqVO extends BaseEntity {
 
@@ -45,43 +45,43 @@ public class DgDesensitizeRuleSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "分级名称", example = "")
-    @Size(max = 256, message = "分级名称长度不能超过256个字符")
+    @Schema(description = "Classification name", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String name;
 
-    @Schema(description = "数据分类ID", example = "")
+    @Schema(description = "Data category ID", example = "")
     private Long dataCategoryId;
 
-    @Schema(description = "应用场景;1：数据资产  2：数据查询  3：数据服务", example = "")
-    @Size(max = 256, message = "应用场景;1：数据资产  2：数据查询  3：数据服务长度不能超过256个字符")
+    @Schema(description = "Application scene; 1: Data asset 2: Data query 3: Data service", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String applicationScene;
 
-    @Schema(description = "脱敏方式;1：底层脱敏  2：展示脱敏", example = "")
-    @Size(max = 256, message = "脱敏方式;1：底层脱敏  2：展示脱敏长度不能超过256个字符")
+    @Schema(description = "Mask type; 1: Underlying mask 2: Display mask", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String maskType;
 
-    @Schema(description = "替换规则", example = "")
-    @Size(max = 256, message = "替换规则长度不能超过256个字符")
+    @Schema(description = "Replace rule", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String replaceRule;
 
-    @Schema(description = "替换内容", example = "")
-    @Size(max = 256, message = "替换内容长度不能超过256个字符")
+    @Schema(description = "Replace content", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String replaceContent;
 
-    @Schema(description = "脱敏区间", example = "")
+    @Schema(description = "Desensitize intervals", example = "")
     private List<DgDesensitizeIntervalDO> intervalList;
 
-    @Schema(description = "排序", example = "")
+    @Schema(description = "Sort order", example = "")
     private Long sortOrder;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 256, message = "描述长度不能超过256个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String description;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 }

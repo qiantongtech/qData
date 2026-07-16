@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.dataLevel.dto;
 import lombok.*;
 
 /**
- * 数据分级 DTO 对象 DG_DATA_LEVEL
+ * Data Level DTO Object DG_DATA_LEVEL
  *
  * @author qdata
  * @date 2026-04-03
@@ -34,25 +34,25 @@ public class DgDataLevelRespDTO {
     /** ID */
     private Long id;
 
-    /** 分级名称 */
+    /** Level Name */
     private String name;
 
-    /** 分级缩写名 */
+    /** Level Short Name */
     private String shortname;
 
-    /** 敏感等级 */
+    /** Sensitive Level */
     private Long sensitiveLevel;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

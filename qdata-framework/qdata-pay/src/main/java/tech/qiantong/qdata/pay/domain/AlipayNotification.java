@@ -24,89 +24,89 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 封装支付宝回调通知的参数
+ * Encapsulates the parameters of Alipay callback notification
  */
 @Data
 @AllArgsConstructor
 public class AlipayNotification extends Notification{
 
-    /** 交易创建时间 */
+    /** Transaction creation time */
     private String gmtCreate;
 
-    /** 编码格式 */
+    /** Encoding format */
     private String charset;
 
-    /** 交易付款时间 */
+    /** Transaction payment time */
     private String gmtPayment;
 
-    /** 通知的发送时间 */
+    /** Notification sending time */
     private String notifyTime;
 
-    /** 商品标题 */
+    /** Product title */
     private String subject;
 
-    /** 签名 */
+    /** Signature */
     private String sign;
 
-    /** 买家支付宝用户号 */
+    /** Buyer’s Alipay user number */
     private String buyerId;
 
-    /** 开票金额 */
+    /** Invoicing amount */
     private String invoiceAmount;
 
-    /** 接口版本 */
+    /** Interface version */
     private String version;
 
-    /** 通知校验ID */
+    /** Notification verification ID */
     private String notifyId;
 
-    /** 支付渠道信息 */
+    /** Payment channel information */
     private List<FundBill> fundBillList;
 
-    /** 通知类型 */
+    /** Notification type */
     private String notifyType;
 
-    /** 商户订单号 */
+    /** Merchant order number */
     private String outTradeNo;
 
-    /** 订单金额 */
+    /** Order amount */
     private String totalAmount;
 
-    /** 交易状态 */
+    /** Transaction status */
     private String tradeStatus;
 
-    /** 支付宝交易号 */
+    /** Alipay transaction number */
     private String tradeNo;
 
-    /** 授权方的AppId */
+    /** AppId of the authorizer */
     private String authAppId;
 
-    /** 实收金额 */
+    /** Actual amount received */
     private String receiptAmount;
 
-    /** 集分宝金额 */
+    /** Amount of Jifenbao */
     private String pointAmount;
 
-    /** 付款金额 */
+    /** Payment amount */
     private String buyerPayAmount;
 
-    /** 支付宝分配给开发者的应用ID */
+    /** The application ID assigned to the developer by Alipay */
     private String appId;
 
-    /** 签名类型 */
+    /** Signature type */
     private String signType;
 
-    /** 卖家支付宝用户号 */
+    /** Seller’s Alipay user number */
     private String sellerId;
 
     public static class FundBill {
-        /** 支付金额 */
+        /** Payment amount */
         private String amount;
 
-        /** 支付渠道 */
+        /** Payment channel */
         private String fundChannel;
 
-        // 构造器、Getters 和 Setters
+        // Constructors, Getters and Setters
 
         public FundBill(String amount, String fundChannel) {
             this.amount = amount;

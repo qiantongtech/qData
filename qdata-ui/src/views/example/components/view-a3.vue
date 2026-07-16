@@ -190,7 +190,7 @@ const params = ref({
                 }
             ];
 
-            // dp-chart-a自定义配置
+            // dp-chart-a custom configuration
             const { chartOptions } = dpChartARef.value.useDpChartA();
 
             chartOptions.value.yAxis.name = `${label}(${unit}) `;
@@ -218,14 +218,14 @@ const params = ref({
                 }
             };
 
-            // dp-chart-a更新echarts
+            // dp-chart-a update echarts
             dpChartARef.value.updateEcharts();
         }, 1000);
     }
     getChartData();
 
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             dpChartARef.value.resize();
         }, 300);

@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产-矢量Service接口
+ * Data Asset - Vector Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -37,67 +37,67 @@ import java.util.Map;
 public interface IDaAssetGeoService extends IService<DaAssetGeoDO> {
 
     /**
-     * 获得数据资产-矢量分页列表
+     * Get data asset vector page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-矢量分页列表
+     * @param pageReqVO page request
+     * @return data asset vector page list
      */
     PageResult<DaAssetGeoDO> getDaAssetGeoPage(DaAssetGeoPageReqVO pageReqVO);
 
     DaAssetGeoRespVO getDaAssetGeoByAssetId(Long assetId);
 
     /**
-     * 创建数据资产-矢量
+     * Create data asset vector
      *
-     * @param createReqVO 数据资产-矢量信息
-     * @return 数据资产-矢量编号
+     * @param createReqVO data asset vector info
+     * @return data asset vector ID
      */
     Long createDaAssetGeo(DaAssetGeoSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产-矢量
+     * Update data asset vector
      *
-     * @param updateReqVO 数据资产-矢量信息
+     * @param updateReqVO data asset vector info
      */
     int updateDaAssetGeo(DaAssetGeoSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-矢量
+     * Delete data asset vector
      *
-     * @param idList 数据资产-矢量编号
+     * @param idList data asset vector ID list
      */
     int removeDaAssetGeo(Collection<Long> idList);
 
     /**
-     * 获得数据资产-矢量详情
+     * Get data asset vector details
      *
-     * @param id 数据资产-矢量编号
-     * @return 数据资产-矢量
+     * @param id data asset vector ID
+     * @return data asset vector
      */
     DaAssetGeoDO getDaAssetGeoById(Long id);
 
     /**
-     * 获得全部数据资产-矢量列表
+     * Get all data asset vector list
      *
-     * @return 数据资产-矢量列表
+     * @return data asset vector list
      */
     List<DaAssetGeoDO> getDaAssetGeoList();
 
     /**
-     * 获得全部数据资产-矢量 Map
+     * Get all data asset vector Map
      *
-     * @return 数据资产-矢量 Map
+     * @return data asset vector Map
      */
     Map<Long, DaAssetGeoDO> getDaAssetGeoMap();
 
 
     /**
-     * 导入数据资产-矢量数据
+     * Import data asset vector data
      *
-     * @param importExcelList 数据资产-矢量数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset vector data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetGeo(List<DaAssetGeoRespVO> importExcelList, boolean isUpdateSupport, String operName);
 }

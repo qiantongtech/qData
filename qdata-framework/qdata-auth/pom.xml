@@ -39,34 +39,34 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!-- 核心模块-->
+        <!-- Core module-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-security</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- General tools-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- Sa-Token 权限认证, 在线文档：https://sa-token.cc -->
+        <!-- Sa-Token authority authentication, online documentation: https://sa-token.cc -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot-starter</artifactId>
             <version>1.40.0</version>
         </dependency>
 
-        <!-- Sa-Token OAuth2.0 模块 -->
+        <!-- Sa-Token OAuth2.0 module -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-oauth2</artifactId>
             <version>1.40.0</version>
         </dependency>
 
-        <!-- Sa-Token 整合 Redis (可选) -->
+        <!-- Sa-Token integrates Redis (optional) -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-redis-jackson</artifactId>

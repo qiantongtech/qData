@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产-地理空间服务Service接口
+ * Data Asset - Geospatial Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -40,67 +40,67 @@ import java.util.Map;
 public interface IDaAssetGisService extends IService<DaAssetGisDO> {
 
     /**
-     * 获得数据资产-地理空间服务分页列表
+     * Get data asset geospatial service page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-地理空间服务分页列表
+     * @param pageReqVO page request
+     * @return data asset geospatial service page list
      */
     PageResult<DaAssetGisDO> getDaAssetGisPage(DaAssetGisPageReqVO pageReqVO);
 
     DaAssetGisRespVO getDaAssetGisByAssetId(Long assetId);
 
     /**
-     * 创建数据资产-地理空间服务
+     * Create data asset geospatial service
      *
-     * @param createReqVO 数据资产-地理空间服务信息
-     * @return 数据资产-地理空间服务编号
+     * @param createReqVO data asset geospatial service info
+     * @return data asset geospatial service ID
      */
     Long createDaAssetGis(DaAssetGisSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产-地理空间服务
+     * Update data asset geospatial service
      *
-     * @param updateReqVO 数据资产-地理空间服务信息
+     * @param updateReqVO data asset geospatial service info
      */
     int updateDaAssetGis(DaAssetGisSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-地理空间服务
+     * Delete data asset geospatial service
      *
-     * @param idList 数据资产-地理空间服务编号
+     * @param idList data asset geospatial service ID list
      */
     int removeDaAssetGis(Collection<Long> idList);
 
     /**
-     * 获得数据资产-地理空间服务详情
+     * Get data asset geospatial service details
      *
-     * @param id 数据资产-地理空间服务编号
-     * @return 数据资产-地理空间服务
+     * @param id data asset geospatial service ID
+     * @return data asset geospatial service
      */
     DaAssetGisDO getDaAssetGisById(Long id);
 
     /**
-     * 获得全部数据资产-地理空间服务列表
+     * Get all data asset geospatial service list
      *
-     * @return 数据资产-地理空间服务列表
+     * @return data asset geospatial service list
      */
     List<DaAssetGisDO> getDaAssetGisList();
 
     /**
-     * 获得全部数据资产-地理空间服务 Map
+     * Get all data asset geospatial service Map
      *
-     * @return 数据资产-地理空间服务 Map
+     * @return data asset geospatial service Map
      */
     Map<Long, DaAssetGisDO> getDaAssetGisMap();
 
 
     /**
-     * 导入数据资产-地理空间服务数据
+     * Import data asset geospatial service data
      *
-     * @param importExcelList 数据资产-地理空间服务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset geospatial service data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetGis(List<DaAssetGisRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

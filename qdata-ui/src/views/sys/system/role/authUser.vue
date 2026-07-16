@@ -107,7 +107,7 @@ const queryParams = reactive({
   phonenumber: undefined,
 });
 
-/** 查询授权用户列表 */
+/** Query the list of authorized users */
 function getList() {
   loading.value = true;
   allocatedUserList(queryParams).then((response) => {
@@ -117,36 +117,36 @@ function getList() {
   });
 }
 
-/** 返回按钮 */
+/** back button */
 function handleClose() {
   const obj = { path: "/system/role" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   userIds.value = selection.map((item) => item.userId);
   multiple.value = !selection.length;
 }
 
-/** 打开授权用户表弹窗 */
+/** Open the authorized user table pop-up window */
 function openSelectUser() {
   proxy.$refs["selectRef"].show();
 }
 
-/** 取消授权按钮操作 */
+/** Cancel authorization button operation */
 function cancelAuthUser(row) {
   proxy.$modal
     .confirm(td('sys.system.roleAuth.confirmCancelAuth', { name: row.userName }))
@@ -160,7 +160,7 @@ function cancelAuthUser(row) {
     .catch(() => { });
 }
 
-/** 批量取消授权按钮操作 */
+/** Batch deauthorization button operation */
 function cancelAuthUserAll(row) {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");

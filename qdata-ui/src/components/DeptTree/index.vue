@@ -39,7 +39,7 @@
         >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <!-- 第一级 -->
+              <!-- first level -->
               <el-icon
                 class="iconimg colorxz"
                 v-if="node.expanded && node.level === 1"
@@ -53,7 +53,7 @@
                 <Folder />
               </el-icon>
 
-              <!-- 有子节点的所有层级 -->
+              <!-- All levels with child nodes -->
               <el-icon
                 class="iconimg colorxz"
                 v-if="node.expanded && node.childNodes.length && node.level > 1"
@@ -69,7 +69,7 @@
                 <Folder />
               </el-icon>
 
-              <!-- 无子节点的节点 -->
+              <!-- Node without child nodes -->
               <el-icon
                 class="zjiconimg colorwxz"
                 v-show="
@@ -101,7 +101,7 @@
                 </span>
               </el-tooltip>
 
-              <!-- 操作入口 -->
+              <!-- Operation entrance -->
               <el-dropdown
                 v-if="editable"
                 trigger="click"
@@ -148,7 +148,7 @@
     </div>
   </el-aside>
 
-  <!-- 拖拽栏 -->
+  <!-- drag bar -->
   <div class="resize-bar" @mousedown="startResize">
     <div class="resize-handle-sx">
       <span class="zjsx"></span>
@@ -240,7 +240,7 @@ const emit = defineEmits([
   "node-delete",
 ]);
 
-// 1. 初始化高度
+// 1. Initialize height
 const qtWrapheight = ref("86vh");
 let resizeObserver = null;
 import CatEditDialog from "@/components/Cat/catEditDialog";
@@ -339,7 +339,7 @@ function handleNodeDelete(data) {
       })
       .then(() => {
         proxy.$modal.msgSuccess(t('common.message.deleteSuccess'));
-        // 如果删除的是当前选中的节点，清空选中状态
+        // If the currently selected node is deleted, clear the selected status.
         if (currentNodeKey.value === data.id) {
           currentNodeKey.value = null;
           emit("node-click", {});
@@ -363,7 +363,7 @@ function handleCatSubmit(formData) {
     if (props.api.add) {
       props.api.add(formData).then((response) => {
         proxy.$modal.msgSuccess(t('common.message.addSuccess'));
-        // 如果是新增，自动展开父节点
+        // If it is newly added, the parent node will be automatically expanded.
         if (
           formData.parentId &&
           !expandedKeys.value.includes(formData.parentId)
@@ -421,7 +421,7 @@ onMounted(() => {
   }
 });
 
-// 高度监听逻辑
+// High level of monitoring logic
 const getQtWrapHeight = () => {
   const element = document.querySelector(".qt-wrap");
   if (element) {
@@ -533,7 +533,7 @@ watch(
   }
 );
 
-// 拖拽逻辑
+// Drag and drop logic
 const isResizing = ref(false);
 let startX = 0;
 const startResize = (event) => {
@@ -556,7 +556,7 @@ const updateResize = (event) => {
   }
 };
 
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
   leftWidth.value = leftWidth.value === 0 ? 300 : 0;
   emit("update:leftWidth", leftWidth.value);
@@ -657,7 +657,7 @@ defineExpose({ resetTree, getDeptTree, setCurrentKey, deptTreeRef });
     margin-left: 2px;
     cursor: pointer;
     align-items: center;
-    transform: rotate(90deg); /* 旋转 90 度实现竖向三个点 */
+    transform: rotate(90deg); /* Rotate 90 degrees to achieve three vertical points */
     flex-shrink: 0;
 
     &.is-active {
@@ -694,7 +694,7 @@ defineExpose({ resetTree, getDeptTree, setCurrentKey, deptTreeRef });
 }
 
 .resize-bar {
-  height: v-bind(qtWrapheight); /* 使用 CSS 变量绑定高度 */
+  height: v-bind(qtWrapheight); /* Binding height using CSS variables */
   cursor: ew-resize;
   background-color: #f0f2f5;
   display: flex;

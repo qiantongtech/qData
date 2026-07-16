@@ -20,8 +20,8 @@ import { defineAsyncComponent } from "vue"
 const modules = import.meta.glob("./**/*.vue")
 
 /**
- * 清洗规则注册清单：仅维护元信息与组件路径
- * 组件解析通过 import.meta.glob + defineAsyncComponent 按需加载
+ * Cleaning rule registration list: only maintain meta information and component paths
+ * Component resolution is loaded on demand through import.meta.glob + defineAsyncComponent
  */
 export const ruleRegistry = {
   "001": { label: "components.cleanRule.numberBoundary", componentPath: "./numberBoundaryRule.vue" },
@@ -40,8 +40,8 @@ export const ruleRegistry = {
 }
 
 /**
- * 获取规则元信息
- * @param {string} key 规则编码（ruleCode）
+ * Get rule meta information
+ * @param {string} key rule code (ruleCode)
  * @returns {object|null}
  */
 export function getRuleConfig(key) {
@@ -49,8 +49,8 @@ export function getRuleConfig(key) {
 }
 
 /**
- * 获取规则异步组件
- * @param {string} key 规则编码（ruleCode）
+ * Get the rule asynchronous component
+ * @param {string} key rule code (ruleCode)
  * @returns {import('vue').DefineComponent|null}
  */
 export function getRuleComponent(key) {

@@ -153,7 +153,7 @@
           <el-tooltip :content="td('common.button.delete')" placement="top">
             <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['tool:gen:remove']"></el-button>
           </el-tooltip>
-<!--          <el-tooltip content="同步" placement="top">-->
+<!--          <el-tooltip content="Sync" placement="top">-->
 <!--            <el-button link type="primary" icon="Refresh" @click="handleSynchDb(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>-->
 <!--          </el-tooltip>-->
             <el-tooltip :content="td('sys.tool.genIndex.genCode')" placement="top">
@@ -170,7 +170,7 @@
         @pagination="getList"
       />
     </div>
-    <!-- 预览界面 -->
+    <!-- Preview interface -->
     <el-dialog :title="preview.title" v-model="preview.open" width="80%" top="5vh" :append-to="$refs['app-container']" class="scrollbar" draggable destroy-on-close>
       <el-tabs v-model="preview.activeName">
         <el-tab-pane
@@ -246,7 +246,7 @@ onActivated(() => {
   }
 })
 
-/** 查询表集合 */
+/** Query table collection */
 function getList() {
   loading.value = true;
   listTable(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -256,13 +256,13 @@ function getList() {
   });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 生成代码操作 */
+/** Generate code operations */
 function handleGenTable(row) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
@@ -278,7 +278,7 @@ function handleGenTable(row) {
   }
 }
 
-/** 同步数据库操作 */
+/** Synchronous database operations */
 function handleSynchDb(row) {
   const tableName = row.tableName;
   proxy.$modal.confirm(td('sys.tool.genIndex.confirmSyncTable', { name: tableName })).then(function () {
@@ -288,24 +288,24 @@ function handleSynchDb(row) {
   }).catch(() => {});
 }
 
-/** 打开导入表弹窗 */
+/** Open the import table pop-up window */
 function openImportTable() {
   proxy.$refs["importRef"].show();
 }
 
-/** 打开创建表弹窗 */
+/** Open the create table pop-up window */
 function openCreateTable() {
   proxy.$refs["createRef"].show();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 预览按钮 */
+/** preview button */
 function handlePreview(row) {
   previewTable(row.tableId).then(response => {
     preview.value.data = response.data;
@@ -314,12 +314,12 @@ function handlePreview(row) {
   });
 }
 
-/** 复制代码成功 */
+/** Copied code successfully */
 function copyTextSuccess() {
   proxy.$modal.msgSuccess(td('common.message.copySuccess'));
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.tableId);
   tableNames.value = selection.map(item => item.tableName);
@@ -327,13 +327,13 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleEditTable(row) {
   const tableId = row.tableId || ids.value[0];
   router.push({ path: "/tool/gen-edit/index/" + tableId, query: { pageNum: queryParams.value.pageNum } });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const tableIds = row.tableId || ids.value;
   proxy.$modal.confirm(td('sys.tool.genIndex.confirmDelete', { ids: tableIds })).then(function () {

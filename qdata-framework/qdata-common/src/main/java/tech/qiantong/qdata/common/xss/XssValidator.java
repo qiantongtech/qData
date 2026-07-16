@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 自定义xss校验注解实现
+ * Implementation of custom xss verification annotations
  *
  * @author qdata
  */

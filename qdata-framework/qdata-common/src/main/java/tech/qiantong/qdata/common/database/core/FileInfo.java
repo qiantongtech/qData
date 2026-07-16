@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.utils.FileTypeUtil;
 import java.util.Date;
 
 /**
- * 数据资产-非结构化数据 目录或文件夹
+ * Data assets - unstructured data directories or folders
  *
  * @author Chaos
  * @date 2025-07-16

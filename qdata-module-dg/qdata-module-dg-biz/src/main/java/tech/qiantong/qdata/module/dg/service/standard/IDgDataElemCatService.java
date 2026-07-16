@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 数据元类目管理Service接口
+ * Data Element Category Management Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -18,51 +18,51 @@ import java.util.List;
 public interface IDgDataElemCatService extends IService<DgDataElemCatDO> {
 
     /**
-     * 创建数据元类目管理
+     * Create data element category management
      *
-     * @param createReqVO 数据元类目管理信息
-     * @return 数据元类目管理编号
+     * @param createReqVO Data element category management information
+     * @return Data element category management ID
      */
     Long createDgDataElemCat(DgDataElemCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据元类目管理
+     * Update data element category management
      *
-     * @param updateReqVO 数据元类目管理信息
+     * @param updateReqVO Data element category management information
      */
     int updateDgDataElemCat(DgDataElemCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元类目管理
+     * Delete data element category management
      *
-     * @param idList 数据元类目管理编号
+     * @param idList Data element category management IDs
      */
     int removeDgDataElemCat(Collection<Long> idList);
 
     /**
-     * 更改指定pid下的所有code
+     * Change all codes under the specified pid
      *
      * @param pid
      */
     void changeCodeByPid(Long pid, String parentCode);
 
     /**
-     * 获得数据元类目管理详情
+     * Get data element category management details
      *
-     * @param id 数据元类目管理编号
-     * @return 数据元类目管理
+     * @param id Data element category management ID
+     * @return Data element category management
      */
     DgDataElemCatDO getDgDataElemCatById(Long id);
 
     /**
-     * 获得全部数据元类目管理列表
+     * Get all data element category management list
      *
-     * @return 数据元类目管理列表
+     * @return Data element category management list
      */
     List<DgDataElemCatDO> getDgDataElemCatList(DgDataElemCatPageReqVO reqVO);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode
@@ -71,7 +71,7 @@ public interface IDgDataElemCatService extends IService<DgDataElemCatDO> {
     String createCode(Long parentId, String parentCode);
 
     /**
-     * 批量删除检查,查询可删除数和不可删除数
+     * Batch delete check, query the number of deletable and non-deletable items
      *
      * @param ids
      * @return

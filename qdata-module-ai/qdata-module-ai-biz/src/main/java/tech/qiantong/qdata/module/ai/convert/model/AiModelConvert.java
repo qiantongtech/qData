@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.model.vo.AiModelSaveReqVO;
 import tech.qiantong.qdata.module.ai.dal.dataobject.model.AiModelDO;
 
 /**
- * 模型管理 Convert
+ * Model management Convert
  *
  * @author FXB
  * @date 2026-04-01
@@ -37,29 +37,29 @@ public interface AiModelConvert {
     AiModelConvert INSTANCE = Mappers.getMapper(AiModelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param aiModelPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param aiModelPageReqVO request parameters
      * @return AiModelDO
      */
      AiModelDO convertToDO(AiModelPageReqVO aiModelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param aiModelSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param aiModelSaveReqVO save request parameters
      * @return AiModelDO
      */
      AiModelDO convertToDO(AiModelSaveReqVO aiModelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param aiModelDO 实体对象
+     * DO to RespVO
+     * @param aiModelDO entity object
      * @return AiModelRespVO
      */
      AiModelRespVO convertToRespVO(AiModelDO aiModelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param aiModelDOList 实体对象列表
+     * DOList to RespVOList
+     * @param aiModelDOList entity object list
      * @return List<AiModelRespVO>
      */
      List<AiModelRespVO> convertToRespVOList(List<AiModelDO> aiModelDOList);

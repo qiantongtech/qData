@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 业务分类数据域关联关系Mapper接口
+ * Business Category Domain Relation Mapper Interface
  *
  * @author qdata
  * @date 2026-04-12
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DmBusinessDomainRelMapper extends BaseMapperX<DmBusinessDomainRelDO> {
 
     default PageResult<DmBusinessDomainRelDO> selectPage(DmBusinessDomainRelPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DmBusinessDomainRelDO>()
                 .eqIfPresent(DmBusinessDomainRelDO::getBusinessCategoryId, reqVO.getBusinessCategoryId())
                 .eqIfPresent(DmBusinessDomainRelDO::getDataDomainId, reqVO.getDataDomainId())
@@ -50,9 +50,9 @@ public interface DmBusinessDomainRelMapper extends BaseMapperX<DmBusinessDomainR
                 .eqIfPresent(DmBusinessDomainRelDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmBusinessDomainRelDO::getValidFlag, reqVO.getValidFlag())
                 .eqIfPresent(DmBusinessDomainRelDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DmBusinessDomainRelDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

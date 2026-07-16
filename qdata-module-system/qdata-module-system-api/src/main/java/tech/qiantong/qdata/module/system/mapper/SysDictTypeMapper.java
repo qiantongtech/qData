@@ -23,80 +23,80 @@ import tech.qiantong.qdata.common.core.domain.entity.SysDictType;
 import java.util.List;
 
 /**
- * 字典表 数据层
+ * Dictionary table data layer
  *
  * @author qdata
  */
 public interface SysDictTypeMapper
 {
     /**
-     * 根据条件分页查询字典类型
+     * Query dictionary types with pagination by conditions
      *
-     * @param dictType 字典类型信息
-     * @return 字典类型集合信息
+     * @param dictType dictionary type information
+     * @return dictionary type collection
      */
     public List<SysDictType> selectDictTypeList(SysDictType dictType);
 
     /**
-     * 根据所有字典类型
+     * Query all dictionary types
      *
-     * @return 字典类型集合信息
+     * @return dictionary type collection
      */
     public List<SysDictType> selectDictTypeAll();
 
     /**
-     * 根据字典类型ID查询信息
+     * Query information by dictionary type ID
      *
-     * @param dictId 字典类型ID
-     * @return 字典类型
+     * @param dictId dictionary type ID
+     * @return dictionary type
      */
     public SysDictType selectDictTypeById(Long dictId);
 
     /**
-     * 根据字典类型查询信息
+     * Query information by dictionary type
      *
-     * @param dictType 字典类型
-     * @return 字典类型
+     * @param dictType dictionary type
+     * @return dictionary type
      */
     public SysDictType selectDictTypeByType(String dictType);
 
     /**
-     * 通过字典ID删除字典信息
+     * Delete dictionary information by dictionary ID
      *
-     * @param dictId 字典ID
-     * @return 结果
+     * @param dictId dictionary ID
+     * @return result
      */
     public int deleteDictTypeById(Long dictId);
 
     /**
-     * 批量删除字典类型信息
+     * Batch delete dictionary type information
      *
-     * @param dictIds 需要删除的字典ID
-     * @return 结果
+     * @param dictIds dictionary IDs to delete
+     * @return result
      */
     public int deleteDictTypeByIds(Long[] dictIds);
 
     /**
-     * 新增字典类型信息
+     * Insert dictionary type information
      *
-     * @param dictType 字典类型信息
-     * @return 结果
+     * @param dictType dictionary type information
+     * @return result
      */
     public int insertDictType(SysDictType dictType);
 
     /**
-     * 修改字典类型信息
+     * Update dictionary type information
      *
-     * @param dictType 字典类型信息
-     * @return 结果
+     * @param dictType dictionary type information
+     * @return result
      */
     public int updateDictType(SysDictType dictType);
 
     /**
-     * 校验字典类型称是否唯一
+     * Validate whether dictionary type name is unique
      *
-     * @param dictType 字典类型
-     * @return 结果
+     * @param dictType dictionary type
+     * @return result
      */
     public SysDictType checkDictTypeUnique(String dictType);
 }

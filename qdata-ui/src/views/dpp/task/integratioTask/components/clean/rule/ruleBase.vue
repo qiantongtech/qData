@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 清洗规则基础页面   -->
+  <!-- Cleaning rules basic page   -->
   <el-dialog
     v-model="dialogVisible"
     draggable
@@ -135,7 +135,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 规则配置 -->
+        <!-- Rule configuration -->
         <div class="h2-title">{{ td('dpp.cleanRule.ruleConfig', '规则配置') }}</div>
         <el-row v-if="type != 3">
           <el-col :span="24">
@@ -204,7 +204,7 @@
           >{{ td('common.button.confirm') }}</el-button
         >
         <el-button @click="handleBack" v-if="!mode">{{ td('common.button.return') }}</el-button>
-        <!-- <el-button type="warning" @click="handleSpotCheck">预览</el-button> -->
+        <!-- <el-button type="warning" @click="handleSpotCheck">Preview</el-button> -->
       </template>
       <el-button @click="closeDialog" v-else>{{ td('common.button.close') }}</el-button>
     </template>
@@ -215,6 +215,7 @@
 import useDefaultLang from "@/composables/useDefaultLang"
 import SideMenu from "./ruleSelectorMenu.vue";
 import { getRuleConfig, getRuleComponent } from "./registry.js";
+import { isNumericColumnType, isTextColumnType, validateWhereCondition } from "../../../utils/foolproof.js";
 
 import moment from "moment";
 
@@ -223,7 +224,7 @@ let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
-// 父组件传入评测对象列表
+// The parent component passes in the evaluation object list
 const props = defineProps({
   inputFields: {
     type: Array,
@@ -267,8 +268,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //Cleaning rule name:
+  ruleCode: "", //Cleaning rule number:
   status: "1",
   // warningLevel: "2",
   whereClause: "",
@@ -277,24 +278,24 @@ let form = reactive({
   ruleDesc: "",
   type: "",
   ruleConfig: {
-    //数值边界调整
+    //Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
+    // Remove spaces from string
+    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    // Regular expression replacement
+    pattern: "", //expression
     replacement: "", //replacement
     ruleValue: [],
     deduplicationStrategy: "1",
     dataRangeValue: moment().format("YYYY-MM-DD"),
-    // 数据添加值
-    stringValue: "", //添加值
-    // 超长字段截断
+    // Data added value
+    stringValue: "", //Add value
+    // Very long field truncation
     maxLength: "100",
     direction: "1",
-    // 日期格式
+    // date format
     targetFormat: "yyyy-MM-dd",
     inputFormats: [
       "yyyyMMdd",
@@ -309,15 +310,15 @@ let form = reactive({
 const isMultipleSelect = computed(() => {
   return form.ruleCode == "019" || form.ruleCode == "029";
 });
-// 新增的计算属性，用于判断字段是否应该被禁用
+// A new calculated property is used to determine whether a field should be disabled
 const shouldDisableField = computed(() => {
   return (dict) => {
-    // 对于规则 025（按组合字段去重），只允许 pkFlag 为 1 的字段
+    // For rule 025 (deduplication by combined fields), only fields with pkFlag 1 are allowed
     // if (form.ruleCode == "025") {
     //   return dict.pkFlag != 1;
     // }
 
-    // 对于规则 039（清理过期记录），只允许日期类型字段
+    // For rule 039 (Purge expired records), only date type fields are allowed
     if (
       form.ruleCode == "039" ||
       form.ruleCode == "007" ||
@@ -331,7 +332,15 @@ const shouldDisableField = computed(() => {
       return !isDateType;
     }
 
-    // 对于规则 007 日期格式
+    if (form.ruleCode == "001" || form.ruleCode == "008") {
+      return !isNumericColumnType(dict.columnType);
+    }
+
+    if (["009", "010", "011", "012", "022"].includes(form.ruleCode)) {
+      return !isTextColumnType(dict.columnType);
+    }
+
+    // For rule 007 date format
     // if (form.ruleCode == "007") {
     //   const isStringType =
     //     dict.columnType?.toUpperCase().includes("CHAR") ||
@@ -346,12 +355,12 @@ const shouldDisableField = computed(() => {
 });
 let title = ref();
 
-// 计算属性：当前规则配置
+// Computed property: current rule configuration
 const currentRuleConfig = computed(() => {
   return getRuleConfig(form.ruleCode);
 });
 
-// 计算属性：当前规则组件
+// Computed property: current rule component
 const currentRuleComponent = computed(() => {
   return getRuleComponent(form.ruleCode) || getRuleComponent("EMPTY");
 });
@@ -366,6 +375,11 @@ async function handleSave() {
     await formRef?.value?.validate();
   } catch (err) {
     proxy.$message.warning(td("dpp.cleanRule.completeRequired", "请完善必填项"));
+    return;
+  }
+  const whereResult = validateWhereCondition(form.whereClause);
+  if (!whereResult.valid) {
+    proxy.$message.warning(whereResult.message);
     return;
   }
   let res = { valid: true, data: {} };
@@ -445,38 +459,38 @@ const initialForm = () => ({
   id: "",
   name: "",
   type: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //Cleaning rule name:
+  ruleCode: "", //Cleaning rule number:
   status: "1",
   whereClause: "",
   columns: isMultipleSelect.value ? [] : "",
   tableName: "",
   ruleDesc: "",
   ruleConfig: {
-    //数值边界调整
+    //Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
+    // Remove spaces from string
+    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    // Regular expression replacement
+    pattern: "", //expression
     replacement: "", //replacement
 
     ruleValue: [],
     deduplicationStrategy: "1",
-    // 枚举值映射标准化
+    // Enumeration value mapping normalization
     stringValue: [],
-    dataRange: "1", // 0：固定时间范围，1：具体日期
-    dataRangeType: "1", // 0：天前
+    dataRange: "1", // 0: fixed time range, 1: specific date
+    dataRangeType: "1", // 0: days ago
     dataRangeValue: moment().format("YYYY-MM-DD"),
-    handleType: "1", // 0：过期处理方式，1：删除记录
-    handleColumns: "", // // 标记字段     选中过期处理方式才会有
-    handleValue: "", // 标记值       选中过期处理方式才会有
-    // 超长字段截断
+    handleType: "1", // 0: Expiration processing method, 1: Delete records
+    handleColumns: "", // // Mark field only exists if the expiration processing method is selected
+    handleValue: "", // The tag value is only available if the expiration processing method is selected.
+    // Very long field truncation
     maxLength: "0",
     direction: "1",
-    // 日期格式
+    // date format
     targetFormat: "",
     inputFormats: [
       "yyyyMMdd",
@@ -486,17 +500,17 @@ const initialForm = () => ({
       "yyyy-MM-dd HH:mm:ss",
       "timestamp",
     ],
-    // 字段值替换
-    mode: "1", // 1-白名单，2-黑名单
-    allowed: [], //清洗值
-    defaultValue: "", //默认值
-    ignoreCase: "1", // 1-大小写敏感，2-大小写不敏感
-    caseSensitive: "1", // 1-去除空格，2-不去除空格
-    ignoreNullValue: "1", // 1-忽略null，2-不忽略null
-    // 日期空值填充
-    fillType: "3", //1=当前日期, 2=昨天, 3=固定值
-    defaultValue: "", // 固定值 fillType=3 时使用
-    format: "", // 日期格式
+    // Field value replacement
+    mode: "1", // 1-whitelist, 2-blacklist
+    allowed: [], //cleaning value
+    defaultValue: "", //Default value
+    ignoreCase: "1", // 1-Case sensitive, 2-Case insensitive
+    caseSensitive: "1", // 1-Remove spaces, 2-Do not remove spaces
+    ignoreNullValue: "1", // 1-ignore null, 2-do not ignore null
+    // Date null filling
+    fillType: "3", //1=Current date, 2=Yesterday, 3=Fixed value
+    defaultValue: "", // Used when fixed value fillType=3
+    format: "", // date format
   },
 });
 

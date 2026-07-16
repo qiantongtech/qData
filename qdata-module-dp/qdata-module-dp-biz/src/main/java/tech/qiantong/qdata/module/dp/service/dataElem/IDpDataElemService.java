@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据元Service接口
+ * Data Element Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,72 +38,72 @@ import java.util.Map;
 public interface IDpDataElemService extends IService<DpDataElemDO> {
 
     /**
-     * 获得数据元分页列表
+     * Get data element paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元分页列表
+     * @param pageReqVO Pagination request
+     * @return Paginated list of data elements
      */
     PageResult<DpDataElemDO> getDpDataElemPage(DpDataElemPageReqVO pageReqVO);
 
     List<DpDataElemDO> getDpDataElemList(DpDataElemPageReqVO pageReqVO);
 
     /**
-     * 创建数据元
+     * Create data element
      *
-     * @param createReqVO 数据元信息
-     * @return 数据元编号
+     * @param createReqVO Data element information
+     * @return Data element ID
      */
     Long createDpDataElem(DpDataElemSaveReqVO createReqVO);
 
     /**
-     * 更新数据元
+     * Update data element
      *
-     * @param updateReqVO 数据元信息
+     * @param updateReqVO Data element information
      */
     int updateDpDataElem(DpDataElemSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元
+     * Delete data element
      *
-     * @param idList 数据元编号
+     * @param idList Data element ID list
      */
     int removeDpDataElem(List<Long> idList);
 
     /**
-     * 获得数据元详情
+     * Get data element details
      *
-     * @param id 数据元编号
-     * @return 数据元
+     * @param id Data element ID
+     * @return Data element
      */
     DpDataElemDO getDpDataElemById(Long id);
 
     /**
-     * 获得全部数据元列表
+     * Get all data element list
      *
-     * @return 数据元列表
+     * @return Data element list
      */
     List<DpDataElemDO> getDpDataElemList();
 
     /**
-     * 获得全部数据元 Map
+     * Get all data element Map
      *
-     * @return 数据元 Map
+     * @return Data element Map
      */
     Map<Long, DpDataElemDO> getDpDataElemMap();
 
 
     /**
-     * 导入数据元数据
+     * Import data element data
      *
-     * @param importExcelList 数据元数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDpDataElem(List<DpDataElemRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 更改数据元状态
+     * Update data element status
      *
      * @param id
      * @param status

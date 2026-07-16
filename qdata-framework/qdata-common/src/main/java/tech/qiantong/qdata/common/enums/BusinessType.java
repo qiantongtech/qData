@@ -19,59 +19,59 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 业务操作类型
+ * Business operation type
  *
  * @author qdata
  */
 public enum BusinessType
 {
     /**
-     * 其它
+     * Others
      */
     OTHER,
 
     /**
-     * 新增
+     * New
      */
     INSERT,
 
     /**
-     * 修改
+     * Modify
      */
     UPDATE,
 
     /**
-     * 删除
+     * Delete
      */
     DELETE,
 
     /**
-     * 授权
+     * Authorize
      */
     GRANT,
 
     /**
-     * 导出
+     * Export
      */
     EXPORT,
 
     /**
-     * 导入
+     * Import
      */
     IMPORT,
 
     /**
-     * 强退
+     * Forced retreat
      */
     FORCE,
 
     /**
-     * 生成代码
+     * Generate code
      */
     GENCODE,
 
     /**
-     * 清空数据
+     * Clear data
      */
     CLEAN,
 }

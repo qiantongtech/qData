@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 import tech.qiantong.qdata.module.dg.service.dataLevel.IDgDataLevelService;
 
 /**
- * 数据分级Controller
+ * Data Level Controller
  *
  * @author qdata
  * @date 2026-04-03
@@ -79,7 +79,7 @@ public class DgDataLevelController extends BaseController {
 
     @Operation(summary = "导出数据分级列表")
     @PreAuthorize("@ss.hasPermi('dg:datalevel:export')")
-    @Log(title = "数据分级", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.data.level", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDataLevelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -90,7 +90,7 @@ public class DgDataLevelController extends BaseController {
 
     @Operation(summary = "导入数据分级列表")
     @PreAuthorize("@ss.hasPermi('dg:datalevel:import')")
-    @Log(title = "数据分级", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.data.level", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDataLevelRespVO> util = new ExcelUtil<>(DgDataLevelRespVO.class);
@@ -110,7 +110,7 @@ public class DgDataLevelController extends BaseController {
 
     @Operation(summary = "新增数据分级")
     @PreAuthorize("@ss.hasPermi('dg:datalevel:add')")
-    @Log(title = "数据分级", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.data.level", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDataLevelSaveReqVO dgDataLevel) {
         dgDataLevel.setCreatorId(getUserId());
@@ -123,7 +123,7 @@ public class DgDataLevelController extends BaseController {
 
     @Operation(summary = "修改数据分级")
     @PreAuthorize("@ss.hasPermi('dg:datalevel:edit')")
-    @Log(title = "数据分级", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.data.level", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDataLevelSaveReqVO dgDataLevel) {
         dgDataLevel.setUpdatorId(getUserId());
@@ -134,7 +134,7 @@ public class DgDataLevelController extends BaseController {
 
     @Operation(summary = "删除数据分级")
     @PreAuthorize("@ss.hasPermi('dg:datalevel:remove')")
-    @Log(title = "数据分级", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.data.level", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDataLevelService.removeDgDataLevel(Arrays.asList(ids)));

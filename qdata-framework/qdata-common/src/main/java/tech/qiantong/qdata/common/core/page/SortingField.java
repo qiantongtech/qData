@@ -25,9 +25,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 排序字段 DTO
+ * Sort field DTO
  *
- * 类名加了 ing 的原因是，避免和 ES SortField 重名。
+ * The reason why ing is added to the class name is to avoid having the same name as ES SortField.
  */
 @Data
 @NoArgsConstructor
@@ -35,20 +35,20 @@ import java.io.Serializable;
 public class SortingField implements Serializable {
 
     /**
-     * 顺序 - 升序
+     * Order - Ascending
      */
     public static final String ORDER_ASC = "asc";
     /**
-     * 顺序 - 降序
+     * Order - Descending
      */
     public static final String ORDER_DESC = "desc";
 
     /**
-     * 字段
+     * Field
      */
     private String field;
     /**
-     * 顺序
+     * Order
      */
     private String order;
 

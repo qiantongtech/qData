@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDocumentCatDO;
 import java.util.List;
 
 /**
- * 标准信息分类管理 Convert
+ * Standard Information Category Management Convert
  *
  * @author qdata
  * @date 2025-08-21
@@ -38,29 +38,29 @@ public interface AttDocumentCatConvert {
     AttDocumentCatConvert INSTANCE = Mappers.getMapper(AttDocumentCatConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attDocumentCatPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attDocumentCatPageReqVO Request parameters
      * @return AttDocumentCatDO
      */
      AttDocumentCatDO convertToDO(AttDocumentCatPageReqVO attDocumentCatPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attDocumentCatSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attDocumentCatSaveReqVO Save request parameters
      * @return AttDocumentCatDO
      */
      AttDocumentCatDO convertToDO(AttDocumentCatSaveReqVO attDocumentCatSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attDocumentCatDO 实体对象
+     * Convert DO to RespVO
+     * @param attDocumentCatDO Entity object
      * @return AttDocumentCatRespVO
      */
      AttDocumentCatRespVO convertToRespVO(AttDocumentCatDO attDocumentCatDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attDocumentCatDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attDocumentCatDOList Entity object list
      * @return List<AttDocumentCatRespVO>
      */
      List<AttDocumentCatRespVO> convertToRespVOList(List<AttDocumentCatDO> attDocumentCatDOList);

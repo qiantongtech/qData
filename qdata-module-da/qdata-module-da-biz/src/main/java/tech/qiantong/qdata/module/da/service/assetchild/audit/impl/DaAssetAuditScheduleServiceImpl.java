@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 资产稽查调度Service业务层处理
+ * Asset Audit Schedule Service business layer processing
  *
  * @author qdata
  * @date 2025-05-09
@@ -68,15 +68,15 @@ public class DaAssetAuditScheduleServiceImpl  extends ServiceImpl<DaAssetAuditSc
 
     @Override
     public int updateDaAssetAuditSchedule(DaAssetAuditScheduleSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新资产稽查调度
+        // Update Asset Audit Schedule
         DaAssetAuditScheduleDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetAuditScheduleDO.class);
         return daAssetAuditScheduleMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetAuditSchedule(Collection<Long> idList) {
-        // 批量删除资产稽查调度
+        // Batch delete Asset Audit Schedule
         return daAssetAuditScheduleMapper.deleteBatchIds(idList);
     }
 
@@ -97,19 +97,19 @@ public class DaAssetAuditScheduleServiceImpl  extends ServiceImpl<DaAssetAuditSc
                 .collect(Collectors.toMap(
                         DaAssetAuditScheduleDO::getId,
                         daAssetAuditScheduleDO -> daAssetAuditScheduleDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入资产稽查调度数据
+     * Import Asset Audit Schedule data
      *
-     * @param importExcelList 资产稽查调度数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Asset Audit Schedule data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator name
+     * @return result
      */
     @Override
     public String importDaAssetAuditSchedule(List<DaAssetAuditScheduleRespVO> importExcelList, boolean isUpdateSupport, String operName) {

@@ -47,7 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 标签与资产关联关系Controller
+ * Tag-Asset Relationship Controller
  *
  * @author qdata
  * @date 2025-07-11
@@ -72,7 +72,7 @@ public class AttTagAssetRelController extends BaseController {
 
     @Operation(summary = "导出标签与资产关联关系列表")
 //    @PreAuthorize("@ss.hasPermi('att:tagAssetRel:export')")
-    @Log(title = "标签与资产关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.tag.asset.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttTagAssetRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -83,7 +83,7 @@ public class AttTagAssetRelController extends BaseController {
 
     @Operation(summary = "导入标签与资产关联关系列表")
 //    @PreAuthorize("@ss.hasPermi('att:tagAssetRel:import')")
-    @Log(title = "标签与资产关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.tag.asset.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttTagAssetRelRespVO> util = new ExcelUtil<>(AttTagAssetRelRespVO.class);
@@ -103,7 +103,7 @@ public class AttTagAssetRelController extends BaseController {
 
     @Operation(summary = "新增标签与资产关联关系")
 //    @PreAuthorize("@ss.hasPermi('att:tagAssetRel:add')")
-    @Log(title = "标签与资产关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.tag.asset.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttTagAssetRelSaveReqVO attTagAssetRel) {
         attTagAssetRel.setCreatorId(getUserId());
@@ -114,7 +114,7 @@ public class AttTagAssetRelController extends BaseController {
 
     @Operation(summary = "修改标签与资产关联关系")
 //    @PreAuthorize("@ss.hasPermi('att:tagAssetRel:edit')")
-    @Log(title = "标签与资产关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.tag.asset.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttTagAssetRelSaveReqVO attTagAssetRel) {
         attTagAssetRel.setUpdatorId(getUserId());
@@ -125,7 +125,7 @@ public class AttTagAssetRelController extends BaseController {
 
     @Operation(summary = "删除标签与资产关联关系")
 //    @PreAuthorize("@ss.hasPermi('att:tagAssetRel:remove')")
-    @Log(title = "标签与资产关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.tag.asset.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{IDs}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attTagAssetRelService.removeAttTagAssetRel(Arrays.asList(ids)));

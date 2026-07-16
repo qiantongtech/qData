@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 主题 Response VO 对象 ATT_THEME
+ * Theme Response VO ATT_THEME
  *
  * @author qdata
  * @date 2025-01-20

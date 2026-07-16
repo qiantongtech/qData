@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 import java.util.List;
 
 /**
- * 数据质量任务-稽查对象 Convert
+ * Data Quality Task - Inspection Object Convert
  *
  * @author Chaos
  * @date 2025-07-21
@@ -38,29 +38,29 @@ public interface DppQualityTaskObjConvert {
     DppQualityTaskObjConvert INSTANCE = Mappers.getMapper(DppQualityTaskObjConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dppQualityTaskObjPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dppQualityTaskObjPageReqVO request parameters
      * @return DppQualityTaskObjDO
      */
      DppQualityTaskObjDO convertToDO(DppQualityTaskObjPageReqVO dppQualityTaskObjPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dppQualityTaskObjSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dppQualityTaskObjSaveReqVO save request parameters
      * @return DppQualityTaskObjDO
      */
      DppQualityTaskObjDO convertToDO(DppQualityTaskObjSaveReqVO dppQualityTaskObjSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dppQualityTaskObjDO 实体对象
+     * Convert DO to RespVO
+     * @param dppQualityTaskObjDO entity object
      * @return DppQualityTaskObjRespVO
      */
      DppQualityTaskObjRespVO convertToRespVO(DppQualityTaskObjDO dppQualityTaskObjDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dppQualityTaskObjDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dppQualityTaskObjDOList entity object list
      * @return List<DppQualityTaskObjRespVO>
      */
      List<DppQualityTaskObjRespVO> convertToRespVOList(List<DppQualityTaskObjDO> dppQualityTaskObjDOList);

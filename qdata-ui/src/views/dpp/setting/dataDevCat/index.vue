@@ -249,7 +249,7 @@
       />
     </div>
 
-    <!-- 添加或修改数据开发类目管理对话框 -->
+    <!-- Add or modify the data development category management dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -356,14 +356,14 @@
           <el-button size="mini" @click="cancel">{{
             td("common.button.cancel")
           }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{
             td("common.button.confirm")
           }}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- 数据开发类目管理详情对话框 -->
+    <!-- Data development category management details dialog box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -450,7 +450,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
@@ -533,10 +533,11 @@ import useUserStore from "@/store/system/user";
 const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 
 const AttDataDevCatList = ref([]);
 
-// 列显隐状态
+// Show hidden status
 const columnVisible = ref({
   1: true,
   2: true,
@@ -548,7 +549,7 @@ const columnVisible = ref({
   14: true,
 });
 
-// 列配置（使用计算属性，确保国际化文本能响应语言切换）
+// Column configuration (use computed properties to ensure internationalized text responds to language switches)
 const columns = computed(() => [
   {
     key: 1,
@@ -594,9 +595,9 @@ const columns = computed(() => [
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -614,19 +615,19 @@ const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const refreshTable = ref(true);
 const isExpandAll = ref(false);
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/AttDataDevCat/importData",
 });
 
@@ -669,7 +670,7 @@ watch(
   }
 );
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -678,7 +679,7 @@ function toggleExpandAll() {
   });
 }
 
-/** 查询数据开发类目管理列表 */
+/** Query the data development category management list */
 function getList() {
   loading.value = true;
   queryParams.value.projectId = userStore.projectId;
@@ -695,14 +696,14 @@ function getList() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -724,33 +725,33 @@ function reset() {
   proxy.resetForm("AttDataDevCatRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   if (row != null && row.id) {
@@ -762,7 +763,7 @@ function handleAdd(row) {
   title.value = td("dpp.setting.dataDevCat.addDataDevCat", "新增数据开发类目");
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -776,7 +777,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -790,7 +791,7 @@ function handleDetail(row) {
   });
 }
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('dpp.setting.dataDevCat.enable') : td('dpp.setting.dataDevCat.disable');
   proxy.$modal
@@ -810,8 +811,10 @@ function handleStatusChange(row) {
     });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["AttDataDevCatRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -820,8 +823,11 @@ function submitForm() {
             proxy.$modal.msgSuccess(td("common.message.editSuccess"));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
@@ -830,14 +836,19 @@ function submitForm() {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -857,7 +868,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/AttDataDevCat/export",
@@ -868,14 +879,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('dpp.setting.dataDevCat.dataDevCatImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -884,17 +895,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

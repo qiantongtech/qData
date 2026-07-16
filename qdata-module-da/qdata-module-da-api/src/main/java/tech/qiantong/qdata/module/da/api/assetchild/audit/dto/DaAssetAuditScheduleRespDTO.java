@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.assetchild.audit.dto;
 import lombok.Data;
 
 /**
- * 资产稽查调度 DTO 对象 DA_ASSET_AUDIT_SCHEDULE
+ * Asset Audit Schedule DTO DA_ASSET_AUDIT_SCHEDULE
  *
  * @author qdata
  * @date 2025-05-09
@@ -34,34 +34,34 @@ public class DaAssetAuditScheduleRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 是否开启稽查调度（0否1是） */
+    /** Audit Schedule Flag (0: No, 1: Yes) */
     private String scheduleFlag;
 
-    /** cron执行表达式 */
+    /** Cron Expression */
     private String cronExpression;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 定时任务调度表id */
+    /** Scheduled Job ID */
     private Long systemJobId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:维度信息
+ * Purpose: Dimension information
  * </p>
  *
  * @author: FXB
@@ -35,9 +35,9 @@ import java.util.List;
 @Builder
 public class DimensionTable {
     private String tableName;
-    //数据库名
+    //Database name
     private String databaseName;
-    //模式名
+    //Schema name
     private String schemaName;
     private String alias;
     private String description;
@@ -47,12 +47,12 @@ public class DimensionTable {
     @Data
     @Builder
     public static class Column {
-        //字段名称
+        //Field name
         private String name;
-        //字段类型
+        //Field type
         private String type;
-        //字段注释
+        //Field annotation
         private String description;
-        private boolean isHierarchy; // 是否层级维度
+        private boolean isHierarchy; // Whether it is a hierarchical dimension
     }
 }

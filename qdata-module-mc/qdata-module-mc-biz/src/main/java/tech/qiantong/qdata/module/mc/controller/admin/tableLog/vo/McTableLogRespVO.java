@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 元数据信息 - 日志 Response VO 对象 MC_TABLE_LOG
+ * Metadata information - Log Response VO object MC_TABLE_LOG
  *
  * @author qdata
  * @date 2026-03-10

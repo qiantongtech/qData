@@ -23,16 +23,21 @@ import java.util.List;
 public interface DppEtlTaskService {
 
     /**
-     * 查询数据源主键集合是否被引用
-     * @param datasourceIdList 数据源id集合
-     * @return 条数
+     * Check if datasource primary key set is referenced
+     * @param datasourceIdList Datasource ID list
+     * @return Count
      */
     int checkTaskIdInDatasource(List<Long> datasourceIdList,List<Long> projectIdList);
 
     /**
-     * 查询资产主键集合是否被引用
-     * @param assetIdList 资产主键集合
-     * @return 条数
+     * Check if asset primary key set is referenced
+     * @param assetIdList Asset primary key list
+     * @return Count
      */
     int checkTaskIdInAsset(List<Long> assetIdList);
+
+    /**
+     * Count tasks under a category and all of its descendants.
+     */
+    long getCountByCatCode(String catCode, List<String> taskTypes);
 }

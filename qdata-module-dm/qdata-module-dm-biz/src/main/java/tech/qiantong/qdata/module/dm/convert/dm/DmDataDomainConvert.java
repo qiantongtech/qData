@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataDomainSaveReqV
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataDomainDO;
 
 /**
- * 数据域管理 Convert
+ * Data Domain Convert
  *
  * @author FXB
  * @date 2026-03-24
@@ -37,29 +37,29 @@ public interface DmDataDomainConvert {
     DmDataDomainConvert INSTANCE = Mappers.getMapper(DmDataDomainConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dmDataDomainPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dmDataDomainPageReqVO Request params
      * @return DmDataDomainDO
      */
      DmDataDomainDO convertToDO(DmDataDomainPageReqVO dmDataDomainPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dmDataDomainSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dmDataDomainSaveReqVO Save request params
      * @return DmDataDomainDO
      */
      DmDataDomainDO convertToDO(DmDataDomainSaveReqVO dmDataDomainSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dmDataDomainDO 实体对象
+     * Convert DO to RespVO
+     * @param dmDataDomainDO Entity object
      * @return DmDataDomainRespVO
      */
      DmDataDomainRespVO convertToRespVO(DmDataDomainDO dmDataDomainDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dmDataDomainDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dmDataDomainDOList Entity object list
      * @return List<DmDataDomainRespVO>
      */
      List<DmDataDomainRespVO> convertToRespVOList(List<DmDataDomainDO> dmDataDomainDOList);

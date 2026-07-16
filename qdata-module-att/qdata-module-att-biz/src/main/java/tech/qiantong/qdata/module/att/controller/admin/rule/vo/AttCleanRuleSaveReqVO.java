@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 清洗规则 创建/修改 Request VO ATT_CLEAN_RULE
+ * Cleaning Rule Create/Update Request VO ATT_CLEAN_RULE
  *
  * @author qdata
  * @date 2025-01-20
@@ -76,7 +76,7 @@ public class AttCleanRuleSaveReqVO extends BaseEntity {
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
     @TableField(exist = false)

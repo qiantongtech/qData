@@ -29,7 +29,7 @@ import tech.qiantong.qdata.module.system.service.auth.IRelUserAuthProductService
 import javax.annotation.Resource;
 
 /**
- * 用户与认证中心关系Service业务层处理
+ * User and Authentication Center Relationship Service implementation
  *
  * @author qdata
  * @date 2024-11-07

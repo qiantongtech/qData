@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.geo.DaAssetGeoDO;
 import java.util.List;
 
 /**
- * 数据资产-矢量 Convert
+ * Data Asset - Vector Convert
  *
  * @author qdata
  * @date 2025-04-14
@@ -38,29 +38,29 @@ public interface DaAssetGeoConvert {
     DaAssetGeoConvert INSTANCE = Mappers.getMapper(DaAssetGeoConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetGeoPageReqVO 请求参数
+     * PageReqVO Convert to DO
+     * @param daAssetGeoPageReqVO request parameters
      * @return DaAssetGeoDO
      */
      DaAssetGeoDO convertToDO(DaAssetGeoPageReqVO daAssetGeoPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetGeoSaveReqVO 保存请求参数
+     * SaveReqVO Convert to DO
+     * @param daAssetGeoSaveReqVO save request parameters
      * @return DaAssetGeoDO
      */
      DaAssetGeoDO convertToDO(DaAssetGeoSaveReqVO daAssetGeoSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetGeoDO 实体对象
+     * DO Convert to RespVO
+     * @param daAssetGeoDO entity object
      * @return DaAssetGeoRespVO
      */
      DaAssetGeoRespVO convertToRespVO(DaAssetGeoDO daAssetGeoDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetGeoDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param daAssetGeoDOList entity object list
      * @return List<DaAssetGeoRespVO>
      */
      List<DaAssetGeoRespVO> convertToRespVOList(List<DaAssetGeoDO> daAssetGeoDOList);

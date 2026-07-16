@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 消息列表为空时，展示 prompt 列表 -->
+<!-- Display the prompt list when the message list is empty -->
 <template>
   <div class="chat-empty">
     <!-- title -->
@@ -152,7 +152,7 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 
 const value = computed({
   get: () => props.modelValue,
@@ -202,10 +202,10 @@ const selectedModelIcon = computed(() =>
 );
 
 onMounted(() => {
-  // getModelList(); // 不再在内部获取模型列表，而是通过 props 传入
+  // getModelList(); // No longer obtain the model list internally, but pass it in through props
 });
 
-/** 选中 prompt 点击 */
+/** Select prompt and click */
 const handlerPromptClick = async () => {
   if (!props.datasourceId || !props.factTableName) {
     message.msgWarning(td('ai.chat.configureDataScopeFirst'));
@@ -263,7 +263,7 @@ const addNewLine = async (event) => {
       font-style: nor mal;
       text-transform: none;
     }
-    // 底部
+    // bottom
     .footer-container {
       display: flex;
       flex-direction: column;

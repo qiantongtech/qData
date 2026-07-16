@@ -25,9 +25,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 /**
- * 国际化资源文件配置加载
+ * Internationalized resource file configuration loading
  *
- * 语言解析优先级：lang 参数 > Accept-Language 请求头 > 默认简体中文
+ * Language parsing priority: lang parameter > Accept-Language request header > Default Simplified Chinese
  *
  * @author qdata
  */
@@ -37,7 +37,7 @@ public class I18nConfig implements WebMvcConfigurer
     @Bean
     public LocaleResolver localeResolver()
     {
-        // 自定义解析器：支持 lang 参数 + Accept-Language 请求头，默认简体中文
+        // Custom parser: supports lang parameter + Accept-Language request header, defaults to Simplified Chinese
         return new HeaderLocaleResolver();
     }
 
@@ -45,7 +45,7 @@ public class I18nConfig implements WebMvcConfigurer
     public LocaleChangeInterceptor localeChangeInterceptor()
     {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        // 参数名
+        // Parameter name
         lci.setParamName("lang");
         return lci;
     }

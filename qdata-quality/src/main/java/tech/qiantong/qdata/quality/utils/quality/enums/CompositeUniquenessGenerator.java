@@ -24,7 +24,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 多字段组合唯一性校验
+// Multi-field combination uniqueness check
 @Component("COMPOSITE_UNIQUENESS_VALIDATION")
 public class CompositeUniquenessGenerator implements QualitySqlGenerator {
     @Override

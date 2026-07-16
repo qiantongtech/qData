@@ -20,7 +20,7 @@ package tech.qiantong.qdata.spark.etl.utils;
 
 /**
  * <P>
- * 用途:生成数字id
+ * Purpose: Generate digital ID
  * </p>
  *
  * @author: FXB

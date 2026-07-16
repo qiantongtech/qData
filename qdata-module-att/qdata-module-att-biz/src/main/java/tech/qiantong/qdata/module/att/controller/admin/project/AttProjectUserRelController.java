@@ -37,6 +37,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -60,7 +61,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目与用户关联关系Controller
+ * Project-User Relationship Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -98,7 +99,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "导出项目与用户关联关系列表")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:export')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttProjectUserRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -109,7 +110,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "导入项目与用户关联关系列表")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:import')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttProjectUserRelRespVO> util = new ExcelUtil<>(AttProjectUserRelRespVO.class);
@@ -137,7 +138,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "新增项目与用户关联关系")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:add')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
         attProjectUserRel.setCreatorId(getUserId());
@@ -148,7 +149,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "新增项目与用户关联关系")
     @PreAuthorize("@ss.hasPermi('att:project:project:add')")
-    @Log(title = "项目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.INSERT)
     @PostMapping("/addUserListAndRoleList")
     public CommonResult<Boolean> addUserListAndRoleList(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
         attProjectUserRel.setCreatorId(getUserId());
@@ -159,7 +160,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "修改项目与用户关联关系")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:edit')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
         attProjectUserRel.setUpdatorId(getUserId());
@@ -170,7 +171,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "修改项目与用户关联关系")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:edit')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.UPDATE)
     @PutMapping("/editUserListAndRoleList")
     public CommonResult<Integer> editUserListAndRoleList(@Valid @RequestBody AttProjectUserRelSaveReqVO attProjectUserRel) {
         attProjectUserRel.setUpdatorId(getUserId());
@@ -181,7 +182,7 @@ public class AttProjectUserRelController extends BaseController {
 
     @Operation(summary = "删除项目与用户关联关系")
     @PreAuthorize("@ss.hasPermi('att:projectUserRel:remove')")
-    @Log(title = "项目与用户关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.project.user.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attProjectUserRelService.removeAttProjectUserRel(Arrays.asList(ids)));
@@ -195,7 +196,7 @@ public class AttProjectUserRelController extends BaseController {
         return getDataTable(list);
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('att:project:role:export')")
     @PostMapping("/role/export")
     public void export(HttpServletResponse response, SysRole role) {
@@ -205,7 +206,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 根据角色编号获取详细信息
+     * Get detail info by role ID
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping(value = "/role/{roleId}")
@@ -215,16 +216,17 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 新增角色
+     * Add role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:add')")
-    @Log(title = "角色管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.INSERT)
     @PostMapping("/role")
     public AjaxResult add(@Validated @RequestBody SysRole role) {
+        role.setRoleName(role.getRoleName().trim());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("角色名称已存在，请修改");
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("新增角色'" + role.getRoleName() + "'失败，权限字符已存在");
+            return error("权限字符已存在，请修改");
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -232,23 +234,24 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 修改保存角色
+     * Update and save role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
     @PutMapping("/role")
     public AjaxResult edit(@Validated @RequestBody SysRole role) {
+        role.setRoleName(role.getRoleName().trim());
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("角色名称已存在，请修改");
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("修改角色'" + role.getRoleName() + "'失败，权限字符已存在");
+            return error("权限字符已存在，请修改");
         }
         role.setUpdateBy(getUsername());
 
         if (roleService.updateRole(role) > 0) {
-            // 更新缓存用户权限
+            // Update cached user permissions
             LoginUser loginUser = getLoginUser();
             if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
@@ -261,10 +264,10 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 修改保存数据权限
+     * Update and save data permissions
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
     @PutMapping("/role/dataScope")
     public AjaxResult dataScope(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
@@ -273,30 +276,36 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 状态修改
+     * Update status
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.UPDATE)
     @PutMapping("/role/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
+        if ("1".equals(role.getStatus())) {
+            int count = roleService.countUserRoleByRoleId(role.getRoleId());
+            if (count > 0) {
+                throw new ServiceException("该角色已分配给" + count + "名成员，不能直接停用");
+            }
+        }
         role.setUpdateBy(getUsername());
         return toAjax(roleService.updateRoleStatus(role));
     }
 
     /**
-     * 删除角色
+     * Delete role
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:remove')")
-    @Log(title = "角色管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.DELETE)
     @DeleteMapping("/role/{roleIds}")
     public AjaxResult removeRole(@PathVariable Long[] roleIds) {
         return toAjax(roleService.deleteRoleByIds(roleIds));
     }
 
     /**
-     * 获取角色选择框列表
+     * Get role selection list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping("/role/optionselect")
@@ -305,7 +314,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 查询已分配用户角色列表
+     * Query assigned user role list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:list')")
     @GetMapping("/role/authUser/allocatedList")
@@ -316,7 +325,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 查询未分配用户角色列表
+     * Query unassigned user role list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:list')")
     @GetMapping("/role/authUser/unallocatedList")
@@ -327,30 +336,30 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 取消授权用户
+     * Cancel authorized user
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
     @PutMapping("/role/authUser/cancel")
     public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole) {
         return toAjax(roleService.deleteAuthUser(userRole));
     }
 
     /**
-     * 批量取消授权用户
+     * Batch cancel authorized users
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
     @PutMapping("/role/authUser/cancelAll")
     public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds) {
         return toAjax(roleService.deleteAuthUsers(roleId, userIds));
     }
 
     /**
-     * 批量选择用户授权
+     * Batch select users for authorization
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.att.role", businessType = BusinessType.GRANT)
     @PutMapping("/role/authUser/selectAll")
     public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds) {
         roleService.checkRoleDataScope(roleId);
@@ -358,7 +367,7 @@ public class AttProjectUserRelController extends BaseController {
     }
 
     /**
-     * 获取对应角色部门树列表
+     * Get corresponding role department tree list
      */
     @PreAuthorize("@ss.hasPermi('att:project:role:query')")
     @GetMapping(value = "/role/deptTree/{roleId}")

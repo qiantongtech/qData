@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dpp.api.etl.dto;
 import lombok.Data;
 
 /**
- * 数据集成任务-日志 DTO 对象 DPP_ETL_TASK_LOG
+ * Data Integration Task Log DTO - DPP_ETL_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-13
@@ -34,52 +34,52 @@ public class DppEtlTaskLogRespDTO {
     /** ID */
     private Long id;
 
-    /** 任务类型 */
+    /** Task Type */
     private String type;
 
-    /** 任务名称 */
+    /** Task Name */
     private String name;
 
-    /** 任务编码 */
+    /** Task Code */
     private String code;
 
-    /** 任务版本 */
+    /** Task Version */
     private Long version;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 责任人 */
+    /** Person in Charge */
     private String personCharge;
 
-    /** 节点坐标信息 */
+    /** Node Coordinate Information */
     private String locations;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 超时时间 */
+    /** Timeout */
     private Long timeout;
 
-    /** 抽取量 */
+    /** Extraction Count */
     private Long extractionCount;
 
-    /** 写入量 */
+    /** Write Count */
     private Long writeCount;
 
-    /** 任务状态 */
+    /** Task Status */
     private String status;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

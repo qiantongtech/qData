@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据质量任务Service接口
+ * Data quality task Service interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDppQualityTaskService extends IService<DppQualityTaskDO> {
 
     /**
-     * 获得数据质量任务分页列表
+     * Get a paginated list of data quality tasks
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务分页列表
+     * @param pageReqVO paging request
+     * @return paginated list of data quality tasks
      */
     PageResult<DppQualityTaskDO> getDppQualityTaskPage(DppQualityTaskPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务
+     * Create data quality tasks
      *
-     * @param createReqVO 数据质量任务信息
-     * @return 数据质量任务编号
+     * @param createReqVO data quality task information
+     * @return data quality task number
      */
     Long createDppQualityTask(DppQualityTaskSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务
+     * Update data quality tasks
      *
-     * @param updateReqVO 数据质量任务信息
+     * @param updateReqVO data quality task information
      */
     int updateDppQualityTask(DppQualityTaskSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务
+     * Delete data quality tasks
      *
-     * @param idList 数据质量任务编号
+     * @param idList data quality task number
      */
     int removeDppQualityTask(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务详情
+     * Get data quality task details
      *
-     * @param id 数据质量任务编号
-     * @return 数据质量任务
+     * @param id data quality task number
+     * @return data quality task
      */
     DppQualityTaskRespVO getDppQualityTaskById(Long id);
 
     /**
-     * 获得全部数据质量任务列表
+     * Get the full data quality task list
      *
-     * @return 数据质量任务列表
+     * @return Data quality task list
      */
     List<DppQualityTaskDO> getDppQualityTaskList();
 
     /**
-     * 获得全部数据质量任务 Map
+     * Get a map of all data quality tasks
      *
-     * @return 数据质量任务 Map
+     * @return Data quality task map
      */
     Map<Long, DppQualityTaskDO> getDppQualityTaskMap();
 
 
     /**
-     * 导入数据质量任务数据
+     * Import data quality task data
      *
-     * @param importExcelList 数据质量任务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importDppQualityTask(List<DppQualityTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

@@ -6,7 +6,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 字段长度范围校验
+// Field length range check
 @Component("LENGTH_VALIDATION")
 public class LengthValidationGenerator implements QualitySqlGenerator {
     @Override

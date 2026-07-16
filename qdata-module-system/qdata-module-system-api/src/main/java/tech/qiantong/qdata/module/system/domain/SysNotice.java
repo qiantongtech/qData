@@ -30,45 +30,45 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.common.xss.Xss;
 
 /**
- * 通知公告表 sys_notice
+ * Notification/Announcement table sys_notice
  *
  * @author qdata
  */
 public class SysNotice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** 公告ID */
+    /** Announcement ID */
     private Long noticeId;
 
-    /** 公告标题 */
+    /** Announcement Title */
     private String noticeTitle;
 
-    /** 公告类型（1通知 2公告） */
+    /** Announcement Type (1=notification, 2=announcement) */
     private String noticeType;
 
-    /** 公告内容 */
+    /** Announcement Content */
     private String noticeContent;
 
-    /** 公告状态（0正常 1关闭） */
+    /** Announcement Status (0=normal, 1=closed) */
     private String status;
 
-    /** 是否置顶（0否 1是） */
+    /** Whether to Pin to Top (0=no, 1=yes) */
     private Integer topFlag;
 
-    /** 是否弹窗（0否 1是） */
+    /** Whether to Show as Popup (0=no, 1=yes) */
     private Integer alertFlag;
 
-    /** 开始弹窗时间 */
+    /** Popup Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date alertStartTime;
 
-    /** 结束弹窗时间 */
+    /** Popup End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date alertEndTime;
 
-    /** 公告内容文本 */
+    /** Plain text of announcement content */
     private String noticeContentText;
 
     public Long getNoticeId() {
@@ -79,9 +79,9 @@ public class SysNotice extends BaseEntity {
         this.noticeId = noticeId;
     }
 
-    @Xss(message = "公告标题不能包含脚本字符")
-    @NotBlank(message = "公告标题不能为空")
-    @Size(min = 0, max = 50, message = "公告标题不能超过50个字符")
+    @Xss(message = "Announcement title must not contain script characters")
+    @NotBlank(message = "Announcement title is required")
+    @Size(min = 0, max = 50, message = "Announcement title must not exceed 50 characters")
     public String getNoticeTitle() {
         return noticeTitle;
     }

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询模型管理列表
+// Query model management list
 export function listModel(query) {
   return request({
     url: '/ai/model/list',
@@ -27,7 +27,7 @@ export function listModel(query) {
   })
 }
 
-// 模型列表（新）
+// Model list (new)
 export function modelList(query) {
   return request({
     url: '/model/list',
@@ -36,7 +36,7 @@ export function modelList(query) {
   })
 }
 
-// 查询模型管理详细
+// Query model management details
 export function getModel(id) {
   return request({
     url: '/ai/model/' + id,
@@ -44,7 +44,7 @@ export function getModel(id) {
   })
 }
 
-// 新增模型管理
+// New model management
 export function addModel(data) {
   return request({
     url: '/ai/model',
@@ -53,7 +53,7 @@ export function addModel(data) {
   })
 }
 
-// 修改模型管理
+// Modify model management
 export function updateModel(data) {
   return request({
     url: '/ai/model',
@@ -62,7 +62,7 @@ export function updateModel(data) {
   })
 }
 
-// 删除模型管理
+// Delete model management
 export function delModel(id) {
   return request({
     url: '/ai/model/' + id,

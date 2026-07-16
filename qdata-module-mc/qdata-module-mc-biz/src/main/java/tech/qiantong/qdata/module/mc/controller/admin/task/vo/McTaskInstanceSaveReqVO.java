@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Collection task instance Create/modify Request VO MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16

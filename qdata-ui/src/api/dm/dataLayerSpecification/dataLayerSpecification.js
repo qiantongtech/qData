@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数仓分层-规范管理列表
+// Query data warehouse layering-standard management list
 export function listDataLayerSpecification(query) {
   return request({
     url: '/dm/dataLayerSpecification/list',
@@ -27,7 +27,7 @@ export function listDataLayerSpecification(query) {
   })
 }
 
-// 查询数仓分层-规范管理详细
+// Query data warehouse layering-standard management details
 export function getDataLayerSpecification(id) {
   return request({
     url: '/dm/dataLayerSpecification/' + id,
@@ -35,7 +35,7 @@ export function getDataLayerSpecification(id) {
   })
 }
 
-// 新增数仓分层-规范管理
+// Newly added data warehouse layering - standardized management
 export function addDataLayerSpecification(data) {
   return request({
     url: '/dm/dataLayerSpecification',
@@ -44,7 +44,7 @@ export function addDataLayerSpecification(data) {
   })
 }
 
-// 修改数仓分层-规范管理
+// Modify data warehouse layering-standardized management
 export function updateDataLayerSpecification(data) {
   return request({
     url: '/dm/dataLayerSpecification',
@@ -53,7 +53,7 @@ export function updateDataLayerSpecification(data) {
   })
 }
 
-// 删除数仓分层-规范管理
+// Delete data warehouse layering-standardized management
 export function delDataLayerSpecification(id) {
   return request({
     url: '/dm/dataLayerSpecification/' + id,

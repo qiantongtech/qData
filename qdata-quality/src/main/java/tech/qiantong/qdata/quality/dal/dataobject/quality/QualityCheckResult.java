@@ -29,11 +29,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QualityCheckResult {
 
-    private String ruleId;         // 质量规则ID
-    private String batch;          // 执行批次号（如20250715123001）
-    private Integer errorCount;    // 异常记录数
-    private Integer totalCount;    // 总记录数
-    private String errorMessage;   // 错误信息（如果有异常）
+    private String ruleId;         // Quality rule ID
+    private String batch;          // Execution batch number (such as 20250715123001)
+    private Integer errorCount;    // Number of abnormal records
+    private Integer totalCount;    // Total number of records
+    private String errorMessage;   // Error message (if there is an exception)
 
     public QualityCheckResult(String ruleId, String batch, String errorMessage) {
         this.ruleId = ruleId;

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询数据资产文档类目管理列表
+// Query the data asset document category management list
 export function listAttDocCat(query) {
   return request({
     url: '/att/AttDocCat/list',
@@ -27,7 +27,7 @@ export function listAttDocCat(query) {
   })
 }
 
-// 查询数据资产文档类目管理详细
+// Query data asset document category management details
 export function getAttDocCat(id) {
   return request({
     url: '/att/AttDocCat/' + id,
@@ -35,7 +35,7 @@ export function getAttDocCat(id) {
   })
 }
 
-// 新增数据资产文档类目管理
+// Added new data asset document category management
 export function addAttDocCat(data) {
   return request({
     url: '/att/AttDocCat',
@@ -44,7 +44,7 @@ export function addAttDocCat(data) {
   })
 }
 
-// 修改数据资产文档类目管理
+// Modify data asset document category management
 export function updateAttDocCat(data) {
   return request({
     url: '/att/AttDocCat',
@@ -53,7 +53,7 @@ export function updateAttDocCat(data) {
   })
 }
 
-// 删除数据资产文档类目管理
+// Delete data asset document category management
 export function delAttDocCat(id) {
   return request({
     url: '/att/AttDocCat/' + id,

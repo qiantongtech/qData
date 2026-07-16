@@ -50,7 +50,7 @@ import javax.annotation.Resource;
 import static tech.qiantong.qdata.common.utils.SecurityUtils.getLoginUser;
 
 /**
- * 公告 信息操作处理
+ * Notice message handler
  *
  * @author qdata
  */
@@ -66,7 +66,7 @@ public class SysNoticeController extends BaseController
     private IMessageService messageService;
 
     /**
-     * 获取通知公告列表
+     * Get notice list
      */
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
@@ -78,7 +78,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 获取通知公告列表(排序后)
+     * Get notice list (sorted)
      */
 //    @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/sortList")
@@ -96,7 +96,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 获取弹框公告
+     * Get popup notice
      * @return
      */
     @GetMapping("/alertNotice")
@@ -115,7 +115,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 根据通知公告编号获取详细信息
+     * Get notice details by ID
      */
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/one")
@@ -124,14 +124,14 @@ public class SysNoticeController extends BaseController
         return success(noticeService.selectNoticeById(noticeId));
     }
     /**
-     * 新增通知公告
+     * Add notice
      */
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
-    @Log(title = "通知公告", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysNotice notice)
     {
-        //测试 消息通知
+        // Test message notification
         MessagePageReqVO messagePageReqVO = new MessagePageReqVO();
         messagePageReqVO.setContent(notice.getNoticeContent());
         messagePageReqVO.setTitle(notice.getNoticeTitle());
@@ -144,10 +144,10 @@ public class SysNoticeController extends BaseController
     }
 
     /**
-     * 修改通知公告
+     * Edit notice/announcement
      */
     @PreAuthorize("@ss.hasPermi('system:notice:edit')")
-    @Log(title = "通知公告", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysNotice notice)
     {
@@ -160,12 +160,12 @@ public class SysNoticeController extends BaseController
         webSocketMessageServer.broadcastMessage(messagePageReqVO);
 
         MessageDO messageDO = new MessageDO();
-        // 设置模版基本数据
+        // Set template basic data
         messageDO.setCategory(Integer.valueOf(0));
         messageDO.setMsgLevel(Integer.valueOf(0));
-        messageDO.setTitle("测试");
-        // 实际消息
-        messageDO.setContent("测试内容");
+        messageDO.setTitle("Test");
+        // Actual message
+        messageDO.setContent("Test content");
 
 //        messageDO.setCreatorId(getLoginUser().getUserId());
 //        messageDO.setCreateBy(getLoginUser().getUser().getNickName());
@@ -175,10 +175,10 @@ public class SysNoticeController extends BaseController
     }
 
     /**
-     * 删除通知公告
+     * Delete notice/announcement
      */
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
-    @Log(title = "通知公告", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
     public AjaxResult remove(@PathVariable Long[] noticeIds)
     {

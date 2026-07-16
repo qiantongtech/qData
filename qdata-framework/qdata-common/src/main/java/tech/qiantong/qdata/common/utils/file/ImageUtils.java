@@ -33,7 +33,7 @@ import java.net.URLConnection;
 import java.util.Arrays;
 
 /**
- * 图片处理工具类
+ * Image processing tools
  *
  * @author qdata
  */
@@ -75,10 +75,10 @@ public class ImageUtils
     }
 
     /**
-     * 读取文件为字节数据
+     * Read file as byte data
      *
-     * @param url 地址
-     * @return 字节数据
+     * @param url address
+     * @return byte data
      */
     public static byte[] readFile(String url)
     {
@@ -87,7 +87,7 @@ public class ImageUtils
         {
             if (url.startsWith("http"))
             {
-                // 网络地址
+                // Network address
                 URL urlObj = new URL(url);
                 URLConnection urlConnection = urlObj.openConnection();
                 urlConnection.setConnectTimeout(30 * 1000);
@@ -97,7 +97,7 @@ public class ImageUtils
             }
             else
             {
-                // 本机地址
+                // Local address
                 String localPath = AniviaConfig.getProfile();
                 String downloadPath = localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
                 in = new FileInputStream(downloadPath);

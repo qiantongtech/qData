@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.utils;
 
 /**
- * 处理并记录日志文件
+ * Process and record log files
  *
  * @author qdata
  */

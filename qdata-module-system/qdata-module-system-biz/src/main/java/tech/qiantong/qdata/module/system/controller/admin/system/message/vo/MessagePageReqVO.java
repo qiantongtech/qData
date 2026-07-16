@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 消息 Request VO 对象 message
+ * Message Request VO for message
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Schema(description = "消息 Request VO")
+@Schema(description = "Message Request VO")
 @Data
 public class MessagePageReqVO extends BaseEntity {
 
@@ -39,46 +39,46 @@ public class MessagePageReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "发送人", example = "")
+    @Schema(description = "Sender", example = "")
     private Long senderId;
 
-    @Schema(description = "接收人", example = "")
+    @Schema(description = "Receiver", example = "")
     private Long receiverId;
 
-    @Schema(description = "消息标题", example = "")
+    @Schema(description = "Message title", example = "")
     private String title;
 
-    @Schema(description = "消息模板内容", example = "")
+    @Schema(description = "Message template content", example = "")
     private String content;
 
-    @Schema(description = "消息类别", example = "")
+    @Schema(description = "Message category", example = "")
     private Integer category;
 
-    @Schema(description = "消息等级", example = "")
+    @Schema(description = "Message level", example = "")
     private Integer msgLevel;
 
-    @Schema(description = "消息模块", example = "")
+    @Schema(description = "Message module", example = "")
     private Integer module;
 
-    @Schema(description = "实体类型", example = "")
+    @Schema(description = "Entity type", example = "")
     private Integer entityType;
 
-    @Schema(description = "实体id", example = "")
+    @Schema(description = "Entity ID", example = "")
     private Long entityId;
 
-    @Schema(description = "消息链接", example = "")
+    @Schema(description = "Message link", example = "")
     private String entityUrl;
 
-    @Schema(description = "是否已读", example = "")
+    @Schema(description = "Whether read", example = "")
     private Integer hasRead;
 
-    @Schema(description = "是否撤回", example = "")
+    @Schema(description = "Whether retracted", example = "")
     private Integer hasRetraction;
 
-    @Schema(description = "是否有效", example = "")
+    @Schema(description = "Whether valid", example = "")
     private Boolean validFlag;
 
-    @Schema(description = "删除标识")
+    @Schema(description = "Delete flag")
     private Integer delFlag;
 
     private Date startTime;

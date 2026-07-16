@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.ai.api.model.dto;
 import lombok.*;
 
 /**
- * 模型管理 DTO 对象 AI_MODEL
+ * Model management DTO object AI_MODEL
  *
  * @author FXB
  * @date 2026-04-01
@@ -34,28 +34,28 @@ public class AiModelReqDTO {
     /** ID */
     private Long id;
 
-    /** 模型名称;例如 qwen-max */
+    /** Model name; for example qwen-max */
     private String name;
 
-    /** 平台;1:通义千问 2:DeepSeek */
+    /** Platform; 1: Tongyi Qianwen 2: DeepSeek */
     private String platform;
 
-    /** API地址 */
+    /** API address */
     private String apiUrl;
 
-    /** API秘钥 */
+    /** API key */
     private String apiKey;
 
-    /** 排序 */
+    /** Sort */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

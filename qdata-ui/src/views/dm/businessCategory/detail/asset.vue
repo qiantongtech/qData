@@ -48,7 +48,7 @@
       </qt-table>
     </qt-wrap>
 
-    <!-- 数据域管理详情对话框 -->
+    <!-- Data Domain Management Details Dialog Box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -167,13 +167,13 @@ const data = reactive({
 
 const { form } = toRefs(data);
 
-// 取消按钮
+// Cancel button
 function cancel() {
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,

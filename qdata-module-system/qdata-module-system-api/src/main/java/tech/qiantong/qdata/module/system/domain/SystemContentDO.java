@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 系统配置 DO 对象 system_content
+ * System configuration DO object system_content
  *
  * @author qdata
  * @date 2024-12-31
  */
 @Data
 @TableName(value = "system_content")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL, etc.
 // @KeySequence("system_content_seq")
 @Builder
 @NoArgsConstructor
@@ -44,7 +44,7 @@ public class SystemContentDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 系统名称 */
+    /** System name */
     private String sysName;
 
     /** logo */
@@ -52,29 +52,29 @@ public class SystemContentDO extends BaseEntity {
 
     private String logo;
 
-    /** 轮播图 */
+    /** Carousel images */
     private String carouselImage;
 
-    /** 联系电话 */
+    /** Contact number */
     private String contactNumber;
 
-    /** 电子邮箱 */
+    /** Email address */
     private String email;
 
-    /** 版权方 */
+    /** Copyright holder */
     private String copyright;
 
-    /** 备案号 */
+    /** Record number (ICP filing) */
     private String recordNumber;
 
-    /** 删除标记 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** 状态 */
+    /** Status */
     private Integer status;
 
-    /** 备注 */
+    /** Remarks */
     private String remark;
 
 

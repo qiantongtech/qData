@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 标签与资产关联关系 创建/修改 Request VO ATT_TAG_ASSET_REL
+ * Tag-Asset Relationship Create/Update Request VO ATT_TAG_ASSET_REL
  *
  * @author qdata
  * @date 2025-07-11

@@ -189,7 +189,7 @@
         @pagination="getList"
     />
 
-    <!-- 添加或修改学生对话框 -->
+    <!-- Add or modify student dialog box -->
     <el-dialog
         :title="title"
         v-model="open"
@@ -282,7 +282,7 @@
         </template>
     </el-dialog>
 
-    <!-- 学生详情对话框 -->
+    <!-- Student details dialog -->
     <el-dialog
         :title="title"
         v-model="openDetail"
@@ -386,7 +386,7 @@
 
     const studentList = ref([]);
 
-    // 列显隐信息
+    // Show hidden information
     const columns = ref([
         { key: 0, label: 'ID', visible: true },
         { key: 1, label: '姓名', visible: true },
@@ -447,7 +447,7 @@
 
     const { queryParams, form, studentDetail, rules } = toRefs(data);
 
-    /** 查询学生列表 */
+    /** Query student list */
     function getList() {
         loading.value = true;
         listStudent(queryParams.value).then((response) => {
@@ -457,14 +457,14 @@
         });
     }
 
-    // 取消按钮
+    // Cancel button
     function cancel() {
         open.value = false;
         openDetail.value = false;
         reset();
     }
 
-    // 表单重置
+    // form reset
     function reset() {
         form.value = {
             id: null,
@@ -489,40 +489,40 @@
         proxy.resetForm('studentRef');
     }
 
-    /** 搜索按钮操作 */
+    /** Search button action */
     function handleQuery() {
         queryParams.value.pageNum = 1;
         getList();
     }
 
-    /** 重置按钮操作 */
+    /** reset button action */
     function resetQuery() {
         proxy.resetForm('queryRef');
         handleQuery();
     }
 
-    // 多选框选中数据
+    // Multiple selection box selected data
     function handleSelectionChange(selection) {
         ids.value = selection.map((item) => item.id);
         single.value = selection.length != 1;
         multiple.value = !selection.length;
     }
 
-    /** 排序触发事件 */
+    /** Sorting trigger events */
     function handleSortChange(column, prop, order) {
         queryParams.value.orderByColumn = column.prop;
         queryParams.value.isAsc = column.order;
         getList();
     }
 
-    /** 新增按钮操作 */
+    /** Add button operation */
     function handleAdd() {
         reset();
         open.value = true;
         title.value = '新增学生';
     }
 
-    /** 修改按钮操作 */
+    /** Modify button actions */
     function handleUpdate(row) {
         reset();
         const _id = row.id || ids.value;
@@ -534,7 +534,7 @@
         });
     }
 
-    /** 详情按钮操作 */
+    /** Detail button operation */
     function handleDetail(row) {
         reset();
         const _id = row.id || ids.value;
@@ -546,7 +546,7 @@
         });
     }
 
-    /** 提交按钮 */
+    /** submit button */
     function submitForm() {
         proxy.$refs['studentRef'].validate((valid) => {
             if (valid) {
@@ -576,7 +576,7 @@
         });
     }
 
-    /** 删除按钮操作 */
+    /** Delete button action */
     function handleDelete(row) {
         const _ids = row.id || ids.value;
         proxy.$modal
@@ -591,7 +591,7 @@
             .catch(() => {});
     }
 
-    /** 导出按钮操作 */
+    /** Export button action */
     function handleExport() {
         proxy.download(
             'example/student/export',

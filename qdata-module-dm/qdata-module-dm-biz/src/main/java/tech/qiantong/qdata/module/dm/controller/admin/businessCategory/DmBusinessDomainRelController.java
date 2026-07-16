@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 业务分类数据域关联关系Controller
+ * Business Category Domain Relation Controller
  *
  * @author qdata
  * @date 2026-04-12
@@ -71,7 +71,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "导出业务分类数据域关联关系列表")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:export')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DmBusinessDomainRelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "导入业务分类数据域关联关系列表")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:import')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DmBusinessDomainRelRespVO> util = new ExcelUtil<>(DmBusinessDomainRelRespVO.class);
@@ -102,7 +102,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "新增业务分类数据域关联关系")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:add')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DmBusinessDomainRelSaveReqVO dmBusinessDomainRel) {
         dmBusinessDomainRel.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "修改业务分类数据域关联关系")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:edit')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DmBusinessDomainRelSaveReqVO dmBusinessDomainRel) {
         dmBusinessDomainRel.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "删除业务分类数据域关联关系")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:remove')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dmBusinessDomainRelService.removeDmBusinessDomainRel(Arrays.asList(ids)));
@@ -132,7 +132,7 @@ public class DmBusinessDomainRelController extends BaseController {
 
     @Operation(summary = "删除业务分类数据域关联关系")
     @PreAuthorize("@ss.hasPermi('dm:businessdomainrel:remove')")
-    @Log(title = "业务分类数据域关联关系", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dm.business.domain.rel", businessType = BusinessType.DELETE)
     @DeleteMapping("/deletebyDomainId/{domainId}/{businessCategoryId}")
     public CommonResult<Integer> deletebyDomainId(@PathVariable Long domainId, @PathVariable Long businessCategoryId) {
         return CommonResult.toAjax(dmBusinessDomainRelService.removeDmBusinessDomainRelByDomainId(domainId, businessCategoryId));

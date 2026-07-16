@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * 数据资产与项目关联关系Service业务层处理
+ * Data asset and project relationship Service business layer processing
  *
  * @author qdata
  * @date 2025-04-18
@@ -80,15 +80,15 @@ public class DaAssetProjectRelServiceImpl  extends ServiceImpl<DaAssetProjectRel
 
     @Override
     public int updateDaAssetProjectRel(DaAssetProjectRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation checks
 
-        // 更新数据资产与项目关联关系
+        // Update data asset and project relationship
         DaAssetProjectRelDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetProjectRelDO.class);
         return daAssetProjectRelMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetProjectRel(Collection<Long> idList) {
-        // 批量删除数据资产与项目关联关系
+        // Batch delete data asset and project relationship
         return daAssetProjectRelMapper.deleteBatchIds(idList);
     }
 
@@ -109,19 +109,19 @@ public class DaAssetProjectRelServiceImpl  extends ServiceImpl<DaAssetProjectRel
                 .collect(Collectors.toMap(
                         DaAssetProjectRelDO::getId,
                         daAssetProjectRelDO -> daAssetProjectRelDO,
-                        // 保留已存在的值
+                        // Retain existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产与项目关联关系数据
+     * Import data asset and project relationship data
      *
-     * @param importExcelList 数据资产与项目关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data asset and project relationship data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName Operator user
+     * @return Result
      */
     @Override
     public String importDaAssetProjectRel(List<DaAssetProjectRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

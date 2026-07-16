@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 import tech.qiantong.qdata.module.att.service.rule.IAttCleanRuleService;
 
 /**
- * 清洗规则Service业务层处理
+ * Cleaning Rule Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -81,19 +81,19 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
 
     @Override
     public int updateAttCleanRule(AttCleanRuleSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
         List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", updateReqVO.getCode());
         if (code.size() > 0) {
             throw new ServiceException("att.error.rule.code.duplicate", "规则编码重复请重新输入");
         }
-        // 更新清洗规则
+        // Update cleaning rule
         AttCleanRuleDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanRuleDO.class);
         return attCleanRuleMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAttCleanRule(Collection<Long> idList) {
-        // 批量删除清洗规则
+        // Batch delete cleaning rules
         return attCleanRuleMapper.deleteBatchIds(idList);
     }
 
@@ -135,17 +135,17 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
                 .collect(Collectors.toMap(
                         AttCleanRuleDO::getId,
                         attCleanRuleDO -> attCleanRuleDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
     /**
-     * 导入清洗规则数据
+     * Import cleaning rule data
      *
-     * @param importExcelList 清洗规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList cleaning rule data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  @return Result
      */
     @Override
     public String importAttCleanRule(List<AttCleanRuleRespVO> importExcelList, boolean isUpdateSupport,
@@ -170,16 +170,16 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
                             attCleanRuleMapper.updateById(attCleanRuleDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attCleanRuleId + " 的清洗规则记录。", attCleanRuleId, "清洗规则"));
+                                    "数据Update 成功，ID为 " + attCleanRuleId + " 的清洗规则记录。", attCleanRuleId, "清洗规则"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attCleanRuleId + " 的清洗规则记录不存在。", attCleanRuleId, "清洗规则"));
+                                    "数据Update 失败，ID为 " + attCleanRuleId + " 的清洗规则记录不存在。", attCleanRuleId, "清洗规则"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttCleanRuleDO> queryWrapper = new QueryWrapper<>();
@@ -220,11 +220,11 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
 
     @Override
     public List<AttCleanRuleRespVO> getAttCleanRuleTree(Long dataElemId) {
-        // 1. 获取所有清洗规则列表
+        // 1. Get all cleaning rule list
         List<AttCleanRuleDO> list = attCleanRuleMapper.selectAttCleanRuleList(dataElemId);
-        // 2. 转换为VO对象
+        // 2. Convert to VO objects
         List<AttCleanRuleRespVO> voList = BeanUtils.toBean(list, AttCleanRuleRespVO.class);
-        // 3. 构建树形结构
+        // 3. Build tree structure
         return buildTreeByType(voList);
     }
 
@@ -232,14 +232,14 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     public List<AttCleanRuleRespVO> getCleaningRuleTree(Long[] dataElemId) {
         List<AttCleanRuleDO> list =null;
         if (dataElemId == null || dataElemId.length == 0) {
-            // 数组为空或未初始化
+            // Array is empty or not initialized
             list = attCleanRuleMapper.selectList();
         }else {
             list = attCleanRuleMapper.getCleaningRuleTreeIds(dataElemId);
         }
-        // 2. 转换为VO对象
+        // 2. Convert to VO objects
         List<AttCleanRuleRespVO> voList = BeanUtils.toBean(list, AttCleanRuleRespVO.class);
-        // 3. 构建树形结构
+        // 3. Build tree structure
         return buildTreeByType(voList);
     }
 
@@ -250,31 +250,31 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     }
 
     /**
-     * 构建树形结构 - 以type字段作为父节点
+     * Build tree structure - use type field as parent node
      *
-     * @param list 规则列表
-     * @return 树形结构列表
+     * @param list Rule list
+     *  Tree structure list
      */
     private List<AttCleanRuleRespVO> buildTreeByType(List<AttCleanRuleRespVO> list) {
         List<AttCleanRuleRespVO> resultList = new ArrayList<>();
-        // 创建type映射，用于存储相同type的节点
+        // Create type mapping for storing nodes with same type
         Map<String, List<AttCleanRuleRespVO>> typeMap = list.stream()
                 .collect(Collectors.groupingBy(AttCleanRuleRespVO::getType));
 
-        // 遍历每个type分组
+        // Iterate each type group
         for (Map.Entry<String, List<AttCleanRuleRespVO>> entry : typeMap.entrySet()) {
             String type = entry.getKey();
             List<AttCleanRuleRespVO> typeNodes = entry.getValue();
             for (AttCleanRuleRespVO typeNode : typeNodes) {
                 typeNode.setDataType("2");
             }
-            // 创建父节点
+            // Create parent node
             AttCleanRuleRespVO parentNode = new AttCleanRuleRespVO();
-            parentNode.setId(0L); // 设置一个特殊的ID
+            parentNode.setId(0L); // Set a special ID
             parentNode.setType(type);
             parentNode.setDataType("1");
             String typeName = CleanRuleTypeEnum.getNameByType(type);
-            parentNode.setName(typeName); // 设置父节点名称
+            parentNode.setName(typeName); // Set parent node name
             parentNode.setChildren(new ArrayList<>(typeNodes));
 
             resultList.add(parentNode);

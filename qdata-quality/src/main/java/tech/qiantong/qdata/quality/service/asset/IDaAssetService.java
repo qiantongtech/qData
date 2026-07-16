@@ -25,7 +25,7 @@ import tech.qiantong.qdata.module.da.api.asset.dto.DaAssetRespDTO;
 import tech.qiantong.qdata.quality.dal.dataobject.asset.DaAssetDO;
 
 /**
- * 数据资产Service接口
+ * Data asset service interface
  *
  * @author lhs
  * @date 2025-01-21

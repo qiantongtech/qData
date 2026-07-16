@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * token验证处理
+ * token verification processing
  *
  * @author qdata
  */
@@ -52,15 +52,15 @@ import java.util.concurrent.TimeUnit;
 public class TokenServiceAi {
     private static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
-    // 令牌自定义标识
+    // Token custom identification
     @Value("${token.header}")
     private String header;
 
-    // 令牌秘钥
+    // Token key
     @Value("${token.secret}")
     private String secret;
 
-    // 令牌有效期（默认30分钟）
+    // Token validity period (default 30 minutes)
     @Value("${token.expireTime}")
     private int expireTime;
 
@@ -74,20 +74,20 @@ public class TokenServiceAi {
     private RedisCache redisCache;
 
     /**
-     * 获取用户身份信息
+     * Get user identity information
      *
-     * @return 用户信息
+     * @return user information
      */
     public LoginUser getLoginUser(HttpServletRequest request)
     {
-        // 获取请求携带的令牌
+        // Get the token carried by the request
         String token = getToken(request);
         if (StringUtils.isNotEmpty(token))
         {
             try
             {
                 Claims claims = parseToken(token);
-                // 解析对应的权限以及用户信息
+                // Parse corresponding permissions and user information
                 String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
                 LoginUser user = redisCache.getCacheObject(userKey);
@@ -102,7 +102,7 @@ public class TokenServiceAi {
     }
 
     /**
-     * 设置用户身份信息
+     * Set user identity information
      */
     public void setLoginUser(LoginUser loginUser)
     {
@@ -113,7 +113,7 @@ public class TokenServiceAi {
     }
 
     /**
-     * 删除用户身份信息
+     * Delete user identification information
      */
     public void delLoginUser(String token)
     {
@@ -125,10 +125,10 @@ public class TokenServiceAi {
     }
 
     /**
-     * 创建令牌
+     * Create token
      *
-     * @param loginUser 用户信息
-     * @return 令牌
+     * @param loginUser user information
+     * @return token
      */
     public String createToken(LoginUser loginUser)
     {
@@ -143,10 +143,10 @@ public class TokenServiceAi {
     }
 
     /**
-     * 验证令牌有效期，相差不足20分钟，自动刷新缓存
+     * Verify the token validity period, the difference is less than 20 minutes, automatically refresh the cache
      *
      * @param loginUser
-     * @return 令牌
+     * @return token
      */
     public void verifyToken(LoginUser loginUser)
     {
@@ -159,23 +159,23 @@ public class TokenServiceAi {
     }
 
     /**
-     * 刷新令牌有效期
+     * Refresh token validity period
      *
-     * @param loginUser 登录信息
+     * @param loginUser login information
      */
     public void refreshToken(LoginUser loginUser)
     {
         loginUser.setLoginTime(System.currentTimeMillis());
         loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
-        // 根据uuid将loginUser缓存
+        // Cache loginUser based on uuid
         String userKey = getTokenKey(loginUser.getToken());
         redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     /**
-     * 设置用户代理信息
+     * Set user agent information
      *
-     * @param loginUser 登录信息
+     * @param loginUser login information
      */
     public void setUserAgent(LoginUser loginUser)
     {
@@ -188,10 +188,10 @@ public class TokenServiceAi {
     }
 
     /**
-     * 从数据声明生成令牌
+     * Generate tokens from data claims
      *
-     * @param claims 数据声明
-     * @return 令牌
+     * @param claims data claim
+     * @return token
      */
     private String createToken(Map<String, Object> claims)
     {
@@ -202,10 +202,10 @@ public class TokenServiceAi {
     }
 
     /**
-     * 从令牌中获取数据声明
+     * Get data claims from token
      *
-     * @param token 令牌
-     * @return 数据声明
+     * @param token token
+     * @return data declaration
      */
     private Claims parseToken(String token)
     {
@@ -216,10 +216,10 @@ public class TokenServiceAi {
     }
 
     /**
-     * 从令牌中获取用户名
+     * Get username from token
      *
-     * @param token 令牌
-     * @return 用户名
+     * @param token token
+     * @return username
      */
     public String getUsernameFromToken(String token)
     {
@@ -228,7 +228,7 @@ public class TokenServiceAi {
     }
 
     /**
-     * 获取请求token
+     * Get request token
      *
      * @param request
      * @return token

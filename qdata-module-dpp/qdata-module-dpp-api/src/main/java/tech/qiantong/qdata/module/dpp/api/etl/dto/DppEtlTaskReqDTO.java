@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task DTO - DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
@@ -35,58 +35,58 @@ public class DppEtlTaskReqDTO {
     /** ID */
     private Long id;
 
-    /** Handle task-related data and operations. */
+    /** Task Type */
     private String type;
 
-    /** Handle task-related data and operations. */
+    /** Task Name */
     private String name;
 
-    /** Task code */
+    /** Task Code */
     private String code;
 
-    /** Task version */
+    /** Task Version */
     private Long version;
 
-    /** Implementation details. */
+    /** Project ID */
     private Long projectId;
 
-    /** Implementation details. */
+    /** Project Code */
     private String projectCode;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
-    /** Implementation details. */
+    /** Person in Charge */
     private String personCharge;
 
-    /** Handle node-related data and operations. */
+    /** Node Coordinate Information */
     private String locations;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
-    /** Implementation details. */
+    /** Timeout */
     private Long timeout;
 
-    /** Implementation details. */
+    /** Extraction Count */
     private Long extractionCount;
 
-    /** Implementation details. */
+    /** Write Count */
     private Long writeCount;
 
-    /** Handle task-related data and operations. */
+    /** Task Status */
     private String status;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id，接口调用时也把任务绑定的 Quartz Job id 传过去。 */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.sensitiveLevel.DaSensitiveLe
 import java.util.List;
 
 /**
- * 敏感等级 Convert
+ * Sensitive Level Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DaSensitiveLevelConvert {
     DaSensitiveLevelConvert INSTANCE = Mappers.getMapper(DaSensitiveLevelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daSensitiveLevelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daSensitiveLevelPageReqVO request parameters
      * @return DaSensitiveLevelDO
      */
      DaSensitiveLevelDO convertToDO(DaSensitiveLevelPageReqVO daSensitiveLevelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daSensitiveLevelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daSensitiveLevelSaveReqVO save request parameters
      * @return DaSensitiveLevelDO
      */
      DaSensitiveLevelDO convertToDO(DaSensitiveLevelSaveReqVO daSensitiveLevelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daSensitiveLevelDO 实体对象
+     * DO Convert to RespVO
+     * @param daSensitiveLevelDO entity object
      * @return DaSensitiveLevelRespVO
      */
      DaSensitiveLevelRespVO convertToRespVO(DaSensitiveLevelDO daSensitiveLevelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daSensitiveLevelDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param daSensitiveLevelDOList entity object list
      * @return List<DaSensitiveLevelRespVO>
      */
      List<DaSensitiveLevelRespVO> convertToRespVOList(List<DaSensitiveLevelDO> daSensitiveLevelDOList);

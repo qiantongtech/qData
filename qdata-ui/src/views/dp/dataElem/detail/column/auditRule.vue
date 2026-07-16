@@ -83,7 +83,7 @@
         <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
             <template #default="scope">
                 <!-- <el-button link type="primary" icon="view"
-                    @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
+                    @click="openRuleDialog(scope.row, scope.$index + 1, true)">View</el-button> -->
                 <el-button link type="primary" icon="Edit"
                     @click="openRuleDialog(scope.row, scope.$index + 1)">{{ td('common.button.update') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
@@ -190,7 +190,7 @@ function RuleSelectorconfirm(obj, mode) {
 
 
 
-//查询数据元列表
+//Query data element list
 function getList() {
     loading.value = true;
     listDpDataElemRuleRel(queryParams.value).then((response) => {
@@ -200,7 +200,7 @@ function getList() {
     });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
@@ -259,7 +259,7 @@ getList();
     }
 }
 
-// 设置只有叶子节点有多选框
+// Set only leaf nodes to have multiple selection boxes
 :deep(.el-tree-node) {
     .is-leaf+.el-checkbox .el-checkbox__inner {
         display: inline-block !important;

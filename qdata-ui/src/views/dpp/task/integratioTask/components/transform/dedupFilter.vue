@@ -262,7 +262,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -277,7 +277,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.columnName)
         );
       },
@@ -290,10 +290,10 @@ function handleAddField() {
     proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
     return;
   }
-  // 已添加的字段名
+  // Added field name
   const usedNames = tableFields.value.map((item) => item.columnName);
 
-  // 找到未使用的字段
+  // Unused fields found
   const nextField = inputFields.value.find(
     (item) => !usedNames.includes(item.columnName)
   );
@@ -325,15 +325,15 @@ function onResolveFields(payload) {
     tableNames.every((name, idx) => name === inputNames[idx]);
   switch (payload.action) {
     case "addNewOnly": {
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
 
-      // 计算已有字段名称
+      // Calculate existing field names
       const existingNames = tableFields.value.map((f) => f.columnName);
-      // 找到新字段中不在已有字段中的字段
+      // Find fields in the new field that are not among the existing fields
       const newUniqueFields = inputFields.value.filter(
         (f) => !existingNames.includes(f.columnName)
       );
-      // 加入到 tableFields 中
+      // Add to tableFields
       tableFields.value = tableFields.value.concat(deepCopy(newUniqueFields));
       break;
     }
@@ -346,25 +346,25 @@ function onResolveFields(payload) {
       if (isEqual) {
         proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
       }
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       tableFields.value = [];
-      // 这里先清空，再加全部字段，避免重复
+      // Clear it here first and then add all the fields to avoid duplication.
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "clearAndAddAll": {
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
 
-      // 恢复原始备份字段
+      // Restore original backup fields
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "cancel": {
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
     }
   }
@@ -406,12 +406,12 @@ function canChangeIgnoreCase(row) {
   const isString = ["varchar", "char", "text", "string"].some((t) =>
     normType.startsWith(t)
   );
-  // 3. 非字符串列：禁用 + 强制 ignoreCase = 1
+  // 3. Non-string columns: disable + force ignoreCase = 1
   if (!isString) {
     row.ignoreCase = 1;
     return false;
   }
-  // 4. 字符串列：可编辑，若值为空给 0
+  // 4. String column: editable, if the value is empty, give 0
   if (row.ignoreCase == null) row.ignoreCase = 0;
   return true;
 }
@@ -422,7 +422,7 @@ function handleRule(data) {
 }
 
 function handleDelete(row) {
-  // 1. 从 tableFields 中删除对应项
+  // 1. Delete the corresponding item from tableFields
   const idxTable = tableFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -445,7 +445,7 @@ function handleDelete(row) {
   setSort();
 }
 
-// 提交弹窗规则数据
+// Submit pop-up rule data
 const submitForm = (value) => {
   if (!value || !Array.isArray(value)) return;
 
@@ -456,7 +456,7 @@ const submitForm = (value) => {
     try {
       parsedConfig = JSON.parse(ruleItem.ruleConfig);
     } catch (e) {
-      console.warn("无法解析 ruleConfig:", ruleItem.ruleConfig);
+      console.warn("Unable to parse ruleConfig:", ruleItem.ruleConfig);
       return;
     }
     const sourceField = parsedConfig?.fieldMerge?.sourceField;
@@ -497,7 +497,7 @@ const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
-    // 判断表格是否为空
+    // Determine whether the table is empty
     if (!tableFields.value || tableFields.value.length === 0) {
       proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
       return;
@@ -515,7 +515,7 @@ const saveData = async () => {
     taskParams.tableFields = tableFields.value;
     taskParams.mainArgs = taskParams.mainArgs || {};
 
-    // 构造 outputFields = inputFields + tableFields 的增强值
+    // Construct outputFields = inputFields + enhanced value of tableFields
     taskParams.outputFields = inputFields.value.map((input) => {
       const matched = tableFields.value.find(
         (item) => item.columnName === input.columnName
@@ -523,10 +523,10 @@ const saveData = async () => {
       return matched ? { ...input, ...matched } : { ...input };
     });
 
-    console.log("保存数据 - outputFields:", taskParams.outputFields);
+    console.log("Save data - outputFields:", taskParams.outputFields);
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };

@@ -26,7 +26,7 @@ import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
 /**
  * <P>
- * 用途:转换器接口
+ * Purpose: converter interface
  * </p>
  *
  * @author: FXB

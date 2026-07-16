@@ -29,7 +29,7 @@ import java.util.Objects;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -44,41 +44,41 @@ public class TableNode {
     private Long id;
 
 //    /**
-//     * 节点编码
+// * Node encoding
 //     */
 //    @Transient
 //    private transient String nodeCode;
 
     /**
-     * 表名
+     * Table name
      */
     private String name;
     /**
-     * 全限定表名 例如：sales_db.dwh.orders
+     * Fully qualified table name For example: sales_db.dwh.orders
      */
     private String tableName;
     /**
-     * 数据源 id
+     * Data source id
      */
 //    private Long datasourceId;
     /**
-     * 数据源ip:port
+     * Data source ip:port
      */
     private String datasourceHostPort;
     /**
-     * 数据源 名称
+     * Data source name
      */
     private String datasourceName;
     /**
-     * 数据源类型
+     * Data source type
      */
     private String datasourceType;
     /**
-     * 数据库名，冗余字段可空
+     * Database name, redundant fields can be empty
      */
     private String dbName;
     /**
-     * 模式名，冗余字段可空
+     * Schema name, redundant fields can be empty
      */
     private String sid;
 

@@ -25,14 +25,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 标签与资产关联关系 DO 对象 ATT_TAG_ASSET_REL
+ * Tag-Asset Relationship DO ATT_TAG_ASSET_REL
  *
  * @author qdata
  * @date 2025-07-11
  */
 @Data
 @TableName(value = "ATT_TAG_ASSET_REL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_TAG_ASSET_REL_seq")
 @Builder
 @NoArgsConstructor
@@ -42,19 +42,19 @@ public class AttTagAssetRelDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** id */
+    /** ID */
     private Long id;
 
-    /** 标签管理id */
+    /** Tag Management ID */
     private String tagId;
 
-    /** 资产id */
+    /** Asset ID */
     private String assetId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

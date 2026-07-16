@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <P>
- * Handle execution logging.
+ * Purpose: Instance log status response data
  * </p>
  *
  * @author: FXB
@@ -40,48 +40,48 @@ import java.util.List;
 public class DppEtlTaskInstanceLogStatusRespDTO {
 
     /**
-     * Implementation details.
-     * Handle execution logging.
+     * Status; 0: Submitted Successfully 1: Running 2: Preparing Pause 3: Paused 4: Preparing Stop 5: Stopped 6: Failed 7: Success 12: Delayed Execution 14: Serial Waiting 15: Preparing Lock 16: Locked
+     * 5: Stopped 6: Failed 7: Success stop log polling
      */
     private String status;
 
     /**
-     * Implementation details.
+     * Log Status 1: In Progress 2: Completed
      */
     private String log;
 
     /**
-     * Handle node-related data and operations.
+     * Node Instance List
      */
     private List<DppEtlNodeInstanceRespDTO> nodeInstanceList;
 
     /**
-     * DataX input record count.
+     * DataX输入数据量
      */
     private Long inputRecords;
 
     /**
-     * DataX output record count.
+     * DataX输出数据量
      */
     private Long outputRecords;
 
     /**
-     * DataX node name list.
+     * DataX节点名称列表
      */
     private List<String> nodeNames;
 
     /**
-     * Number of successful DataX nodes.
+     * DataX成功节点数量
      */
     private Integer successCount;
 
     /**
-     * Number of failed DataX nodes.
+     * DataX失败节点数量
      */
     private Integer failedCount;
 
     /**
-     * Number of stopped DataX nodes.
+     * DataX停止节点数量
      */
     private Integer stoppedCount;
 }

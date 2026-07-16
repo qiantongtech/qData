@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.video.DaAssetVide
 import tech.qiantong.qdata.module.da.service.assetchild.video.IDaAssetVideoService;
 
 /**
- * 数据资产-视频数据Controller
+ * Data Asset-Video Controller
  *
  * @author qdata
  * @date 2025-04-14
@@ -73,7 +73,7 @@ public class DaAssetVideoController extends BaseController {
 
     @Operation(summary = "导出数据资产-视频数据列表")
     @PreAuthorize("@ss.hasPermi('da:assetVideo:export')")
-    @Log(title = "数据资产-视频数据", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.video", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetVideoPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -84,7 +84,7 @@ public class DaAssetVideoController extends BaseController {
 
     @Operation(summary = "导入数据资产-视频数据列表")
     @PreAuthorize("@ss.hasPermi('da:assetVideo:import')")
-    @Log(title = "数据资产-视频数据", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.video", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetVideoRespVO> util = new ExcelUtil<>(DaAssetVideoRespVO.class);
@@ -104,7 +104,7 @@ public class DaAssetVideoController extends BaseController {
 
     @Operation(summary = "新增数据资产-视频数据")
     @PreAuthorize("@ss.hasPermi('da:assetVideo:add')")
-    @Log(title = "数据资产-视频数据", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.video", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetVideoSaveReqVO daAssetVideo) {
         daAssetVideo.setCreatorId(getUserId());
@@ -115,7 +115,7 @@ public class DaAssetVideoController extends BaseController {
 
     @Operation(summary = "修改数据资产-视频数据")
     @PreAuthorize("@ss.hasPermi('da:assetVideo:edit')")
-    @Log(title = "数据资产-视频数据", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.video", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetVideoSaveReqVO daAssetVideo) {
         daAssetVideo.setUpdatorId(getUserId());
@@ -126,7 +126,7 @@ public class DaAssetVideoController extends BaseController {
 
     @Operation(summary = "删除数据资产-视频数据")
     @PreAuthorize("@ss.hasPermi('da:assetVideo:remove')")
-    @Log(title = "数据资产-视频数据", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.video", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetVideoService.removeDaAssetVideo(Arrays.asList(ids)));

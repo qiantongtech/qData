@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询标准信息分类管理列表
+// Query standard information classification management list
 export function listAttDocumentCat(query) {
   return request({
     url: '/att/documentCat/list',
@@ -27,7 +27,7 @@ export function listAttDocumentCat(query) {
   })
 }
 
-// 查询标准信息分类管理详细
+// Query standard information classification management details
 export function getAttDocumentCat(id) {
   return request({
     url: '/att/documentCat/' + id,
@@ -35,7 +35,7 @@ export function getAttDocumentCat(id) {
   })
 }
 
-// 新增标准信息分类管理
+// Added standard information classification management
 export function addAttDocumentCat(data) {
   return request({
     url: '/att/documentCat',
@@ -44,7 +44,7 @@ export function addAttDocumentCat(data) {
   })
 }
 
-// 修改标准信息分类管理
+// Modify standard information classification management
 export function updateAttDocumentCat(data) {
   return request({
     url: '/att/documentCat',
@@ -53,7 +53,7 @@ export function updateAttDocumentCat(data) {
   })
 }
 
-// 删除标准信息分类管理
+// Delete standard information classification management
 export function delAttDocumentCat(id) {
   return request({
     url: '/att/documentCat/' + id,

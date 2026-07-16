@@ -17,14 +17,14 @@ public class McDbTxService {
     private IMcDbService mcDbApiService;
 
     /**
-     * 库级元数据：独立事务，立即提交
+     * Library-level metadata: independent transaction, commit immediately
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Long createDbAndCommit(McDbSaveReqVO dbScope) {
         try {
             return mcDbApiService.createMcDb(dbScope);
         } catch (Exception e) {
-            // 只影响当前库，不向外抛
+            // Only affects the current library and does not throw it out.
             return null;
         }
     }

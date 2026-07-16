@@ -39,7 +39,7 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 主题域管理Mapper接口
+ * Theme Domain Mapper Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -61,9 +61,9 @@ public interface DmThemeDomainMapper extends BaseMapperX<DmThemeDomainDO> {
                 .eqIfPresent(DmThemeDomainDO::getDataLayerId, reqVO.getDataLayerId())
                 .likeIfPresent(DmThemeDomainDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmThemeDomainDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime descending
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(","))
                                 .stream().map(e -> "t." +LambdaQueryWrapperX.camelToUnderline(e))

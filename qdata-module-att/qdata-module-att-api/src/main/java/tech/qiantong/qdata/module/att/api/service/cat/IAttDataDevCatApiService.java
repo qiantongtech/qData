@@ -26,9 +26,9 @@ import java.util.List;
 public interface IAttDataDevCatApiService {
 
     /**
-     * 获得全部数据开发类目管理列表
+     * Get all data development category management list
      *
-     * @return 数据开发类目管理列表
+     * @return Data Development Category Management list
      */
     List<AttDataDevCatRespDTO> getAttDataDevCatApiList(AttDataDevCatReqDTO attDataDevCatReqDTO);
 }

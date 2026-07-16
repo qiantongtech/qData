@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDese
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeIntervalDO;
 
 /**
- * 脱敏区间 Convert
+ * Desensitization Interval Convert
  *
  * @author qdata
  * @date 2026-04-10
@@ -37,29 +37,29 @@ public interface DgDesensitizeIntervalConvert {
     DgDesensitizeIntervalConvert INSTANCE = Mappers.getMapper(DgDesensitizeIntervalConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDesensitizeIntervalPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDesensitizeIntervalPageReqVO request parameters
      * @return DgDesensitizeIntervalDO
      */
      DgDesensitizeIntervalDO convertToDO(DgDesensitizeIntervalPageReqVO dgDesensitizeIntervalPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDesensitizeIntervalSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDesensitizeIntervalSaveReqVO save request parameters
      * @return DgDesensitizeIntervalDO
      */
      DgDesensitizeIntervalDO convertToDO(DgDesensitizeIntervalSaveReqVO dgDesensitizeIntervalSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDesensitizeIntervalDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDesensitizeIntervalDO entity object
      * @return DgDesensitizeIntervalRespVO
      */
      DgDesensitizeIntervalRespVO convertToRespVO(DgDesensitizeIntervalDO dgDesensitizeIntervalDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDesensitizeIntervalDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDesensitizeIntervalDOList entity object list
      * @return List<DgDesensitizeIntervalRespVO>
      */
      List<DgDesensitizeIntervalRespVO> convertToRespVOList(List<DgDesensitizeIntervalDO> dgDesensitizeIntervalDOList);

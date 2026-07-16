@@ -21,10 +21,10 @@ package tech.qiantong.qdata.common.utils;
 public class ConversionUtils {
 
     /**
-     * 将字符串转换为 Long 类型。如果字符串为空或无法转换，则返回 0L。
+     * Convert a string to type Long. If the string is empty or cannot be converted, 0L is returned.
      *
-     * @param dataLength 要转换的字符串
-     * @return 转换后的 Long 类型值
+     * @param dataLength The string to be converted
+     * @return converted Long type value
      */
     public static Long getStringToLong(String dataLength) {
         if (StringUtils.isEmpty(dataLength)) {
@@ -33,16 +33,16 @@ public class ConversionUtils {
         try {
             return Long.parseLong(dataLength);
         } catch (NumberFormatException e) {
-            // 如果转换失败，则返回 0L
+            // If the conversion fails, 0L is returned
             return 0L;
         }
     }
 
     /**
-     * 将字符串转换为 Integer 类型。如果字符串为空或无法转换，则返回 0。
+     * Convert a string to type Integer. Returns 0 if the string is empty or cannot be converted.
      *
-     * @param dataLength 要转换的字符串
-     * @return 转换后的 Integer 类型值
+     * @param dataLength The string to be converted
+     * @return converted Integer type value
      */
     public static Integer getStringToInt(String dataLength) {
         if (StringUtils.isEmpty(dataLength)) {
@@ -51,16 +51,16 @@ public class ConversionUtils {
         try {
             return Integer.parseInt(dataLength);
         } catch (NumberFormatException e) {
-            // 如果转换失败，则返回 0
+            // If the conversion fails, returns 0
             return 0;
         }
     }
 
     /**
-     * 将字符串转换为 Double 类型。如果字符串为空或无法转换，则返回 0.0。
+     * Convert a string to type Double. If the string is empty or cannot be converted, 0.0 is returned.
      *
-     * @param dataLength 要转换的字符串
-     * @return 转换后的 Double 类型值
+     * @param dataLength The string to be converted
+     * @return converted Double type value
      */
     public static Double getStringToDouble(String dataLength) {
         if (StringUtils.isEmpty(dataLength)) {
@@ -69,16 +69,16 @@ public class ConversionUtils {
         try {
             return Double.parseDouble(dataLength);
         } catch (NumberFormatException e) {
-            // 如果转换失败，则返回 0.0
+            // If the conversion fails, 0.0 is returned
             return 0.0;
         }
     }
 
     /**
-     * 将字符串转换为 Boolean 类型。如果字符串为空或无法转换，则返回 false。
+     * Convert a string to type Boolean. Returns false if the string is empty or cannot be converted.
      *
-     * @param value 要转换的字符串
-     * @return 转换后的 Boolean 类型值
+     * @param value the string to convert
+     * @return converted Boolean type value
      */
     public static Boolean getStringToBoolean(String value) {
         if (StringUtils.isEmpty(value)) {

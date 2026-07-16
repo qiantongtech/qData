@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据库Service接口
+ * Database Service interface
  *
  * @author qdata
  * @date 2026-02-11
@@ -22,54 +22,54 @@ import java.util.Map;
 public interface IMcDbService extends IService<McDbDO> {
 
     /**
-     * 获得数据库分页列表
+     * Get the database paging list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据库分页列表
+     * @param pageReqVO paging request
+     * @return database paging list
      */
     PageResult<McDbDO> getMcDbPage(McDbPageReqVO pageReqVO);
 
     /**
-     * 创建数据库
+     * Create database
      *
-     * @param createReqVO 数据库信息
-     * @return 数据库编号
+     * @param createReqVO database information
+     * @return database number
      */
     Long createMcDb(McDbSaveReqVO createReqVO);
 
     /**
-     * 更新数据库
+     * Update database
      *
-     * @param updateReqVO 数据库信息
+     * @param updateReqVO database information
      */
     int updateMcDb(McDbSaveReqVO updateReqVO);
 
     /**
-     * 删除数据库
+     * Delete database
      *
-     * @param idList 数据库编号
+     * @param idList database number
      */
     int removeMcDb(Collection<Long> idList);
 
     /**
-     * 获得数据库详情
+     * Get database details
      *
-     * @param id 数据库编号
-     * @return 数据库
+     * @param id database number
+     * @return database
      */
     McDbRespVO getMcDbById(Long id);
 
     /**
-     * 获得全部数据库列表
+     * Get a list of all databases
      *
-     * @return 数据库列表
+     * @return database list
      */
     List<McDbDO> getMcDbList(McDbPageReqVO mcDb);
 
     /**
-     * 获得全部数据库 Map
+     * Get all database maps
      *
-     * @return 数据库 Map
+     * @return database map
      */
     Map<Long, McDbDO> getMcDbMap();
 

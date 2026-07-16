@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 逻辑模型属性信息Mapper接口
+ * Logical Model Column Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,7 +38,7 @@ import java.util.Set;
 public interface DpModelColumnMapper extends BaseMapperX<DpModelColumnDO> {
 
     default PageResult<DpModelColumnDO> selectPage(DpModelColumnPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DpModelColumnDO> lambdaWrapper = new MPJLambdaWrapper();

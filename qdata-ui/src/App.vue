@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 页面内容 -->
+  <!-- Page content -->
   <el-watermark style="width: 100%; height: 100%; position: ''" v-if="watermarkText" :font="config.font"
     :content="watermarkText" :gap="[200, 200]">
     <router-view />
@@ -28,7 +28,7 @@
 <script setup>
 import useSettingsStore from "@/store/system/settings";
 import { handleThemeStyle } from "@/utils/theme";
-import { useRoute } from "vue-router"; // 引入 useRoute 钩子
+import { useRoute } from "vue-router"; // Introduce useRoute hook
 import useUserStore from "@/store/system/user";
 import defaultSettings from '@/settings'
 import {i18n} from '@/plugins/vueI18n'
@@ -36,18 +36,18 @@ import {i18n} from '@/plugins/vueI18n'
 // const appStore = useAppStore();
 const userStore = useUserStore();
 // import { alertEffects } from "element-plus";
-// 使用 useRoute 钩子获取当前路由对象
+// Use the useRoute hook to get the current route object
 const route = useRoute();
 // const storedUser = useUserStore();
 ;
 const title = () => i18n.global.t('common.html.appTitle') || defaultSettings.title;
 document.title = title();
 const whiteList = ["/login", "/register", "/sso/login", "/sso",];
-// 计算水印文本，动态获取当前路由的名称
+// Calculate the watermark text and dynamically obtain the name of the current route
 const watermarkText = computed(() => {
   if (localStorage.getItem("username")) {
     if (route.path != "/login" && route.path != "/sso/login") {
-      return localStorage.getItem("username") || "默认水印"; //需要水印赋值不需要给空
+      return localStorage.getItem("username") || "默认水印"; //Watermark assignment is required and does not need to be empty.
     } else {
       return "";
     }
@@ -62,7 +62,7 @@ const config = reactive({
 });
 onMounted(() => {
   nextTick(() => {
-    // 初始化主题样式
+    // Initialize theme style
     handleThemeStyle(useSettingsStore().theme);
   });
 });

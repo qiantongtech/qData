@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 新增评测规则的 每个规则的配置 -->
+  <!-- Add evaluation rule config for each rule -->
   <el-dialog
     v-model="dialogVisible"
     draggable
@@ -190,7 +190,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 规则配置 -->
+        <!-- Rule configuration -->
         <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.ruleConfig') }}</div>
         <el-row :gutter="20">
           <el-col :span="12" class="hasMsg" v-if="type != 3">
@@ -305,7 +305,7 @@
           <el-col :span="12">
             <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData" :label-position="labelPosition">
               <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />
-              <!-- <span class="msg">样例必须符合规则，如不符合不能包含特殊字符</span> -->
+              <!-- <span class="msg">Sample must comply with rule; cannot contain special characters if non-compliant</span> -->
               <div style="margin-top: 6px; display: inline-block">
                 <el-tag
                   v-if="sampleCheckMsg"
@@ -348,7 +348,7 @@ import { ref, reactive, watch, toRefs } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
-// 通过注册中心按需加载规则子组件，减少静态 import 带来的首屏体积
+// Load rule subcomponents on demand via registry to reduce first-screen bundle size
 import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 
@@ -357,7 +357,7 @@ let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
-// 父组件传入评测对象列表
+// Evaluation object list from parent component
 const props = defineProps({
   dppQualityTaskObjSaveReqVO: {
     type: Array,
@@ -380,8 +380,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //稽查规则名称：
-  ruleCode: "", //稽查规则编号：
+  ruleName: "", // Inspection rule name:
+  ruleCode: "", // Inspection rule code:
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -394,33 +394,33 @@ let form = reactive({
   tableName: "",
 
   rule: {
-    // 字符串类型校验
-    allowedChars: ["1"], // 允许字符类型
-    useRegexFlag: 0, // 使用正则
-    regex: "", // 正则表达式
-    // 忽略空值：，保留一个
-    ignoreNullValue: "0", //忽略空值：
-    // 字段长度范围校验
-    minLength: null, //最小长度
-    maxLength: null, //最大长度
-    // 字段精度
-    scale: "2", // 小数位数
-    skipInteger: "1", // 忽略整数值
-    // 字段组完整性校验
+    // String type validation
+    allowedChars: ["1"], // Allowed character types
+    useRegexFlag: 0, // Use regex
+    regex: "", // Regex
+    // Ignore null value, keep one
+    ignoreNullValue: "0", // Ignore null value
+    // Field length range validation
+    minLength: null, // Min length
+    maxLength: null, // Max length
+    // Field precision
+    scale: "2", // Decimal places
+    skipInteger: "1", // Skip integer value
+    // Field group integrity validation
     fillStrategy: "1",
 
-    // 数值字段范围校验
+    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
-    //  枚举值校验
+    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
     codeList: [],
     validValues: [],
     calculationGroups: [],
-    // 时间选择
+    // Time selection
     conditions: [],
   },
 });
@@ -449,24 +449,24 @@ const evaColumnLabel = computed(() => {
 });
 let title = ref();
 
-// 计算属性：当前规则配置
+// Computed: current rule configuration
 const currentRuleConfig = computed(() => {
   return getRuleConfig(form.ruleType);
 });
 
-// 计算属性：当前规则组件
+// Computed: current rule component
 const currentRuleComponent = computed(() => {
   return getRuleComponent(form.ruleType) || null;
 });
 
 let loading = ref(false);
 let columnList = ref([]);
-// 评测字段列表缓存：key = datasourceId|tableName
+// Evaluation field list cache: key = datasourceId|tableName
 const columnsCache = new Map();
 
 const spotCheckRef = ref();
 
-//监测
+// Watch
 async function handleSpotCheck() {
   console.log(
     "🚀 ~ handleSpotCheck ~  selectedRef.value:",
@@ -483,7 +483,7 @@ async function handleSpotCheck() {
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
-    // 如果子组件返回了evaColumn字段（如timeOrderRule组件），直接赋值给form.evaColumn
+    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
     }
@@ -530,7 +530,7 @@ function handleTargetObjectChange(tableName) {
     } else {
       form.evaColumn = "";
     }
-    // 清空当前表的缓存，确保每次切换都重新请求
+    // Clear current table cache to ensure fresh request on each switch
     const cacheKey = `${selected.datasourceId}|${tableName}`;
     columnsCache.delete(cacheKey);
     fetchColumns();
@@ -601,7 +601,7 @@ async function handleSave() {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
 
-    // 如果子组件返回了evaColumn字段（如timeOrderRule组件），直接赋值给form.evaColumn
+    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
     }
@@ -610,11 +610,11 @@ async function handleSave() {
     name: col.columnName,
     label: col.label,
   }));
-  // 先把 evaColumn 数组转为逗号分隔字符串
+  // Convert evaColumn array to comma-separated string first
   if (Array.isArray(form.evaColumn)) {
     form.evaColumn = form.evaColumn.join(",");
   }
-  // 构建最终的 rule 字段
+  // Build the final rule field
   form.rule = JSON.stringify({
     ...res.data,
     evaColumns: selectedLabels,
@@ -732,8 +732,8 @@ async function openDialog(record, index, fg) {
 
 const initialForm = () => ({
   name: "",
-  ruleName: "", //稽查规则名称：
-  ruleCode: "", //稽查规则编号：
+  ruleName: "", // Inspection rule name:
+  ruleCode: "", // Inspection rule code:
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -745,29 +745,29 @@ const initialForm = () => ({
   evaColumn: undefined,
   tableName: "",
   rule: {
-    // 字符串类型校验
-    allowedChars: ["1"], // 允许字符类型
-    useRegexFlag: 0, // 使用正则
-    regex: "", // 正则表达式
-    ignoreNullValue: "1", // 忽略空值：
+    // String type validation
+    allowedChars: ["1"], // Allowed character types
+    useRegexFlag: 0, // Use regex
+    regex: "", // Regex
+    ignoreNullValue: "1", // Ignore null value
 
-    // 字段长度范围校验
-    minLength: null, // 最小长度
-    maxLength: null, // 最大长度
+    // Field length range validation
+    minLength: null, // Min length
+    maxLength: null, // Max length
 
-    // 字段精度
-    scale: "2", // 小数位数
-    skipInteger: "1", // 忽略整数值
+    // Field precision
+    scale: "2", // Decimal places
+    skipInteger: "1", // Skip integer value
 
-    // 字段组完整性校验
+    // Field group integrity validation
     fillStrategy: "1",
 
-    // 数值字段范围校验
+    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
 
-    // 枚举值校验
+    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
@@ -775,10 +775,10 @@ const initialForm = () => ({
     validValues: [],
     calculationGroups: [],
 
-    // 时间字段
+    // Time field
     allowPartialEmpty: "1",
 
-    // 多条件字段
+    // Multi-condition field
     conditions: [],
   },
 });
@@ -786,7 +786,7 @@ const initialForm = () => ({
 function resetForm() {
   Object.assign(form, initialForm());
   columnList.value = [];
-  columnsCache.clear(); // 清空字段列表缓存
+  columnsCache.clear(); // Clear field list cache
   title.value = "";
   sampleCheckMsg.value = "";
 }

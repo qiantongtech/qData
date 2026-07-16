@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询容器管理-服务器配置列表
+// Query container management-server configuration list
 export function listcontainerServer(query) {
   return request({
     url: '/system/containerServer/list',
@@ -27,7 +27,7 @@ export function listcontainerServer(query) {
   })
 }
 
-// 查询容器管理-服务器配置详细
+// Query container management-server configuration details
 export function getcontainerServer(ID) {
   return request({
     url: '/system/containerServer/info',
@@ -44,7 +44,7 @@ export function getcontainerServer(ID) {
 }
 
 
-// 新增容器管理-服务器配置
+// Added container management-server configuration
 export function addcontainerServer(data) {
   return request({
     url: '/system/containerServer',
@@ -53,7 +53,7 @@ export function addcontainerServer(data) {
   })
 }
 
-// 修改容器管理-服务器配置
+// Modify container management-server configuration
 export function updatecontainerServer(data) {
   return request({
     url: '/system/containerServer',
@@ -62,7 +62,7 @@ export function updatecontainerServer(data) {
   })
 }
 
-// 删除容器管理-服务器配置
+// Remove container management-server configuration
 export function delcontainerServer(ID) {
   return request({
     url: '/system/containerServer/' + ID,

@@ -26,7 +26,7 @@ const { proxy } = getCurrentInstance();
 
 const url = ref(import.meta.env.VITE_APP_BASE_API + "/doc.html")
 
-// 打开外链 URL 在新的标签页中
+// Open the external link URL in a new tab
 window.open(url.value, "_blank");
 
 proxy.$tab.closePage();

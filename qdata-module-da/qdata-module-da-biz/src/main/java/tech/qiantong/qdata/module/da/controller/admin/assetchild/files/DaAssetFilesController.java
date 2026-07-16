@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 数据资产-文件服务Controller
+ * Data Asset - File Service Controller
  *
  * @author qdata
  * @date 2025-06-26
@@ -71,7 +71,7 @@ public class DaAssetFilesController extends BaseController {
 
     @Operation(summary = "导出数据资产-文件服务列表")
     @PreAuthorize("@ss.hasPermi('da:assetFiles:export')")
-    @Log(title = "数据资产-文件服务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.files", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetFilesPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DaAssetFilesController extends BaseController {
 
     @Operation(summary = "导入数据资产-文件服务列表")
     @PreAuthorize("@ss.hasPermi('da:assetFiles:import')")
-    @Log(title = "数据资产-文件服务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.files", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetFilesRespVO> util = new ExcelUtil<>(DaAssetFilesRespVO.class);
@@ -102,7 +102,7 @@ public class DaAssetFilesController extends BaseController {
 
     @Operation(summary = "新增数据资产-文件服务")
     @PreAuthorize("@ss.hasPermi('da:assetFiles:add')")
-    @Log(title = "数据资产-文件服务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.files", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetFilesSaveReqVO daAssetFiles) {
         daAssetFiles.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DaAssetFilesController extends BaseController {
 
     @Operation(summary = "修改数据资产-文件服务")
     @PreAuthorize("@ss.hasPermi('da:assetFiles:edit')")
-    @Log(title = "数据资产-文件服务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.files", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetFilesSaveReqVO daAssetFiles) {
         daAssetFiles.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DaAssetFilesController extends BaseController {
 
     @Operation(summary = "删除数据资产-文件服务")
     @PreAuthorize("@ss.hasPermi('da:assetFiles:remove')")
-    @Log(title = "数据资产-文件服务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.files", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetFilesService.removeDaAssetFiles(Arrays.asList(ids)));

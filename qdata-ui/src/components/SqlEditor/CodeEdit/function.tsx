@@ -45,7 +45,7 @@ import ITextModel = editor.ITextModel;
 import ProviderResult = languages.ProviderResult;
 import CompletionList = languages.CompletionList;
 import CompletionItem = languages.CompletionItem;
-// 导入 lodash
+// import lodash
 loader.config({ monaco });
 
 /**
@@ -215,7 +215,7 @@ export const buildAllSuggestionsToEditor = (
       detail: item?.label?.description || ''
     };
   });
-  //todo: 补充补全建议 关键词建议
+  //todo: Supplementary completion suggestions Keyword suggestions
 
   return {
     suggestions: subgraphOptions

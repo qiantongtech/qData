@@ -23,57 +23,57 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import ${packageName}.domain.${ClassName};
 
 /**
- * ${functionName}Service接口
+ * ${functionName}Service interface
  *
  * @author ${author}
  * @date ${datetime}
  */
 public interface I${ClassName}Service extends IService<${ClassName}> {
     /**
-     * 查询${functionName}
+     * Query ${functionName}
      *
-     * @param ${pkColumn.javaField} ${functionName}主键
+     * @param ${pkColumn.javaField} ${functionName} primary key
      * @return ${functionName}
      */
     public ${ClassName} select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
 
     /**
-     * 查询${functionName}列表
+     * Query ${functionName} list
      *
      * @param ${className} ${functionName}
-     * @return ${functionName}集合
+     * @return ${functionName} collection
      */
     public List<${ClassName}> select${ClassName}List(${ClassName} ${className});
 
     /**
-     * 新增${functionName}
+     * Add ${functionName}
      *
      * @param ${className} ${functionName}
-     * @return 结果
+     * @return result
      */
     public int insert${ClassName}(${ClassName} ${className});
 
     /**
-     * 修改${functionName}
+     * Modify ${functionName}
      *
      * @param ${className} ${functionName}
-     * @return 结果
+     * @return result
      */
     public int update${ClassName}(${ClassName} ${className});
 
     /**
-     * 批量删除${functionName}
+     * Delete ${functionName} in batches
      *
-     * @param ${pkColumn.javaField}s 需要删除的${functionName}主键集合
-     * @return 结果
+     * @param ${pkColumn.javaField}s ${functionName} primary key collection that needs to be deleted
+     * @return result
      */
     public int delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaType}[] ${pkColumn.javaField}s);
 
     /**
-     * 删除${functionName}信息
+     * Delete ${functionName} information
      *
-     * @param ${pkColumn.javaField} ${functionName}主键
-     * @return 结果
+     * @param ${pkColumn.javaField} ${functionName} primary key
+     * @return result
      */
     public int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
 }

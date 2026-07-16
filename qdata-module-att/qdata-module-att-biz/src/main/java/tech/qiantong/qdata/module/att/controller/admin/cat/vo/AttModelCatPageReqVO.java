@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 逻辑模型类目管理 Request VO 对象 ATT_MODEL_CAT
+ * Logical Model Category Management Request VO ATT_MODEL_CAT
  *
  * @author qdata
  * @date 2025-01-20

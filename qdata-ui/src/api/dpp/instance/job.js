@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据集成任务实例列表
+// Query the list of data integration task instances
 export function listDppEtlTaskInstance(query) {
   return request({
     url: '/dpp/etlTaskInstance/list',
@@ -27,7 +27,7 @@ export function listDppEtlTaskInstance(query) {
   })
 }
 
-// 查询数据集成任务实例详细
+// Query data integration task instance details
 export function getDppEtlTaskInstance(id) {
   return request({
     url: '/dpp/etlTaskInstance/' + id,
@@ -35,7 +35,7 @@ export function getDppEtlTaskInstance(id) {
   })
 }
 
-// 新增数据集成任务实例
+// Added data integration task instance
 export function addDppEtlTaskInstance(data) {
   return request({
     url: '/dpp/etlTaskInstance',
@@ -44,7 +44,7 @@ export function addDppEtlTaskInstance(data) {
   })
 }
 
-// 修改数据集成任务实例
+// Modify data integration task instance
 export function updateDppEtlTaskInstance(data) {
   return request({
     url: '/dpp/etlTaskInstance',
@@ -53,7 +53,7 @@ export function updateDppEtlTaskInstance(data) {
   })
 }
 
-// 删除数据集成任务实例
+// Delete a data integration task instance
 export function delDppEtlTaskInstance(id) {
   return request({
     url: '/dpp/etlTaskInstance/' + id,
@@ -62,7 +62,7 @@ export function delDppEtlTaskInstance(id) {
 }
 
 
-// 查询数据集成任务实例列表
+// Query the list of data integration task instances
 export function listDppEtlTreeList(query) {
   return request({
     url: '/dpp/etlTaskInstance/treeList',
@@ -70,7 +70,7 @@ export function listDppEtlTreeList(query) {
     params: query
   })
 }
-// 获取子任务列表
+// Get a list of subtasks
 export function subNodeList(query) {
   return request({
     url: '/dpp/etlTaskInstance/subNodeList',

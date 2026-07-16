@@ -27,14 +27,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据分级 DO 对象 DG_DATA_LEVEL
+ * Data Level DO entity DG_DATA_LEVEL
  *
  * @author qdata
  * @date 2026-04-03
  */
 @Data
 @TableName(value = "DG_DATA_LEVEL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DG_DATA_LEVEL_seq")
 @Builder
 @NoArgsConstructor
@@ -48,28 +48,28 @@ public class DgDataLevelDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 分级名称 */
+    /** Level Name */
     private String name;
 
-    /** 分级缩写名 */
+    /** Level Abbreviation */
     private String shortName;
 
-    /** 敏感等级 */
+    /** Sensitive Level */
     private Long sensitiveLevel;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 颜色值 */
+    /** Color Value */
     private String colors;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 

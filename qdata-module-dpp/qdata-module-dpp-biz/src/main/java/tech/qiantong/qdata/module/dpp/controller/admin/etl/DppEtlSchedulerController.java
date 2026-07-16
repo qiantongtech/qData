@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlSchedulerDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlSchedulerService;
 
 /**
- * 数据集成调度信息Controller
+ * Data Integration Scheduling Info Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成调度信息")
+@Tag(name = "Data Integration Scheduling Info")
 @RestController
 @RequestMapping("/dpp/etlScheduler")
 @Validated
@@ -71,7 +71,7 @@ public class DppEtlSchedulerController extends BaseController {
 
     @Operation(summary = "导出数据集成调度信息列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlScheduler:export')")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.schedule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlSchedulerPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DppEtlSchedulerController extends BaseController {
 
     @Operation(summary = "导入数据集成调度信息列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlScheduler:import')")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.schedule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlSchedulerRespVO> util = new ExcelUtil<>(DppEtlSchedulerRespVO.class);
@@ -102,7 +102,7 @@ public class DppEtlSchedulerController extends BaseController {
 
     @Operation(summary = "新增数据集成调度信息")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlScheduler:add')")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.schedule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlSchedulerSaveReqVO dppEtlScheduler) {
         dppEtlScheduler.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DppEtlSchedulerController extends BaseController {
 
     @Operation(summary = "修改数据集成调度信息")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlScheduler:edit')")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.schedule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlSchedulerSaveReqVO dppEtlScheduler) {
         dppEtlScheduler.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DppEtlSchedulerController extends BaseController {
 
     @Operation(summary = "删除数据集成调度信息")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlScheduler:remove')")
-    @Log(title = "数据集成调度信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.schedule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlSchedulerService.removeDppEtlScheduler(Arrays.asList(ids)));

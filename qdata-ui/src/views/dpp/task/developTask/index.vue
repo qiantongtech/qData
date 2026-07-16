@@ -282,6 +282,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status != 1"
+                    :loading="executeOnceLoading"
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.developTask.executeOnce", "执行一次")
@@ -396,6 +397,7 @@ import {checkApi} from "@/api/ds/api/api.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 
 const api = {
   list: listAttDataDevCat,
@@ -429,7 +431,6 @@ const schedulerOptions = [
   { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
 ];
 const getSchedulerLabel = (value) => {
-  // 列表展示时，把库里的调度器值转成页面文案。
   return schedulerOptions.find((item) => item.value == value)?.label || value || "-";
 };
 const getExecutionType = (executionType) => {
@@ -440,7 +441,7 @@ const getExecutionType = (executionType) => {
   if (!item) return null;
   return {
     ...item,
-    elTagType: item.elTagType, // 默认 info
+    elTagType: item.elTagType, // Default info
   };
 };
 
@@ -451,7 +452,7 @@ const getStatus = (status) => {
     return "0";
   }
 };
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 const deptOptions = ref([]);
 let userList = ref([]);
@@ -459,13 +460,13 @@ let taskForm = ref({});
 const handleAdd = () => {
   taskConfigDialogVisible.value = true;
 };
-// 保存并关闭
+// Save and close
 const handleSave = (form) => {
   const parms = {
     ...form,
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
-    type: "3", //数据开发新增标识
+    type: "3", //New identifier for data development
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
@@ -474,13 +475,13 @@ const handleSave = (form) => {
     }
   });
 };
-// 保存并完善
+// Save and improve
 const handleConfirm = (form) => {
   const parms = {
     ...form,
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
-    type: "3", //数据开发新增标识
+    type: "3", //New identifier for data development
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
@@ -493,10 +494,10 @@ const handleConfirm = (form) => {
   });
 };
 
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
 
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
+let startX = 0; // Initial position when mouse is pressed // Initial left width
 const startResize = (event) => {
   isResizing.value = true;
   startX = event.clientX;
@@ -510,14 +511,14 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => {});
   }
 };
-/** 下拉树结构 */
+/** Drop down tree structure */
 function getDeptTree() {
   api
     .list({
@@ -540,7 +541,7 @@ const route = useRoute();
 let openCron = ref(false);
 let row = ref();
 let expression = ref("");
-/** 运行实例按钮操作 */
+/** Run instance button action */
 function handleJobLog(data) {
   row.value = "";
   row.value = data || "";
@@ -554,7 +555,7 @@ function handleschedulerState(id, row, e) {
       ? td("dpp.developTask.online", "上线")
       : td("dpp.developTask.offline", "下线");
 
-  // 弹出确认框
+  // Confirmation box pops up
   proxy.$modal
     .confirm(
       td(
@@ -566,7 +567,7 @@ function handleschedulerState(id, row, e) {
     )
     .then(function () {
       loading.value = true;
-      // 调用后台接口更新调度状态
+      // Call the background interface to update the scheduling status
       updateReleaseSchedule({
         id,
         schedulerState: row.schedulerState,
@@ -579,27 +580,27 @@ function handleschedulerState(id, row, e) {
           );
         })
         .catch((error) => {
-          // 处理失败时的恢复操作
-          row.schedulerState = row.schedulerState === "1" ? "0" : "1"; // 恢复之前的状态
+          // Recovery operations in case of processing failure
+          row.schedulerState = row.schedulerState === "1" ? "0" : "1"; // Restore previous state
         })
         .finally(() => {
-          loading.value = false; // 无论成功失败都停止加载
+          loading.value = false; // Stop loading regardless of success or failure
         });
     })
     .catch((error) => {
-      // 失败时恢复状态
+      // Restoring state on failure
       row.schedulerState = row.schedulerState == "1" ? "0" : "1";
     });
 }
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(id, row, e) {
   const text =
     row.status == "1"
       ? td("dpp.developTask.online", "上线")
       : td("dpp.developTask.offline", "下线");
 
-  // 弹出确认框
+  // Confirmation box pops up
   proxy.$modal
     .confirm(
       td(
@@ -610,8 +611,8 @@ function handleStatusChange(id, row, e) {
         .replace("{name}", row.name)
     )
     .then(function () {
-      loading.value = true; // 开始加载
-      // 调用后台接口更新发布状态
+      loading.value = true; // Start loading
+      // Call the background interface to update the publishing status
       updateReleaseJobTask({
         id,
         releaseState: row.status,
@@ -625,19 +626,19 @@ function handleStatusChange(id, row, e) {
           handleQuery();
         })
         .catch((error) => {
-          // 失败时恢复状态
+          // Restoring state on failure
           row.status = row.status === "1" ? "0" : "1";
         })
         .finally(() => {
-          loading.value = false; // 无论成功失败都停止加载
+          loading.value = false; // Stop loading regardless of success or failure
         });
     })
     .catch((error) => {
-      // 失败时恢复状态
+      // Restoring state on failure
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   row.value.crontab = value;
   releaseTaskCrontab({
@@ -651,13 +652,14 @@ function crontabFill(value) {
   });
 }
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(
       td("dpp.developTask.invalidTaskId", "无效的任务id，请刷新后重试")
     );
     return;
   }
-  loading.value = true;
+  executeOnceLoading.value = true;
   try {
     const res = await startDppEtlTask(row.id);
 
@@ -670,10 +672,8 @@ const handleExecuteOnce = async (row) => {
       );
     }
   } finally {
-    setTimeout(() => {
-      loading.value = false;
-      handleQuery();
-    }, 1000);
+    executeOnceLoading.value = false;
+    handleQuery();
   }
 };
 
@@ -704,7 +704,7 @@ const handleExecuteStop = async (row) => {
 };
 
 let DataView = ref(false);
-/** 运行实例接口 */
+/** Run instance interface */
 function handleDataView(row) {
   form.value = row;
   DataView.value = true;
@@ -885,21 +885,21 @@ function listWrapper(params) {
   return listDppEtlTask(p);
 }
 
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => userStore.projectCode,
   (newId) => {
     handleQuery();
     getDeptTree();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 
 function getList() {
   tableRef.value?.getList();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -910,12 +910,12 @@ function reset() {
   proxy.resetForm("dppEtlTaskRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -923,7 +923,7 @@ function resetQuery() {
   tableStore.params.catCode = "";
   getList();
 }
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dppEtlTaskRef"].validate((valid) => {
     if (valid) {
@@ -952,7 +952,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal

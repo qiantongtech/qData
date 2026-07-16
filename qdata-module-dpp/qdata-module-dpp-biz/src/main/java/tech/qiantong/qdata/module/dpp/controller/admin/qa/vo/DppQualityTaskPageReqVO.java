@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据质量任务 Request VO 对象 DPP_QUALITY_TASK
+ * Data Quality Task Request VO DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务 Request VO")
+@Schema(description = "Data Quality Task Page Request VO")
 @Data
 public class DppQualityTaskPageReqVO extends PageParam {
 
@@ -84,19 +84,19 @@ public class DppQualityTaskPageReqVO extends PageParam {
     private Long assetId;
 
 
-    /** 节点id */
+    /** Node ID */
     @Schema(description = "节点id", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     @Schema(description = "节点编码", example = "")
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     @Schema(description = "任务编码", example = "")
     private String taskCode;
 

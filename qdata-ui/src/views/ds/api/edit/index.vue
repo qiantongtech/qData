@@ -27,7 +27,7 @@
                         prevStep: index < activeReult,
                         cur: index > activeReult
                     }" :style="{ width: 100 / stepsList.length + '%' }">
-                        <!-- 圆圈 -->
+                        <!-- circle -->
                         <div class="step-circle" :class="{
                             active: activeReult === index,
                             prev: index < activeReult
@@ -37,10 +37,10 @@
                             </span>
                         </div>
 
-                        <!-- 步骤名称 -->
+                        <!-- step name -->
                         <span>{{ item.name }}</span>
 
-                        <!-- 箭头 -->
+                        <!-- arrow -->
                         <div v-if="index < stepsList.length - 1" :id="'div' + item.id" :class="{
                             titleItem: activeReult === index,
                             prevJiao: index < activeReult,
@@ -170,10 +170,10 @@ const data = reactive({
                 trigger: 'blur'
             }
         ],
-        //请输入有效的请求路径。路径必须以斜杠（/）开头，只能包含字母、数字、连字符(-)、点号(.)、波浪号(~)、下划线(_)、
-        // 以及URL安全的特殊字符如感叹号(!)、美元符号($)、和号(&)、单引号(')、括号(()())、星号(*)、加号(+)、逗号(,)、
-        // 分号(;)、等号(=)、at符号(@)，还可以包含百分号后跟两位十六进制数表示的URL编码字符。路径不能以双斜杠(//)开始，
-        // 并且可以以斜杠(/)结尾
+        //Please enter a valid request path. The path must start with a slash (/) and can only contain letters, numbers, hyphens (-), periods (.), tildes (~), underscores (_),
+        // And URL-safe special characters such as exclamation mark (!), dollar sign ($), ampersand (&), single quote ('), bracket (()()), asterisk (*), plus sign (+), comma (,),
+        // Semicolon (;), equal sign (=), at symbol (@), and can also include a percent sign followed by two hexadecimal digits representing URL-encoded characters. The path cannot start with double slashes (//).
+        // and can end with a slash (/)
         reqMethod: [{ required: true, message: td('ds.apiEdit.requestMethodRequired'), trigger: 'change' }],
         resType: [{ required: true, message: td('ds.apiEdit.returnFormatRequired'), trigger: 'change' }],
         resDataType: [{ required: true, message: td('ds.apiEdit.returnFormatRequired'), trigger: 'change' }],
@@ -183,9 +183,9 @@ const data = reactive({
         apiServiceType: [{ required: true, message: td('ds.apiEdit.configMethodRequired'), trigger: 'change' }],
         sourceId: [{ required: true, message: td('ds.apiEdit.dataSourceRequired'), trigger: 'change' }]
     },
-    // 请求方式数据字典
+    // Request method data dictionary
     reqMethodOptions: [],
-    // 返回格式数据字典
+    // Return format data dictionary
     resTypeOptions: [
         {
             itemValue: '1',
@@ -203,24 +203,24 @@ const data = reactive({
     active: 0,
     activeReult: 0,
     splReult: false,
-    // 是否数据字典
+    // Whether data dictionary
     whetherOptions: [],
-    // 状态数据字典
+    // Status data dictionary
     statusOptions: [],
-    // 数据源数据字典
+    // Data source data dictionary
     sourceOptions: [],
-    // 数据库表数据字典
+    // Database table data dictionary
     tableOptions: [],
-    // 配置方式数据字典
+    // Configuration mode data dictionary
     configTypeOptions: [],
-    // 操作符数据字典
+    // operator data dictionary
     whereTypeOptions: [],
-    // 参数类型数据字典
+    // Parameter type data dictionary
     paramTypeOptions: [],
-    filteredTableOptions: [], // 过滤后的数据库表选项
+    filteredTableOptions: [], // Filtered database table options
     typeName: '',
     treeOptions: [],
-    // 保存按钮
+    // save button
     loadingOptions: {
         loading: false
     },
@@ -258,12 +258,12 @@ watch(
     (newVal) => { }
 );
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDsApiDetailById() {
     const _ID = id;
 }
 
-/** 步骤条上一步 */
+/** step bar previous step */
 function handleLastStep() {
     activeReult.value--;
 }
@@ -273,7 +273,7 @@ const handleClick = (tab, event) => {
 };
 
 /**
- * 步骤条下一步
+ * step bar next step
  * proxy.$refs["dsApiRef"].validate(valid => {
  * */
 function handleNextStep() {
@@ -316,7 +316,7 @@ function handleNextStep() {
         });
     }
 }
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
     try {
         loading.value = true;
@@ -341,7 +341,7 @@ function submitForm() {
             Object.assign(params, form1.value);
             params.reqParamsList = params.reqParams;
             params.resParamsList = params.resParams;
-            //删除reqParams和resParams
+            //Remove reqParams and resParams
             delete params.reqParams;
             delete params.resParams;
             if (params.resParamsList == null) {
@@ -355,7 +355,7 @@ function submitForm() {
             params.headerJson = JSON.stringify(params.executeConfig.headerJson);
             params.configJson = JSON.stringify(params.executeConfig);
             if (form1.value.id) {
-                //删除创建、更新时间字段
+                //Delete creation and update time fields
                 delete params.createTime;
                 delete params.updateTime;
                 updateDataApi(params)
@@ -414,8 +414,8 @@ function getFullPathAndIdArray(optionList, targetObject) {
 
     traverse(targetObject);
     return {
-        fullPath: path.join(' - '), // 拼接路径
-        idArray: idArray // ID数组
+        fullPath: path.join(' - '), // splicing path
+        idArray: idArray // ID array
     };
 }
 
@@ -457,7 +457,7 @@ function getDataApiById(id) {
             const targetObject = typeOption.value.find((item) => item.id == form1.typeId);
             if (targetObject) {
                 const { fullPath, idArray } = getFullPathAndIdArray(typeOption, targetObject);
-                // 设置typeName和idArray
+                // Set typeName and idArray
                 typeName.value = fullPath;
                 idArray.value = idArray;
             }
@@ -476,10 +476,10 @@ watch(
         const _route = Object.assign({}, route, { title: title });
         proxy.$tab.updatePage(_route);
     },
-    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 
-//查询数据源信息
+//Query data source information
 function getDatasource() {
     getDaDatasourceList().then((response) => {
         sourceOptions.value = response.data;
@@ -490,10 +490,10 @@ getDatasource();
 
 getDataApiById(id);
 
-//写一个离开这个页面时的路由监听，vue3
+//Write a routing monitor when leaving this page, vue3
 
 onBeforeRouteLeave((to, from) => {
-    // 监听路由变化，如果路由变化，销毁当前页面
+    // Monitor route changes and destroy the current page if the route changes.
     if (to.path !== from.path) {
         getDataApiById(null);
     }
@@ -689,10 +689,10 @@ onBeforeRouteLeave((to, from) => {
     }
 
     // .blue-bar {
-    //     background-color: #2666FB; // 蓝条颜色
-    //     width: 5px; // 宽度5px
-    //     height: 20px; // 高度20px
-    //     margin-right: 10px; // 图片与文字之间的间距
+    //     background-color: #2666FB; // blue bar color
+    //     width: 5px; // width 5px
+    //     height: 20px; // height 20px
+    //     margin-right: 10px; // Space between image and text
     // }
 }
 
@@ -710,9 +710,9 @@ onBeforeRouteLeave((to, from) => {
 
 .el-textarea__inner::-webkit-resizer {
     background: transparent;
-    /* 背景透明 */
+    /* background transparent */
     border-width: 3px;
-    /* 线条粗细 */
+    /* line thickness */
     border-style: solid;
     border-color: transparent #2666FB #2666FB transparent;
 }

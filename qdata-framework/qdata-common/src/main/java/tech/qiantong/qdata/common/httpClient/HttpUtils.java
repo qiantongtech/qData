@@ -51,26 +51,26 @@ import java.util.stream.Collectors;
 public class HttpUtils {
     private static final CloseableHttpClient httpClient;
 
-    // HTTP 方法常量
+    // HTTP method constants
     public static final String POST = "POST";
     public static final String GET = "GET";
     public static final String PUT = "PUT";
-    public static final String DELETE = "DELETE";  // 新增 DELETE 常量
+    public static final String DELETE = "DELETE";  // New DELETE constant
 
     static {
-        // 设置连接池
+        // Set up connection pool
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-        connManager.setMaxTotal(200); // 最大连接数
-        connManager.setDefaultMaxPerRoute(20); // 每个路由的最大连接数
+        connManager.setMaxTotal(200); // Maximum number of connections
+        connManager.setDefaultMaxPerRoute(20); // Maximum number of connections per route
 
-        // 设置请求配置
+        // Set request configuration
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(60000)  // 连接超时
-                .setSocketTimeout(60000)   // 数据传输超时
-                .setConnectionRequestTimeout(10000)  // 请求超时
+                .setConnectTimeout(60000)  // Connection timeout
+                .setSocketTimeout(60000)   // Data transfer timeout
+                .setConnectionRequestTimeout(10000)  // Request timeout
                 .build();
 
-        // 创建HttpClient实例
+        // Create HttpClient instance
         httpClient = HttpClients.custom()
                 .setConnectionManager(connManager)
                 .setDefaultRequestConfig(requestConfig)
@@ -87,7 +87,7 @@ public class HttpUtils {
     @SneakyThrows
     public static String packGetRequestURL(String url, Map<String, Object> params) {
         StringBuilder urlPack = new StringBuilder(url);
-        //封装请求头
+        //Encapsulate request header
         if (url.indexOf("?") > -1) {
             urlPack.append("&");
         } else {
@@ -96,7 +96,7 @@ public class HttpUtils {
 
         int size = params.entrySet().size();
         int sum = 1;
-        //取出所有请求参数
+        //Get all request parameters
         for (Map.Entry<String, Object> entry : params.entrySet()) {
 //            System.out.println("key= " + entry.getKey() + " ； value= " + entry.getValue());
             if (sum == size) {
@@ -106,7 +106,7 @@ public class HttpUtils {
                 sum++;
             }
         }
-        //返回
+        //Return
         return urlPack.toString();
     }
 
@@ -114,7 +114,7 @@ public class HttpUtils {
                                HttpServletResponse response,
                                List<HeaderEntity> headers) throws IOException {
         HttpRequest request = HttpUtil.createRequest(Method.GET, url)
-                .setFollowRedirects(true);  // 🚀 开启自动重定向
+                .setFollowRedirects(true);  // 🚀 Turn on automatic redirection
         if (headers != null && !headers.isEmpty()) {
             request.addHeaders(
                     headers.stream()
@@ -123,7 +123,7 @@ public class HttpUtils {
         }
         HttpResponse res = request.execute();
 
-        // 1. 读取并设置远端 Content-Type（否则用默认）
+        // 1. Read and set the remote Content-Type (otherwise use the default)
         String remoteCt = res.header("Content-Type");
         if (StringUtils.isNotBlank(remoteCt)) {
             response.setContentType(remoteCt);
@@ -131,10 +131,10 @@ public class HttpUtils {
             response.setContentType("application/json;charset=UTF-8");
         }
         response.setCharacterEncoding("UTF-8");
-        // 2. 状态码同步
+        // 2. Status code synchronization
         response.setStatus(res.getStatus());
 
-        // 3. 根据类型决定写字符流或二进制流
+        // 3. Decide whether to write character stream or binary stream according to the type
         byte[]   bodyBytes = res.bodyBytes();
         String   bodyText  = res.body();
         if (remoteCt != null &&
@@ -160,7 +160,7 @@ public class HttpUtils {
                                 List<HeaderEntity> headers) throws IOException {
         HttpRequest request = HttpUtil.createRequest(Method.POST, url)
                 .body(JSONObject.toJSONString(params))
-                .setFollowRedirects(true);  // 🚀 开启自动重定向
+                .setFollowRedirects(true);  // 🚀 Turn on automatic redirection
         if (headers != null && !headers.isEmpty()) {
             request.addHeaders(
                     headers.stream()
@@ -201,7 +201,7 @@ public class HttpUtils {
 //
 //
 //    /**
-//     * get请求(直接将响应结果输出到response)
+// * get request (directly output the response result to response)
 //     *
 //     * @param url
 //     * @param headers
@@ -253,20 +253,20 @@ public class HttpUtils {
 //    }
 //
 //    /**
-//     * 发送POST请求(直接将响应结果输出到response)
+// * Send POST request (directly output the response result to response)
 //     *
-//     * @param url     目标URL
-//     * @param params  请求参数
-//     * @param headers 请求头
-//     * @throws IOException 发生网络异常
+// * @param url target URL
+// * @param params request parameters
+// * @param headers request headers
+// * @throws IOException A network exception occurred
 //     */
 //    public static void sendPost(String url, Map<String, Object> params, HttpServletResponse response, List<HeaderEntity> headers) throws IOException {
 //        HttpRequest request = HttpUtil.createRequest(Method.POST, url);
-//        //设置请求头
+// //Set request header
 //        if (headers != null && headers.size() > 0) {
 //            request.addHeaders(headers.stream().collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue())));
 //        }
-//        //设置参数
+// //Set parameters
 //        request.body(JSONObject.toJSONString(params));
 //        HttpResponse res = request.execute();
 //        Map<String, List<String>> map = res.headers();
@@ -310,17 +310,17 @@ public class HttpUtils {
 
 
     /**
-     * 执行请求并返回响应对象
+     * Execute the request and return the response object
      *
-     * @param method 请求方法
+     * @param method request method
      * @param url URL
-     * @param params 请求参数
-     * @param headers 请求头
-     * @return 响应对象
-     * @throws IOException IO异常
+     * @param params request parameters
+     * @param headers request headers
+     * @return response object
+     * @throws IOException IO exception
      */
     private static ResponseObject executeRequest(String method, String url, Map<String, Object> params, List<HeaderEntity> headers) throws IOException {
-        // 创建请求
+        // Create request
         HttpUriRequest request;
         if (POST.equals(method)) {
             request = new HttpPost(url);
@@ -338,25 +338,25 @@ public class HttpUtils {
             throw new IllegalArgumentException("Unsupported HTTP method: " + method);
         }
 
-        // 添加请求头
+        // Add request header
         if (headers != null && !headers.isEmpty()) {
             for (HeaderEntity header : headers) {
                 request.addHeader(header.getKey(), header.getValue());
             }
         }
 
-        // 执行请求
+        // Execute request
         try (CloseableHttpResponse response = httpClient.execute(request)) {
-            // 构造响应对象
+            // Construct response object
             ResponseObject responseObject = new ResponseObject();
             responseObject.setStatus(response.getStatusLine().getStatusCode());
             responseObject.setHeaders(response.getAllHeaders());
 
-            // 获取响应体
+            // Get response body
             String contentType = response.getFirstHeader("Content-Type").getValue();
             String body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 
-            // 根据Content-Type判断响应内容类型并返回
+            // Determine the response content type based on Content-Type and return
             if (contentType.contains("application/json")) {
                 responseObject.setBody(JSONObject.parseObject(body));
             } else {
@@ -368,62 +368,62 @@ public class HttpUtils {
     }
 
     /**
-     * 发送GET请求并返回响应对象
+     * Send a GET request and return a response object
      *
-     * @param url URL地址
-     * @param headers 请求头
-     * @return 响应对象
-     * @throws IOException IO异常
+     * @param url URL address
+     * @param headers request headers
+     * @return response object
+     * @throws IOException IO exception
      */
     public static ResponseObject sendGet(String url, List<HeaderEntity> headers) throws IOException {
         return executeRequest(GET, url, null, headers);
     }
 
     /**
-     * 发送POST请求并返回响应对象
+     * Send a POST request and return a response object
      *
-     * @param url URL地址
-     * @param params 请求参数
-     * @param headers 请求头
-     * @return 响应对象
-     * @throws IOException IO异常
+     * @param url URL address
+     * @param params request parameters
+     * @param headers request headers
+     * @return response object
+     * @throws IOException IO exception
      */
     public static ResponseObject sendPost(String url, Map<String, Object> params, List<HeaderEntity> headers) throws IOException {
         return executeRequest(POST, url, params, headers);
     }
 
     /**
-     * 发送PUT请求并返回响应对象
+     * Send a PUT request and return a response object
      *
-     * @param url URL地址
-     * @param params 请求参数
-     * @param headers 请求头
-     * @return 响应对象
-     * @throws IOException IO异常
+     * @param url URL address
+     * @param params request parameters
+     * @param headers request headers
+     * @return response object
+     * @throws IOException IO exception
      */
     public static ResponseObject sendPut(String url, Map<String, Object> params, List<HeaderEntity> headers) throws IOException {
         return executeRequest(PUT, url, params, headers);
     }
 
     /**
-     * 发送DELETE请求并返回响应对象
+     * Send a DELETE request and return a response object
      *
-     * @param url URL地址
-     * @param headers 请求头
-     * @return 响应对象
-     * @throws IOException IO异常
+     * @param url URL address
+     * @param headers request headers
+     * @return response object
+     * @throws IOException IO exception
      */
     public static ResponseObject sendDelete(String url, List<HeaderEntity> headers) throws IOException {
         return executeRequest(DELETE, url, null, headers);
     }
 
     /**
-     * 响应对象，封装HTTP请求的响应信息
+     * Response object, encapsulates the response information of the HTTP request
      */
     public static class ResponseObject {
-        private int status;  // HTTP 状态码
-        private Header[] headers;  // 响应头
-        private Object body;  // 响应体（可能是 JSON 对象或字符串）
+        private int status;  // HTTP status code
+        private Header[] headers;  // Response header
+        private Object body;  // Response body (may be a JSON object or string)
 
         // Getters and setters
         public int getStatus() {

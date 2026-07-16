@@ -25,14 +25,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 主题 DO 对象 ATT_THEME
+ * Theme DO ATT_THEME
  *
  * @author qdata
  * @date 2025-01-20
  */
 @Data
 @TableName(value = "ATT_THEME")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_THEME_seq")
 @Builder
 @NoArgsConstructor
@@ -45,22 +45,22 @@ public class AttThemeDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 主题名称 */
+    /** Theme Name */
     private String name;
 
-    /** 图标url */
+    /** Icon URL */
     private String icon;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

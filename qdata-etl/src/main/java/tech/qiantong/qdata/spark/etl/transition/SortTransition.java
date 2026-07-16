@@ -33,7 +33,7 @@ import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 import static org.apache.spark.sql.functions.col;
 
 /**
- * 排序转换器（类似Kettle的排序记录）
+ * Sorting converter (similar to Kettle's sorting records)
  *
  * @author
  * @date 2025/06/20
@@ -62,10 +62,10 @@ public class SortTransition implements Transition {
         LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
         JSONObject parameter = transition.getJSONObject("parameter");
 
-        // 1. 解析排序字段
+        // 1. Parse sort fields
         JSONArray sortFields = parameter.getJSONArray("tableFields");
         if (sortFields == null || sortFields.isEmpty()) {
-            // 没有排序字段，直接返回原数据
+            // There is no sorting field, and the original data is returned directly.
             return dataset;
         }
 
@@ -90,11 +90,11 @@ public class SortTransition implements Transition {
             }
         }
 
-        // 2. 排序
-        // 排序前
+        // 2. Sort
+        // Before sorting
         dataset.show(false);
         Dataset<Row> sorted = dataset.sort(orderColumns.toArray(new Column[0]));
-        // 排序后
+        // After sorting
         sorted.show(false);
         return sorted;
     }

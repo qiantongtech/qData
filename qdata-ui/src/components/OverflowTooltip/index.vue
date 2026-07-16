@@ -27,20 +27,20 @@ import { ref, onMounted, nextTick, watch, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
     text: { type: String, required: true },
-    maxWidth: { type: String, default: '200px' }, // 必须带单位
+    maxWidth: { type: String, default: '200px' }, // Must bring unit
 });
 
 const textRef = ref(null);
 const isOverflow = ref(false);
 
-// 测量文字是否溢出
+// Measure whether text overflows
 const measure = () => {
     if (textRef.value) {
         isOverflow.value = textRef.value.scrollWidth > textRef.value.offsetWidth;
     }
 };
 
-// 初始化和窗口 resize
+// Initialization and window resize
 onMounted(() => {
     nextTick(() => requestAnimationFrame(measure));
     window.addEventListener('resize', measure);
@@ -50,7 +50,7 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', measure);
 });
 
-// 监听文字或 maxWidth 变化
+// Listen for text or maxWidth changes
 watch([() => props.text, () => props.maxWidth], () => {
     nextTick(() => requestAnimationFrame(measure));
 });

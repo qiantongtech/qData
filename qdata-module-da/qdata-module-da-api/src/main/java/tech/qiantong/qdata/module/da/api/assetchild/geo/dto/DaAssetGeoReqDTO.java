@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据资产-矢量 DTO 对象 DA_ASSET_GEO
+ * Data Asset - Vector DTO DA_ASSET_GEO
  *
  * @author qdata
  * @date 2025-04-14
@@ -35,28 +35,28 @@ public class DaAssetGeoReqDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 文件名称 */
+    /** File Name */
     private String fileName;
 
-    /** 文件路径 */
+    /** File URL */
     private String fileUrl;
 
-    /** 要素类型 */
+    /** Element Type */
     private String elementType;
 
     @Schema(description = "文件类型", example = "")
     private String fileType;
 
-    /** 坐标系 */
+    /** Coordinate System */
     private String coordinateSystem;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

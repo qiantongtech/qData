@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 应用API服务关联 Response VO 对象 ATT_CLIENT_API_REL
+ * App API Service Association Response VO ATT_CLIENT_API_REL
  *
  * @author FXB
  * @date 2025-08-21

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request';
 
-// 查询主题列表
+// Query topic list
 export function listAttTheme(query) {
     return request({
         url: '/att/theme/list',
@@ -27,7 +27,7 @@ export function listAttTheme(query) {
     });
 }
 
-// 查询主题详细
+// Query topic details
 export function getAttTheme(id) {
     return request({
         url: '/att/theme/' + id,
@@ -35,7 +35,7 @@ export function getAttTheme(id) {
     });
 }
 
-// 新增主题
+// Add topic
 export function addAttTheme(data) {
     return request({
         url: '/att/theme',
@@ -44,7 +44,7 @@ export function addAttTheme(data) {
     });
 }
 
-// 修改主题
+// Modify theme
 export function updateAttTheme(data) {
     return request({
         url: '/att/theme',
@@ -53,14 +53,14 @@ export function updateAttTheme(data) {
     });
 }
 
-// 删除主题
+// Delete topic
 export function delAttTheme(id) {
     return request({
         url: '/att/theme/' + id,
         method: 'delete'
     });
 }
-// 获取主题的查询接口
+// Get the query interface of the topic
 export function getThemeList(query) {
     return request({
         url: '/att/theme/getAttThemeListByReqVO',

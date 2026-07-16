@@ -41,6 +41,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttModelCatDO;
 import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.dal.mapper.cat.AttTaskCatMapper;
 import tech.qiantong.qdata.module.att.service.cat.IAttTaskCatService;
+import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 import javax.annotation.Resource;
@@ -51,7 +52,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成任务类目管理Service业务层处理
+ * Data Integration Task Category Management Service business layer processing
  *
  * @author qdata
  * @date 2025-03-11
@@ -62,6 +63,8 @@ import java.util.stream.Collectors;
 public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTaskCatDO> implements IAttTaskCatService, IAttTaskCatApiService {
     @Resource
     private AttTaskCatMapper attTaskCatMapper;
+    @Resource
+    private DppEtlTaskService dppEtlTaskService;
 
     @Override
     public PageResult<AttTaskCatDO> getAttTaskCatPage(AttTaskCatPageReqVO pageReqVO) {
@@ -70,6 +73,8 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
 
     @Override
     public Long createAttTaskCat(AttTaskCatSaveReqVO createReqVO) {
+        normalizeAndValidate(createReqVO);
+        checkDuplicate(createReqVO.getId(), createReqVO.getParentId(), createReqVO.getName());
         AttTaskCatDO dictType = BeanUtils.toBean(createReqVO, AttTaskCatDO.class);
         dictType.setCode(createCode(createReqVO.getParentId(), null));
         attTaskCatMapper.insert(dictType);
@@ -87,17 +92,65 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
 
     @Override
     public int updateAttTaskCat(AttTaskCatSaveReqVO updateReqVO) {
-        // 相关校验
+        normalizeAndValidate(updateReqVO);
+        AttTaskCatDO existing = attTaskCatMapper.selectById(updateReqVO.getId());
+        if (existing == null) {
+            throw new ServiceException("类目不存在");
+        }
+        checkDuplicate(updateReqVO.getId(), updateReqVO.getParentId(), updateReqVO.getName());
+        checkParentCycle(existing, updateReqVO.getParentId());
 
-        // 更新数据集成任务类目管理
+        // Update Data Integration Task Category Management
         AttTaskCatDO updateObj = BeanUtils.toBean(updateReqVO, AttTaskCatDO.class);
-        return attTaskCatMapper.updateById(updateObj);
+        int rows = attTaskCatMapper.updateById(updateObj);
+        if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
+            this.lambdaUpdate().likeRight(AttTaskCatDO::getCode, existing.getCode())
+                    .set(AttTaskCatDO::getValidFlag, false).update();
+        }
+        return rows;
     }
 
     @Override
     public int removeAttTaskCat(Collection<Long> idList) {
-        // 批量删除数据集成任务类目管理
+        for (AttTaskCatDO category : attTaskCatMapper.selectBatchIds(idList)) {
+            long childCount = this.lambdaQuery().likeRight(AttTaskCatDO::getCode, category.getCode())
+                    .ne(AttTaskCatDO::getId, category.getId()).count();
+            long taskCount = dppEtlTaskService.getCountByCatCode(category.getCode(), java.util.Collections.singletonList("1"));
+            if (childCount > 0 || taskCount > 0) {
+                throw new ServiceException("该类目包含" + childCount + "个子类目和" + taskCount + "个任务，不能直接删除。");
+            }
+        }
         return attTaskCatMapper.deleteBatchIds(idList);
+    }
+
+    private void normalizeAndValidate(AttTaskCatSaveReqVO reqVO) {
+        reqVO.setName(reqVO.getName() == null ? null : reqVO.getName().trim());
+        if (StringUtils.isBlank(reqVO.getName()) || reqVO.getName().matches(".*\\s+.*")
+                || !reqVO.getName().matches(".*[A-Za-z0-9\\u4e00-\\u9fa5].*")) {
+            throw new ServiceException("类目名称不能为空、不能包含空白字符或仅由符号组成");
+        }
+        if (reqVO.getSortOrder() != null && reqVO.getSortOrder() < 0) {
+            throw new ServiceException("排序值不合法，请输入非负整数");
+        }
+    }
+
+    private void checkDuplicate(Long id, Long parentId, String name) {
+        long count = this.lambdaQuery().eq(AttTaskCatDO::getParentId, parentId)
+                .eq(AttTaskCatDO::getName, name).ne(id != null, AttTaskCatDO::getId, id).count();
+        if (count > 0) {
+            throw new ServiceException("当前上级类目下已存在同名类目，请修改。");
+        }
+    }
+
+    private void checkParentCycle(AttTaskCatDO current, Long parentId) {
+        if (parentId == null || parentId == 0) return;
+        if (parentId.equals(current.getId())) {
+            throw new ServiceException("上级类目不能选择自身或其子级。");
+        }
+        AttTaskCatDO parent = attTaskCatMapper.selectById(parentId);
+        if (parent == null || (parent.getCode() != null && parent.getCode().startsWith(current.getCode()))) {
+            throw new ServiceException("上级类目不能选择自身或其子级。");
+        }
     }
 
     @Override
@@ -133,7 +186,7 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
                 .collect(Collectors.toMap(
                         AttTaskCatDO::getId,
                         attTaskCatDO -> attTaskCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
@@ -142,12 +195,12 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttTaskCatDO> query = new LambdaQueryWrapper<AttTaskCatDO>()
                 .eq(AttTaskCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttTaskCatDO::getCode, parentCode)
@@ -156,27 +209,27 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
         List<AttTaskCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttTaskCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
     }
 
     /**
-     * 导入数据集成任务类目管理数据
+     * Import Data Integration Task Category Management data
      *
-     * @param importExcelList 数据集成任务类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data Integration Task Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Import result
      */
     @Override
     public String importAttTaskCat(List<AttTaskCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -200,16 +253,16 @@ public class AttTaskCatServiceImpl extends ServiceImpl<AttTaskCatMapper, AttTask
                             attTaskCatMapper.updateById(attTaskCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attTaskCatId + " 的数据集成任务类目管理记录。", attTaskCatId, "数据集成任务类目管理"));
+                                    "数据Update 成功，ID为 " + attTaskCatId + " 的数据集成任务类目管理记录。", attTaskCatId, "数据集成任务类目管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attTaskCatId + " 的数据集成任务类目管理记录不存在。", attTaskCatId, "数据集成任务类目管理"));
+                                    "数据Update 失败，ID为 " + attTaskCatId + " 的数据集成任务类目管理记录不存在。", attTaskCatId, "数据集成任务类目管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttTaskCatDO> queryWrapper = new QueryWrapper<>();

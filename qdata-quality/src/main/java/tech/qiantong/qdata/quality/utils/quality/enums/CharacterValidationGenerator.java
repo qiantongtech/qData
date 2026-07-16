@@ -26,7 +26,7 @@ import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
 
-// 字符串类型校验（如身份证只允许数字和X）
+// String type verification (for example, ID cards only allow numbers and X)
 @Component("CHARACTER_VALIDATION")
 public class CharacterValidationGenerator implements QualitySqlGenerator {
     @Override

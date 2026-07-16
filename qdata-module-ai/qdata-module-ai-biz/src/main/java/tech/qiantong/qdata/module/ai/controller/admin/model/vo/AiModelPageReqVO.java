@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 模型管理 Request VO 对象 AI_MODEL
+ * Model Management Request VO Object AI_MODEL
  *
  * @author FXB
  * @date 2026-04-01

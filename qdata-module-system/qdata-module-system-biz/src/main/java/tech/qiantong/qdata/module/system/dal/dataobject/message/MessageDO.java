@@ -24,14 +24,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 
 /**
- * 消息 DO 对象 message
+ * Message DO object message
  *
  * @author qdata
  * @date 2024-10-31
  */
 @Data
 @TableName(value = "message")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary key in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. For MySQL etc., this can be omitted.
 // @KeySequence("message_seq")
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -49,72 +49,72 @@ public class MessageDO extends BaseEntity {
     private Long id;
 
     /**
-     * 发送人
+     * Sender
      */
     private Long senderId;
 
     /**
-     * 接收人
+     * Receiver
      */
     private Long receiverId;
 
     /**
-     * 消息标题
+     * Message title
      */
     private String title;
 
     /**
-     * 消息模板内容
+     * Message template content
      */
     private String content;
 
     /**
-     * 消息类别
+     * Message category
      */
     private Integer category;
 
     /**
-     * 消息等级
+     * Message level
      */
     private Integer msgLevel;
 
     /**
-     * 消息模块
+     * Message module
      */
     private Integer module;
 
     /**
-     * 实体类型
+     * Entity type
      */
     private Integer entityType;
 
     /**
-     * 实体id
+     * Entity ID
      */
     private Long entityId;
 
     /**
-     * 消息链接
+     * Message link
      */
     private String entityUrl;
 
     /**
-     * 是否已读
+     * Whether read
      */
     private Integer hasRead;
 
     /**
-     * 是否撤回
+     * Whether retracted
      */
     private Integer hasRetraction;
 
     /**
-     * 是否有效
+     * Whether valid
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete flag
      */
     @TableLogic
     private Integer delFlag;

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 清洗规则类目Service接口
+ * Cleaning Rule Category Service Interface
  *
  * @author qdata
  * @date 2025-08-11
@@ -37,72 +37,72 @@ import java.util.Map;
 public interface IAttCleanCatService extends IService<AttCleanCatDO> {
 
     /**
-     * 获得清洗规则类目分页列表
+     * Get Cleaning Rule Category paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 清洗规则类目分页列表
+     * @param pageReqVO Page request
+     *  Cleaning Rule Category paginated list
      */
     PageResult<AttCleanCatDO> getAttCleanCatPage(AttCleanCatPageReqVO pageReqVO);
 
     /**
-     * 创建清洗规则类目
+     * Create Cleaning Rule Category
      *
-     * @param createReqVO 清洗规则类目信息
-     * @return 清洗规则类目编号
+     * @param createReqVO Cleaning Rule Category info
+     *  Cleaning Rule Category ID
      */
     Long createAttCleanCat(AttCleanCatSaveReqVO createReqVO);
 
     /**
-     * 更新清洗规则类目
+     * Update Cleaning Rule Category
      *
-     * @param updateReqVO 清洗规则类目信息
+     * @param updateReqVO Cleaning Rule Category info
      */
     int updateAttCleanCat(AttCleanCatSaveReqVO updateReqVO);
 
     /**
-     * 删除清洗规则类目
+     * Delete Cleaning Rule Category
      *
-     * @param idList 清洗规则类目编号
+     * @param idList Cleaning Rule Category ID
      */
     int removeAttCleanCat(Long idList);
 
     /**
-     * 获得清洗规则类目详情
+     * Get Cleaning Rule Category details
      *
-     * @param id 清洗规则类目编号
-     * @return 清洗规则类目
+     * @param id Cleaning Rule Category ID
+     * @return Cleaning Rule Category
      */
     AttCleanCatDO getAttCleanCatById(Long id);
 
     /**
-     * 获得全部清洗规则类目列表
+     * Get all Cleaning Rule Category list
      *
-     * @return 清洗规则类目列表
+     * @return Cleaning Rule Category list
      */
     List<AttCleanCatDO> getAttCleanCatList(AttCleanCatPageReqVO attCleanCat);
     List<AttCleanCatDO> getAttCleanCatList();
 
     /**
-     * 获得全部清洗规则类目 Map
+     * Get all Cleaning Rule Category Map
      *
-     * @return 清洗规则类目 Map
+     * @return Cleaning Rule Category Map
      */
     Map<Long, AttCleanCatDO> getAttCleanCatMap();
 
 
     /**
-     * 导入清洗规则类目数据
+     * Import Cleaning Rule Category data
      *
-     * @param importExcelList 清洗规则类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Cleaning Rule Category data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttCleanCat(List<AttCleanCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

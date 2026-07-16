@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -193,7 +193,7 @@ public class DM8Dialect extends AbstractDbDialect {
     }
 
     private List<String> generateDmCreateSql(String tableName, String tableComment, List<DbColumn> columns) {
-        // 达梦在语法上与 Oracle 类似，但也有差异
+        // Dameng is similar to Oracle in syntax, but there are also differences
         List<String> sqlList = new ArrayList<>();
         StringBuilder createSql = new StringBuilder();
 
@@ -203,7 +203,7 @@ public class DM8Dialect extends AbstractDbDialect {
             createSql.append("\n  ").append(col.getColName()).append(" ");
             createSql.append(mapDmColumnType(col));
 
-            // N false 不能为空  Y true 可以为空
+            // N false cannot be empty Y true can be empty
             if (!col.getNullable()) {
                 createSql.append(" NOT NULL");
             }
@@ -263,7 +263,7 @@ public class DM8Dialect extends AbstractDbDialect {
     }
 
     private static String mapDmColumnType(DbColumn col) {
-        // 类似 Oracle
+        // Similar to Oracle
         String type = col.getDataType();
         Long length = DatabaseUtil.getStringToLong(col.getDataLength());
         Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
@@ -292,7 +292,7 @@ public class DM8Dialect extends AbstractDbDialect {
                 return "TIMESTAMP";
             case "TEXT":
             case "CLOB":
-                return "TEXT"; // 达梦也可使用 CLOB
+                return "TEXT"; // Dameng can also use CLOB
             default:
                 return type;
         }
@@ -316,17 +316,17 @@ public class DM8Dialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + tableName;
     }
 
@@ -420,22 +420,22 @@ public class DM8Dialect extends AbstractDbDialect {
     }
 
     /**
-     * 检验表名、表注释和字段是否符合 DM8 数据库规范
+     * Verify that table names, table comments, and fields comply with DM8 database specifications
      *
-     * @param tableName    表名
-     * @param tableComment 表注释
-     * @param columns      字段列表
-     * @return 如果有错误，则返回错误信息列表；若无错误则返回空列表
+     * @param tableName table name
+     * @param tableComment table comment
+     * @param columns field list
+     * @return If there is an error, return an error message list; if there is no error, return an empty list
      */
     public static List<String> validateDm8Specification(String tableName, String tableComment, List<DbColumn> columns) {
         List<String> errors = new ArrayList<>();
 
-        // 1. 校验表名
+        // 1. Verification table name
         if (tableName == null || tableName.trim().isEmpty()) {
             errors.add("表名不能为空");
         } else {
             String tn = tableName.trim();
-            // DM8 规范：表名必须以大写字母开头，只能包含大写字母、数字和下划线
+            // DM8 specification: Table names must start with an uppercase letter and can only contain uppercase letters, numbers, and underscores
             if (!tn.matches("^[A-Z][A-Z0-9_]*$")) {
                 errors.add("表名格式不符合DM8规范，必须以大写字母开头，且只能包含大写字母、数字和下划线");
             }
@@ -444,12 +444,12 @@ public class DM8Dialect extends AbstractDbDialect {
             }
         }
 
-        // 2. 校验表注释
+        // 2. Checklist comments
         if (tableComment == null || tableComment.trim().isEmpty()) {
             errors.add("表注释不能为空");
         }
 
-        // 3. 校验字段列表
+        // 3. Check field list
         if (columns == null || columns.isEmpty()) {
             errors.add("表必须至少包含一个字段");
         } else {
@@ -471,7 +471,7 @@ public class DM8Dialect extends AbstractDbDialect {
                 "'port' = '${port}' ," +
                 "'username' = '${username}' ," +
                 "'password' = '${password}'," +
-                "'database-name' = 'DAMENG' ," +//TODO 后面这个可以在数据连接里加一个配置项动态传递
+                "'database-name' = 'DAMENG' ," +//The following TODO can be dynamically passed by adding a configuration item in the data connection.
                 "'schema-name' = '${dbName}'," +
                 "'table-name' = '${tableName}' ," +
                 " 'scan.startup.mode' = 'initial'," +
@@ -545,7 +545,7 @@ public class DM8Dialect extends AbstractDbDialect {
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        //判断是否开启ssl
+        //Determine whether to enable ssl
         if (checkUseSSL(property)) {
             Security.addProvider(new BouncyCastleProvider());
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
@@ -628,21 +628,21 @@ public class DM8Dialect extends AbstractDbDialect {
         List<String> sqlList = new ArrayList<>();
         String fullTableName = getTableName(dbQueryProperty, tableName);
 
-        // 首先删除现有的主键约束
+        // First delete the existing primary key constraint
         sqlList.add("ALTER TABLE " + fullTableName + " DROP PRIMARY KEY CASCADE");
 
-        // 如果提供了新的主键字段列表，则添加新的主键约束
+        // If a new primary key field list is provided, add a new primary key constraint
         if (colKeyDbColumnList != null && !colKeyDbColumnList.isEmpty()) {
             StringBuilder addSql = new StringBuilder();
             addSql.append("ALTER TABLE ").append(fullTableName).append(" ADD CONSTRAINT ");
 
-            // 生成约束名：表名_主键字段组合
+            // Generate constraint name: table name_primary key field combination
             StringBuilder constraintName = new StringBuilder();
             constraintName.append(tableName.toUpperCase());
             for (DbColumn col : colKeyDbColumnList) {
                 constraintName.append("_").append(col.getColName().toUpperCase());
             }
-            // 达梦约束名长度限制为128个字符
+            // Dameng constraint name length is limited to 128 characters
             String finalConstraintName = constraintName.length() > 128 ?
                     constraintName.substring(0, 128) : constraintName.toString();
 

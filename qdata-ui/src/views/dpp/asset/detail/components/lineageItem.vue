@@ -17,12 +17,12 @@
 -->
 
 <template>
-  <!-- 数据血缘节点 -->
+  <!-- Data lineage node -->
   <div class="data-processing-dag-node">
     <div class="main-area" :class="{ act: nodeData.active }" @mouseenter="onMainMouseEnter"
       @mouseleave="onMainMouseLeave">
       <div class="main-info">
-        <!-- {/* 节点类型icon */} -->
+        <!-- {/* Node type icon */} -->
         <!-- <i class="node-logo" :style="{ backgroundImage: `url(${NODE_TYPE_LOGO[nodeData.type]})` }" /> -->
         <img class="node-logo" :src="NODE_TYPE_LOGO[nodeData.type]" alt="" />
         <el-popover :disabled="!currentNode.name && !currentNode.status" width="auto" title="" content=""
@@ -58,7 +58,7 @@
           </template>
         </el-popover>
       </div>
-      <!-- {/* 节点状态信息 */} -->
+      <!-- {/* Node status information */} -->
       <div class="status-action">
         <template v-if="nodeData.taskStatus == '6'">
           <el-tooltip class="box-item" effect="dark" :content="nodeData.statusMsg" placement="top">
@@ -69,7 +69,7 @@
           <i class="status-icon status-icon-success" />
         </template>
 
-        <!-- {/* 节点操作菜单 */} -->
+        <!-- {/* Node operation menu */} -->
         <!-- <div class="more-action-container">
           <i class="more-action" />
         </div> -->
@@ -85,7 +85,7 @@
         </el-icon>
       </div>
     </template>
-    <!-- {/* 添加下游节点 nodeData.type !== NodeType.OUTPUT*/} -->
+    <!-- {/* Add downstream node nodeData.type !== NodeType.OUTPUT*/} -->
     <!-- <el-dropdown popper-class="processing-node-menu" trigger="click">
           <span class="el-dropdown-link">
             <el-icon><CirclePlus /></el-icon>
@@ -106,7 +106,7 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { StringExt } from "@antv/x6";
 
 const { td } = useDefaultLang();
-// 状态映射表
+// State mapping table
 const statusMap = {
   0: td('dpp.asset.detail.lineage.statusSubmitSuccess'),
   1: td('dpp.asset.detail.lineage.statusExecuting'),
@@ -130,32 +130,32 @@ const taskTypeMap = {
 function getTaskTypeText(type) {
   return taskTypeMap[String(type)] || '-';
 }
-// 获取状态文字的方法
+// How to get status text
 const getTaskStatusText = (status) => {
   return statusMap[status] ?? '-';
 };
-// 节点类型
+// Node type
 const NodeType = {
-  INPUT: "INPUT", // 数据输入
-  FILTER: "FILTER", // 数据过滤
-  JOIN: "JOIN", // 数据连接
-  UNION: "UNION", // 数据合并
-  AGG: "AGG", // 数据聚合
-  OUTPUT: "OUTPUT", // 数据输出
+  INPUT: "INPUT", // Data entry
+  FILTER: "FILTER", // Data filtering
+  JOIN: "JOIN", // data connection
+  UNION: "UNION", // Data merge
+  AGG: "AGG", // Data aggregation
+  OUTPUT: "OUTPUT", // data output
 };
-// 不同节点类型的icon
+// Icons for different node types
 const NODE_TYPE_LOGO = {
-  TABLE: new URL("@/assets/images/dpp/asset/img-icon-one-one.png", import.meta.url).href, // 表
-  TASK: new URL("@/assets/images/dpp/asset/img-icon-two-one.png", import.meta.url).href, // 任务
+  TABLE: new URL("@/assets/images/dpp/asset/img-icon-one-one.png", import.meta.url).href, // table
+  TASK: new URL("@/assets/images/dpp/asset/img-icon-two-one.png", import.meta.url).href, // Task
 };
-// 元素校验状态
+// Element validation status
 const CellStatus = {
   DEFAULT: "default",
   SUCCESS: "success",
   ERROR: "error",
 };
 
-// 加工类型列表
+// Processing type list
 const PROCESSING_TYPE_LIST = [
   {
     type: "FILTER",
@@ -201,13 +201,13 @@ onMounted(() => {
   cellChanged(props.node);
 });
 /**
- * 根据起点初始下游节点的位置信息
- * @param node 起始节点
+ * According to the location information of the initial downstream node of the starting point
+ * @param node starting node
  * @param graph
  * @returns
  */
 const getDownstreamNodePosition = (node, graph, dx = 250, dy = 100) => {
-  // 找出画布中以该起始节点为起点的相关边的终点id集合
+  // Find the set of endpoint IDs of the relevant edges starting from the start node in the canvas
   const downstreamNodeIdList = [];
   graph.getEdges().forEach((edge) => {
     const originEdge = edge.toJSON()?.data;
@@ -215,18 +215,18 @@ const getDownstreamNodePosition = (node, graph, dx = 250, dy = 100) => {
       downstreamNodeIdList.push(originEdge.target);
     }
   });
-  // 获取起点的位置信息
+  // Get the location information of the starting point
   const position = node.getPosition();
   let minX = Infinity;
   let maxY = -Infinity;
   graph.getNodes().forEach((graphNode) => {
     if (downstreamNodeIdList.indexOf(graphNode.id) > -1) {
       const nodePosition = graphNode.getPosition();
-      // 找到所有节点中最左侧的节点的x坐标
+      // Find the x-coordinate of the leftmost node among all nodes
       if (nodePosition.x < minX) {
         minX = nodePosition.x;
       }
-      // 找到所有节点中最x下方的节点的y坐标
+      // Find the y coordinate of the x-lowest node among all nodes
       if (nodePosition.y > maxY) {
         maxY = nodePosition.y;
       }
@@ -239,7 +239,7 @@ const getDownstreamNodePosition = (node, graph, dx = 250, dy = 100) => {
   };
 };
 
-// 根据节点的类型获取ports
+// Get ports based on node type
 const getPortsByType = (type, nodeId) => {
   let ports = [];
   switch (type) {
@@ -275,10 +275,10 @@ const getPortsByType = (type, nodeId) => {
   return ports;
 };
 /**
- * 创建节点并添加到画布
- * @param type 节点类型
+ * Create node and add to canvas
+ * @param type node type
  * @param graph
- * @param position 节点位置
+ * @param position node position
  * @returns
  */
 const createNode = (type, graph, position) => {
@@ -304,7 +304,7 @@ const createNode = (type, graph, position) => {
   return newNode;
 };
 /**
- * 创建边并添加到画布
+ * Create edges and add to canvas
  * @param source
  * @param target
  * @param graph
@@ -331,29 +331,29 @@ const createEdge = (source, target, graph) => {
     graph.addEdge(edge);
   }
 };
-// 创建下游的节点和边
+// Create downstream nodes and edges
 const createDownstream = (type) => {
   const node = props.node;
   const { graph } = node.model || {};
   if (graph) {
-    // 获取下游节点的初始位置信息
+    // Get the initial location information of downstream nodes
     const position = getDownstreamNodePosition(node, graph);
-    // 创建下游节点
+    // Create downstream nodes
     const newNode = createNode(type, graph, position);
     const source = node.id;
     const target = newNode.id;
-    // 创建该节点出发到下游节点的边
+    // Create an edge from this node to the downstream node
     createEdge(source, target, graph);
   }
 };
 
-// 点击添加下游+号
+// Click to add downstream + number
 // eslint-disable-next-line no-unused-vars
 const clickPlusDragMenu = (type) => {
   createDownstream(type);
 };
 
-// 展开
+// Expand
 const handleCollapse = () => {
   const node = props.node;
   const { graph } = node.model || {};
@@ -375,10 +375,10 @@ const handleCollapse = () => {
   };
   run(node);
 };
-// 鼠标进入矩形主区域的时候显示连接桩
+// When the mouse enters the main rectangular area, the connecting piles are displayed.
 const onMainMouseEnter = () => {
   const node = props.node;
-  // 获取该节点下的所有连接桩
+  // Get all connection piles under this node
   const ports = node.getPorts() || [];
   ports.forEach((port) => {
     node.setPortProp(port.id, "attrs/circle", {
@@ -388,10 +388,10 @@ const onMainMouseEnter = () => {
   });
 };
 
-// 鼠标离开矩形主区域的时候隐藏连接桩
+// Hide the connection pile when the mouse leaves the main rectangular area
 const onMainMouseLeave = () => {
   const node = props.node;
-  // 获取该节点下的所有连接桩
+  // Get all connection piles under this node
   const ports = node.getPorts() || [];
   ports.forEach((port) => {
     node.setPortProp(port.id, "attrs/circle", {

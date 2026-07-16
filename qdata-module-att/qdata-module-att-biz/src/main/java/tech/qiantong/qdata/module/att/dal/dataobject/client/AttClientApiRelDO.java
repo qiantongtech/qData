@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 应用API服务关联 DO 对象 ATT_CLIENT_API_REL
+ * App API Service Association DO ATT_CLIENT_API_REL
  *
  * @author FXB
  * @date 2025-08-21
  */
 @Data
 @TableName(value = "ATT_CLIENT_API_REL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_CLIENT_API_REL_seq")
 @Builder
 @NoArgsConstructor
@@ -49,60 +49,60 @@ public class AttClientApiRelDO extends BaseEntity {
     private Long id;
 
     /**
-     * 应用ID
+     * App ID
      */
     private Long clientId;
 
     /**
-     * API服务ID
+     * API Service ID
      */
     private Long apiId;
 
     /**
-     * API服务名称
+     * API Service Name
      */
     @TableField(exist = false)
     private String apiName;
 
     /**
-     * API服务路径
+     * API Service URL
      */
     @TableField(exist = false)
     private String apiUrl;
 
     /**
-     * 请求方式 1：get，2：post（ds_api_bas_info_api_method_type）
+     * Request Method 1: GET, 2: POST (ds_api_bas_info_api_method_type)
      */
     @TableField(exist = false)
     private String reqMethod;
 
     /**
-     * 是否永久有效
+     * Permanent Valid Flag
      */
     private String pvFlag;
 
     /**
-     * 开始时间
+     * Start Time
      */
     private Date startTime;
 
     /**
-     * 结束时间
+     * End Time
      */
     private Date endTime;
 
     /**
-     * 授权状态
+     * Authorization Status
      */
     private String status;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;

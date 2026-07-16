@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Kingbase8 数据库方言
+ * Kingbase8 database dialect
  *
  * @author QianTongDC
  * @date 2024-02-08
@@ -70,7 +70,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbName + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + "public" + "' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -103,7 +103,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbQueryProperty.getDbName() + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + dbQueryProperty.getSid() + "' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -111,7 +111,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
     @Override
     public String getDbColumns(DbQueryProperty dbQueryProperty) {
         return "SELECT " +
-                "c.relname AS TABLENAME, " +                       // ★ 新增
+                "c.relname AS TABLENAME, " +                       // ★ New
                 "a.attname AS COLNAME, " +
                 "CASE " +
                 "  WHEN t.typname = 'int2' THEN 'SMALLINT' " +
@@ -151,7 +151,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE c.relnamespace = ( " +
                 "  SELECT oid FROM pg_namespace WHERE nspname = '" + dbQueryProperty.getSid() + "' " +
                 ") " +
-                "AND a.attnum > 0 " +                               // 过滤系统列
+                "AND a.attnum > 0 " +                               // Filter system column
                 "ORDER BY c.relname, a.attnum";
     }
 
@@ -262,7 +262,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
     }
 
     private static String mapKingbaseColumnType(DbColumn col) {
-        // 类似 Oracle
+        // Similar to Oracle
         String type = col.getDataType().toUpperCase(Locale.ROOT);
         Long length = DatabaseUtil.getStringToLong(col.getDataLength());
         Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
@@ -355,17 +355,17 @@ public class Kingbase8Dialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -391,7 +391,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
             return "SELECT datname AS DBNAME, 2 AS TOTALLEVELS " +
                     "FROM pg_database WHERE datistemplate = false ORDER BY DBNAME";
         } else if (level == 2) {
-            // 必须先用 dbName 重建连接，再执行：
+            // The connection must be reestablished using dbName before executing:
             return "SELECT schema_name AS DBNAME, 2 AS TOTALLEVELS " +
                     "FROM information_schema.schemata " +
                     "WHERE schema_name NOT LIKE 'pg_%' " +

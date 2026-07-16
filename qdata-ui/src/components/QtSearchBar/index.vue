@@ -15,7 +15,7 @@
         v-bind="getFormItemProps(item)"
         v-show="index < props.visibleCount ? true : store.expand"
       >
-        <!-- 输入框 -->
+        <!-- Input box -->
         <el-input
           class="search-content"
           v-if="item.component.is == 'input'"
@@ -26,7 +26,7 @@
           @keyup.enter="handleQueryClick"
         />
 
-        <!-- 下拉框 -->
+        <!-- drop down box -->
         <el-select
           class="search-content"
           v-if="item.component.is == 'select'"
@@ -42,7 +42,7 @@
           />
         </el-select>
 
-        <!-- 时间选择器 -->
+        <!-- time picker -->
         <el-date-picker
           class="search-content"
           v-if="item.component.is == 'date-picker'"
@@ -55,7 +55,7 @@
           v-bind="item.component"
         />
 
-        <!-- 树形选择框 -->
+        <!-- tree selection box -->
         <el-tree-select
           class="search-content"
           v-if="item.component.is == 'tree-select'"
@@ -129,19 +129,19 @@ const store = reactive({
   length: props.items.length,
 });
 
-// 过滤form参数
+// Filter form parameters
 function getFormItemProps(item) {
   const { component, ...data } = item;
   return data;
 }
 
-// 查询
+// Query
 function handleQueryClick() {
   emits("query");
   props.tableRef?.getList();
 }
 
-// 重置
+// reset
 function handleResetClick() {
   formRef.value.resetFields();
   emits("reset");

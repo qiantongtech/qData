@@ -33,7 +33,7 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 import java.util.*;
 
 /**
- * 数据资产Mapper接口
+ * Data Asset Mapper Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -41,7 +41,7 @@ import java.util.*;
 public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
 
     default PageResult<DaAssetDO> selectPage(DaAssetPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapperX<DaAssetDO> lambdaWrapper = new MPJLambdaWrapperX();
@@ -63,7 +63,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
                 .leftJoin("DM_DATA_DOMAIN t5 ON t.DATA_DOMAIN_ID = t5.id AND t5.DEL_FLAG = '0'")
                 .leftJoin("DM_THEME_DOMAIN t6 ON t.THEME_DOMAIN_ID = t6.id AND t6.DEL_FLAG = '0'");
 
-        //增加标签筛选
+        // Add tag filtering
         if (CollectionUtils.isNotEmpty(reqVO.getTagIdList())) {
             String tagIds = reqVO.getTagIdList().stream()
                     .map(String::valueOf)
@@ -74,7 +74,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
             );
         }
 
-        //拼接查询标签列表
+        // Build tag query sub-select
         String subSelectSql = "SELECT\n" +
                 "'['|| WM_CONCAT(DISTINCT '{\"tagId\":\"' || d.ID || '\",\"tagName\":\"' || d.name || '\"}' ) ||']'\n" +
                 "FROM \n" +
@@ -141,7 +141,7 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
     }
 
     default PageResult<DaAssetDO> selectPageDpp(DaAssetPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<DaAssetDO> lambdaWrapper = new MPJLambdaWrapper();
@@ -187,11 +187,11 @@ public interface DaAssetMapper extends BaseMapperX<DaAssetDO> {
 
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old category code
+     * @param newCatCode New category code
+     * @return Number of affected rows
      */
     default int updateCatCode(String oldCatCode, String newCatCode) {
         return this.update(

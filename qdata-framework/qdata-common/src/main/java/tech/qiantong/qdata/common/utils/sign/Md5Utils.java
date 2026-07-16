@@ -25,7 +25,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Md5加密方法
+ * Md5 encryption method
  *
  * @author qdata
  */
@@ -74,7 +74,7 @@ public class Md5Utils {
     protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     /**
-     * md5 算法
+     * md5 algorithm
      * @param bytes
      * @return
      * @throws NoSuchAlgorithmException

@@ -39,7 +39,7 @@ export const treeData = [
                 taskType: 'DATAX',
                 componentType: '1',
                 engine: ['SPARK', 'FLINK', 'DATAX'],
-                icon: new URL('@/assets/images/common/dpp/icon-bsr.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-bsr.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-sr.png'
             },
             {
@@ -50,7 +50,7 @@ export const treeData = [
                 componentType: '2',
                 taskType: 'DATAX',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-wxl.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-wxl.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-excel.png'
             },
             {
@@ -61,7 +61,7 @@ export const treeData = [
                 componentType: '4',
                 taskType: 'DATAX',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-scv.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-scv.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-csv.png'
             },
 
@@ -81,7 +81,7 @@ export const treeData = [
                 taskType: 'SPARK',
                 componentType: '31',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-zh.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-zh.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-zh.png'
             },
             {
@@ -92,7 +92,7 @@ export const treeData = [
                 taskType: 'SORT_RECORD',
                 componentType: '34',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-pxjl.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-pxjl.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-shell-one.png'
             },
             {
@@ -103,7 +103,7 @@ export const treeData = [
                 taskType: 'FIELD_DERIVATION',
                 componentType: '39',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-zdpf.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-zdpf.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-shell-one.png'
             },
             {
@@ -114,7 +114,7 @@ export const treeData = [
                 taskType: 'DATA_DEDUPLICATION',
                 componentType: '40',
                 engine: ['SPARK','DATAX'],
-                icon: new URL('@/assets/images/common/dpp/icon-dedu.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-dedu.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/dedupFilter.vue',
             },
             {
@@ -125,7 +125,7 @@ export const treeData = [
                 taskType: 'ADD_CONSTANT',
                 componentType: '48',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-action-add.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-action-add.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/addConstants.vue',
             },
             {
@@ -136,7 +136,7 @@ export const treeData = [
                 taskType: 'SELECT_FIELDS',
                 componentType: '22',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-action-set.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-action-set.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/fieldSelectAndmodificat.vue',
             },
             {
@@ -147,7 +147,7 @@ export const treeData = [
                 taskType: 'VALUE_MAP',
                 componentType: '47',
                 engine: ['SPARK'],
-                icon: new URL('@/assets/images/common/dpp/icon-map.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-map.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/valueMapping.vue',
             },
         ]
@@ -166,14 +166,14 @@ export const treeData = [
                 taskType: 'DATAX',
                 componentType: '91',
                 engine: ['SPARK', 'FLINK', 'DATAX'],
-                icon: new URL('@/assets/images/common/dpp/icon-bsc.svg', import.meta.url).href, // 动态获取路径
+                icon: new URL('@/assets/images/common/dpp/icon-bsc.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-sc.png'
             },
         ]
     }
 ];
 
-// 返回知道数据
+// Return known data
 export const getTreeData = (taskType) => {
     var data = [...treeData];
     data.map(item => {

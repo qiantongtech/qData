@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询采集任务实例列表
+// Query collection task instance list
 export function listTaskInstance(query) {
   return request({
     url: '/mc/taskInstance/list',
@@ -9,7 +9,7 @@ export function listTaskInstance(query) {
   })
 }
 
-// 查询采集任务实例详细
+// Query collection task instance details
 export function getTaskInstance(id) {
   return request({
     url: '/mc/taskInstance/' + id,
@@ -17,7 +17,7 @@ export function getTaskInstance(id) {
   })
 }
 
-// 新增采集任务实例
+// Added collection task instance
 export function addTaskInstance(data) {
   return request({
     url: '/mc/taskInstance',
@@ -26,7 +26,7 @@ export function addTaskInstance(data) {
   })
 }
 
-// 修改采集任务实例
+// Modify collection task instance
 export function updateTaskInstance(data) {
   return request({
     url: '/mc/taskInstance',
@@ -35,7 +35,7 @@ export function updateTaskInstance(data) {
   })
 }
 
-// 删除采集任务实例
+// Delete collection task instance
 export function delTaskInstance(id) {
   return request({
     url: '/mc/taskInstance/' + id,

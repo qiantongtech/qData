@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据元数据规则关联信息Service业务层处理
+ * Data Element Rule Relation Information Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -84,14 +84,14 @@ public class DpDataElemRuleRelServiceImpl extends ServiceImpl<DpDataElemRuleRelM
         if (updateReqVO.getStatus() == null) {
             updateReqVO.setStatus("1");
         }
-        // 更新数据元数据规则关联信息
+        // Update data element rule relation information
         DpDataElemRuleRelDO updateObj = BeanUtils.toBean(updateReqVO, DpDataElemRuleRelDO.class);
         return dpDataElemRuleRelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpDataElemRuleRel(Collection<Long> idList) {
-        // 批量删除数据元数据规则关联信息
+        // Batch delete data element rule relation information
         return dpDataElemRuleRelMapper.deleteBatchIds(idList);
     }
 
@@ -112,19 +112,19 @@ public class DpDataElemRuleRelServiceImpl extends ServiceImpl<DpDataElemRuleRelM
                 .collect(Collectors.toMap(
                         DpDataElemRuleRelDO::getId,
                         dpDataElemRuleRelDO -> dpDataElemRuleRelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据元数据规则关联信息数据
+     * Import data element rule relation information data
      *
-     * @param importExcelList 数据元数据规则关联信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element rule relation information data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpDataElemRuleRel(List<DpDataElemRuleRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

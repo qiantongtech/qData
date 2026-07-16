@@ -21,7 +21,7 @@ package tech.qiantong.qdata.security.context;
 import org.springframework.security.core.Authentication;
 
 /**
- * 身份验证信息
+ * Authentication information
  *
  * @author qdata
  */

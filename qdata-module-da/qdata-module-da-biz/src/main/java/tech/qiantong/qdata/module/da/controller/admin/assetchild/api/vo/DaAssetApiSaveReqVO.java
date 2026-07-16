@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据资产-外部API 创建/修改 Request VO DA_ASSET_API
+ * Data Asset - External API Create/Update Request VO DA_ASSET_API
  *
  * @author qdata
  * @date 2025-04-14

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 采集任务实例Service接口
+ * Collection task instance Service interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,74 +20,74 @@ import java.util.Map;
 public interface IMcTaskInstanceService extends IService<McTaskInstanceDO> {
 
     /**
-     * 获得采集任务实例分页列表
+     * Get the paging list of collection task instances
      *
-     * @param pageReqVO 分页请求
-     * @return 采集任务实例分页列表
+     * @param pageReqVO paging request
+     * @return Paginated list of collection task instances
      */
     PageResult<McTaskInstanceDO> getMcTaskInstancePage(McTaskInstancePageReqVO pageReqVO);
 
     /**
-     * 创建采集任务实例
+     * Create a collection task instance
      *
-     * @param createReqVO 采集任务实例信息
-     * @return 采集任务实例编号
+     * @param createReqVO collects task instance information
+     * @return collection task instance number
      */
     Long createMcTaskInstance(McTaskInstanceSaveReqVO createReqVO);
     Long createMcTaskInstance(McTaskInstanceDO createReqVO);
 
     /**
-     * 更新采集任务实例
+     * Update collection task instance
      *
-     * @param updateReqVO 采集任务实例信息
+     * @param updateReqVO collects task instance information
      */
     int updateMcTaskInstance(McTaskInstanceSaveReqVO updateReqVO);
 
     /**
-     * 删除采集任务实例
+     * Delete collection task instance
      *
-     * @param idList 采集任务实例编号
+     * @param idList collection task instance number
      */
     int removeMcTaskInstance(Collection<Long> idList);
 
     /**
-     * 获得采集任务实例详情
+     * Get collection task instance details
      *
-     * @param id 采集任务实例编号
-     * @return 采集任务实例
+     * @param id collection task instance number
+     * @return collection task instance
      */
     McTaskInstanceDO getMcTaskInstanceById(Long id);
 
     /**
-     * 获得采集任务实例详情
+     * Get collection task instance details
      *
      * @param taskId
-     * @return 采集任务实例
+     * @return collection task instance
      */
     McTaskInstanceDO getMcTaskInstanceByTaskId(Long taskId);
 
     /**
-     * 获得全部采集任务实例列表
+     * Get a list of all collection task instances
      *
-     * @return 采集任务实例列表
+     * @return collection task instance list
      */
     List<McTaskInstanceDO> getMcTaskInstanceList();
 
     /**
-     * 获得全部采集任务实例 Map
+     * Get all collection task instances Map
      *
-     * @return 采集任务实例 Map
+     * @return Collection task instance Map
      */
     Map<Long, McTaskInstanceDO> getMcTaskInstanceMap();
 
 
     /**
-     * 导入采集任务实例数据
+     * Import collection task instance data
      *
-     * @param importExcelList 采集任务实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Collection task instance data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importMcTaskInstance(List<McTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

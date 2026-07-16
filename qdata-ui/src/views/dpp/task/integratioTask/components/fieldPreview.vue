@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <!-- 申请服务弹框 -->
+    <!-- Apply for service pop-up box -->
     <el-dialog :title="td('dpp.integration.fieldSourceTitle', '步骤里的字段和其来源')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
         destroy-on-close>
         <div class="info-line">
@@ -34,7 +34,7 @@
                 </template>
             </el-table-column>
             <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }" />
-            <!-- <el-table-column label="字段注释"  align="left" prop="description" :show-overflow-tooltip="{effect: 'light'}">
+            <!-- <el-table-column label="Field comment" align="left" prop="description" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
                     {{ scope.row.description || "-" }}
                 </template>

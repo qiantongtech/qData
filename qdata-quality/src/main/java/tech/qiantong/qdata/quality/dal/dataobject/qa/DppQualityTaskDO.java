@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据质量任务 DO 对象 DPP_QUALITY_TASK
+ * Data Quality Task DO Object DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
  */
 @Data
 @TableName(value = "DPP_QUALITY_TASK")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("DPP_QUALITY_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -45,52 +45,52 @@ public class DppQualityTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务名称 */
+    /** Task name */
     private String taskName;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 联系人 */
+    /** Contact person */
     private String contact;
 
-    /** 联系人ID */
+    /** Contact ID */
     private String contactId;
 
-    /** 联系电话 */
+    /** Contact number */
     private String contactNumber;
 
-    /** 任务状态 */
+    /** Task status */
     private String status;
 
-    /** 任务描述 */
+    /** Task description */
     private String description;
 
-    /** 任务优先级 */
+    /** Task priority */
     private String priority;
 
-    /** Worker分组 */
+    /** Worker grouping */
     private String workerGroup;
 
-    /** 失败重试次数 */
+    /** Number of failed retries */
     private Long retryTimes;
 
-    /** 失败重试间隔(秒) */
+    /** Failure retry interval (seconds) */
     private Long retryInterval;
 
-    /** 延时执行时间(秒) */
+    /** Delayed execution time (seconds) */
     private Long delayTime;
 
-    /** 执行策略 */
+    /** Execution strategy */
     private String strategy;
 
-    /** 调度周期 */
+    /** Scheduling cycle */
     private String cycle;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

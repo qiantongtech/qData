@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 标签类目管理Service业务层处理
+ * Tag Category Management Service business layer processing
  *
  * @author qdata
  * @date 2025-07-11
@@ -81,7 +81,7 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
         if (catDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        // Check if the category itself is selected
         if (catDO.getId().equals(updateReqVO.getParentId())){
             throw new ServiceException("att.error.parent.self", "切换上级不能选择自身作为上级类目");
         }
@@ -98,21 +98,21 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
             }
         }
 
-        //修改上下级判断
+        // Check if parent-child hierarchy changed
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId()) ) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
             flag = true;
         }
 
-        // 更新标签类目管理
+        // Update Tag Category Management
         AttTagCatDO updateObj = BeanUtils.toBean(updateReqVO, AttTagCatDO.class);
         int i = attTagCatMapper.updateById(updateObj);
 
         attTagService.updateCatCode(catDO.getCode(),updateObj.getCode());
-        //判断上下级是否发生了改变
+        // Check if parent-child hierarchy has changed
         if (flag) {
-            //更改所有下级
+            // Update all child categories
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
 
@@ -141,12 +141,12 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttTagCatDO> query = new LambdaQueryWrapper<AttTagCatDO>()
                 .eq(AttTagCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttTagCatDO::getCode, parentCode)
@@ -155,15 +155,15 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
         List<AttTagCatDO> list = attTagCatMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttTagCatDO parent = attTagCatMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
@@ -173,9 +173,9 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
     public Integer removeAttTagCat(Long id) {
         int count = 0;
         AttTagCatDO cat = attTagCatMapper.selectById(id);
-        //判断是否存在数据
+        // Check if data exists
         if (attTagService.getCountByCatCode(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.delete.tag", "存在标签，不允许删除");
+            throw new ServiceException("att.error.delete.tag", "存在标签，不允许Delete ");
         }
         if (cat != null) {
             count += attTagCatMapper.delete(Wrappers.lambdaQuery(AttTagCatDO.class)
@@ -186,7 +186,7 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
 
 //    @Override
 //    public int removeAttTagCat(Collection<Long> idList) {
-//        // 批量删除标签类目管理
+//        // Batch delete Tag Category Management
 //        return attTagCatMapper.deleteBatchIds(idList);
 //    }
 
@@ -207,19 +207,19 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
                 .collect(Collectors.toMap(
                         AttTagCatDO::getId,
                         attTagCatDO -> attTagCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入标签类目管理数据
+         * Import Tag Category Management data
          *
-         * @param importExcelList 标签类目管理数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Tag Category Management data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         * @param operName Operator
+         * @return Import result
          */
         @Override
         public String importAttTagCat(List<AttTagCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -243,16 +243,16 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
                                 attTagCatMapper.updateById(attTagCatDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attTagCatId + " 的标签类目管理记录。", attTagCatId, "标签类目管理"));
+                                        "数据Update 成功，ID为 " + attTagCatId + " 的标签类目管理记录。", attTagCatId, "标签类目管理"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attTagCatId + " 的标签类目管理记录不存在。", attTagCatId, "标签类目管理"));
+                                        "数据Update 失败，ID为 " + attTagCatId + " 的标签类目管理记录不存在。", attTagCatId, "标签类目管理"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "数据Update 失败，某条记录的ID不存在。"));
                         }
                     } else {
                         QueryWrapper<AttTagCatDO> queryWrapper = new QueryWrapper<>();

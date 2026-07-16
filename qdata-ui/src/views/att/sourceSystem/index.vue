@@ -60,7 +60,7 @@
       </qt-table>
     </qt-wrap>
 
-    <!-- 添加或修改来源系统对话框 -->
+    <!-- Add or modify source system dialog -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -160,14 +160,14 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
             >{{ td('common.button.confirm') }}</el-button
           >
         </div>
       </template>
     </el-dialog>
 
-    <!-- 来源系统详情对话框 -->
+    <!-- Source system details dialog box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -283,12 +283,13 @@ import { reactive, ref, toRefs, getCurrentInstance, onMounted } from "vue";
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_source_system_type } = proxy.useDict("sys_source_system_type");
 
-// 获取用户列表选项
+// Get user list options
 const userOptions = ref([]);
 
-// 加载用户列表
+// Load user list
 function loadUserOptions() {
   deptUserTree().then((response) => {
     const options = response.data.map((item) => ({
@@ -313,14 +314,14 @@ function loadUserOptions() {
   });
 }
 
-// 根据用户ID获取用户名
+// Get username based on user ID
 function getUserLabel(userId) {
   if (!userId) return "-";
   const user = userOptions.value.find((u) => u.value === userId);
   return user ? user.label : userId;
 }
 
-// 根据字典值获取标签
+// Get tags based on dictionary value
 function getDictLabel(dictOptions, value) {
   if (!value) return "-";
   const dict = dictOptions.find((d) => d.value === value);
@@ -467,17 +468,17 @@ const data = reactive({
 
 const { form, rules } = toRefs(data);
 
-// 点击查询
+// Click to query
 function handleQueryClick() {
   tableRef.value.getList();
 }
 
-// 重置查询
+// Reset query
 function handleResetQueryClick() {
   tableRef.value.resetQuery();
 }
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.sourceSystem.form.enable') : td('att.sourceSystem.form.disable');
   proxy.$modal
@@ -495,14 +496,14 @@ function handleStatusChange(row) {
     });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -525,14 +526,14 @@ function reset() {
   proxy.resetForm("sourceSystemRef");
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('att.sourceSystem.title.add');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id;
@@ -547,7 +548,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id;
@@ -557,31 +558,41 @@ function handleDetail(row) {
     title.value = td('att.sourceSystem.title.detail');
   });
 }
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["sourceSystemRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         updateSourceSystem(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addSourceSystem(form.value)
           .then((response) => {
+            submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             tableRef.value.getList();
           })
-          .catch((error) => {});
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const invalidIds = [];
   let _ids = null;
@@ -590,7 +601,7 @@ function handleDelete(row) {
   } else {
     // _ids = store.rows.map((item) => item.id).join(",");
     store.rows.forEach((item) => {
-      // 当 validFlag 为 false 时，记录 id
+      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }
@@ -608,10 +619,10 @@ function handleDelete(row) {
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {
-      // 用户取消删除操作
+      // User cancels deletion operation
     });
 }
 
-// 初始化
+// initialization
 loadUserOptions();
 </script>

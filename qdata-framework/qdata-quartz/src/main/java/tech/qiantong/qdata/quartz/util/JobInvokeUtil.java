@@ -28,16 +28,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 任务执行工具
+ * Task execution tool
  *
  * @author qdata
  */
 public class JobInvokeUtil
 {
     /**
-     * 执行方法
+     * Execution method
      *
-     * @param sysJob 系统任务
+     * @param sysJob system task
      */
     public static void invokeMethod(SysJob sysJob) throws Exception
     {
@@ -59,11 +59,11 @@ public class JobInvokeUtil
     }
 
     /**
-     * 调用任务方法
+     * Call task method
      *
-     * @param bean 目标对象
-     * @param methodName 方法名称
-     * @param methodParams 方法参数
+     * @param bean target object
+     * @param methodName method name
+     * @param methodParams method parameters
      */
     private static void invokeMethod(Object bean, String methodName, List<Object[]> methodParams)
             throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
@@ -82,10 +82,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 校验是否为为class包名
+     * Verify whether it is the class package name
      *
-     * @param invokeTarget 名称
-     * @return true是 false否
+     * @param invokeTarget name
+     * @return true yes false no
      */
     public static boolean isValidClassName(String invokeTarget)
     {
@@ -93,10 +93,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 获取bean名称
+     * Get bean name
      *
-     * @param invokeTarget 目标字符串
-     * @return bean名称
+     * @param invokeTarget target string
+     * @return bean name
      */
     public static String getBeanName(String invokeTarget)
     {
@@ -105,10 +105,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 获取bean方法
+     * Get bean method
      *
-     * @param invokeTarget 目标字符串
-     * @return method方法
+     * @param invokeTarget target string
+     * @return method
      */
     public static String getMethodName(String invokeTarget)
     {
@@ -117,10 +117,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 获取method方法参数相关列表
+     * Get the method parameter related list
      *
-     * @param invokeTarget 目标字符串
-     * @return method方法相关参数列表
+     * @param invokeTarget target string
+     * @return method method related parameter list
      */
     public static List<Object[]> getMethodParams(String invokeTarget)
     {
@@ -134,27 +134,27 @@ public class JobInvokeUtil
         for (int i = 0; i < methodParams.length; i++)
         {
             String str = StringUtils.trimToEmpty(methodParams[i]);
-            // String字符串类型，以'或"开头
+            // String string type, starting with ' or "
             if (StringUtils.startsWithAny(str, "'", "\""))
             {
                 classs.add(new Object[] { StringUtils.substring(str, 1, str.length() - 1), String.class });
             }
-            // boolean布尔类型，等于true或者false
+            // boolean Boolean type, equal to true or false
             else if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str))
             {
                 classs.add(new Object[] { Boolean.valueOf(str), Boolean.class });
             }
-            // long长整形，以L结尾
+            // long long integer, ending with L
             else if (StringUtils.endsWith(str, "L"))
             {
                 classs.add(new Object[] { Long.valueOf(StringUtils.substring(str, 0, str.length() - 1)), Long.class });
             }
-            // double浮点类型，以D结尾
+            // double floating point type, ending in D
             else if (StringUtils.endsWith(str, "D"))
             {
                 classs.add(new Object[] { Double.valueOf(StringUtils.substring(str, 0, str.length() - 1)), Double.class });
             }
-            // 其他类型归类为整形
+            // Other types are classified as plastic surgery
             else
             {
                 classs.add(new Object[] { Integer.valueOf(str), Integer.class });
@@ -164,10 +164,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 获取参数类型
+     * Get parameter type
      *
-     * @param methodParams 参数相关列表
-     * @return 参数类型列表
+     * @param methodParams parameter related list
+     * @return parameter type list
      */
     public static Class<?>[] getMethodParamsType(List<Object[]> methodParams)
     {
@@ -182,10 +182,10 @@ public class JobInvokeUtil
     }
 
     /**
-     * 获取参数值
+     * Get parameter value
      *
-     * @param methodParams 参数相关列表
-     * @return 参数值列表
+     * @param methodParams parameter related list
+     * @return parameter value list
      */
     public static Object[] getMethodParamsValue(List<Object[]> methodParams)
     {

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * Handle task-related data and operations.
+ * Collection task DTO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -17,56 +17,56 @@ public class McTaskRespDTO {
     /** ID */
     private Long id;
 
-    /** Implementation details. */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** Implementation details. */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** Handle task-related data and operations. */
+    /** Task name */
     private String name;
 
-    /** Implementation details. */
+    /** Data connection id */
     private Long datasourceId;
 
-    /** Handle database and data source configuration. */
+    /** Database type */
     private String dbType;
 
-    /** Implementation details. */
+    /** Responsible person */
     private Long leader;
 
-    /** Implementation details. */
+    /** Responsible person’s phone number */
     private String leaderPhone;
 
-    /** Implementation details. */
+    /** Collection mode */
     private String collectionMode;
 
-    /** Implementation details. */
+    /** Collection range */
     private String collectionScope;
 
-    /** Handle task-related data and operations. */
+    /** Task status */
     private String status;
 
-    /** Scheduler */
+    /** 调度器 */
     private String scheduler;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     private Boolean delFlag;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * Implementation details.
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;

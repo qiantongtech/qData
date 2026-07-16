@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 稽查规则Controller
+ * Audit Rule Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -71,7 +71,7 @@ public class AttAuditRuleController extends BaseController {
 
     @Operation(summary = "导出稽查规则列表")
     @PreAuthorize("@ss.hasPermi('att:auditRule:export')")
-    @Log(title = "稽查规则", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.audit.rule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttAuditRulePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -83,7 +83,7 @@ public class AttAuditRuleController extends BaseController {
 
     @Operation(summary = "导入稽查规则列表")
     @PreAuthorize("@ss.hasPermi('att:auditRule:import')")
-    @Log(title = "稽查规则", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.audit.rule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttAuditRuleRespVO> util = new ExcelUtil<>(AttAuditRuleRespVO.class);
@@ -103,7 +103,7 @@ public class AttAuditRuleController extends BaseController {
 
     @Operation(summary = "新增稽查规则")
     @PreAuthorize("@ss.hasPermi('att:auditRule:add')")
-    @Log(title = "稽查规则", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.audit.rule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttAuditRuleSaveReqVO attAuditRule) {
         attAuditRule.setCreatorId(getUserId());
@@ -114,7 +114,7 @@ public class AttAuditRuleController extends BaseController {
 
     @Operation(summary = "修改稽查规则")
     @PreAuthorize("@ss.hasPermi('att:auditRule:edit')")
-    @Log(title = "稽查规则", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.audit.rule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttAuditRuleSaveReqVO attAuditRule) {
         attAuditRule.setUpdatorId(getUserId());
@@ -125,7 +125,7 @@ public class AttAuditRuleController extends BaseController {
 
     @Operation(summary = "删除稽查规则")
     @PreAuthorize("@ss.hasPermi('att:auditRule:remove')")
-    @Log(title = "稽查规则", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.audit.rule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attAuditRuleService.removeAttAuditRule(Arrays.asList(ids)));

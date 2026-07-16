@@ -1,5 +1,5 @@
 <template>
-    <!-- 带！号的  -->
+    <!-- Bring! No.  -->
     <el-form-item v-bind="$attrs">
         <template #default="scope">
             <div class="default-wrap">

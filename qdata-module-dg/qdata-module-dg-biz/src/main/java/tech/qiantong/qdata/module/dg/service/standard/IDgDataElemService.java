@@ -9,7 +9,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.standard.DgDataElemDO;
 import java.util.List;
 
 /**
- * 数据元Service接口
+ * Data Element Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -17,47 +17,47 @@ import java.util.List;
 public interface IDgDataElemService extends IService<DgDataElemDO> {
 
     /**
-     * 获得数据元分页列表
+     * Get data element paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元分页列表
+     * @param pageReqVO Pagination request
+     * @return Data element paginated list
      */
     PageResult<DgDataElemDO> getDgDataElemPage(DgDataElemPageReqVO pageReqVO);
 
     List<DgDataElemDO> getDgDataElemList(DgDataElemPageReqVO pageReqVO);
 
     /**
-     * 创建数据元
+     * Create data element
      *
-     * @param createReqVO 数据元信息
-     * @return 数据元编号
+     * @param createReqVO Data element information
+     * @return Data element ID
      */
     Long createDgDataElem(DgDataElemSaveReqVO createReqVO);
 
     /**
-     * 更新数据元
+     * Update data element
      *
-     * @param updateReqVO 数据元信息
+     * @param updateReqVO Data element information
      */
     int updateDgDataElem(DgDataElemSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元
+     * Delete data element
      *
-     * @param idList 数据元编号
+     * @param idList Data element IDs
      */
     int removeDgDataElem(List<Long> idList);
 
     /**
-     * 获得数据元详情
+     * Get data element details
      *
-     * @param id 数据元编号
-     * @return 数据元
+     * @param id Data element ID
+     * @return Data element
      */
     DgDataElemDO getDgDataElemById(Long id);
 
     /**
-     * 更改数据元状态
+     * Update data element status
      *
      * @param id
      * @param status

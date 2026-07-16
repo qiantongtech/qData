@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskObjService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 数据质量任务-稽查对象Service业务层处理
+ * Data Quality Task - Audit Object Service business layer processing
  *
  * @author Chaos
  * @date 2025-07-21
@@ -69,15 +69,15 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
 
     @Override
     public int updateDppQualityTaskObj(DppQualityTaskObjSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据质量任务-稽查对象
+        // Update Data Quality Task - Audit Object
         DppQualityTaskObjDO updateObj = BeanUtils.toBean(updateReqVO, DppQualityTaskObjDO.class);
         return dppQualityTaskObjMapper.updateById(updateObj);
     }
     @Override
     public int removeDppQualityTaskObj(Collection<Long> idList) {
-        // 批量删除数据质量任务-稽查对象
+        // Batch delete Data Quality Task - Audit Object
         return dppQualityTaskObjMapper.deleteBatchIds(idList);
     }
 
@@ -107,19 +107,19 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
                 .collect(Collectors.toMap(
                         DppQualityTaskObjDO::getId,
                         dppQualityTaskObjDO -> dppQualityTaskObjDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据质量任务-稽查对象数据
+     * Import Data Quality Task - Audit Object data
      *
-     * @param importExcelList 数据质量任务-稽查对象数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data Quality Task - Audit Object data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName operator user
+     * @return result
      */
     @Override
     public String importDppQualityTaskObj(List<DppQualityTaskObjRespVO> importExcelList, boolean isUpdateSupport, String operName) {

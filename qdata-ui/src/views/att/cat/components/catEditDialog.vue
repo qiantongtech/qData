@@ -114,36 +114,37 @@
 import { useI18n } from 'vue-i18n'
 
 /**
- * CatEditDialog 组件使用说明
+ * CatEditDialog component usage guide
  *
- * 该组件用于类目（Category）的编辑和新增操作。
- * 不再使用 props 传递数据，而是通过 expose 出的 open 方法进行调用。
+ * This component handles category (Category) edit and add operations.
+ * Instead of passing data via props, it is called through the exposed open method.
  *
- * 使用方法：
- * 1. 在父组件中引入并放置组件：
+ * Usage:
+ * 1. Import and place the component in the parent:
  *    <CatEditDialog ref="catEditDialogRef" @submit="handleDialogSubmit" />
  *
- * 2. 在 script 中定义 ref：
+ * 2. Define ref in script:
  *    const catEditDialogRef = ref();
  *
- * 3. 调用 open 方法打开弹窗：
+ * 3. Call open method to show the dialog:
  *    catEditDialogRef.value.open({
- *      title: "新增类目",          // 弹窗标题
- *      nameLabel: "类目名称",      // 名称字段的 label
- *      treeOptions: [...],        // 上级类目树形数据
- *      form: { ... },             // 表单初始数据（如果是修改，传入当前行数据；如果是新增，传入默认值或部分预设值）
- *      rules: { ... }             // (可选) 表单校验规则，如果不传则使用默认规则
+ *      title: "Add Category",          // Dialog title
+ *      nameLabel: "Category Name",     // Label for the name field
+ *      treeOptions: [...],             // Parent category tree data
+ *      form: { ... },                  // Initial form data (pass current row data for edit, or defaults for add)
+ *      rules: { ... }                  // (Optional) Validation rules, uses defaults if not provided
  *    });
  *
- * 4. 监听 @submit 事件获取结果：
+ * 4. Listen to @submit event for results:
  *    const handleDialogSubmit = (formData) => {
- *      // 调用接口保存 formData
- *      // 保存成功后无需手动关闭弹窗，弹窗会在点击确定且校验通过后自动关闭（或者根据业务需求调整）
- *      // 注意：目前的实现是校验通过后自动关闭弹窗并 emit submit。
+ *      // Call API to save formData
+ *      // No need to manually close the dialog after saving — it auto-closes on successful validation
+ *      // Note: current implementation auto-closes and emits submit after validation passes
  *    };
  */
 
 import { ref, computed, nextTick } from "vue";
+import { ElMessageBox } from "element-plus";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
@@ -154,14 +155,15 @@ const visible = ref(false);
 const loading = ref(false);
 const formRef = ref();
 
-// 组件内部状态
+// Component internal state
 const title = ref("");
 const nameLabel = ref(td('att.common.categoryName'));
 const treeOptions = ref([]);
 const customRules = ref(null);
 const dialogType = ref("");
+const oldParentId = ref();
 
-// 默认表单数据
+// Default form data
 const defaultForm = {
   parentId: undefined,
   name: "",
@@ -177,29 +179,52 @@ const effectiveNameLabel = computed(() => nameLabel.value);
 const effectiveNamePlaceholder = computed(() => td('att.common.namePlaceholder'));
 const hideStatusAndSort = computed(() => dialogType.value === "dataCategory");
 
-// 默认校验规则
+// Default validation rules
 const defaultRules = {
   name: [{ required: true, message: td('common.form.nameRequired'), trigger: "blur" }],
   parentId: [{ required: true, message: td('att.common.parentCatRequired'), trigger: "blur" }],
   code: [{ required: true, message: td('att.common.codeRequired'), trigger: "blur" }],
 };
 
-// 计算最终使用的规则，优先使用传入的 customRules
+// Compute final rules to use, preferring passed-in customRules
 const currentRules = computed(() => {
-  if (customRules.value) {
-    return customRules.value;
-  }
-  // 动态更新默认规则中的 message
-  const rules = JSON.parse(JSON.stringify(defaultRules));
+  const rules = customRules.value
+    ? Object.fromEntries(Object.entries(customRules.value).map(([key, value]) => [key, [...value]]))
+    : JSON.parse(JSON.stringify(defaultRules));
   if (rules.name && rules.name[0]) {
     rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
   }
+  rules.name = [
+    ...(rules.name || []),
+    {
+      validator: (_rule, value, callback) => {
+        const name = String(value || "");
+        if (/\s/.test(name)) return callback(new Error('类目名称不能包含空白字符'));
+        if (!/[A-Za-z0-9\u4e00-\u9fa5]/.test(name)) return callback(new Error('类目名称不能仅由符号组成'));
+        callback();
+      },
+      trigger: "blur",
+    },
+    { max: 50, message: '类目名称长度不能超过50个字符', trigger: "blur" },
+  ];
+  rules.sortOrder = [
+    {
+      validator: (_rule, value, callback) => {
+        if (!Number.isInteger(Number(value)) || Number(value) < 0) {
+          callback(new Error('排序值不合法，请输入非负整数'));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur",
+    },
+  ];
   return rules;
 });
 
 /**
- * 打开弹窗的方法
- * @param {Object} options 配置项
+ * Open dialog method
+ * @param {Object} options Configuration options
  */
 const open = (options = {}) => {
   title.value = options.title || td('att.common.edit');
@@ -208,20 +233,22 @@ const open = (options = {}) => {
   customRules.value = options.rules || null;
   dialogType.value = options.type || "";
 
-  // 初始化表单数据
-  // 如果传入了 form，则合并到 defaultForm 中（深拷贝避免引用问题）
-  // 注意：这里假设 options.form 包含了需要回显的数据
+  // Initialize form data
+  // If form is provided, merge into defaultForm (deep copy to avoid reference issues)
+  // Note: this assumes options.form contains the data to populate
   if (options.form) {
     form.value = JSON.parse(
       JSON.stringify({ ...defaultForm, ...options.form })
     );
+    oldParentId.value = form.value.parentId;
   } else {
     form.value = JSON.parse(JSON.stringify(defaultForm));
+    oldParentId.value = form.value.parentId;
   }
 
   visible.value = true;
 
-  // 重置校验状态
+  // Reset validation state
   nextTick(() => {
     formRef.value?.clearValidate();
   });
@@ -233,12 +260,21 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  formRef.value?.validate((valid) => {
+  const submit = () => formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       emit("submit", JSON.parse(JSON.stringify(form.value)));
     }
   });
+  if (form.value.id && form.value.parentId !== oldParentId.value) {
+    ElMessageBox.confirm(
+      '修改上级类目会影响该类目下任务的归属路径，请确认。',
+      '系统提示',
+      { type: 'warning' }
+    ).then(submit).catch(() => {});
+    return;
+  }
+  submit();
 };
 
 const close = () => {
@@ -250,7 +286,7 @@ const stopLoading = () => {
   loading.value = false;
 };
 
-// 暴露 open 方法给父组件
+// Expose open method to parent component
 defineExpose({
   open,
   close,

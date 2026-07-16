@@ -26,12 +26,12 @@
             dpModelDetail.modelComment ||
             '' }}</div> -->
           <div class="task-item">
-            <!-- 正方形编号 -->
+            <!-- square number -->
             <div class="task-id">
               {{ dppEtlTaskDetail.id || '-' }}
             </div>
 
-            <!-- 名称 -->
+            <!-- Name -->
             <div class="task-name">
               {{ dppEtlTaskDetail.name || '' }}
             </div>

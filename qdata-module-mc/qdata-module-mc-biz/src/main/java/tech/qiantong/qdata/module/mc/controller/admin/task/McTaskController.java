@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 采集任务Controller
+ * Collection taskController
  *
  * @author qdata
  * @date 2025-12-16
@@ -54,7 +54,7 @@ public class McTaskController extends BaseController {
 
     @Operation(summary = "导出采集任务列表")
     @BizDataScope(code = "mc_task_list", userField = "leader", deptField = "responsibleDept")
-    @Log(title = "采集任务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -64,7 +64,7 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "导入采集任务列表")
-    @Log(title = "采集任务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<McTaskRespVO> util = new ExcelUtil<>(McTaskRespVO.class);
@@ -81,7 +81,7 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务")
-    @Log(title = "采集任务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskSaveReqVO mcTask) {
         mcTask.setCreatorId(getUserId());
@@ -91,7 +91,7 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务")
-    @Log(title = "采集任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskSaveReqVO mcTask) {
         mcTask.setUpdatorId(getUserId());
@@ -101,14 +101,14 @@ public class McTaskController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务")
-    @Log(title = "采集任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskService.removeMcTask(Arrays.asList(ids)));
     }
 
     @Operation(summary = "删除采集任务")
-    @Log(title = "采集任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task", businessType = BusinessType.DELETE)
     @GetMapping("/batchDeleteCheck/{ids}")
     public CommonResult<BatchDeleteCheck<Long>> batchDeleteCheck(@PathVariable Long[] ids) {
         BatchDeleteCheck<Long> result = mcTaskService.batchDeleteCheck(Arrays.asList(ids));

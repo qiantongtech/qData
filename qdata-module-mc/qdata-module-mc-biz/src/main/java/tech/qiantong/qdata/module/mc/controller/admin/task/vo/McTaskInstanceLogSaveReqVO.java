@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 采集任务实例-日志 创建/修改 Request VO MC_TASK_INSTANCE_LOG
+ * Collection task instance-log creation/modification Request VO MC_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-12-16

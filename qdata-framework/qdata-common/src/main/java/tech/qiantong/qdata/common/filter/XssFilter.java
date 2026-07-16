@@ -29,14 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 防止XSS攻击的过滤器
+ * Filters to prevent XSS attacks
  *
  * @author qdata
  */
 public class XssFilter implements Filter
 {
     /**
-     * 排除链接
+     * Exclude link
      */
     public List<String> excludes = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public class XssFilter implements Filter
     {
         String url = request.getServletPath();
         String method = request.getMethod();
-        // GET DELETE 不过滤
+        // GET DELETE without filtering
         if (method == null || HttpMethod.GET.matches(method) || HttpMethod.DELETE.matches(method))
         {
             return true;

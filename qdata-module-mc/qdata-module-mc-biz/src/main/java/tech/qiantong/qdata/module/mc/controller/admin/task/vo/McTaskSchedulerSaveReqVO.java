@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data integration scheduling information Create/modify Request VO MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16

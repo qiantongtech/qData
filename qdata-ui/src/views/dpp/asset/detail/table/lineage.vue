@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 资产血缘 tab -->
+  <!-- Asset lineage tab -->
   <div class="containerServer" v-loding="loding">
     <el-empty :description="td('common.noAssetLineage')" v-if="noData">
     </el-empty>
@@ -79,12 +79,12 @@ const initGraph = () => {
 
 Graph.registerConnector("curveConnector", (sourcePoint, targetPoint) => {
   const hgap = Math.abs(targetPoint.x - sourcePoint.x);
-  const offset = Math.max(hgap * 0.6, 80); // 控制曲线弯曲
+  const offset = Math.max(hgap * 0.6, 80); // Control curve bending
 
   const path = new Path();
-  // 起点直接用 sourcePoint
+  // Use sourcePoint directly as the starting point
   path.appendSegment(Path.createSegment("M", sourcePoint.x, sourcePoint.y));
-  // 曲线控制点
+  // curve control points
   path.appendSegment(Path.createSegment(
     "C",
     sourcePoint.x + offset,
@@ -123,7 +123,7 @@ register({
 
 const TeleportContainer = getTeleport();
 
-// ====================== 节点/边状态 ======================
+// ====================== Node/Edge status ======================
 const nodeStatusList = [
   { id: "node-0", status: "success" },
   { id: "node-1", status: "success" },

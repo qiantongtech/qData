@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 主体管理Controller
+ * Subject Management Controller
  *
  * @author qdata
  * @date 2024-08-18
@@ -70,7 +70,7 @@ public class CaSubjectController extends BaseController
         FileUploadUtil.init(fileStorageService, serverConfig, storagePath);
     }
     /**
-     * 查询主体管理列表
+     * Query subject management list
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:list')")
     @GetMapping("/list")
@@ -82,20 +82,20 @@ public class CaSubjectController extends BaseController
     }
 
     /**
-     * 导出主体管理列表
+     * Export subject management list
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:export')")
-    @Log(title = "主体管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CaSubject caSubject)
     {
         List<CaSubject> list = caSubjectService.selectCaSubjectList(caSubject);
         ExcelUtil<CaSubject> util = new ExcelUtil<CaSubject>(CaSubject.class);
-        util.exportExcel(response, list, "主体管理数据");
+        util.exportExcel(response, list, "Subject Management Data");
     }
 
     /**
-     * 获取主体管理详细信息
+     * Get subject management detail info
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:query')")
     @GetMapping(value = "/{id}")
@@ -105,27 +105,27 @@ public class CaSubjectController extends BaseController
     }
 
     /**
-     * 新增主体管理
+     * Add subject management
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:add')")
-    @Log(title = "主体管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CaSubject caSubject)
     {
-        // 构建证书的 DN 名称
+        // Build certificate DN name
         String dnNameStr = StringUtils.format("CN={}, OU={}, O={}, L={}, ST={}, C={}",
                 caSubject.getCn(), caSubject.getOu(),
                 caSubject.getO(), caSubject.getL(),
                 caSubject.getSt(), caSubject.getC());
 
-        // 生成并获取根证书和私钥的文件列表
+        // Generate and get root certificate and private key file list
         List<MultipartFile> fileList = CaGenerateRootCertificate.generateRootCertificate(dnNameStr);
 
-        // 上传并获取证书和私钥的文件信息
+        // Upload and get certificate and private key file info
         FileInfo cert = FileUploadUtil.upload(fileList.get(0), "ca/");
         FileInfo privateKey = FileUploadUtil.upload(fileList.get(1), "ca/");
 
-        // 更新数据信息
+        // Update data info
         caSubject.setCertificate(Constants.RESOURCE_PREFIX + "/" + cert.getPath() + cert.getFilename());
         caSubject.setPrivateKey(Constants.RESOURCE_PREFIX + "/" + privateKey.getPath() + privateKey.getFilename());
         caSubject.setCreatorId(getUserId());
@@ -134,10 +134,10 @@ public class CaSubjectController extends BaseController
     }
 
     /**
-     * 修改主体管理
+     * Update subject management
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:edit')")
-    @Log(title = "主体管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CaSubject caSubject)
     {
@@ -145,10 +145,10 @@ public class CaSubjectController extends BaseController
     }
 
     /**
-     * 删除主体管理
+     * Delete subject management
      */
     @PreAuthorize("@ss.hasPermi('ca:subject:remove')")
-    @Log(title = "主体管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.subject", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

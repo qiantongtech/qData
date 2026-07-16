@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.operate.DaAssetOp
 import java.util.List;
 
 /**
- * 数据资产操作申请 Convert
+ * Data Asset Operate Apply Convert
  *
  * @author qdata
  * @date 2025-05-09
@@ -38,29 +38,29 @@ public interface DaAssetOperateApplyConvert {
     DaAssetOperateApplyConvert INSTANCE = Mappers.getMapper(DaAssetOperateApplyConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetOperateApplyPageReqVO 请求参数
+     * PageReqVO Convert to DO
+     * @param daAssetOperateApplyPageReqVO request parameters
      * @return DaAssetOperateApplyDO
      */
      DaAssetOperateApplyDO convertToDO(DaAssetOperateApplyPageReqVO daAssetOperateApplyPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetOperateApplySaveReqVO 保存请求参数
+     * SaveReqVO Convert to DO
+     * @param daAssetOperateApplySaveReqVO save request parameters
      * @return DaAssetOperateApplyDO
      */
      DaAssetOperateApplyDO convertToDO(DaAssetOperateApplySaveReqVO daAssetOperateApplySaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetOperateApplyDO 实体对象
+     * DO Convert to RespVO
+     * @param daAssetOperateApplyDO entity object
      * @return DaAssetOperateApplyRespVO
      */
      DaAssetOperateApplyRespVO convertToRespVO(DaAssetOperateApplyDO daAssetOperateApplyDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetOperateApplyDOList 实体对象列表
+     * DOList Convert to RespVOList
+     * @param daAssetOperateApplyDOList entity object list
      * @return List<DaAssetOperateApplyRespVO>
      */
      List<DaAssetOperateApplyRespVO> convertToRespVOList(List<DaAssetOperateApplyDO> daAssetOperateApplyDOList);

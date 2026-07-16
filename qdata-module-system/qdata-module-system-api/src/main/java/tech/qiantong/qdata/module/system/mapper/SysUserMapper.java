@@ -25,151 +25,151 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 用户表 数据层
+ * User table data layer
  *
  * @author qdata
  */
 public interface SysUserMapper {
     /**
-     * 根据条件分页查询用户列表
+     * Paginate query user list by conditions
      *
-     * @param sysUser 用户信息
-     * @return 用户信息集合信息
+     * @param sysUser User info
+     * @return User info collection
      */
     public List<SysUser> selectUserList(SysUser sysUser);
 
     public List<SysUser> selectUserAllList(SysUser sysUser);
 
     /**
-     * 根据部门id查询用户列表
+     * Query user list by dept ID
      *
-     * @param sysUser 用户信息
-     * @return 用户信息集合信息
+     * @param sysUser User info
+     * @return User info collection
      */
     public List<SysUser> selectUserListByDeptId(SysUser sysUser);
 
     /**
-     * 根据条件分页查询已配用户角色列表
+     * Paginate query allocated user role list by conditions
      *
-     * @param user 用户信息
-     * @return 用户信息集合信息
+     * @param user User info
+     * @return User info collection
      */
     public List<SysUser> selectAllocatedList(SysUser user);
 
     /**
-     * 获取用户列表排除当前项目已经存在的用户
+     * Get user list excluding users already in current project
      */
     public List<SysUser> selectNoProjectUserList(SysUser user);
 
     /**
-     * 根据条件分页查询未分配用户角色列表
+     * Paginate query unallocated user role list by conditions
      *
-     * @param user 用户信息
-     * @return 用户信息集合信息
+     * @param user User info
+     * @return User info collection
      */
     public List<SysUser> selectUnallocatedList(SysUser user);
 
     /**
-     * 通过用户名查询用户
+     * Query user by username
      *
-     * @param userName 用户名
-     * @return 用户对象信息
+     * @param userName Username
+     * @return User object info
      */
     public SysUser selectUserByUserName(String userName);
 
     /**
-     * 通过用户ID查询用户
+     * Query user by user ID
      *
-     * @param userId 用户ID
-     * @return 用户对象信息
+     * @param userId User ID
+     * @return User object info
      */
     public SysUser selectUserById(Long userId);
 
     /**
-     * 通过用户ID和项目ID查询用户
+     * Query user by user ID and project ID
      *
-     * @param userId    用户ID
-     * @param projectId 项目ID
-     * @return 用户对象信息
+     * @param userId    User ID
+     * @param projectId Project ID
+     * @return User object info
      */
     public SysUser selectUserByUserIdAndProjectId(@Param("userId") Long userId, @Param("projectId") Long projectId);
 
     /**
-     * 新增用户信息
+     * Insert user info
      *
-     * @param user 用户信息
-     * @return 结果
+     * @param user User info
+     * @return Result
      */
     public int insertUser(SysUser user);
 
     /**
-     * 修改用户信息
+     * Update user info
      *
-     * @param user 用户信息
-     * @return 结果
+     * @param user User info
+     * @return Result
      */
     public int updateUser(SysUser user);
 
     /**
-     * 修改用户头像
+     * Update user avatar
      *
-     * @param userName 用户名
-     * @param avatar   头像地址
-     * @return 结果
+     * @param userName Username
+     * @param avatar   Avatar URL
+     * @return Result
      */
     public int updateUserAvatar(@Param("userName") String userName, @Param("avatar") String avatar);
 
     /**
-     * 重置用户密码
+     * Reset user password
      *
-     * @param userName 用户名
-     * @param password 密码
-     * @return 结果
+     * @param userName Username
+     * @param password Password
+     * @return Result
      */
     public int resetUserPwd(@Param("userName") String userName, @Param("password") String password);
 
     /**
-     * 通过用户ID删除用户
+     * Delete user by user ID
      *
-     * @param userId 用户ID
-     * @return 结果
+     * @param userId User ID
+     * @return Result
      */
     public int deleteUserById(Long userId);
 
     /**
-     * 批量删除用户信息
+     * Batch delete user info
      *
-     * @param userIds 需要删除的用户ID
-     * @return 结果
+     * @param userIds User IDs to delete
+     * @return Result
      */
     public int deleteUserByIds(Long[] userIds);
 
     /**
-     * 校验用户名称是否唯一
+     * Check if username is unique
      *
-     * @param userName 用户名称
-     * @return 结果
+     * @param userName Username
+     * @return Result
      */
     public SysUser checkUserNameUnique(String userName);
 
     /**
-     * 校验手机号码是否唯一
+     * Check if phone number is unique
      *
-     * @param phonenumber 手机号码
-     * @return 结果
+     * @param phonenumber Phone number
+     * @return Result
      */
     public SysUser checkPhoneUnique(String phonenumber);
 
     /**
-     * 校验email是否唯一
+     * Check if email is unique
      *
-     * @param email 用户邮箱
-     * @return 结果
+     * @param email User email
+     * @return Result
      */
     public SysUser checkEmailUnique(String email);
 
     /**
-     * 根据部门id集合和角色id集合获取用户id列表
+     * Get user ID list by dept ID set and role ID set
      *
      * @param deptIdSet
      * @param roleIdSet
@@ -180,9 +180,9 @@ public interface SysUserMapper {
             @Param("roleIdSet") List<String> roleIdSet);
 
     /**
-     * 根据登录名称或者手机号查询用户
+     * Query user by login name or phone number
      *
-     * @param str 登录名称或者手机号
+     * @param str Login name or phone number
      */
     List<SysUser> selectUserListByNameOrPhone(String str);
 }

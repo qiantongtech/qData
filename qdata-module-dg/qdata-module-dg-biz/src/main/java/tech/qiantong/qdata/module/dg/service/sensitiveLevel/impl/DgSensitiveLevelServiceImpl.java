@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
- * 敏感等级Service业务层处理
+ * Sensitive Level Service Business Layer Processing
  *
  * @author Chaos
  * @date 2025-01-21
@@ -43,16 +43,16 @@ public class DgSensitiveLevelServiceImpl extends ServiceImpl<DgSensitiveLevelMap
 
     @Override
     public int updateDgSensitiveLevel(DgSensitiveLevelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新敏感等级
+        // Update sensitive level
         DgSensitiveLevelDO updateObj = BeanUtils.toBean(updateReqVO, DgSensitiveLevelDO.class);
         return mapper.updateById(updateObj);
     }
 
     @Override
     public int removeDgSensitiveLevel(Collection<Long> idList) {
-        // 批量删除敏感等级
+        // Batch delete sensitive levels
         return mapper.deleteBatchIds(idList);
     }
 

@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 项目 Response VO 对象 ATT_PROJECT
+ * Project Response VO ATT_PROJECT
  *
  * @author shu
  * @date 2025-01-20

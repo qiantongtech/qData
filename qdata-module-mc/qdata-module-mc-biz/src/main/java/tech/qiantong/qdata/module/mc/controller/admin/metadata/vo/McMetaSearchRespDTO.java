@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 元数据检索统一返回实体
- * 用于 MC_DB / MC_TABLE / MC_COLUMN UNION ALL 查询
+ * Metadata retrieval uniformly returns entities
+ * For MC_DB / MC_TABLE / MC_COLUMN UNION ALL queries
  */
 @Data
 @Schema(description = "元数据检索结果")
@@ -18,7 +18,7 @@ public class McMetaSearchRespDTO extends PageParam {
 
     private static final long serialVersionUID = 1L;
 
-    // ================== 基础标识 ==================
+    // ================== Basic logo ==================
 
     @Schema(description = "元数据ID")
     private Long id;
@@ -43,26 +43,26 @@ public class McMetaSearchRespDTO extends PageParam {
 
 
 
-    //查询参数
+    //Query parameters
     @TableField(exist = false)
     private String keyword;
 
-    //元数据类型(DB-1 / TABLE-2 / COLUMN-3)
+    //Metadata type (DB-1/TABLE-2/COLUMN-3)
     @TableField(exist = false)
     private List<String> types;
 
-    //数据源类型
+    //Data source type
     @TableField(exist = false)
     private List<String> dbTypes;
 
-    //时间
+    //Time
     @TableField(exist = false)
     private Date startTime;
     @TableField(exist = false)
     private Date endTime;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;

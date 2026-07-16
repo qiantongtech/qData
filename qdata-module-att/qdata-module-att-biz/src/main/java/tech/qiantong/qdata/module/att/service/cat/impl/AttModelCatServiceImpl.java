@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 逻辑模型类目管理Service业务层处理
+ * Logical Model Category Management Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -94,7 +94,7 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
                 throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
         }
-        // 更新逻辑模型类目管理
+        // Update Logical Model Category Management
         AttModelCatDO updateObj = BeanUtils.toBean(updateReqVO, AttModelCatDO.class);
         return baseMapper.updateById(updateObj);
     }
@@ -104,9 +104,9 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         int count = 0;
         for (Long id : idList) {
             AttModelCatDO cat = baseMapper.selectById(id);
-            //判断是否存在数据
+            // Check if data exists
             if (dpModelApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许删除");
+                throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许Delete ");
             }
             if (cat != null) {
                 count += baseMapper.delete(Wrappers.lambdaQuery(AttModelCatDO.class)
@@ -120,9 +120,9 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
     public int removeAttModelCat(Long id) {
         int count = 0;
         AttModelCatDO cat = baseMapper.selectById(id);
-        //判断是否存在数据
+        // Check if data exists
         if (dpModelApiService.getCountByCatCode(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许删除");
+            throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许Delete ");
         }
         if (cat != null) {
             count += baseMapper.delete(Wrappers.lambdaQuery(AttModelCatDO.class)
@@ -158,19 +158,19 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
                 .collect(Collectors.toMap(
                         AttModelCatDO::getId,
                         attModelCatDO -> attModelCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入逻辑模型类目管理数据
+     * Import Logical Model Category Management data
      *
-     * @param importExcelList 逻辑模型类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList Logical Model Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttModelCat(List<AttModelCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -194,16 +194,16 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
                             attModelCatMapper.updateById(attModelCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attModelCatId + " 的逻辑模型类目管理记录。", attModelCatId, "逻辑模型类目管理"));
+                                    "数据Update 成功，ID为 " + attModelCatId + " 的逻辑模型类目管理记录。", attModelCatId, "逻辑模型类目管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attModelCatId + " 的逻辑模型类目管理记录不存在。", attModelCatId, "逻辑模型类目管理"));
+                                    "数据Update 失败，ID为 " + attModelCatId + " 的逻辑模型类目管理记录不存在。", attModelCatId, "逻辑模型类目管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttModelCatDO> queryWrapper = new QueryWrapper<>();
@@ -246,12 +246,12 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttModelCatDO> query = new LambdaQueryWrapper<AttModelCatDO>()
                 .eq(AttModelCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttModelCatDO::getCode, parentCode)
@@ -260,15 +260,15 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         List<AttModelCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttModelCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

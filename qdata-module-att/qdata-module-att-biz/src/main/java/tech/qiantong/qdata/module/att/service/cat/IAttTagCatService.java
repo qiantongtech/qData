@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标签类目管理Service接口
+ * Tag Category Management Service Interface
  *
  * @author qdata
  * @date 2025-07-11
@@ -37,77 +37,77 @@ import java.util.Map;
 public interface IAttTagCatService extends IService<AttTagCatDO> {
 
     /**
-     * 获得标签类目管理分页列表
+     * Get tag category management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 标签类目管理分页列表
+     * @param pageReqVO Page request
+     * @return Tag category management paginated list
      */
     PageResult<AttTagCatDO> getAttTagCatPage(AttTagCatPageReqVO pageReqVO);
 
     /**
-     * 创建标签类目管理
+     * Create tag category management
      *
-     * @param createReqVO 标签类目管理信息
-     * @return 标签类目管理编号
+     * @param createReqVO Tag category management info
+     * @return Tag category management ID
      */
     Long createAttTagCat(AttTagCatSaveReqVO createReqVO);
 
     /**
-     * 更新标签类目管理
+     * Update tag category management
      *
-     * @param updateReqVO 标签类目管理信息
+     * @param updateReqVO Tag category management info
      */
     int updateAttTagCat(AttTagCatSaveReqVO updateReqVO);
 
     /**
-     * 删除标签类目管理
+     * Delete tag category management
      *
-     * @param idList 标签类目管理编号
+     * @param idList Tag category management ID
      */
 //    int removeAttTagCat(Collection<Long> idList);
 
     /**
-     * 获得标签类目管理详情
+     * Get tag category management details
      *
-     * @param id 标签类目管理编号
-     * @return 标签类目管理
+     * @param id Tag category management ID
+     * @return Tag category management
      */
     AttTagCatDO getAttTagCatById(Long id);
 
     /**
-     * 获得全部标签类目管理列表
+     * Get all tag category management list
      *
-     * @return 标签类目管理列表
+     * @return Tag category management list
      */
     List<AttTagCatDO> getAttTagCatList();
 
     /**
-     * 获得全部标签类目管理 Map
+     * Get all tag category management Map
      *
-     * @return 标签类目管理 Map
+     * @return Tag category management Map
      */
     Map<Long, AttTagCatDO> getAttTagCatMap();
 
 
     /**
-     * 导入标签类目管理数据
+     * Import tag category management data
      *
-     * @param importExcelList 标签类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Tag category management data list
+     * @param isUpdateSupport Whether to support updates; if already exists, update the data
+     * @param operName Operating user
+     * @return Result
      */
     String importAttTagCat(List<AttTagCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获得全部数据标签类目管理列表
+     * Get all data tag category management list
      *
-     * @return 数据标签类目管理列表
+     * @return Data tag category management list
      */
     List<AttTagCatDO> getAttTagCatLIst(AttTagCatPageReqVO attTagCat);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode
@@ -116,7 +116,7 @@ public interface IAttTagCatService extends IService<AttTagCatDO> {
     String createCode(Long parentId, String parentCode);
 
     /**
-     * 更改指定pid下的所有code
+     * Change all codes under specified pid
      *
      * @param pid
      */

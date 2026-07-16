@@ -31,11 +31,11 @@ public enum ReplyTypeEnum {
     CHART("2", "知识图表");
 
     /**
-     * 类型
+     * Type
      */
     private final String type;
     /**
-     * 名称
+     * Name
      */
     private final String name;
 

@@ -212,7 +212,7 @@
       <el-row :gutter="2">
         <!-- <el-col :span="8">
                     <div class="infotop-row border-top">
-                        <div class="infotop-row-lable">安全等级</div>
+                        <div class="infotop-row-lable">Security level</div>
                         <div class="infotop-row-value">
                             {{ getFormatValue(detail.dbRespVO?.safetyLevelName) }}
                         </div>

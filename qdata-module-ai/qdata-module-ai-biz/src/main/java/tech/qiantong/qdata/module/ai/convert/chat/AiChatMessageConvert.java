@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatMessageSaveR
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatMessageDO;
 
 /**
- * ai聊天消息 Convert
+ * ai chat message Convert
  *
  * @author FXB
  * @date 2026-04-01
@@ -37,29 +37,29 @@ public interface AiChatMessageConvert {
     AiChatMessageConvert INSTANCE = Mappers.getMapper(AiChatMessageConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param aiChatMessagePageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param aiChatMessagePageReqVO request parameters
      * @return AiChatMessageDO
      */
      AiChatMessageDO convertToDO(AiChatMessagePageReqVO aiChatMessagePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param aiChatMessageSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param aiChatMessageSaveReqVO save request parameters
      * @return AiChatMessageDO
      */
      AiChatMessageDO convertToDO(AiChatMessageSaveReqVO aiChatMessageSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param aiChatMessageDO 实体对象
+     * DO to RespVO
+     * @param aiChatMessageDO entity object
      * @return AiChatMessageRespVO
      */
      AiChatMessageRespVO convertToRespVO(AiChatMessageDO aiChatMessageDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param aiChatMessageDOList 实体对象列表
+     * DOList to RespVOList
+     * @param aiChatMessageDOList entity object list
      * @return List<AiChatMessageRespVO>
      */
      List<AiChatMessageRespVO> convertToRespVOList(List<AiChatMessageDO> aiChatMessageDOList);

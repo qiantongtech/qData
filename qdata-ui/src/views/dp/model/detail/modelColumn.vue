@@ -66,7 +66,7 @@
     </qt-table>
   </qt-wrap>
 
-  <!-- 新增或修改逻辑模型属性信息对话框 -->
+  <!-- Add or modify logical model attribute information dialog box -->
   <el-dialog
     class="autoHeight"
     :title="title"
@@ -154,7 +154,7 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <!-- decimal、NUMERIC、number -->
+          <!-- decimal, NUMERIC, number -->
           <el-form-item :label="td('dp.modelForm.decimalPlaces')" prop="columnScale" :label-position="labelPosition">
             <el-input-number
               :disabled="
@@ -249,7 +249,7 @@
     </template>
   </el-dialog>
 
-  <!-- 逻辑模型属性信息详情对话框 -->
+  <!-- Logical model attribute information details dialog box -->
   <el-dialog
     :title="title"
     v-model="openDetail"
@@ -398,7 +398,7 @@ const getDpDataElem = async () => {
     const response = await getDpDataElemList();
     DpData.value = response.data;
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 const handleDatasourceChange = (value) => {
@@ -533,18 +533,18 @@ function listWrapper(params) {
   const p = { ...params, modelId };
   return listDpModelColumn(p);
 }
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
-    modelId = newId || 1; // 如果 id 为空，使用默认值 1
+    modelId = newId || 1; // If id is empty, the default value 1 is used
     handleQuery();
 
     // getList();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
-// 转换输入值为大写
+// Convert input value to uppercase
 const convertToUpperCase = (key, value) => {
   const uppercasedValue = value.replace(/[a-z]/g, (char) => char.toUpperCase());
 
@@ -556,14 +556,14 @@ function getList() {
   tableRef.value?.getList();
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -592,33 +592,33 @@ function reset() {
   proxy.resetForm("dpModelColumnRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   getList();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-// 排序由 qt-table 内部处理并写入 params
+// Sorting is handled internally by qt-table and written to params
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('dp.modelForm.addModelProperty');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -629,7 +629,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -640,7 +640,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dpModelColumnRef"].validate((valid) => {
     if (valid) {
@@ -666,7 +666,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -681,7 +681,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "dp/modelColumn/export",

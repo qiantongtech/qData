@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据源Mapper接口
+ * Data source Mapper interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -39,10 +39,10 @@ import java.util.Set;
 public interface DaDatasourceMapper extends BaseMapperX<DaDatasourceDO> {
 
     default PageResult<DaDatasourceDO> selectPage(DaDatasourcePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DaDatasourceDO>()
                 .likeIfPresent(DaDatasourceDO::getDatasourceName, reqVO.getDatasourceName())
                 .inIfPresent(DaDatasourceDO::getDatasourceType, StringUtils.isNotEmpty(reqVO.getDatasourceType()) ? reqVO.getDatasourceType().split(",") : null)
@@ -55,9 +55,9 @@ public interface DaDatasourceMapper extends BaseMapperX<DaDatasourceDO> {
                 .eqIfPresent(DaDatasourceDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DaDatasourceDO::getCreateTime, reqVO.getCreateTime())
                 .inIfPresent(DaDatasourceDO::getId, reqVO.getIdList())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(DaDatasourceDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 

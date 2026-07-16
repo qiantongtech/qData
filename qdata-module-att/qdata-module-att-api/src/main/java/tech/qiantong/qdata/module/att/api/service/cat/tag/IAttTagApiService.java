@@ -25,9 +25,9 @@ import java.util.List;
 public interface IAttTagApiService {
 
     /**
-     * 获得全部标签信息
+     * Get all tag info
      *
-     * @return 数据类目管理列表
+     * @return Tag list
      */
     List<AttTagRespDTO> getApiList();
 }

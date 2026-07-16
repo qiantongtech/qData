@@ -30,14 +30,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据元 DO 对象 DP_DATA_ELEM
+ * Data Element DO - DP_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_DATA_ELEM")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_DATA_ELEM_seq")
 @Builder
 @NoArgsConstructor
@@ -54,22 +54,22 @@ public class DpDataElemDO extends BaseEntity {
     private Long id;
 
     /**
-     * 编码
+     * Code
      */
     private String code;
 
     /**
-     * 名称
+     * Name
      */
     private String name;
 
     /**
-     * 英文名称
+     * English Name
      */
     private String engName;
 
     /**
-     * 类目编码
+     * Category Code
      */
     private String catCode;
 
@@ -77,48 +77,48 @@ public class DpDataElemDO extends BaseEntity {
     private String catName;
 
     /**
-     * 类型
+     * Type
      */
     private String type;
 
     /**
-     * 责任人
+     * Person in Charge
      */
     private String personCharge;
 
     /**
-     * 责任人名称
+     * Person in Charge Name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
     /**
-     * 字段类型
+     * Column Type
      */
     private String columnType;
 
     /**
-     * 状态
+     * Status
      */
     private String status;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;
@@ -128,15 +128,15 @@ public class DpDataElemDO extends BaseEntity {
 
     private Long documentId;
 
-    /** 名称 */
+    /** Name */
     @TableField(exist = false)
     private String documentName;
 
-    /** 名称 */
+    /** Name */
     @TableField(exist = false)
     private String documentCode;
 
-    /** 文件标准类型字段， */
+    /** Document standard type field */
     @TableField(exist = false)
     private String documentType;
 }

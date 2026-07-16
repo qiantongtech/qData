@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志Controller
+ * Metadata database and information and field information relationship-Log Controller
  *
  * @author qdata
  * @date 2026-03-10
@@ -50,7 +50,7 @@ public class McTableColumnRelLogController extends BaseController {
 
     @Operation(summary = "导出元数据数据库与信息及字段信息关系-日志列表")
 //    @PreAuthorize("@ss.hasPermi('mc:tableColumnRelLog:TableColumnRelLog:export')")
-    @Log(title = "元数据数据库与信息及字段信息关系-日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.table.column.rel.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTableColumnRelLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -69,7 +69,7 @@ public class McTableColumnRelLogController extends BaseController {
 
     @Operation(summary = "新增元数据数据库与信息及字段信息关系-日志")
 //    @PreAuthorize("@ss.hasPermi('mc:tableColumnRelLog:TableColumnRelLog:add')")
-    @Log(title = "元数据数据库与信息及字段信息关系-日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.table.column.rel.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTableColumnRelLogSaveReqVO mcTableColumnRelLog) {
         mcTableColumnRelLog.setCreatorId(getUserId());
@@ -80,7 +80,7 @@ public class McTableColumnRelLogController extends BaseController {
 
     @Operation(summary = "修改元数据数据库与信息及字段信息关系-日志")
 //    @PreAuthorize("@ss.hasPermi('mc:tableColumnRelLog:TableColumnRelLog:edit')")
-    @Log(title = "元数据数据库与信息及字段信息关系-日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.table.column.rel.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTableColumnRelLogSaveReqVO mcTableColumnRelLog) {
         mcTableColumnRelLog.setUpdatorId(getUserId());
@@ -91,7 +91,7 @@ public class McTableColumnRelLogController extends BaseController {
 
     @Operation(summary = "删除元数据数据库与信息及字段信息关系-日志")
 //    @PreAuthorize("@ss.hasPermi('mc:tableColumnRelLog:TableColumnRelLog:remove')")
-    @Log(title = "元数据数据库与信息及字段信息关系-日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.table.column.rel.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTableColumnRelLogService.removeMcTableColumnRelLog(Arrays.asList(ids)));

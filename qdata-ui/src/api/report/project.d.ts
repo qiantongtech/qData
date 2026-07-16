@@ -18,41 +18,41 @@
 
 export type ProjectItem = {
   /**
-   * 项目 id
+   * project id
    */
   id: string
   /**
-   * 项目名称
+   * Project name
    */
   name: string
   /**
-   * 项目状态:
+   * Project status:
    *
-   * 0 - 已发布
-   * 1 - 未发布
+   * 0 - Published
+   * 1 - Not published
    */
   status: number
   /**
-   * 创建时间
+   * creation time
    */
   createTime: number
   /**
-   * 预览图片 URL
+   * Preview image URL
    */
   picUrl: string
   /**
-   * 创建者
+   * Creator
    */
   creator: string
   /**
-   * 项目备注
+   * Project notes
    */
   remark: string
 }
 
 export interface ProjectDetail extends ProjectItem {
   /**
-   * 项目参数
+   * Project parameters
    */
    content: string
 }

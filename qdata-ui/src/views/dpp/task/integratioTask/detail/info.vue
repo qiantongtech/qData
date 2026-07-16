@@ -66,7 +66,7 @@ const props = defineProps({
   },
 });
 
-// 公共字段
+// public fields
 const baseTable = [
   { key: "status", label: td('dpp.info.configStatus', '配置状态'), value: "" },
   { key: "crontab", label: td('dpp.info.scheduleCycle', '调度周期'), value: "" },
@@ -83,7 +83,7 @@ const baseTable = [
   { key: "taskType", label: td('dpp.info.executionEngine', '执行引擎'), value: "" },
 ];
 
-// Spark 字段
+// Spark field
 const sparkFields = [
   { key: "driverCores", label: td('dpp.info.driverCores', 'Driver核心数'), value: "" },
   { key: "driverMemory", label: td('dpp.info.driverMemory', 'Driver内存数'), value: "" },
@@ -92,7 +92,7 @@ const sparkFields = [
   { key: "executorCores", label: td('dpp.info.executorCores', 'Executor核心数'), value: "" },
 ];
 
-// Flink 字段
+// Flink fields
 const flinkFields = [
   { key: "jobManagerMemory", label: td('dpp.info.jobManagerMemory', 'JobManager内存数'), value: "" },
   { key: "taskManagerMemory", label: td('dpp.info.taskManagerMemory', 'TaskManager内存数'), value: "" },
@@ -101,7 +101,7 @@ const flinkFields = [
   { key: "parallelism", label: td('dpp.info.parallelism', '并行度'), value: "" },
 ];
 
-// 动态生成 fileDesc
+// Dynamically generate fileDesc
 const fileDesc = computed(() => {
   const type = props.dppEtlTaskDetail?.taskType;
   let table = [...baseTable];
@@ -114,7 +114,7 @@ const fileDesc = computed(() => {
   return table;
 });
 
-// 获取字段值
+// Get field value
 const getDescValue = (row) => {
   const detail = props.dppEtlTaskDetail || {};
   if (row.type === "time") {
@@ -125,7 +125,6 @@ const getDescValue = (row) => {
   return row.value !== null && row.value !== undefined && row.value !== "" ? row.value : "-";
 };
 const getSchedulerLabel = (value) => {
-  // 详情页只负责展示，把枚举值翻译成可读名称。
   return schedulerOptions.find((item) => item.value == value)?.label || value || "-";
 };
 </script>

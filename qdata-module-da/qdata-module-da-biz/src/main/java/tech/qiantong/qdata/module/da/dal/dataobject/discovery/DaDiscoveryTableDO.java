@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据发现库信息 DO 对象 DA_DISCOVERY_TABLE
+ * Data Discovery Table Info DO - DA_DISCOVERY_TABLE
  *
  * @author qdata
  * @date 2025-02-11
  */
 @Data
 @TableName(value = "DA_DISCOVERY_TABLE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_DISCOVERY_TABLE_seq")
 @Builder
 @NoArgsConstructor
@@ -44,34 +44,34 @@ public class DaDiscoveryTableDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 表描述 */
+    /** Table Comment */
     private String tableComment;
 
-    /** 数据量 */
+    /** Data Count */
     private Long dataCount;
 
-    /** 字段量 */
+    /** Field Count */
     private Long fieldCount;
 
-    /** 表结构标识 */
+    /** Table Structure Change Flag */
     private String changeFlag;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否忽略 */
+    /** Ignore Flag */
     private String ignoreFlag;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

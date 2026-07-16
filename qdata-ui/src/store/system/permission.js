@@ -23,7 +23,7 @@ import Layout from '@/layout/index';
 import ParentView from '@/components/ParentView';
 import InnerLink from '@/layout/components/InnerLink';
 
-// 匹配views里面所有的.vue文件
+// Match all .vue files in views
 const modules = import.meta.glob('./../../views/**/*.vue');
 
 const usePermissionStore = defineStore('permission', {
@@ -50,7 +50,7 @@ const usePermissionStore = defineStore('permission', {
         },
         generateRoutes(roles) {
             return new Promise((resolve) => {
-                // 向后端请求路由数据
+                // Request routing data from the backend
                 getRouters().then((res) => {
                     const sdata = JSON.parse(JSON.stringify(res.data));
                     const rdata = JSON.parse(JSON.stringify(res.data));
@@ -100,7 +100,7 @@ function setupRouteLang(route,lastRouter){
     }
 }
 
-// 遍历后台传来的路由字符串，转换为组件对象
+// Traverse the routing string sent from the background and convert it into a component object
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
     return asyncRouterMap.filter((route) => {
         if (type && route.children) {
@@ -117,7 +117,7 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
         }
 
         if (route.component) {
-            // Layout ParentView 组件特殊处理
+            // Special handling of Layout ParentView component
             if (route.component === 'Layout') {
                 route.component = Layout;
             } else if (route.component === 'ParentView') {
@@ -172,7 +172,7 @@ function filterChildren(childrenMap, lastRouter = false) {
     return children;
 }
 
-// 动态路由遍历，验证是否具备权限
+// Dynamic route traversal to verify whether permissions are available
 export function filterDynamicRoutes(routes) {
     const res = [];
     routes.forEach((route) => {

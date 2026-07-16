@@ -22,7 +22,7 @@ import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.dialect.DialectRegistry;
 
 /**
- * 方言工厂类
+ * Dialect factory class
  *
  * @author QianTongDC
  * @date 2022-11-14

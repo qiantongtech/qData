@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 标签管理Mapper接口
+ * Tag Management Mapper Interface
  *
  * @author qdata
  * @date 2025-07-11
@@ -38,10 +38,10 @@ import java.util.Set;
 public interface AttTagMapper extends BaseMapperX<AttTagDO> {
 
     default PageResult<AttTagDO> selectPage(AttTagPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time", "aeest_count"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttTagDO>()
                 .likeIfPresent(AttTagDO::getName, reqVO.getName())
                 .eqIfPresent(AttTagDO::getDescription, reqVO.getDescription())
@@ -54,19 +54,19 @@ public interface AttTagMapper extends BaseMapperX<AttTagDO> {
                 .eqIfPresent(AttTagDO::getCreateTime, reqVO.getCreateTime())
                 .likeIfPresent(AttTagDO::getCreateBy, reqVO.getCreateBy())
                 .notInIfPresent(AttTagDO::getId, reqVO.getIds())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttTagDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(),allowedColumns));
     }
 
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode old category code
+     * @param newCatCode new category code
+     * @return number of affected rows
      */
     default int updateCatCode(String oldCatCode, String newCatCode) {
         return this.update(

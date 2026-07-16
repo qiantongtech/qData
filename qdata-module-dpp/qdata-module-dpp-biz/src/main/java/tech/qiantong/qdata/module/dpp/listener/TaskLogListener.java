@@ -35,7 +35,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -54,20 +54,20 @@ public class TaskLogListener {
             key = {"ds.queue.taskInstance.log"},
             value = @Queue(value = "ds.queue.taskInstance.log", durable = "true", exclusive = "false", autoDelete = "false")))
     public void taskInstanceLogInsert(Map map, Channel channel, Message message) {
-        //任务实例id
+        //Task instance ID
         String taskInstanceId = String.valueOf(map.get("taskInstanceId"));
-        //工作流实例id
+        //Workflow instance ID
         String processInstanceId = String.valueOf(map.get("workflowInstanceId"));
-        //日志
+        //Log
         String logStr = String.valueOf(map.get("log"));
-        //处理日志
+        //Process log
         try {
             dppEtlNodeInstanceService.taskInstanceLogInsert(taskInstanceId, processInstanceId, logStr);
         } catch (Exception e) {
             log.error("任务实例日志插入异常:{}", e.getMessage());
         }
 
-        // 手动确认
+        // Manual acknowledgment
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

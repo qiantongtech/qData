@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 标签管理 Response VO 对象 ATT_TAG
+ * Tag Management Response VO ATT_TAG
  *
  * @author qdata
  * @date 2025-07-11

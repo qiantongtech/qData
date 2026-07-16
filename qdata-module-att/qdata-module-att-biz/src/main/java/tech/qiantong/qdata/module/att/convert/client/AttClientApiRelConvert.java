@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.client.AttClientApiRelDO;
 import java.util.List;
 
 /**
- * 应用API服务关联 Convert
+ * App API Service Association Convert
  *
  * @author FXB
  * @date 2025-08-21
@@ -38,29 +38,29 @@ public interface AttClientApiRelConvert {
     AttClientApiRelConvert INSTANCE = Mappers.getMapper(AttClientApiRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attClientApiRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attClientApiRelPageReqVO Request parameters
      * @return AttClientApiRelDO
      */
      AttClientApiRelDO convertToDO(AttClientApiRelPageReqVO attClientApiRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attClientApiRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attClientApiRelSaveReqVO Save request parameters
      * @return AttClientApiRelDO
      */
      AttClientApiRelDO convertToDO(AttClientApiRelSaveReqVO attClientApiRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attClientApiRelDO 实体对象
+     * Convert DO to RespVO
+     * @param attClientApiRelDO Entity object
      * @return AttClientApiRelRespVO
      */
      AttClientApiRelRespVO convertToRespVO(AttClientApiRelDO attClientApiRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attClientApiRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attClientApiRelDOList Entity object list
      * @return List<AttClientApiRelRespVO>
      */
      List<AttClientApiRelRespVO> convertToRespVOList(List<AttClientApiRelDO> attClientApiRelDOList);

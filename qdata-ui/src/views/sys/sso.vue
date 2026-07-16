@@ -59,22 +59,22 @@ export default {
     });
   },
   methods: {
-    // 检测code值
+    // Detect code value
     checkCode() {
       if (this.code != null && this.code !== '') {
-        // todo 使用授权码去获取Token
+        // todo Use authorization code to obtain Token
         codeLogin(this.code).then(res => {
           console.log("Token :" + res.msg)
 
-          // 调用 action 的登录方法
+          // Call the login method of action
           userStore.setToken(res.msg).then(() => {
             this.$router.push({path: this.fullPath === "" ? "/index" : this.fullPath})
           })
         }).catch(err => {
           console.log(err)
-          // 退出本系统的状态
+          // Exit the system status
           if (confirm(err)) {
-            // 执行注销逻辑
+            // Execute logout logic
             useUserStore().logOut().then(() => {
               location.href = '/index'
             })

@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.mc.service.task.IMcTaskService;
 
 import javax.annotation.Resource;
 
 /**
- * 采集任务执行器Controller
- * 用于DolphinScheduler回调执行采集任务
+ * Collection task executorController
+ * Used for DolphinScheduler callback to perform collection tasks
  *
  * @author qdata
  * @date 2026-05-11
@@ -30,20 +31,20 @@ public class McTaskExecutorController extends BaseController {
     private IMcTaskService mcTaskService;
 
     /**
-     * DolphinScheduler回调执行采集任务
+     * DolphinScheduler callback to perform collection tasks
      *
-     * @param id 任务ID
-     * @return 执行结果
+     * @param id task ID
+     * @return execution result
      */
     @PutMapping("/runExecuteTask/{id}")
     public CommonResult<String> runExecuteTask(@PathVariable("id") Long id) {
         try {
             mcTaskService.runDaDiscoveryTask(id);
-            return CommonResult.success("任务id:" + id + "执行成功");
+            return CommonResult.success(MessageUtils.message("mc.task.execute.success", id));
         } catch (NumberFormatException e) {
-            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(),"任务ID格式错误：" + id);
+            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.message("mc.task.execute.id.format.error", id));
         } catch (Exception e) {
-            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(),"任务执行失败：" + e.getMessage());
+            return CommonResult.error( GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.message("mc.task.execute.fail", e.getMessage()));
         }
     }
 }

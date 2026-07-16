@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 版本更新
+ * Version Update
  *
  * @author qknow
  */
@@ -23,12 +23,12 @@ import java.util.Map;
 @RequestMapping("/updater")
 public class UpdaterController extends BaseController {
 
-    /** 系统基础配置 */
+    /** System base config */
     @Autowired
     private AniviaConfig qdataConfig;
 
     /**
-     * 获取当前部署实例的版本
+     * Get current deployment instance version
      */
     @GetMapping("/getLocalVersion")
     public CommonResult<Map<String, Object>> getLocalVersion() {
@@ -39,24 +39,24 @@ public class UpdaterController extends BaseController {
     }
 
     /**
-     * 检查当前实例是否为最新版本
+     * Check if current instance is the latest version
      */
     @GetMapping("/getCurrentAppVersion")
     public CommonResult<VersionInfo> getCurrentAppVersion() {
-        // 获取本地版本信息
+        // Get local version info
         String currentVersion = qdataConfig.getVersion();
-        // 初始最新版本信息
+        // Initial latest version
         String latestVersion = "3.8.9";
-        // 是否需要更新
+        // Whether update is needed
         boolean needUpdate = true;
         try {
             String remoteUrl = "https://qdata-pro.qiantong.tech/prod-api/updater/getLocalVersion";
             HttpUtils.ResponseObject response = HttpUtils.sendGet(remoteUrl, null);
             if (response.getStatus() == 200) {
-                // 直接将body转换为Map处理
+                // Convert body to Map directly
                 Map<?, ?> responseMap = parseResponseBody(response.getBody());
                 if (responseMap != null) {
-                    // 提取版本信息
+                    // Extract version info
                     Object versionData = responseMap.get("data");
                     Object version;
                     if (versionData instanceof Map) {
@@ -71,7 +71,7 @@ public class UpdaterController extends BaseController {
                 }
             }
         } catch (Exception e) {
-            logger.error("检查版本失败", e);
+            logger.error("Version check failed", e);
         }
         VersionInfo versionInfo = new VersionInfo();
         versionInfo.setCurrentVersion(currentVersion);
@@ -81,7 +81,7 @@ public class UpdaterController extends BaseController {
     }
 
     /**
-     * 解析响应体为Map
+     * Parse response body to Map
      */
     private Map<?, ?> parseResponseBody(Object body) {
         if (body instanceof Map) {

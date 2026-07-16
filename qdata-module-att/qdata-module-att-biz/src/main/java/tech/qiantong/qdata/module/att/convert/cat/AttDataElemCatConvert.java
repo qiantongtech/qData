@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttDataElemCatDO;
 import java.util.List;
 
 /**
- * 数据元类目管理 Convert
+ * Data Element Category Management Convert
  *
  * @author qdata
  * @date 2025-01-20
@@ -38,29 +38,29 @@ public interface AttDataElemCatConvert {
     AttDataElemCatConvert INSTANCE = Mappers.getMapper(AttDataElemCatConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attDataElemCatPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attDataElemCatPageReqVO Request parameters
      * @return AttDataElemCatDO
      */
      AttDataElemCatDO convertToDO(AttDataElemCatPageReqVO attDataElemCatPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attDataElemCatSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attDataElemCatSaveReqVO Save request parameters
      * @return AttDataElemCatDO
      */
      AttDataElemCatDO convertToDO(AttDataElemCatSaveReqVO attDataElemCatSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attDataElemCatDO 实体对象
+     * Convert DO to RespVO
+     * @param attDataElemCatDO Entity object
      * @return AttDataElemCatRespVO
      */
      AttDataElemCatRespVO convertToRespVO(AttDataElemCatDO attDataElemCatDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attDataElemCatDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attDataElemCatDOList Entity object list
      * @return List<AttDataElemCatRespVO>
      */
      List<AttDataElemCatRespVO> convertToRespVOList(List<AttDataElemCatDO> attDataElemCatDOList);

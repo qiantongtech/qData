@@ -49,7 +49,7 @@ import ${packageName}.service.${moduleName}.I${ClassName}Service;
 #elseif($table.tree)
 #end
 /**
- * ${functionName}Service业务层处理
+ * ${functionName}Service business layer processing
  *
  * @author ${author}
  * @date ${datetime}
@@ -75,22 +75,22 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
 
     @Override
     public int update${ClassName}(${ClassName}SaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新${functionName}
+        // Update ${functionName}
         ${ClassName}DO updateObj = BeanUtils.toBean(updateReqVO, ${ClassName}DO.class);
         return ${className}Mapper.updateById(updateObj);
     }
     #if($table.crud || $table.sub)
     @Override
     public int remove${ClassName}(Collection<Long> idList) {
-        // 批量删除${functionName}
+        // Delete ${functionName} in batches
         return ${className}Mapper.deleteBatchIds(idList);
     }
     #elseif($table.tree)
     @Override
     public int remove${ClassName}(Long id) {
-        // 单独删除${functionName}
+        // Delete ${functionName} individually
         return ${className}Mapper.deleteById(id);
     }
     #end
@@ -112,7 +112,7 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
                 .collect(Collectors.toMap(
                         ${ClassName}DO::getId,
                         ${className}DO -> ${className}DO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
@@ -126,12 +126,12 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
 
     #if($table.crud || $table.sub)
         /**
-         * 导入${functionName}数据
+         * Import ${functionName} data
          *
-         * @param importExcelList ${functionName}数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList ${functionName}data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String import${ClassName}(List<${ClassName}RespVO> importExcelList, boolean isUpdateSupport, String operName) {

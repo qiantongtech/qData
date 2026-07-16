@@ -48,7 +48,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产字段Service业务层处理
+ * Data Asset Column Service Business Layer Processing
  *
  * @author lhs
  * @date 2025-01-21
@@ -69,7 +69,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
 
     @Override
     public AjaxResult getColumnByAssetId(DaAssetColumnPageReqVO pageReqVO) {
-        if (StringUtils.isEmpty(pageReqVO.getAssetId())) {//资产id不能为空
+        if (StringUtils.isEmpty(pageReqVO.getAssetId())) {//Asset ID cannot be empty
             return AjaxResult.error(MessageUtils.messageWithFallback("da.error.asset.id.empty", "资产id不能为空"));
         }
         List<DaAssetColumnDO> list = this.lambdaQuery()
@@ -139,7 +139,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
         if (daAssetDO == null) {
             throw new ServiceException("da.error.asset.notfound", "数据资产不存在");
         }
-        //维护数据元数据资产关联信息表信息
+        // Maintain data element asset relation info table
         DpDataElemAssetRelReqDTO dpDataElemAssetRelReqDTO = new DpDataElemAssetRelReqDTO();
         dpDataElemAssetRelReqDTO.setTableName(daAssetDO.getTableName());
         dpDataElemAssetRelReqDTO.setColumnName(updateReqVO.getColumnName());
@@ -148,27 +148,27 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
         dpDataElemAssetRelReqDTO.setElementIds(updateReqVO.getElementId());
         boolean b = iDpModelApiService.updateElementAssetRelation(dpDataElemAssetRelReqDTO);
 //        if(!b){
-//            throw new ServiceException("数据元和资产关系数据更新失败");
+//            throw new ServiceException("Data element and asset relation data update failed");
 //        }
-        //不是代码，将代码表关联id制空
+        // Not a code table, set the code table relation ID to null
         DaAssetColumnDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetColumnDO.class);
         if (StringUtils.isEmpty(updateObj.getDataElemCodeFlag()) || "0".equals(updateObj.getDataElemCodeFlag())) {
             updateObj.setDataElemCodeId(null);
         }
-        // 更新数据资产字段
+        // Update data asset column
         return daAssetColumnMapper.updateDaAssetColumn(updateObj);
     }
 
     @Override
     public int removeDaAssetColumn(Collection<Long> idList) {
-        // 批量删除数据资产字段
+        // Batch delete data asset columns
         return daAssetColumnMapper.deleteBatchIds(idList);
     }
 
     @Override
     public DaAssetColumnDO getDaAssetColumnById(Long id) {
         DaAssetColumnDO daAssetColumnDO = daAssetColumnMapper.selectById(id);
-        //查询数据元id
+        // Query data element id
         Set<Long> dpDataElemListByAssetIdApi = iDpModelApiService.getDpDataElemListByAssetIdApi(daAssetColumnDO.getId());
         daAssetColumnDO.setElementId(dpDataElemListByAssetIdApi);
         return daAssetColumnDO;
@@ -186,19 +186,19 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
                 .collect(Collectors.toMap(
                         DaAssetColumnDO::getId,
                         daAssetColumnDO -> daAssetColumnDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产字段数据
+     * Import data asset column data
      *
-     * @param importExcelList 数据资产字段数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset column data list
+     * @param isUpdateSupport Whether to update if already exists
+     * @param operName        Operator user
+     * @return Result
      */
     @Override
     public String importDaAssetColumn(List<DaAssetColumnRespVO> importExcelList, boolean isUpdateSupport, String operName) {

@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 操作状态
+ * Operating status
  *
  * @author qdata
  *
@@ -27,12 +27,12 @@ package tech.qiantong.qdata.common.enums;
 public enum BusinessStatus
 {
     /**
-     * 成功
+     * Success
      */
     SUCCESS,
 
     /**
-     * 失败
+     * Failed
      */
     FAIL,
 }

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.att.api.client.dto;
 import lombok.Data;
 
 /**
- * 应用管理 DTO 对象 ATT_CLIENT
+ * Application Management DTO ATT_CLIENT
  *
  * @author qdata
  * @date 2025-02-18
@@ -34,37 +34,37 @@ public class AttClientRespDTO {
     /** ID */
     private Long id;
 
-    /** 应用名称 */
+    /** App Name */
     private String name;
 
-    /** 应用类型 */
+    /** App Type */
     private String type;
 
-    /** 应用秘钥 */
+    /** App Secret */
     private String secret;
 
-    /** 主页地址 */
+    /** Homepage URL */
     private String homepageUrl;
 
-    /** 允许授权的url */
+    /** Allowed Authorization URL */
     private String allowUrl;
 
-    /** 同步地址 */
+    /** Sync URL */
     private String syncUrl;
 
-    /** 应用图标 */
+    /** App Logo */
     private String logo;
 
-    /** 应用描述 */
+    /** App Description */
     private String description;
 
-    /** 是否公开 */
+    /** Public Flag */
     private String publicFlag;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

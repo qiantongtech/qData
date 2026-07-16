@@ -33,7 +33,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 #end
 
 /**
- * ${functionName}对象 ${tableName}
+ * ${functionName} object ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -83,7 +83,7 @@ public class ${ClassName} extends ${Entity} {
 #end
 #end
 #if($table.sub)
-    /** $table.subTable.functionName信息 */
+    /** $table.subTable.functionName information */
     private List<${subClassName}> ${subclassName}List;
 
 #end

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-视频数据列表
+// Query data assets-video data list
 export function listDaAssetVideo(query) {
   return request({
     url: '/da/daAssetVideo/list',
@@ -27,7 +27,7 @@ export function listDaAssetVideo(query) {
   })
 }
 
-// 查询数据资产-视频数据详细
+// Query data assets-video data details
 export function getDaAssetVideo(id) {
   return request({
     url: '/da/daAssetVideo/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetVideo(id) {
   })
 }
 
-// 新增数据资产-视频数据
+// New data asset-video data
 export function addDaAssetVideo(data) {
   return request({
     url: '/da/daAssetVideo',
@@ -44,7 +44,7 @@ export function addDaAssetVideo(data) {
   })
 }
 
-// 修改数据资产-视频数据
+// Modify data assets-video data
 export function updateDaAssetVideo(data) {
   return request({
     url: '/da/daAssetVideo',
@@ -53,7 +53,7 @@ export function updateDaAssetVideo(data) {
   })
 }
 
-// 删除数据资产-视频数据
+// Delete data asset - video data
 export function delDaAssetVideo(id) {
   return request({
     url: '/da/daAssetVideo/' + id,

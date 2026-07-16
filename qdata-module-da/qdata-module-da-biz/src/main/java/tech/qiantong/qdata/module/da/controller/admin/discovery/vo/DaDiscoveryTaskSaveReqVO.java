@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据发现任务 创建/修改 Request VO DA_DISCOVERY_TASK
+ * Data Discovery Task Create/Update Request VO DA_DISCOVERY_TASK
  *
  * @author qdata
  * @date 2025-02-11
@@ -67,8 +67,8 @@ public class DaDiscoveryTaskSaveReqVO extends BaseEntity {
     @Schema(description = "联系人ID", example = "")
     private Long contactId;
 
-    /** 上次变化表数 */
-    @Schema(description = "上次变化表数")
+    /** Last changed table count */
+    @Schema(description = "Last changed table count")
     private Long lastTableCount;
 
     @Schema(description = "联系电话", example = "")
@@ -89,20 +89,20 @@ public class DaDiscoveryTaskSaveReqVO extends BaseEntity {
     @Schema(description = "最后执行时间", example = "")
     private Date lastExecuteTime;
 
-    /** 节点id */
-    @Schema(description = "节点id", example = "")
+    /** Node ID */
+    @Schema(description = "Node ID", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
-    @Schema(description = "节点编码", example = "")
+    /** Node code */
+    @Schema(description = "Node code", example = "")
     private String nodeCode;
 
-    /** 任务id */
-    @Schema(description = "任务id", example = "")
+    /** Task ID */
+    @Schema(description = "Task ID", example = "")
     private Long taskId;
 
-    /** 任务编码 */
-    @Schema(description = "任务编码", example = "")
+    /** Task code */
+    @Schema(description = "Task code", example = "")
     private String taskCode;
 
     @Schema(description = "备注", example = "")

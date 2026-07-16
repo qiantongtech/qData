@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Mybatis Plus 配置
+ * Mybatis Plus configuration
  *
  * @author qdata
  */
@@ -39,30 +39,30 @@ public class MybatisPlusConfig
     public MybatisPlusInterceptor mybatisPlusInterceptor()
     {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 分页插件
+        // Pagination plugin
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
-        // 乐观锁插件
+        // Optimistic lock plug-in
         interceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
-        // 阻断插件
+        // Block plug-ins
         interceptor.addInnerInterceptor(blockAttackInnerInterceptor());
         return interceptor;
     }
 
     /**
-     * 分页插件，自动识别数据库类型 https://baomidou.com/guide/interceptor-pagination.html
+     * Pagination plug-in, automatically identify database type https://baomidou.com/guide/interceptor-pagination.html
      */
     public PaginationInnerInterceptor paginationInnerInterceptor()
     {
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
-        // 如果有多数据源可以不配具体类型, 否则都建议配上具体的 DbType
+        // If there are multiple data sources, it is not necessary to match the specific type. Otherwise, it is recommended to match the specific DbType.
         // paginationInnerInterceptor.setDbType(DbType.MYSQL);
-        // 设置最大单页限制数量，默认 500 条，-1 不受限制
+        // Set the maximum number of items per page, default is 500, -1 is unlimited
         paginationInnerInterceptor.setMaxLimit(-1L);
         return paginationInnerInterceptor;
     }
 
     /**
-     * 乐观锁插件 https://baomidou.com/guide/interceptor-optimistic-locker.html
+     * Optimistic lock plug-in https://baomidou.com/guide/interceptor-optimistic-locker.html
      */
     public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor()
     {
@@ -70,7 +70,7 @@ public class MybatisPlusConfig
     }
 
     /**
-     * 如果是对全表的删除或更新操作，就会终止该操作 https://baomidou.com/guide/interceptor-block-attack.html
+     * If it is a delete or update operation on the entire table, the operation will be terminated https://baomidou.com/guide/interceptor-block-attack.html
      */
     public BlockAttackInnerInterceptor blockAttackInnerInterceptor()
     {

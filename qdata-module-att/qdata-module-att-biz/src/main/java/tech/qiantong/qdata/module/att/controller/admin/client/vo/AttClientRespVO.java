@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 应用管理 Response VO 对象 ATT_CLIENT
+ * App Management Response VO ATT_CLIENT
  *
  * @author qdata
  * @date 2025-02-18

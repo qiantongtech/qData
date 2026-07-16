@@ -14,7 +14,7 @@ import java.math.BigInteger;
 import java.util.Date;
 
 /**
- * 元数据字段信息 创建/修改 Request VO MC_COLUMN
+ * Metadata field information Create/modify Request VO MC_COLUMN
  *
  * @author qdata
  * @date 2026-02-11
@@ -118,16 +118,16 @@ public class McColumnSaveReqVO extends BaseEntity {
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
-    //字段变更内容
+    //Field changes
     @TableField(exist = false)
     private String updateMsg;
 
-    //字段变更类型 - 数字代码表示不同变更类型：1-字段注释变更, 2-字段类型变更, 3-字段长度变更, 4-字段精度变更, 5-字段小数位数变更, 6-字段默认值变更, 7-主键标识变更, 8-外键标识变更, 9-可空标识变更
+    //Field change type - Numeric code represents different change types: 1-Field comment change, 2-Field type change, 3-Field length change, 4-Field precision change, 5-Field decimal place change, 6-Field default value change, 7-Primary key identification change, 8-Foreign key identification change, 9-Nullable identification change
     @TableField(exist = false)
     private String updateType;
 
@@ -140,18 +140,18 @@ public class McColumnSaveReqVO extends BaseEntity {
     @Schema(description = "是否分区字段", example = "")
     private String partitionFlag;
 
-    //表的分区字段
+    //Table partition field
     @TableField(exist = false)
     private String tbPartitionKey;
 
     /**
-     * 字段规范
+     * Field specification
      */
     @Schema(description = "字段规范", example = "")
     private String columnStandard;
 
     /**
-     * 取值逻辑
+     * Value logic
      */
     @Schema(description = "取值逻辑", example = "")
     private String valueRule;
@@ -159,12 +159,12 @@ public class McColumnSaveReqVO extends BaseEntity {
     @Schema(description = "负责部门", example = "")
     private Long responsibleDept;
 
-    /** 责任人 */
+    /** Responsible person */
     @Schema(description = "责任人", example = "")
     private Long businessLeader;
 
     /**
-     * 是否唯一
+     * Is it unique?
      */
     @Schema(description = "是否唯一", example = "")
     private Long uniqueFlag;

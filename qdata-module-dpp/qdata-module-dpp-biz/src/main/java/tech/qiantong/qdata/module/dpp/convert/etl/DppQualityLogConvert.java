@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import java.util.List;
 
 /**
- * 数据质量日志 Convert
+ * Data Quality Log Convert
  *
  * @author qdata
  * @date 2025-07-19
@@ -38,29 +38,29 @@ public interface DppQualityLogConvert {
     DppQualityLogConvert INSTANCE = Mappers.getMapper(DppQualityLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dppQualityLogPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dppQualityLogPageReqVO request parameters
      * @return DppQualityLogDO
      */
      DppQualityLogDO convertToDO(DppQualityLogPageReqVO dppQualityLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dppQualityLogSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dppQualityLogSaveReqVO save request parameters
      * @return DppQualityLogDO
      */
      DppQualityLogDO convertToDO(DppQualityLogSaveReqVO dppQualityLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dppQualityLogDO 实体对象
+     * Convert DO to RespVO
+     * @param dppQualityLogDO entity object
      * @return DppQualityLogRespVO
      */
      DppQualityLogRespVO convertToRespVO(DppQualityLogDO dppQualityLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dppQualityLogDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dppQualityLogDOList entity object list
      * @return List<DppQualityLogRespVO>
      */
      List<DppQualityLogRespVO> convertToRespVOList(List<DppQualityLogDO> dppQualityLogDOList);

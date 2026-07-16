@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 调度日志操作处理
+ * Scheduling log operation processing
  *
  * @author qdata
  */
@@ -46,7 +46,7 @@ public class SysJobLogController extends BaseController
     private ISysJobLogService jobLogService;
 
     /**
-     * 查询定时任务调度日志列表
+     * Query the scheduled task scheduling log list
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:list')")
     @GetMapping("/list")
@@ -58,10 +58,10 @@ public class SysJobLogController extends BaseController
     }
 
     /**
-     * 导出定时任务调度日志列表
+     * Export scheduled task scheduling log list
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:export')")
-    @Log(title = "任务调度日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.sys.job.log.export", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysJobLog sysJobLog)
     {
@@ -71,7 +71,7 @@ public class SysJobLogController extends BaseController
     }
 
     /**
-     * 根据调度编号获取详细信息
+     * Get details based on schedule number
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:query')")
     @GetMapping(value = "/{jobLogId}")
@@ -82,10 +82,10 @@ public class SysJobLogController extends BaseController
 
 
     /**
-     * 删除定时任务调度日志
+     * Delete scheduled task scheduling logs
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:remove')")
-    @Log(title = "定时任务调度日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.sys.job.log.delete", businessType = BusinessType.DELETE)
     @DeleteMapping("/{jobLogIds}")
     public AjaxResult remove(@PathVariable Long[] jobLogIds)
     {
@@ -93,10 +93,10 @@ public class SysJobLogController extends BaseController
     }
 
     /**
-     * 清空定时任务调度日志
+     * Clear scheduled task scheduling logs
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:remove')")
-    @Log(title = "调度日志", businessType = BusinessType.CLEAN)
+    @Log(title = "log.op.title.sys.job.log.clean", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")
     public AjaxResult clean()
     {

@@ -19,11 +19,11 @@
 package tech.qiantong.qdata.common.database.constants.fieldtypes;
 
 /**
- * 人大金仓（Kingbase8）数据库支持的字段类型枚举
+ * Enumeration of field types supported by Kingbase8 database
  */
 public enum Kingbase8FieldType {
     VARCHAR("VARCHAR"),
-    // 根据Kingbase8实际支持情况，可决定是否包含VARCHAR2
+    // Depending on the actual support of Kingbase8, you can decide whether to include VARCHAR2
     VARCHAR2("VARCHAR2"),
     CHAR("CHAR"),
     NUMBER("NUMBER"),

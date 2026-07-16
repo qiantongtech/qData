@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 评测规则结果 Response VO 对象 DPP_EVALUATE_LOG
+ * Evaluation rule result Response VO object DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21

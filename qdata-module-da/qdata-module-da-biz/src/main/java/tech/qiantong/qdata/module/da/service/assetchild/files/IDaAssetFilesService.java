@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产-文件服务Service接口
+ * Data Asset - File Service Interface
  *
  * @author qdata
  * @date 2025-06-26
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface IDaAssetFilesService extends IService<DaAssetFilesDO> {
 
     /**
-     * 获得数据资产-文件服务分页列表
+     * Get data asset file service page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-文件服务分页列表
+     * @param pageReqVO page request
+     * @return data asset file service page list
      */
     PageResult<DaAssetFilesDO> getDaAssetFilesPage(DaAssetFilesPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产-文件服务
+     * Create data asset file service
      *
-     * @param createReqVO 数据资产-文件服务信息
-     * @return 数据资产-文件服务编号
+     * @param createReqVO data asset file service info
+     * @return data asset file service ID
      */
     Long createDaAssetFiles(DaAssetFilesSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产-文件服务
+     * Update data asset file service
      *
-     * @param updateReqVO 数据资产-文件服务信息
+     * @param updateReqVO data asset file service info
      */
     int updateDaAssetFiles(DaAssetFilesSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-文件服务
+     * Delete data asset file service
      *
-     * @param idList 数据资产-文件服务编号
+     * @param idList data asset file service ID list
      */
     int removeDaAssetFiles(Collection<Long> idList);
 
     /**
-     * 获得数据资产-文件服务详情
+     * Get data asset file service details
      *
-     * @param id 数据资产-文件服务编号
-     * @return 数据资产-文件服务
+     * @param id data asset file service ID
+     * @return data asset file service
      */
     DaAssetFilesDO getDaAssetFilesById(Long id);
 
     /**
-     * 获得全部数据资产-文件服务列表
+     * Get all data asset file service list
      *
-     * @return 数据资产-文件服务列表
+     * @return data asset file service list
      */
     List<DaAssetFilesDO> getDaAssetFilesList();
 
     /**
-     * 获得全部数据资产-文件服务 Map
+     * Get all data asset file service Map
      *
-     * @return 数据资产-文件服务 Map
+     * @return data asset file service Map
      */
     Map<Long, DaAssetFilesDO> getDaAssetFilesMap();
 
 
     /**
-     * 导入数据资产-文件服务数据
+     * Import data asset file service data
      *
-     * @param importExcelList 数据资产-文件服务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset file service data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetFiles(List<DaAssetFilesRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

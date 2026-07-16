@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询脱敏规则列表
+// Query the list of desensitization rules
 export function listDesensitizeRules(query) {
   return request({
     url: '/dg/desensitizeRules/list',
@@ -27,7 +27,7 @@ export function listDesensitizeRules(query) {
   })
 }
 
-// 查询脱敏规则详细
+// Query the details of desensitization rules
 export function getDesensitizeRules(id) {
   return request({
     url: '/dg/desensitizeRules/' + id,
@@ -35,7 +35,7 @@ export function getDesensitizeRules(id) {
   })
 }
 
-// 新增脱敏规则
+// Add desensitization rules
 export function addDesensitizeRules(data) {
   return request({
     url: '/dg/desensitizeRules',
@@ -44,7 +44,7 @@ export function addDesensitizeRules(data) {
   })
 }
 
-// 修改脱敏规则
+// Modify desensitization rules
 export function updateDesensitizeRules(data) {
   return request({
     url: '/dg/desensitizeRules',
@@ -53,7 +53,7 @@ export function updateDesensitizeRules(data) {
   })
 }
 
-// 删除脱敏规则
+// Delete desensitization rule
 export function delDesensitizeRules(id) {
   return request({
     url: '/dg/desensitizeRules/' + id,

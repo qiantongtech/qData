@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemRuleRelDO
 import java.util.List;
 
 /**
- * 数据元数据规则关联信息 Convert
+ * Data Element Rule Relationship Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DpDataElemRuleRelConvert {
     DpDataElemRuleRelConvert INSTANCE = Mappers.getMapper(DpDataElemRuleRelConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpDataElemRuleRelPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpDataElemRuleRelPageReqVO Request params
      * @return DpDataElemRuleRelDO
      */
      DpDataElemRuleRelDO convertToDO(DpDataElemRuleRelPageReqVO dpDataElemRuleRelPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpDataElemRuleRelSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpDataElemRuleRelSaveReqVO Save request params
      * @return DpDataElemRuleRelDO
      */
      DpDataElemRuleRelDO convertToDO(DpDataElemRuleRelSaveReqVO dpDataElemRuleRelSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpDataElemRuleRelDO 实体对象
+     * Convert DO to RespVO
+     * @param dpDataElemRuleRelDO Entity object
      * @return DpDataElemRuleRelRespVO
      */
      DpDataElemRuleRelRespVO convertToRespVO(DpDataElemRuleRelDO dpDataElemRuleRelDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpDataElemRuleRelDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpDataElemRuleRelDOList Entity object list
      * @return List<DpDataElemRuleRelRespVO>
      */
      List<DpDataElemRuleRelRespVO> convertToRespVOList(List<DpDataElemRuleRelDO> dpDataElemRuleRelDOList);

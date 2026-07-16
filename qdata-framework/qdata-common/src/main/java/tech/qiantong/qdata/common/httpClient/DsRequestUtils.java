@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:调度器请求工具
+ * Purpose: Scheduler request tool
  * </p>
  *
  * @author: FXB
@@ -40,8 +40,8 @@ import java.util.Map;
 @Component
 public class DsRequestUtils {
 
-    private static String baseUrl;//ds请求接口前缀
-    private static String token;//ds令牌
+    private static String baseUrl;//ds request interface prefix
+    private static String token;//ds token
 
     @Value("${ds.token}")
     public void setToken(String token) {
@@ -54,17 +54,17 @@ public class DsRequestUtils {
     }
 
     /**
-     * 请求方法
+     * Request method
      *
-     * @param url         接口路径
-     * @param method      请求方法
-     * @param body        body参数
-     * @param params      url拼接的参数 map
-     * @param resultClass 结果class
+     * @param url interface path
+     * @param method request method
+     * @param body body parameter
+     * @param params url splicing parameter map
+     * @param resultClass result class
      * @return
      */
     public static <T> T request(String url, String method, Object body, Map<String, Object> params, Class<T> resultClass) {
-        //拼接url参数
+        //Splicing url parameters
         if (params != null && !params.isEmpty()) {
             String paramsStr = HttpUtil.toParams(params);
             if (url.indexOf("?") > -1) {
@@ -74,40 +74,40 @@ public class DsRequestUtils {
             }
         }
 
-        //封装请求对象
+        //Encapsulate request object
         HttpRequest request = HttpUtil.createRequest(Method.valueOf(method), baseUrl + url)
                 .header("token", token);
         if (body != null) {
             request.body(JSON.toJSONString(body));
         }
-        //获取结果
+        //Get results
         HttpResponse response = request.execute();
         return JSON.parseObject(response.body(), resultClass);
     }
 
     /**
-     * 请求方法(表单传参)
+     * Request method (form parameter passing)
      *
-     * @param url         接口路径
-     * @param method      请求方法
+     * @param url interface path
+     * @param method request method
      * @param params      map
-     * @param resultClass 结果class
+     * @param resultClass result class
      * @return
      */
     public static <T> T requestForm(String url, String method, Map<String, Object> params, Class<T> resultClass) {
-        //封装请求对象
+        //Encapsulate request object
         HttpRequest request = HttpUtil.createRequest(Method.valueOf(method), baseUrl + url)
                 .header("token", token);
         if (params != null) {
             request.form(params);
         }
-        //获取结果
+        //Get results
         HttpResponse response = request.execute();
         return JSON.parseObject(response.body(), resultClass);
     }
 
     /**
-     * 替换项目编码
+     * Replace project encoding
      *
      * @param url
      * @param projectCode
@@ -118,7 +118,7 @@ public class DsRequestUtils {
     }
 
     /**
-     * 替换项目编码及id
+     * Replace project code and id
      *
      * @param url
      * @param projectCode
@@ -130,7 +130,7 @@ public class DsRequestUtils {
     }
 
     /**
-     * 替换项目编码及code
+     * Replace project encoding and code
      *
      * @param url
      * @param projectCode

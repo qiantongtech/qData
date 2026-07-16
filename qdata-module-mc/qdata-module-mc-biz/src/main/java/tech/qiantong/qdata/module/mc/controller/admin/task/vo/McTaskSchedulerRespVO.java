@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data integration scheduling information Response VO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16

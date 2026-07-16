@@ -50,12 +50,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 消息Controller
+ * Message Controller
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Tag(name = "消息")
+@Tag(name = "Message")
 @RestController
 @RequestMapping("/system/message")
 @Validated
@@ -65,7 +65,7 @@ public class MessageController extends BaseController {
     @Resource
     private WebSocketMessageServer webSocketMessageServer;
 
-    @Operation(summary = "查询消息列表")
+    @Operation(summary = "Query message list")
 //    @PreAuthorize("@ss.hasPermi('system:message:message:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<MessageRespVO>> list(MessagePageReqVO message) {
@@ -74,17 +74,17 @@ public class MessageController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, MessageRespVO.class));
     }
 
-    @Operation(summary = "导出消息列表")
+    @Operation(summary = "Export message list")
     @PreAuthorize("@ss.hasPermi('system:message:message:export')")
-    @Log(title = "消息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MessagePageReqVO message) {
         List<MessageDO> list = (List<MessageDO>) messageService.getMessagePage(message).getRows();
         ExcelUtil<MessageRespVO> util = new ExcelUtil<>(MessageRespVO.class);
-        util.exportExcel(response, MessageConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, MessageConvert.INSTANCE.convertToRespVOList(list), "Message Data");
     }
 
-    @Operation(summary = "获取消息详细信息")
+    @Operation(summary = "Get message details")
     @PreAuthorize("@ss.hasPermi('system:message:message:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<MessageRespVO> getInfo(@PathVariable("id") Long id) {
@@ -92,15 +92,15 @@ public class MessageController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(messageDO, MessageRespVO.class));
     }
 
-    @Operation(summary = "新增消息")
+    @Operation(summary = "Add message")
     @PreAuthorize("@ss.hasPermi('system:message:message:add')")
-    @Log(title = "消息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Boolean> add(@Valid @RequestBody MessageSaveReqVO message) {
         MessageDO messageDO = BeanUtils.toBean(message, MessageDO.class);
         messageDO.setCreatorId(getUserId());
         messageDO.setCreateBy(getNickName());
-        //通知在线用户有新消息
+        // Notify online users of new message
 //        MessagePageReqVO messagePageReqVO = new MessagePageReqVO();
 //        messagePageReqVO.setContent(messageDO.getContent());
 //        messagePageReqVO.setTitle(messageDO.getTitle());
@@ -110,16 +110,16 @@ public class MessageController extends BaseController {
         return CommonResult.toAjax(messageService.save(messageDO));
     }
 
-    @Operation(summary = "修改消息")
+    @Operation(summary = "Modify message")
     @PreAuthorize("@ss.hasPermi('system:message:message:edit')")
-    @Log(title = "消息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Boolean> edit(@Valid @RequestBody MessageSaveReqVO message) {
         MessageDO messageDO = BeanUtils.toBean(message, MessageDO.class);
         messageDO.setUpdatorId(getUserId());
         messageDO.setUpdateBy(getNickName());
         messageDO.setUpdateTime(new Date());
-        //通知在线用户有新消息
+        // Notify online users of new message
 //        MessagePageReqVO messagePageReqVO = new MessagePageReqVO();
 //        messagePageReqVO.setContent(messageDO.getContent());
 //        messagePageReqVO.setTitle(messageDO.getTitle());
@@ -129,9 +129,9 @@ public class MessageController extends BaseController {
         return CommonResult.toAjax(messageService.updateById(messageDO));
     }
 
-    @Operation(summary = "删除消息")
+    @Operation(summary = "Delete message")
     @PreAuthorize("@ss.hasPermi('system:message:message:remove')")
-    @Log(title = "消息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.message", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Boolean> remove(@PathVariable Long[] ids) {
         boolean b = messageService.removeByIds(Arrays.asList(ids));
@@ -139,7 +139,7 @@ public class MessageController extends BaseController {
         return CommonResult.toAjax(b);
     }
 
-    @Operation(summary = "查询消息数量")
+    @Operation(summary = "Query message count")
     //@PreAuthorize("@ss.hasPermi('system:message:message:list')")
     @GetMapping("/getNum")
     public CommonResult<Long> getNum(MessagePageReqVO message) {
@@ -148,19 +148,19 @@ public class MessageController extends BaseController {
         return CommonResult.success(messageService.getNum(message));
     }
 
-    @Operation(summary = "已读消息")
+    @Operation(summary = "Mark message as read")
     @PostMapping("/read")
     public CommonResult<Boolean> read(Long id) {
         return CommonResult.toAjax(messageService.read(id));
     }
 
-    @Operation(summary = "全部消息已读")
+    @Operation(summary = "Mark all messages as read")
     @PostMapping("/readAll")
     public CommonResult<Boolean> readAll(Integer category, Integer module) {
         return CommonResult.toAjax(messageService.readAll(getUserId(), category, module));
     }
 
-    @Operation(summary = "测试添加消息")
+    @Operation(summary = "Test add message")
     @GetMapping("/test")
     public CommonResult<Boolean> test(MessageSaveReqVO message, Long templateId, String context ) {
         Map<String, Object> map  = Maps.newLinkedHashMap();
@@ -168,13 +168,13 @@ public class MessageController extends BaseController {
         return CommonResult.success(messageService.send(templateId, message, map));
     }
 
-    @Operation(summary = "发送消息")
+    @Operation(summary = "Send message")
     @PostMapping("/send")
     public CommonResult<Boolean> send(@RequestBody @Valid MessageSend message) {
         MessageSaveReqVO messageSaveReqDTO = new MessageSaveReqVO();
         messageSaveReqDTO.setSenderId(1L);
         messageSaveReqDTO.setCreatorId(1L);
-        messageSaveReqDTO.setCreateBy("超级管理员");
+        messageSaveReqDTO.setCreateBy("Super Admin");
         messageSaveReqDTO.setReceiverId(message.getReceiverId());
         return CommonResult.success(messageService.send(message.getTemplateId(), messageSaveReqDTO, message.getData()));
     }

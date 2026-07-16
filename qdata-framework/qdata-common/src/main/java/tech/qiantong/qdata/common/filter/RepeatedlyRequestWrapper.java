@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 构建可重复读取inputStream的request
+ * Construct a request that can read inputStream repeatedly
  *
  * @author qdata
  */

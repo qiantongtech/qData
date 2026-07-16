@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据字段信息Controller
+ * Metadata field informationController
  *
  * @author qdata
  * @date 2026-02-11
@@ -62,7 +62,7 @@ public class McColumnController extends BaseController {
 
     @Operation(summary = "导出元数据字段信息列表")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
-    @Log(title = "元数据字段信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.column", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McColumnPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -79,7 +79,7 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "新增元数据字段信息")
-    @Log(title = "元数据字段信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.column", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Integer> add(@Valid @RequestBody @NotEmpty List<@Valid McColumnSaveReqVO> mdColumn) {
         for (McColumnSaveReqVO saveReqVO : mdColumn) {
@@ -92,7 +92,7 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "暂存字段元数据信息")
-    @Log(title = "暂存表元数据信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.column.draft", businessType = BusinessType.INSERT)
     @PostMapping("draft")
     public CommonResult<Integer> draft(@RequestBody @NotEmpty List<McColumnSaveReqVO> saveReqVO) {
         return CommonResult.toAjax(mcColumnService.saveDraft(saveReqVO));
@@ -100,7 +100,7 @@ public class McColumnController extends BaseController {
 
 
     @Operation(summary = "修改元数据字段信息")
-    @Log(title = "元数据字段信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.column", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McColumnSaveReqVO mcColumn) {
         mcColumn.setUpdatorId(getUserId());
@@ -111,7 +111,7 @@ public class McColumnController extends BaseController {
     }
 
     @Operation(summary = "停启用字段元数据")
-    @Log(title = "字段元数据", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.column.toggle", businessType = BusinessType.UPDATE)
     @PostMapping("toggle")
     public CommonResult<Integer> toggle(@Valid @RequestBody ToggleStatusVO param) {
         return CommonResult.toAjax(mcColumnService.toggle(param.getId(), param.getStatus()));
@@ -119,7 +119,7 @@ public class McColumnController extends BaseController {
 
 
     @Operation(summary = "删除元数据字段信息")
-    @Log(title = "元数据字段信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.column", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcColumnService.removeMcColumn(Arrays.asList(ids)));

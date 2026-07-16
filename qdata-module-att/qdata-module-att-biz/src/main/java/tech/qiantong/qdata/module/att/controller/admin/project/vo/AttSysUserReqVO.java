@@ -23,7 +23,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 
 /**
  * <P>
- * 用途:
+ * Purpose: 
  * </p>
  *
  * @author: FXB

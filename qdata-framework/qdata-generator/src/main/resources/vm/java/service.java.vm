@@ -30,7 +30,7 @@ import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
 #elseif($table.tree)
 #end
 /**
- * ${functionName}Service接口
+ * ${functionName}Service interface
  *
  * @author ${author}
  * @date ${datetime}
@@ -38,61 +38,61 @@ import ${packageName}.dal.dataobject.${moduleName}.${ClassName}DO;
 public interface I${ClassName}Service extends IService<${ClassName}DO> {
 
     /**
-     * 获得${functionName}分页列表
+     * Get ${functionName} paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return ${functionName}分页列表
+     * @param pageReqVO paging request
+     * @return ${functionName}paginated list
      */
     PageResult<${ClassName}DO> get${ClassName}Page(${ClassName}PageReqVO pageReqVO);
 
     /**
-     * 创建${functionName}
+     * Create ${functionName}
      *
-     * @param createReqVO ${functionName}信息
-     * @return ${functionName}编号
+     * @param createReqVO ${functionName} information
+     * @return ${functionName} number
      */
     Long create${ClassName}(${ClassName}SaveReqVO createReqVO);
 
     /**
-     * 更新${functionName}
+     * Update ${functionName}
      *
-     * @param updateReqVO ${functionName}信息
+     * @param updateReqVO ${functionName} information
      */
     int update${ClassName}(${ClassName}SaveReqVO updateReqVO);
 
     #if($table.crud || $table.sub)
     /**
-     * 删除${functionName}
+     * Delete ${functionName}
      *
-     * @param idList ${functionName}编号
+     * @param idList ${functionName}number
      */
     int remove${ClassName}(Collection<Long> idList);
     #elseif($table.tree)
     /**
-     * 删除${functionName}
+     * Delete ${functionName}
      *
-     * @param id ${functionName}编号
+     * @param id ${functionName} number
      */
     int remove${ClassName}(Long id);
     #end
 
     /**
-     * 获得${functionName}详情
+     * Get ${functionName} details
      *
-     * @param id ${functionName}编号
+     * @param id ${functionName} number
      * @return ${functionName}
      */
     ${ClassName}DO get${ClassName}ById(Long id);
 
     /**
-     * 获得全部${functionName}列表
+     * Get the list of all ${functionName}
      *
-     * @return ${functionName}列表
+     * @return ${functionName} list
      */
     List<${ClassName}DO> get${ClassName}List();
 
     /**
-     * 获得全部${functionName} Map
+     * Get all ${functionName} Map
      *
      * @return ${functionName} Map
      */
@@ -100,22 +100,22 @@ public interface I${ClassName}Service extends IService<${ClassName}DO> {
 
     #if($table.tree)
     /**
-     * 是否存在${functionName}子节点
+     * Whether there is a ${functionName} child node
      *
      * @param id ${functionName}id
-     * @return 结果 true 存在 false 不存在
+     * @return result true exists false does not exist
      */
     boolean hasChildBy${ClassName}Id(Long id);
     #end
 
     #if($table.crud || $table.sub)
     /**
-     * 导入${functionName}数据
+     * Import ${functionName} data
      *
-     * @param importExcelList ${functionName}数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList ${functionName}data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String import${ClassName}(List<${ClassName}RespVO> importExcelList, boolean isUpdateSupport, String operName);
     #end

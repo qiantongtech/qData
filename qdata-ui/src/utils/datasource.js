@@ -16,7 +16,7 @@
  * See the LICENSE file in the project root for full license information.
  */
 
-// 数据源配置表 (图标 + 标签类型)
+// Data source configuration table (icon + label type)
 const DATASOURCE_CONFIG = {
   DM: { icon: "datasource/img-dm.png" },
   DM8: { icon: "datasource/img-dm.png" },
@@ -46,9 +46,9 @@ const DATASOURCE_CONFIG = {
 };
 
 /**
- * 获取数据源图标
- * @param {string} type 数据源类型
- * @returns {string} 图标URL
+ * Get data source icon
+ * @param {string} type data source type
+ * @returns {string} Icon URL
  */
 export const getDatasourceIcon = (type) => {
   if (!type) return "";
@@ -56,18 +56,18 @@ export const getDatasourceIcon = (type) => {
   const config = DATASOURCE_CONFIG[key];
   if (!config || !config.icon) return "";
 
-  // 使用相对路径以确保 Vite 能正确解析动态 URL
+  // Use relative paths to ensure Vite can correctly resolve dynamic URLs
   // src/utils/datasource.js -> src/assets/images/common/
   return new URL(`../assets/images/common/${config.icon}`, import.meta.url).href;
 };
 
 /**
- * 获取数据源标签类型
- * @param {string} type 数据源类型
- * @returns {string} 标签类型 (info, warning, success, etc.)
+ * Get data source label type
+ * @param {string} type data source type
+ * @returns {string} tag type (info, warning, success, etc.)
  */
 export const getDatasourceTagType = (type) => {
-  if (!type) return "success"; // 默认返回 success
+  if (!type) return "success"; // Returns success by default
   const key = type.toUpperCase();
   const config = DATASOURCE_CONFIG[key];
   return (config && config.tagType) || "success";

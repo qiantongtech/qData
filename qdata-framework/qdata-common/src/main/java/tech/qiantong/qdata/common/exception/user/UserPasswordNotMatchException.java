@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.user;
 
 /**
- * 用户密码不正确或不符合规范异常类
+ * The user password is incorrect or does not comply with the specification exception class
  *
  * @author qdata
  */

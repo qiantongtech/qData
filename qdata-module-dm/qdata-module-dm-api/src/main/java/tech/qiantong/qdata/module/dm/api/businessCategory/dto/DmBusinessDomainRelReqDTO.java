@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dm.api.businessCategory.dto;
 import lombok.Data;
 
 /**
- * 业务分类数据域关联关系 DTO 对象 DM_BUSINESS_DOMAIN_REL
+ * Business Category Data Domain Relation DTO - DM_BUSINESS_DOMAIN_REL
  *
  * @author qdata
  * @date 2026-04-12
@@ -34,28 +34,28 @@ public class DmBusinessDomainRelReqDTO {
     /** ID */
     private Long id;
 
-    /** 业务分类ID */
+    /** Business Category ID */
     private Long businessCategoryId;
 
-    /** 数据域ID */
+    /** Data Domain ID */
     private Long dataDomainId;
 
-    /** 业务分类名称 */
+    /** Business Category Name */
     private String businessCategoryName;
 
-    /** 数据域名称 */
+    /** Data Domain Name */
     private String dataDomainName;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
 

@@ -42,7 +42,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeUserR
 import tech.qiantong.qdata.module.dg.dal.mapper.whitelist.DgDesensitizeUserRelMapper;
 import tech.qiantong.qdata.module.dg.service.whitelist.IDgDesensitizeUserRelService;
 /**
- * 脱敏白名单与用户关联关系Service业务层处理
+ * Desensitize Whitelist User Relationship Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-09
@@ -68,15 +68,15 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
 
     @Override
     public int updateDgDesensitizeUserRel(DgDesensitizeUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏白名单与用户关联关系
+        // Update desensitize whitelist user relationship
         DgDesensitizeUserRelDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeUserRelDO.class);
         return dgDesensitizeUserRelMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeUserRel(Collection<Long> idList) {
-        // 批量删除脱敏白名单与用户关联关系
+        // Batch delete desensitize whitelist user relationships
         return dgDesensitizeUserRelMapper.deleteBatchIds(idList);
     }
 
@@ -97,24 +97,24 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
                 .collect(Collectors.toMap(
                         DgDesensitizeUserRelDO::getId,
                         dgDesensitizeUserRelDO -> dgDesensitizeUserRelDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏白名单与用户关联关系数据
+         * Import desensitize whitelist user relationship data
          *
-         * @param importExcelList 脱敏白名单与用户关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize whitelist user relationship data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeUserRel(List<DgDesensitizeUserRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -133,16 +133,16 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
                                 dgDesensitizeUserRelMapper.updateById(dgDesensitizeUserRelDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                        "数据更新成功，ID为 " + dgDesensitizeUserRelId + " 的脱敏白名单与用户关联关系记录。", dgDesensitizeUserRelId, "脱敏白名单与用户关联关系"));
+                                        "Data update successful, Desensitize Whitelist user relationship record with ID " + dgDesensitizeUserRelId + ".", dgDesensitizeUserRelId, "Desensitize Whitelist user relationship"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                        "数据更新失败，ID为 " + dgDesensitizeUserRelId + " 的脱敏白名单与用户关联关系记录不存在。", dgDesensitizeUserRelId, "脱敏白名单与用户关联关系"));
+                                        "Data update failed, Desensitize Whitelist user relationship record with ID " + dgDesensitizeUserRelId + " does not exist.", dgDesensitizeUserRelId, "Desensitize Whitelist user relationship"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, the ID of a record does not exist."));
                         }
                     } else {
                         QueryWrapper<DgDesensitizeUserRelDO> queryWrapper = new QueryWrapper<>();
@@ -152,17 +152,17 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
                             dgDesensitizeUserRelMapper.insert(dgDesensitizeUserRelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                    "数据插入成功，ID为 " + dgDesensitizeUserRelId + " 的脱敏白名单与用户关联关系记录。", dgDesensitizeUserRelId, "脱敏白名单与用户关联关系"));
+                                    "Data insert successful, Desensitize Whitelist user relationship record with ID " + dgDesensitizeUserRelId + ".", dgDesensitizeUserRelId, "Desensitize Whitelist user relationship"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                    "数据插入失败，ID为 " + dgDesensitizeUserRelId + " 的脱敏白名单与用户关联关系记录已存在。", dgDesensitizeUserRelId, "脱敏白名单与用户关联关系"));
+                                    "Data insert failed, Desensitize Whitelist user relationship record with ID " + dgDesensitizeUserRelId + " already exists.", dgDesensitizeUserRelId, "Desensitize Whitelist user relationship"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -171,12 +171,12 @@ public class DgDesensitizeUserRelServiceImpl  extends ServiceImpl<DgDesensitizeU
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records have incorrect format. Errors as follows:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations, all data has been imported successfully! A total of " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

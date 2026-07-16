@@ -111,7 +111,7 @@
       @pagination="getList"
   />
 
-  <!-- {{ td('common..pleaseEnter') + '内容' }} -->
+  <!-- {{ td('common..pleaseEnter') + 'content' }} -->
   <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
     <template #header="{ close, titleId, titleClass }">
           <span role="heading" aria-level="2" class="el-dialog__title">
@@ -329,7 +329,7 @@
     </template>
   </el-dialog>
 
-  <!-- ${functionName}详情对话框 -->
+  <!-- ${functionName} details dialog -->
   <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
     <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -540,7 +540,7 @@ const { proxy } = getCurrentInstance();
       const ${subclassName}List = ref([]);
       #end
 
-  // 列显隐信息
+  // Show hidden information
   const columns = ref([
       #foreach($column in $columns)
         { key: $foreach.index, label: "td('${controllerPrefix}.${moduleName}.column.${column.javaField}')", visible: true }#if($foreach.hasNext),#end
@@ -597,7 +597,7 @@ const { proxy } = getCurrentInstance();
 
   const { queryParams, form, ${businessName}Detail, rules } = toRefs(data);
 
-  /** 查询${functionName}列表 */
+  /** Query ${functionName} list */
   function getList() {
     loading.value = true;
       #foreach ($column in $columns)
@@ -622,14 +622,14 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  // 取消按钮
+  // Cancel button
   function cancel() {
     open.value = false;
     openDetail.value = false;
     reset();
   }
 
-  // 表单重置
+  // Form reset
   function reset() {
     form.value = {
         #foreach ($column in $columns)
@@ -646,13 +646,13 @@ const { proxy } = getCurrentInstance();
     proxy.resetForm("${businessName}Ref");
   }
 
-  /** 搜索按钮操作 */
+  /** Search button operation */
   function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
   }
 
-  /** 重置按钮操作 */
+  /** Reset button operation */
   function resetQuery() {
       #foreach ($column in $columns)
           #if($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -664,7 +664,7 @@ const { proxy } = getCurrentInstance();
     handleQuery();
   }
 
-  // 多选框选中数据
+  // Multiple selection box selected data
   function handleSelectionChange(selection) {
     ids.value = selection.map(item => item.${pkColumn.javaField});
     single.value = selection.length != 1;
@@ -672,21 +672,21 @@ const { proxy } = getCurrentInstance();
   }
 
 
-  /** 排序触发事件 */
+  /** Sorting trigger event */
   function handleSortChange(column, prop, order) {
     queryParams.value.orderByColumn = column.prop;
     queryParams.value.isAsc = column.order;
     getList();
   }
 
-  /** 新增按钮操作 */
+  /** Add button operation */
   function handleAdd() {
     reset();
     open.value = true;
     title.value = td('${controllerPrefix}.${moduleName}.title.add');
   }
 
-  /** 修改按钮操作 */
+  /** Modify button operation */
   function handleUpdate(row) {
     reset();
     const _${pkColumn.javaField} = row.${pkColumn.javaField} || ids.value
@@ -706,7 +706,7 @@ const { proxy } = getCurrentInstance();
   }
 
 
-  /** 详情按钮操作 */
+  /** Details button operation */
   function handleDetail(row) {
     reset();
     const _${pkColumn.javaField} = row.${pkColumn.javaField} || ids.value
@@ -725,7 +725,7 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  /** 提交按钮 */
+  /** Submit button */
   function submitForm() {
     proxy.#[[$]]#refs["${businessName}Ref"].validate(valid => {
       if (valid) {
@@ -766,7 +766,7 @@ const { proxy } = getCurrentInstance();
     });
   }
 
-  /** 删除按钮操作 */
+  /** Delete button operation */
   function handleDelete(row) {
     const _${pkColumn.javaField}s = row.${pkColumn.javaField} || ids.value;
     proxy.#[[$modal]]#.confirm(td('${controllerPrefix}.${moduleName}.message.confirmDelete') + '"' + _${pkColumn.javaField}s + '"').then(function() {
@@ -778,12 +778,12 @@ const { proxy } = getCurrentInstance();
   }
 
   #if($table.sub)
-  /** ${subTable.functionName}序号 */
+  /** ${subTable.functionName} serial number */
   function row${subClassName}Index({ row, rowIndex }) {
     row.index = rowIndex + 1;
   }
 
-  /** ${subTable.functionName}添加按钮操作 */
+  /** ${subTable.functionName}Add button operation */
   function handleAdd${subClassName}() {
     let obj = {};
     #foreach($column in $subTable.columns)
@@ -795,7 +795,7 @@ const { proxy } = getCurrentInstance();
     ${subclassName}List.value.push(obj);
   }
 
-  /** ${subTable.functionName}删除按钮操作 */
+  /** ${subTable.functionName} delete button operation */
   function handleDelete${subClassName}() {
     if (checked${subClassName}.value.length == 0) {
       proxy.#[[$modal]]#.msgError(td('common.message.selectRecord'));
@@ -808,13 +808,13 @@ const { proxy } = getCurrentInstance();
     }
   }
 
-  /** 复选框选中数据 */
+  /** Check box selected data */
   function handle${subClassName}SelectionChange(selection) {
     checked${subClassName}.value = selection.map(item => item.index)
   }
 
   #end
-  /** 导出按钮操作 */
+  /** Export button operation */
   function handleExport() {
     proxy.download('${controllerPrefix}/${businessName}/export', {
       ...queryParams.value

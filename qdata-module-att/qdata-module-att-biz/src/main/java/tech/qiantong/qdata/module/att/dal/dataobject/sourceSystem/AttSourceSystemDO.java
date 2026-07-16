@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 来源系统 DO 对象 ATT_SOURCE_SYSTEM
+ * Source System DO ATT_SOURCE_SYSTEM
  *
  * @author qdata
  * @date 2026-04-03
  */
 @Data
 @TableName(value = "ATT_SOURCE_SYSTEM")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_SOURCE_SYSTEM_seq")
 @Builder
 @NoArgsConstructor
@@ -44,36 +44,36 @@ public class AttSourceSystemDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 系统名称 */
+    /** System Name */
     private String name;
 
-    /** 系统类型 */
+    /** System Type */
     private String type;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 负责人 */
+    /** Responsible Person */
     private String responsiblePerson;
 
-    /** 负责人名称 */
+    /** Responsible Person Name */
     @TableField(exist = false)
     private String responsiblePersonName;
 
-    /** 对接人 */
+    /** Contact Person */
     private String contactPerson;
-    /** 对接人名称 */
+    /** Contact Person Name */
     @TableField(exist = false)
     private String contactPersonName;
 
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     @TableLogic
     private Boolean delFlag;
 

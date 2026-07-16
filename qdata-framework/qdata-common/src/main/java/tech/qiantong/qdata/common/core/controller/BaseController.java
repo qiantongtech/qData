@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * web层通用数据处理
+ * Web layer general data processing
  *
  * @author qdata
  */
@@ -50,12 +50,12 @@ public class BaseController
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 将前台传递过来的日期格式的字符串，自动转化为Date类型
+     * Automatically convert the date format string passed from the front desk to the Date type
      */
     @InitBinder
     public void initBinder(WebDataBinder binder)
     {
-        // Date 类型转换
+        // Date type conversion
         binder.registerCustomEditor(Date.class, new PropertyEditorSupport()
         {
             @Override
@@ -67,7 +67,7 @@ public class BaseController
     }
 
     /**
-     * 设置请求分页数据
+     * Set request paging data
      */
     protected void startPage()
     {
@@ -75,7 +75,7 @@ public class BaseController
     }
 
     /**
-     * 设置请求排序数据
+     * Set request sort data
      */
     protected void startOrderBy()
     {
@@ -88,7 +88,7 @@ public class BaseController
     }
 
     /**
-     * 清理分页的线程变量
+     * Clean up paged thread variables
      */
     protected void clearPage()
     {
@@ -96,7 +96,7 @@ public class BaseController
     }
 
     /**
-     * 响应请求分页数据
+     * Response to request paginated data
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected TableDataInfo getDataTable(List<?> list)
@@ -110,7 +110,7 @@ public class BaseController
     }
 
     /**
-     * 返回成功
+     * Return success
      */
     public AjaxResult success()
     {
@@ -118,7 +118,7 @@ public class BaseController
     }
 
     /**
-     * 返回失败消息
+     * Return failure message
      */
     public AjaxResult error()
     {
@@ -126,7 +126,7 @@ public class BaseController
     }
 
     /**
-     * 返回成功消息
+     * Return success message
      */
     public AjaxResult success(String message)
     {
@@ -134,7 +134,7 @@ public class BaseController
     }
 
     /**
-     * 返回成功消息
+     * Return success message
      */
     public AjaxResult success(Object data)
     {
@@ -142,7 +142,7 @@ public class BaseController
     }
 
     /**
-     * 返回失败消息
+     * Return failure message
      */
     public AjaxResult error(String message)
     {
@@ -150,7 +150,7 @@ public class BaseController
     }
 
     /**
-     * 返回警告消息
+     * Return warning message
      */
     public AjaxResult warn(String message)
     {
@@ -158,10 +158,10 @@ public class BaseController
     }
 
     /**
-     * 响应返回结果
+     * Response return result
      *
-     * @param rows 影响行数
-     * @return 操作结果
+     * @param rows affects the number of rows
+     * @return operation result
      */
     protected AjaxResult toAjax(int rows)
     {
@@ -169,10 +169,10 @@ public class BaseController
     }
 
     /**
-     * 响应返回结果
+     * Response return result
      *
-     * @param result 结果
-     * @return 操作结果
+     * @param result result
+     * @return operation result
      */
     protected AjaxResult toAjax(boolean result)
     {
@@ -180,7 +180,7 @@ public class BaseController
     }
 
     /**
-     * 页面跳转
+     * Page jump
      */
     public String redirect(String url)
     {
@@ -188,7 +188,7 @@ public class BaseController
     }
 
     /**
-     * 获取用户缓存信息
+     * Get user cache information
      */
     public LoginUser getLoginUser()
     {
@@ -196,7 +196,7 @@ public class BaseController
     }
 
     /**
-     * 获取登录用户id
+     * Get login user id
      */
     public Long getUserId()
     {
@@ -204,7 +204,7 @@ public class BaseController
     }
 
     /**
-     * 获取登录部门id
+     * Get login department id
      */
     public Long getDeptId()
     {
@@ -212,7 +212,7 @@ public class BaseController
     }
 
     /**
-     * 获取登录用户名
+     * Get login username
      */
     public String getUsername()
     {
@@ -220,7 +220,7 @@ public class BaseController
     }
 
     /**
-     * 获取登录人姓名
+     * Get the login name
      */
     public String getNickName()
     {

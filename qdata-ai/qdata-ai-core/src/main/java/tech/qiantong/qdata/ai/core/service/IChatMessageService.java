@@ -27,7 +27,7 @@ import tech.qiantong.qdata.ai.core.vo.ChatMessageSendRespVO;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -37,7 +37,7 @@ public interface IChatMessageService {
     Flux<ChatMessageSendRespVO> sendChatMessageStream(ChatMessageSendReqVO sendReqVO, Long userId);
 
     /**
-     * 导出明细数据
+     * Export detailed data
      *
      * @param response
      * @param exportDetailDataReqVO

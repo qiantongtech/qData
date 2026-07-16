@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 评测规则结果 创建/修改 Request VO DPP_EVALUATE_LOG
+ * Evaluation rule results Create/Modify Request VO DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21
@@ -103,7 +103,7 @@ public class DppEvaluateLogSaveReqVO extends BaseEntity {
         this.ruleDescription = rule.getRuleDescription();
         this.taskLogId = rule.getTaskLogId() == null ? null : String.valueOf(rule.getTaskLogId());
         this.evaluateId = rule.getEvaluateId() == null ? null : String.valueOf(rule.getEvaluateId());
-        this.checkDate = new Date(); // 默认当前时间
+        this.checkDate = new Date(); // Default current time
 
         Map<String, Object> config = rule.getConfig();
 //        config.put("","");

@@ -17,7 +17,7 @@
  */
 
 /**
- * 渲染内容
+ * render content
  * @param content
  * @returns {*|string}
  */
@@ -48,14 +48,14 @@ export const getFileFormat = (filename) => {
     if (!filename){
         return  ''
     }
-    // 获取最后一个点的位置
+    // Get the position of the last point
     const lastDotIndex = filename.lastIndexOf('.');
 
-    // 如果没有点或点是第一个字符，返回空字符串
+    // If there is no dot or dot is the first character, returns an empty string
     if (lastDotIndex === -1 || lastDotIndex === 0) {
         return '';
     }
 
-    // 提取扩展名并转为小写
+    // Extract extension and convert to lower case
     return filename.slice(lastDotIndex + 1).toLowerCase();
 }

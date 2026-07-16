@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js';
 
-// 获取路由
+// Get route
 export const getRouters = () => {
     return request({
         url: '/getRouters',
@@ -26,7 +26,7 @@ export const getRouters = () => {
     });
 };
 
-// 获取路由
+// Get route
 export const getRoutersDpp = (id) => {
     return request({
         url: '/getRoutersDpp/' + id,

@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 调度任务信息操作处理
+ * Scheduling task information operation processing
  *
  * @author qdata
  */
@@ -51,7 +51,7 @@ public class SysJobController extends BaseController
     private ISysJobService jobService;
 
     /**
-     * 查询定时任务列表
+     * Query scheduled task list
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:list')")
     @GetMapping("/list")
@@ -63,10 +63,10 @@ public class SysJobController extends BaseController
     }
 
     /**
-     * 导出定时任务列表
+     * Export scheduled task list
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:export')")
-    @Log(title = "定时任务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysJob sysJob)
     {
@@ -76,7 +76,7 @@ public class SysJobController extends BaseController
     }
 
     /**
-     * 获取定时任务详细信息
+     * Get scheduled task details
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:query')")
     @GetMapping(value = "/{jobId}")
@@ -86,10 +86,10 @@ public class SysJobController extends BaseController
     }
 
     /**
-     * 新增定时任务
+     * Add a new scheduled task
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:add')")
-    @Log(title = "定时任务", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SysJob job) throws SchedulerException, TaskException
     {
@@ -115,17 +115,17 @@ public class SysJobController extends BaseController
         }
 //        else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
 //        {
-//            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+// return error("New task'" + job.getJobName() + "'Failed, the target string is not in the whitelist");
 //        }
         job.setCreateBy(getUsername());
         return toAjax(jobService.insertJob(job));
     }
 
     /**
-     * 修改定时任务
+     * Modify scheduled tasks
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:edit')")
-    @Log(title = "定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysJob job) throws SchedulerException, TaskException
     {
@@ -151,17 +151,17 @@ public class SysJobController extends BaseController
         }
 //        else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
 //        {
-//            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+// return error("Modify task'" + job.getJobName() + "'Failed, the target string is not in the whitelist");
 //        }
         job.setUpdateBy(getUsername());
         return toAjax(jobService.updateJob(job));
     }
 
     /**
-     * 定时任务状态修改
+     * Scheduled task status modification
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:changeStatus')")
-    @Log(title = "定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysJob job) throws SchedulerException
     {
@@ -171,10 +171,10 @@ public class SysJobController extends BaseController
     }
 
     /**
-     * 定时任务立即执行一次
+     * Scheduled tasks are executed immediately
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:changeStatus')")
-    @Log(title = "定时任务", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.UPDATE)
     @PutMapping("/run")
     public AjaxResult run(@RequestBody SysJob job) throws SchedulerException
     {
@@ -183,10 +183,10 @@ public class SysJobController extends BaseController
     }
 
     /**
-     * 删除定时任务
+     * Delete scheduled tasks
      */
     @PreAuthorize("@ss.hasPermi('monitor:job:remove')")
-    @Log(title = "定时任务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.sys.job", businessType = BusinessType.DELETE)
     @DeleteMapping("/{jobIds}")
     public AjaxResult remove(@PathVariable Long[] jobIds) throws SchedulerException, TaskException
     {

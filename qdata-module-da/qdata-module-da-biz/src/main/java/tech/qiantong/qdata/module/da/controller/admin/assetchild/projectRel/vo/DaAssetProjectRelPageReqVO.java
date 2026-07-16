@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据资产与项目关联关系 Request VO 对象 DA_ASSET_PROJECT_REL
+ * Data Asset and Project Relationship Request VO DA_ASSET_PROJECT_REL
  *
  * @author qdata
  * @date 2025-04-18

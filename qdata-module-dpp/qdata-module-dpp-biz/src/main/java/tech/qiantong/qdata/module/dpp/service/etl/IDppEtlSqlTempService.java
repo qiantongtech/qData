@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成SQL模版Service接口
+ * Data Integration SQL Template Service Interface
  *
  * @author FXB
  * @date 2025-06-25
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface IDppEtlSqlTempService extends IService<DppEtlSqlTempDO> {
 
     /**
-     * 获得数据集成SQL模版分页列表
+     * Get data integration SQL template pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成SQL模版分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration SQL template pagination list
      */
     PageResult<DppEtlSqlTempDO> getDppEtlSqlTempPage(DppEtlSqlTempPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成SQL模版
+     * Create data integration SQL template
      *
-     * @param createReqVO 数据集成SQL模版信息
-     * @return 数据集成SQL模版编号
+     * @param createReqVO Data integration SQL template info
+     * @return Data integration SQL template ID
      */
     Long createDppEtlSqlTemp(DppEtlSqlTempSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成SQL模版
+     * Update data integration SQL template
      *
-     * @param updateReqVO 数据集成SQL模版信息
+     * @param updateReqVO Data integration SQL template info
      */
     int updateDppEtlSqlTemp(DppEtlSqlTempSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成SQL模版
+     * Delete data integration SQL template
      *
-     * @param idList 数据集成SQL模版编号
+     * @param idList Data integration SQL template ID list
      */
     int removeDppEtlSqlTemp(Collection<Long> idList);
 
     /**
-     * 获得数据集成SQL模版详情
+     * Get data integration SQL template detail
      *
-     * @param id 数据集成SQL模版编号
-     * @return 数据集成SQL模版
+     * @param id Data integration SQL template ID
+     * @return Data integration SQL template
      */
     DppEtlSqlTempDO getDppEtlSqlTempById(Long id);
 
     /**
-     * 获得全部数据集成SQL模版列表
+     * Get all data integration SQL template list
      *
-     * @return 数据集成SQL模版列表
+     * @return Data integration SQL template list
      */
     List<DppEtlSqlTempDO> getDppEtlSqlTempList();
 
     /**
-     * 获得全部数据集成SQL模版 Map
+     * Get all data integration SQL template Map
      *
-     * @return 数据集成SQL模版 Map
+     * @return Data integration SQL template Map
      */
     Map<Long, DppEtlSqlTempDO> getDppEtlSqlTempMap();
 
 
     /**
-     * 导入数据集成SQL模版数据
+     * Import data integration SQL template data
      *
-     * @param importExcelList 数据集成SQL模版数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration SQL template data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlSqlTemp(List<DppEtlSqlTempRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

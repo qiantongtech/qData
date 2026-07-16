@@ -3,7 +3,7 @@ package tech.qiantong.qdata.module.mc.api.tableColumnRelLog.dto;
 import lombok.Data;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志 DTO 对象 MC_TABLE_COLUMN_REL_LOG
+ * Metadata database and information and field information relationship - log DTO object MC_TABLE_COLUMN_REL_LOG
  *
  * @author qdata
  * @date 2026-03-10
@@ -16,37 +16,37 @@ public class McTableColumnRelLogRespDTO {
     /** ID */
     private Long id;
 
-    /** 数据类型;数据类型 1：预发布 2：采集，预留字段，暂时不用 */
+    /** Data type; Data type 1: Pre-release 2: Collection, reserved fields, not used temporarily */
     private String dataType;
 
-    /** 采集任务 id;预留字段，暂时不用 */
+    /** Collection task id; reserved field, not used temporarily */
     private Long taskId;
 
-    /** 库 id */
+    /** Database ID */
     private Long dbId;
 
-    /** 库版本 */
+    /** Library version */
     private Integer dbVersion;
 
-    /** 表 id */
+    /** table id */
     private Long tableId;
 
-    /** 表版本 */
+    /** Table version */
     private Integer tableVersion;
 
-    /** 字段 id */
+    /** Field id */
     private String columnId;
 
-    /** 字段版本 */
+    /** Field version */
     private Integer columnVersion;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

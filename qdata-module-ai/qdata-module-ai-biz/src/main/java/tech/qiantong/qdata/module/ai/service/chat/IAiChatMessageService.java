@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatMessagePageR
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatMessageDO;
 
 /**
- * ai聊天消息Service接口
+ * ai chat message service interface
  *
  * @author FXB
  * @date 2026-04-01
@@ -38,62 +38,62 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatMessageDO;
 public interface IAiChatMessageService extends IService<AiChatMessageDO> {
 
     /**
-     * 获得ai聊天消息分页列表
+     * Get a paginated list of ai chat messages
      *
-     * @param pageReqVO 分页请求
-     * @return ai聊天消息分页列表
+     * @param pageReqVO paging request
+     * @return ai chat message paginated list
      */
     PageResult<AiChatMessageDO> getAiChatMessagePage(AiChatMessagePageReqVO pageReqVO);
 
     /**
-     * 创建ai聊天消息
+     * Create ai chat message
      *
-     * @param createReqVO ai聊天消息信息
-     * @return ai聊天消息编号
+     * @param createReqVO ai chat message information
+     * @return AI chat message ID
      */
     Long createAiChatMessage(AiChatMessageSaveReqVO createReqVO);
 
     /**
-     * 更新ai聊天消息
+     * Update ai chat message
      *
-     * @param updateReqVO ai聊天消息信息
+     * @param updateReqVO ai chat message information
      */
     int updateAiChatMessage(AiChatMessageSaveReqVO updateReqVO);
 
     /**
-     * 删除ai聊天消息
+     * Delete ai chat messages
      *
-     * @param idList ai聊天消息编号
+     * @param idList AI chat message IDs
      */
     int removeAiChatMessage(Collection<Long> idList);
 
     /**
-     * 获得ai聊天消息详情
+     * Get ai chat message details
      *
-     * @param id ai聊天消息编号
-     * @return ai聊天消息
+     * @param id AI chat message ID
+     * @return ai chat message
      */
     AiChatMessageDO getAiChatMessageById(Long id);
 
     /**
-     * 获得全部ai聊天消息列表
+     * Get a list of all ai chat messages
      *
-     * @return ai聊天消息列表
+     * @return ai chat message list
      */
     List<AiChatMessageDO> getAiChatMessageList();
 
     /**
-     * 获得全部ai聊天消息 Map
+     * Get all ai chat messages Map
      *
-     * @return ai聊天消息 Map
+     * @return ai chat message Map
      */
     Map<Long, AiChatMessageDO> getAiChatMessageMap();
 
     /**
-     * 获得指定会话的ai聊天消息列表
+     * Get the ai chat message list of the specified session
      *
-     * @param conversationId 会话编号
-     * @return ai聊天消息列表
+     * @param conversationId conversation ID
+     * @return ai chat message list
      */
     List<AiChatMessageDO> getChatMessageListByConversationId(Long conversationId);
 }

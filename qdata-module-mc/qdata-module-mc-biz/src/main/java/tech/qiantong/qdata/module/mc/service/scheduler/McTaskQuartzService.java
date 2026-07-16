@@ -12,8 +12,8 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import javax.annotation.Resource;
 
 /**
- * Handle Quartz scheduling operations.
- * Handle task-related data and operations.
+ * Quartz 调度器服务
+ * 用于管理数据采集任务的调度和执行
  *
  * @author qdata
  * @date 2026-07-07
@@ -27,10 +27,10 @@ public class McTaskQuartzService {
 
     /**
      * Quartz
-     * Create the scheduler.
+     * 创建调度器
      *
-     * @param taskCode parameter value
-     * @return the operation result
+     * @param taskCode 任务编码
+     * @return 调度器ID
      */
     public Long createSchedulerQuartz(McTaskDO taskCode) {
         Long schedule = null;
@@ -59,7 +59,7 @@ public class McTaskQuartzService {
 
     /**
      * Quartz
-     * Handle task-related data and operations.
+     * 上线调度器（单独上线调度器，不操作任务）
      *
      * @param schedulerId
      */
@@ -73,7 +73,7 @@ public class McTaskQuartzService {
 
     /**
      * Quartz
-     * Handle task-related data and operations.
+     * 下线调度器（单独下线调度器，不操作任务）
      *
      * @param schedulerId
      */
@@ -87,9 +87,9 @@ public class McTaskQuartzService {
 
     /**
      * Quartz
-     * Handle task-related data and operations.
+     * 启动任务（立即执行一次）
      *
-     * @param taskId parameter value
+     * @param taskId 任务编码
      */
     public void startTaskQuartz(Long taskId) {
         try {

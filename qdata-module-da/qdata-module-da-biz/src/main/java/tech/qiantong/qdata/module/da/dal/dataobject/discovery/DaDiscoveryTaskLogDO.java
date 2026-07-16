@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据发现任务日志 DO 对象 DA_DISCOVERY_TASK_LOG
+ * Data Discovery Task Log DO - DA_DISCOVERY_TASK_LOG
  *
  * @author qdata
  * @date 2025-02-17
  */
 @Data
 @TableName(value = "DA_DISCOVERY_TASK_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_DISCOVERY_TASK_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -47,69 +47,69 @@ public class DaDiscoveryTaskLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 实例名称 */
+    /** Instance Name */
     private String name;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     private String nodeCode;
 
-    /** 任务名称 */
+    /** Task Name */
     private String taskName;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 开始时间 */
+    /** Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** 结束时间 */
+    /** End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 新增表数 */
+    /** New Table Count */
     private Long newTableCount;
 
-    /** 修改表数 */
+    /** Modified Table Count */
     private Long modifiedTableCount;
 
-    /** 删除表数 */
+    /** Deleted Table Count */
     private Long deletedTableCount;
 
-    /** 联系人 */
+    /** Contact */
     private String contact;
 
-    /** 联系人ID */
+    /** Contact ID */
     private Long contactId;
 
-    /** 联系电话 */
+    /** Contact Number */
     private String contactNumber;
 
-    /** 邮箱 */
+    /** Email */
     private String email;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** DolphinScheduler的任务实例id */
+    /** DolphinScheduler Task Instance ID */
     private Long dsTaskInstanceId;
 
-    /** 日志路径 */
+    /** Log Path */
     private String path;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

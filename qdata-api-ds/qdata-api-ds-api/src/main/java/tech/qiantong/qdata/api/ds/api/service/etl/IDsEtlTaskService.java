@@ -25,7 +25,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DsTaskSaveRespDTO;
 
 /**
  * <P>
- * 用途:ds数据集成任务相关接口
+ * Description: DS data integration task related interfaces
  * </p>
  *
  * @author: FXB
@@ -33,49 +33,49 @@ import tech.qiantong.qdata.api.ds.api.etl.DsTaskSaveRespDTO;
  **/
 public interface IDsEtlTaskService {
     /**
-     * 创建任务
+     * Create task
      *
      * @param dsTaskSaveReqDTO
-     * @param projectCode      项目编码
+     * @param projectCode      project code
      * @return
      */
     DsTaskSaveRespDTO createTask(DsTaskSaveReqDTO dsTaskSaveReqDTO, Long projectCode);
 
     /**
-     * 更新任务
+     * Update task
      *
      * @param dsTaskSaveReqDTO
-     * @param projectCode      项目编码
-     * @param taskCode         任务编码
+     * @param projectCode      project code
+     * @param taskCode         task code
      * @return
      */
     DsTaskSaveRespDTO updateTask(DsTaskSaveReqDTO dsTaskSaveReqDTO, String projectCode, String taskCode);
 
     /**
-     * 发布或下线任务
+     * Release or offline task
      *
-     * @param releaseState releaseState 状态 ONLINE：上线 OFFLINE：下线
-     * @param projectCode  项目编码
-     * @param code         任务编码
-     * @return 注：上线后需将调度也上线，下线时接口会处理调度同时进行下线
+     * @param releaseState releaseState status ONLINE: online OFFLINE: offline
+     * @param projectCode  project code
+     * @param code         task code
+     * @return Note: After online, the scheduler also needs to be put online; when offline, the interface will handle the scheduler going offline simultaneously
      */
     DsStatusRespDTO releaseTask(String releaseState, String projectCode, String code);
 
 
     /**
-     * 删除任务
+     * Delete task
      *
-     * @param projectCode 项目编码
-     * @param code        任务编码
-     * @return 注：只有下线的任务才能删除
+     * @param projectCode project code
+     * @param code        task code
+     * @return Note: Only offline tasks can be deleted
      */
     DsStatusRespDTO deleteTask(String projectCode, String code);
 
     /**
-     * 启动任务
+     * Start task
      *
      * @param dsStartTaskReqDTO
-     * @param projectCode      项目编码
+     * @param projectCode      project code
      * @return
      */
     DsStatusRespDTO startTask(DsStartTaskReqDTO dsStartTaskReqDTO, String projectCode);

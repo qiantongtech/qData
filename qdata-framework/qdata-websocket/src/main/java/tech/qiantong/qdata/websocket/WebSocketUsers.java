@@ -29,27 +29,27 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * websocket 客户端用户集
+ * WebSocket client user collection
  *
  * @author qdata
  */
 public class WebSocketUsers
 {
     /**
-     * WebSocketUsers 日志控制器
+     * WebSocketUsers logger
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketUsers.class);
 
     /**
-     * 用户集
+     * User collection
      */
     private static Map<String, Session> USERS = new ConcurrentHashMap<String, Session>();
 
     /**
-     * 存储用户
+     * Store user
      *
-     * @param key 唯一键
-     * @param session 用户信息
+     * @param key unique key
+     * @param session user session
      */
     public static void put(String key, Session session)
     {
@@ -57,11 +57,11 @@ public class WebSocketUsers
     }
 
     /**
-     * 移除用户
+     * Remove user
      *
-     * @param session 用户信息
+     * @param session user session
      *
-     * @return 移除结果
+     * @return removal result
      */
     public static boolean remove(Session session)
     {
@@ -88,9 +88,9 @@ public class WebSocketUsers
     }
 
     /**
-     * 移出用户
+     * Remove user by key
      *
-     * @param key 键
+     * @param key key
      */
     public static boolean remove(String key)
     {
@@ -109,9 +109,9 @@ public class WebSocketUsers
     }
 
     /**
-     * 获取在线用户列表
+     * Get online user list
      *
-     * @return 返回用户集合
+     * @return user collection
      */
     public static Map<String, Session> getUsers()
     {
@@ -119,9 +119,9 @@ public class WebSocketUsers
     }
 
     /**
-     * 群发消息文本消息
+     * Broadcast text message to all users
      *
-     * @param message 消息内容
+     * @param message message content
      */
     public static void sendMessageToUsersByText(String message)
     {
@@ -133,10 +133,10 @@ public class WebSocketUsers
     }
 
     /**
-     * 发送文本消息
+     * Send text message to a user
      *
-     * @param userName 自己的用户名
-     * @param message 消息内容
+     * @param session user session
+     * @param message message content
      */
     public static void sendMessageToUserByText(Session session, String message)
     {

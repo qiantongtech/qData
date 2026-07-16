@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据集成节点实例-日志 Response VO 对象 DPP_ETL_NODE_INSTANCE_LOG
+ * Data Integration Node Instance-Log Response VO Object DPP_ETL_NODE_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-08-05

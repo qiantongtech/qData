@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeLogService;
 
 /**
- * 数据集成节点-日志Controller
+ * Data Integration Node Log Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成节点-日志")
+@Tag(name = "Data Integration Node - Log")
 @RestController
 @RequestMapping("/dpp/etlNodeLog")
 @Validated
@@ -71,7 +71,7 @@ public class DppEtlNodeLogController extends BaseController {
 
     @Operation(summary = "导出数据集成节点-日志列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeLog:export')")
-    @Log(title = "数据集成节点-日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.node.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlNodeLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class DppEtlNodeLogController extends BaseController {
 
     @Operation(summary = "导入数据集成节点-日志列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeLog:import')")
-    @Log(title = "数据集成节点-日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.node.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlNodeLogRespVO> util = new ExcelUtil<>(DppEtlNodeLogRespVO.class);
@@ -102,7 +102,7 @@ public class DppEtlNodeLogController extends BaseController {
 
     @Operation(summary = "新增数据集成节点-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeLog:add')")
-    @Log(title = "数据集成节点-日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.node.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlNodeLogSaveReqVO dppEtlNodeLog) {
         dppEtlNodeLog.setCreatorId(getUserId());
@@ -113,7 +113,7 @@ public class DppEtlNodeLogController extends BaseController {
 
     @Operation(summary = "修改数据集成节点-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeLog:edit')")
-    @Log(title = "数据集成节点-日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.node.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlNodeLogSaveReqVO dppEtlNodeLog) {
         dppEtlNodeLog.setUpdatorId(getUserId());
@@ -124,7 +124,7 @@ public class DppEtlNodeLogController extends BaseController {
 
     @Operation(summary = "删除数据集成节点-日志")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeLog:remove')")
-    @Log(title = "数据集成节点-日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.node.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlNodeLogService.removeDppEtlNodeLog(Arrays.asList(ids)));

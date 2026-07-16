@@ -88,9 +88,9 @@
 
     <template #footer>
       <div style="text-align: right">
-        <!-- 关闭按钮 -->
+        <!-- close button -->
         <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
-        <!-- 保存按钮 -->
+        <!-- save button -->
         <el-button type="primary" @click="saveData">{{ td('common.button.save') }}</el-button>
       </div>
     </template>
@@ -114,7 +114,7 @@ const props = defineProps({
 const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
 
 const emit = defineEmits(["update:visible", "confirm"]);
-// 定义字段类型数组
+// Define field type array
 const columntype = [
   { value: "STRING", label: "STRING" },
   { value: "BOOL", label: "BOOL" },
@@ -125,8 +125,8 @@ const columntype = [
 ];
 const form = ref({
   name: "",
-  catCode: "", // 可以初始化为空，也可以设为默认值
-  executionType: "PARALLEL", // 初始化为空或默认值
+  catCode: "", // Can be initialized to empty or set to default value
+  executionType: "PARALLEL", // Initialized to empty or default value
   crontab: "",
   releaseState: 0,
   description: "",
@@ -148,7 +148,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -158,19 +158,19 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
 let daDiscoveryTaskRef = ref();
-// 保存数据的方法
+// How to save data
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };

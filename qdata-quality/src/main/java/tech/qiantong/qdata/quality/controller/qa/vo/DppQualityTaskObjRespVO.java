@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据质量任务-稽查对象 Response VO 对象 DPP_QUALITY_TASK_OBJ
+ * Data quality task-audit object Response VO object DPP_QUALITY_TASK_OBJ
  *
  * @author Chaos
  * @date 2025-07-21
@@ -97,7 +97,7 @@ public class DppQualityTaskObjRespVO implements Serializable {
     private Date updateTime;
 
 
-    // 规则对象
+    // Rule object
     private DppQualityTaskEvaluateRespVO dppQualityTaskEvaluateSaveReqVO;
 
 }

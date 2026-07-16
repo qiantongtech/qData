@@ -31,7 +31,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerTreeRespV
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 
 /**
- * 数仓分层管理Service接口
+ * Data Warehouse Layer Service Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -39,72 +39,72 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerDO;
 public interface IDmDataLayerService extends IService<DmDataLayerDO> {
 
     /**
-     * 获得数仓分层管理分页列表
+     * Get data warehouse layer page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数仓分层管理分页列表
+     * @param pageReqVO Page request
+     * @return Data warehouse layer page list
      */
     PageResult<DmDataLayerDO> getDmDataLayerPage(DmDataLayerPageReqVO pageReqVO);
 
     /**
-     * 创建数仓分层管理
+     * Create data warehouse layer
      *
-     * @param createReqVO 数仓分层管理信息
-     * @return 数仓分层管理编号
+     * @param createReqVO Data warehouse layer information
+     * @return Data warehouse layer ID
      */
     Long createDmDataLayer(DmDataLayerSaveReqVO createReqVO);
 
     /**
-     * 更新数仓分层管理
+     * Update data warehouse layer
      *
-     * @param updateReqVO 数仓分层管理信息
+     * @param updateReqVO Data warehouse layer information
      */
     int updateDmDataLayer(DmDataLayerSaveReqVO updateReqVO);
 
     /**
-     * 删除数仓分层管理
+     * Delete data warehouse layer
      *
-     * @param idList 数仓分层管理编号
+     * @param idList Data warehouse layer IDs
      */
     int removeDmDataLayer(Collection<Long> idList);
 
     /**
-     * 获得数仓分层管理详情
+     * Get data warehouse layer details
      *
-     * @param id 数仓分层管理编号
-     * @return 数仓分层管理
+     * @param id Data warehouse layer ID
+     * @return Data warehouse layer
      */
     DmDataLayerDO getDmDataLayerById(Long id);
 
     /**
-     * 获得全部数仓分层管理列表
+     * Get all data warehouse layers
      *
-     * @return 数仓分层管理列表
+     * @return Data warehouse layer list
      */
     List<DmDataLayerDO> getDmDataLayerList();
 
     /**
-     * 获得全部数仓分层管理 Map
+     * Get all data warehouse layers as Map
      *
-     * @return 数仓分层管理 Map
+     * @return Data warehouse layer Map
      */
     Map<Long, DmDataLayerDO> getDmDataLayerMap();
 
 
     /**
-     * 导入数仓分层管理数据
+     * Import data warehouse layer data
      *
-     * @param importExcelList 数仓分层管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data warehouse layer data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName        Operation user
+     * @return Result
      */
     String importDmDataLayer(List<DmDataLayerRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获取数仓分层管理树列表
+     * Get data warehouse layer tree list
      *
-     * @return 数仓分层管理树列表
+     * @return Data warehouse layer tree list
      */
     List<DmDataLayerTreeRespVO> tree();
 }

@@ -23,7 +23,7 @@ import tech.qiantong.qdata.api.ds.api.base.DsResultDTO;
 
 /**
  * <P>
- * 用途:项目删除响应DTO
+ * Description: Project delete response DTO
  * </p>
  *
  * @author: FXB
@@ -32,7 +32,7 @@ import tech.qiantong.qdata.api.ds.api.base.DsResultDTO;
 @Data
 public class DsProjectDeleteRespDTO extends DsResultDTO {
     /**
-     * 是否删除成功
+     * Whether deletion was successful
      */
     private Boolean data;
 }

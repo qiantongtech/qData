@@ -272,13 +272,13 @@
         </div>
       </div>
     </div>
-    <!-- 元数据选择弹窗 -->
+    <!-- Metadata selection popup -->
     <MetadataSelectModal
       ref="metadataSelectRef"
       :hideTableIds="hideTableIds"
       @confirm="handleMetadataConfirm"
     />
-    <!-- 批量设置弹窗 -->
+    <!-- Batch settings pop-up window -->
     <el-dialog
       :title="td('dpp.asset.add.batchSetting')"
       v-model="uiState.batchVisible"
@@ -475,7 +475,7 @@ import { listThemeDomain } from "@/api/dm/themeDomain/themeDomain";
 import { addDaAsset } from "@/api/da/asset/asset.js";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 
-const { td } = useDefaultLang();// --- 基础配置与工具 ---
+const { td } = useDefaultLang();// --- Basic configuration and tools ---
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const { setRefreshNeeded } = usePageRefresh("da_asset");
@@ -485,25 +485,25 @@ const { table_type, table_name_case, da_asset_type } = proxy.useDict(
   "da_asset_type"
 );
 
-// 1. 基础状态
+// 1. Basic state
 const baseState = reactive({
-  rows: [], // 资产列表数据
-  assetType: "1", // 资产类型
+  rows: [], // Asset List Data
+  assetType: "1", // Asset type
 });
 
-// 2. UI与弹窗状态
+// 2. UI and pop-up window status
 const uiState = reactive({
-  publishLoading: false, // 注册按钮 loading
-  batchVisible: false, // 批量设置弹窗可见性
+  publishLoading: false, // Register button loading
+  batchVisible: false, // Set popup visibility in batches
   activeTableId: null,
 });
 
-// 3. 引用定义
+// 3. Reference definition
 const tableFormRef = ref(null);
 const tableRef = ref(null);
-const metadataSelectRef = ref(null); // 元数据选择弹窗引用
+const metadataSelectRef = ref(null); // Metadata selection pop-up window reference
 
-// 4. 下拉选项数据
+// 4. Drop-down option data
 const options = reactive({
   dataLayerList: [],
   businessCategoryList: [],
@@ -515,7 +515,7 @@ const options = reactive({
   },
 });
 
-// 5. 批量设置表单
+// 5. Batch setting form
 const batchForm = reactive({
   tableType: -1,
   dataLayerId: -1,
@@ -531,9 +531,9 @@ const batchDataDomainList = ref([]);
 const batchDomainLoading = ref(false);
 const selectedRows = ref([]);
 
-// --- 计算属性 ---
+// --- Computed properties ---
 
-// 表格表单数据包装
+// Form data packaging
 const tableForm = reactive({
   rows: computed(() => baseState.rows),
 });
@@ -542,7 +542,7 @@ const hideTableIds = computed(() => {
   return baseState.rows.map((row) => row.tableId).join(",");
 });
 
-// --- 表格配置 ---
+// ---Table configuration ---
 
 const tableColumns = [
   { type: "selection", width: 55 },
@@ -576,7 +576,7 @@ const tableConfig = reactive({
 });
 
 /**
- * 格式化树形数据，添加 displayName
+ * Format tree data, add displayName
  */
 const formatTreeData = (list) => {
   return list.map((item) => {
@@ -594,10 +594,10 @@ const formatTreeData = (list) => {
 };
 
 /**
- * 获取所有基础下拉选项
+ * Get all basic dropdown options
  */
 const fetchAllOptions = () => {
-  // 1. 获取数仓分层
+  // 1. Obtain data warehouse stratification
   options.loading.layer = true;
   treeDataLayer({ validFlag: true })
     .then((res) => {
@@ -625,7 +625,7 @@ const fetchAllOptions = () => {
       options.loading.layer = false;
     });
 
-  // 2. 获取业务分类
+  // 2. Get business classification
   options.loading.business = true;
   listBusinessCategory({
     pageNum: 1,
@@ -646,7 +646,7 @@ const fetchAllOptions = () => {
       options.loading.business = false;
     });
 
-  // 3. 获取主题域
+  // 3. Get the subject domain
   options.loading.theme = true;
   listThemeDomain({ pageNum: 1, pageSize: 1000, validFlag: true })
     .then((res) => {
@@ -663,7 +663,7 @@ const fetchAllOptions = () => {
 };
 
 /**
- * 根据业务分类获取数据分域
+ * Obtain data domain according to business classification
  */
 const fetchDataDomain = async (row) => {
   if (!row.businessCategoryId) {
@@ -693,12 +693,12 @@ const fetchDataDomain = async (row) => {
     );
     rowUiContext[row.tableId].dataDomainList = formatTreeData(tree);
   } catch (error) {
-    console.error("获取数据分域失败:", error);
+    console.error("Failed to fetch data domain:", error);
   }
 };
 
 /**
- * 列表数据源方法
+ * List data source methods
  */
 const listLocalData = () => {
   return Promise.resolve({
@@ -708,7 +708,7 @@ const listLocalData = () => {
 };
 
 /**
- * 表类型切换处理
+ * Table type switching processing
  */
 const handleTableTypeChange = (row) => {
   row.businessCategoryId = null;
@@ -722,7 +722,7 @@ const handleTableTypeChange = (row) => {
 };
 
 /**
- * 业务分类切换处理
+ * Business classification switching processing
  */
 const handleBusinessDomainChange = (val, row) => {
   row.dataDomainId = null;
@@ -739,7 +739,7 @@ const handleBusinessDomainChange = (val, row) => {
 };
 
 /**
- * 主题域切换处理
+ * Subject domain switching processing
  */
 const handleThemeDomainChange = (val, row) => {
   row.themeDomainCode = "";
@@ -760,9 +760,9 @@ const findInTree = (tree, id) => {
   return null;
 };
 
-// --- 监听器 ---
+// --- Listener ---
 
-// 仅在列表长度变化时刷新表格展示
+// Only refresh the table display when the list length changes
 watch(
   () => baseState.rows.length,
   () => {
@@ -771,19 +771,19 @@ watch(
 );
 
 /**
- * 打开元数据选择弹窗
+ * Open the metadata selection popup
  */
 const handleOpenMetadataSelect = (row = null) => {
-  // 记录当前操作的行，用于确认后的替换逻辑
+  // The line that records the current operation is used for replacement logic after confirmation.
   uiState.activeTableId = row?.tableId || null;
   metadataSelectRef.value.show();
 };
 
 /**
- * 打开批量设置弹窗
+ * Open the batch settings pop-up window
  */
 const handleOpenBatchSetting = () => {
-  // 重置批量设置表单为默认值（{{ td('dpp.asset.add.noChange') }}状态）
+  // Reset the batch setting form to default value ({{ td('dpp.asset.add.noChange') }} state)
   batchForm.tableType = -1;
   batchForm.dataLayerId = -1;
   batchForm.tableCase = -1;
@@ -794,14 +794,14 @@ const handleOpenBatchSetting = () => {
 };
 
 /**
- * 表格选中项变化
+ * Table selected item changes
  */
 const handleSelectionChange = (selection) => {
   selectedRows.value = selection;
 };
 
 /**
- * 删除行
+ * Delete row
  */
 const handleDeleteRow = (row) => {
   const index = baseState.rows.findIndex((r) => r.tableId === row.tableId);
@@ -849,16 +849,16 @@ const handleBatchBusinessChange = async (val) => {
 };
 
 /**
- * 确认批量设置
+ * Confirm batch settings
  */
 const confirmBatchSetting = async () => {
   for (const row of selectedRows.value) {
-    // 1. 基础属性更新（若选中了有效值则更新）
+    // 1. Basic attribute update (update if valid value is selected)
     if (batchForm.tableType !== -1) row.tableType = batchForm.tableType;
     if (batchForm.dataLayerId !== -1) row.dataLayerId = batchForm.dataLayerId;
     if (batchForm.tableCase !== -1) row.tableCase = batchForm.tableCase;
 
-    // 提取赋值方法以便复用
+    // Extract assignment methods for reuse
     const applyBusinessAttr = () => {
       if (batchForm.businessCategoryId !== -1) {
         row.businessCategoryId = batchForm.businessCategoryId;
@@ -877,7 +877,7 @@ const confirmBatchSetting = async () => {
           );
           row.dataDomainId = batchForm.dataDomainId;
         } else {
-          // 如果业务分类变了但数据分域选的是"不修改"，则需要根据新业务分类重置/获取数据分域
+          // If the business classification changes but the data partition is selected as "Do not modify", you need to reset/obtain the data partition according to the new business classification.
           // row.dataDomainId = null;
           // fetchDataDomain(row);
         }
@@ -897,24 +897,24 @@ const confirmBatchSetting = async () => {
       }
     };
 
-    // 2. 业务属性更新：根据行当前的 tableType 决定赋值范围
+    // 2. Business attribute update: determine the assignment range based on the current tableType of the row
     if (!row.tableType) {
       applyBusinessAttr();
       applyThemeAttr();
     } else if (row.tableType === "4") {
-      // 应用表：仅赋值所属主题
+      // Application table: only assign values to the subject to which they belong
       applyThemeAttr();
     } else {
-      // 非应用表：仅赋值业务分类/数据分域
+      // Non-application table: only assign business classification/data domain
       applyBusinessAttr();
     }
   }
   uiState.batchVisible = false;
-  // proxy.$modal.msgSuccess("批量设置成功");
+  // proxy.$modal.msgSuccess("Batch setting successful");
 };
 
 /**
- * 确认注册
+ * Confirm registration
  */
 async function confirmPublish() {
   if (!baseState.rows.length) {
@@ -957,14 +957,14 @@ async function confirmPublish() {
     setRefreshNeeded();
     router.push({ path: "/da/asset" });
   } catch (error) {
-    console.error("注册失败:", error);
+    console.error("Registration failed:", error);
   } finally {
     uiState.publishLoading = false;
   }
 }
 
 /**
- * 元数据选择确认处理
+ * Metadata selection confirmation processing
  */
 const handleMetadataConfirm = (tables) => {
   if (!tables || !Array.isArray(tables) || tables.length === 0) return;
@@ -976,7 +976,7 @@ const handleMetadataConfirm = (tables) => {
       tableName: table.tableName,
       tableComment: table.tableComment,
       datasourceId: table.datasourceId,
-      tableType: null, // 移除默认值
+      tableType: null, // Remove default value
       dataLayerId: null,
       tableCase: table.tableName === table.tableName.toUpperCase() ? 1 : 2,
       businessCategoryId: null,

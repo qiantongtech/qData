@@ -24,7 +24,7 @@ import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessDefinition;
 
 /**
  * <P>
- * 用途:任务保存请求响应参数DTO
+ * Description: Task save response DTO
  * </p>
  *
  * @author: FXB

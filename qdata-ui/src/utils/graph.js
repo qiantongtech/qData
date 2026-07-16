@@ -19,10 +19,10 @@ import { i18n } from '@/plugins/vueI18n';
 import { Shape } from '@antv/x6';
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 /**
- * antv x6的所有配置项整合
+ * Integration of all configuration items of antv x6
  */
 export const baseConfig = {
-  // 设置节点移动的范围在画布内
+  // Set the range of node movement within the canvas
   translating: {
     restrict: true
   },
@@ -43,8 +43,8 @@ export const baseConfig = {
     router: {
       name: 'manhattan',
       args: {
-        padding: 10,  // 控制边缘与节点之间的间距
-        avoid: true,   // 启用避开节点功能
+        padding: 10,  // Control the spacing between edges and nodes
+        avoid: true,   // Enable node avoidance
       }
     },
     connector: {
@@ -55,10 +55,10 @@ export const baseConfig = {
     },
     snap: true,
     connectionPoint: 'anchor',
-    allowBlank: false,  // 禁止连接到空白区域
-    allowEdge: false,   // 禁止边连接到另一条边
-    allowNode: false,   // 禁止边连接到节点的中心
-    allowPort: true,    // 只允许连接到连接桩
+    allowBlank: false,  // Disable connections to white space
+    allowEdge: false,   // Disallow an edge from connecting to another edge
+    allowNode: false,   // Disallow edges from connecting to the center of a node
+    allowPort: true,    // Only allowed to connect to connecting posts
     highlight: true,
     snap: {
       radius: 20
@@ -101,7 +101,7 @@ export const baseConfig = {
   interacting: function (cellView) {
     return true;
   },
-  // 快捷键绑定
+  // Shortcut key bindings
   bindShortcuts(graph) {
     // graph.use(new Keyboard());
     graph.bindKey(['delete', 'backspace'], () => {
@@ -115,7 +115,7 @@ export const baseConfig = {
   }
 };
 
-// 公用的连接桩
+// public connecting pile
 export const cuPort = {
   groups: {
     top: {
@@ -183,7 +183,7 @@ export const cuPort = {
   items: [{ group: 'top' }, { group: 'right' }, { group: 'bottom' }, { group: 'left' }]
 };
 
-// 节点的类型
+// node type
 export const typeList = [
   { value: 1, label:  i18n.global.t('common.graph.inputComponent') },
   { value: 2, label:  i18n.global.t('common.graph.outputComponent') },
@@ -204,17 +204,17 @@ export const toolbar = [
   //   id: "full-screen",
   //   icon: "toolbar (7).png",
   //   isFull: false,
-  //   tip: "全屏",
+  //   tip: "full screen",
   // },
   // {
   //   id: "undo",
   //   icon: "toolbar (6).png",
-  //   tip: "撤销",
+  //   tip: "Undo",
   // },
   // {
   //   id: "redo",
   //   icon: "toolbar (5).png",
-  //   tip: "重做",
+  //   tip: "redo",
   // },
   {
     id: "auto-fit",

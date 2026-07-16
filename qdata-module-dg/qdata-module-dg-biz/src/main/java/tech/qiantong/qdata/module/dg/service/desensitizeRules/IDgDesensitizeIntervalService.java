@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDese
 import tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo.DgDesensitizeIntervalPageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeIntervalDO;
 /**
- * 脱敏区间Service接口
+ * Desensitize Interval Service Interface
  *
  * @author qdata
  * @date 2026-04-10
@@ -36,65 +36,65 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 public interface IDgDesensitizeIntervalService extends IService<DgDesensitizeIntervalDO> {
 
     /**
-     * 获得脱敏区间分页列表
+     * Get desensitize interval paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 脱敏区间分页列表
+     * @param pageReqVO Pagination request
+     * @return Desensitize interval paginated list
      */
     PageResult<DgDesensitizeIntervalDO> getDgDesensitizeIntervalPage(DgDesensitizeIntervalPageReqVO pageReqVO);
 
     /**
-     * 创建脱敏区间
+     * Create desensitize interval
      *
-     * @param createReqVO 脱敏区间信息
-     * @return 脱敏区间编号
+     * @param createReqVO Desensitize interval information
+     * @return Desensitize interval ID
      */
     Long createDgDesensitizeInterval(DgDesensitizeIntervalSaveReqVO createReqVO);
 
     /**
-     * 更新脱敏区间
+     * Update desensitize interval
      *
-     * @param updateReqVO 脱敏区间信息
+     * @param updateReqVO Desensitize interval information
      */
     int updateDgDesensitizeInterval(DgDesensitizeIntervalSaveReqVO updateReqVO);
 
     /**
-     * 删除脱敏区间
+     * Delete desensitize interval
      *
-     * @param idList 脱敏区间编号
+     * @param idList Desensitize interval IDs
      */
     int removeDgDesensitizeInterval(Collection<Long> idList);
 
     /**
-     * 获得脱敏区间详情
+     * Get desensitize interval details
      *
-     * @param id 脱敏区间编号
-     * @return 脱敏区间
+     * @param id Desensitize interval ID
+     * @return Desensitize interval
      */
     DgDesensitizeIntervalDO getDgDesensitizeIntervalById(Long id);
 
     /**
-     * 获得全部脱敏区间列表
+     * Get all desensitize interval list
      *
-     * @return 脱敏区间列表
+     * @return Desensitize interval list
      */
     List<DgDesensitizeIntervalDO> getDgDesensitizeIntervalList();
 
     /**
-     * 获得全部脱敏区间 Map
+     * Get all desensitize interval Map
      *
-     * @return 脱敏区间 Map
+     * @return Desensitize interval Map
      */
     Map<Long, DgDesensitizeIntervalDO> getDgDesensitizeIntervalMap();
 
 
     /**
-     * 导入脱敏区间数据
+     * Import desensitize interval data
      *
-     * @param importExcelList 脱敏区间数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Desensitize interval data list
+     * @param isUpdateSupport Whether to update support, if already exists, update the data
+     * @param operName        Operator user
+     * @return Result
      */
     String importDgDesensitizeInterval(List<DgDesensitizeIntervalRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

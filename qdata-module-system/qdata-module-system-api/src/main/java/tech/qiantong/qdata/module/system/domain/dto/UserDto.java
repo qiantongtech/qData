@@ -31,38 +31,38 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
     /**
-     * 用户id 不能为空
+     * User ID, required
      */
     private String id;
     /**
-     * 直属领导id
+     * Direct Leader ID
      */
     private String parentId;
 
     /**
-     * 用户姓名 不能为空
+     * User Name, required
      */
     private String name;
     /**
-     * 用户头像 不能为空
+     * User Avatar URL, required
      */
     private String avatarUrl;
     /**
-     * 用户所属部门id 可以为空
+     * Department ID List, optional
      */
     private List<String> deptIdList;
     /**
-     * 用户状态 0禁用 1启用
+     * User Status: 0 = Disabled, 1 = Enabled
      */
     private Integer status;
     private String token;
 
     /**
-     * 手机号
+     * Phone Number
      */
     private String phone;
     /**
-     * 部门名称
+     * Department Name
      */
     private String deptName;
 

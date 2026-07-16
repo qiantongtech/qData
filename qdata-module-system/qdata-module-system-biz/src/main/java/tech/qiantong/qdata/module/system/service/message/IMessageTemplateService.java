@@ -29,7 +29,7 @@ import tech.qiantong.qdata.module.system.dal.dataobject.message.MessageTemplateD
 import java.util.List;
 
 /**
- * 消息模板Service接口
+ * Message Template Service interface
  *
  * @author qdata
  * @date 2024-10-31

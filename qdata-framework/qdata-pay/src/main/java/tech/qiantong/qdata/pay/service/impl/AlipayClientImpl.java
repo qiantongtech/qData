@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Service
 public class AlipayClientImpl implements PayGatewayClient {
-    /** 支付宝网关地址 */
+    /** Alipay gateway address */
     @Value("${payment.alipay.gatewayUrl}")
     private  String GATEWAY_URL;
     @Value("${payment.alipay.returnUrl}")
@@ -58,16 +58,16 @@ public class AlipayClientImpl implements PayGatewayClient {
     private AliPayConfig myAliPayConfig;
 
     /**
-     *          前端的使用方法
+     * How to use the front end
      *          if (response.status === 'ALIPAY_SUCCESS') {
-     *             // 创建一个容器，用于放置支付宝的支付表单
+     * //Create a container to place Alipay's payment form
      *             const formContainer = document.createElement('div');
      *             formContainer.innerHTML = response.paymentUrl;
-     *             // 将表单添加到页面并提交
+     * //Add the form to the page and submit it
      *             document.body.appendChild(formContainer);
-     *             formContainer.querySelector('form').submit(); // 自动提交表单
+     * formContainer.querySelector('form').submit(); // Automatically submit the form
      *           }
-     * @param payRequest 包含支付请求的详细信息
+     * @param payRequest contains the details of the payment request
      * @return
      */
     @Override
@@ -78,7 +78,7 @@ public class AlipayClientImpl implements PayGatewayClient {
         request.setNotifyUrl(myAliPayConfig.getNotifyUrl());
         request.setReturnUrl(RETURN_URL);
 
-        // 设置请求参数
+        // Set request parameters
         double amount = payRequest.getAmount() / 100.0;
         request.setBizContent("{\"out_trade_no\":\"" + payRequest.getOrderId() + "\","
                 + "\"total_amount\":\"" + amount + "\","
@@ -87,19 +87,19 @@ public class AlipayClientImpl implements PayGatewayClient {
 
         String form = "";
         try {
-            // 调用SDK生成表单
+            // Call SDK to generate form
             form = alipayClient.pageExecute(request).getBody();
         } catch (AlipayApiException e) {
             e.printStackTrace();
             return new PaymentResponse("ALIPAY_FAILURE", null, payRequest.getOrderId());
         }
-        // 返回支付表单给前端
+        // Return the payment form to the front end
         return new PaymentResponse("ALIPAY_SUCCESS", form, payRequest.getOrderId());
     }
 
     @Override
     public RefundResponse refund(RefundRequest refunRequest) {
-        // 初始化支付宝客户端
+        // Initialize Alipay client
         AlipayClient alipayClient = new DefaultAlipayClient(
                 GATEWAY_URL,
                 myAliPayConfig.getAppId(),
@@ -110,32 +110,32 @@ public class AlipayClientImpl implements PayGatewayClient {
                 SIGN_TYPE_RSA2
         );
 
-        // 创建退款请求对象
+        // Create a refund request object
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 
-        // 构建退款请求的业务参数
+        // Construct business parameters for refund request
         JSONObject bizContent = new JSONObject();
-        // 订单号，对应支付宝交易号
+        // Order number, corresponding to Alipay transaction number
         bizContent.put("trade_no", refunRequest.getOrderId());
-        // 退款金额
+        // Refund amount
         double amount = refunRequest.getAmount() / 100.0;
         bizContent.put("refund_amount", amount);
-        // 退款请求号，可用于部分退款时的唯一标识
+        // Refund request number, which can be used to uniquely identify partial refunds
         bizContent.put("out_request_no", UUID.fastUUID().toString());
 
-        // 可选参数：如果需要返回详细的退款信息，可以添加此部分
+        // Optional parameters: If you need to return detailed refund information, you can add this section
         JSONArray queryOptions = new JSONArray();
         queryOptions.add("refund_detail_item_list");
         bizContent.put("query_options", queryOptions);
 
-        // 设置业务参数到请求对象中
+        // Set business parameters to the request object
         request.setBizContent(bizContent.toString());
 
         try {
-            // 执行退款请求，调用支付宝API
+            // Execute refund request and call Alipay API
             AlipayTradeRefundResponse response = alipayClient.execute(request);
 
-            // 根据API返回结果判断退款是否成功
+            // Determine whether the refund is successful based on the API return result
             if (response.isSuccess()) {
                 System.out.println("退款成功");
                 return new RefundResponse("ALIPAY_REFUND_SUCCESS", refunRequest.getOrderId());
@@ -144,7 +144,7 @@ public class AlipayClientImpl implements PayGatewayClient {
                 return new RefundResponse("ALIPAY_REFUND_FAILURE", refunRequest.getOrderId());
             }
         } catch (Exception e) {
-            // 处理可能的异常情况
+            // Handle possible exceptions
             e.printStackTrace();
             return new RefundResponse("ALIPAY_REFUND_ERROR", refunRequest.getOrderId());
         }
@@ -152,13 +152,13 @@ public class AlipayClientImpl implements PayGatewayClient {
 
     @Override
     public PaymentStatusResponse queryStatus(String paymentId) {
-        // 调用支付宝API查询支付状态
+        // Call Alipay API to check payment status
         return new PaymentStatusResponse("ALIPAY_SUCCESS", paymentId);
     }
 
     @Override
     public Notification handleNotification(Map<String, String> parameters) {
-        // 解析 fund_bill_list 字段，将其转换为 FundBill 对象的列表
+        // Parse the fund_bill_list field, converting it into a list of FundBill objects
         String fundBillListJson = parameters.get("fund_bill_list");
         List<AlipayNotification.FundBill> fundBillList = parseFundBillList(fundBillListJson);
         return new AlipayNotification(
@@ -188,7 +188,7 @@ public class AlipayClientImpl implements PayGatewayClient {
         );
     }
 
-    // 使用 Fastjson 解析 JSON 字符串为 FundBill 列表
+    // Use Fastjson to parse JSON string into FundBill list
     private List<AlipayNotification.FundBill> parseFundBillList(String fundBillListJson) {
         try {
             return JSON.parseObject(fundBillListJson, new TypeReference<List<AlipayNotification.FundBill>>() {});

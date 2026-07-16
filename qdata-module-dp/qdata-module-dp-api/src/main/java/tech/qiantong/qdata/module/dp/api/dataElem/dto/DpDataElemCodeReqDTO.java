@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.dataElem.dto;
 import lombok.Data;
 
 /**
- * 数据元代码 DTO 对象 DP_DATA_ELEM_CODE
+ * Data Element Code DTO - DP_DATA_ELEM_CODE
  *
  * @author qdata
  * @date 2025-01-21
@@ -34,19 +34,19 @@ public class DpDataElemCodeReqDTO {
     /** ID */
     private Long id;
 
-    /** 数据元id */
+    /** Data Element ID */
     private String dataElemId;
 
-    /** 代码值 */
+    /** Code Value */
     private String codeValue;
 
-    /** 代码名称 */
+    /** Code Name */
     private String codeName;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

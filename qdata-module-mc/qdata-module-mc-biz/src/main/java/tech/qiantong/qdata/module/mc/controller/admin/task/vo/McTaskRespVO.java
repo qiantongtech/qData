@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Handle task-related data and operations.
+ * Collection task Response VO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -115,13 +115,13 @@ public class McTaskRespVO implements Serializable {
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * Implementation details.
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
@@ -129,73 +129,73 @@ public class McTaskRespVO implements Serializable {
 
 
     /**
-     * Handle DolphinScheduler operations.
+     * DolphinScheduler task encoding (obtained from schedule)
      */
     @TableField(exist = false)
     private String taskCode;
 
     /**
-     * Implementation details.
+     * cron expression
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * Handle scheduling configuration and operations.
+     * Scheduling status
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * Handle scheduling configuration and operations.
+     * Scheduling status
      */
     @TableField(exist = false)
     private String jobId;
 
     /**
-     * Implementation details.
+     * Collection range
      */
     @TableField(exist = false)
     private List<McTaskScopeDO> scopeSaveReqVOS;
 
     /**
-     * Handle database and data source configuration.
+     * Data source information
      */
     @TableField(exist = false)
     private DaDatasourceRespDTO datasourceDO;
 
     /**
-     * Handle database and data source configuration.
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
     /**
-     * Handle database and data source configuration.
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;
 
 
     /**
-     * Implementation details.
+     * Contact name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * Implementation details.
+     * Last execution time
      */
     @TableField(exist = false)
     private String lastExecuteTime;
 
     /**
-     * Create the required record.
+     * Creator phone number
      */
     private String createPhoneNumber;
 
     /**
-     * Implementation details.
+     * Responsible department
      */
     private Long responsibleDept;
 }

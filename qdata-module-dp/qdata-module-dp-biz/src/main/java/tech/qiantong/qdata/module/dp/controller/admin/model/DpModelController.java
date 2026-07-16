@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 逻辑模型Controller
+ * Logical Model Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -81,7 +81,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "导出逻辑模型列表")
     @PreAuthorize("@ss.hasPermi('dp:model:export')")
-    @Log(title = "逻辑模型", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpModelPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -92,7 +92,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "导入逻辑模型列表")
     @PreAuthorize("@ss.hasPermi('dp:model:import')")
-    @Log(title = "逻辑模型", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpModelRespVO> util = new ExcelUtil<>(DpModelRespVO.class);
@@ -112,7 +112,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "新增逻辑模型")
     @PreAuthorize("@ss.hasPermi('dp:model:add')")
-    @Log(title = "逻辑模型", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpModelSaveReqVO dpModel) {
         dpModel.setCreatorId(getUserId());
@@ -123,7 +123,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "修改逻辑模型")
     @PreAuthorize("@ss.hasPermi('dp:model:edit')")
-    @Log(title = "逻辑模型", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpModelSaveReqVO dpModel) {
         dpModel.setUpdatorId(getUserId());
@@ -134,7 +134,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "删除逻辑模型")
     @PreAuthorize("@ss.hasPermi('dp:model:remove')")
-    @Log(title = "逻辑模型", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpModelService.removeDpModel(Arrays.asList(ids)));
@@ -150,7 +150,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "删除逻辑模型连带字段一起删除")
     @PreAuthorize("@ss.hasPermi('dp:model:remove')")
-    @Log(title = "逻辑模型", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.model", businessType = BusinessType.DELETE)
     @DeleteMapping("/columnAll/{ids}")
     public CommonResult<Integer> removeAndColumnAll(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpModelService.removeDpModelAndColumnAll(Arrays.asList(ids)));
@@ -158,7 +158,7 @@ public class DpModelController extends BaseController {
 
     @Operation(summary = "更改状态")
     @PreAuthorize("@ss.hasPermi('dp:model:edit')")
-    @Log(title = "更改数据元状态", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.model.status", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public CommonResult<Boolean> updateStatus(@PathVariable Long id, @PathVariable Long status) {
         return CommonResult.toAjax(dpModelService.updateStatus(id, status));

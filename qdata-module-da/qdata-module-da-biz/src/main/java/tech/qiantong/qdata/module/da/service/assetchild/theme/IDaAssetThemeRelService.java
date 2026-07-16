@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据资产-主题关联关系Service接口
+ * Data Asset - Theme Relation Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -37,76 +37,76 @@ import java.util.Map;
 public interface IDaAssetThemeRelService extends IService<DaAssetThemeRelDO> {
 
     /**
-     * 获得数据资产-主题关联关系分页列表
+     * Get data asset theme relation page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-主题关联关系分页列表
+     * @param pageReqVO page request
+     * @return data asset theme relation page list
      */
     PageResult<DaAssetThemeRelDO> getDaAssetThemeRelPage(DaAssetThemeRelPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据资产-主题关联关系列表
+     * Get all data asset theme relation list
      *
-     * @return 数据资产-主题关联关系列表
+     * @return data asset theme relation list
      */
     List<DaAssetThemeRelRespVO> getDaAssetThemeRelList(DaAssetThemeRelPageReqVO pageReqVO);
     List<Long> getDaAssetIdList(List<Long> themeIdList);
 
     /**
-     * 创建数据资产-主题关联关系
+     * Create data asset theme relation
      *
-     * @param createReqVO 数据资产-主题关联关系信息
-     * @return 数据资产-主题关联关系编号
+     * @param createReqVO data asset theme relation info
+     * @return data asset theme relation ID
      */
     Long createDaAssetThemeRel(DaAssetThemeRelSaveReqVO createReqVO);
 
     void createDaAssetThemeRelList(List<String> themeIdList, Long id);
 
     /**
-     * 更新数据资产-主题关联关系
+     * Update data asset theme relation
      *
-     * @param updateReqVO 数据资产-主题关联关系信息
+     * @param updateReqVO data asset theme relation info
      */
     int updateDaAssetThemeRel(DaAssetThemeRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-主题关联关系
+     * Delete data asset theme relation
      *
-     * @param idList 数据资产-主题关联关系编号
+     * @param idList data asset theme relation ID list
      */
     int removeDaAssetThemeRel(Collection<Long> idList);
     int removeThemeRelByAssetId( Long assetId);
 
     /**
-     * 获得数据资产-主题关联关系详情
+     * Get data asset theme relation details
      *
-     * @param id 数据资产-主题关联关系编号
-     * @return 数据资产-主题关联关系
+     * @param id data asset theme relation ID
+     * @return data asset theme relation
      */
     DaAssetThemeRelDO getDaAssetThemeRelById(Long id);
 
     /**
-     * 获得全部数据资产-主题关联关系列表
+     * Get all data asset theme relation list
      *
-     * @return 数据资产-主题关联关系列表
+     * @return data asset theme relation list
      */
     List<DaAssetThemeRelDO> getDaAssetThemeRelList();
 
     /**
-     * 获得全部数据资产-主题关联关系 Map
+     * Get all data asset theme relation Map
      *
-     * @return 数据资产-主题关联关系 Map
+     * @return data asset theme relation Map
      */
     Map<Long, DaAssetThemeRelDO> getDaAssetThemeRelMap();
 
 
     /**
-     * 导入数据资产-主题关联关系数据
+     * Import data asset theme relation data
      *
-     * @param importExcelList 数据资产-主题关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset theme relation data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetThemeRel(List<DaAssetThemeRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 }

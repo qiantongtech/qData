@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询示例部门列表
+// Query sample department list
 export function listDept(query) {
   return request({
     url: '/example/dept/list',
@@ -27,7 +27,7 @@ export function listDept(query) {
   })
 }
 
-// 查询示例部门详细
+// Query example department details
 export function getDept(id) {
   return request({
     url: '/example/dept/' + id,
@@ -35,7 +35,7 @@ export function getDept(id) {
   })
 }
 
-// 新增示例部门
+// Add example department
 export function addDept(data) {
   return request({
     url: '/example/dept',
@@ -44,7 +44,7 @@ export function addDept(data) {
   })
 }
 
-// 修改示例部门
+// Modify sample department
 export function updateDept(data) {
   return request({
     url: '/example/dept',
@@ -53,7 +53,7 @@ export function updateDept(data) {
   })
 }
 
-// 删除示例部门
+// Delete example department
 export function delDept(id) {
   return request({
     url: '/example/dept/' + id,

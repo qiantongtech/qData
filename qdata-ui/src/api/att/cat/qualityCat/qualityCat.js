@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据质量类目列表
+// Query the list of data quality categories
 export function listAttQualityCat(query) {
   return request({
     url: '/att/qualityCat/list',
@@ -27,7 +27,7 @@ export function listAttQualityCat(query) {
   })
 }
 
-// 查询数据质量类目详细
+// Query data quality category details
 export function getAttQualityCat(id) {
   return request({
     url: '/att/qualityCat/' + id,
@@ -35,7 +35,7 @@ export function getAttQualityCat(id) {
   })
 }
 
-// 新增数据质量类目
+// Added new data quality category
 export function addAttQualityCat(data) {
   return request({
     url: '/att/qualityCat',
@@ -44,7 +44,7 @@ export function addAttQualityCat(data) {
   })
 }
 
-// 修改数据质量类目
+// Modify data quality category
 export function updateAttQualityCat(data) {
   return request({
     url: '/att/qualityCat',
@@ -53,7 +53,7 @@ export function updateAttQualityCat(data) {
   })
 }
 
-// 删除数据质量类目
+// Delete data quality category
 export function delAttQualityCat(id) {
   return request({
     url: '/att/qualityCat/' + id,

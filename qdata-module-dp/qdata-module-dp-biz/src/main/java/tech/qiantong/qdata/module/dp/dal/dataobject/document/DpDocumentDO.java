@@ -28,14 +28,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 标准信息登记 DO 对象 DP_DOCUMENT
+ * Standard Document Registration DO - DP_DOCUMENT
  *
  * @author qdata
  * @date 2025-08-21
  */
 @Data
 @TableName(value = "DP_DOCUMENT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_DOCUMENT_seq")
 @Builder
 @NoArgsConstructor

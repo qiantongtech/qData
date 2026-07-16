@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据质量类目 创建/修改 Request VO ATT_QUALITY_CAT
+ * Data Quality Category Create/Update Request VO ATT_QUALITY_CAT
  *
  * @author qdata
  * @date 2025-07-19

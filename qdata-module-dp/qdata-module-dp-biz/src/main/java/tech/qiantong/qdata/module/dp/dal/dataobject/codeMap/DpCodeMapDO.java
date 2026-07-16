@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据元代码映射 DO 对象 DP_CODE_MAP
+ * Data Element Code Map DO - DP_CODE_MAP
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_CODE_MAP")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_CODE_MAP_seq")
 @Builder
 @NoArgsConstructor
@@ -44,22 +44,22 @@ public class DpCodeMapDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据元id */
+    /** Data Element ID */
     private String dataElemId;
 
-    /** 原始值 */
+    /** Original Value */
     private String originalValue;
 
-    /** 代码名 */
+    /** Code Name */
     private String codeName;
 
-    /** 代码值 */
+    /** Code Value */
     private String codeValue;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

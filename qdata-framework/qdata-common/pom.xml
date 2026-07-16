@@ -35,87 +35,87 @@
 
     <dependencies>
 
-        <!-- EasyExcel Excel处理工具 -->
+        <!-- EasyExcel Excel processing tool -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>3.3.4</version>
         </dependency>
 
-        <!-- Spring框架基本的核心工具 -->
+        <!-- Spring framework basic core tools -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
 
-        <!-- SpringWeb模块 -->
+        <!-- SpringWeb module -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
 
-        <!-- spring security 安全认证 -->
+        <!-- spring security security certification -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- pagehelper 分页插件 -->
+        <!-- pagehelper paging plugin -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- 自定义验证注解 -->
+        <!-- Custom validation annotations -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!--常用工具类 -->
+        <!--Commonly used tools -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- JSON工具类 -->
+        <!-- JSON tool class -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- 阿里JSON解析器 -->
+        <!-- Alibaba JSON parser -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
         </dependency>
 
-        <!-- 阿里JSON解析器 -->
+        <!-- Alibaba JSON parser -->
         <dependency>
             <artifactId>fastjson</artifactId>
             <groupId>com.alibaba</groupId>
             <version>1.2.83</version>
         </dependency>
 
-        <!-- io常用工具类 -->
+        <!-- io common tools -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
 
-        <!-- excel工具 -->
+        <!-- excel tools -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
         </dependency>
 
-        <!-- yml解析器 -->
+        <!-- yml parser -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
         </dependency>
 
-        <!-- Token生成与解析-->
+        <!-- Token generation and analysis-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -127,25 +127,25 @@
             <artifactId>jaxb-api</artifactId>
         </dependency>
 
-        <!-- redis 缓存操作 -->
+        <!-- redis cache operation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- pool 对象池 -->
+        <!-- pool object pool -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- 解析客户端操作系统、浏览器等 -->
+        <!-- Analyze client operating system, browser, etc. -->
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
 
-        <!-- servlet包 -->
+        <!-- servlet package -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -176,14 +176,14 @@
             <version>1.18.36</version>
         </dependency>
 
-        <!-- mybatis-plus 增强CRUD -->
+        <!-- mybatis-plus enhances CRUD -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.2</version>
         </dependency>
 
-        <!-- 多数据源 -->
+        <!-- Multiple data sources -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
@@ -202,7 +202,7 @@
             <version>7.14.0</version>
         </dependency>
 
-        <!-- 对象转换 -->
+        <!-- Object conversion -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
@@ -233,7 +233,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- OkHttps网络请求库： http://okhttps.ejlchina.com/ -->
+        <!-- OkHttps network request library: http://okhttps.ejlchina.com/ -->
         <dependency>
             <groupId>com.ejlchina</groupId>
             <artifactId>okhttps</artifactId>
@@ -245,14 +245,14 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
-        <!-- kafka驱动-->
+        <!-- kafka driver-->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>3.0.0</version>
         </dependency>
 
-        <!-- 指定hadoop-client API的版本 -->
+        <!-- Specify the version of hadoop-client API -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>

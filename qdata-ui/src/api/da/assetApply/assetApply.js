@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产申请列表
+// Query data asset application list
 export function listDaAssetApply(query) {
   return request({
     url: '/da/assetApply/list',
@@ -27,7 +27,7 @@ export function listDaAssetApply(query) {
   })
 }
 
-// 查询数据资产申请详细
+// Query data asset application details
 export function getDaAssetApply(id) {
   return request({
     url: '/da/assetApply/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetApply(id) {
   })
 }
 
-// 新增数据资产申请
+// New data asset application
 export function addDaAssetApply(data) {
   return request({
     url: '/da/assetApply',
@@ -44,7 +44,7 @@ export function addDaAssetApply(data) {
   })
 }
 
-// 修改数据资产申请
+// Modify data asset application
 export function updateDaAssetApply(data) {
   return request({
     url: '/da/assetApply',
@@ -53,14 +53,14 @@ export function updateDaAssetApply(data) {
   })
 }
 
-// 删除数据资产申请
+// Delete data asset request
 export function delDaAssetApply(id) {
   return request({
     url: '/da/assetApply/' + id,
     method: 'delete'
   })
 }
-// 請求
+// Request
 export function queryServiceForwarding(data) {
   return request({
     url: '/da/api/queryServiceForwarding',

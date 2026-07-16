@@ -26,7 +26,7 @@ import java.util.Date;
 
 /**
  * <P>
- * 用途:标准检索响应VO
+ * Purpose: Standard Search Response VO
  * </p>
  *
  * @author: FXB
@@ -38,7 +38,7 @@ public class DpDocumentSearchRespVO implements Serializable {
     private static final long serialVersionUID = -4634002019134354679L;
 
     /**
-     * 数据类型 1:标准，2:逻辑模型，3:数据元，4:代码表
+     * Data type 1: Standard, 2: Logical Model, 3: Data Element, 4: Code Table
      */
     private String dataType;
 
@@ -48,49 +48,49 @@ public class DpDocumentSearchRespVO implements Serializable {
     private Long id;
 
     /**
-     * 编码
+     * Code
      */
     private String code;
 
     /**
-     * 标准名称
+     * Standard Name
      */
     private String name;
 
     /**
-     * 类目名称（分类名称）
+     * Category Name
      */
     private String catName;
 
     /**
-     * 文件标准类型字段，;1-国家标准，2-行业标准，3-地方标准，4-团体标准 字典：dp_document_type
+     * Document standard type; 1-National Standard, 2-Industry Standard, 3-Local Standard, 4-Group Standard. Dictionary: dp_document_type
      */
     private String type;
 
     /**
-     * 文件状态（标准状态），字典：	dp_document_status
+     * Document status (Standard Status), Dictionary: dp_document_status
      */
     private String status;
 
     /**
-     * 发布日期
+     * Release Date
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
     /**
-     * 实施日期
+     * Implementation Date
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date implementationDate;
 
     /**
-     * 文件url
+     * File URL
      */
     private String fileUrl;
 
     /**
-     * 文件名称
+     * File Name
      */
     private String fileName;
 }

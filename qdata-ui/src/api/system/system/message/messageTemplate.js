@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询消息模板列表
+// Query message template list
 export function listMessageTemplate(query) {
   return request({
     url: '/system/messageTemplate/list',
@@ -27,7 +27,7 @@ export function listMessageTemplate(query) {
   })
 }
 
-// 查询消息模板详细
+// Query message template details
 export function getMessageTemplate(id) {
   return request({
     url: '/system/messageTemplate/' + id,
@@ -35,7 +35,7 @@ export function getMessageTemplate(id) {
   })
 }
 
-// 新增消息模板
+// Add message template
 export function addMessageTemplate(data) {
   return request({
     url: '/system/messageTemplate',
@@ -44,7 +44,7 @@ export function addMessageTemplate(data) {
   })
 }
 
-// 修改消息模板
+// Modify message template
 export function updateMessageTemplate(data) {
   return request({
     url: '/system/messageTemplate',
@@ -53,7 +53,7 @@ export function updateMessageTemplate(data) {
   })
 }
 
-// 删除消息模板
+// Delete message template
 export function delMessageTemplate(id) {
   return request({
     url: '/system/messageTemplate/' + id,

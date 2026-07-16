@@ -20,7 +20,10 @@ package tech.qiantong.qdata.module.da.service.datasource.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -98,7 +101,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * 数据源Service业务层处理
+ * Datasource Service business layer processing
  *
  * @author lhs
  * @date 2025-01-21
@@ -152,30 +155,31 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
 
     /**
-     * 项目启动后初始化 Redis 中的数据源缓存。
+     * Initialize the datasource cache in Redis after project startup.
      *
-     * 功能：
-     * 1. 从数据库中加载所有数据源记录；
-     * 2. 使用 DaDatasourceDO.simplify() 方法提取关键字段；
-     * 3. 将结果写入 Redis Hash：
+     * Functionality:
+     * 1. Load all datasource records from the database;
+     * 2. Extract key fields using the DaDatasourceDO.simplify() method;
+     * 3. Write the results to a Redis Hash:
      *
-     * 场景：
-     * - 项目启动后预热数据源缓存，任务调度和 Worker 节点可直接从 Redis 获取配置信息；
-     * - 避免运行时对数据库或中台服务的强依赖。
+     * Scenarios:
+     * - After project startup, warm up the datasource cache so that task scheduling
+     *   and Worker nodes can directly obtain configuration info from Redis;
+     * - Avoid strong runtime dependencies on the database or middle-platform services.
      *
-     * 注意：
-     * - 可选：初始化前可清空 Redis 中已有的 "datasource" 缓存。
+     * Note:
+     * - Optional: the existing "datasource" cache in Redis can be cleared before initialization.
      */
     @PostConstruct
     public void initDatasourceCache() {
         try {
             List<DaDatasourceDO> list = daDatasourceMapper.selectList();
             if (list == null || list.isEmpty()) {
-                log.info("【数据源缓存初始化】无数据源记录，跳过初始化。");
+                log.info("[Datasource Cache Init] No datasource records found, skipping initialization.");
                 return;
             }
 
-            // 可选：初始化前清空缓存
+            // Optional: clear cache before initialization
             // redisService.del("datasource");
 
             for (DaDatasourceDO ds : list) {
@@ -184,12 +188,12 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 }
 
                 try {
-                    // 最新数据源连接信息
+                    // Latest datasource connection info
                     String field = String.valueOf(ds.getId());
                     String value = com.alibaba.fastjson2.JSONObject.toJSONString(ds.simplify());
                     redisService.hashPut("datasource", field, value);
 
-                    // todo 历史数据源连接信息 （临时处理，后续可以移除）
+                    // TODO: historical datasource connection info (temporary handling, can be removed later)
                     DbQueryProperty property = new DbQueryProperty(
                             ds.getDatasourceType(),
                             ds.getIp(),
@@ -197,27 +201,27 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                             ds.getDatasourceConfig());
                     String key = property.trainToJdbcUrl();
 
-                    // 判断是否已存在
+                    // Check if already exists
                     Boolean exists = redisService.hashHasKey("datasource-old", key);
                     if (Boolean.FALSE.equals(exists)) {
                         redisService.hashPut("datasource-old", key, ds.getId().toString());
-                        log.info("存入新历史数据源: key={}, value={}", key, ds.getId().toString());
+                        log.info("Stored new historical datasource: key={}, value={}", key, ds.getId().toString());
                     } else {
-                        log.info("已存在历史数据源: key={}，跳过存入", key);
+                        log.info("Historical datasource already exists: key={}, skipping insert", key);
                     }
                 } catch (Exception e) {
-                    log.warn("不支持转化的数据源");
+                    log.warn("Unsupported datasource conversion");
                 }
             }
 
-            log.info("【数据源缓存初始化】成功加载 {} 条数据源到 Redis。", list.size());
+            log.info("[Datasource Cache Init] Successfully loaded {} datasources into Redis.", list.size());
         } catch (Exception e) {
-            log.error("【数据源缓存初始化】加载 Redis 缓存失败：", e);
+            log.error("[Datasource Cache Init] Failed to load Redis cache:", e);
         }
     }
 
     /**
-     * 查询数据资产的数据源连接信息
+     * Query datasource connection info for a data asset
      *
      * @param daAsset
      * @return
@@ -271,6 +275,11 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public Long createDaDatasource(DaDatasourceSaveReqVO createReqVO) {
+        normalizeDatasource(createReqVO);
+        validateDatasourceConfig(createReqVO);
+        checkDuplicateDatasource(createReqVO);
+        ensureEnabledDatasourceConnectable(createReqVO);
+
         DaDatasourceDO dictType = BeanUtils.toBean(createReqVO, DaDatasourceDO.class);
         daDatasourceMapper.insert(dictType);
         delAndSaveDaDataSourceProject(dictType);
@@ -282,15 +291,102 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public int updateDaDatasource(DaDatasourceSaveReqVO updateReqVO) {
+        normalizeDatasource(updateReqVO);
+        validateDatasourceConfig(updateReqVO);
+        checkDuplicateDatasource(updateReqVO);
+        ensureEnabledDatasourceConnectable(updateReqVO);
+
         Long datasourceId = updateReqVO.getId();
 
-        // 更新数据源
+        // Update datasource
         DaDatasourceDO updateObj = BeanUtils.toBean(updateReqVO, DaDatasourceDO.class);
         delAndSaveDaDataSourceProject(updateObj);
 
         int i = daDatasourceMapper.updateById(updateObj);
         redisService.hashPut("datasource", datasourceId.toString(), com.alibaba.fastjson2.JSONObject.toJSONString(this.getDaDatasourceById(datasourceId).simplify()));
         return i;
+    }
+
+    private void normalizeDatasource(DaDatasourceSaveReqVO datasource) {
+        datasource.setDatasourceName(StrUtil.trim(datasource.getDatasourceName()));
+        datasource.setDatasourceType(StrUtil.trim(datasource.getDatasourceType()));
+        datasource.setIp(StrUtil.trim(datasource.getIp()));
+
+        if (StrUtil.isBlank(datasource.getDatasourceConfig()) || !JSONUtil.isJsonObj(datasource.getDatasourceConfig())) {
+            return;
+        }
+        JSONObject config = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        trimConfigValue(config, "username");
+        trimConfigValue(config, "password");
+        trimConfigValue(config, "dbname");
+        trimConfigValue(config, "sid");
+        datasource.setDatasourceConfig(config.toString());
+    }
+
+    private void trimConfigValue(JSONObject config, String key) {
+        Object value = config.get(key);
+        if (value instanceof String) {
+            config.set(key, StrUtil.trim((String) value));
+        }
+    }
+
+    private void validateDatasourceConfig(DaDatasourceSaveReqVO datasource) {
+        if (StrUtil.isBlank(datasource.getDatasourceConfig()) || !JSONUtil.isJsonObj(datasource.getDatasourceConfig())) {
+            throw new ServiceException("数据源配置格式不正确");
+        }
+        JSONObject config = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        String type = datasource.getDatasourceType();
+        if (!"OSS-ALIYUN".equals(type) && !"Kafka".equals(type) && !"HDFS".equals(type)
+                && StrUtil.isBlank(config.getStr("username"))) {
+            throw new ServiceException("账号不能为空或仅包含空格");
+        }
+    }
+
+    private void checkDuplicateDatasource(DaDatasourceSaveReqVO datasource) {
+        LambdaQueryWrapper<DaDatasourceDO> nameWrapper = new LambdaQueryWrapper<>();
+        nameWrapper.eq(DaDatasourceDO::getDatasourceName, datasource.getDatasourceName());
+        excludeCurrentDatasource(nameWrapper, datasource.getId());
+        if (this.count(nameWrapper) > 0) {
+            throw new ServiceException("已存在同名数据源，请修改数据源名称");
+        }
+
+        LambdaQueryWrapper<DaDatasourceDO> connectionWrapper = new LambdaQueryWrapper<>();
+        connectionWrapper.eq(DaDatasourceDO::getDatasourceType, datasource.getDatasourceType())
+                .eq(DaDatasourceDO::getIp, datasource.getIp())
+                .eq(DaDatasourceDO::getPort, datasource.getPort())
+                .select(DaDatasourceDO::getId, DaDatasourceDO::getDatasourceConfig);
+        excludeCurrentDatasource(connectionWrapper, datasource.getId());
+
+        JSONObject targetConfig = JSONUtil.parseObj(datasource.getDatasourceConfig());
+        String targetDbName = StrUtil.nullToEmpty(targetConfig.getStr("dbname"));
+        String targetUsername = StrUtil.nullToEmpty(targetConfig.getStr("username"));
+        for (DaDatasourceDO existing : this.list(connectionWrapper)) {
+            if (StrUtil.isBlank(existing.getDatasourceConfig()) || !JSONUtil.isJsonObj(existing.getDatasourceConfig())) {
+                continue;
+            }
+            JSONObject existingConfig = JSONUtil.parseObj(existing.getDatasourceConfig());
+            if (targetDbName.equals(StrUtil.nullToEmpty(existingConfig.getStr("dbname")))
+                    && targetUsername.equals(StrUtil.nullToEmpty(existingConfig.getStr("username")))) {
+                throw new ServiceException("已存在相同连接信息的数据源，请勿重复创建");
+            }
+        }
+    }
+
+    private void excludeCurrentDatasource(LambdaQueryWrapper<DaDatasourceDO> wrapper, Long datasourceId) {
+        if (datasourceId != null) {
+            wrapper.ne(DaDatasourceDO::getId, datasourceId);
+        }
+    }
+
+    private void ensureEnabledDatasourceConnectable(DaDatasourceSaveReqVO datasource) {
+        if (!Boolean.TRUE.equals(datasource.getValidFlag())) {
+            return;
+        }
+        DbQueryProperty property = new DbQueryProperty(
+                datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
+        if (!clientTest(property)) {
+            throw new ServiceException("当前数据源未测试通过，不能启用。");
+        }
     }
 
     private void delAndSaveDaDataSourceProject(DaDatasourceDO daDatasourceDO) {
@@ -308,7 +404,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public int removeDaDatasource(Collection<Long> idList) {
-        // 批量删除数据源
+        // Batch delete datasources
         return daDatasourceMapper.deleteBatchIds(idList);
     }
 
@@ -323,7 +419,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             queryWrapper.in("DATASOURCE_ID", idList);
             daDatasourceProjectRelService.remove(queryWrapper);
         }
-        // 批量删除数据源
+        // Batch delete datasources
         return daDatasourceMapper.deleteBatchIds(idList);
     }
 
@@ -366,19 +462,19 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 .collect(Collectors.toMap(
                         DaDatasourceDO::getId,
                         daDatasourceDO -> daDatasourceDO,
-                        // 保留已存在的值
+                        // Preserve existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据源数据
+     * Import datasource data
      *
-     * @param importExcelList 数据源数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList list of datasource data
+     * @param isUpdateSupport whether to update existing records
+     * @param operName        operator name
+     * @return result
      */
     @Override
     public String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -463,6 +559,38 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     }
 
+    @Override
+    public Boolean clientTest(Long id) {
+        DbQuery dbQuery = null;
+        try {
+            dbQuery = this.buildDbQuery(id);
+            return dbQuery.valid();
+        } catch (Exception exception) {
+            log.warn("Datasource connection test failed, datasourceId={}", id, exception);
+            return false;
+        } finally {
+            if (dbQuery != null) {
+                dbQuery.close();
+            }
+        }
+    }
+
+    @Override
+    public Boolean clientTest(DbQueryProperty dbQueryProperty) {
+        DbQuery dbQuery = null;
+        try {
+            dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
+            return dbQuery.valid();
+        } catch (Exception exception) {
+            log.warn("Datasource connection test failed", exception);
+            return false;
+        } finally {
+            if (dbQuery != null) {
+                dbQuery.close();
+            }
+        }
+    }
+
     public DbQuery buildDbQuery(Long id) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
@@ -478,7 +606,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * @param id 数据源id
+     * @param id datasource id
      * @return
      */
     @Override
@@ -500,9 +628,9 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * 获取数据表里面的数据字段
+     * Get the data fields inside a data table
      *
-     * @param jsonObject 数据源id和数据表
+     * @param jsonObject datasource id and data table
      * @return
      */
     @Override
@@ -516,7 +644,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             List<DpModelColumnReqDTO> columnReqDTOList = BeanUtils.toBean(modelIdColumnList, DpModelColumnReqDTO.class);
             return columnReqDTOList;
         }
-        // 获取数据库类型
+        // Get the database type
         DbType dbTypeEnum = DbType.getDbType(jsonObject.getStr("type"));
         List<DbColumn> columnList = this.getDbTableColumns(Long.valueOf(jsonObject.getStr("id")), jsonObject.getStr("tableName"));
         List<DpModelColumnReqDTO> columnReqDTOList = new ArrayList<>();
@@ -554,10 +682,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
 
     /**
-     * 将 List<DpModelColumnReqDTO> 转换为 List<DaAssetColumnDO>
+     * Convert List<DpModelColumnReqDTO> to List<DaAssetColumnDO>
      *
-     * @param columnsList DpModelColumnReqDTO 列表
-     * @return 转换后的 DaAssetColumnDO 列表；若输入为空或 null，则返回一个空的 ArrayList
+     * @param columnsList list of DbColumn objects
+     * @return converted DaAssetColumnDO list; returns an empty ArrayList if input is empty or null
      */
     public static List<DaAssetColumnDO> convertDbColumns(List<DbColumn> columnsList) {
         if (columnsList == null || columnsList.isEmpty()) {
@@ -565,13 +693,13 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         }
         List<DaAssetColumnDO> assetColumns = new ArrayList<>(columnsList.size());
         for (DbColumn dbColumn : columnsList) {
-            // 利用 DpModelColumnReqDTO 的构造方法封装 DbColumn 到 DTO 对象
+            // Use DpModelColumnReqDTO constructor to wrap DbColumn into a DTO object
             DpModelColumnReqDTO dto = new DpModelColumnReqDTO(dbColumn);
-            // 利用 DTO 数据映射生成 DaAssetColumnDO 对象
+            // Use DTO data mapping to generate a DaAssetColumnDO object
             DaAssetColumnDO assetColumn = DaAssetColumnDO.builder()
-                    // engName 映射为字段名称
+                    // engName maps to field name
                     .columnName(dto.getEngName())
-                    // cnName 映射为字段注释
+                    // cnName maps to field comment
                     .columnComment(dto.getCnName())
                     .columnType(dto.getColumnType())
                     .columnLength(dto.getColumnLength())
@@ -711,7 +839,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         String sqlText = decryptSqlText(daDatasource.getSqlText());
         DbQuery dbQuery = getDbQuery(daDatasource);
         int[] paging = getPagingParameters(daDatasource);
-        // paging 数组中：paging[0] 为 offset，paging[1] 为 pageSize
+        // In the paging array: paging[0] is offset, paging[1] is pageSize
         tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> mapPageResult = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
         dbQuery.close();
         return mapPageResult;
@@ -726,7 +854,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
         dbQuery.close();
         List<Map<String, Object>> dataList = result.getData();
-        // 移除每条记录中的 ROW_ID 字段
+        // Remove the ROW_ID field from each record
         dataList.forEach(map -> map.remove("ROW_ID"));
         String schemeName = "导出第" + paging[2] + "页数据-" + IdUtil.simpleUUID();
         exportByList(response, dataList, schemeName);
@@ -741,7 +869,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             throw new ServiceException("da.error.sql.parse", "SQL语法有问题，解析出错");
         }
 
-        // 查询数据源信息
+        // Query datasource info
         DaDatasourceRespDTO datasourceById = this.getDatasourceById(Long.valueOf(sourceId));
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 datasourceById.getDatasourceType(),
@@ -753,7 +881,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * 解密传入的 SQL 语句
+     * Decrypt the incoming SQL statement
      */
     private String decryptSqlText(String encryptedSqlText) {
         String sqlText = "";
@@ -768,28 +896,28 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             throw new DataQueryException("db.error.sql.empty", "SQL语句不能为空");
         }
 
-        // 检查是否包含分隔符';'
+        // Check if the separator ';' is present
         int semicolonCount = sqlText.length() - sqlText.replace(";", "").length();
         if (semicolonCount > 0) {
             int firstIndex = sqlText.indexOf(";");
             int lastIndex = sqlText.lastIndexOf(";");
-            // 若';'不只出现在末尾，则视为存在多个SQL语句
+            // If ';' does not appear only at the end, consider it as multiple SQL statements
             if (firstIndex != lastIndex || lastIndex != sqlText.length() - 1) {
                 throw new DataQueryException("db.error.sql.multi", "仅支持单个查询SQL语句，不允许存在多个语句");
             }
-            // 移除末尾的';'
+            // Remove the trailing ';'
             sqlText = sqlText.substring(0, sqlText.length() - 1).trim();
             if (sqlText.contains(";")) {
                 throw new DataQueryException("db.error.sql.multi", "仅支持单个查询SQL语句，不允许存在多个语句");
             }
         }
 
-        // 确保SQL以"select"开头（忽略大小写）
+        // Ensure the SQL starts with "select" (case-insensitive)
         if (!sqlText.toLowerCase().startsWith("select")) {
             throw new DataQueryException("db.error.sql.query.only", "仅允许执行查询操作的SQL语句");
         }
 
-        // 进一步检测是否包含非查询的SQL标识
+        // Further check for non-query SQL identifiers
         validateQueryOnly(sqlText);
 
         return sqlText;
@@ -797,18 +925,18 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
 
     /**
-     * 检查SQL语句中是否存在非查询操作的关键字。
-     * 为避免误报，先将SQL语句中位于字符串中的内容去除，再通过正则表达式判断
+     * Check the SQL statement for non-query operation keywords.
+     * To avoid false positives, strip string literals from the SQL first, then check via regex.
      */
     private void validateQueryOnly(String sqlText) {
-        // 移除SQL中的字符串常量，避免因字符串中包含敏感词导致误判
+        // Remove string constants from the SQL to avoid false positives caused by sensitive words in strings
         String withoutStringLiterals = sqlText.replaceAll("'[^']*'", "");
-        // 定义不允许出现的关键词（全词匹配，忽略大小写）
+        // Define disallowed keywords (whole-word match, case-insensitive)
         String[] forbiddenKeywords = {"insert", "update", "delete", "create", "drop", "alter", "truncate", "exec", "execute", "merge"};
         String lowerSql = withoutStringLiterals.toLowerCase();
 
         for (String keyword : forbiddenKeywords) {
-            // \b 确保匹配关键字边界，避免匹配到部分字段
+            // \b ensures keyword boundary matching, avoiding partial field name matches
             if (Pattern.compile("\\b" + keyword + "\\b").matcher(lowerSql).find()) {
                 throw new DataQueryException("db.error.sql.keyword",
                     "SQL语句中包含非查询操作标识: " + keyword, keyword);
@@ -817,7 +945,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * 根据请求中的数据源 ID 获取 DbQuery 对象
+     * Get a DbQuery object based on the datasource ID in the request
      */
     private DbQuery getDbQuery(DaDatasourcePageReqVO daDatasource) {
         DaDatasourceDO datasource = this.getDaDatasourceById(daDatasource.getId());
@@ -838,10 +966,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     /**
-     * 获取分页参数：返回一个 int 数组，其中
-     * paging[0] 为 offset，
-     * paging[1] 为 pageSize，
-     * paging[2] 为 pageNum（用于导出时显示页码）
+     * Get paging parameters: returns an int array where
+     * paging[0] is offset,
+     * paging[1] is pageSize,
+     * paging[2] is pageNum (used for displaying page number during export)
      */
     private int[] getPagingParameters(DaDatasourcePageReqVO daDatasource) {
         int pageSize = daDatasource.getPageSize() != null ? daDatasource.getPageSize() : 20;
@@ -856,59 +984,59 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             throw new ServiceException("da.error.form.notfound", "暂无表单信息");
         }
 
-        // 获取第一行数据的所有列名作为 order
+        // Get all column names from the first row as the order
         Map<String, Object> firstRow = dataList.get(0);
-        // 使用 Set 可以确保列名唯一性
+        // Use a Set to ensure column name uniqueness
         List<String> order = new ArrayList<>(firstRow.keySet());
 
-        //1.创建工作博
+        //1. Create workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
 
-        //头部字段字体
+        // Header field font
         XSSFFont headFont = workbook.createFont();
-        //字体高度
+        // Font height
         headFont.setFontHeightInPoints((short) 24);
-        //字体
+        // Font
         headFont.setFontName("宋体");
         headFont.setBold(true);
-        // 设置单元格类型
+        // Set cell style
         XSSFCellStyle headCellStyle = workbook.createCellStyle();
         headCellStyle.setFont(headFont);
-        //水平布局：居中
+        // Horizontal alignment: center
         headCellStyle.setAlignment(HorizontalAlignment.CENTER);
-        //垂直居中
+        // Vertical alignment: center
         headCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         headCellStyle.setWrapText(true);
 
-        //标注划字体
+        // Annotation/markup font
         XSSFFont font = workbook.createFont();
-        //字体高度
+        // Font height
         font.setFontHeightInPoints((short) 11);
-        //字体
+        // Font
         font.setFontName("宋体");
 
-        //列样式
+        // Column style
         XSSFCellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFont(font);
-        //水平布局：居中
+        // Horizontal alignment: center
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        //垂直居中
+        // Vertical alignment: center
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyle.setWrapText(true);
 
-        //2。创建工作表
+        // 2. Create worksheet
         XSSFSheet sheet = workbook.createSheet(tableName);
 
-        //冻结第一行
+        // Freeze the first row
         sheet.createFreezePane(0, 1, 0, 1);
 
-        //3。创建字段行
+        // 3. Create header row
         XSSFRow row = sheet.createRow(0);
         row.setHeight((short) (2 * 200));
 
         int index = 0;
         for (String key : order) {
-            //设置默认宽度
+            // Set default width
             sheet.setColumnWidth(index, 25 * 256);
             XSSFCell labelCell = row.createCell(index);
             labelCell.setCellStyle(cellStyle);
@@ -916,10 +1044,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             index++;
         }
 
-        //4。数据行
+        // 4. Data rows
         for (int i = 0; i < dataList.size(); i++) {
             Map<String, Object> map = dataList.get(i);
-            //数据行
+            // Data row
             XSSFRow dataRow = sheet.createRow(i + 1);
             dataRow.setHeight((short) (4 * 200));
             int columnIndex = 0;
@@ -927,7 +1055,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 Object valueObj = map.get(key);
                 String value = "";
                 if (valueObj instanceof Date) {
-                    // 如果是日期类型，转换为固定格式的字符串
+                    // If it is a date type, convert to a fixed-format string
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     value = dateFormat.format((Date) valueObj);
                 } else {
@@ -941,7 +1069,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         }
 
         if (response != null) {
-            //5.输出流 输出
+            // 5. Output stream - write to output
             ByteArrayOutputStream baos = null;
             try {
                 baos = new ByteArrayOutputStream();
@@ -961,12 +1089,12 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 if (response.getOutputStream() != null) {
                     response.getOutputStream().flush();
                 }
-                //6.刷新流，释放资源
+                // 6. Flush the stream and release resources
                 if (baos != null) {
                     baos.flush();
                     baos.close();
                 }
-                //关闭资源
+                // Close resources
                 workbook.close();
             }
         }
@@ -975,14 +1103,17 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public Boolean editDatasourceStatus(Long datasourceId, Long status) {
+        if (Objects.equals(status, 1L) && !clientTest(datasourceId)) {
+            throw new ServiceException("当前数据源未测试通过，不能启用。");
+        }
         return this.update(Wrappers.lambdaUpdate(DaDatasourceDO.class)
                 .eq(DaDatasourceDO::getId, datasourceId)
                 .set(DaDatasourceDO::getValidFlag, status));
     }
 
     /**
-     * @param id        数据源id
-     * @param tableName 表名称
+     * @param id        datasource id
+     * @param tableName table name
      * @return
      */
     @Override
@@ -1048,7 +1179,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 datasource.getDatasourceConfig()
         );
 
-        // 1. 先获取顶层数据库
+        // 1. First get the top-level databases
         List<DbName> dbNames;
         DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
         try {
@@ -1064,15 +1195,15 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             return dbNames;
         }
 
-        // 单层结构，直接返回
+        // Single-level structure, return directly
         if (dbNames.get(0).getLevel() == 1 && dbNames.get(0).getTotalLevels() == 1) {
             return dbNames;
         }
 
-        // 2. 逐个加载下级
+        // 2. Iteratively load child databases
         for (DbName dbName : dbNames) {
 
-            // Kingbase / PostgreSQL 需要切换 dbName
+            // Kingbase / PostgreSQL need to switch dbName
             DbQueryProperty childProperty = baseProperty;
             if (DbType.KINGBASE8.getDb().equals(baseProperty.getDbType())
                     || DbType.POSTGRE_SQL.getDb().equals(baseProperty.getDbType())) {
@@ -1084,14 +1215,14 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             DbQuery childQuery = dataSourceFactory.createDbQuery(childProperty);
             try {
                 if (!childQuery.valid()) {
-                    // 不影响整体，直接跳过当前节点
+                    // Does not affect the whole, skip current node directly
                     continue;
                 }
                 List<DbName> children = childQuery.getDbNames(dbName);
                 dbName.setChildren(children);
             } catch (Exception e) {
-                // 可选：记录日志
-                // log.warn("获取数据库 {} 子级失败", dbName.getDbName(), e);
+                // Optional: log the error
+                // log.warn("Failed to get children for database {}", dbName.getDbName(), e);
             } finally {
                 childQuery.close();
             }
@@ -1149,30 +1280,30 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     private int updateTableStatus(DaDiscoveryTableDO matchedTable, DaDiscoveryTableDO table, boolean modifiedTablesBoolean, Long daDiscoveryTaskLog) {
         if (modifiedTablesBoolean) {
-            //1:新增，2:修改，3:删除，4:无变化
+            // 1: new, 2: modified, 3: deleted, 4: unchanged
             table.setChangeFlag("2");
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表状态为修改：" + matchedTable.getTableName());
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Updated table status to modified: " + matchedTable.getTableName());
 
             iDaDiscoveryTableService.updateDaDiscoveryTable(table);
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新完毕");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Update completed");
             return 1;
         } else {
-            //1:新增，2:修改，3:删除，4:无变化
+            // 1: new, 2: modified, 3: deleted, 4: unchanged
             matchedTable.setChangeFlag("4");
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表状态为无变化：" + matchedTable.getTableName());
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Updated table status to unchanged: " + matchedTable.getTableName());
 
             iDaDiscoveryTableService.updateDaDiscoveryTable(matchedTable);
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新完毕");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Update completed");
             return 0;
         }
 
     }
     private void saveNewTable(DaDiscoveryTableDO table, List<DbColumn> columns, DbQuery dbQuery, DbQueryProperty dbQueryProperty, Long daDiscoveryTaskLog) {
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "保存新表：" + table.getTableName());
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Saving new table: " + table.getTableName());
 
         updateTableDataCount(dbQuery, table, columns.size());
 
-        //1:新增，2:修改，3:删除，4:无变化
+        // 1: new, 2: modified, 3: deleted, 4: unchanged
         table.setChangeFlag("1");
         iDaDiscoveryTableService.createDaDiscoveryTable(table);
 
@@ -1182,7 +1313,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                     .collect(Collectors.toList());
             metadataColumnEntityList.forEach(iDaDiscoveryColumnService::createDaDiscoveryColumn);
         }
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "保存完毕");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Save completed");
     }
 
     public DaDiscoveryTableDO findMatchedTable(DaDiscoveryTableDO table, List<DaDiscoveryTableDO> daDiscoveryTableDOList) {
@@ -1190,7 +1321,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 .filter(existingTable -> existingTable.getTableName().equals(table.getTableName()) &&
                         existingTable.getTaskId().equals(table.getTaskId()))
                 .findFirst()
-                .orElse(null);  // 如果没有匹配到，返回null
+                .orElse(null);  // Return null if no match found
     }
 
     private boolean isTableCommentModified(DaDiscoveryTableDO table, DaDiscoveryTableDO matchedTable) {
@@ -1227,7 +1358,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         return daDiscoveryTableDOList.stream()
                 .filter(existingTable -> StringUtils.equals(existingTable.getColumnName(), table.getColumnName()))
                 .findFirst()
-                .orElse(null);  // 如果没有匹配到，返回null
+                .orElse(null);  // Return null if no match found
     }
 
 
@@ -1251,15 +1382,15 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                         .noneMatch(existingTable -> {
                             return StringUtils.equals(existingTable.getColumnName(), table.getColumnName());
                         }))
-                .collect(Collectors.toList()); // 返回daDiscoveryTableDOList中在metadataTableEntityList中不存在的table
+                .collect(Collectors.toList()); // Return tables in daDiscoveryTableDOList that are not present in metadataTableEntityList
     }
 
 
     private int updateExistingTable(DbQuery dbQuery, DaDiscoveryTableDO matchedTable, DaDiscoveryTableDO table, List<DbColumn> columns, Long daDiscoveryTaskLog) {
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "更新表：" + table.getTableName());
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Updating table: " + table.getTableName());
 
         boolean modifiedTablesBoolean = false;
-        //查询表存的快照字段结构
+        // Query the snapshot field structure stored in the table
         List<DaDiscoveryColumnDO> discoveryColumnDOList = this.fetchDaDiscoveryColumnDOList(matchedTable, daDiscoveryTaskLog);
         discoveryColumnDOList = discoveryColumnDOList == null ? new ArrayList<>() : discoveryColumnDOList;
 
@@ -1279,7 +1410,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     private Map<String, Object> logSchemaModifications(DbQueryProperty dbQueryProperty, DbQuery dbQuery, DaDiscoveryTaskRespVO daDiscoveryTaskById, Long daDiscoveryTaskLog) {
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始执行模式修改操作，任务ID：" + daDiscoveryTaskById.getId());
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Starting schema modification operation, task ID: " + daDiscoveryTaskById.getId());
 
         int newTables = 0;
         int modifiedTables = 0;
@@ -1293,34 +1424,34 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         List<DaDiscoveryTableDO> metadataTableEntityList = new ArrayList<>();
         if (CollUtil.isNotEmpty(tables)) {
             totalTables = tables.size();
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从数据源中，实时获取表列数量信息：" + totalTables);
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Fetching table column count info from datasource in real-time: " + totalTables);
 
             metadataTableEntityList = mapToMetadataTableList(tables, daDiscoveryTaskById.getId());
             if (CollUtil.isNotEmpty(metadataTableEntityList)) {
                 for (DaDiscoveryTableDO table : metadataTableEntityList) {
                     DaDiscoveryTableDO matchedTable = findMatchedTable(table, daDiscoveryTableDOList);
-                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "正在处理表：" + table.getTableName());
+                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Processing table: " + table.getTableName());
 
                     List<DbColumn> columns = dbQuery.getTableColumns(dbQueryProperty, table.getTableName());
 
                     columns = columns == null ? new ArrayList<>() : columns;
-                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从数据源中，实时获取列数量信息：" + columns.size());
+                    iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Fetching column count info from datasource in real-time: " + columns.size());
                     if (matchedTable == null) {
                         newTables++;
-                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "新表发现，表：" + table.getTableName() + "，开始保存");
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "New table discovered, table: " + table.getTableName() + ", starting to save");
                         saveNewTable(table, columns, dbQuery, dbQueryProperty, daDiscoveryTaskLog);
                     } else {
-                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息");
-                        //是否忽略;0:否，1：是
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Checking table [" + table.getTableName() + "] configuration info in database");
+                        // Whether to ignore; 0: no, 1: yes
                         String ignoreFlag = matchedTable.getIgnoreFlag();
-                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息,发现配置ignoreFlag为：" + ignoreFlag);
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Checking table [" + table.getTableName() + "] configuration info in database, found ignoreFlag: " + ignoreFlag);
                         if (StringUtils.equals("1", ignoreFlag)) {
-                            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "查看表[ " + table.getTableName() + " ]库中配置信息,发现配置为：忽略。该表结束扫描！");
+                            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Checking table [" + table.getTableName() + "] configuration info in database, found config: ignored. Scanning of this table ends!");
                             continue;
                         }
                         table.setId(matchedTable.getId());
                         modifiedTables += updateExistingTable(dbQuery, matchedTable, table, columns, daDiscoveryTaskLog);
-                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "已存在表更新，表：" + table.getTableName());
+                        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Existing table updated, table: " + table.getTableName());
 
                     }
                 }
@@ -1330,7 +1461,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         deletedTables = deleteUnmatchedTables(daDiscoveryTableDOList, metadataTableEntityList, daDiscoveryTaskLog);
         String executionTime = DateUtils.getExecutionTime();
 
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "模式修改操作完成，总表数：" + totalTables + "。其中，新增表数：" + newTables + "，修改表数：" + modifiedTables + "，删除表数：" + deletedTables);
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Schema modification operation completed, total tables: " + totalTables + ". Among them, new tables: " + newTables + ", modified tables: " + modifiedTables + ", deleted tables: " + deletedTables);
 
         Map<String, Object> map = new HashMap<>();
         map.put("taskName", daDiscoveryTaskById.getName());
@@ -1350,7 +1481,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 .filter(table -> metadataTableEntityList.stream()
                         .noneMatch(existingTable -> existingTable.getTableName().equals(table.getTableName()) &&
                                 existingTable.getTaskId().equals(table.getTaskId())))
-                .collect(Collectors.toList()); // 返回daDiscoveryTableDOList中在metadataTableEntityList中不存在的table
+                .collect(Collectors.toList()); // Return tables in daDiscoveryTableDOList that are not present in metadataTableEntityList
     }
 
     private int deleteUnmatchedTables(List<DaDiscoveryTableDO> daDiscoveryTableDOList, List<DaDiscoveryTableDO> metadataTableEntityList, Long daDiscoveryTaskLog) {
@@ -1360,13 +1491,13 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         for (DaDiscoveryTableDO daDiscoveryTableDO : notInMetadataTable) {
             daDiscoveryTableDO.setUpdateBy("超级管理员");
             daDiscoveryTableDO.setUpdatorId(1L);
-            //1:新增，2:修改，3:删除，4:无变化
+            // 1: new, 2: modified, 3: deleted, 4: unchanged
             daDiscoveryTableDO.setChangeFlag("3");
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "删除未匹配表：" + daDiscoveryTableDO.getTableName());
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Deleting unmatched table: " + daDiscoveryTableDO.getTableName());
             iDaDiscoveryTableService.updateDaDiscoveryTable(daDiscoveryTableDO);
         }
 
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "删除完毕");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Deletion completed");
         return notInMetadataTable.size();
     }
 
@@ -1374,14 +1505,14 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     private Map<String, Object> runJobTableSchemaUpdates(DaDiscoveryTaskRespVO daDiscoveryTaskById, Long daDiscoveryTaskLog) {
 
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源编号，获取发现任务的 数据源详细信息");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution - getting datasource details for discovery task by datasource ID");
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(daDiscoveryTaskById.getDatasourceId());
         if (daDatasourceBy == null) {
             throw new DataQueryException("db.error.task.datasource.detail",
-                    "任务执行-根据数据源编号，获取发现任务的数据源详情信息查询失败！");
+                    "Task execution - failed to get datasource details for discovery task by datasource ID!");
         }
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源编号，获取发现任务的 数据源详细信息成功");
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接信息，建立实时数据源链接");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution - successfully got datasource details for discovery task by datasource ID");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution - establishing real-time datasource connection by datasource connection info");
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
@@ -1406,6 +1537,8 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
 
     /**
+     * Detect table schema updates
+     *
      * @param id
      */
     @Override
@@ -1421,7 +1554,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                     "任务执行-根据发现任务编号，获取发现任务详细信息失败!");
         }
         redisService.set(key, "1", 1200);
-        //创建日志记录表
+        // Create a log record table
         DaDiscoveryTaskLogSaveReqVO createReqVO = new DaDiscoveryTaskLogSaveReqVO();
         Date executionDate = DateUtils.getExecutionDate();
         createReqVO.setStartTime(executionDate);

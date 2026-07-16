@@ -44,7 +44,7 @@ export function buildMonarchTokensProvider(monacoLanguages) {
     tokenPostfix: '.log',
     keywords: JAVA_LOG_KEYWORD,
     operators: [],
-    ignoreCase: true, // 忽略大小写
+    ignoreCase: true, // Ignore case
     builtinFunctions: [],
     builtinVariables: [],
     typeKeywords: [],
@@ -83,7 +83,7 @@ export function buildMonarchTokensProvider(monacoLanguages) {
     },
     tokenizer: {
       root: [
-        // 默认不区分大小写 //
+        // Case insensitive by default //
         [/\[(\w*-\d*)+\]/, 'custom-thread'],
         [/(\w+(\.))+(\w+)(\(\d+\))?(:){1}/, 'custom-class'],
         [/(\w+(\.))+(\w+)(\(\d+\))?\s+/, 'custom-class'],

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询清洗规则列表
+// Query the list of cleaning rules
 export function listAttCleanRule(query) {
   return request({
     url: '/att/cleanRule/list',
@@ -27,7 +27,7 @@ export function listAttCleanRule(query) {
   })
 }
 
-// 查询清洗规则详细
+// Query detailed cleaning rules
 export function getAttCleanRule(id) {
   return request({
     url: '/att/cleanRule/' + id,
@@ -35,7 +35,7 @@ export function getAttCleanRule(id) {
   })
 }
 
-// 新增清洗规则
+// Add cleaning rules
 export function addAttCleanRule(data) {
   return request({
     url: '/att/cleanRule',
@@ -44,7 +44,7 @@ export function addAttCleanRule(data) {
   })
 }
 
-// 修改清洗规则
+// Modify cleaning rules
 export function updateAttCleanRule(data) {
   return request({
     url: '/att/cleanRule',
@@ -53,7 +53,7 @@ export function updateAttCleanRule(data) {
   })
 }
 
-// 删除清洗规则
+// Delete cleaning rules
 export function delAttCleanRule(id) {
   return request({
     url: '/att/cleanRule/' + id,
@@ -70,7 +70,7 @@ export function treeAttCleanRule(params) {
   })
 }
 
-// 数据集成用到的 清洗规则
+// Cleaning rules used in data integration
 export function listAll(params) {
   return request({
     url: '/att/cleanRule/listAll',

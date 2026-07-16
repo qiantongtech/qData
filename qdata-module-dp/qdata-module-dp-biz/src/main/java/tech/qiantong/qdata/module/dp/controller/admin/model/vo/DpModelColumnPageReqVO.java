@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 逻辑模型属性信息 Request VO 对象 DP_MODEL_COLUMN
+ * Logical Model Column Request VO - DP_MODEL_COLUMN
  *
  * @author qdata
  * @date 2025-01-21

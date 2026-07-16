@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.system.api.message.dto;
 import lombok.Data;
 
 /**
- * 消息 DTO 对象 message
+ * Message DTO object message
  *
  * @author qdata
  * @date 2024-10-31
@@ -34,46 +34,46 @@ public class MessageRespDTO {
     /** ID */
     private Long id;
 
-    /** 发送人 */
+    /** Sender ID */
     private Long senderId;
 
-    /** 接收人 */
+    /** Receiver ID */
     private Long receiverId;
 
-    /** 消息标题 */
+    /** Message title */
     private String title;
 
-    /** 消息模板内容 */
+    /** Message template content */
     private String content;
 
-    /** 消息类别 */
+    /** Message category */
     private Integer category;
 
-    /** 消息等级 */
+    /** Message level */
     private Integer msgLevel;
 
-    /** 消息模块 */
+    /** Message module */
     private Integer module;
 
-    /** 实体类型 */
+    /** Entity type */
     private Integer entityType;
 
-    /** 实体id */
+    /** Entity ID */
     private Long entityId;
 
-    /** 消息链接 */
+    /** Message link */
     private String entityUrl;
 
-    /** 是否已读 */
+    /** Has read */
     private Integer hasRead;
 
-    /** 是否撤回 */
+    /** Has retraction */
     private Integer hasRetraction;
 
-    /** 是否有效 */
+    /** Is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
 

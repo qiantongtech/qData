@@ -25,7 +25,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 脱敏白名单 Request VO 对象 DG_DESENSITIZE_WHITELIST
+ * Desensitize Whitelist Request VO Object DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09

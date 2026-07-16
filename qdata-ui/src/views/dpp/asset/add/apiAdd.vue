@@ -64,7 +64,7 @@
   </el-form-item>
 
   <div class="tableForm row-full">
-    <!-- Header 字段（type == 3） -->
+    <!-- Header field (type == 3) -->
     <el-form
         :model="{ headerList }"
         :rules="rules"
@@ -165,7 +165,7 @@
       </el-table>
     </el-form>
 
-    <!-- 入参字段（type == 1） -->
+    <!-- Input parameter field (type == 1) -->
     <el-form
         :model="{ inputList }"
         :rules="rules"
@@ -343,7 +343,7 @@
         </el-table-column>
       </el-table>
     </el-form>
-    <!-- 出参字段（type == 2） -->
+    <!-- Output parameter field (type == 2) -->
     <el-form
         :model="{ outputList }"
         :rules="rules"
@@ -484,7 +484,7 @@ import { ref, reactive, computed, watch, getCurrentInstance } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 const { td } = useDefaultLang();
-// 接收父组件传递的form对象（其中包含 daAssetApiParamList）和其他属性
+// Receive the form object (which contains daAssetApiParamList) and other properties passed by the parent component
 const props = defineProps({
   form: Object,
   createTypeList: Array,
@@ -510,7 +510,7 @@ const hasChildren = (row) => {
     }
     return true;
   }
-  // 如果没有子节点，且 columnType 是 Object 或 Array，则重置为 string
+  // If there are no child nodes and columnType is Object or Array, reset to string
   if (["Object", "Array"].includes(row.columnType)) {
     row.columnType = "string";
   }
@@ -518,7 +518,7 @@ const hasChildren = (row) => {
   return false;
 };
 
-// 弹窗状态和表单数据
+// Pop-up status and form data
 let open = ref(false);
 const form2 = ref({
   id: "",
@@ -530,7 +530,7 @@ const form2 = ref({
   remark: "",
   type: "",
 });
-// 计算属性：按 type 分组过滤数据
+// Computed properties: filter data grouped by type
 const headerList = computed(() =>
     daAssetApiParamList.value.filter((item) => Number(item.type) == 3)
 );
@@ -540,7 +540,7 @@ const inputList = computed(() =>
 const outputList = computed(() =>
     daAssetApiParamList.value.filter((item) => Number(item.type) == 2)
 );
-// 新增操作（顶级记录）
+// Add new operation (top level record)
 // const handleAdd = (type) => {
 //   form2.value = {
 //     id: "",
@@ -551,14 +551,14 @@ const outputList = computed(() =>
 //     fieldRequest: '',
 //     status: '',
 //     remark: "",
-//     type: type  // 直接使用数字型
+//     type: type // Use numeric type directly
 //   };
 //   open.value = true;
 // };
-// 直接新增一行数据到表格
+// Add a row of data directly to the table
 const handleAdd = (type) => {
   const newRow = {
-    id: uuidv4(), // 使用当前时间戳作为唯一 ID
+    id: uuidv4(), // Use current timestamp as unique ID
     name: "",
     fieldExtent: "",
     columnType: "string",
@@ -578,7 +578,7 @@ const rules = {
     { required: true, message: td('dpp.asset.add.api.paramTypeRequired'), trigger: "change" },
   ],
 };
-// 行新增操作（在已有记录下增加子节点）
+// Row new operation (add child nodes to existing records)
 const handleAddRow = (type, row) => {
   const newRow = {
     id: uuidv4(),
@@ -590,16 +590,16 @@ const handleAddRow = (type, row) => {
     status: "",
     remark: "",
     requestFlag: "0",
-    type: row.type, // 继承父级的 type
+    type: row.type, // Inherit the parent's type
     parentId: row.id,
   };
   submitCU(newRow);
   // open.value = true;
 };
 
-// 修改操作
+// Modify operations
 const handleUpdate = (type, row) => {
-  // 将选中行赋值给弹窗表单数据
+  // Assign the selected row to the pop-up form data
   form2.value = { ...row };
   open.value = true;
 };
@@ -607,30 +607,30 @@ const findPosi = (array, targetId, path = "") => {
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item.id === targetId) {
-      return path + i; // 返回当前节点的索引作为路径
+      return path + i; // Returns the index of the current node as a path
     }
     if (item.daAssetApiParamList && item.daAssetApiParamList.length > 0) {
-      // 递归查找子节点
+      // Find child nodes recursively
       const childPath = `${path}${i}.daAssetApiParamList.`;
       const result = findPosi(item.daAssetApiParamList, targetId, childPath);
       if (result !== null) {
-        return result; // 找到则返回路径
+        return result; // If found, return the path
       }
     }
   }
-  return null; // 没找到返回 null
+  return null; // Not found returns null
 };
 
 let inputForm = ref();
 let headerForm = ref();
 let outputForm = ref();
-// 删除操作：递归删除节点（支持树形结构删除）
+// Delete operation: recursively delete nodes (supports tree structure deletion)
 const handleDelete = (type, row) => {
   if (deleteNodeById(daAssetApiParamList.value, row.id)) {
     daAssetApiParamList.value = [...daAssetApiParamList.value];
   }
 };
-// 校驗
+// Verify
 const validateForms = async () => {
   try {
     const [inputValid, headerValid, outputValid] = await Promise.all([
@@ -640,14 +640,14 @@ const validateForms = async () => {
     ]);
 
     if (inputValid && headerValid && outputValid) {
-      console.log("所有表单校验通过，执行提交操作");
+      console.log("All form validations passed; submitting");
       return true;
     } else {
-      console.warn("有表单校验未通过");
+      console.warn("Some form validations failed");
       return false;
     }
   } catch (error) {
-    console.error("表单校验出错", error);
+    console.error("Form validation error", error);
     return false;
   }
 };
@@ -668,7 +668,7 @@ const deleteNodeById = (nodes, idToDelete) => {
   return false;
 };
 
-// 递归更新节点（查找后更新）
+// Update nodes recursively (update after search)
 const updateNodeInTree = (tree, node) => {
   for (let i = 0; i < tree.length; i++) {
     if (tree[i].id === node.id) {
@@ -685,7 +685,7 @@ const updateNodeInTree = (tree, node) => {
   return false;
 };
 
-// 在指定 parentId 的位置新增或更新子节点
+// Add or update a child node at the specified parentId
 const buildTree = (tree, parentId, newNode) => {
   tree.forEach((node) => {
     if (node.id === parentId) {
@@ -707,10 +707,10 @@ const buildTree = (tree, parentId, newNode) => {
   });
 };
 
-// 新增/编辑提交操作：根据 type 判断操作（顶级或子节点）
+// Add/edit submission operation: determine the operation (top-level or sub-node) based on type
 const submitCU = (value) => {
   if (Number(value.type) === 3) {
-    // 顶级记录
+    // top record
     const index = daAssetApiParamList.value.findIndex(
         (item) => item.id === value.id
     );
@@ -723,7 +723,7 @@ const submitCU = (value) => {
       daAssetApiParamList.value.push(value);
     }
   } else if (Number(value.type) === 1 || Number(value.type) === 2) {
-    // 入参（1）或出参（2）均采用树形结构处理
+    // Incoming parameters (1) or outgoing parameters (2) are processed using a tree structure.
     const updated = updateNodeInTree(daAssetApiParamList.value, value);
     if (!updated) {
       if (!value.parentId) {
@@ -736,7 +736,7 @@ const submitCU = (value) => {
   open.value = false;
 };
 
-// 取消操作，清空弹窗表单数据并关闭弹窗
+// Cancel the operation, clear the pop-up form data and close the pop-up window
 const cancelCU = () => {
   form2.value = {
     id: "",
@@ -752,12 +752,12 @@ const cancelCU = () => {
   open.value = false;
 };
 
-// 同步外部传入的 form 数据
+// Synchronize externally incoming form data
 watch(
     () => props.form,
     (newVal) => {
       localForm.value = { ...newVal };
-      // 同步合并的参数列表（注意：若外部传入的 daAssetApiParamList 更新时，也需要同步过来）
+      // Synchronize the merged parameter list (note: if the externally passed daAssetApiParamList is updated, it also needs to be synchronized)
       daAssetApiParamList.value = newVal.daAssetApiParamList || [];
     },
     { deep: true }
@@ -871,10 +871,10 @@ defineExpose({
 .tableForm {
   margin-bottom: 15px;
   .el-form-item {
-    margin: 0; // 去掉默认 margin
+    margin: 0; // Remove default margin
     display: flex;
     align-items: center;
-    height: 100%; // 让其撑满表格单元格高度
+    height: 100%; // Let it fill the height of the table cell
   }
 }
 </style>

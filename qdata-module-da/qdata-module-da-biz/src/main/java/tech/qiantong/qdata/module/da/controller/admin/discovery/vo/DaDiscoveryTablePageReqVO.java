@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据发现库信息 Request VO 对象 DA_DISCOVERY_TABLE
+ * Data Discovery Database Table Request VO object DA_DISCOVERY_TABLE
  *
  * @author qdata
  * @date 2025-02-11

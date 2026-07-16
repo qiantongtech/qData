@@ -14,20 +14,7 @@
  *  *
  * More information: https://qdata.qiantong.tech/business.html
  *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+
  */
 
 package tech.qiantong.qdata.config;
@@ -45,18 +32,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Swagger 接口文档国际化
- * 运行时从 messages*.properties 资源文件读取 @Tag name 和 @Operation summary 的翻译
+ * Swagger API documentation internationalization
+ * Reads translations for @Tag name and @Operation summary from messages*.properties resource files at runtime
  *
- * i18n key 约定：直接使用 @Operation(summary) 或 @Tag(name) 的原始值作为 key
+ * i18n key convention: use the original value of @Operation(summary) or @Tag(name) directly as the key
  *
- * 示例：
- *   @Operation(summary = "Query Role List")   ← messages.properties key
- *   @Tag(name = "Role Management")            ← messages.properties key
+ * Example:
+ *   @Operation(summary = "Query Role List")   <-- messages.properties key
+ *   @Tag(name = "Role Management")            <-- messages.properties key
  *
  *   messages_zh_CN.properties:
- *     Query Role List=查询角色列表
- *     Role Management=角色管理
+ * Query Role List=Query role list
+ * Role Management=Role Management
  *
  * @author qdata
  */
@@ -65,7 +52,7 @@ public class SwaggerI18nCustomizer implements GlobalOpenApiCustomizer {
 
     @Override
     public void customise(OpenAPI openApi) {
-        // 翻译 Tags
+        // Translate Tags
         if (openApi.getTags() != null) {
             for (Tag tag : openApi.getTags()) {
                 if (tag.getName() != null) {
@@ -79,24 +66,24 @@ public class SwaggerI18nCustomizer implements GlobalOpenApiCustomizer {
             }
         }
 
-        // 翻译 Operations
+        // Translate Operations
         Map<String, PathItem> paths = openApi.getPaths();
         if (paths != null) {
             for (PathItem pathItem : paths.values()) {
                 for (Operation operation : pathItem.readOperations()) {
-                    // 翻译 operation summary
+                    // Translate operation summary
                     if (operation.getSummary() != null) {
                         String i18nSummary = MessageUtils.messageWithFallback(
                                 operation.getSummary(), operation.getSummary());
                         operation.setSummary(i18nSummary);
                     }
-                    // 翻译 operation description
+                    // Translate operation description
                     if (operation.getDescription() != null) {
                         String i18nDesc = MessageUtils.messageWithFallback(
                                 operation.getDescription(), operation.getDescription());
                         operation.setDescription(i18nDesc);
                     }
-                    // 翻译 operation 中的 tags
+                    // Translate tags within the operation
                     if (operation.getTags() != null) {
                         List<String> translatedTags = operation.getTags().stream()
                                 .map(t -> MessageUtils.messageWithFallback(t, t))

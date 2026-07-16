@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.enums;
 import lombok.Getter;
 
 /**
- * 达梦数据库字段类型枚举
+ * Dameng database field type enumeration
  */
 @Getter
 public enum DmColumnTypeEnum {

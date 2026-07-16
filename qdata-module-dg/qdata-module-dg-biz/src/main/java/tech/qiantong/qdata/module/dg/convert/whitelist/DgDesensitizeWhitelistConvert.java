@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.whitelist.vo.DgDesensitize
 import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeWhitelistDO;
 
 /**
- * 脱敏白名单 Convert
+ * Desensitization Whitelist Convert
  *
  * @author qdata
  * @date 2026-04-09
@@ -37,29 +37,29 @@ public interface DgDesensitizeWhitelistConvert {
     DgDesensitizeWhitelistConvert INSTANCE = Mappers.getMapper(DgDesensitizeWhitelistConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dgDesensitizeWhitelistPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dgDesensitizeWhitelistPageReqVO request params
      * @return DgDesensitizeWhitelistDO
      */
      DgDesensitizeWhitelistDO convertToDO(DgDesensitizeWhitelistPageReqVO dgDesensitizeWhitelistPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dgDesensitizeWhitelistSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dgDesensitizeWhitelistSaveReqVO save request params
      * @return DgDesensitizeWhitelistDO
      */
      DgDesensitizeWhitelistDO convertToDO(DgDesensitizeWhitelistSaveReqVO dgDesensitizeWhitelistSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dgDesensitizeWhitelistDO 实体对象
+     * Convert DO to RespVO
+     * @param dgDesensitizeWhitelistDO entity object
      * @return DgDesensitizeWhitelistRespVO
      */
      DgDesensitizeWhitelistRespVO convertToRespVO(DgDesensitizeWhitelistDO dgDesensitizeWhitelistDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dgDesensitizeWhitelistDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dgDesensitizeWhitelistDOList entity object list
      * @return List<DgDesensitizeWhitelistRespVO>
      */
      List<DgDesensitizeWhitelistRespVO> convertToRespVOList(List<DgDesensitizeWhitelistDO> dgDesensitizeWhitelistDOList);

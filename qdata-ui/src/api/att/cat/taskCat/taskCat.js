@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据集成任务类目管理列表
+// Query the data integration task category management list
 export function listAttTaskCat(query) {
   return request({
     url: '/att/taskCat/list',
@@ -27,7 +27,7 @@ export function listAttTaskCat(query) {
   })
 }
 
-// 查询数据集成任务类目管理详细
+// Query data integration task category management details
 export function getAttTaskCat(id) {
   return request({
     url: '/att/taskCat/' + id,
@@ -35,7 +35,7 @@ export function getAttTaskCat(id) {
   })
 }
 
-// 新增数据集成任务类目管理
+// Added data integration task category management
 export function addAttTaskCat(data) {
   return request({
     url: '/att/taskCat',
@@ -44,7 +44,7 @@ export function addAttTaskCat(data) {
   })
 }
 
-// 修改数据集成任务类目管理
+// Modify data integration task category management
 export function updateAttTaskCat(data) {
   return request({
     url: '/att/taskCat',
@@ -53,7 +53,7 @@ export function updateAttTaskCat(data) {
   })
 }
 
-// 删除数据集成任务类目管理
+// Delete data integration task category management
 export function delAttTaskCat(id) {
   return request({
     url: '/att/taskCat/' + id,

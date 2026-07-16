@@ -24,8 +24,8 @@ import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
 
 /**
- * Handle Quartz scheduling operations.
- * Handle Quartz scheduling operations.
+ * DPP 的 Quartz 调用入口。
+ * Quartz 到点后只负责调用这里，真正的数据集成执行逻辑仍然交给 DPP 任务服务处理。
  */
 @Component("dppQuartzJob")
 public class DppQuartzJob {
@@ -37,7 +37,7 @@ public class DppQuartzJob {
     }
 
     /**
-     * Data integration.
+     * 数据集成
      */
     public void dataIntegration(Long taskId) {
         try {
@@ -51,7 +51,7 @@ public class DppQuartzJob {
     }
 
     /**
-     * Data development.
+     * 数据开发
      */
     public void dataDevelopment(Long id) {
         try {

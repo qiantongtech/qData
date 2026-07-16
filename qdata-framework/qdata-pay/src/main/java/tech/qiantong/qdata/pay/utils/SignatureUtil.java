@@ -21,31 +21,31 @@ package tech.qiantong.qdata.pay.utils;
 import java.util.Map;
 
 /**
- * 签名验证
+ * Signature verification
  * @author qdata
  */
 public class SignatureUtil {
 
     /**
-     * 生成签名字符串。
-     * @param parameters 需要签名的参数集合
-     * @param secret 签名密钥
-     * @return 生成的签名字符串
+     * Generate signature string.
+     * @param parameters A collection of parameters that need to be signed
+     * @param secret signing key
+     * @return generated signature string
      */
     public static String generateSignature(Map<String, String> parameters, String secret) {
-        // 实现签名生成逻辑
+        // Implement signature generation logic
         return "";
     }
 
     /**
-     * 验证签名的有效性。
-     * @param parameters 需要验证的参数集合
-     * @param signature 传入的签名字符串
-     * @param secret 签名密钥
-     * @return 如果签名有效返回true，否则返回false
+     * Verify the validity of the signature.
+     * @param parameters collection of parameters that need to be verified
+     * @param signature the incoming signature string
+     * @param secret signing key
+     * @return true if the signature is valid, false otherwise
      */
     public static boolean verifySignature(Map<String, String> parameters, String signature, String secret) {
-        // 实现签名验证逻辑
+        // Implement signature verification logic
         return true;
     }
 }

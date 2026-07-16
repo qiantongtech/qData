@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  组合字段去重  -->
+  <!--  Combination field deduplication  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="falg">
     <div class="deduplication-config">
       <div class="justify-between mb15">
@@ -148,7 +148,7 @@ const props = defineProps({
 });
 const form = reactive({ ...props.form });
 const exposedcolumnss = ["stringValue", "handleType"];
-const data = Object.fromEntries(exposedcolumnss.map((key) => [key, form[key]])); // 添加排序字段，默认排序顺序为降序
+const data = Object.fromEntries(exposedcolumnss.map((key) => [key, form[key]])); // Add a sorting field, the default sort order is descending
 
 let dragTable = ref(null);
 let sortableInstance = null;
@@ -158,7 +158,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -173,7 +173,7 @@ function setSort() {
         const movedItem = form.stringValue.splice(evt.oldIndex, 1)[0];
         form.stringValue.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           form.stringValue.map((f) => f.sort)
         );
       },
@@ -183,17 +183,17 @@ function setSort() {
 const addtypecolumns = () => {
   form.stringValue.push({
     sort: form.stringValue.length,
-    columns: "", // 字段名称
-    type: "0", // 默认降序
+    columns: "", // Field name
+    type: "0", // Default descending order
   });
   setSort();
 };
-// 删除排序字段
+// Remove sort field
 const handleDeletetypecolumns = (index) => {
   form.stringValue.splice(index, 1);
   setSort();
 };
-// 判断字段是否已被其他行选择，禁用重复选项
+// Determine whether the field has been selected by other rows, disable the duplicate option
 const iscolumnsDisabled = (columnsName, currentRowId) => {
   return form.stringValue.some(
     (item) => item.columns === columnsName && item.id !== currentRowId
@@ -208,7 +208,7 @@ function validate() {
         return;
       }
 
-      // 如果没有添加排序字段，直接通过
+      // If no sorting field is added, directly pass
       if (!form.stringValue || form.stringValue.length === 0) {
         resolve({
           valid: true,
@@ -217,7 +217,7 @@ function validate() {
         return;
       }
 
-      // 校验每个字段名称非空
+      // Verify that each field name is not empty
       for (const item of form.stringValue) {
         if (!item.columns) {
           ElMessage.error(td('dpp.cleanRule.sortFieldNameRequired', '排序字段名称不能为空'));
@@ -226,7 +226,7 @@ function validate() {
         }
       }
 
-      // 校验字段名称不重复
+      // Check that field names are not repeated
       const columnss = form.stringValue.map((item) => item.columns);
       const hasDuplicate = new Set(columnss).size !== columnss.length;
       if (hasDuplicate) {
@@ -235,7 +235,7 @@ function validate() {
         return;
       }
 
-      // 只有数组有值才更新 sort
+      // Sort is updated only if the array has a value
       if (form.stringValue && form.stringValue.length > 0) {
         form.stringValue.forEach((item, index) => {
           item.sort = index + 1;

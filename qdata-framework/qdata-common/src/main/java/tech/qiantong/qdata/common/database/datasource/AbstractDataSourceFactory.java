@@ -41,7 +41,7 @@ public abstract class AbstractDataSourceFactory implements DataSourceFactory {
         property.viald();
         DbType dbType = DbType.getDbType(property.getDbType());
         DataSource dataSource = null;
-        //判断不为kafka
+        //Judgment is not kafka
         if (!dbType.getDb().equals(DbType.KAFKA.getDb())) {
             dataSource = createDataSource(property);
         }
@@ -58,7 +58,7 @@ public abstract class AbstractDataSourceFactory implements DataSourceFactory {
         dbQuery.setDbQueryProperty(dbQueryProperty);
         dbQuery.setDataSource(dataSource);
         dbQuery.setDbDialect(dbDialect);
-        //判断不为kafka
+        //Judgment is not kafka
         if (!dbType.getDb().equals(DbType.KAFKA.getDb())) {
             dbQuery.setJdbcTemplate(new JdbcTemplate(dataSource));
         }

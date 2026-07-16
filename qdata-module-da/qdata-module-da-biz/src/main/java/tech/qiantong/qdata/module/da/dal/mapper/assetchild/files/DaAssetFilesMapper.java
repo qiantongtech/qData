@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据资产-文件服务Mapper接口
+ * Data Asset - File Service Mapper Interface
  *
  * @author qdata
  * @date 2025-06-26
@@ -37,19 +37,19 @@ import java.util.Set;
 public interface DaAssetFilesMapper extends BaseMapperX<DaAssetFilesDO> {
 
     default PageResult<DaAssetFilesDO> selectPage(DaAssetFilesPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DaAssetFilesDO>()
                 .eqIfPresent(DaAssetFilesDO::getAssetId, reqVO.getAssetId())
                 .likeIfPresent(DaAssetFilesDO::getName, reqVO.getName())
                 .eqIfPresent(DaAssetFilesDO::getUrl, reqVO.getUrl())
                 .eqIfPresent(DaAssetFilesDO::getType, reqVO.getType())
                 .eqIfPresent(DaAssetFilesDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(DaAssetFilesDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

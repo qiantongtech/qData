@@ -8,7 +8,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.List;
 
 /**
- * Handle task-related data and operations.
+ * Collection Task Create/Modify Request VO MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -62,31 +62,31 @@ public class McTaskSaveReqVO extends BaseEntity {
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * Implementation details.
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
 
     /**
-     * Implementation details.
+     * cron expression
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * Handle scheduling configuration and operations.
+     * Scheduling status
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * Implementation details.
+     * Collection range
      */
     @TableField(exist = false)
     private List<McTaskScopeSaveReqVO> scopeSaveReqVOS;

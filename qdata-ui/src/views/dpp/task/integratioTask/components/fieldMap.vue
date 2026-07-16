@@ -17,14 +17,14 @@
 -->
 
 <template>
-<!-- 输出组件的字段映射   -->
+<!-- Field mapping for output components   -->
   <div class="container">
     <el-form label-width="80px" :model="readerForm">
       <el-row>
-        <!-- 左侧拖拽列表 -->
+        <!-- Drag list on the left -->
         <el-col :span="8" :offset="3">
           <p>{{ td('dpp.integration.sourceTableFields', '来源表字段：') }}</p>
-          <!-- 全选复选框 -->
+          <!-- Select all checkbox -->
           <el-checkbox style="margin-top: -20px" v-model="leftSelectAll" :disabled="info"
             v-if="readerForm.tableFields.length > 0">{{ td('dpp.integration.selectAll', '全选') }}</el-checkbox>
           <draggable tag="div" class="draggable-list" :list="readerForm.tableFields" animation="300" item-key="id" :disabled="info">
@@ -42,7 +42,7 @@
           </draggable>
         </el-col>
 
-        <!-- 中间箭头列 -->
+        <!-- middle arrow column -->
         <el-col :span="4">
           <div class="arrow-container">
             <div v-for="(arrow, index) in arrowRows" :key="index" class="arrow-row fixed-height">
@@ -53,32 +53,32 @@
           </div>
         </el-col>
 
-        <!-- 右侧拖拽列表 -->
+        <!-- Drag list on the right -->
         <el-col :span="8">
           <p>{{ td('dpp.integration.targetFields', '目标字段：') }}</p>
-          <!-- 全选复选框，仅当不是 hdfs 且有字段时显示 -->
+          <!-- Select all checkbox, only displayed if it is not hdfs and there are fields -->
           <el-checkbox v-if="readerForm.toColumnsList.length > 0" :disabled="type == 'hdfs' || info"
             v-model="rightSelectAll" style="margin-top: -20px">
             {{ td('dpp.integration.selectAll', '全选') }}
           </el-checkbox>
-          <!-- 拖拽区域 -->
+          <!-- drag area -->
           <draggable tag="div" class="draggable-list" :list="readerForm.toColumnsList" animation="300" item-key="id" :disabled="info">
             <template v-slot:item="{ element, index }">
               <div class="draggable-item fixed-height">
                 <div class="custom-draggable-item">
-                  <!-- 使用 tooltip 提示禁用原因 -->
+                  <!-- Use tooltip to prompt the reason for disabling -->
                   <el-tooltip v-if="type === 'hdfs'" :content="td('dpp.integration.hdfsNoSelect', 'HDFS 类型不可勾选')" placement="top">
                     <el-checkbox class="checkbox" v-model="element.isChecked" :disabled="true">
                       <span class="column-name">{{ element.columnName }}</span>
                     </el-checkbox>
                   </el-tooltip>
-                  <!-- 正常复选框 -->
+                  <!-- normal checkbox -->
                   <el-checkbox v-else class="checkbox" v-model="element.isChecked" @change="handleCheckedChange(index)"
                     :disabled="info">
                     <span class="column-name">{{ element.columnName }}</span>
                   </el-checkbox>
 
-                  <!-- 图标 -->
+                  <!-- icon -->
                   <img src="../../../../../assets/images/common/dpp/img-mop.png" class="icon" />
                 </div>
               </div>
@@ -97,7 +97,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 import draggable from "vuedraggable";
 const { td } = useDefaultLang();
 
-// 定义 props
+// Define props
 const props = defineProps({
   tableFields: {
     type: Array,
@@ -117,13 +117,13 @@ const props = defineProps({
   },
 });
 
-// 内部状态
+// internal state
 const readerForm = ref({
   tableFields: [],
   toColumnsList: [],
 });
 
-// 初始化表单数据
+// Initialize form data
 const updateReaderForm = () => {
   readerForm.value.tableFields = Array.isArray(props.tableFields)
     ? props.tableFields.map((item) => ({
@@ -141,7 +141,7 @@ const updateReaderForm = () => {
 
 updateReaderForm();
 
-// 监听 props 变化
+// Monitor props changes
 watch(
   () => props.tableFields,
   (newVal) => {
@@ -164,28 +164,28 @@ watch(
   { deep: true }
 );
 
-// 判断对应行左右项是否都选中
+// Determine whether the left and right items of the corresponding row are selected
 const shouldShowArrow = (index) => {
   const fromChecked = readerForm.value.tableFields[index]?.isChecked || false;
   const toChecked = readerForm.value.toColumnsList[index]?.isChecked || false;
   return fromChecked && toChecked;
 };
 
-// 计算属性：每一行是否显示箭头
+// Computed property: whether to display arrows in each row
 const arrowRows = computed(() => {
-  // 获取较短的列表长度
+  // Get shorter list length
   const length = Math.min(
     readerForm.value.toColumnsList.length,
     readerForm.value.tableFields.length
   );
 
-  // 根据较短的列表来遍历
+  // Iterate over shorter lists
   return Array.from({ length }).map((_, index) => ({
     showArrow: shouldShowArrow(index),
   }));
 });
 
-// 全选计算属性：左侧
+// Select all computed properties: left
 const leftSelectAll = computed({
   get() {
     return readerForm.value.tableFields.every((item) => item.isChecked);
@@ -197,7 +197,7 @@ const leftSelectAll = computed({
   },
 });
 
-// 全选计算属性：右侧
+// Select all computed properties: right
 const rightSelectAll = computed({
   get() {
     return readerForm.value.toColumnsList.every((item) => item.isChecked);
@@ -210,7 +210,7 @@ const rightSelectAll = computed({
 });
 
 const handleCheckedChange = (index) => {
-  // 当单个项选中状态变化时，leftSelectAll 和 rightSelectAll 会自动通过计算属性更新
+  // When the selected state of a single item changes, leftSelectAll and rightSelectAll are automatically updated through calculated properties.
 };
 
 defineExpose({
@@ -226,18 +226,18 @@ defineExpose({
   margin-top: -20px;
 }
 
-/* 左右列表容器 */
+/* Left and right list containers */
 .draggable-list {
   display: flex;
   flex-direction: column;
 }
 
-/* 固定高度 */
+/* fixed height */
 .fixed-height {
-  height: 40px; // 根据需要调整固定高度
+  height: 40px; // Adjust fixed height as needed
 }
 
-/* 拖拽项样式 */
+/* Drag item style */
 .draggable-item {
   box-sizing: border-box;
   padding: 6px;
@@ -264,7 +264,7 @@ defineExpose({
   height: 16px;
 }
 
-/* 中间箭头列 */
+/* middle arrow column */
 .arrow-container {
   display: flex;
   flex-direction: column;
@@ -273,7 +273,7 @@ defineExpose({
   margin-top: 75px;
 }
 
-/* 每一行 */
+/* each line */
 .arrow-row {
   display: flex;
   align-items: center;
@@ -281,7 +281,7 @@ defineExpose({
   margin-bottom: 0;
 }
 
-/* 小圆点 */
+/* small dots */
 .circle {
   width: 10px;
   height: 10px;
@@ -289,12 +289,12 @@ defineExpose({
   border-radius: 50%;
 }
 
-/* 箭头线：默认隐藏 */
+/* Arrow lines: hidden by default */
 .arrow-line {
   display: none;
 }
 
-/* 当条件满足时，显示整条横线和箭头 */
+/* When the conditions are met, the entire horizontal line and arrow are displayed. */
 .arrow-line.show-arrow {
   display: block;
   width: 160px;
@@ -303,7 +303,7 @@ defineExpose({
   position: relative;
 }
 
-/* 箭头尖 */
+/* arrow tip */
 .arrow-line.show-arrow::after {
   content: "";
   position: absolute;

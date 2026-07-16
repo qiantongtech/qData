@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjSa
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjPageReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 /**
- * 数据质量任务-稽查对象Service接口
+ * Data Quality Task Audit Object Service Interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -36,66 +36,66 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 public interface IDppQualityTaskObjService extends IService<DppQualityTaskObjDO> {
 
     /**
-     * 获得数据质量任务-稽查对象分页列表
+     * Get data quality task audit object pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务-稽查对象分页列表
+     * @param pageReqVO Pagination request
+     * @return Data quality task audit object pagination list
      */
     PageResult<DppQualityTaskObjDO> getDppQualityTaskObjPage(DppQualityTaskObjPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务-稽查对象
+     * Create data quality task audit object
      *
-     * @param createReqVO 数据质量任务-稽查对象信息
-     * @return 数据质量任务-稽查对象编号
+     * @param createReqVO Data quality task audit object info
+     * @return Data quality task audit object ID
      */
     Long createDppQualityTaskObj(DppQualityTaskObjSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务-稽查对象
+     * Update data quality task audit object
      *
-     * @param updateReqVO 数据质量任务-稽查对象信息
+     * @param updateReqVO Data quality task audit object info
      */
     int updateDppQualityTaskObj(DppQualityTaskObjSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务-稽查对象
+     * Delete data quality task audit object
      *
-     * @param idList 数据质量任务-稽查对象编号
+     * @param idList Data quality task audit object ID list
      */
     int removeDppQualityTaskObj(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务-稽查对象详情
+     * Get data quality task audit object detail
      *
-     * @param id 数据质量任务-稽查对象编号
-     * @return 数据质量任务-稽查对象
+     * @param id Data quality task audit object ID
+     * @return Data quality task audit object
      */
     DppQualityTaskObjDO getDppQualityTaskObjById(Long id);
 
     /**
-     * 获得全部数据质量任务-稽查对象列表
+     * Get all data quality task audit object list
      *
-     * @return 数据质量任务-稽查对象列表
+     * @return Data quality task audit object list
      */
     List<DppQualityTaskObjDO> getDppQualityTaskObjList();
     List<DppQualityTaskObjDO> getDppQualityTaskObjList(DppQualityTaskObjPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据质量任务-稽查对象 Map
+     * Get all data quality task audit object Map
      *
-     * @return 数据质量任务-稽查对象 Map
+     * @return Data quality task audit object Map
      */
     Map<Long, DppQualityTaskObjDO> getDppQualityTaskObjMap();
 
 
     /**
-     * 导入数据质量任务-稽查对象数据
+     * Import data quality task audit object data
      *
-     * @param importExcelList 数据质量任务-稽查对象数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task audit object data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppQualityTaskObj(List<DppQualityTaskObjRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

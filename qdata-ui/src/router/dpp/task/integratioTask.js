@@ -19,7 +19,7 @@
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 数据资研发模块公共路由
+// Data resource R&D module public routing
 export default [
     {
         path: '/dpp/task/integratioTask/edit',

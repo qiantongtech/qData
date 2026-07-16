@@ -26,39 +26,39 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
- * 一键修改包名
+ * Modify package name with one click
  * * @author qdata
  */
 public class ProjectRenamer {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // 输入修改前的工程路径
+        // Enter the project path before modification
         System.out.print("请输入修改前的工程路径: ");
         String originalDirectory = scanner.nextLine();
 
-        // 输入修改后的工程路径
+        // Enter the modified project path
         System.out.print("请输入修改后的工程路径: ");
         String newDirectory = scanner.nextLine();
 
-        // 输入修改前的工程名称
+        // Enter the project name before modification
         System.out.print("请输入修改前的工程名称: ");
         String oldProjectName = scanner.nextLine().toLowerCase();
 
-        // 输入修改后的工程名称
+        // Enter the modified project name
         System.out.print("请输入修改后的工程名称: ");
         String newProjectName = scanner.nextLine().toLowerCase();
 
         try {
-            // 创建新的功能目录
+            // Create a new feature directory
             File newDir = new File(newDirectory);
             if (!newDir.exists()) {
-                newDir.mkdirs(); // 创建新目录
+                newDir.mkdirs(); // Create new directory
             }
 
-            // 复制原工程内容到新目录并重命名
+            // Copy the original project contents to the new directory and rename it
             copyAndRename(new File(originalDirectory), newDir, oldProjectName, newProjectName);
-            // 替换文件内容中的原工程名称
+            // Replace the original project name in the file content
             replaceInFiles(newDir, oldProjectName, newProjectName);
 
             System.out.println("工程已成功从 " + originalDirectory + " 修改为 " + newDirectory);
@@ -95,7 +95,7 @@ public class ProjectRenamer {
                 } else {
                     Path path = Paths.get(file.getPath());
                     String content = new String(Files.readAllBytes(path));
-                    // 替换包路径和工程名称
+                    // Replace package path and project name
                     content = content.replace(oldString, newString);
                     Files.write(path, content.getBytes());
                 }

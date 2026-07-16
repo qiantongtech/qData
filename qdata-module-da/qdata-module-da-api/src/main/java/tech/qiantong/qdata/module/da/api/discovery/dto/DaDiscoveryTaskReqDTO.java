@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据发现任务 DTO 对象 DA_DISCOVERY_TASK
+ * Data Discovery Task DTO DA_DISCOVERY_TASK
  *
  * @author qdata
  * @date 2025-02-11
@@ -37,65 +37,65 @@ public class DaDiscoveryTaskReqDTO {
     /** ID */
     private Long id;
 
-    /** 任务名称 */
+    /** Task Name */
     private String name;
 
-    /** 数据连接id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 任务状态 */
+    /** Task Status */
     private String status;
 
-    /** cron执行表达式 */
+    /** Cron Expression */
     private String cronExpression;
 
-    /** 联系人 */
+    /** Contact */
     private String contact;
 
     @Schema(description = "邮箱", example = "")
     private String email;
 
-    /** 联系人ID */
+    /** Contact ID */
     private Long contactId;
 
-    /** 上次变化表数 */
+    /** Last Changed Table Count */
     private Long lastTableCount;
 
-    /** 联系电话 */
+    /** Contact Number */
     private String contactNumber;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 定时任务调度表id */
+    /** Scheduled Job ID */
     private Long systemJobId;
 
-    /** 最后执行时间 */
+    /** Last Execute Time */
     private Date lastExecuteTime;
 
-    /** 节点id */
+    /** Node ID */
     @Schema(description = "节点id", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node Code */
     @Schema(description = "节点编码", example = "")
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     @Schema(description = "任务id", example = "")
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     @Schema(description = "任务编码", example = "")
     private String taskCode;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

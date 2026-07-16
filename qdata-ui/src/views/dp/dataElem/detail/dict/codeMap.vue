@@ -83,7 +83,7 @@
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <!-- 新增或修改数据元代码映射对话框 -->
+    <!-- Add or modify data element code mapping dialog box -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
         <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -188,7 +188,7 @@ const data = reactive({
 
 const { queryParams, form, dpCodeMapDetail, rules } = toRefs(data);
 
-/** 查询数据元代码映射列表 */
+/** Query the data element code mapping list */
 function getList() {
     if (id.value == -1) {
         return;
@@ -212,14 +212,14 @@ function getDpDataElemCodeList() {
     });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     openDetail.value = false;
     reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         id: null,
@@ -240,40 +240,40 @@ function reset() {
     proxy.resetForm('dpCodeMapRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
     ids.value = selection.map((item) => item.id);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
     queryParams.value.orderByColumn = column.prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
     reset();
     open.value = true;
     title.value = td('dp.dataElem.addCodeMapTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
     reset();
     const _id = row.id || ids.value;
@@ -284,7 +284,7 @@ function handleUpdate(row) {
     });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
     reset();
     const _id = row.id || ids.value;
@@ -295,7 +295,7 @@ function handleDetail(row) {
     });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
     proxy.$refs['dpCodeMapRef'].validate((valid) => {
         if (valid) {
@@ -321,7 +321,7 @@ function submitForm() {
     });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
@@ -336,7 +336,7 @@ function handleDelete(row) {
         .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
     proxy.download(
         'dp/dpCodeMap/export',
@@ -347,7 +347,7 @@ function handleExport() {
     );
 }
 
-// 新增代码名选择处理函数
+// Added code name selection processing function
 function handleCodeNameChange(value) {
     const selectedCode = dpDataElemCodeList.value.find((item) => item.codeName === value);
     if (selectedCode) {

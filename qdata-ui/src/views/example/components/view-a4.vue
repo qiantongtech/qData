@@ -182,7 +182,7 @@ const params = ref({
         ]
     };
 
-    // el-table动态表头
+    // el-table dynamic header
     const tableColumn = ref([]);
     watchEffect(() => {
         tableColumn.value = tableColumnConfig[params.value.sizeType];
@@ -227,32 +227,32 @@ const params = ref({
             chartOptions.value.xAxis.boundaryGap = !isLine ? true : false;
             chartOptions.value.yAxis.max = function (value, maxValue) {
                 if (value.max === value.min) {
-                    return parseFloat((value.max + value.max + 0.1).toFixed(1)); // 更小的增量
+                    return parseFloat((value.max + value.max + 0.1).toFixed(1)); // smaller increments
                 }
-                var maxN = value.max + (value.max - value.min) * 0.1 + 0.1; // 更小的增量
+                var maxN = value.max + (value.max - value.min) * 0.1 + 0.1; // smaller increments
                 if (maxValue) {
                     if (maxN < maxValue) {
-                        maxN = maxValue + 1; // 更小的修正值
+                        maxN = maxValue + 1; // Smaller correction value
                     }
                 }
                 return parseFloat(maxN.toFixed(1));
             };
             chartOptions.value.yAxis.min = function (value, minValue) {
                 if (value.max === value.min) {
-                    var minN1 = value.min - value.min * 0.1; // 更小的增量
+                    var minN1 = value.min - value.min * 0.1; // smaller increments
                     if (minN1 < 0) {
                         return 0;
                     } else {
                         return parseFloat(minN1.toFixed(1));
                     }
                 }
-                var minN = value.min - (value.max - value.min) * 0.1; // 更小的增量
+                var minN = value.min - (value.max - value.min) * 0.1; // smaller increments
                 if (minN < 0) {
                     return 0;
                 } else {
                     if (minValue) {
                         if (minN > minValue) {
-                            minN = minValue - 1; // 更小的修正值
+                            minN = minValue - 1; // Smaller correction value
                         }
                     }
                     return parseFloat(minN.toFixed(1));
@@ -264,7 +264,7 @@ const params = ref({
     getChartData();
 
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             dpChartARef.value.resize();
         }, 300);

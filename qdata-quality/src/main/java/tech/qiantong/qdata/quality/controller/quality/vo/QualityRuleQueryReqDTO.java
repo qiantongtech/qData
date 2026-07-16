@@ -50,17 +50,17 @@ public class QualityRuleQueryReqDTO implements Serializable {
     private String ruleType;
 
     /**
-     * 用户参数
+     * User parameters
      */
     private String inputValue;
 
     /**
-     * 规则配置参数，如时间范围、是否忽略 null、是否忽略大小写等
+     * Rule configuration parameters, such as time range, whether to ignore null, whether to ignore case, etc.
      */
     private Map<String, Object> config;
 
     /**
-     * 分页参数（可选）
+     * Pagination parameters (optional)
      */
     private Integer pageNum;
 
@@ -69,12 +69,12 @@ public class QualityRuleQueryReqDTO implements Serializable {
 
 
     /**
-     * 偏移量（从第几行开始），自动计算
+     * Offset (starting at row number), automatically calculated
      */
     private Integer offset;
 
     /**
-     * 限制行数（每页大小），自动设置
+     * Limit number of rows (per page size), set automatically
      */
     private Integer limit;
 

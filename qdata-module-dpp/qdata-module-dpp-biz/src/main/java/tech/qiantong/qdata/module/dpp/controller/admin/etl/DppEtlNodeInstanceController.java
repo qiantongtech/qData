@@ -62,12 +62,12 @@ import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 /**
- * 数据集成节点实例Controller
+ * Data Integration Node Instance Controller
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Tag(name = "数据集成节点实例")
+@Tag(name = "Data Integration Node Instance")
 @RestController
 @RequestMapping("/dpp/etlNodeInstance")
 @Validated
@@ -91,7 +91,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "导出数据集成节点实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:export')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppEtlNodeInstancePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -102,7 +102,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "导入数据集成节点实例列表")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:import')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppEtlNodeInstanceRespVO> util = new ExcelUtil<>(DppEtlNodeInstanceRespVO.class);
@@ -122,7 +122,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "新增数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:add')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
         dppEtlNodeInstance.setCreatorId(getUserId());
@@ -133,7 +133,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "修改数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:edit')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppEtlNodeInstanceSaveReqVO dppEtlNodeInstance) {
         dppEtlNodeInstance.setUpdatorId(getUserId());
@@ -144,7 +144,7 @@ public class DppEtlNodeInstanceController extends BaseController {
 
     @Operation(summary = "删除数据集成节点实例")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlNodeInstance:remove')")
-    @Log(title = "数据集成节点实例", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.node.instance", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppEtlNodeInstanceService.removeDppEtlNodeInstance(Arrays.asList(ids)));
@@ -160,7 +160,7 @@ public class DppEtlNodeInstanceController extends BaseController {
         if (redisService.hasKey(taskInstanceLogKey)) {
             content += redisService.get(taskInstanceLogKey) + "\n";
         } else {
-            //获取表中的日志
+            // Get log from table
             String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
             if (logContent != null) {
                 content += logContent + "\n";
@@ -173,20 +173,20 @@ public class DppEtlNodeInstanceController extends BaseController {
     @Operation(summary = "下载日志文件")
     public void downloadLog(HttpServletResponse response, Long nodeInstanceId,String name) {
         try {
-            // 获取日志
+            // Get log
             String log = dppEtlNodeInstanceService.getLogByNodeInstanceId(nodeInstanceId);
-            // 如果文件存在
-            // 设置响应的内容类型为文件下载
+            // If file exists
+            // Set response content type to file download
             response.setContentType("application/octet-stream");
-            // 设置下载文件名
+            // Set download filename
             response.setHeader("Content-Disposition", "attachment;filename=" + name + ".log");
 
-            // 创建文件输入流
+            // Create file input stream
             try (InputStream in = new ByteArrayInputStream(log.getBytes("UTF-8"));
                  OutputStream out = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];
                 int length;
-                // 将文件内容写入输出流
+                // Write file content to output stream
                 while ((length = in.read(buffer)) != -1) {
                     out.write(buffer, 0, length);
                 }

@@ -16,7 +16,7 @@
   See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 复杂详情路由模板
+<!-- Complex detail route template
     {
         path: '/example/genStudent',
         component: Layout,
@@ -27,7 +27,7 @@
                 path: 'studentDetail',
                 component: () => import('@/views/example/genStudent/detail/index2.vue'),
                 name: 'tree',
-                meta: { title: '学生详情', activeMenu: '/example/student'  }
+                meta: { title: 'Student Details', activeMenu: '/example/student'  }
             }
         ]
     }
@@ -173,15 +173,15 @@ const handleClick = (tab, event) => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
     () => route.query.id,
     (newId) => {
-      id = newId || 1;  // 如果 id 为空，使用默认值 1
+      id = newId || 1;  // If id is empty, the default value 1 is used
       getStudentDetailById();
 
     },
-    { immediate: true }  // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true }  // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   studentDetail: {
@@ -191,7 +191,7 @@ const data = reactive({
 
 const {  studentDetail, rules } = toRefs(data);
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getStudentDetailById() {
   const _id = id ;
   getStudent(_id).then(response => {

@@ -36,7 +36,7 @@ import java.util.Properties;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -105,10 +105,10 @@ public class KafkaDialect extends AbstractDbDialect {
     @Override
     public Boolean validConnection(DataSource dataSource, DbQueryProperty dbQueryProperty) {
         Properties props = new Properties();
-        props.put("bootstrap.servers", dbQueryProperty.getHost() + ":" + dbQueryProperty.getPort()); // Kafka 集群地址
-        props.put("default.api.timeout.ms", 10000); // api请求超时时间
-        props.put("request.timeout.ms", 10000); // 设置请求超时时间为10秒
-        props.put("admin.request.timeout.ms", 10000); // 设置管理请求超时时间为10秒
+        props.put("bootstrap.servers", dbQueryProperty.getHost() + ":" + dbQueryProperty.getPort()); // Kafka cluster address
+        props.put("default.api.timeout.ms", 10000); // api request timeout
+        props.put("request.timeout.ms", 10000); // Set the request timeout to 10 seconds
+        props.put("admin.request.timeout.ms", 10000); // Set the management request timeout to 10 seconds
         if (dbQueryProperty.getConfig() != null && !dbQueryProperty.getConfig().isEmpty()) {
             dbQueryProperty.getConfig().forEach((k, v) -> props.put(k, v));
         }
@@ -116,9 +116,9 @@ public class KafkaDialect extends AbstractDbDialect {
         AdminClient admin = AdminClient.create(props);
         try {
             NewTopic newTopic = new NewTopic(topic, 1, (short) 1);
-            //创建主题
+            //Create topic
             admin.createTopics(Collections.singleton(newTopic)).all().get();
-            //删除主题
+            //Delete topic
             admin.deleteTopics(Collections.singleton(topic)).all().get();
             return true;
         } catch (Exception e) {

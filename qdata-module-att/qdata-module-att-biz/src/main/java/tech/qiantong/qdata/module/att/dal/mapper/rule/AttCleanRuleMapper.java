@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 清洗规则Mapper接口
+ * Cleaning Rule Mapper Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -40,7 +40,7 @@ import java.util.Set;
 public interface AttCleanRuleMapper extends BaseMapperX<AttCleanRuleDO> {
 
     default PageResult<AttCleanRuleDO> selectPage(AttCleanRulePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapper<AttCleanRuleDO> lambdaWrapper = new MPJLambdaWrapper();

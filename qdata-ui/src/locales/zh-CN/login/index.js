@@ -1,6 +1,6 @@
-// 登录页翻译（表单、问候语、底部信息）
+// Login page translation (form, greeting, bottom information)
 export default {
-  // 表单
+  // form
   title: '账号登录',
   username: '用户名',
   password: '密码',
@@ -24,7 +24,7 @@ export default {
   usernameRequired: '请输入您的账号',
   passwordRequired: '请输入您的密码',
   codeRequired: '请输入验证码',
-  // 时段问候语
+  // session greeting
   greeting: {
     greetingHello: '亲爱的朋友',
     greetingMessage: '🌟 每一次登录，都是向数据价值更进一步！',
@@ -41,7 +41,7 @@ export default {
     greetingEvening: '晚上好',
     greetingEveningMsg: '放松心情，享受夜晚。'
   },
-  // 底部信息
+  // Bottom information
   info: {
     welcome: '欢迎使用本系统',
     message: '开箱即用的数据中台',

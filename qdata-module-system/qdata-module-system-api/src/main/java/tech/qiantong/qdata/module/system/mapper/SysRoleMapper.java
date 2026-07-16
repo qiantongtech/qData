@@ -24,135 +24,135 @@ import tech.qiantong.qdata.common.core.domain.entity.SysRole;
 import java.util.List;
 
 /**
- * 角色表 数据层
+ * Role table data layer
  *
  * @author qdata
  */
 public interface SysRoleMapper
 {
     /**
-     * 根据条件分页查询角色数据
+     * Paginate query role data by conditions
      *
-     * @param role 角色信息
-     * @return 角色数据集合信息
+     * @param role role information
+     * @return role data collection
      */
     public List<SysRole> selectRoleList(SysRole role);
 
     /**
-     * 根据用户ID查询角色
+     * Query roles by user ID
      *
-     * @param userId 用户ID
-     * @return 角色列表
+     * @param userId user ID
+     * @return role list
      */
     public List<SysRole> selectRolePermissionByUserId(Long userId);
 
     /**
-     * 查询所有角色
+     * Query all roles
      *
-     * @return 角色列表
+     * @return role list
      */
     public List<SysRole> selectRoleAll();
 
     /**
-     * 查询所有的角色根据项目id进行筛选
+     * Query all roles filtered by project ID
      *
-     * @return 角色列表
+     * @return role list
      */
     public List<SysRole> selectRoleAllByProjectId(@Param("projectId") Long projectId);
 
     /**
-     * 根据用户ID获取角色选择框列表
+     * Get role selection list by user ID
      *
-     * @param userId 用户ID
-     * @return 选中角色ID列表
+     * @param userId user ID
+     * @return selected role ID list
      */
     public List<Long> selectRoleListByUserId(Long userId);
 
     /**
-     * 通过角色ID查询角色
+     * Query role by role ID
      *
-     * @param roleId 角色ID
-     * @return 角色对象信息
+     * @param roleId role ID
+     * @return role object information
      */
     public SysRole selectRoleById(Long roleId);
 
     /**
-     * 根据用户ID查询角色
+     * Query roles by username
      *
-     * @param userName 用户名
-     * @return 角色列表
+     * @param userName username
+     * @return role list
      */
     public List<SysRole> selectRolesByUserName(String userName);
 
     /**
-     * 校验角色名称是否唯一
+     * Validate whether role name is unique
      *
-     * @param roleName 角色名称
-     * @return 角色信息
+     * @param roleName role name
+     * @return role information
      */
     public SysRole checkRoleNameUnique(String roleName);
 
     /**
-     * 校验角色名称是否唯一带项目id一起判断
+     * Validate whether role name is unique with project ID
      *
-     * @param role 角色
-     * @return 角色信息
+     * @param role role
+     * @return role information
      */
     public SysRole checkRoleNameUniqueAndProjectId(SysRole role);
 
     /**
-     * 校验角色权限是否唯一
+     * Validate whether role key is unique
      *
-     * @param roleKey 角色权限
-     * @return 角色信息
+     * @param roleKey role key
+     * @return role information
      */
     public SysRole checkRoleKeyUnique(String roleKey);
 
     /**
-     * 校验角色权限是否唯一带项目id一起判断
+     * Validate whether role key is unique with project ID
      *
-     * @param role 角色
-     * @return 角色信息
+     * @param role role
+     * @return role information
      */
     public SysRole checkRoleKeyUniqueAndProjectId(SysRole role);
 
     /**
-     * 修改角色信息
+     * Update role information
      *
-     * @param role 角色信息
-     * @return 结果
+     * @param role role information
+     * @return result
      */
     public int updateRole(SysRole role);
 
     /**
-     * 新增角色信息
+     * Insert role information
      *
-     * @param role 角色信息
-     * @return 结果
+     * @param role role information
+     * @return result
      */
     public int insertRole(SysRole role);
 
     /**
-     * 批量新增角色信息
+     * Batch insert role information
      *
-     * @param sysRoleList 角色信息集合表
-     * @return 结果
+     * @param sysRoleList role information list
+     * @return result
      */
     public int insertRoleList(List<SysRole> sysRoleList);
 
     /**
-     * 通过角色ID删除角色
+     * Delete role by role ID
      *
-     * @param roleId 角色ID
-     * @return 结果
+     * @param roleId role ID
+     * @return result
      */
     public int deleteRoleById(Long roleId);
 
     /**
-     * 批量删除角色信息
+     * Batch delete role information
      *
-     * @param roleIds 需要删除的角色ID
-     * @return 结果
+     * @param roleIds role IDs to delete
+     * @return result
      */
     public int deleteRoleByIds(Long[] roleIds);
 }

@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 业务分类数据域关联关系Service业务层处理
+ * Business Category Data Domain Relation Service - Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-12
@@ -70,15 +70,15 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
 
     @Override
     public int updateDmBusinessDomainRel(DmBusinessDomainRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新业务分类数据域关联关系
+        // Update business category data domain relation
         DmBusinessDomainRelDO updateObj = BeanUtils.toBean(updateReqVO, DmBusinessDomainRelDO.class);
         return dmBusinessDomainRelMapper.updateById(updateObj);
     }
     @Override
     public int removeDmBusinessDomainRel(Collection<Long> idList) {
-        // 批量删除业务分类数据域关联关系
+        // Batch delete business category data domain relations
         return dmBusinessDomainRelMapper.deleteBatchIds(idList);
     }
 
@@ -99,24 +99,24 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
                 .collect(Collectors.toMap(
                         DmBusinessDomainRelDO::getId,
                         dmBusinessDomainRelDO -> dmBusinessDomainRelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入业务分类数据域关联关系数据
+         * Import business category data domain relation data
          *
-         * @param importExcelList 业务分类数据域关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Business category data domain relation data list
+         * @param isUpdateSupport Whether to support update, if exists, update the data
+         * @param operName Operation user
+         * @return Result
          */
         @Override
         public String importDmBusinessDomainRel(List<DmBusinessDomainRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dm.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -135,16 +135,16 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
                                 dmBusinessDomainRelMapper.updateById(dmBusinessDomainRelDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
-                                        "数据更新成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
+                                        "Data update successful, business category data domain relation record with ID " + dmBusinessDomainRelId + ".", dmBusinessDomainRelId, "BusinessCategoryDomainRel"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
-                                        "数据更新失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录不存在。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
+                                        "Data update failed, business category data domain relation record with ID " + dmBusinessDomainRelId + " does not exist.", dmBusinessDomainRelId, "BusinessCategoryDomainRel"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, a record has no ID."));
                         }
                     } else {
                         QueryWrapper<DmBusinessDomainRelDO> queryWrapper = new QueryWrapper<>();
@@ -154,17 +154,17 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
                             dmBusinessDomainRelMapper.insert(dmBusinessDomainRelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
-                                    "数据插入成功，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
+                                    "Data insert successful, business category data domain relation record with ID " + dmBusinessDomainRelId + ".", dmBusinessDomainRelId, "BusinessCategoryDomainRel"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
-                                    "数据插入失败，ID为 " + dmBusinessDomainRelId + " 的业务分类数据域关联关系记录已存在。", dmBusinessDomainRelId, "业务分类数据域关联关系"));
+                                    "Data insert failed, business category data domain relation record with ID " + dmBusinessDomainRelId + " already exists.", dmBusinessDomainRelId, "BusinessCategoryDomainRel"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
-                            "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                            "Data import failed, error: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -173,12 +173,12 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! " + failureNum + " records have incorrect format, errors below:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "All data imported successfully! Total " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }
@@ -186,9 +186,9 @@ public class DmBusinessDomainRelServiceImpl extends ServiceImpl<DmBusinessDomain
     @Override
     public Integer removeDmBusinessDomainRelByDomainId(Long domainId, Long businessCategoryId) {
          if (domainId == null || businessCategoryId == null || businessCategoryId == 0) {
-              throw new ServiceException("dm.error.id.empty", "数据域ID或业务分类ID不能为空！");
+              throw new ServiceException("dm.error.id.empty", "Data domain ID or business category ID cannot be empty!");
          }
-        //根据数据域ID和业务分类ID删除关联关系
+        // Delete relation by data domain ID and business category ID
         return dmBusinessDomainRelMapper.delete(new LambdaQueryWrapper<DmBusinessDomainRelDO>()
                .eq(DmBusinessDomainRelDO::getDataDomainId, domainId)
                .eq(DmBusinessDomainRelDO::getBusinessCategoryId, businessCategoryId));

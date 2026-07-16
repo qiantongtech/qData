@@ -17,7 +17,7 @@
  */
 
  /**
- * v-hasRole 角色权限处理
+ * v-hasRole role permission processing
  * Copyright (c) 2019 qdata
  */
 

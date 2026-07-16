@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产-外部APIService接口
+ * Data Asset - External API Service Interface
  *
  * @author qdata
  * @date 2025-04-14
@@ -40,67 +40,67 @@ import java.util.Map;
 public interface IDaAssetApiService extends IService<DaAssetApiDO> {
 
     /**
-     * 获得数据资产-外部API分页列表
+     * Get data asset external API page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产-外部API分页列表
+     * @param pageReqVO page request
+     * @return data asset external API page list
      */
     PageResult<DaAssetApiDO> getDaAssetApiPage(DaAssetApiPageReqVO pageReqVO);
 
     DaAssetApiRespVO getDaAssetApiByAssetId(Long assetId);
 
     /**
-     * 创建数据资产-外部API
+     * Create data asset external API
      *
-     * @param createReqVO 数据资产-外部API信息
-     * @return 数据资产-外部API编号
+     * @param createReqVO data asset external API info
+     * @return data asset external API ID
      */
     Long createDaAssetApi(DaAssetApiSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产-外部API
+     * Update data asset external API
      *
-     * @param updateReqVO 数据资产-外部API信息
+     * @param updateReqVO data asset external API info
      */
     int updateDaAssetApi(DaAssetApiSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产-外部API
+     * Delete data asset external API
      *
-     * @param idList 数据资产-外部API编号
+     * @param idList data asset external API ID list
      */
     int removeDaAssetApi(Collection<Long> idList);
 
     /**
-     * 获得数据资产-外部API详情
+     * Get data asset external API details
      *
-     * @param id 数据资产-外部API编号
-     * @return 数据资产-外部API
+     * @param id data asset external API ID
+     * @return data asset external API
      */
     DaAssetApiDO getDaAssetApiById(Long id);
 
     /**
-     * 获得全部数据资产-外部API列表
+     * Get all data asset external API list
      *
-     * @return 数据资产-外部API列表
+     * @return data asset external API list
      */
     List<DaAssetApiDO> getDaAssetApiList();
 
     /**
-     * 获得全部数据资产-外部API Map
+     * Get all data asset external API Map
      *
-     * @return 数据资产-外部API Map
+     * @return data asset external API Map
      */
     Map<Long, DaAssetApiDO> getDaAssetApiMap();
 
 
     /**
-     * 导入数据资产-外部API数据
+     * Import data asset external API data
      *
-     * @param importExcelList 数据资产-外部API数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data asset external API data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaAssetApi(List<DaAssetApiRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

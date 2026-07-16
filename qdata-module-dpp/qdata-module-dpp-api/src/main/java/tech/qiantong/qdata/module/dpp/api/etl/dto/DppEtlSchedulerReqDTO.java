@@ -25,7 +25,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data Integration Scheduler DTO - DPP_ETL_SCHEDULER
  *
  * @author qdata
  * @date 2025-02-13
@@ -41,45 +41,45 @@ public class DppEtlSchedulerReqDTO {
     /** Task ID */
     private Long taskId;
 
-    /** Task code */
+    /** Task Code */
     private String taskCode;
 
-    /** Implementation details. */
+    /** Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** Implementation details. */
+    /** End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** Implementation details. */
+    /** Timezone */
     private String timezoneId;
 
-    @Schema(description = "任务状态", example = "")
+    @Schema(description = "Task Status", example = "")
     private String status;
 
-    /** Implementation details. */
+    /** Cron Expression */
     private String cronExpression;
 
-    /** Implementation details. */
+    /** Failure Strategy */
     private String failureStrategy;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Execution engine */
+    /** 执行引擎 */
     private String taskActuator;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete Flag */
     private Boolean delFlag;
 
 }

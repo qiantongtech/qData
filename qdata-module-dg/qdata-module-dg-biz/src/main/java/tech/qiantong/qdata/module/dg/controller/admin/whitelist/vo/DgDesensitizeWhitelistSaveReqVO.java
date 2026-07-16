@@ -33,12 +33,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeUserRelDO;
 
 /**
- * 脱敏白名单 创建/修改 Request VO DG_DESENSITIZE_WHITELIST
+ * Desensitize Whitelist Create/Update Request VO DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09
  */
-@Schema(description = "脱敏白名单 Response VO")
+@Schema(description = "Desensitize Whitelist Save Request VO")
 @Data
 public class DgDesensitizeWhitelistSaveReqVO extends BaseEntity {
 
@@ -47,15 +47,15 @@ public class DgDesensitizeWhitelistSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "白名单名称", example = "")
-    @Size(max = 256, message = "白名单名称长度不能超过256个字符")
+    @Schema(description = "Whitelist name", example = "")
+    @Size(max = 256, message = "{dg.whitelist.name.length}")
     private String name;
 
-    @Schema(description = "数据分类", example = "")
+    @Schema(description = "Data category", example = "")
     private Long dataCategoryId;
 
-    @Schema(description = "生效分类;1：用户 2：角色 3：部门", example = "")
-    @Size(max = 256, message = "生效分类;1：用户 2：角色 3：部门长度不能超过256个字符")
+    @Schema(description = "Effective category; 1: User 2: Role 3: Department", example = "")
+    @Size(max = 256, message = "{dg.whitelist.effective.category.length}")
     private String effectiveCategory;
 
     @Schema(description = "用户集合", example = "")
@@ -79,6 +79,6 @@ public class DgDesensitizeWhitelistSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid flag; 0: invalid, 1: valid */
     private Boolean validFlag;
 }

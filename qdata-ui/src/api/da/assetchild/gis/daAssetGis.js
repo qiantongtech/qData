@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产-地理空间服务列表
+// Query Data Assets - List of Geospatial Services
 export function listDaAssetGis(query) {
   return request({
     url: '/da/daAssetGis/list',
@@ -27,7 +27,7 @@ export function listDaAssetGis(query) {
   })
 }
 
-// 查询数据资产-地理空间服务详细
+// Query data assets-Geospatial service details
 export function getDaAssetGis(id) {
   return request({
     url: '/da/daAssetGis/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetGis(id) {
   })
 }
 
-// 新增数据资产-地理空间服务
+// New data assets-Geospatial services
 export function addDaAssetGis(data) {
   return request({
     url: '/da/daAssetGis',
@@ -44,7 +44,7 @@ export function addDaAssetGis(data) {
   })
 }
 
-// 修改数据资产-地理空间服务
+// Modify Data Assets - Geospatial Services
 export function updateDaAssetGis(data) {
   return request({
     url: '/da/daAssetGis',
@@ -53,7 +53,7 @@ export function updateDaAssetGis(data) {
   })
 }
 
-// 删除数据资产-地理空间服务
+// Delete Data Assets - Geospatial Services
 export function delDaAssetGis(id) {
   return request({
     url: '/da/daAssetGis/' + id,

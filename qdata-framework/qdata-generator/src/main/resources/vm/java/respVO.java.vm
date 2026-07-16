@@ -32,7 +32,7 @@ import java.io.Serializable;
 #end
 
 /**
- * ${functionName} Response VO 对象 ${tableName}
+ * ${functionName} Response VO object ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -74,7 +74,7 @@ public class ${ClassName}RespVO implements Serializable {
     #end
 #end
 #if($table.sub)
-    /** $table.subTable.functionName信息 */
+    /** $table.subTable.functionName information */
     private List<${subClassName}> ${subclassName}List;
 
 #end

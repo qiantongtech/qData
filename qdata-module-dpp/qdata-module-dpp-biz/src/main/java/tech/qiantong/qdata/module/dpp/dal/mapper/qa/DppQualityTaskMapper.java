@@ -28,7 +28,7 @@ import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 import java.util.Arrays;
 
 /**
- * 数据质量任务Mapper接口
+ * Data Quality Task Mapper
  *
  * @author Chaos
  * @date 2025-07-21
@@ -58,12 +58,12 @@ public interface DppQualityTaskMapper extends BaseMapperX<DppQualityTaskDO> {
                 .eqIfPresent(DppQualityTaskDO::getRetryInterval, reqVO.getRetryInterval())
                 .eqIfPresent(DppQualityTaskDO::getDelayTime, reqVO.getDelayTime())
                 .eqIfPresent(DppQualityTaskDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppQualityTaskDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
 }

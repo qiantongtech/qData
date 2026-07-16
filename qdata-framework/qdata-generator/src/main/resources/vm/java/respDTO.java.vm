@@ -27,7 +27,7 @@ import lombok.*;
 #end
 
 /**
- * ${functionName} DTO 对象 ${tableName}
+ * ${functionName} DTO object ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -61,7 +61,7 @@ public class ${ClassName}RespDTO {
 #end
 #end
 #if($table.sub)
-    /** $table.subTable.functionName信息 */
+    /** $table.subTable.functionName information */
     private List<${subClassName}> ${subclassName}List;
 
 #end

@@ -30,7 +30,7 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 
 /**
- * Handle task-related data and operations.
+ * Scheduled task tools
  *
  * @author qdata
  *
@@ -38,10 +38,10 @@ import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 public class ScheduleUtils
 {
     /**
-     * Handle task-related data and operations.
+     * Get quartz task class
      *
-     * @param sysJob parameter value
-     * @return the operation result
+     * @param sysJob execution plan
+     * @return specific execution task class
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
@@ -55,7 +55,7 @@ public class ScheduleUtils
     }
 
     /**
-     * Handle task-related data and operations.
+     * Build task trigger object
      */
     public static TriggerKey getTriggerKey(Long jobId, String jobGroup)
     {
@@ -71,7 +71,7 @@ public class ScheduleUtils
     }
 
     /**
-     * Handle task-related data and operations.
+     * Build task key object
      */
     public static JobKey getJobKey(Long jobId, String jobGroup)
     {
@@ -87,7 +87,7 @@ public class ScheduleUtils
     }
 
     /**
-     * Handle task-related data and operations.
+     * Create a scheduled task
      */
     public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, TaskException
     {
@@ -101,39 +101,39 @@ public class ScheduleUtils
             throws SchedulerException, TaskException
     {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
-        // Implementation details.
+        // Build job information
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         JobDetail jobDetail = JobBuilder.newJob(jobClass)
                 .withIdentity(getJobKey(jobId, jobGroup, namespace)).build();
 
-        // Handle scheduling configuration and operations.
+        // Expression dispatch builder
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
         cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
-        // Implementation details.
+        // Build a new trigger based on the new cronExpression expression
         CronTrigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(getTriggerKey(jobId, jobGroup, namespace))
                 .withSchedule(cronScheduleBuilder).build();
 
-        // Retrieve the required data.
+        // Put in the parameters and the runtime method can get them
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
-        // Implementation details.
+        // Determine whether it exists
         if (scheduler.checkExists(getJobKey(jobId, jobGroup, namespace)))
         {
-            // Create the required record.
+            // To prevent data problems during creation, remove first and then perform the creation operation
             scheduler.deleteJob(getJobKey(jobId, jobGroup, namespace));
         }
 
-        // Handle task-related data and operations.
+        // Determine whether the task is expired
         if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression())))
         {
-            // Handle task-related data and operations.
+            // Execute scheduled tasks
             scheduler.scheduleJob(jobDetail, trigger);
         }
 
-        // Handle task-related data and operations.
+        // Pause task
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
         {
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup, namespace));
@@ -141,7 +141,7 @@ public class ScheduleUtils
     }
 
     /**
-     * Handle task-related data and operations.
+     * Set scheduled task strategy
      */
     public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
             throws TaskException
@@ -163,10 +163,10 @@ public class ScheduleUtils
     }
 
     /**
-     * Validate the input and configuration.
+     * Check whether the package name is configured in the whitelist
      *
-     * @param invokeTarget parameter value
-     * @return the operation result
+     * @param invokeTarget target string
+     * @return result
      */
     public static boolean whiteList(String invokeTarget)
     {

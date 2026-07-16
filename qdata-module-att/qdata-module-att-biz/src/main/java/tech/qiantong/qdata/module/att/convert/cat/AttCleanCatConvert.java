@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttCleanCatDO;
 import java.util.List;
 
 /**
- * 清洗规则类目 Convert
+ * Cleaning Rule Category Convert
  *
  * @author qdata
  * @date 2025-08-11
@@ -38,29 +38,29 @@ public interface AttCleanCatConvert {
     AttCleanCatConvert INSTANCE = Mappers.getMapper(AttCleanCatConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attCleanCatPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attCleanCatPageReqVO Request parameters
      * @return AttCleanCatDO
      */
      AttCleanCatDO convertToDO(AttCleanCatPageReqVO attCleanCatPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attCleanCatSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attCleanCatSaveReqVO Save request parameters
      * @return AttCleanCatDO
      */
      AttCleanCatDO convertToDO(AttCleanCatSaveReqVO attCleanCatSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attCleanCatDO 实体对象
+     * Convert DO to RespVO
+     * @param attCleanCatDO Entity object
      * @return AttCleanCatRespVO
      */
      AttCleanCatRespVO convertToRespVO(AttCleanCatDO attCleanCatDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attCleanCatDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attCleanCatDOList Entity object list
      * @return List<AttCleanCatRespVO>
      */
      List<AttCleanCatRespVO> convertToRespVOList(List<AttCleanCatDO> attCleanCatDOList);

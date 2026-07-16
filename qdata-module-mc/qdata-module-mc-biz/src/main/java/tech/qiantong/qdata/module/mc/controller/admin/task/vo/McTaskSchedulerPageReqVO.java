@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 Request VO 对象 MC_TASK_SCHEDULER
+ * Data integration scheduling information Request VO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16

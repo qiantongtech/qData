@@ -50,7 +50,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.assetchild.api.DaAssetApiDO;
 import tech.qiantong.qdata.module.da.service.assetchild.api.IDaAssetApiService;
 
 /**
- * 数据资产-外部APIController
+ * Data Asset - External API Controller
  *
  * @author qdata
  * @date 2025-04-14
@@ -73,7 +73,7 @@ public class DaAssetApiController extends BaseController {
 
     @Operation(summary = "导出数据资产-外部API列表")
     @PreAuthorize("@ss.hasPermi('da:api:export')")
-    @Log(title = "数据资产-外部API", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.asset.api", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaAssetApiPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -84,7 +84,7 @@ public class DaAssetApiController extends BaseController {
 
     @Operation(summary = "导入数据资产-外部API列表")
     @PreAuthorize("@ss.hasPermi('da:api:import')")
-    @Log(title = "数据资产-外部API", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.asset.api", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaAssetApiRespVO> util = new ExcelUtil<>(DaAssetApiRespVO.class);
@@ -104,7 +104,7 @@ public class DaAssetApiController extends BaseController {
 
     @Operation(summary = "新增数据资产-外部API")
     @PreAuthorize("@ss.hasPermi('da:api:add')")
-    @Log(title = "数据资产-外部API", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.asset.api", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaAssetApiSaveReqVO daAssetApi) {
         daAssetApi.setCreatorId(getUserId());
@@ -115,7 +115,7 @@ public class DaAssetApiController extends BaseController {
 
     @Operation(summary = "修改数据资产-外部API")
     @PreAuthorize("@ss.hasPermi('da:api:edit')")
-    @Log(title = "数据资产-外部API", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.asset.api", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaAssetApiSaveReqVO daAssetApi) {
         daAssetApi.setUpdatorId(getUserId());
@@ -126,7 +126,7 @@ public class DaAssetApiController extends BaseController {
 
     @Operation(summary = "删除数据资产-外部API")
     @PreAuthorize("@ss.hasPermi('da:api:remove')")
-    @Log(title = "数据资产-外部API", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.asset.api", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daAssetApiService.removeDaAssetApi(Arrays.asList(ids)));

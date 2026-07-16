@@ -147,19 +147,19 @@ const visibleDialog = computed({
     emit("update", newValue);
   },
 });
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref();
-// 修改
+// Modify
 const open = ref(false);
 let row = ref({});
 const openDialog = (obj) => {
   row.value = obj;
   open.value = true;
 };
-// 属性字段修改新增
+// Attribute fields modified and added
 const handletaskConfig = (form) => {
   ColumnByAssettab.value = ColumnByAssettab.value.map((column) => {
     if (column.id == form.id) {
@@ -171,8 +171,8 @@ const handletaskConfig = (form) => {
 
 let dpModelRefs = ref();
 let form = ref({});
-const tableFields = ref([]); // 来源表格
-// 计算属性：判断按钮是否禁用
+const tableFields = ref([]); // Source form
+// Computed property: determine whether the button is disabled
 const isButtonDisabled = computed(() => {
   console.log(form.value.taskParams.excelFile);
   return (
@@ -181,7 +181,7 @@ const isButtonDisabled = computed(() => {
     !form.value.taskParams.excelFile
   );
 });
-// 获取列数据
+// Get column data
 const parseExcel = async (id) => {
   if (!form.value.taskParams.startData) {
     ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "解析失败，请添加起始行"));
@@ -225,15 +225,15 @@ const parseExcel = async (id) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
-    // 异步验证表单
+    // Asynchronous validation form
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
     if (
@@ -242,15 +242,15 @@ const saveData = async () => {
     ) {
       return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "校验未通过，请选择属性字段"));
     }
-    // 如果没有 code，就调用接口获取唯一的 code
+    // If there is no code, call the interface to get the unique code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
         projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false; // 结束加载状态
-      form.value.code = response.data; // 设置唯一的 code
+      loading.value = false; // end loading state
+      form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = ColumnByAssettab.value;
@@ -274,32 +274,32 @@ const saveData = async () => {
 };
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (props.visible) {
-    // 数据源
+    // data source
     form.value = deepCopy(props.currentNode.data);
     ColumnByAssettab.value = props.currentNode?.data.taskParams.tableFields;
   } else {
     off();
   }
 });
-// 文件删除
+// File deletion
 function handleRemove() {
   ColumnByAssettab.value = [];
   form.value.taskParams.excelFile = undefined;

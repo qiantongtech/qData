@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.system.service.ISysOperLogService;
 import java.util.List;
 
 /**
- * 操作日志 服务层处理
+ * Operation Log Service Layer Processing
  *
  * @author qdata
  */
@@ -38,9 +38,9 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     private SysOperLogMapper operLogMapper;
 
     /**
-     * 新增操作日志
+     * Insert an operation log entry
      *
-     * @param operLog 操作日志对象
+     * @param operLog the operation log object
      */
     @Override
     public void insertOperlog(SysOperLog operLog)
@@ -49,10 +49,10 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     }
 
     /**
-     * 查询系统操作日志集合
+     * Query a list of system operation logs
      *
-     * @param operLog 操作日志对象
-     * @return 操作日志集合
+     * @param operLog the operation log object
+     * @return list of operation logs
      */
     @Override
     public List<SysOperLog> selectOperLogList(SysOperLog operLog)
@@ -61,10 +61,10 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     }
 
     /**
-     * 批量删除系统操作日志
+     * Batch delete system operation logs
      *
-     * @param operIds 需要删除的操作日志ID
-     * @return 结果
+     * @param operIds the IDs of the operation logs to delete
+     * @return the number of rows affected
      */
     @Override
     public int deleteOperLogByIds(Long[] operIds)
@@ -73,10 +73,10 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     }
 
     /**
-     * 查询操作日志详细
+     * Query detailed information of an operation log
      *
-     * @param operId 操作ID
-     * @return 操作日志对象
+     * @param operId the operation ID
+     * @return the operation log object
      */
     @Override
     public SysOperLog selectOperLogById(Long operId)
@@ -85,7 +85,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     }
 
     /**
-     * 清空操作日志
+     * Clear all operation logs
      */
     @Override
     public void cleanOperLog()

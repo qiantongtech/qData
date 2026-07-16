@@ -29,7 +29,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 主题域管理 创建/修改 Request VO DM_THEME_DOMAIN
+ * Theme Domain Create/Update Request VO - DM_THEME_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24

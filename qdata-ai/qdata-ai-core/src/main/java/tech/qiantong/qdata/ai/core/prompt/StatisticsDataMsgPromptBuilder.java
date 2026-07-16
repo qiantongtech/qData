@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:统计数据分析提示词构建
+ * Purpose: Statistical data analysis prompt word construction
  * </p>
  *
  * @author: FXB
@@ -85,7 +85,7 @@ public class StatisticsDataMsgPromptBuilder {
                     8. 如有必要，提供对比分析
                 """);
 
-        // 1. 数据结构说明
+        // 1. Data structure description
         prompt.append("\n【数据结构】\n");
         if (StringUtils.isNotBlank(dimension)) {
             prompt.append(String.format("维度字段: %s\n", dimension));
@@ -97,7 +97,7 @@ public class StatisticsDataMsgPromptBuilder {
             prompt.append("度量字段: ").append(String.join(", ", measures)).append("\n");
         }
 
-        // 2. 字段说明
+        // 2. Field description
         if (selectColumns != null && !selectColumns.isEmpty()
                 && selectColumnDescriptions != null && !selectColumnDescriptions.isEmpty()) {
             prompt.append("\n【字段说明】\n");
@@ -108,7 +108,7 @@ public class StatisticsDataMsgPromptBuilder {
             }
         }
 
-        // 3. 数据样本
+        // 3. Data sample
         if (dataRows != null && !dataRows.isEmpty()) {
             prompt.append("\n【统计数据】\n");
 
@@ -119,7 +119,7 @@ public class StatisticsDataMsgPromptBuilder {
             prompt.append(String.format("总记录数: %d\n", dataRows.size()));
             prompt.append(String.format("展示前 %d 条数据:\n", displayRows));
 
-            // 构建字段名到描述的映射
+            // Construct a mapping from field names to descriptions
             Map<String, String> columnDescriptionMap = new java.util.HashMap<>();
             if (selectColumns != null && selectColumnDescriptions != null) {
                 for (int i = 0; i < Math.min(selectColumns.size(), selectColumnDescriptions.size()); i++) {
@@ -146,7 +146,7 @@ public class StatisticsDataMsgPromptBuilder {
             }
         }
 
-        // 4. 输出格式要求
+        // 4. Output format requirements
         prompt.append("\n\n请基于以上数据生成JSON格式的分析报告：");
         prompt.append("""
 

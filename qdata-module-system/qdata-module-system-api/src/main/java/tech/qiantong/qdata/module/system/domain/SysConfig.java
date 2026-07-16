@@ -28,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 参数配置表 sys_config
+ * Parameter configuration table sys_config
  *
  * @author qdata
  */
@@ -36,24 +36,24 @@ public class SysConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 参数主键 */
-    @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
+    /** Parameter primary key */
+    @Excel(name = "Config ID", cellType = ColumnType.NUMERIC)
     private Long configId;
 
-    /** 参数名称 */
-    @Excel(name = "参数名称")
+    /** Parameter name */
+    @Excel(name = "Config Name")
     private String configName;
 
-    /** 参数键名 */
-    @Excel(name = "参数键名")
+    /** Parameter key name */
+    @Excel(name = "Config Key")
     private String configKey;
 
-    /** 参数键值 */
-    @Excel(name = "参数键值")
+    /** Parameter key value */
+    @Excel(name = "Config Value")
     private String configValue;
 
-    /** 系统内置（Y是 N否） */
-    @Excel(name = "系统内置", readConverterExp = "Y=是,N=否")
+    /** System built-in flag (Y=yes, N=no) */
+    @Excel(name = "Built-in", readConverterExp = "Y=yes,N=no")
     private String configType;
 
     public Long getConfigId()
@@ -66,8 +66,8 @@ public class SysConfig extends BaseEntity
         this.configId = configId;
     }
 
-    @NotBlank(message = "参数名称不能为空")
-    @Size(min = 0, max = 100, message = "参数名称不能超过100个字符")
+    @NotBlank(message = "Config name is required")
+    @Size(min = 0, max = 100, message = "Config name must not exceed 100 characters")
     public String getConfigName()
     {
         return configName;
@@ -78,8 +78,8 @@ public class SysConfig extends BaseEntity
         this.configName = configName;
     }
 
-    @NotBlank(message = "参数键名长度不能为空")
-    @Size(min = 0, max = 100, message = "参数键名长度不能超过100个字符")
+    @NotBlank(message = "Config key is required")
+    @Size(min = 0, max = 100, message = "Config key must not exceed 100 characters")
     public String getConfigKey()
     {
         return configKey;
@@ -90,8 +90,8 @@ public class SysConfig extends BaseEntity
         this.configKey = configKey;
     }
 
-    @NotBlank(message = "参数键值不能为空")
-    @Size(min = 0, max = 500, message = "参数键值长度不能超过500个字符")
+    @NotBlank(message = "Config value is required")
+    @Size(min = 0, max = 500, message = "Config value must not exceed 500 characters")
     public String getConfigValue()
     {
         return configValue;

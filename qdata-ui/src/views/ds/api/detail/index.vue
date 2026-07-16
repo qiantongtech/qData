@@ -122,7 +122,7 @@
         <el-tab-pane :label="td('ds.api.apiDetail.testInfo')" name="2">
           <component-two :form1="form1" v-if="activeName === '2'"></component-two>
         </el-tab-pane>
-        <!--        <el-tab-pane label="授权信息" name="2">-->
+        <!--        <el-tab-pane label="Authorization information" name="2">-->
         <!--          <component-two ></component-two>-->
         <!--        </el-tab-pane>-->
       </el-tabs>
@@ -154,15 +154,15 @@ const handleClick = (tab, event) => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
-    id = newId || 1;  // 如果 id 为空，使用默认值 1
+    id = newId || 1;  // If id is empty, the default value 1 is used
     getDsApiDetailById();
 
   },
-  { immediate: true }  // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true }  // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   dsApiDetail: {
@@ -180,11 +180,11 @@ function safeParse(str, defaultVal) {
   try {
     return JSON.parse(str);
   } catch (e) {
-    console.warn('JSON 解析失败，返回原值：', str, e);
-    return str;  // 返回原始字符串而不是 defaultVal
+    console.warn("Failed to parse JSON; returning the original value:", str, e);
+    return str;  // Return original string instead of defaultVal
   }
 }
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDsApiDetailById() {
   const _ID = id;
   getDsApi(_ID).then(response => {
@@ -220,9 +220,9 @@ function getDsApiDetailById() {
 getDsApiDetailById();
 
 onBeforeRouteLeave((to, from) => {
-  // 监听路由变化，如果路由变化，销毁当前页面
+  // Monitor route changes and destroy the current page if the route changes.
   if (to.path !== from.path) {
-    console.log('路由变化，销毁当前页面')
+    console.log("Route changed; destroying the current page")
     form2.value = {}
     form1.value = {}
   }

@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 数据集成节点实例 Request VO 对象 DPP_ETL_NODE_INSTANCE
+ * Data Integration Node Instance Request VO Object DPP_ETL_NODE_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13

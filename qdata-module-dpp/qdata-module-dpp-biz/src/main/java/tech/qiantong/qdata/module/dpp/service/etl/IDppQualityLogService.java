@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
  * This file is part of qData Data Middle Platform (Open Source Edition).
  *
@@ -29,7 +29,7 @@ import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogPageR
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskAssetReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 /**
- * 数据质量日志Service接口
+ * Data Quality Log Service Interface
  *
  * @author qdata
  * @date 2025-07-19
@@ -37,78 +37,78 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 public interface IDppQualityLogService extends IService<DppQualityLogDO> {
 
     /**
-     * 获得数据质量日志分页列表
+     * Get data quality log pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量日志分页列表
+     * @param pageReqVO Pagination request
+     * @return Data quality log pagination list
      */
     PageResult<DppQualityLogDO> getDppQualityLogPage(DppQualityLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量日志
+     * Create data quality log
      *
-     * @param createReqVO 数据质量日志信息
-     * @return 数据质量日志编号
+     * @param createReqVO Data quality log info
+     * @return Data quality log ID
      */
     Long createDppQualityLog(DppQualityLogSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量日志
+     * Update data quality log
      *
-     * @param updateReqVO 数据质量日志信息
+     * @param updateReqVO Data quality log info
      */
     int updateDppQualityLog(DppQualityLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量日志
+     * Delete data quality log
      *
-     * @param idList 数据质量日志编号
+     * @param idList Data quality log ID list
      */
     int removeDppQualityLog(Collection<Long> idList);
 
     /**
-     * 获得数据质量日志详情
+     * Get data quality log detail
      *
-     * @param id 数据质量日志编号
-     * @return 数据质量日志
+     * @param id Data quality log ID
+     * @return Data quality log
      */
     DppQualityLogDO getDppQualityLogById(Long id);
     DppQualityLogDO selectPrevLogByIdWithWrapper(Long id);
 
     /**
-     * 获得数据质量日志详情
-     * 资产专用
-     * @return 数据质量日志
+     * Get data quality log detail
+     * Asset specific
+     * @return Data quality log
      */
     DppQualityLogDO getDppQualityLogById(DppQualityTaskAssetReqVO dppQualityTaskAssetReqVO);
 
     /**
-     * 获得全部数据质量日志列表
+     * Get all data quality log list
      *
-     * @return 数据质量日志列表
+     * @return Data quality log list
      */
     List<DppQualityLogDO> getDppQualityLogList();
 
     /**
-     * 获得全部数据质量日志 Map
+     * Get all data quality log Map
      *
-     * @return 数据质量日志 Map
+     * @return Data quality log Map
      */
     Map<Long, DppQualityLogDO> getDppQualityLogMap();
 
 
     /**
-     * 导入数据质量日志数据
+     * Import data quality log data
      *
-     * @param importExcelList 数据质量日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality log data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 发送数据质量日志的消息
+     * Send data quality log message
      * @param id
      */
     void sendMessage(Long id);

@@ -46,7 +46,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 逻辑模型类目管理Controller
+ * Logical Model Category Management Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -69,7 +69,7 @@ public class AttModelCatController extends BaseController {
 
     @Operation(summary = "导出逻辑模型类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:modelCat:export')")
-    @Log(title = "逻辑模型类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttModelCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -80,7 +80,7 @@ public class AttModelCatController extends BaseController {
 
     @Operation(summary = "导入逻辑模型类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:modelCat:import')")
-    @Log(title = "逻辑模型类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttModelCatRespVO> util = new ExcelUtil<>(AttModelCatRespVO.class);
@@ -100,7 +100,7 @@ public class AttModelCatController extends BaseController {
 
     @Operation(summary = "新增逻辑模型类目管理")
     @PreAuthorize("@ss.hasPermi('att:modelCat:add')")
-    @Log(title = "逻辑模型类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttModelCatSaveReqVO attModelCat) {
         attModelCat.setCreatorId(getUserId());
@@ -111,7 +111,7 @@ public class AttModelCatController extends BaseController {
 
     @Operation(summary = "修改逻辑模型类目管理")
     @PreAuthorize("@ss.hasPermi('att:modelCat:edit')")
-    @Log(title = "逻辑模型类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttModelCatSaveReqVO attModelCat) {
         attModelCat.setUpdatorId(getUserId());
@@ -122,15 +122,15 @@ public class AttModelCatController extends BaseController {
 
     //    @Operation(summary = "删除逻辑模型类目管理")
 //    @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
-//    @Log(title = "逻辑模型类目管理", businessType = BusinessType.DELETE)
+//    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{IDs}")
 //    public CommonResult<Integer> remove(@PathVariable Long[] ids) {
 //        return CommonResult.toAjax(attModelCatService.removeAttModelCat(Arrays.asList(ids)));
 //    }
-    //删除
+    // Delete
     @Operation(summary = "删除逻辑模型类目管理")
     @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
-    @Log(title = "逻辑模型类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ID}")
     public CommonResult<Integer> remove(@PathVariable Long ID) {
         return CommonResult.toAjax(attModelCatService.removeAttModelCat(ID));

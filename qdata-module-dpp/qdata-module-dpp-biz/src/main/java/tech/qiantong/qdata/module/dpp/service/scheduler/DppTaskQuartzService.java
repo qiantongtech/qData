@@ -13,8 +13,8 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import javax.annotation.Resource;
 
 /**
- * Handle DolphinScheduler operations.
- * Handle task-related data and operations.
+ * DolphinScheduler 调度器服务
+ * 用于管理数据采集任务的调度和执行
  *
  * @author qdata
  * @date 2025-12-16
@@ -27,7 +27,7 @@ public class DppTaskQuartzService {
     private ISchedulerAdapter schedulerAdapter;
 
     /**
-     * Create the scheduler.
+     * 创建调度器
      */
     public Long create(DppEtlTaskDO dppEtlTaskDO, String invokeTarget) {
         ScheduleCommand build = ScheduleCommand.builder().jobName(dppEtlTaskDO.getName())
@@ -46,7 +46,7 @@ public class DppTaskQuartzService {
     }
 
     /**
-     * Update the scheduler.
+     * 修改调度器
      */
     public void update(Long id,String cronExpression){
         try {
@@ -55,13 +55,13 @@ public class DppTaskQuartzService {
                             .jobName(scheduleRespDTO.getJobName()).jobGroup(scheduleRespDTO.getJobGroup()).invokeTarget(scheduleRespDTO.getInvokeTarget()).misfirePolicy(scheduleRespDTO.getMisfirePolicy())
                     .concurrent(scheduleRespDTO.getConcurrent()).executionType(scheduleRespDTO.getExecutionType()).status(scheduleRespDTO.getStatus()).cronExpression(cronExpression).build());
         } catch (Exception e) {
-            log.error("Failed to update the scheduler.", e);
+            log.error("修改调度器失败！",e);
             throw new ServiceException("dpp.error.scheduler.update", "修改调度器失败！");
         }
     }
 
     /**
-     * Disable the scheduler.
+     * 下线
      *
      * @param quartzId
      */
@@ -74,7 +74,7 @@ public class DppTaskQuartzService {
     }
 
     /**
-     * Enable the scheduler.
+     * 上线
      *
      * @param quartzId
      */
@@ -87,7 +87,7 @@ public class DppTaskQuartzService {
     }
 
     /**
-     * Handle task-related data and operations.
+     * 生成任务编号
      *
      * @param projectCode
      * @return

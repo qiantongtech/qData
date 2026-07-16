@@ -41,14 +41,14 @@ const useSettingsStore = defineStore('settings', {
             storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
     }),
     actions: {
-        // 修改布局设置
+        // Modify layout settings
         changeSetting(data) {
             const { key, value } = data;
             if (this.hasOwnProperty(key)) {
                 this[key] = value;
             }
         },
-        // 设置网页标题
+        // Set page title
         setTitle(title) {
             this.title = title;
             useDynamicTitle();

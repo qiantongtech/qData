@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Collection task instance DTO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,67 +18,67 @@ public class McTaskInstanceRespDTO {
     /** ID */
     private Long id;
 
-    /** Implementation details. */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** Implementation details. */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** Handle task-related data and operations. */
+    /** Collection task id */
     private Long taskId;
 
-    /** Implementation details. */
+    /** Collection mode */
     private String collectionMode;
 
-    /** Implementation details. */
+    /** Collection range */
     private String collectionScope;
 
-    /** Implementation details. */
+    /** Total number of collection tables */
     private Long totalCount;
 
-    /** Implementation details. */
+    /** Number of successful collection tables */
     private Long successCount;
 
-    /** Implementation details. */
+    /** Number of failed collection tables */
     private Long failCount;
 
-    /** Implementation details. */
+    /** Reason for failure */
     private String failCause;
 
-    /** Implementation details. */
+    /** New quantity */
     private Long addCount;
 
-    /** Implementation details. */
+    /** Delete quantity */
     private Long delCount;
 
-    /** Implementation details. */
+    /** Change quantity */
     private Long updateCount;
 
-    /** Implementation details. */
+    /** Start time */
     private Date startTime;
 
-    /** Implementation details. */
+    /** End time */
     private Date endTime;
 
-    /** Implementation details. */
+    /** Time consuming */
     private Long duration;
 
-    /** Implementation details. */
+    /** status */
     private String status;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     private Boolean delFlag;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
 

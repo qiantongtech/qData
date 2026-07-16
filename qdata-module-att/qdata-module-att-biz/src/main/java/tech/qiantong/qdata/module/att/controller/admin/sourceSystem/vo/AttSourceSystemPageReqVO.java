@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 来源系统 Request VO 对象 ATT_SOURCE_SYSTEM
+ * Source System Request VO ATT_SOURCE_SYSTEM
  *
  * @author qdata
  * @date 2026-04-03

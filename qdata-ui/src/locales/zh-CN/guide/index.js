@@ -1,4 +1,4 @@
-// GuideTip 组件翻译
+// GuideTip component translation
 export default {
   index: {
     title: '重要提醒：本系统为演示站点，<u>每日凌晨 02:30 清除所有用户数据</u>，以保障系统整洁与稳定运行。',

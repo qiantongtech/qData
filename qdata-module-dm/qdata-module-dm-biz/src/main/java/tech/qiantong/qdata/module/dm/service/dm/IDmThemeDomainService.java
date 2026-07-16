@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmThemeDomainPageReq
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 
 /**
- * 主题域管理Service接口
+ * Theme Domain Service Interface
  *
  * @author FXB
  * @date 2026-03-24
@@ -38,70 +38,70 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmThemeDomainDO;
 public interface IDmThemeDomainService extends IService<DmThemeDomainDO> {
 
     /**
-     * 获得主题域管理分页列表
+     * Get theme domain page list
      *
-     * @param pageReqVO 分页请求
-     * @return 主题域管理分页列表
+     * @param pageReqVO Page request
+     * @return Theme domain page list
      */
     PageResult<DmThemeDomainDO> getDmThemeDomainPage(DmThemeDomainPageReqVO pageReqVO);
 
     /**
-     * 创建主题域管理
+     * Create theme domain
      *
-     * @param createReqVO 主题域管理信息
-     * @return 主题域管理编号
+     * @param createReqVO Theme domain information
+     * @return Theme domain ID
      */
     Long createDmThemeDomain(DmThemeDomainSaveReqVO createReqVO);
 
     /**
-     * 更新主题域管理
+     * Update theme domain
      *
-     * @param updateReqVO 主题域管理信息
+     * @param updateReqVO Theme domain information
      */
     int updateDmThemeDomain(DmThemeDomainSaveReqVO updateReqVO);
 
     /**
-     * 删除主题域管理
+     * Delete theme domain
      *
-     * @param idList 主题域管理编号
+     * @param idList Theme domain IDs
      */
     int removeDmThemeDomain(Collection<Long> idList);
 
     /**
-     * 获得主题域管理详情
+     * Get theme domain details
      *
-     * @param id 主题域管理编号
-     * @return 主题域管理
+     * @param id Theme domain ID
+     * @return Theme domain
      */
     DmThemeDomainDO getDmThemeDomainById(Long id);
 
     /**
-     * 获得全部主题域管理列表
+     * Get all theme domains
      *
-     * @return 主题域管理列表
+     * @return Theme domain list
      */
     List<DmThemeDomainDO> getDmThemeDomainList();
 
     /**
-     * 获得全部主题域管理 Map
+     * Get all theme domains as Map
      *
-     * @return 主题域管理 Map
+     * @return Theme domain Map
      */
     Map<Long, DmThemeDomainDO> getDmThemeDomainMap();
 
 
     /**
-     * 导入主题域管理数据
+     * Import theme domain data
      *
-     * @param importExcelList 主题域管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Theme domain data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName        Operation user
+     * @return Result
      */
     String importDmThemeDomain(List<DmThemeDomainRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获取主题域管理列表
+     * Get theme domain list
      *
      * @param reqVO
      * @return
@@ -109,7 +109,7 @@ public interface IDmThemeDomainService extends IService<DmThemeDomainDO> {
     List<DmThemeDomainDO> getDmThemeDomainList(DmThemeDomainPageReqVO reqVO);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode
@@ -118,7 +118,7 @@ public interface IDmThemeDomainService extends IService<DmThemeDomainDO> {
     String createCode(Long parentId, String parentCode);
 
     /**
-     * 更改指定pid下的所有code
+     * Update all codes under the specified parent ID
      *
      * @param pid
      */

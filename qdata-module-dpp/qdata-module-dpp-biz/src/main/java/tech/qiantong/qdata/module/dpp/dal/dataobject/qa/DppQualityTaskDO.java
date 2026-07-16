@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据质量任务 DO 对象 DPP_QUALITY_TASK
+ * Data Quality Task DO - DPP_QUALITY_TASK
  *
  * @author Chaos
  * @date 2025-07-21
  */
 @Data
 @TableName(value = "DPP_QUALITY_TASK")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_QUALITY_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -45,52 +45,52 @@ public class DppQualityTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务名称 */
+    /** Task name */
     private String taskName;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 联系人 */
+    /** Contact */
     private String contact;
 
-    /** 联系人ID */
+    /** Contact ID */
     private String contactId;
 
-    /** 联系电话 */
+    /** Contact number */
     private String contactNumber;
 
-    /** 任务状态 0:下线，1:上线*/
+    /** Task status 0: offline, 1: online */
     private String status;
 
-    /** 任务描述 */
+    /** Task description */
     private String description;
 
-    /** 任务优先级 */
+    /** Priority */
     private String priority;
 
-    /** Worker分组 */
+    /** Worker group */
     private String workerGroup;
 
-    /** 失败重试次数 */
+    /** Fail retry times */
     private Long retryTimes;
 
-    /** 失败重试间隔(秒) */
+    /** Retry interval (seconds) */
     private Long retryInterval;
 
-    /** 延时执行时间(秒) */
+    /** Delay time (seconds) */
     private Long delayTime;
 
-    /** 执行策略 */
+    /** Strategy */
     private String strategy;
 
-    /** 调度周期 */
+    /** Cycle */
     private String cycle;
 
-    /** 是否有效 */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
@@ -103,25 +103,25 @@ public class DppQualityTaskDO extends BaseEntity {
     @TableField(exist = false)
     private String catName;
 
-   /*定时任务调度表id*/
+   /** System job ID */
     private Long systemJobId;
 
-    /** 节点id */
+    /** Node ID */
     private Long nodeId;
 
-    /** 节点编码 */
+    /** Node code */
     private String nodeCode;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task code */
     private String taskCode;
 
 
-    @Schema(description = "是否是资产质量任务;0：否。1是")
+    @Schema(description = "Whether it is an asset quality task; 0: No, 1: Yes")
     private String assetFlag;
 
-    @Schema(description = "资产id")
+    @Schema(description = "Asset ID")
     private Long assetId;
 }

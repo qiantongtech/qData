@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.desensitizeRules.dto;
 import lombok.*;
 
 /**
- * 脱敏规则 DTO 对象 DG_DESENSITIZE_RULE
+ * Desensitization Rule DTO Object DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10
@@ -34,34 +34,34 @@ public class DgDesensitizeRuleReqDTO {
     /** ID */
     private Long id;
 
-    /** 分级名称 */
+    /** Level Name */
     private String name;
 
-    /** 数据分类ID */
+    /** Data Category ID */
     private Long dataCategoryId;
 
-    /** 应用场景;1：数据资产  2：数据查询  3：数据服务 */
+    /** Application Scene; 1: Data Asset 2: Data Query 3: Data Service */
     private String applicationScene;
 
-    /** 脱敏方式;1：底层脱敏  2：展示脱敏 */
+    /** Mask Type; 1: Underlying Desensitization 2: Display Desensitization */
     private String maskType;
 
-    /** 替换规则 */
+    /** Replace Rule */
     private String replaceRule;
 
-    /** 替换内容 */
+    /** Replace Content */
     private String replaceContent;
 
-    /** 排序 */
+    /** Sort Order */
     private Long sortOrder;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

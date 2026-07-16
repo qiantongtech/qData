@@ -41,7 +41,7 @@ function mapAndTranslate(dictType, items) {
 }
 
 /**
- * 获取字典数据
+ * Get dictionary data
  */
 export function useDict(...args) {
   const res = ref({});

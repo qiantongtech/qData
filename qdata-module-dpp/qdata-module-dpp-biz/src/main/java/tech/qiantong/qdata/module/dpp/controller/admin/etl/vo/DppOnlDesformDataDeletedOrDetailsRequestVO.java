@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @Data
 public class DppOnlDesformDataDeletedOrDetailsRequestVO extends DppOnlDesformDataBaseRequestVO implements Serializable {
 
-//    @ApiModelProperty(value = "数据ID")
+//    @ApiModelProperty(value = "Data ID")
     private String dataId;
 
     @Builder(toBuilder = true)

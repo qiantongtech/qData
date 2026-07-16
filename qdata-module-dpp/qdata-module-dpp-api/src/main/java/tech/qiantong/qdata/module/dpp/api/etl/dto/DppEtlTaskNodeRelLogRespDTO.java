@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dpp.api.etl.dto;
 import lombok.Data;
 
 /**
- * 数据集成任务节点关系-日志 DTO 对象 DPP_ETL_TASK_NODE_REL_LOG
+ * Data Integration Task Node Relation Log DTO - DPP_ETL_TASK_NODE_REL_LOG
  *
  * @author qdata
  * @date 2025-02-13
@@ -34,43 +34,43 @@ public class DppEtlTaskNodeRelLogRespDTO {
     /** ID */
     private Long id;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 任务编码 */
+    /** Task Code */
     private String taskCode;
 
-    /** 任务版本 */
+    /** Task Version */
     private Long taskVersion;
 
-    /** 前节点id */
+    /** Pre Node ID */
     private Long preNodeId;
 
-    /** 前节点编码 */
+    /** Pre Node Code */
     private String preNodeCode;
 
-    /** 前节点版本 */
+    /** Pre Node Version */
     private Long preNodeVersion;
 
-    /** 后节点id */
+    /** Post Node ID */
     private Long postNodeId;
 
-    /** 后节点编码 */
+    /** Post Node Code */
     private String postNodeCode;
 
-    /** 后节点版本 */
+    /** Post Node Version */
     private Long postNodeVersion;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

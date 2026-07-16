@@ -26,12 +26,12 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import java.util.Date;
 
 /**
- * 消息 Response VO 对象 message
+ * Message Response VO for message
  *
  * @author qdata
  * @date 2024-10-31
  */
-@Schema(description = "消息 Response VO")
+@Schema(description = "Message Response VO")
 @Data
 public class MessageRespVO {
 
@@ -40,89 +40,89 @@ public class MessageRespVO {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "发送人")
-    @Schema(description = "发送人", example = "")
+    @Excel(name = "Sender")
+    @Schema(description = "Sender", example = "")
     private Long senderId;
 
-    @Excel(name = "接收人")
-    @Schema(description = "接收人", example = "")
+    @Excel(name = "Receiver")
+    @Schema(description = "Receiver", example = "")
     private Long receiverId;
 
-    @Excel(name = "消息标题")
-    @Schema(description = "消息标题", example = "")
+    @Excel(name = "Message Title")
+    @Schema(description = "Message title", example = "")
     private String title;
 
-    @Excel(name = "消息模板内容")
-    @Schema(description = "消息模板内容", example = "")
+    @Excel(name = "Message Template Content")
+    @Schema(description = "Message template content", example = "")
     private String content;
 
-    @Excel(name = "消息类别")
-    @Schema(description = "消息类别", example = "")
+    @Excel(name = "Message Category")
+    @Schema(description = "Message category", example = "")
     private Integer category;
 
-    @Excel(name = "消息等级")
-    @Schema(description = "消息等级", example = "")
+    @Excel(name = "Message Level")
+    @Schema(description = "Message level", example = "")
     private Integer msgLevel;
 
-    @Excel(name = "消息模块")
-    @Schema(description = "消息模块", example = "")
+    @Excel(name = "Message Module")
+    @Schema(description = "Message module", example = "")
     private Integer module;
 
-    @Excel(name = "实体类型")
-    @Schema(description = "实体类型", example = "")
+    @Excel(name = "Entity Type")
+    @Schema(description = "Entity type", example = "")
     private Integer entityType;
 
-    @Excel(name = "实体id")
-    @Schema(description = "实体id", example = "")
+    @Excel(name = "Entity ID")
+    @Schema(description = "Entity ID", example = "")
     private Long entityId;
 
-    @Excel(name = "消息链接")
-    @Schema(description = "消息链接", example = "")
+    @Excel(name = "Message Link")
+    @Schema(description = "Message link", example = "")
     private String entityUrl;
 
-    @Excel(name = "是否已读")
-    @Schema(description = "是否已读", example = "")
+    @Excel(name = "Whether Read")
+    @Schema(description = "Whether read", example = "")
     private Integer hasRead;
 
-    @Excel(name = "是否撤回")
-    @Schema(description = "是否撤回", example = "")
+    @Excel(name = "Whether Retracted")
+    @Schema(description = "Whether retracted", example = "")
     private Integer hasRetraction;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Whether Valid")
+    @Schema(description = "Whether valid", example = "")
     private Boolean validFlag;
 
-    @Schema(description = "删除标识")
+    @Schema(description = "Delete flag")
     private Integer delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Creator")
+    @Schema(description = "Creator", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
-    @Schema(description = "创建时间", example = "")
+    @Excel(name = "Create Time", width = 30, dateFormat = "yyyy-MM-dd")
+    @Schema(description = "Create time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updater")
+    @Schema(description = "Updater", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    @Schema(description = "更新时间", example = "")
+    @Excel(name = "Update Time", width = 30, dateFormat = "yyyy-MM-dd")
+    @Schema(description = "Update time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
 }

@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -42,9 +42,9 @@ import java.util.List;
 public class ColumnRespVO implements Serializable {
     private static final long serialVersionUID = 5343220360439610872L;
 
-    @Schema(description = "Excel文件路径")
+    @Schema(description = "Excel File Path")
     private String csvFile;
 
-    @Schema(description = "字段")
+    @Schema(description = "Fields")
     private List<String> columnList;
 }

@@ -34,25 +34,25 @@
     </description>
 
     <dependencies>
-        <!-- SpringBoot Web容器 -->
+        <!-- SpringBoot web container -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- spring security 安全认证 -->
+        <!-- spring security security certification -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- 阿里JSON解析器 -->
+        <!-- Alibaba JSON parser -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
         </dependency>
 
-        <!--常用工具类 -->
+        <!--Commonly used tools -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -76,7 +76,7 @@
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- system-api模块 -->
+        <!-- system-api module -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-system-api</artifactId>

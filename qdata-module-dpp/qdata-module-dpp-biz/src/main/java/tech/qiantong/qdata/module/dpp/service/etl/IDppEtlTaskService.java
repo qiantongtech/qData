@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -38,65 +38,65 @@ import java.util.Map;
 public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     /**
-     * Handle task-related data and operations.
+     * Get data integration task pagination list
      *
-     * @param pageReqVO parameter value
-     * @return the operation result
+     * @param pageReqVO Pagination request
+     * @return Data integration task pagination list
      */
     PageResult<DppEtlTaskDO> getDppEtlTaskPage(DppEtlTaskPageReqVO pageReqVO);
 
     /**
-     * Handle task-related data and operations.
+     * Create data integration task
      *
-     * @param createReqVO parameter value
-     * @return the operation result
+     * @param createReqVO Data integration task info
+     * @return Data integration task ID
      */
     Long createDppEtlTask(DppEtlTaskSaveReqVO createReqVO);
 
     /**
-     * Handle task-related data and operations.
+     * Update data integration task
      *
-     * @param updateReqVO parameter value
+     * @param updateReqVO Data integration task info
      */
     int updateDppEtlTask(DppEtlTaskSaveReqVO updateReqVO);
 
     /**
-     * Handle task-related data and operations.
+     * Delete data integration task
      *
-     * @param idList parameter value
+     * @param idList Data integration task ID list
      */
     int removeDppEtlTask(Collection<Long> idList);
 
     /**
-     * Handle task-related data and operations.
+     * Get data integration task detail
      *
-     * @param id parameter value
-     * @return the operation result
+     * @param id Data integration task ID
+     * @return Data integration task
      */
     DppEtlTaskRespVO getDppEtlTaskById(Long id);
 
     /**
-     * Handle task-related data and operations.
+     * Get all data integration task list
      *
-     * @return the operation result
+     * @return Data integration task list
      */
     List<DppEtlTaskDO> getDppEtlTaskList();
 
     /**
-     * Handle task-related data and operations.
+     * Get all data integration task Map
      *
-     * @return the operation result
+     * @return Data integration task Map
      */
     Map<Long, DppEtlTaskDO> getDppEtlTaskMap();
 
 
     /**
-     * Handle task-related data and operations.
+     * Import data integration task data
      *
-     * @param importExcelList parameter value
-     * @param isUpdateSupport parameter value
-     * @param operName parameter value
-     * @return the operation result
+     * @param importExcelList Data integration task data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlTask(List<DppEtlTaskRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -115,7 +115,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     DppEtlTaskUpdateQueryRespVO getuUpdateQueryInfo(Long id);
 
     /**
-     * Handle task-related data and operations.
+     * Get task ID by task code
      *
      * @param taskCode
      * @return
@@ -123,7 +123,7 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Long getTaskIdByTaskCode(String taskCode);
 
     /**
-     * Handle task-related data and operations.
+     * Get task info by task code
      *
      * @param taskCode
      * @return
@@ -133,21 +133,21 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     List<DppEtlTaskTreeRespVO> getDppEtlTaskListTree(DppEtlTaskPageReqVO dppEtlTask);
 
     /**
-     * Start the task.
+     * 启动任务
      * @param id
      * @return
      */
     AjaxResult startDppEtlTask(Long id);
 
     /**
-     * Handle task-related data and operations.
+     * 启动任务数据集成
      * @param id
      * @return
      */
     void startDppEtlTaskDataIntegration(Long id);
 
     /**
-     * Handle task-related data and operations.
+     * 启动任务数据开发
      *
      * @param id
      */
@@ -160,14 +160,14 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     Map<String, Object> updateReleaseSchedule(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * Handle task-related data and operations.
+     * Create ETL task
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */
     DppEtlTaskSaveReqVO createEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 
     /**
-     * Handle task-related data and operations.
+     * Update ETL task
      * @param dppEtlNewNodeSaveReqVO
      * @return
      */

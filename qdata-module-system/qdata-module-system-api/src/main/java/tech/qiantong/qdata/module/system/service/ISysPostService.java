@@ -23,96 +23,96 @@ import tech.qiantong.qdata.module.system.domain.SysPost;
 import java.util.List;
 
 /**
- * 岗位信息 服务层
+ * Post information service layer
  *
  * @author qdata
  */
 public interface ISysPostService
 {
     /**
-     * 查询岗位信息集合
+     * Query post information collection
      *
-     * @param post 岗位信息
-     * @return 岗位列表
+     * @param post post information
+     * @return post list
      */
     public List<SysPost> selectPostList(SysPost post);
 
     /**
-     * 查询所有岗位
+     * Query all posts
      *
-     * @return 岗位列表
+     * @return post list
      */
     public List<SysPost> selectPostAll();
 
     /**
-     * 通过岗位ID查询岗位信息
+     * Query post information by post ID
      *
-     * @param postId 岗位ID
-     * @return 角色对象信息
+     * @param postId post ID
+     * @return post object information
      */
     public SysPost selectPostById(Long postId);
 
     /**
-     * 根据用户ID获取岗位选择框列表
+     * Get post selection list by user ID
      *
-     * @param userId 用户ID
-     * @return 选中岗位ID列表
+     * @param userId user ID
+     * @return selected post ID list
      */
     public List<Long> selectPostListByUserId(Long userId);
 
     /**
-     * 校验岗位名称
+     * Check post name uniqueness
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public boolean checkPostNameUnique(SysPost post);
 
     /**
-     * 校验岗位编码
+     * Check post code uniqueness
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public boolean checkPostCodeUnique(SysPost post);
 
     /**
-     * 通过岗位ID查询岗位使用数量
+     * Query post usage count by post ID
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     public int countUserPostById(Long postId);
 
     /**
-     * 删除岗位信息
+     * Delete post information
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     public int deletePostById(Long postId);
 
     /**
-     * 批量删除岗位信息
+     * Batch delete post information
      *
-     * @param postIds 需要删除的岗位ID
-     * @return 结果
+     * @param postIds post IDs to delete
+     * @return result
      */
     public int deletePostByIds(Long[] postIds);
 
     /**
-     * 新增保存岗位信息
+     * Insert and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public int insertPost(SysPost post);
 
     /**
-     * 修改保存岗位信息
+     * Update and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     public int updatePost(SysPost post);
 }

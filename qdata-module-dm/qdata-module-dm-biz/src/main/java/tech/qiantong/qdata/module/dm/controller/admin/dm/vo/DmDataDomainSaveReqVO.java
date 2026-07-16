@@ -28,7 +28,7 @@ import java.util.Date;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据域管理 创建/修改 Request VO DM_DATA_DOMAIN
+ * Data Domain Create/Update Request VO - DM_DATA_DOMAIN
  *
  * @author FXB
  * @date 2026-03-24

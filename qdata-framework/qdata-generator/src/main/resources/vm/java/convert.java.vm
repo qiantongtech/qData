@@ -40,29 +40,29 @@ public interface ${ClassName}Convert {
     ${ClassName}Convert INSTANCE = Mappers.getMapper(${ClassName}Convert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param ${className}PageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param ${className}PageReqVO request parameters
      * @return ${ClassName}DO
      */
      ${ClassName}DO convertToDO(${ClassName}PageReqVO ${className}PageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param ${className}SaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param ${className}SaveReqVO Save request parameters
      * @return ${ClassName}DO
      */
      ${ClassName}DO convertToDO(${ClassName}SaveReqVO ${className}SaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param ${className}DO 实体对象
+     * DO to RespVO
+     * @param ${className}DO entity object
      * @return ${ClassName}RespVO
      */
      ${ClassName}RespVO convertToRespVO(${ClassName}DO ${className}DO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param ${className}DOList 实体对象列表
+     * DOList to RespVOList
+     * @param ${className}DOList entity object list
      * @return List<${ClassName}RespVO>
      */
      List<${ClassName}RespVO> convertToRespVOList(List<${ClassName}DO> ${className}DOList);

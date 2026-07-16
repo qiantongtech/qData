@@ -27,14 +27,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data Integration Scheduler Info DO - DPP_ETL_SCHEDULER
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_SCHEDULER")
-// Handle JDBC SQL execution.
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_SCHEDULER_seq")
 @Builder
 @NoArgsConstructor
@@ -54,42 +54,42 @@ public class DppEtlSchedulerDO extends BaseEntity {
     /** Task code */
     private String taskCode;
 
-    /** Implementation details. */
+    /** Start time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** Implementation details. */
+    /** End time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** Implementation details. */
+    /** Timezone */
     private String timezoneId;
 
-    @Schema(description = "任务状态", example = "")
+    @Schema(description = "Task status", example = "")
     private String status;
 
-    /** Implementation details. */
+    /** Cron expression */
     private String cronExpression;
 
-    /** Implementation details. */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Execution engine */
+    /** 执行引擎 */
     private String taskActuator;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** Valid flag */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询资产稽查调度列表
+// Query the asset audit schedule list
 export function listDaAssetAuditSchedule(query) {
   return request({
     url: '/da/daAssetAuditSchedule/list',
@@ -27,7 +27,7 @@ export function listDaAssetAuditSchedule(query) {
   })
 }
 
-// 查询资产稽查调度详细
+// Query asset audit schedule details
 export function getDaAssetAuditSchedule(id) {
   return request({
     url: '/da/daAssetAuditSchedule/' + id,
@@ -35,7 +35,7 @@ export function getDaAssetAuditSchedule(id) {
   })
 }
 
-// 新增资产稽查调度
+// Added asset audit schedule
 export function addDaAssetAuditSchedule(data) {
   return request({
     url: '/da/daAssetAuditSchedule',
@@ -44,7 +44,7 @@ export function addDaAssetAuditSchedule(data) {
   })
 }
 
-// 修改资产稽查调度
+// Modify asset audit schedule
 export function updateDaAssetAuditSchedule(data) {
   return request({
     url: '/da/daAssetAuditSchedule',
@@ -53,7 +53,7 @@ export function updateDaAssetAuditSchedule(data) {
   })
 }
 
-// 删除资产稽查调度
+// Delete asset audit schedule
 export function delDaAssetAuditSchedule(id) {
   return request({
     url: '/da/daAssetAuditSchedule/' + id,

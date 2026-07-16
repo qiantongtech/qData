@@ -5,14 +5,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 采集范围 DO 对象 MC_TASK_SCOPE
+ * Collection range DO object MC_TASK_SCOPE
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_SCOPE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_SCOPE_seq")
 @Builder
 @NoArgsConstructor
@@ -26,23 +26,23 @@ public class McTaskScopeDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 数据库名称 */
+    /** Database name */
     private String dbName;
 
-    /** 模式名 */
+    /** Pattern name */
     private String schemaName;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 }

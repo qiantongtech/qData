@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemCodeDO;
 import java.util.List;
 
 /**
- * 数据元代码 Convert
+ * Data Element Code Convert
  *
  * @author qdata
  * @date 2025-01-21
@@ -38,29 +38,29 @@ public interface DpDataElemCodeConvert {
     DpDataElemCodeConvert INSTANCE = Mappers.getMapper(DpDataElemCodeConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dpDataElemCodePageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dpDataElemCodePageReqVO Request params
      * @return DpDataElemCodeDO
      */
      DpDataElemCodeDO convertToDO(DpDataElemCodePageReqVO dpDataElemCodePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dpDataElemCodeSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dpDataElemCodeSaveReqVO Save request params
      * @return DpDataElemCodeDO
      */
      DpDataElemCodeDO convertToDO(DpDataElemCodeSaveReqVO dpDataElemCodeSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dpDataElemCodeDO 实体对象
+     * Convert DO to RespVO
+     * @param dpDataElemCodeDO Entity object
      * @return DpDataElemCodeRespVO
      */
      DpDataElemCodeRespVO convertToRespVO(DpDataElemCodeDO dpDataElemCodeDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dpDataElemCodeDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param dpDataElemCodeDOList Entity object list
      * @return List<DpDataElemCodeRespVO>
      */
      List<DpDataElemCodeRespVO> convertToRespVOList(List<DpDataElemCodeDO> dpDataElemCodeDOList);

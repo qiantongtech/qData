@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * <P>
- * 用途:对spark做hive方言的支持
+ * Purpose: Support hive dialect for spark
  * </p>
  *
  * @author: FXB

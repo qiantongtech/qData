@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据集成调度信息Mapper接口
+ * Data Integration Scheduler Info Mapper
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,10 +37,10 @@ import java.util.Set;
 public interface DppEtlSchedulerMapper extends BaseMapperX<DppEtlSchedulerDO> {
 
     default PageResult<DppEtlSchedulerDO> selectPage(DppEtlSchedulerPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DppEtlSchedulerDO>()
                 .eqIfPresent(DppEtlSchedulerDO::getTaskId, reqVO.getTaskId())
                 .eqIfPresent(DppEtlSchedulerDO::getTaskCode, reqVO.getTaskCode())
@@ -51,9 +51,9 @@ public interface DppEtlSchedulerMapper extends BaseMapperX<DppEtlSchedulerDO> {
                 .eqIfPresent(DppEtlSchedulerDO::getFailureStrategy, reqVO.getFailureStrategy())
                 .eqIfPresent(DppEtlSchedulerDO::getDsId, reqVO.getDsId())
                 .eqIfPresent(DppEtlSchedulerDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact name match condition (name = '<name>')
                 // .likeIfPresent(DppEtlSchedulerDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Order by createTime descending
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

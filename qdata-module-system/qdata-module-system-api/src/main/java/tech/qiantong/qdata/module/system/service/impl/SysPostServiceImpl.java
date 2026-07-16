@@ -31,7 +31,7 @@ import tech.qiantong.qdata.module.system.service.ISysPostService;
 import java.util.List;
 
 /**
- * 岗位信息 服务层处理
+ * Post Information Service Layer Processing
  *
  * @author qdata
  */
@@ -45,10 +45,10 @@ public class SysPostServiceImpl implements ISysPostService
     private SysUserPostMapper userPostMapper;
 
     /**
-     * 查询岗位信息集合
+     * Query post information collection
      *
-     * @param post 岗位信息
-     * @return 岗位信息集合
+     * @param post post information
+     * @return post information collection
      */
     @Override
     public List<SysPost> selectPostList(SysPost post)
@@ -57,9 +57,9 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 查询所有岗位
+     * Query all posts
      *
-     * @return 岗位列表
+     * @return post list
      */
     @Override
     public List<SysPost> selectPostAll()
@@ -68,10 +68,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 通过岗位ID查询岗位信息
+     * Query post information by post ID
      *
-     * @param postId 岗位ID
-     * @return 角色对象信息
+     * @param postId post ID
+     * @return role object information
      */
     @Override
     public SysPost selectPostById(Long postId)
@@ -80,10 +80,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 根据用户ID获取岗位选择框列表
+     * Get post selection box list by user ID
      *
-     * @param userId 用户ID
-     * @return 选中岗位ID列表
+     * @param userId user ID
+     * @return selected post ID list
      */
     @Override
     public List<Long> selectPostListByUserId(Long userId)
@@ -92,10 +92,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 校验岗位名称是否唯一
+     * Check if post name is unique
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public boolean checkPostNameUnique(SysPost post)
@@ -110,10 +110,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 校验岗位编码是否唯一
+     * Check if post code is unique
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public boolean checkPostCodeUnique(SysPost post)
@@ -128,10 +128,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 通过岗位ID查询岗位使用数量
+     * Query post usage count by post ID
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     @Override
     public int countUserPostById(Long postId)
@@ -140,10 +140,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 删除岗位信息
+     * Delete post information
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     @Override
     public int deletePostById(Long postId)
@@ -152,10 +152,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 批量删除岗位信息
+     * Batch delete post information
      *
-     * @param postIds 需要删除的岗位ID
-     * @return 结果
+     * @param postIds post IDs to delete
+     * @return result
      */
     @Override
     public int deletePostByIds(Long[] postIds)
@@ -165,17 +165,17 @@ public class SysPostServiceImpl implements ISysPostService
             SysPost post = selectPostById(postId);
             if (countUserPostById(postId) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", post.getPostName()));
+                throw new ServiceException(String.format("%1$s is already assigned, cannot be deleted", post.getPostName()));
             }
         }
         return postMapper.deletePostByIds(postIds);
     }
 
     /**
-     * 新增保存岗位信息
+     * Insert and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public int insertPost(SysPost post)
@@ -184,10 +184,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 修改保存岗位信息
+     * Update and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public int updatePost(SysPost post)

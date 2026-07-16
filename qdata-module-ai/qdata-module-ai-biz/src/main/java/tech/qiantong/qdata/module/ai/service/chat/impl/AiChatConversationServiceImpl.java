@@ -43,7 +43,7 @@ import tech.qiantong.qdata.module.ai.dal.mapper.chat.AiChatConversationMapper;
 import tech.qiantong.qdata.module.ai.service.chat.IAiChatConversationService;
 
 /**
- * ai聊天对话Service业务层处理
+ * ai chat conversation service business layer processing
  *
  * @author FXB
  * @date 2026-04-01
@@ -69,16 +69,16 @@ public class AiChatConversationServiceImpl extends ServiceImpl<AiChatConversatio
 
     @Override
     public int updateAiChatConversation(AiChatConversationSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新ai聊天对话
+        // Update ai chat conversation
         AiChatConversationDO updateObj = BeanUtils.toBean(updateReqVO, AiChatConversationDO.class);
         return aiChatConversationMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAiChatConversation(Collection<Long> idList) {
-        // 批量删除ai聊天对话
+        // Delete ai chat conversations in batches
         return aiChatConversationMapper.deleteBatchIds(idList);
     }
 
@@ -99,7 +99,7 @@ public class AiChatConversationServiceImpl extends ServiceImpl<AiChatConversatio
                 .collect(Collectors.toMap(
                         AiChatConversationDO::getId,
                         aiChatConversationDO -> aiChatConversationDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }

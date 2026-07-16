@@ -27,7 +27,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 评测规则结果 Request VO 对象 DPP_EVALUATE_LOG
+ * Evaluation rule result Request VO object DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21

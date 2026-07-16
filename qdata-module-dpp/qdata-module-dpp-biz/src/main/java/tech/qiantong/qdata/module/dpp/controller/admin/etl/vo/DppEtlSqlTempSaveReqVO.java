@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据集成SQL模版 创建/修改 Request VO DPP_ETL_SQL_TEMP
+ * Data Integration SQL Template Create/Update Request VO DPP_ETL_SQL_TEMP
  *
  * @author FXB
  * @date 2025-06-25
  */
-@Schema(description = "数据集成SQL模版 Response VO")
+@Schema(description = "Data Integration SQL Template Create/Update Request VO")
 @Data
 public class DppEtlSqlTempSaveReqVO extends BaseEntity {
 

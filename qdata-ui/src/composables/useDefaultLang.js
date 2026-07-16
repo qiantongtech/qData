@@ -11,9 +11,9 @@ function useDefaultLang() {
     };
 
     const td = (key, def, params) => {
-        // 使用 try-catch 确保即使 i18n 未正确初始化也不会报错
+        // Use try-catch to ensure that no error is reported even if i18n is not initialized correctly
         try {
-            // 使用 te() 检查 key 是否存在，如果不存在返回默认值
+            // Use te() to check whether key exists, and return the default value if it does not exist
             const result = i18n.te(key) ? i18n.t(key, params) : def;
             return result;
         } catch (e) {

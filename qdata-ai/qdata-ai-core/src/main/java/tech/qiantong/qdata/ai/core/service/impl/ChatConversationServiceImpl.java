@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:会话实现类
+ * Purpose: Session implementation class
  * </p>
  *
  * @author: FXB
@@ -132,12 +132,12 @@ public class ChatConversationServiceImpl implements IChatConversationService {
     }
 
     /**
-     * 构建事实表实体
+     * Build fact table entities
      *
-     * @param tableName    表名
-     * @param tableComment 表注释
-     * @param dbColumns    数据库字段列表
-     * @return 事实表实体
+     * @param tableName table name
+     * @param tableComment table comment
+     * @param dbColumns database field list
+     * @return fact table entity
      */
     private FactTable buildFactTable(String tableName, String tableComment, List<DbColumn> dbColumns) {
         List<FactTable.Column> columns = new ArrayList<>();
@@ -164,12 +164,12 @@ public class ChatConversationServiceImpl implements IChatConversationService {
     }
 
     /**
-     * 构建维度表实体
+     * Build dimension table entities
      *
-     * @param tableName    表名
-     * @param tableComment 表注释
-     * @param dbColumns    数据库字段列表
-     * @return 维度表实体
+     * @param tableName table name
+     * @param tableComment table comment
+     * @param dbColumns database field list
+     * @return dimension table entity
      */
     private DimensionTable buildDimensionTable(String tableName, String tableComment, List<DbColumn> dbColumns) {
         List<DimensionTable.Column> columns = new ArrayList<>();

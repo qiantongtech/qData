@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 数据集成调度信息Mapper接口
+ * Data integration scheduling information Mapper interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -19,10 +19,10 @@ import java.util.Set;
 public interface McTaskSchedulerMapper extends BaseMapperX<McTaskSchedulerDO> {
 
     default PageResult<McTaskSchedulerDO> selectPage(McTaskSchedulerPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<McTaskSchedulerDO>()
                 .eqIfPresent(McTaskSchedulerDO::getTaskId, reqVO.getTaskId())
                 .eqIfPresent(McTaskSchedulerDO::getJobId, reqVO.getJobId())
@@ -33,9 +33,9 @@ public interface McTaskSchedulerMapper extends BaseMapperX<McTaskSchedulerDO> {
                 .eqIfPresent(McTaskSchedulerDO::getFailureStrategy, reqVO.getFailureStrategy())
                 .eqIfPresent(McTaskSchedulerDO::getStatus, reqVO.getStatus())
                 .eqIfPresent(McTaskSchedulerDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(McTaskSchedulerDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

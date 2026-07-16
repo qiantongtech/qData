@@ -27,12 +27,12 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data Integration Scheduler Information Create/Update Request VO DPP_ETL_SCHEDULER
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成调度信息 Response VO")
+@Schema(description = "Data Integration Scheduler Information Create/Update Request VO")
 @Data
 public class DppEtlSchedulerSaveReqVO extends BaseEntity {
 

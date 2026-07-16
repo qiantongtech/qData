@@ -26,7 +26,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 逻辑模型类目管理Mapper接口
+ * Logical Model Category Management Mapper Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -34,16 +34,16 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 public interface AttModelCatMapper extends BaseMapperX<AttModelCatDO> {
 
     default PageResult<AttModelCatDO> selectPage(AttModelCatPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
 //        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<AttModelCatDO>()
                 .likeIfPresent(AttModelCatDO::getName, reqVO.getName())
                 .likeRightIfPresent(AttModelCatDO::getCode, reqVO.getCode())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact match condition for name (name = '<name>')
                 // .likeIfPresent(AttModelCatDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
 //                .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
                 .orderByAsc(AttModelCatDO::getSortOrder));
     }

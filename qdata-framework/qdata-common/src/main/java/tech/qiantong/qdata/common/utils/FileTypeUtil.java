@@ -25,12 +25,12 @@ public class FileTypeUtil {
     private static final Map<String, String> FILE_TYPE_MAP = new HashMap<>();
 
     static {
-        // 文本类
+        // Text class
         FILE_TYPE_MAP.put("txt", "文本文件");
         FILE_TYPE_MAP.put("csv", "CSV文件");
         FILE_TYPE_MAP.put("log", "日志文件");
 
-        // 代码类
+        // Code class
         FILE_TYPE_MAP.put("java", "Java源文件");
         FILE_TYPE_MAP.put("class", "Java类文件");
         FILE_TYPE_MAP.put("jar", "JAR文件");
@@ -41,21 +41,21 @@ public class FileTypeUtil {
         FILE_TYPE_MAP.put("css", "CSS文件");
         FILE_TYPE_MAP.put("json", "JSON文件");
 
-        // 图片类
+        // Picture category
         FILE_TYPE_MAP.put("jpg", "JPEG图片");
         FILE_TYPE_MAP.put("jpeg", "JPEG图片");
         FILE_TYPE_MAP.put("png", "PNG图片");
         FILE_TYPE_MAP.put("gif", "GIF图片");
         FILE_TYPE_MAP.put("bmp", "位图文件");
 
-        // 压缩类
+        // Compression type
         FILE_TYPE_MAP.put("zip", "ZIP压缩文件");
         FILE_TYPE_MAP.put("rar", "RAR压缩文件");
         FILE_TYPE_MAP.put("7z", "7-Zip压缩文件");
         FILE_TYPE_MAP.put("tar", "TAR归档文件");
         FILE_TYPE_MAP.put("gz", "GZIP压缩文件");
 
-        // 办公文档类
+        // Office documents
         FILE_TYPE_MAP.put("doc", "Word文档");
         FILE_TYPE_MAP.put("docx", "Word文档");
         FILE_TYPE_MAP.put("xls", "Excel表格");
@@ -66,9 +66,9 @@ public class FileTypeUtil {
     }
 
     /**
-     * 根据文件名获取文件类型描述
-     * @param fileName 文件名
-     * @return 文件类型描述，如"文本文件(.txt)"，未知类型返回"文件"
+     * Get file type description based on file name
+     * @param fileName file name
+     * @return file type description, such as "text file (.txt)", unknown type returns "file"
      */
     public static String getFileType(String fileName) {
         if (fileName == null || fileName.isEmpty()) {

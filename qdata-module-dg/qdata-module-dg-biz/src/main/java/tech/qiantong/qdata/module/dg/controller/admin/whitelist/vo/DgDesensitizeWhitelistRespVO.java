@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 脱敏白名单 Response VO 对象 DG_DESENSITIZE_WHITELIST
+ * Desensitize Whitelist Response VO Object DG_DESENSITIZE_WHITELIST
  *
  * @author qdata
  * @date 2026-04-09

@@ -206,7 +206,7 @@ public final class JSONUtils {
     }
 
     public static String convertParametersToJson(Map<String, String> taskParamMap) throws JsonProcessingException {
-        // Handle JSON data for this operation.
+        // Convert taskParamMap to JSON string
         return objectMapper.writeValueAsString(taskParamMap);
     }
 
@@ -275,7 +275,7 @@ public final class JSONUtils {
      * @param classV classV
      * @param <K> K
      * @param <V> V
-     * @return to map
+     * @return converted map
      */
     public static <K, V> Map<K, V> toMap(String json, Class<K> classK, Class<V> classV) {
         if (Strings.isNullOrEmpty(json)) {
@@ -448,26 +448,26 @@ public final class JSONUtils {
     }
 
     /**
-     * Handle JSON data for this operation.
-     * @param object parameter value
-     * @return the operation result
+     * Convert object to JSON string
+     * @param object The object to be converted
+     * @return JSON string
      */
     public static String toJson(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);  // Handle JSON data for this operation.
+            return objectMapper.writeValueAsString(object);  // Convert to JSON string
         } catch (Exception e) {
             e.printStackTrace();
-            return null;  // Return the operation result.
+            return null;  // Returns null if conversion fails
         }
     }
 
 
 
     /**
-     * Implementation details.
+     * Convert string to type long
      *
-     * @param processDefinitionCode parameter value
-     * @return the operation result
+     * @param processDefinitionCode The string to convert
+     * @return the converted long value, if the conversion fails, -1 is returned
      */
     public static long convertToLong(String processDefinitionCode) {
         if (processDefinitionCode == null || processDefinitionCode.trim().isEmpty()) {
@@ -481,10 +481,10 @@ public final class JSONUtils {
     }
 
     /**
-     * Handle JSON data for this operation.
+     * 格式化 JSON 字符串
      *
-     * @param json parameter value
-     * @return the operation result
+     * @param json 原始 JSON 字符串
+     * @return 格式化后的 JSON 字符串
      */
     public static String formatJson(String json) {
         try {

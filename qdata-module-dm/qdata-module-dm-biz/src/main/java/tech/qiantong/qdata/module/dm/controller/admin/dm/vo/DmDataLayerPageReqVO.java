@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数仓分层管理 Request VO 对象 DM_DATA_LAYER
+ * Data Warehouse Layer Request VO - DM_DATA_LAYER
  *
  * @author FXB
  * @date 2026-03-24

@@ -21,7 +21,7 @@ package tech.qiantong.qdata.common.exception.file;
 import java.util.Arrays;
 
 /**
- * 文件上传 误异常类
+ * File upload error exception class
  *
  * @author qdata
  */

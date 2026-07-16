@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 数据集成节点 创建/修改 Request VO DPP_ETL_NODE
+ * Data Integration Node Create/Update Request VO DPP_ETL_NODE
  *
  * @author qdata
  * @date 2025-02-13
@@ -43,7 +43,7 @@ public class DppEtlNodeSaveReqVO extends BaseEntity {
     private Long id;
 
     /**
-     * 任务类型;1：离线任务 2：实时任务 3：数据开发任务 4：作业任务
+     * Task Type; 1:Offline Task 2:Real-time Task 3:Data Development Task 4:Job Task
      */
     private String taskType;
 

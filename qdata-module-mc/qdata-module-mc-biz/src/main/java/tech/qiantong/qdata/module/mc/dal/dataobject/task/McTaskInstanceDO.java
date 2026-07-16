@@ -7,14 +7,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Collection task instance DO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_INSTANCE")
-// Handle JDBC SQL execution.
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -28,90 +28,90 @@ public class McTaskInstanceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Implementation details. */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** Implementation details. */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** Handle task-related data and operations. */
+    /** Collection task id */
     private Long taskId;
 
-    /** Implementation details. */
+    /** Collection mode */
     private String collectionMode;
 
-    /** Implementation details. */
+    /** Collection range */
     private String collectionScope;
 
-    /** Implementation details. */
+    /** Total number of collection tables */
     private Long totalCount;
 
-    /** Implementation details. */
+    /** Number of successful collection tables */
     private Long successCount;
 
-    /** Implementation details. */
+    /** Number of failed collection tables */
     private Long failCount;
 
-    /** Implementation details. */
+    /** Reason for failure */
     private String failCause;
 
-    /** Implementation details. */
+    /** New quantity */
     private Long addCount;
 
-    /** Implementation details. */
+    /** Delete quantity */
     private Long delCount;
 
-    /** Implementation details. */
+    /** Change quantity */
     private Long updateCount;
 
-    /** Implementation details. */
+    /** Start time */
     private Date startTime;
 
-    /** Implementation details. */
+    /** End time */
     private Date endTime;
 
-    /** Implementation details. */
+    /** Time consuming */
     private Long duration;
 
-    /** Implementation details. */
+    /** status */
     private String status;
 
     /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** Implementation details. */
+    /** Description */
     private String description;
 
     /**
-     * Handle task-related data and operations.
+     * Task name
      */
     @TableField(exist = false)
     private String name;
     /**
-     * Handle task-related data and operations.
+     * Task status
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * Create the required record.
+     * Creator phone number
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * Handle database and data source configuration.
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * Handle database and data source configuration.
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

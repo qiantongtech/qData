@@ -56,7 +56,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 业务分类Service业务层处理
+ * Business Category Service - Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-08
@@ -81,7 +81,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
     @Override
     public PageResult<DmBusinessCategoryDO> getDmBusinessCategoryPage(DmBusinessCategoryPageReqVO pageReqVO) {
         PageResult<DmBusinessCategoryDO> pageResult = dmBusinessCategoryMapper.selectPage(pageReqVO);
-      /*  //根据业务分类id 查询数据域集合 存入DmBusinessCategoryDO
+      /*  // Query data domain collection by business category ID and store in DmBusinessCategoryDO
         pageResult.getRows().forEach(item -> {
             item.setDataDomainList(dmDataDomainMapper.selectlistBybusinessDomainId(item.getId()));
         });*/
@@ -93,7 +93,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         DmBusinessCategoryDO dictType = BeanUtils.toBean(createReqVO, DmBusinessCategoryDO.class);
         dictType.setCode(createCode(createReqVO.getParentId(), null));
         dmBusinessCategoryMapper.insert(dictType);
-        // 插入数据域关联关系
+        // Insert data domain relation
         if (dictType.getDomainList() != null && !dictType.getDomainList().isEmpty()) {
             dictType.getDomainList().forEach(domain -> {
                 domain.setBusinessCategoryId(dictType.getId());
@@ -110,9 +110,9 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         if (catDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        // Check if the parent is set to itself
         if (catDO.getId().equals(updateReqVO.getParentId())) {
-            throw new tech.qiantong.qdata.common.exception.ServiceException("切换上级不能选择自身作为上级类目");
+            throw new tech.qiantong.qdata.common.exception.ServiceException("Cannot select itself as the parent category");
         }
 
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
@@ -120,21 +120,21 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DmBusinessCategoryDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new tech.qiantong.qdata.common.exception.ServiceException("须先启用父级");
+                throw new tech.qiantong.qdata.common.exception.ServiceException("Parent must be enabled first");
             }
         }
-        //修改上下级判断
+        // Check if the parent relationship has changed
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId())) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
             flag = true;
         }
 
-        // 更新业务分类
+        // Update business category
         DmBusinessCategoryDO updateObj = BeanUtils.toBean(updateReqVO, DmBusinessCategoryDO.class);
-        // 插入新的数据域关联关系
+        // Insert new data domain relation
         if (updateObj.getDomainList() != null && !updateObj.getDomainList().isEmpty()) {
-            //先根据业务分类id 删除旧的关联域
+            // First delete the old domain relations by business category ID
             dmBusinessDomainRelMapper.delete(new LambdaQueryWrapper<DmBusinessDomainRelDO>().eq(DmBusinessDomainRelDO::getBusinessCategoryId, updateObj.getId()));
             updateObj.getDomainList().forEach(domain -> {
                 domain.setBusinessCategoryId(updateObj.getId());
@@ -144,9 +144,9 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         }
 
         int i = dmBusinessCategoryMapper.updateById(updateObj);
-        //判断上下级是否发生了改变
+        // If the parent relationship has changed
         if (flag) {
-            //更改所有下级
+            // Update all child codes
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
 
@@ -155,35 +155,35 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
 
     @Override
     public int removeDmBusinessCategory(Collection<Long> idList) {
-        //xxxi先查询是否包含子业务分类  如果包含 则提示删除子业务分类后在删除
+        // First check if there are any child business categories. If so, prompt to delete child categories first.
         if (idList.stream()
                 .anyMatch(id -> dmBusinessCategoryMapper.selectCount(new LambdaQueryWrapper<DmBusinessCategoryDO>().eq(DmBusinessCategoryDO::getParentId, id)) > 0)) {
-            throw new IllegalArgumentException("业务分类下存在子业务分类，不能删除");
+            throw new IllegalArgumentException("Business category has child categories, cannot delete");
         }
-        // 先删除业务分类关联的域域关系业务分类
+        // First delete the domain relations associated with the business category
         dmBusinessDomainRelMapper.delete(new LambdaQueryWrapper<DmBusinessDomainRelDO>().in(DmBusinessDomainRelDO::getBusinessCategoryId, idList));
-        // 删除业务分类关联
+        // Delete the business category relations
         return dmBusinessCategoryMapper.deleteBatchIds(idList);
     }
 
     @Override
     public DmBusinessCategoryDO getDmBusinessCategoryById(Long id) {
         DmBusinessCategoryDO dmBusinessCategoryDO = dmBusinessCategoryMapper.selectById(id);
-        //查询用户表 将ownerId 转换为ownerName
+        // Query user table, convert ownerId to ownerName
         if (dmBusinessCategoryDO.getOwnerId() != null) {
             SysUser sysUser = dmUserMapper.selectUserById(dmBusinessCategoryDO.getOwnerId());
             if (sysUser != null) {
                 dmBusinessCategoryDO.setOwnerName(sysUser.getNickName());
             }
         }
-        //查询业务分类表 将parentId 转换为parentName
+        // Query business category table, convert parentId to parentName
         if (dmBusinessCategoryDO.getParentId() != null) {
             DmBusinessCategoryDO categoryDO = dmBusinessCategoryMapper.selectById(dmBusinessCategoryDO.getParentId());
             if (categoryDO != null) {
                 dmBusinessCategoryDO.setParentName(categoryDO.getName());
             }
         }
-        //根据业务分类id 查询数据域ID集合 存入DmBusinessCategoryDO
+        // Query data domain ID collection by business category ID and store in DmBusinessCategoryDO
         dmBusinessCategoryDO.setDomainIds(dmBusinessDomainRelMapper.selectList(new LambdaQueryWrapper<DmBusinessDomainRelDO>().eq(DmBusinessDomainRelDO::getBusinessCategoryId, id))
                 .stream()
                 .map(DmBusinessDomainRelDO::getDataDomainId)
@@ -198,7 +198,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
     @Override
     public List<DmBusinessCategoryDO> getDmBusinessCategoryList(DmBusinessCategoryPageReqVO dmBusinessCategory) {
         List<DmBusinessCategoryDO> pageResult = dmBusinessCategoryMapper.selectAllList(dmBusinessCategory);
-        //根据业务域id 查询数据域集合 存入DmBusinessCategoryDO
+        // Query data domain collection by business category ID and store in DmBusinessCategoryDO
         pageResult.forEach(item -> {
             List<DmBusinessDomainRelDO> cc = dmBusinessDomainRelMapper.selectList(new LambdaQueryWrapper<DmBusinessDomainRelDO>().eq(DmBusinessDomainRelDO::getBusinessCategoryId, item.getId()));
             item.setDomainList(cc);
@@ -212,23 +212,23 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         List<DmBusinessCategoryDO> dmBusinessCategoryList = dmBusinessCategoryMapper.selectList();
         return dmBusinessCategoryList.stream()
                 .collect(Collectors.toMap(DmBusinessCategoryDO::getId, dmBusinessCategoryDO -> dmBusinessCategoryDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入业务分类数据
+     * Import business category data
      *
-     * @param importExcelList 业务分类数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Business category data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName        Operation user
+     * @return Result
      */
     @Override
     public String importDmBusinessCategory(List<DmBusinessCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dm.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -247,16 +247,16 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
                             dmBusinessCategoryMapper.updateById(dmBusinessCategoryDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
-                                    "数据更新成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。", dmBusinessCategoryId, "业务分类"));
+                                    "Data update successful, business category record with ID " + dmBusinessCategoryId + ".", dmBusinessCategoryId, "BusinessCategory"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
-                                    "数据更新失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录不存在。", dmBusinessCategoryId, "业务分类"));
+                                    "Data update failed, business category record with ID " + dmBusinessCategoryId + " does not exist.", dmBusinessCategoryId, "BusinessCategory"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, a record has no ID."));
                     }
                 } else {
                     QueryWrapper<DmBusinessCategoryDO> queryWrapper = new QueryWrapper<>();
@@ -266,17 +266,17 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
                         dmBusinessCategoryMapper.insert(dmBusinessCategoryDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
-                                "数据插入成功，ID为 " + dmBusinessCategoryId + " 的业务分类记录。", dmBusinessCategoryId, "业务分类"));
+                                "Data insert successful, business category record with ID " + dmBusinessCategoryId + ".", dmBusinessCategoryId, "BusinessCategory"));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
-                                "数据插入失败，ID为 " + dmBusinessCategoryId + " 的业务分类记录已存在。", dmBusinessCategoryId, "业务分类"));
+                                "Data insert failed, business category record with ID " + dmBusinessCategoryId + " already exists.", dmBusinessCategoryId, "BusinessCategory"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
-                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                        "Data import failed, error: " + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -285,12 +285,12 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! " + failureNum + " records have incorrect format, errors below:<br/>" + failureDetails,
                     failureNum, failureDetails));
             throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "All data imported successfully! Total " + successNum + " records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -299,12 +299,12 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Divided into three scenarios:
+         * 1. No data in the database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements, call YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements, call YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the previous maximum code value
         LambdaQueryWrapper<DmBusinessCategoryDO> query = new LambdaQueryWrapper<DmBusinessCategoryDO>().eq(DmBusinessCategoryDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), DmBusinessCategoryDO::getCode, parentCode)
                 .isNotNull(DmBusinessCategoryDO::getCode)
@@ -312,15 +312,15 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
         List<DmBusinessCategoryDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Scenario 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Scenario 2
                 DmBusinessCategoryDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Scenario 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
@@ -345,12 +345,12 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
 
     @Override
     public List<TreeData> getTreeData(String type) {
-        //获取所有开启的业务分类
+        // Get all enabled business categories
         List<DmBusinessCategoryDO> dmBusinessCategoryDOList = baseMapper.selectList(Wrappers.lambdaQuery(DmBusinessCategoryDO.class)
                 .eq(DmBusinessCategoryDO::getValidFlag, true)
                 .orderByAsc(DmBusinessCategoryDO::getSortOrder));
 
-        //组装业务分类树
+        // Build business category tree
         List<TreeData> treeDataList = dmBusinessCategoryDOList.stream()
                 .map(v -> TreeData.builder()
                         .id(v.getId())
@@ -379,7 +379,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
             }
         }
 
-        //获取跟业务分类有关联的数据域
+        // Get data domains related to business categories
         MPJLambdaWrapperX<DmDataDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
         String statisticsSql = null;
         if (StringUtils.isNotBlank(type)) {
@@ -399,7 +399,7 @@ public class DmBusinessCategoryServiceImpl extends ServiceImpl<DmBusinessCategor
                 .eq(DmBusinessCategoryDO::getValidFlag, true);
         List<DmDataDomainDO> dataDomainDOList = dmDataDomainMapper.selectList(lambdaWrapper);
 
-        //将数据域和业务分类关联起来
+        // Associate data domains with business categories
         for (DmDataDomainDO dmDataDomainDO : dataDomainDOList) {
             TreeData parent = dmBusinessCategoryMap.get(dmDataDomainDO.getBusinessCategoryId());
             if (parent != null) {

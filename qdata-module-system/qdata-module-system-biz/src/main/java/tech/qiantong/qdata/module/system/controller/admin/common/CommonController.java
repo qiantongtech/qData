@@ -54,7 +54,7 @@ import tech.qiantong.qdata.module.system.domain.vo.ExcelColumnReqVO;
 import tech.qiantong.qdata.module.system.domain.vo.ColumnRespVO;
 
 /**
- * 通用请求处理
+ * Common Request Handler
  *
  * @author qdata
  */
@@ -75,16 +75,16 @@ public class CommonController {
     private static final String FILE_DELIMETER = ",";
 
     /**
-     * 通用下载请求
+     * Common download request
      *
-     * @param fileName 文件名称
-     * @param delete   是否删除
+     * @param fileName File name
+     * @param delete   Whether to delete
      */
     @GetMapping("/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
         try {
             if (!FileUtils.checkAllowDownload(fileName)) {
-                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
+                throw new Exception(StringUtils.format("File name ({}) is invalid, download not allowed. ", fileName));
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
             String filePath = AniviaConfig.getDownloadPath() + fileName;
@@ -96,19 +96,19 @@ public class CommonController {
                 FileUtils.deleteFile(filePath);
             }
         } catch (Exception e) {
-            log.error("下载文件失败", e);
+            log.error("Failed to download file", e);
         }
     }
 
     /**
-     * 通用上传请求（单个）
+     * Common upload request (single)
      */
     @PostMapping("/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception {
         try {
-            // 上传文件路径
+            // Upload file path
             String filePath = AniviaConfig.getUploadPath();
-            // 上传并返回新文件名称
+            // Upload and return new file name
             String fileName = FileUploadUtils.upload(filePath, file);
             String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
@@ -123,19 +123,19 @@ public class CommonController {
     }
 
     /**
-     * 通用上传请求（多个）
+     * Common upload request (multiple)
      */
     @PostMapping("/uploads")
     public AjaxResult uploadFiles(List<MultipartFile> files) throws Exception {
         try {
-            // 上传文件路径
+            // Upload file path
             String filePath = AniviaConfig.getUploadPath();
             List<String> urls = new ArrayList<String>();
             List<String> fileNames = new ArrayList<String>();
             List<String> newFileNames = new ArrayList<String>();
             List<String> originalFilenames = new ArrayList<String>();
             for (MultipartFile file : files) {
-                // 上传并返回新文件名称
+                // Upload and return new file name
                 String fileName = FileUploadUtils.upload(filePath, file);
                 String url = serverConfig.getUrl() + fileName;
                 urls.add(url);
@@ -155,32 +155,32 @@ public class CommonController {
     }
 
     /**
-     * 本地资源通用下载
+     * Local resource download
      */
     @GetMapping("/download/resource")
     public void resourceDownload(String resource, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         try {
             if (!FileUtils.checkAllowDownload(resource)) {
-                throw new Exception(StringUtils.format("资源文件({})非法，不允许下载。 ", resource));
+                throw new Exception(StringUtils.format("Resource file ({}) is invalid, download not allowed. ", resource));
             }
-            // 本地资源路径
+            // Local resource path
             String localPath = AniviaConfig.getProfile();
-            // 数据库资源地址
+            // Database resource address
             String downloadPath = localPath + StringUtils.substringAfter(resource, Constants.RESOURCE_PREFIX);
-            // 下载名称
+            // Download name
             String downloadName = StringUtils.substringAfterLast(downloadPath, "/");
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, downloadName);
             FileUtils.writeBytes(downloadPath, response.getOutputStream());
         } catch (Exception e) {
-            log.error("下载文件失败", e);
+            log.error("Failed to download file", e);
         }
     }
 
 
     /**
-     * 获取excel列名并转换为csv
+     * Get excel column names and convert to csv
      *
      * @return
      */
@@ -196,7 +196,7 @@ public class CommonController {
         List<String> columnList = ExcelToCsvUtil.convertExcelToCsv(excelFile, csvFile, startColumn, startData);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                return AjaxResult.error("附件中列名格式有误，请检查!");
+                return AjaxResult.error("Column name format in attachment is incorrect, please check!");
             }
         }
         String hdfsPath = "/tmp/etl";
@@ -207,7 +207,7 @@ public class CommonController {
     }
 
     /**
-     * 获取excel列名并转换为csv
+     * Get excel column names and convert to csv
      *
      * @return
      */
@@ -221,7 +221,7 @@ public class CommonController {
         List<String> columnList = ExcelToCsvUtil.parseCsv(file, csvFile);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
-                return AjaxResult.error("附件中列名格式有误，请检查!");
+                return AjaxResult.error("Column name format in attachment is incorrect, please check!");
             }
         }
         String hdfsPath = "/tmp/etl";
@@ -232,21 +232,21 @@ public class CommonController {
     }
 
     /**
-     * 上传文件至hdfs
+     * Upload file to hdfs
      *
-     * @param hdfsUrl  hdfs地址
-     * @param pathStr  上传的路径
-     * @param file     文件路径
-     * @param filename 文件名称
+     * @param hdfsUrl  hdfs address
+     * @param pathStr  Upload path
+     * @param file     File path
+     * @param filename File name
      */
     public void uploadHdfs(String hdfsUrl, String pathStr, String file, String filename) {
         pathStr = pathStr == null ? "" : pathStr;
         pathStr = resolvePath(pathStr, filename);
-        // 1. 创建 Hadoop 配置对象
+        // 1. Create Hadoop configuration object
         Configuration conf = new Configuration();
         conf.set("fs.defaultFS", hdfsUrl);
         conf.set("dfs.client.use.datanode.hostname", "true");
-        // 如果只有1台DN，确保副本数别比节点数大
+        // If only 1 DN, ensure replica count does not exceed node count
         conf.set("dfs.replication", "1");
         Path path = new Path(pathStr);
         try (FileSystem fs = FileSystem.get(new URI(hdfsUrl), conf, "hadoop");

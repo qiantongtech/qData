@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttQualityCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttQualityCatService;
 
 /**
- * 数据质量类目Controller
+ * Data Quality Category Controller
  *
  * @author qdata
  * @date 2025-07-19
@@ -67,7 +67,7 @@ public class AttQualityCatController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量类目列表")
-    @Log(title = "数据质量类目", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.quality.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttQualityCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -78,7 +78,7 @@ public class AttQualityCatController extends BaseController {
 
     @Operation(summary = "导入数据质量类目列表")
     @PreAuthorize("@ss.hasPermi('att:qualityCat:import')")
-    @Log(title = "数据质量类目", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.quality.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttQualityCatRespVO> util = new ExcelUtil<>(AttQualityCatRespVO.class);
@@ -97,7 +97,7 @@ public class AttQualityCatController extends BaseController {
 
     @Operation(summary = "新增数据质量类目")
     @PreAuthorize("@ss.hasPermi('att:qualityCat:add')")
-    @Log(title = "数据质量类目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.quality.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttQualityCatSaveReqVO attQualityCat) {
         attQualityCat.setCreatorId(getUserId());
@@ -108,7 +108,7 @@ public class AttQualityCatController extends BaseController {
 
     @Operation(summary = "修改数据质量类目")
     @PreAuthorize("@ss.hasPermi('att:qualityCat:edit')")
-    @Log(title = "数据质量类目", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.quality.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttQualityCatSaveReqVO attQualityCat) {
         attQualityCat.setUpdatorId(getUserId());
@@ -119,7 +119,7 @@ public class AttQualityCatController extends BaseController {
 
     @Operation(summary = "删除数据质量类目")
     @PreAuthorize("@ss.hasPermi('att:qualityCat:remove')")
-    @Log(title = "数据质量类目", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.quality.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attQualityCatService.removeAttQualityCat(Arrays.asList(ids)));

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产质量结果记录 Response VO 对象 DA_ASSET_AUDIT_RULE
+ * Data Asset Quality Result Record Response VO DA_ASSET_AUDIT_RULE
  *
  * @author qdata
  * @date 2025-05-09

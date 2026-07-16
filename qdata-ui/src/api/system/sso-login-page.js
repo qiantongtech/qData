@@ -18,7 +18,7 @@
 
 import request from '@/utils/sso-request.js'
 
-// 统一身份认证登录方法
+// Unified identity authentication login method
 export function ssoLoginPage(name, pwd, rememberMe) {
   const data = {
     "name": name,
@@ -32,7 +32,7 @@ export function ssoLoginPage(name, pwd, rememberMe) {
   })
 }
 
-// 获取验证码
+// Get verification code
 export function getCodeImg() {
   return request({
     url: '/captchaImage',

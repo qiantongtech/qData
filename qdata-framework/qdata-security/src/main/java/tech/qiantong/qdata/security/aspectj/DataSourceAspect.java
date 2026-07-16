@@ -32,7 +32,7 @@ import java.util.Objects;
 //import tech.qiantong.framework.datasource.DynamicDataSourceContextHolder;
 
 /**
- * 多数据源处理 集成多数据源弃用
+ * Multi-data source processing Integrating multiple data sources is deprecated
  *
  * @author qdata
  */
@@ -66,13 +66,13 @@ public class DataSourceAspect
         }
         finally
         {
-            // 销毁数据源 在执行方法之后
+            // Destroy the data source after executing the method
 //            DynamicDataSourceContextHolder.clearDataSourceType();
         }
     }
 
     /**
-     * 获取需要切换的数据源
+     * Get the data source that needs to be switched
      */
     public DataSource getDataSource(ProceedingJoinPoint point)
     {

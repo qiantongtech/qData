@@ -24,11 +24,11 @@ public interface IDaDiscoveryTaskApiService {
 
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old category code
+     * @param newCatCode New category code
+     * @return Rows affected
      */
     int updateCatCode(String oldCatCode, String newCatCode);
 }

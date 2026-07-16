@@ -47,7 +47,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成节点实例Service业务层处理
+ * Data Integration Node Instance Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -94,16 +94,16 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
 
     @Override
     public int updateDppEtlNodeInstance(DppEtlNodeInstanceSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成节点实例
+        // Update data integration node instance
         DppEtlNodeInstanceDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlNodeInstanceDO.class);
         return dppEtlNodeInstanceMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDppEtlNodeInstance(Collection<Long> idList) {
-        // 批量删除数据集成节点实例
+        // Batch delete data integration node instance
         return dppEtlNodeInstanceMapper.deleteBatchIds(idList);
     }
 
@@ -124,19 +124,19 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
                 .collect(Collectors.toMap(
                         DppEtlNodeInstanceDO::getId,
                         dppEtlNodeInstanceDO -> dppEtlNodeInstanceDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成节点实例数据
+     * Import data integration node instance data
      *
-     * @param importExcelList 数据集成节点实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data integration node instance data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName        operator user
+     * @return result
      */
     @Override
     public String importDppEtlNodeInstance(List<DppEtlNodeInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -274,7 +274,7 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
     public void taskInstanceLogInsert(String taskInstanceId, String processInstanceId, String logStr) {
         String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + taskInstanceId;
         String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + processInstanceId;
-        //判断当前任务实例是否存在
+        // Check if current task instance exists
         if (processInstanceId == null || StringUtils.equals("null", processInstanceId) || (!redisService.hasKey(processInstanceLogKey) && dppEtlTaskInstanceService.count(Wrappers.lambdaQuery(DppEtlTaskInstanceDO.class)
                 .eq(DppEtlTaskInstanceDO::getId, Long.parseLong(processInstanceId))) == 0)) {
             return;
@@ -292,17 +292,17 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
         redisService.set(taskInstanceLogKey, taskInstanceLog);
         redisService.set(processInstanceLogKey, processInstanceLog);
 
-        //判断会话是否结束
+        // Check if session is finished
         if (StringUtils.indexOf(logStr, "FINALIZE_SESSION") > -1) {
-            //判断当前任务实例是否结束
+            // Check if current task instance is finished
             DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceService.getById(Long.parseLong(processInstanceId));
-            //判断状态  5：停止 6：失败 7：成功
+            // Check status: 5=stopped, 6=failed, 7=succeeded
             if (dppEtlTaskInstanceDO != null && Arrays.asList("5", "6", "7").contains(dppEtlTaskInstanceDO.getStatus())) {
-                //写入日志
+                // Write log
                 redisService.delete(processInstanceLogKey);
-                //判断是否是数据集成
+                // Check if it is data integration
                 if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {
-                    //写入日志
+                    // Write log
                     dppEtlTaskInstanceLogService.saveOrUpdate(DppEtlTaskInstanceLogDO.builder()
                             .taskInstanceId(dppEtlTaskInstanceDO.getId())
                             .tm(new Date())
@@ -314,9 +314,9 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
                 }
             }
 
-            //获取当前节点实例
+            // Get current node instance
             DppEtlNodeInstanceDO dppEtlNodeInstanceDO = this.getById(Long.parseLong(taskInstanceId));
-            //写入日志,5分钟过期用于兼容节点状态未改变时可以正常查询日志
+            // Write log, 5-minute expiry for compatibility when node status hasn't changed
             redisService.delete(taskInstanceLogKey);
             redisService.set(taskInstanceLogKey, taskInstanceLog, 60 * 5);
             dppEtlNodeInstanceLogService.save(DppEtlNodeInstanceLogDO.builder()
@@ -339,7 +339,7 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
         if (redisService.hasKey(processInstanceLogKey)) {
             content += redisService.get(processInstanceLogKey) + "\n";
         } else {
-            //获取表中的日志
+            // Get logs from the table
             String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
             if (logContent != null) {
                 content += logContent + "\n";

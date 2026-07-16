@@ -26,14 +26,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task Instance DO - DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
  */
 @Data
 @TableName(value = "DPP_ETL_TASK_INSTANCE")
-// Handle JDBC SQL execution.
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DPP_ETL_TASK_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -44,23 +44,28 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
+     * ID
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Implementation details. */
+    /**
+     * Category ID
+     */
     private Long catId;
 
-    /** Implementation details. */
+    /**
+     * Category code
+     */
     private String catCode;
 
     /**
-     * Handle task-related data and operations.
+     * Task type; 1: Offline task 2: Real-time task 3: Data development task 4: Job task
      */
     private String taskType;
 
     /**
-     * Handle task-related data and operations.
+     * Task instance name
      */
     private String name;
 
@@ -80,141 +85,141 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
     private Integer taskVersion;
 
     /**
-     * Implementation details.
+     * Status history (json list)
      */
     private String statusHistory;
 
     /**
-     * Implementation details.
+     * Person in charge
      */
     private String personCharge;
 
     /**
-     * Implementation details.
+     * Person in charge name
      */
     @TableField(exist = false)
     private String personChargeName;
 
 
     /**
-     * Implementation details.
+     * Contact number
      */
     private String contactNumber;
     /**
-     * Implementation details.
+     * Project ID
      */
     private Long projectId;
 
     /**
-     * Implementation details.
+     * Project code
      */
     private String projectCode;
 
     /**
-     * Handle scheduling configuration and operations.
+     * Schedule time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date scheduleTime;
 
     /**
-     * Implementation details.
+     * Start time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
-     * Implementation details.
+     * End time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /**
-     * Implementation details.
+     * Run times
      */
     private Integer runTimes;
 
     /**
-     * Implementation details.
+     * Run type
      */
     private String commandType;
 
     /**
-     * Implementation details.
+     * Max retry times
      */
     private Integer maxTryTimes;
 
     /**
-     * Implementation details.
+     * Failure strategy
      */
     private String failureStrategy;
 
     /**
-     * Handle task-related data and operations.
+     * Sub task flag
      */
     private String subTaskFlag;
 
     /**
-     * Implementation details.
+     * Status
      */
     private String status;
 
     /**
-     * Handle task-related data and operations.
+     * Parent task instance ID; only has value when it's a sub-task
      */
     private Long parentTaskInstanceId;
 
     /**
-     * Handle task-related data and operations.
+     * Parent node instance ID; only has value when it's a sub-task
      */
     private Long parentNodeInstanceId;
 
     /**
-     * Handle DolphinScheduler operations.
+     * DolphinScheduler ID
      */
     private Long dsId;
 
     /**
-     * Scheduling engine
+     * 调度引擎
      */
     private String taskScheduler;
 
     /**
-     * Execution engine
+     * 执行引擎
      */
     private String taskActuator;
 
     /**
-     * Handle Quartz scheduling operations.
+     * Quartz调度任务id
      */
     private Long quartzId;
 
     /**
-     * Executor job ID.
+     * 执行器任务id
      */
     private String executorJobId;
 
     /**
-     * Executor configuration file path.
+     * 执行器配置文件路径
      */
     private String executorConfigPath;
 
     /**
-     * Execution process ID.
+     * 执行进程号
      */
     private Long pid;
 
     /**
-     * Execution log file path.
+     * 执行日志文件路径
      */
     private String logPath;
 
     /**
-     * Whether the record is valid.
+     * Valid flag
      */
     private Boolean validFlag;
 
     /**
-     * Delete the related record.
+     * Delete flag
      */
     @TableLogic
     private Boolean delFlag;

@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.dm.controller.admin.dm.vo.DmDataLayerSpecifica
 import tech.qiantong.qdata.module.dm.dal.dataobject.dm.DmDataLayerSpecificationDO;
 
 /**
- * 数仓分层-规范管理 Convert
+ * Data Warehouse Layer Specification Convert
  *
  * @author FXB
  * @date 2026-03-24
@@ -37,29 +37,29 @@ public interface DmDataLayerSpecificationConvert {
     DmDataLayerSpecificationConvert INSTANCE = Mappers.getMapper(DmDataLayerSpecificationConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dmDataLayerSpecificationPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dmDataLayerSpecificationPageReqVO Request params
      * @return DmDataLayerSpecificationDO
      */
      DmDataLayerSpecificationDO convertToDO(DmDataLayerSpecificationPageReqVO dmDataLayerSpecificationPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dmDataLayerSpecificationSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dmDataLayerSpecificationSaveReqVO Save request params
      * @return DmDataLayerSpecificationDO
      */
      DmDataLayerSpecificationDO convertToDO(DmDataLayerSpecificationSaveReqVO dmDataLayerSpecificationSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dmDataLayerSpecificationDO 实体对象
+     * Convert DO to RespVO
+     * @param dmDataLayerSpecificationDO Entity object
      * @return DmDataLayerSpecificationRespVO
      */
      DmDataLayerSpecificationRespVO convertToRespVO(DmDataLayerSpecificationDO dmDataLayerSpecificationDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dmDataLayerSpecificationDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dmDataLayerSpecificationDOList Entity object list
      * @return List<DmDataLayerSpecificationRespVO>
      */
      List<DmDataLayerSpecificationRespVO> convertToRespVOList(List<DmDataLayerSpecificationDO> dmDataLayerSpecificationDOList);

@@ -17,11 +17,11 @@
  */
 
 /**
- * 通用js方法封装处理
+ * Universal js method encapsulation processing
  * Copyright (c) 2019 qData
  */
 
-// 日期格式化
+// date formatting
 export function parseTime(time, pattern) {
   if (arguments.length === 0 || !time) {
     return null
@@ -62,14 +62,14 @@ export function parseTime(time, pattern) {
   return time_str
 }
 
-// 表单重置
+// form reset
 export function resetForm(refName) {
   if (this.$refs[refName]) {
     this.$refs[refName].resetFields();
   }
 }
 
-// 添加日期范围
+// Add date range
 export function addDateRange(params, dateRange, propName) {
   let search = params;
   search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
@@ -84,7 +84,7 @@ export function addDateRange(params, dateRange, propName) {
   return search;
 }
 
-// 回显数据字典
+// echo data dictionary
 export function selectDictLabel(datas, value) {
   if (value === undefined) {
     return "";
@@ -102,7 +102,7 @@ export function selectDictLabel(datas, value) {
   return actions.join('');
 }
 
-// 回显数据字典（字符串数组）
+// echo data dictionary (array of strings)
 export function selectDictLabels(datas, value, separator) {
   if (value === undefined || value.length === 0) {
     return "";
@@ -128,7 +128,7 @@ export function selectDictLabels(datas, value, separator) {
   return actions.join('').substring(0, actions.join('').length - 1);
 }
 
-// 字符串格式化(%s )
+// String formatting (%s)
 export function sprintf(str) {
   var args = arguments, flag = true, i = 1;
   str = str.replace(/%s/g, function () {
@@ -142,7 +142,7 @@ export function sprintf(str) {
   return flag ? str : '';
 }
 
-// 转换字符串，undefined,null等转化为""
+// Convert strings, undefined, null, etc. into ""
 export function parseStrEmpty(str) {
   if (!str || str == "undefined" || str == "null") {
     return "";
@@ -150,7 +150,7 @@ export function parseStrEmpty(str) {
   return str;
 }
 
-// 数据合并
+// Data merge
 export function mergeRecursive(source, target) {
   for (var p in target) {
     try {
@@ -167,11 +167,11 @@ export function mergeRecursive(source, target) {
 };
 
 /**
- * 构造树型结构数据
- * @param {*} data 数据源
- * @param {*} id id字段 默认 'id'
- * @param {*} parentId 父节点字段 默认 'parentId'
- * @param {*} children 孩子节点字段 默认 'children'
+ * Construct tree structure data
+ * @param {*} data data source
+ * @param {*} id id field default 'id'
+ * @param {*} parentId parent node field default 'parentId'
+ * @param {*} children child node field default 'children'
  */
 export function handleTree(data, id, parentId, children) {
   let config = {
@@ -218,8 +218,8 @@ export function handleTree(data, id, parentId, children) {
 }
 
 /**
-* 参数处理
-* @param {*} params  参数
+* Parameter handling
+* @param {*} params parameters
 */
 export function tansParams(params) {
   let result = ''
@@ -244,7 +244,7 @@ export function tansParams(params) {
 }
 
 
-// 返回项目路径
+// Return project path
 export function getNormalPath(p) {
   if (p.length === 0 || !p || p == 'undefined') {
     return p
@@ -256,13 +256,13 @@ export function getNormalPath(p) {
   return res;
 }
 
-// 验证是否为blob格式
+// Verify if it is in blob format
 export function blobValidate(data) {
   return data.type !== 'application/json'
 }
 
 
-// 格式化返回值
+// Format return value
 export function getFormatValue(value) {
   if (value === null || value === undefined || value === 'null') {
     return '-';
@@ -273,7 +273,7 @@ export function getFormatValue(value) {
 const imageModules = import.meta.glob('@/assets/**/*.{png,jpg,gif,svg}', { eager: true, import: 'default' })
 export function getAssetsFile(path) {
   if (!path || path.trim() === '') {
-    console.error('提供的路径无效', path);
+    console.error("The provided path is invalid", path);
     return undefined;
   }
 
@@ -282,7 +282,7 @@ export function getAssetsFile(path) {
   if (imageModules.hasOwnProperty(imagePath)) {
     return imageModules[imagePath];
   } else {
-    console.log(`找不到路径的图像: ${imagePath}`);
+    console.log(`Image not found at path: ${imagePath}`);
     return undefined;
   }
 }
@@ -310,7 +310,7 @@ export function getParentLabelPath(tree, targetId, options = {}) {
   return labelPath ? labelPath.join('/') : '';
 }
 
-// 前端下载日志
+// Front-end download log
 export function downloadContent(content, filename) {
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -323,7 +323,7 @@ export function downloadContent(content, filename) {
   URL.revokeObjectURL(url);
 }
 
-// 格式化版本号
+// Format version number
 export function formatVersion(version) {
   const patch = version % 1000;
   const minor = Math.floor(version / 1000) % 1000;
@@ -331,16 +331,16 @@ export function formatVersion(version) {
   return `v${major}.${minor}.${patch}`;
 }
 
-// 格式化换行符
+// Format newline character
 export function formatNewlines(str) {
   if (!str) return '-';
-  // 第一步：如果字符串中是字面量 "\\n"，先转成真实 \n
+  // Step 1: If the string contains the literal "\\n", first convert it to real \n
   let processed = str.replace(/\\n/g, '\n');
-  // 第二步：转义 HTML 防 XSS
+  // Step 2: Escape HTML to prevent XSS
   processed = processed
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
-  // 第三步：把真实 \n 转成 <br>
+  // Step 3: Convert real \n to <br>
   return processed.replace(/\n/g, '<br>');
 }

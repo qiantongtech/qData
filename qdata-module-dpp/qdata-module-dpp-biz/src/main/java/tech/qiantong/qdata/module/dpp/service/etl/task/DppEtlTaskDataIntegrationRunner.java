@@ -51,10 +51,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Handle DataX task configuration and execution.
+ * 数据集成 DataX 本地任务执行器。
  * <p>
- * Handle DataX task configuration and execution.
- * Handle task-related data and operations.
+ * 负责将数据集成任务中的输入、去重、输出节点参数组装为 DataX JSON，
+ * 并统一处理任务实例创建、延迟执行、失败重试、状态回写和执行日志保存。
  *
  * @author qdata
  */
@@ -70,49 +70,49 @@ public class DppEtlTaskDataIntegrationRunner {
     private DataXExecutor dataXExecutor;
 
     /**
-     * Handle DataX task configuration and execution.
+     * 启动数据集成本地 DataX 任务。
      *
-     * @param dppEtlTaskDO parameter value
+     * @param dppEtlTaskDO 数据集成任务详情
      */
     @Transactional
     public void startDppEtlTaskDataIntegration(DppEtlTaskDO dppEtlTaskDO, DppEtlTaskInstanceDO instance, StringBuilder taskLog) {
         Date startTime = new Date();
 
         try {
-            // Handle DataX task configuration and execution.
+            // 查询这个任务保存下来的节点配置，里面包含数据源、表名、字段等 DataX 参数。
             List<DppEtlNodeRespVO> nodeList = iDppEtlNodeService.listNodeByTaskId(dppEtlTaskDO.getId());
-            // Handle DataX task configuration and execution.
+            // 节点为空时无法生成 DataX 作业，直接按业务异常结束本次执行。
             if (CollectionUtils.isEmpty(nodeList)) {
                 throw new ServiceException("本地DataX任务没有配置节点，请先保存任务！");
             }
 
-            // Handle node-related data and operations.
+            // 输入节点负责 reader 参数，输出节点负责 writer 参数。
             DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
             DppEtlNodeRespVO deduplication = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
             DppEtlNodeRespVO writerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_WRITER.getCode());
-            // Handle DataX task configuration and execution.
+            // DataX 本地执行至少需要 reader 和 writer，去重节点为可选配置。
             if (readerNode == null || writerNode == null) {
                 throw new ServiceException("本地DataX任务没有配置输入节点或输出节点，请先保存任务！");
             }
 
             Map<String, Object> readerNodeJsonMap = Collections.emptyMap();
-            // Handle JSON data for this operation.
+            // reader 节点存在时解析输入端参数，避免空参数影响 JSON 构建。
             if (ObjectUtils.isNotEmpty(readerNode)) {
                 readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
             }
             Map<String, Object> writerNodeJsonMap = Collections.emptyMap();
-            // Handle JSON data for this operation.
+            // writer 节点存在时解析输出端参数，避免空参数影响 JSON 构建。
             if (ObjectUtils.isNotEmpty(writerNode)) {
                 writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             }
             Map<String, Object> definitionJsonMap = Collections.emptyMap();
-            // Handle DataX task configuration and execution.
+            // 去重节点为可选节点，仅在配置存在时参与 DataX JSON 构建。
             if (ObjectUtils.isNotEmpty(deduplication)) {
                 String deduplicationParameters = deduplication.getParameters();
                 definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(deduplicationParameters);
             }
 
-            // Handle DataX task configuration and execution.
+            // 生成 DataX JSON
             String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMap);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
@@ -127,18 +127,18 @@ public class DppEtlTaskDataIntegrationRunner {
             LogUtils.appendLocalLogLine(taskLog, "DataX exitCode: " + run.getExitCode());
             LogUtils.appendLocalLogLine(taskLog, "DataX output:" + run.getOutput());
             LogUtils.appendLocalLogLine(taskLog, "*********************************** Execute DataX task end *************************************");
-            // Handle DataX task configuration and execution.
+            // DataX 返回非成功状态时，统一抛出异常交给失败分支回写实例状态。
             if (!run.isSuccess()) {
                 throw new ServiceException("DataX任务执行失败，exitCode=" + run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
             LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
         } catch (Exception e) {
-            // Handle task-related data and operations.
+            // 任意异常都标记任务失败，并将失败原因写入本地执行日志。
             markLocalDataXTaskFail(instance, e);
             LogUtils.appendLocalLogLine(taskLog, "DataX task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
         } finally {
-            // Handle task-related data and operations.
+            // 无论成功失败都保存完整执行日志，方便任务实例详情页排查。
             long duration = (new Date().getTime() - startTime.getTime()) / 1000L;
             LogUtils.appendLocalLogLine(taskLog, "DataX task execution finished, duration: " + duration + " seconds");
             saveLocalDataXTaskInstanceLog(instance, dppEtlTaskDO, taskLog.toString());
@@ -146,26 +146,26 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 按任务配置执行 DataX，并在失败时按配置次数和间隔进行重试。
      *
-     * @param json parameter value
-     * @param timing parameter value
-     * @param taskLog parameter value
-     * @return the operation result
-     * @throws Exception when the operation fails
+     * @param json    DataX 作业 JSON
+     * @param timing  执行延迟和失败重试配置
+     * @param taskLog 本次任务实例日志
+     * @return DataX 执行结果
+     * @throws Exception DataX 执行失败或等待过程被中断
      */
     private DataXResult executeDataXJobWithRetry(String json, DataXExecutionTiming timing, StringBuilder taskLog) throws Exception {
         sleepBeforeDataXExecution(timing.getDelayMillis(), taskLog, "Delay before DataX execution");
 
         Exception lastException = null;
-        // Implementation details.
+        // 最大执行次数 = 首次执行 + 失败重试次数。
         for (int attempt = 1; attempt <= timing.getMaxAttempts(); attempt++) {
             LogUtils.appendLocalLogLine(taskLog, String.format("Start DataX execution attempt %d/%d", attempt, timing.getMaxAttempts()));
             try {
                 DataXResult result = dataXExecutor.run(json);
-                // Return the operation result.
+                // 执行成功时立即返回，避免继续进入后续重试流程。
                 if (result.isSuccess()) {
-                    // Handle task-related data and operations.
+                    // 非首次成功说明本次任务经历过重试，补充重试成功日志。
                     if (attempt > 1) {
                         LogUtils.appendLocalLogLine(taskLog, String.format("DataX execution retry succeeded on attempt %d/%d",
                                 attempt, timing.getMaxAttempts()));
@@ -180,12 +180,12 @@ public class DppEtlTaskDataIntegrationRunner {
                 LogUtils.appendLocalLogLine(taskLog, "DataX execution attempt exception: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
             }
 
-            // Implementation details.
+            // 当前已经是最后一次执行时，抛出最后一次失败原因。
             if (attempt >= timing.getMaxAttempts()) {
                 LogUtils.appendLocalLogLine(taskLog, String.format("DataX execution failed after %d attempt(s)", timing.getMaxAttempts()));
                 throw lastException;
             }
-            // Implementation details.
+            // 未达到最大次数时，按配置的重试间隔等待后继续下一次执行。
             LogUtils.appendLocalLogLine(taskLog, String.format("DataX execution attempt %d/%d failed, will retry after %d minutes",
                     attempt, timing.getMaxAttempts(), timing.getRetryIntervalMinutes()));
             sleepBeforeDataXExecution(timing.getRetryIntervalMillis(), taskLog, "Wait before DataX retry");
@@ -195,17 +195,17 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 从任务草稿 JSON 中解析 DataX 延迟执行和失败重试参数。
      *
-     * @param draftJsonText parameter value
-     * @return the operation result
+     * @param draftJsonText 任务草稿 JSON
+     * @return DataX 执行时序配置
      */
     static DataXExecutionTiming buildDataXExecutionTiming(String draftJsonText) {
         Map<String, Object> draftJson = Collections.emptyMap();
-        // Implementation details.
+        // 草稿内容不为空时才尝试解析，解析失败或为空时使用默认空配置。
         if (StringUtils.isNotEmpty(draftJsonText)) {
             Map<String, Object> parsedDraftJson = JSONUtils.convertTaskDefinitionJsonMap(draftJsonText);
-            // Handle JSON data for this operation.
+            // JSON 工具可能返回 null，这里兜底为空配置避免后续取值异常。
             if (parsedDraftJson != null) {
                 draftJson = parsedDraftJson;
             }
@@ -214,7 +214,7 @@ public class DppEtlTaskDataIntegrationRunner {
         long failRetryInterval = normalizeNonNegative(toLong(draftJson.get("failRetryInterval")));
         long delayTime = normalizeNonNegative(toLong(draftJson.get("delayTime")));
         long maxAttempts = failRetryTimes + 1;
-        // Implementation details.
+        // 防止极端配置导致重试次数超过 int 上限。
         if (maxAttempts > Integer.MAX_VALUE) {
             maxAttempts = Integer.MAX_VALUE;
         }
@@ -229,36 +229,36 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Implementation details.
+     * 将配置值转换为 Long。
      *
-     * @param value parameter value
-     * @return the operation result
+     * @param value 原始配置值
+     * @return 转换后的 Long，无法转换时返回 null
      */
     private static Long toLong(Object value) {
-        // Implementation details.
+        // 空值视为未配置。
         if (value == null) {
             return null;
         }
-        // Maintain compatibility with existing data and configurations.
+        // 数字类型直接取 long 值，兼容 Integer、Long 等类型。
         if (value instanceof Number) {
             return ((Number) value).longValue();
         }
         try {
             return Long.parseLong(value.toString());
         } catch (NumberFormatException e) {
-            // Implementation details.
+            // 非数字字符串按未配置处理，后续统一归零。
             return null;
         }
     }
 
     /**
-     * Implementation details.
+     * 将空值或负数配置归一化为 0。
      *
-     * @param value parameter value
-     * @return the operation result
+     * @param value 原始数值
+     * @return 非负数值
      */
     private static long normalizeNonNegative(Long value) {
-        // Implementation details.
+        // 延迟和重试参数不允许小于 0，异常配置按 0 处理。
         if (value == null || value < 0) {
             return 0L;
         }
@@ -266,15 +266,15 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 按配置等待 DataX 执行或重试。
      *
-     * @param millis parameter value
-     * @param taskLog parameter value
-     * @param action parameter value
-     * @throws InterruptedException when the operation fails
+     * @param millis  等待毫秒数
+     * @param taskLog 本次任务实例日志
+     * @param action  等待动作描述
+     * @throws InterruptedException 等待过程被中断
      */
     private void sleepBeforeDataXExecution(long millis, StringBuilder taskLog, String action) throws InterruptedException {
-        // Implementation details.
+        // 未配置等待时间时直接继续执行。
         if (millis <= 0) {
             return;
         }
@@ -282,7 +282,7 @@ public class DppEtlTaskDataIntegrationRunner {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            // Handle scheduling configuration and operations.
+            // 恢复线程中断标记，保证上层调度器能够感知中断状态。
             Thread.currentThread().interrupt();
             LogUtils.appendLocalLogLine(taskLog, action + " interrupted");
             throw e;
@@ -290,14 +290,14 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 创建本地 DataX 任务实例。
      *
-     * @param task parameter value
-     * @return the operation result
+     * @param task 数据集成任务详情
+     * @return 已持久化的任务实例
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public DppEtlTaskInstanceDO createLocalDataXTaskInstance(DppEtlTaskDO task) {
-        // Handle DataX task configuration and execution.
+        // 本地 DataX 执行没有外部调度实例 ID，使用应用侧生成的 ID 作为实例主键。
         DppEtlTaskInstanceDO instance = DppEtlTaskInstanceDO.builder()
                 .id(IdUtils.generateArtificialId())
                 .catId(task.getCatId())
@@ -329,9 +329,9 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 将本地 DataX 任务实例标记为成功。
      *
-     * @param instance parameter value
+     * @param instance 本次任务实例
      */
     private void markLocalDataXTaskSuccess(DppEtlTaskInstanceDO instance) {
         instance.setStatus(String.valueOf(WorkflowExecutionStatus.SUCCESS.getCode()));
@@ -340,10 +340,10 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 将本地 DataX 任务实例标记为失败。
      *
-     * @param instance parameter value
-     * @param e parameter value
+     * @param instance 本次任务实例
+     * @param e        失败异常
      */
     private void markLocalDataXTaskFail(DppEtlTaskInstanceDO instance, Exception e) {
         instance.setStatus(String.valueOf(WorkflowExecutionStatus.FAILURE.getCode()));
@@ -353,11 +353,11 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 保存本地 DataX 任务实例日志。
      *
-     * @param instance parameter value
-     * @param task parameter value
-     * @param logContent parameter value
+     * @param instance   本次任务实例
+     * @param task       任务详情
+     * @param logContent 完整执行日志
      */
     private void saveLocalDataXTaskInstanceLog(DppEtlTaskInstanceDO instance, DppEtlTaskDO task, String logContent) {
         DppEtlTaskInstanceLogDO taskInstanceLog = DppEtlTaskInstanceLogDO.builder()
@@ -374,27 +374,27 @@ public class DppEtlTaskDataIntegrationRunner {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 向任务日志追加一段本地 DataX 文本。
      *
-     * @param taskLog parameter value
-     * @param text parameter value
+     * @param taskLog 本次任务实例日志
+     * @param text    需要追加的文本
      */
     private void appendLocalDataXLogText(StringBuilder taskLog, String text) {
-        // Handle execution logging.
+        // 空文本无需写入，避免日志出现多余空行。
         if (StringUtils.isEmpty(text)) {
             return;
         }
         taskLog.append(text);
-        // Handle execution logging.
+        // 追加外部文本时补齐换行，保证日志按行展示。
         if (!text.endsWith("\n") && !text.endsWith("\r")) {
             taskLog.append(System.lineSeparator());
         }
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * DataX 执行时序配置。
      * <p>
-     * Handle execution logging.
+     * 同时保留分钟值用于日志展示，保留毫秒值用于实际等待。
      */
     static class DataXExecutionTiming {
         private final int maxAttempts;
@@ -405,14 +405,14 @@ public class DppEtlTaskDataIntegrationRunner {
         private final long delayMillis;
 
         /**
-         * Handle DataX task configuration and execution.
+         * 创建 DataX 执行时序配置。
          *
-         * @param maxAttempts parameter value
-         * @param retryTimes parameter value
-         * @param retryIntervalMinutes parameter value
-         * @param delayMinutes parameter value
-         * @param retryIntervalMillis parameter value
-         * @param delayMillis parameter value
+         * @param maxAttempts          最大执行次数
+         * @param retryTimes           失败重试次数
+         * @param retryIntervalMinutes 失败重试间隔，单位分钟
+         * @param delayMinutes         延迟执行时间，单位分钟
+         * @param retryIntervalMillis  失败重试间隔，单位毫秒
+         * @param delayMillis          延迟执行时间，单位毫秒
          */
         DataXExecutionTiming(int maxAttempts, long retryTimes, long retryIntervalMinutes, long delayMinutes,
                              long retryIntervalMillis, long delayMillis) {
@@ -425,54 +425,54 @@ public class DppEtlTaskDataIntegrationRunner {
         }
 
         /**
-         * Retrieve the required data.
+         * 获取最大执行次数。
          *
-         * @return the operation result
+         * @return 最大执行次数
          */
         int getMaxAttempts() {
             return maxAttempts;
         }
 
         /**
-         * Retrieve the required data.
+         * 获取失败重试次数。
          *
-         * @return the operation result
+         * @return 失败重试次数
          */
         long getRetryTimes() {
             return retryTimes;
         }
 
         /**
-         * Retrieve the required data.
+         * 获取失败重试间隔分钟数。
          *
-         * @return the operation result
+         * @return 失败重试间隔，单位分钟
          */
         long getRetryIntervalMinutes() {
             return retryIntervalMinutes;
         }
 
         /**
-         * Retrieve the required data.
+         * 获取延迟执行分钟数。
          *
-         * @return the operation result
+         * @return 延迟执行时间，单位分钟
          */
         long getDelayMinutes() {
             return delayMinutes;
         }
 
         /**
-         * Retrieve the required data.
+         * 获取失败重试间隔毫秒数。
          *
-         * @return the operation result
+         * @return 失败重试间隔，单位毫秒
          */
         long getRetryIntervalMillis() {
             return retryIntervalMillis;
         }
 
         /**
-         * Retrieve the required data.
+         * 获取延迟执行毫秒数。
          *
-         * @return the operation result
+         * @return 延迟执行时间，单位毫秒
          */
         long getDelayMillis() {
             return delayMillis;

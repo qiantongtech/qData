@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 元数据字段信息Mapper接口
+ * Metadata field information Mapper interface
  *
  * @author qdata
  * @date 2026-02-11
@@ -24,7 +24,7 @@ import java.util.Set;
 public interface McColumnMapper extends BaseMapperX<McColumnDO> {
 
     default PageResult<McColumnDO> selectPage(McColumnPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         boolean selfScopeWithUnassigned = BizDataScopeQueryHelper.useSelfScopeWithUnassigned(
                 reqVO.getBizScopeMode(), reqVO.getBizScopeIncludeUnassigned(), reqVO.getBusinessLeader());
         boolean deptScopeWithUnassigned = BizDataScopeQueryHelper.useDeptScopeWithUnassigned(
@@ -75,7 +75,7 @@ public interface McColumnMapper extends BaseMapperX<McColumnDO> {
         if (!"0".equals(reqVO.getSourceSystemName())) {
             lambdaWrapperX.likeRightIfExists("d", McDbDO::getSourceSystemName, reqVO.getSourceSystemName());
         }
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
 

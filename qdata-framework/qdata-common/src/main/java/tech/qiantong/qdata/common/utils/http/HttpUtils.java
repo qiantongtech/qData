@@ -21,6 +21,7 @@ package tech.qiantong.qdata.common.utils.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.qiantong.qdata.common.constant.Constants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 import javax.net.ssl.*;
@@ -33,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
 /**
- * 通用http发送方法
+ * General HTTP request utility
  *
  * @author qdata
  */
@@ -42,10 +43,10 @@ public class HttpUtils
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url)
     {
@@ -53,11 +54,11 @@ public class HttpUtils
     }
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url, String param)
     {
@@ -65,12 +66,12 @@ public class HttpUtils
     }
 
     /**
-     * 向指定 URL 发送GET方法的请求
+     * Send a GET request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @param contentType 编码类型
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @param contentType encoding type
+     * @return the response result of the remote resource
      */
     public static String sendGet(String url, String param, String contentType)
     {
@@ -96,19 +97,19 @@ public class HttpUtils
         }
         catch (ConnectException e)
         {
-            log.error("调用HttpUtils.sendGet ConnectException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.messageEn("log.http.connect.exception"), url, param, e);
         }
         catch (SocketTimeoutException e)
         {
-            log.error("调用HttpUtils.sendGet SocketTimeoutException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.messageEn("log.http.socket.timeout"), url, param, e);
         }
         catch (IOException e)
         {
-            log.error("调用HttpUtils.sendGet IOException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.io.exception"), url, param, e);
         }
         catch (Exception e)
         {
-            log.error("调用HttpsUtil.sendGet Exception, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.unknown.exception"), url, param, e);
         }
         finally
         {
@@ -121,18 +122,18 @@ public class HttpUtils
             }
             catch (Exception ex)
             {
-                log.error("调用in.close Exception, url=" + url + ",param=" + param, ex);
+                log.error(MessageUtils.message("log.http.close.exception"), url, param, ex);
             }
         }
         return result.toString();
     }
 
     /**
-     * 向指定 URL 发送POST方法的请求
+     * Send a POST request to the specified URL
      *
-     * @param url 发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @return 所代表远程资源的响应结果
+     * @param url the URL to send the request to
+     * @param param request parameters, should be in the form of name1=value1&name2=value2
+     * @return the response result of the remote resource
      */
     public static String sendPost(String url, String param)
     {
@@ -164,19 +165,19 @@ public class HttpUtils
         }
         catch (ConnectException e)
         {
-            log.error("调用HttpUtils.sendPost ConnectException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.connect.exception"), url, param, e);
         }
         catch (SocketTimeoutException e)
         {
-            log.error("调用HttpUtils.sendPost SocketTimeoutException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.socket.timeout"), url, param, e);
         }
         catch (IOException e)
         {
-            log.error("调用HttpUtils.sendPost IOException, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.io.exception"), url, param, e);
         }
         catch (Exception e)
         {
-            log.error("调用HttpsUtil.sendPost Exception, url=" + url + ",param=" + param, e);
+            log.error(MessageUtils.message("log.http.post.unknown.exception"), url, param, e);
         }
         finally
         {
@@ -193,7 +194,7 @@ public class HttpUtils
             }
             catch (IOException ex)
             {
-                log.error("调用in.close Exception, url=" + url + ",param=" + param, ex);
+                log.error(MessageUtils.message("log.http.close.exception"), url, param, ex);
             }
         }
         return result.toString();

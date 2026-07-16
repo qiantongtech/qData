@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 服务器相关信息
+ * Server related information
  *
  * @author qdata
  */
@@ -46,27 +46,27 @@ public class Server
     private static final int OSHI_WAIT_SECOND = 1000;
 
     /**
-     * CPU相关信息
+     * CPU related information
      */
     private Cpu cpu = new Cpu();
 
     /**
-     * 內存相关信息
+     * Memory related information
      */
     private Mem mem = new Mem();
 
     /**
-     * JVM相关信息
+     * JVM related information
      */
     private Jvm jvm = new Jvm();
 
     /**
-     * 服务器相关信息
+     * Server related information
      */
     private Sys sys = new Sys();
 
     /**
-     * 磁盘相关信息
+     * Disk related information
      */
     private List<SysFile> sysFiles = new LinkedList<SysFile>();
 
@@ -137,11 +137,11 @@ public class Server
     }
 
     /**
-     * 设置CPU信息
+     * Set CPU information
      */
     private void setCpuInfo(CentralProcessor processor)
     {
-        // CPU信息
+        // CPU information
         long[] prevTicks = processor.getSystemCpuLoadTicks();
         Util.sleep(OSHI_WAIT_SECOND);
         long[] ticks = processor.getSystemCpuLoadTicks();
@@ -163,7 +163,7 @@ public class Server
     }
 
     /**
-     * 设置内存信息
+     * Set memory information
      */
     private void setMemInfo(GlobalMemory memory)
     {
@@ -173,7 +173,7 @@ public class Server
     }
 
     /**
-     * 设置服务器信息
+     * Set server information
      */
     private void setSysInfo()
     {
@@ -186,7 +186,7 @@ public class Server
     }
 
     /**
-     * 设置Java虚拟机
+     * Set up Java virtual machine
      */
     private void setJvmInfo() throws UnknownHostException
     {
@@ -199,7 +199,7 @@ public class Server
     }
 
     /**
-     * 设置磁盘信息
+     * Set disk information
      */
     private void setSysFiles(OperatingSystem os)
     {
@@ -223,10 +223,10 @@ public class Server
     }
 
     /**
-     * 字节转换
+     * Byte conversion
      *
-     * @param size 字节大小
-     * @return 转换后值
+     * @param size byte size
+     * @return converted value
      */
     public String convertFileSize(long size)
     {

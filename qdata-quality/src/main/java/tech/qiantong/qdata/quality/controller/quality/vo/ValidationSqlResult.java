@@ -33,7 +33,7 @@ public class ValidationSqlResult  implements Serializable {
 
 
     /**
-     * 分页参数（可选）
+     * Pagination parameters (optional)
      */
     private Integer pageNum;
 
@@ -42,12 +42,12 @@ public class ValidationSqlResult  implements Serializable {
 
 
     /**
-     * 偏移量（从第几行开始），自动计算
+     * Offset (starting at row number), automatically calculated
      */
     private Integer offset;
 
     /**
-     * 限制行数（每页大小），自动设置
+     * Limit number of rows (per page size), set automatically
      */
     private Integer limit;
 }

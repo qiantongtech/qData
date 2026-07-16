@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.Tag.AttTagDO;
 import java.util.List;
 
 /**
- * 标签管理 Convert
+ * Tag Management Convert
  *
  * @author qdata
  * @date 2025-07-11
@@ -38,29 +38,29 @@ public interface AttTagConvert {
     AttTagConvert INSTANCE = Mappers.getMapper(AttTagConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param attTagPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param attTagPageReqVO Request parameters
      * @return AttTagDO
      */
      AttTagDO convertToDO(AttTagPageReqVO attTagPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param attTagSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param attTagSaveReqVO Save request parameters
      * @return AttTagDO
      */
      AttTagDO convertToDO(AttTagSaveReqVO attTagSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param attTagDO 实体对象
+     * Convert DO to RespVO
+     * @param attTagDO Entity object
      * @return AttTagRespVO
      */
      AttTagRespVO convertToRespVO(AttTagDO attTagDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param attTagDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param attTagDOList Entity object list
      * @return List<AttTagRespVO>
      */
      List<AttTagRespVO> convertToRespVOList(List<AttTagDO> attTagDOList);

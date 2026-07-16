@@ -24,29 +24,29 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author qdata 序列生成类
+ * @author qdata sequence generation class
  */
 public class Seq
 {
-    // 通用序列类型
+    // Generic sequence type
     public static final String commSeqType = "COMMON";
 
-    // 上传序列类型
+    // Upload sequence type
     public static final String uploadSeqType = "UPLOAD";
 
-    // 通用接口序列数
+    // Common interface sequence number
     private static AtomicInteger commSeq = new AtomicInteger(1);
 
-    // 上传接口序列数
+    // Upload interface sequence number
     private static AtomicInteger uploadSeq = new AtomicInteger(1);
 
-    // 机器标识
+    // Machine identification
     private static final String machineCode = "A";
 
     /**
-     * 获取通用序列号
+     * Get universal serial number
      *
-     * @return 序列值
+     * @return sequence value
      */
     public static String getId()
     {
@@ -54,9 +54,9 @@ public class Seq
     }
 
     /**
-     * 默认16位序列号 yyMMddHHmmss + 一位机器标识 + 3长度循环递增字符串
+     * Default 16-digit serial number yyMMddHHmmss + one-digit machine identification + 3-length circularly increasing string
      *
-     * @return 序列值
+     * @return sequence value
      */
     public static String getId(String type)
     {
@@ -69,11 +69,11 @@ public class Seq
     }
 
     /**
-     * 通用接口序列号 yyMMddHHmmss + 一位机器标识 + length长度循环递增字符串
+     * General interface serial number yyMMddHHmmss + one-bit machine identification + length length circularly increasing string
      *
-     * @param atomicInt 序列数
-     * @param length 数值长度
-     * @return 序列值
+     * @param atomicInt sequence number
+     * @param length numerical length
+     * @return sequence value
      */
     public static String getId(AtomicInteger atomicInt, int length)
     {
@@ -84,22 +84,22 @@ public class Seq
     }
 
     /**
-     * 序列循环递增字符串[1, 10 的 (length)幂次方), 用0左补齐length位数
+     * The sequence loop increments the string [1, 10 raised to the power of (length)), left-padding length digits with 0
      *
-     * @return 序列值
+     * @return sequence value
      */
     private synchronized static String getSeq(AtomicInteger atomicInt, int length)
     {
-        // 先取值再+1
+        // Get the value first and then +1
         int value = atomicInt.getAndIncrement();
 
-        // 如果更新后值>=10 的 (length)幂次方则重置为1
+        // If the updated value >= 10 raised to the (length) power, it is reset to 1
         int maxSeq = (int) Math.pow(10, length);
         if (atomicInt.get() >= maxSeq)
         {
             atomicInt.set(1);
         }
-        // 转字符串，用0左补齐
+        // Convert to string, left-padded with 0
         return StringUtils.padl(value, length);
     }
 }

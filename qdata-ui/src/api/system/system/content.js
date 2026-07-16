@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询系统配置列表
+// Query system configuration list
 export function listContent(query) {
   return request({
     url: '/system/content/list',
@@ -27,7 +27,7 @@ export function listContent(query) {
   })
 }
 
-// 查询系统配置详细
+// Query system configuration details
 export function getContent(id) {
   return request({
     url: '/sys/content/' + id,
@@ -35,7 +35,7 @@ export function getContent(id) {
   })
 }
 
-// 新增系统配置
+// Add new system configuration
 export function addContent(data) {
   return request({
     url: '/system/content',
@@ -44,7 +44,7 @@ export function addContent(data) {
   })
 }
 
-// 修改系统配置
+// Modify system configuration
 export function updateContent(data) {
   return request({
     url: '/system/content/edit',
@@ -53,7 +53,7 @@ export function updateContent(data) {
   })
 }
 
-// 删除系统配置
+// Delete system configuration
 export function delContent(id) {
   return request({
     url: '/system/content/' + id,

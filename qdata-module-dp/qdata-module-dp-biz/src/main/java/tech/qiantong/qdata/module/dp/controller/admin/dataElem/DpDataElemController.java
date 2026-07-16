@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.dp.dal.dataobject.dataElem.DpDataElemDO;
 import tech.qiantong.qdata.module.dp.service.dataElem.IDpDataElemService;
 
 /**
- * 数据元Controller
+ * Data Element Controller
  *
  * @author qdata
  * @date 2025-01-21
@@ -79,7 +79,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "导出数据元列表")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:export')")
-    @Log(title = "数据元", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dp.data.elem", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DpDataElemPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -90,7 +90,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "导入数据元列表")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:import')")
-    @Log(title = "数据元", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dp.data.elem", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DpDataElemRespVO> util = new ExcelUtil<>(DpDataElemRespVO.class);
@@ -110,7 +110,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "新增数据元")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:add')")
-    @Log(title = "数据元", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dp.data.elem", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DpDataElemSaveReqVO dpDataElem) {
         dpDataElem.setCreatorId(getUserId());
@@ -121,7 +121,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "修改数据元")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:edit')")
-    @Log(title = "数据元", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.data.elem", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DpDataElemSaveReqVO dpDataElem) {
         dpDataElem.setUpdatorId(getUserId());
@@ -132,7 +132,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "删除数据元")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:remove')")
-    @Log(title = "数据元", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dp.data.elem", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dpDataElemService.removeDpDataElem(Arrays.asList(ids)));
@@ -140,7 +140,7 @@ public class DpDataElemController extends BaseController {
 
     @Operation(summary = "更改数据元状态")
     @PreAuthorize("@ss.hasPermi('dp:dataElem:edit')")
-    @Log(title = "更改数据元状态", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dp.data.elem.status", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public CommonResult<Boolean> updateStatus(@PathVariable Long id,@PathVariable Long status) {
         return CommonResult.toAjax(dpDataElemService.updateStatus(id,status));

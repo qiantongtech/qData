@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 应用管理Controller
+ * App Management Controller
  *
  * @author qdata
  * @date 2025-02-18
@@ -71,7 +71,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "导出应用管理列表")
     @PreAuthorize("@ss.hasPermi('att:client:export')")
-    @Log(title = "应用管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttClientPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -82,7 +82,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "导入应用管理列表")
     @PreAuthorize("@ss.hasPermi('att:client:import')")
-    @Log(title = "应用管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttClientRespVO> util = new ExcelUtil<>(AttClientRespVO.class);
@@ -102,7 +102,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "新增应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:add')")
-    @Log(title = "应用管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttClientSaveReqVO attClient) {
         return CommonResult.toAjax(attClientService.createAttClient(attClient));
@@ -110,7 +110,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "修改应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:edit')")
-    @Log(title = "应用管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttClientSaveReqVO attClient) {
         return CommonResult.toAjax(attClientService.updateAttClient(attClient));
@@ -118,7 +118,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "删除应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:remove')")
-    @Log(title = "应用管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attClientService.removeAttClient(Arrays.asList(ids)));
@@ -126,7 +126,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "重置应用秘钥")
     @PreAuthorize("@ss.hasPermi('att:client:edit')")
-    @Log(title = "重置应用秘钥", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.client.reset.key", businessType = BusinessType.UPDATE)
     @PostMapping("/reset/secret")
     public CommonResult<String> resetSecret(Long id) {
         AttClientDO client = attClientService.getAttClientById(id);

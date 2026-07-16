@@ -36,8 +36,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 判断请求url和数据是否和上一次相同，
- * 如果和上次相同，则是重复提交表单。 有效时间为10秒内。
+ * Determine whether the request URL and data are the same as the last time,
+ * If it is the same as last time, the form is submitted again. Valid time is within 10 seconds.
  *
  * @author qdata
  */
@@ -48,7 +48,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
 
     public final String REPEAT_TIME = "repeatTime";
 
-    // 令牌自定义标识
+    // Token custom identification
     @Value("${token.header}")
     private String header;
 
@@ -66,7 +66,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
             nowParams = HttpHelper.getBodyString(repeatedlyRequest);
         }
 
-        // body参数为空，获取Parameter的数据
+        // The body parameter is empty, get Parameter data
         if (StringUtils.isEmpty(nowParams))
         {
             nowParams = JSON.toJSONString(request.getParameterMap());
@@ -75,13 +75,13 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         nowDataMap.put(REPEAT_PARAMS, nowParams);
         nowDataMap.put(REPEAT_TIME, System.currentTimeMillis());
 
-        // 请求地址（作为存放cache的key值）
+        // Request address (as the key value for storing cache)
         String url = request.getRequestURI();
 
-        // 唯一值（没有消息头则使用请求地址）
+        // Unique value (if there is no header, the request address is used)
         String submitKey = StringUtils.trimToEmpty(request.getHeader(header));
 
-        // 唯一标识（指定key + url + 消息头）
+        // Unique identification (specify key + url + message header)
         String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
 
         Object sessionObj = redisCache.getCacheObject(cacheRepeatKey);
@@ -104,7 +104,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     }
 
     /**
-     * 判断参数是否相同
+     * Determine whether the parameters are the same
      */
     private boolean compareParams(Map<String, Object> nowMap, Map<String, Object> preMap)
     {
@@ -114,7 +114,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     }
 
     /**
-     * 判断两次间隔时间
+     * Determine the time between two times
      */
     private boolean compareTime(Map<String, Object> nowMap, Map<String, Object> preMap, int interval)
     {

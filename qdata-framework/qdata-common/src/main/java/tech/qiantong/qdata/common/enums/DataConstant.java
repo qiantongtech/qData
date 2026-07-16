@@ -23,7 +23,7 @@ public class DataConstant {
 
 
     /**
-     * 通用的是否
+     * Is it universal?
      */
     public enum TrueOrFalse {
         FALSE("0",false),
@@ -49,7 +49,7 @@ public class DataConstant {
 
 
     /**
-     * 通用的启用禁用状态
+     * Universal enabled and disabled states
      */
     public enum EnableState {
         DISABLE("0","禁用"),
@@ -73,7 +73,7 @@ public class DataConstant {
     }
 
     /**
-     * 流程审核状态
+     * Process review status
      */
     public enum AuditState{
         WAIT("1","待提交"),
@@ -105,7 +105,7 @@ public class DataConstant {
 
 
     /**
-     * Api状态
+     * API status
      */
     public enum ApiState{
         WAIT("1","待发布"),

@@ -100,7 +100,7 @@ export function buildMonarchTokensProvider(monacoLanguages) {
     tokenPostfix: ".sql",
     keywords: [...FLINK_SQL_KEYWORD, ...EXTEND_SQL_KEYWORD],
     operators: FLINK_SQL_OPERATORS,
-    ignoreCase: true, // 忽略大小写
+    ignoreCase: true, // Ignore case
     builtinFunctions: FLINK_SQL_BUILTIN_FUNCTIONS,
     builtinVariables: [],
     typeKeywords: FLINK_SQL_TYPE_KEYWORDS,

@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task Instance DTO - DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
@@ -37,72 +37,72 @@ public class DppEtlTaskInstanceRespDTO {
     /** ID */
     private Long id;
 
-    /** Handle task-related data and operations. */
+    /** Task Instance Name */
     private String name;
 
     /** Task ID */
     private Long taskId;
 
-    /** Task code */
+    /** Task Code */
     private String taskCode;
 
-    /** Task version */
+    /** Task Version */
     private Long taskVersion;
 
-    /** Implementation details. */
+    /** Status History (JSON List) */
     private String statusHistory;
 
-    /** Implementation details. */
+    /** Person in Charge */
     private String personCharge;
 
-    /** Implementation details. */
+    /** Project ID */
     private Long projectId;
 
-    /** Implementation details. */
+    /** Project Code */
     private String projectCode;
 
-    /** Implementation details. */
+    /** Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    /** Implementation details. */
+    /** End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    /** Implementation details. */
+    /** Run Times */
     private Integer runTimes;
 
-    /** Implementation details. */
+    /** Command Type */
     private String commandType;
 
-    /** Implementation details. */
+    /** Max Retry Times */
     private Long maxTryTimes;
 
-    /** Implementation details. */
+    /** Failure Strategy */
     private String failureStrategy;
 
-    /** Handle task-related data and operations. */
+    /** Sub Task Flag */
     private String subTaskFlag;
 
-    /** Implementation details. */
+    /** Status */
     private String status;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Execution engine */
+    /** 执行引擎 */
     private String taskActuator;
 
-    /** Handle Quartz scheduling operations. */
+    /** Quartz调度任务id */
     private Long quartzId;
 
-    /** Whether the record is valid. */
+    /** 是否有效 */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

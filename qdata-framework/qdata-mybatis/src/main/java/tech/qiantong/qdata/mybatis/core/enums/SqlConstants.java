@@ -21,14 +21,14 @@ package tech.qiantong.qdata.mybatis.core.enums;
 import com.baomidou.mybatisplus.annotation.DbType;
 
 /**
- * SQL相关常量类
+ * SQL related constant class
  *
- * @author 芋道源码
+ * @author taro source code
  */
 public class SqlConstants {
 
     /**
-     * 数据库的类型
+     * Database type
      */
     public static DbType DB_TYPE;
 

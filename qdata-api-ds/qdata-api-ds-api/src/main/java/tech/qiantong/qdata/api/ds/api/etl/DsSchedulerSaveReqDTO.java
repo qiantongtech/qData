@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <P>
- * 用途:调度器新增请求参数DTO
+ * Description: Scheduler save request DTO
  * </p>
  *
  * @author: FXB
@@ -39,31 +39,31 @@ public class DsSchedulerSaveReqDTO {
 
     /**
      * {
-     * "startTime":"2025-02-21 00:00:00",//开始时间直接默认当前时间 格式yyyy-MM-dd HH:mm:ss
-     * "endTime":"2125-02-21 00:00:00",//结束时间直接默认当前时间的100年后 格式yyyy-MM-dd HH:mm:ss
-     * "crontab":"0 0 * * * ? *",//cron表达式（必填）
-     * "timezoneId":"Asia/Shanghai"//时区直接默认为 Asia/Shanghai
+     * "startTime":"2025-02-21 00:00:00",//start time defaults to current time, format yyyy-MM-dd HH:mm:ss
+     * "endTime":"2125-02-21 00:00:00",//end time defaults to 100 years from now, format yyyy-MM-dd HH:mm:ss
+     * "crontab":"0 0 * * * ? *",//cron expression (required)
+     * "timezoneId":"Asia/Shanghai"//timezone defaults to Asia/Shanghai
      * }
      */
     private String schedule;
 
     /**
-     * 任务编码（必填）
+     * Task code (required)
      */
     private String processDefinitionCode;
 
     /**
-     * 失败策略默认为 CONTINUE
+     * Failure strategy, defaults to CONTINUE
      */
     private String failureStrategy;
 
     /**
-     * 默认 default
+     * Default default
      */
     private String workerGroup;
 
     /**
-     * 默认 default
+     * Default default
      */
     private String tenantCode;
 

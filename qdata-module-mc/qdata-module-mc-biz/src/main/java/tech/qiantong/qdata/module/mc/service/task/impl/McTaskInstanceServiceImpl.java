@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 采集任务实例Service业务层处理
+ * Collection task instance Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -54,10 +54,10 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
             return mcTaskInstanceDOPageResult;
         }
 
-        // FIXME(用户查询避免循环查询，临时方案)  使用 Map 缓存用户信息,避免重复查询
+        // FIXME (user query to avoid circular query, temporary solution) uses Map to cache user information to avoid repeated queries
         Map<Long, SysUser> userCache = Maps.newHashMap();
         for (McTaskInstanceDO row : rows) {
-            // 获取创建人手机号
+            // Get the creator’s mobile phone number
             Long creatorId = row.getCreatorId();
             if (creatorId != null && !userCache.containsKey(creatorId)) {
                 SysUser sysUser = sysUserService.selectUserById(creatorId);
@@ -90,16 +90,16 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
 
     @Override
     public int updateMcTaskInstance(McTaskInstanceSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新采集任务实例
+        // Update collection task instance
         McTaskInstanceDO updateObj = BeanUtils.toBean(updateReqVO, McTaskInstanceDO.class);
         return mcTaskInstanceMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskInstance(Collection<Long> idList) {
-        // 批量删除采集任务实例
+        // Delete collection task instances in batches
         return mcTaskInstanceMapper.deleteBatchIds(idList);
     }
 
@@ -114,7 +114,7 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
         wrapper.eq(McTaskInstanceDO::getTaskId, taskId)
                 .orderByDesc(McTaskInstanceDO::getCreateTime);
 
-        // 只取第 1 页、1 条
+        // Take only page 1 and item 1
         Page<McTaskInstanceDO> page = new Page<>(1, 1);
         Page<McTaskInstanceDO> result = mcTaskInstanceMapper.selectPage(page, wrapper);
 
@@ -133,19 +133,19 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
                 .collect(Collectors.toMap(
                         McTaskInstanceDO::getId,
                         mcTaskInstanceDO -> mcTaskInstanceDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入采集任务实例数据
+     * Import collection task instance data
      *
-     * @param importExcelList 采集任务实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Collection task instance data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTaskInstance(List<McTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName) {

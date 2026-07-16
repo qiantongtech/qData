@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.enums.LimitType;
 import java.lang.annotation.*;
 
 /**
- * 限流注解
+ * Current limiting annotation
  *
  * @author qdata
  */
@@ -34,22 +34,22 @@ import java.lang.annotation.*;
 public @interface RateLimiter
 {
     /**
-     * 限流key
+     * Current limiting key
      */
     public String key() default CacheConstants.RATE_LIMIT_KEY;
 
     /**
-     * 限流时间,单位秒
+     * Current limiting time, unit seconds
      */
     public int time() default 60;
 
     /**
-     * 限流次数
+     * Number of current limits
      */
     public int count() default 100;
 
     /**
-     * 限流类型
+     * Current limiting type
      */
     public LimitType limitType() default LimitType.DEFAULT;
 }

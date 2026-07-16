@@ -204,7 +204,7 @@ function handleUpdate(id) {
     form.value = {
       ...form.value,
       ...data,
-      // 兼容字段名
+      // Compatible field names
       name: data.name || data.levelName || "",
       shortName: data.shortName || data.levelCode || data.code || "",
       validFlag: data.validFlag ?? (data.status === "1" || data.status === 1),
@@ -238,13 +238,13 @@ function normalizeSensitiveLevel(value) {
   const isDecimalInput = str.includes(".") || !Number.isInteger(num);
 
   if (isDecimalInput) {
-    // 小数输入：向下取整后限制在 [1, 100]
+    // Decimal input: limited to [1, 100] after rounding down
     return Math.min(100, Math.max(1, floored));
   } else {
-    // 整数输入
+    // Integer input
     if (floored <= 0) return 1;
     if (floored >= 100) return 100;
-    return floored; // 1 ~ 99 保留原值
+    return floored; // 1 ~ 99 keep original value
   }
 }
 

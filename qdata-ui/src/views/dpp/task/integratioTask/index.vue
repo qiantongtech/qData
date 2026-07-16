@@ -273,6 +273,7 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status != 1"
+                    :loading="executeOnceLoading"
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.integratioTask.executeOnce", "执行一次")
@@ -325,7 +326,7 @@
       >
       </crontab>
     </el-dialog>
-    <!-- 新增 -->
+    <!-- New -->
     <add
       :visible="taskConfigDialogVisible"
       :title="td('dpp.cleanRule.addTask', '新增任务')"
@@ -376,6 +377,7 @@ import { ref, reactive, getCurrentInstance, watch } from "vue";
 const userStore = useUserStore();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 
 const api = {
   list: listAttTaskCat,
@@ -575,14 +577,14 @@ function resetQuery() {
   handleQuery();
 }
 
-// 部门树
+// department tree
 const leftWidth = ref(300);
 const DeptTreeRef = ref(null);
 function handleNodeClick(data) {
   tableStore.params.catCode = data.code;
   handleQuery();
 }
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 let nodeData = ref({ taskConfig: {}, name: null });
 
@@ -749,12 +751,14 @@ function submitForm() {
 }
 
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(
       td("dpp.integratioTask.invalidTaskId", "无效的任务id，请刷新后重试")
     );
     return;
   }
+  executeOnceLoading.value = true;
   try {
     const res = await startDppEtlTask(row.id);
     if (Number(res?.code) === 200) {
@@ -769,6 +773,8 @@ const handleExecuteOnce = async (row) => {
     }
   } catch (e) {
     //
+  } finally {
+    executeOnceLoading.value = false;
   }
 };
 

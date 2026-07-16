@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据信息Controller
+ * Metadata InformationController
  *
  * @author qdata
  * @date 2026-02-11
@@ -72,7 +72,7 @@ public class McTableController extends BaseController {
     @Operation(summary = "导出元数据信息列表")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:export')")
     @BizDataScope(code = "mc_metadata_list", userField = "businessLeader", deptField = "responsibleDept")
-    @Log(title = "元数据信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.table", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTablePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -91,7 +91,7 @@ public class McTableController extends BaseController {
 
     @Operation(summary = "新增元数据信息")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:add')")
-    @Log(title = "元数据信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.table", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTableSaveReqVO mcTable) {
         mcTable.setCreatorId(getUserId());
@@ -102,7 +102,7 @@ public class McTableController extends BaseController {
 
     @Operation(summary = "修改元数据信息")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:edit')")
-    @Log(title = "元数据信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.table", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTableSaveReqVO mcTable) {
         mcTable.setUpdatorId(getUserId());
@@ -113,7 +113,7 @@ public class McTableController extends BaseController {
 
     @Operation(summary = "暂存表元数据")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:add')")
-    @Log(title = "暂存表元数据", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.table.draft", businessType = BusinessType.INSERT)
     @PostMapping("draft")
     public CommonResult<Long> draft(@RequestBody McTableSaveReqVO saveReqVO) {
         return CommonResult.toAjax(mcTableService.saveDraft(saveReqVO));
@@ -123,7 +123,7 @@ public class McTableController extends BaseController {
 
     @Operation(summary = "删除元数据信息")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:remove')")
-    @Log(title = "元数据信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.table", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTableService.removeMcTable(Arrays.asList(ids)));
@@ -139,7 +139,7 @@ public class McTableController extends BaseController {
 
     @Operation(summary = "停启用表元数据")
     @PreAuthorize("@ss.hasPermi('mc:metadata:table:edit')")
-    @Log(title = "停启用表元数据", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.table.toggle", businessType = BusinessType.UPDATE)
     @PostMapping("/toggle")
     public CommonResult<Integer> toggle(@Valid @RequestBody ToggleStatusVO param) {
         return CommonResult.toAjax(mcTableService.toggle(param.getId(), param.getStatus()));

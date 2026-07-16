@@ -27,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Handle task-related data and operations.
+ * Data Integration Task Instance Response VO Object DPP_ETL_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务实例 Response VO")
+@Schema(description = "Data Integration Task Instance Response VO")
 @Data
 public class DppEtlTaskInstanceRespVO implements Serializable {
 

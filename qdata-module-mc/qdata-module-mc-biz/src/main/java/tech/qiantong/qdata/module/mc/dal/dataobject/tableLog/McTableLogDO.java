@@ -5,14 +5,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 元数据信息 - 日志 DO 对象 MC_TABLE_LOG
+ * Metadata information - Log DO object MC_TABLE_LOG
  *
  * @author qdata
  * @date 2026-03-10
  */
 @Data
 @TableName(value = "MC_TABLE_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TABLE_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -26,80 +26,80 @@ public class McTableLogDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据类型;数据类型 1：预发布 2：采集，预留字段，暂时不用 */
+    /** Data type; Data type 1: Pre-release 2: Collection, reserved fields, not used temporarily */
     private String dataType;
 
-    /** 采集任务 id;预留字段，暂时不用 */
+    /** Collection task id; reserved field, not used temporarily */
     private Long taskId;
 
-    /** 表 id */
+    /** table id */
     private Long tableId;
 
-    /** 版本 */
+    /** version */
     private String version;
 
-    /** 库 id */
+    /** Database ID */
     private Long dbId;
 
-    /** 数据源 id;冗余字段 */
+    /** Data source id; redundant field */
     private Long datasourceId;
 
-    /** 表名称（表英文名称） */
+    /** Table name (table English name) */
     private String tableName;
 
-    /** 表注释/表描述（表中文名称） */
+    /** Table comment/table description (table Chinese name) */
     private String tableComment;
 
-    /** 安全等级 id */
+    /** Security level id */
     private Long safetyLevelId;
 
-    /** 数据库名 */
+    /** Database name */
     private String dbName;
 
-    /** 模式名;可空 */
+    /** Pattern name; can be empty */
     private String schemaName;
 
-    /** 存储类型 */
+    /** Storage type */
     private String storageType;
 
-    /** 存储大小 */
+    /** Storage size */
     private Integer storageSize;
 
-    /** 业务责任人 */
+    /** Business Responsible Person */
     private Long businessLeader;
 
-    /** 业务责任人电话 */
+    /** Phone number of business person in charge */
     private String businessLeaderPhone;
 
-    /** 技术责任人 */
+    /** Technical Responsible Person */
     private Long techLeader;
 
-    /** 技术责任人电话 */
+    /** Telephone number of technical person in charge */
     private String techLeaderPhone;
 
-    /** 是否主表;0：否，1：是 */
+    /** Whether it is the main table; 0: no, 1: yes */
     private String masterFlag;
 
-    /** 是否临时表;0：否，1：是 */
+    /** Whether it is a temporary table; 0: no, 1: yes */
     private String tempFlag;
 
-    /** 数据质量 */
+    /** Data quality */
     private Integer dataQuality;
 
-    /** 变更类型 */
+    /** Change type */
     private String updateType;
 
-    /** 变更说明 */
+    /** Change description */
     private String updateMsg;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据资产-质量预警 DO 对象 DA_ASSET_AUDIT_ALERT
+ * Data Asset - Quality Alert DO - DA_ASSET_AUDIT_ALERT
  *
  * @author qdata
  * @date 2025-05-09
  */
 @Data
 @TableName(value = "DA_ASSET_AUDIT_ALERT")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_AUDIT_ALERT_seq")
 @Builder
 @NoArgsConstructor
@@ -46,31 +46,31 @@ public class DaAssetAuditAlertDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 稽查批次号 */
+    /** Audit Batch Number */
     private String batchNo;
 
-    /** 稽查时间 */
+    /** Audit Time */
     private Date auditTime;
 
-    /** 预警时间 */
+    /** Alert Time */
     private Date alertTime;
 
-    /** 预警信息 */
+    /** Alert Message */
     private String alertMessage;
 
-    /** 预警通道JSON */
+    /** Alert Channels JSON */
     private String alertChannels;
 
-    /** 预警通道结果 */
+    /** Alert Channel Result */
     private String alertChannelResult;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

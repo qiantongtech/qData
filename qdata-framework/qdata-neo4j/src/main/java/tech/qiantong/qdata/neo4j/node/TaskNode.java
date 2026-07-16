@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -47,25 +47,25 @@ public class TaskNode {
     @GeneratedValue
     private Long id;
     /**
-     * 任务名称
+     * Task name
      */
     private String name;
     /**
-     * 任务id
+     * Task id
      */
     private Long taskId;
     /**
-     * 任务编码
+     * Task coding
      */
     private String taskCode;
 
     /**
-     * 任务类型;1：离线任务(数据集成) 2：实时任务 3：数据开发任务 4：作业任务
+     * Task type; 1: Offline task (data integration) 2: Real-time task 3: Data development task 4: Job task
      */
     private String type;
 
     /**
-     * 执行 SPARK或FLINK
+     * Execute SPARK or FLINK
      */
     private String taskType;
 
@@ -78,17 +78,17 @@ public class TaskNode {
     private List<TableToTaskRel> tableToTaskRels;
 
     /**
-     * 下方为扩展字段，不会在neo4j中存储
+     * Below are the extended fields, which will not be stored in neo4j
      */
 
     /**
-     * 上一次执行时间
+     * Last execution time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date taskTime;
 
     /**
-     * 上一次执行状态
+     * Last execution status
      */
     private String taskStatus;
 

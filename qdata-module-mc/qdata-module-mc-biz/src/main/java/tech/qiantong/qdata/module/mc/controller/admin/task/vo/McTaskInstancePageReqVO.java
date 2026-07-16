@@ -9,7 +9,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 采集任务实例 Request VO 对象 MC_TASK_INSTANCE
+ * Collection task instance Request VO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
@@ -70,7 +70,7 @@ public class McTaskInstancePageReqVO extends PageParam {
     private String status;
 
 
-    /** 是否有效 */
+    /** Is it valid */
     private String validFlag;
 
 

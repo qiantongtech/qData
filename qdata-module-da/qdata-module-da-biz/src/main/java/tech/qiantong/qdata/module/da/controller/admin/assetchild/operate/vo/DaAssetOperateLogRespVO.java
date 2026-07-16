@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产操作记录 Response VO 对象 DA_ASSET_OPERATE_LOG
+ * Data Asset Operate Log Response VO Object DA_ASSET_OPERATE_LOG
  *
  * @author qdata
  * @date 2025-05-09
@@ -139,15 +139,15 @@ public class DaAssetOperateLogRespVO implements Serializable {
     private String updateWhereMd5;
 
 
-    /** 用户名称 */
+    /** User name */
     @TableField(exist = false)
     private String userName;
 
-    /** 手机号码 */
+    /** Phone number */
     @TableField(exist = false)
     private String phoneNumber;
 
-    /** 用户昵称 */
+    /** User nickname */
     @TableField(exist = false)
     private String nickName;
 }

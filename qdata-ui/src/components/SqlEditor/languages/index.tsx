@@ -41,7 +41,7 @@ import { LogLanguage } from '@/components/CustomEditor/languages/javalog';
 import { Monaco } from '@monaco-editor/react';
 
 /**
- * 避免重复加载语言, 通过获取到 language 的 id 来判断是否已经加载过
+ * To avoid loading the language repeatedly, determine whether it has been loaded by getting the id of the language.
  * @param monacoLanguages
  * @param language
  */
@@ -50,10 +50,10 @@ function canLoadLanguage(monacoLanguages: Monaco['languages'] | undefined, langu
 }
 
 /**
- * 加载自定义语言
+ * Load custom language
  * @param monacoLanguages
  * @param monacoEditor
- * @param registerCompletion 是否注册自动补全 (默认不注册)
+ * @param registerCompletion Whether to register automatic completion (not registered by default)
  * @constructor
  */
 export function LoadCustomEditorLanguage(

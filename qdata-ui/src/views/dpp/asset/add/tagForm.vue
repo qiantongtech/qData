@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 打标新增标签弹窗 -->
+  <!-- Mark the new label pop-up window -->
   <el-dialog
     :title="td('dpp.asset.add.tag.addTag')"
     v-model="visible"
@@ -146,7 +146,7 @@ const { dp_model_status } = proxy.useDict("dp_model_status");
 import { listAttTagCat } from "@/api/att/cat/tagCat/tagCat.js";
 
 const { td } = useDefaultLang();
-// 定义组件属性
+// Define component properties
 const props = defineProps({
   modelValue: {
     type: Boolean,

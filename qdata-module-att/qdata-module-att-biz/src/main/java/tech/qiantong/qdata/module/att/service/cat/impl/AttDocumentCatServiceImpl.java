@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 标准信息分类管理Service业务层处理
+ * Standard Document Category Management Service business layer processing
  *
  * @author qdata
  * @date 2025-08-21
@@ -101,7 +101,7 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
                 throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
         }
-        // 更新标准信息分类管理
+        // Update Standard Document Category Management
         AttDocumentCatDO updateObj = BeanUtils.toBean(updateReqVO, AttDocumentCatDO.class);
         return baseMapper.updateById(updateObj);
     }
@@ -113,7 +113,7 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
         if (countData > 0) {
             throw new ServiceException("att.error.delete.document", "存在标准，不允许删除");
         }
-        // 单独删除标准信息分类管理
+        // Delete Standard Document Category Management
         return baseMapper.deleteById(id);
     }
 
@@ -134,7 +134,7 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
                 .collect(Collectors.toMap(
                         AttDocumentCatDO::getId,
                         attDocumentCatDO -> attDocumentCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
@@ -148,12 +148,12 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttDocumentCatDO> query = new LambdaQueryWrapper<AttDocumentCatDO>()
                 .eq(AttDocumentCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttDocumentCatDO::getCode, parentCode)
@@ -162,15 +162,15 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
         List<AttDocumentCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttDocumentCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

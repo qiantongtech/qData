@@ -58,7 +58,7 @@ import ConfigView from "./configView";
 const { t } = useI18n();
 const { td } = useDefaultLang();
 
-// editor数据
+// editor data
 const props = defineProps({
   value: {
     type: String,
@@ -71,7 +71,7 @@ const props = defineProps({
 });
 const emits = defineEmits(["handleChange"]);
 
-// 左侧图标
+// left icon
 const iconList = ref([
   {
     name: t('components.sqlEditor.logConsole'),
@@ -124,7 +124,7 @@ const handleIcon = (item) => {
 const closeConsoleDialog = () => {
   activeValue.value = { name: "" };
 };
-// 右侧图标
+// right icon
 const iconListR = ref([
   {
     name: t('components.sqlEditor.attrConfig'),
@@ -145,13 +145,13 @@ const handleIconR = (item) => {
 const closeConsoleDialogR = () => {
   activeValueR.value = { name: "" };
 };
-// 控制台和配置页的自定义宽高
+// Custom width and height of console and configuration pages
 const consoleRef = ref(null);
 const consoleHeight = computed(() => consoleRef.value && consoleRef.value.currHeight);
 const configViewRef = ref(null);
 const configWidth = computed(() => configViewRef.value && configViewRef.value.currWidth);
 
-// 全屏
+// full screen
 const editorMain = ref(null);
 const { isFullscreen, toggle } = useFullscreen(editorMain);
 const fullScreenCallBack = () => {

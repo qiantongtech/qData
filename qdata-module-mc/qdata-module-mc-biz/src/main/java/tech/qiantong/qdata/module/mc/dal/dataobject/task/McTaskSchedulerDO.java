@@ -7,14 +7,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * Handle scheduling configuration and operations.
+ * Data integration scheduling information DO object MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_SCHEDULER")
-// Handle JDBC SQL execution.
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_SCHEDULER_seq")
 @Builder
 @NoArgsConstructor
@@ -28,40 +28,40 @@ public class McTaskSchedulerDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** Task ID */
+    /** task id */
     private Long taskId;
 
-    /** Handle scheduling configuration and operations. */
+    /** Scheduler ID */
     private String jobId;
 
-    /** Handle DolphinScheduler operations. */
+    /** DolphinScheduler task encoding (for API calls) */
     private String taskCode;
 
-    /** Scheduling engine */
+    /** 调度引擎 */
     private String taskScheduler;
 
-    /** Implementation details. */
+    /** 开始时间 */
     private Date startTime;
 
-    /** Implementation details. */
+    /** End time */
     private Date endTime;
 
-    /** Implementation details. */
+    /** Time zone */
     private String timezoneId;
 
-    /** Implementation details. */
+    /** cron expression */
     private String cronExpression;
 
-    /** Implementation details. */
+    /** Failure strategy */
     private String failureStrategy;
 
-    /** Handle scheduling configuration and operations. */
+    /** Scheduling status */
     private String status;
 
-    /** Whether the record is valid. */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** Delete the related record. */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

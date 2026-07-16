@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 数据资产操作记录 DTO 对象 DA_ASSET_OPERATE_LOG
+ * Data Asset Operation Log DTO DA_ASSET_OPERATE_LOG
  *
  * @author qdata
  * @date 2025-05-09
@@ -37,49 +37,49 @@ public class DaAssetOperateLogRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 数据连接id */
+    /** Datasource ID */
     private Long datasourceId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 表注释/表描述 */
+    /** Table Comment/Table Description */
     private String tableComment;
 
-    /** 操作类型 */
+    /** Operation Type */
     private String operateType;
 
-    /** 操作时间 */
+    /** Operation Time */
     private Date operateTime;
 
-    /** 执行时间 */
+    /** Execute Time */
     private Date executeTime;
 
-    /** 修改前数据(JSON数据) */
+    /** Data Before Update (JSON) */
     private String updateBefore;
 
-    /** 修改后数据(JSON数据) */
+    /** Data After Update (JSON) */
     private String updateAfter;
 
-    /** 字段 */
+    /** Field Names */
     private String fieldNames;
 
-    /** 导入文件URL */
+    /** Import File URL */
     private String fileUrl;
 
-    /** 导入文件名称 */
+    /** Import File Name */
     private String fileName;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
     @Schema(description = "更新条件JSON MD5字符串", example = "")

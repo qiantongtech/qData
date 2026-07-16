@@ -24,7 +24,7 @@
             </exclusions>
         </dependency>
 
-        <!-- 使用 Jakarta 版本 (Tomcat 10+) -->
+        <!-- Using Jakarta version (Tomcat 10+) -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -58,7 +58,7 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- maven-compiler-plugin 配置 -->
+            <!-- maven-compiler-plugin configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -67,13 +67,13 @@
                     <source>17</source>
                     <target>17</target>
                     <annotationProcessorPaths>
-                        <!-- 引入 mapstruct-processor -->
+                        <!-- Introduce mapstruct-processor -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>1.6.3</version>
                         </path>
-                        <!-- 引入 lombok-processor -->
+                        <!-- Introduce lombok-processor -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -83,7 +83,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot Maven 插件配置 -->
+            <!-- Spring Boot Maven plugin configuration -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -97,7 +97,7 @@
                 </executions>
             </plugin>
 
-            <!-- 其他需要的插件配置，如 maven-war-plugin 等 -->
+            <!-- Other required plug-in configurations, such as maven-war-plugin, etc. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

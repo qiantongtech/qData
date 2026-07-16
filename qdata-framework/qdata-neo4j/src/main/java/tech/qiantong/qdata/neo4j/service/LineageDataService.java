@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -67,26 +67,26 @@ public class LineageDataService {
             return new LineageDTO();
         }
 
-        //查询关系数据
+        //Query relational data
         getRels(lineageDto, datasourceHostPort, tableName);
         return lineageDto;
     }
 
     /**
-     * 查询关系数据
+     * Query relational data
      *
      * @param lineageDto
      * @param datasourceHostPort
      * @param tableName
      */
     void getRels(LineageDTO lineageDto, String datasourceHostPort, String tableName) {
-        // 创建驱动
+        // Create driver
         Driver driver = GraphDatabase.driver(neo4jProperties.getUri(),
                 AuthTokens.basic(neo4jProperties.getUsername(), neo4jProperties.getPassword()));
 
-        // 打开自动关闭的会话
+        // Open an automatically closed session
         try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            // 3. 执行 Cypher，返回一条记录
+            // 3. Execute Cypher and return a record
             Result result = session.run(
                     "MATCH (currentTable:Table {datasourceHostPort: $datasourceHostPort,tableName: $tableName})   " +
                             "OPTIONAL MATCH (currentTable)<-[r1:TASK_TO_TABLE]-(sourceTask:Task)   " +
@@ -126,7 +126,7 @@ public class LineageDataService {
     }
 
     /**
-     * 删除任务
+     * Delete task
      *
      * @param taskId
      */
@@ -139,7 +139,7 @@ public class LineageDataService {
     }
 
     /**
-     * 保存
+     * Save
      *
      * @param readerTableNodeList
      * @param writerTableNodeList
@@ -179,7 +179,7 @@ public class LineageDataService {
     }
 
     /**
-     * 保存节点信息
+     * Save node information
      *
      * @param tableNodeList
      */
@@ -199,7 +199,7 @@ public class LineageDataService {
 
     @Transactional
     public void save() {
-        // 1. 源表
+        // 1. Source table
         TableNode orders = tableRepository.save(
                 TableNode.builder()
                         .name("user")
@@ -210,7 +210,7 @@ public class LineageDataService {
                         .sid("dwh")
                         .build());
 
-        // 2. 任务1
+        // 2. Task 1
         TaskNode task1 = taskRepository.save(
                 TaskNode.builder()
                         .name("任务名称")
@@ -218,7 +218,7 @@ public class LineageDataService {
                         .taskCode("4000000000")
                         .build());
 
-        // 3. 目标表1
+        // 3. Target table 1
         TableNode toOrders = tableRepository.save(
                 TableNode.builder()
                         .name("to_user")
@@ -228,7 +228,7 @@ public class LineageDataService {
                         .dbName("sales_db")
                         .sid("dwh")
                         .build());
-        /* 6. 建立关系（核心） */
+        /* 6. Building relationships (core) */
 
         // orders -> task1
         orders.setTableToTaskRels(Arrays.asList(TableToTaskRel.builder()
@@ -256,13 +256,13 @@ public class LineageDataService {
     }
 
 //    public static void main(String[] args) {
-//        // 1. 创建驱动
+// // 1. Create driver
 //        Driver driver = GraphDatabase.driver("bolt://110.42.38.62:40053",
 //                AuthTokens.basic("neo4j", "InC3tmU4bijT4vkl"));
 //
-//        // 2. 打开自动关闭的会话
+// // 2. Open the automatically closed session
 //        try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-//            // 3. 执行 Cypher，返回一条记录
+// // 3. Execute Cypher and return a record
 //            Record row = session.run(
 //                    "MATCH (currentTable:Table {tableName: $tableName})   " +
 //                            "OPTIONAL MATCH (currentTable)<-[r1:TASK_TO_TABLE]-(sourceTask:Task)   " +
@@ -276,10 +276,10 @@ public class LineageDataService {
 //                            "currentTable + collect(DISTINCT sourceTable) + collect(DISTINCT targetTable)  AS tables,   " +
 //                            "collect(DISTINCT r1) + collect(DISTINCT r2) +collect(DISTINCT r3) + collect(DISTINCT r4) AS  rels ",
 //                    Values.parameters("tableName", "sales_db.dwh.to_orders")
-//            ).single();              // 明确只取一条，避免游标
+// ).single(); // Explicitly take only one item to avoid cursors
 //
 //            List<Relationship> rels =
-//                    row.get("rels").asList(v -> v.asRelationship());   // 或 Value::asRelationship
+// row.get("rels").asList(v -> v.asRelationship()); // or Value::asRelationship
 //
 //            List<JSONObject> relsObj = new ArrayList<>();
 //            for (Relationship rel : rels) {

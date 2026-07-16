@@ -18,7 +18,7 @@
 
 import request from '@/utils/request';
 
-// 查询作业类目管理列表
+// Query job category management list
 export function listAttJobCat(query) {
     return request({
         url: '/att/jobCat/list',
@@ -27,7 +27,7 @@ export function listAttJobCat(query) {
     });
 }
 
-// 查询作业类目管理详细
+// Query job category management details
 export function getAttJobCat(id) {
     return request({
         url: '/att/jobCat/' + id,
@@ -35,7 +35,7 @@ export function getAttJobCat(id) {
     });
 }
 
-// 新增作业类目管理
+// Add new job category management
 export function addAttJobCat(data) {
     return request({
         url: '/att/jobCat',
@@ -44,7 +44,7 @@ export function addAttJobCat(data) {
     });
 }
 
-// 修改作业类目管理
+// Modify job category management
 export function updateAttJobCat(data) {
     return request({
         url: '/att/jobCat',
@@ -53,7 +53,7 @@ export function updateAttJobCat(data) {
     });
 }
 
-// 删除作业类目管理
+// Delete job category management
 export function delAttJobCat(id) {
     return request({
         url: '/att/jobCat/' + id,

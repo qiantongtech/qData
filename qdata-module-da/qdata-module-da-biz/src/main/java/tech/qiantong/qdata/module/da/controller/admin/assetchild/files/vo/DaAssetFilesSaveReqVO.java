@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据资产-文件服务 创建/修改 Request VO DA_ASSET_FILES
+ * Data Asset - File Service Create/Update Request VO DA_ASSET_FILES
  *
  * @author qdata
  * @date 2025-06-26

@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.utils.sign;
 
 /**
- * Base64工具类
+ * Base64 tool class
  *
  * @author qdata
  */

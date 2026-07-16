@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  字段前缀/后缀统一  -->
+  <!--  Unify field prefix/suffix  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">

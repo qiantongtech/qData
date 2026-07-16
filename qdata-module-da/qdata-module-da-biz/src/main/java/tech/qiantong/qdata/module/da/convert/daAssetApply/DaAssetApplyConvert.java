@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.da.dal.dataobject.daAssetApply.DaAssetApplyDO;
 import java.util.List;
 
 /**
- * 数据资产申请 Convert
+ * Data Asset Application Convert
  *
  * @author shu
  * @date 2025-03-19
@@ -38,29 +38,29 @@ public interface DaAssetApplyConvert {
     DaAssetApplyConvert INSTANCE = Mappers.getMapper(DaAssetApplyConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param daAssetApplyPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param daAssetApplyPageReqVO request parameters
      * @return DaAssetApplyDO
      */
      DaAssetApplyDO convertToDO(DaAssetApplyPageReqVO daAssetApplyPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param daAssetApplySaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param daAssetApplySaveReqVO save request parameters
      * @return DaAssetApplyDO
      */
      DaAssetApplyDO convertToDO(DaAssetApplySaveReqVO daAssetApplySaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param daAssetApplyDO 实体对象
+     * Convert DO to RespVO
+     * @param daAssetApplyDO entity object
      * @return DaAssetApplyRespVO
      */
      DaAssetApplyRespVO convertToRespVO(DaAssetApplyDO daAssetApplyDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param daAssetApplyDOList 实体对象列表
+     * Convert DOList to RespVOList
+     * @param daAssetApplyDOList entity object list
      * @return List<DaAssetApplyRespVO>
      */
      List<DaAssetApplyRespVO> convertToRespVOList(List<DaAssetApplyDO> daAssetApplyDOList);

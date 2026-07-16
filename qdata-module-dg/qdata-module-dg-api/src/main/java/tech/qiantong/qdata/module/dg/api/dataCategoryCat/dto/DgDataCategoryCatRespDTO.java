@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.dg.api.dataCategoryCat.dto;
 import lombok.*;
 
 /**
- * 数据分类-类目 DTO 对象 DG_DATA_CATEGORY_CAT
+ * Data Category-Category DTO Object DG_DATA_CATEGORY_CAT
  *
  * @author FXB
  * @date 2026-04-07
@@ -34,25 +34,25 @@ public class DgDataCategoryCatRespDTO {
     /** ID */
     private Long id;
 
-    /** 类别名称 */
+    /** Category Name */
     private String name;
 
-    /** 关联上级ID */
+    /** Parent ID */
     private Long parentId;
 
-    /** 类别排序 */
+    /** Category Sort Order */
     private Long sortOrder;
 
-    /** 层级编码 */
+    /** Hierarchy Code */
     private String code;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not Deleted */
     private Boolean delFlag;
 
 

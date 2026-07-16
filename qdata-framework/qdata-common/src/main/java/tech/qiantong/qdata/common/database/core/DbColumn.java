@@ -30,57 +30,57 @@ import lombok.NoArgsConstructor;
 public class DbColumn {
 
     /**
-     * 表名
+     * Table name
      */
     private String tableName;
 
     /**
-     * 列名
+     * List
      */
     private String colName;
 
     /**
-     * 数据类型
+     * Data type
      */
     private String dataType;
 
     /**
-     * 数据长度
+     * Data length
      */
     private String dataLength;
 
     /**
-     * 数据精度
+     * Data accuracy
      */
     private String dataPrecision;
 
     /**
-     * 数据小数位
+     * Data decimal places
      */
     private String dataScale;
 
     /**
-     * 是否主键 true是主键 false不是主键
+     * Whether the primary key is true is the primary key false is not the primary key
      */
     private Boolean colKey;
 
     /**
-     * 是否允许为空 true 允许为空 false 不允许为空
+     * Whether empty is allowed true, empty is allowed, false is not allowed to be empty
      */
     private Boolean nullable;
 
     /**
-     * 列的序号
+     * Column number
      */
     private Integer colPosition;
 
     /**
-     * 列默认值
+     * Column default value
      */
     private String dataDefault;
 
     /**
-     * 列注释
+     * Column comments
      */
     private String colComment;
 }

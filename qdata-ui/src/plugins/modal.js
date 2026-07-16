@@ -21,55 +21,55 @@ import { i18n } from '@/plugins/vueI18n'
 let loadingInstance;
 
 export default {
-  // 消息提示
+  // Message prompt
   msg(content) {
     ElMessage.info(content)
   },
-  // 错误消息
+  // error message
   msgError(content) {
     ElMessage.error(content)
   },
-  // 成功消息
+  // success message
   msgSuccess(content) {
     ElMessage.success(content)
   },
-  // 警告消息
+  // warning message
   msgWarning(content) {
     ElMessage.warning(content)
   },
-  // 弹出提示
+  // Pop up prompt
   alert(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'))
   },
-  // 错误提示
+  // Error message
   alertError(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'error' })
   },
-  // 成功提示
+  // Tips for success
   alertSuccess(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'success' })
   },
-  // 警告提示
+  // Warning
   alertWarning(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'warning' })
   },
-  // 通知提示
+  // Notification tips
   notify(content) {
     ElNotification.info(content)
   },
-  // 错误通知
+  // Error notification
   notifyError(content) {
     ElNotification.error(content);
   },
-  // 成功通知
+  // Success notification
   notifySuccess(content) {
     ElNotification.success(content)
   },
-  // 警告通知
+  // warning notification
   notifyWarning(content) {
     ElNotification.warning(content)
   },
-  // 确认窗体
+  // Confirmation form
   confirm(content) {
     return ElMessageBox.confirm(content, i18n.global.t('common.message.systemPrompt'), {
       confirmButtonText: i18n.global.t('common.button.confirm'),
@@ -77,7 +77,7 @@ export default {
       type: "warning",
     })
   },
-  // 提交内容
+  // Submit content
   prompt(content) {
     return ElMessageBox.prompt(content, i18n.global.t('common.message.systemPrompt'), {
       confirmButtonText: i18n.global.t('common.button.confirm'),
@@ -85,7 +85,7 @@ export default {
       type: "warning",
     })
   },
-  // 打开遮罩层
+  // Open mask layer
   loading(content) {
     loadingInstance = ElLoading.service({
       lock: true,
@@ -93,7 +93,7 @@ export default {
       background: "rgba(0, 0, 0, 0.7)",
     })
   },
-  // 关闭遮罩层
+  // Turn off mask layer
   closeLoading() {
     loadingInstance.close();
   }

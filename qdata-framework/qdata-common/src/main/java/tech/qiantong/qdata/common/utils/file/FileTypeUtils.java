@@ -23,19 +23,19 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 
 /**
- * 文件类型工具类
+ * File type tool class
  *
  * @author qdata
  */
 public class FileTypeUtils
 {
     /**
-     * 获取文件类型
+     * Get file type
      * <p>
-     * 例如: Ming.txt, 返回: txt
+     * For example: Ming.txt, return: txt
      *
-     * @param file 文件名
-     * @return 后缀（不含".")
+     * @param file file name
+     * @return suffix (without ".")
      */
     public static String getFileType(File file)
     {
@@ -47,12 +47,12 @@ public class FileTypeUtils
     }
 
     /**
-     * 获取文件类型
+     * Get file type
      * <p>
-     * 例如: qdata.txt, 返回: txt
+     * For example: qdata.txt, return: txt
      *
-     * @param fileName 文件名
-     * @return 后缀（不含".")
+     * @param fileName file name
+     * @return suffix (without ".")
      */
     public static String getFileType(String fileName)
     {
@@ -65,10 +65,10 @@ public class FileTypeUtils
     }
 
     /**
-     * 获取文件类型
+     * Get file type
      *
-     * @param photoByte 文件字节码
-     * @return 后缀（不含".")
+     * @param photoByte file bytecode
+     * @return suffix (without ".")
      */
     public static String getFileExtendName(byte[] photoByte)
     {

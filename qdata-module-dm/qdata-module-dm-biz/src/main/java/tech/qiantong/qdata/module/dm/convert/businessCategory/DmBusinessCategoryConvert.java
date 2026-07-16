@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dm.dal.dataobject.businessCategory.DmBusinessC
 import java.util.List;
 
 /**
- * 业务分类 Convert
+ * Business Category Convert
  *
  * @author qdata
  * @date 2026-04-08
@@ -38,29 +38,29 @@ public interface DmBusinessCategoryConvert {
     DmBusinessCategoryConvert INSTANCE = Mappers.getMapper(DmBusinessCategoryConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dmBusinessCategoryPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dmBusinessCategoryPageReqVO Request params
      * @return DmBusinessCategoryDO
      */
      DmBusinessCategoryDO convertToDO(DmBusinessCategoryPageReqVO dmBusinessCategoryPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dmBusinessCategorySaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dmBusinessCategorySaveReqVO Save request params
      * @return DmBusinessCategoryDO
      */
      DmBusinessCategoryDO convertToDO(DmBusinessCategorySaveReqVO dmBusinessCategorySaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dmBusinessCategoryDO 实体对象
+     * Convert DO to RespVO
+     * @param dmBusinessCategoryDO Entity object
      * @return DmBusinessCategoryRespVO
      */
      DmBusinessCategoryRespVO convertToRespVO(DmBusinessCategoryDO dmBusinessCategoryDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dmBusinessCategoryDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dmBusinessCategoryDOList Entity object list
      * @return List<DmBusinessCategoryRespVO>
      */
      List<DmBusinessCategoryRespVO> convertToRespVOList(List<DmBusinessCategoryDO> dmBusinessCategoryDOList);

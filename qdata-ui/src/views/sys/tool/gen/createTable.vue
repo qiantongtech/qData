@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 创建表 -->
+  <!-- Create table -->
   <el-dialog :title="td('sys.tool.genCreate.title')" v-model="visible" width="800px" top="5vh"  :append-to="$refs['app-container']" draggable destroy-on-close>
     <span>{{ td('sys.tool.genCreate.createTableStmt') }}</span>
     <el-input type="textarea" :rows="10" :placeholder="td('sys.tool.genCreate.inputTextPlaceholder')" v-model="content"></el-input>
@@ -40,12 +40,12 @@ const content = ref("");
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["ok"]);
 
-/** 显示弹框 */
+/** Show popup */
 function show() {
   visible.value = true;
 }
 
-/** 导入按钮操作 */
+/** Import button actions */
 function handleImportTable() {
   if (content.value === "") {
     proxy.$modal.msgError(td('sys.tool.genCreate.inputCreateStmt'));

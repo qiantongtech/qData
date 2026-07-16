@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据质量任务-稽查对象 DO 对象 DPP_QUALITY_TASK_OBJ
+ * Data quality task-audit object DO object DPP_QUALITY_TASK_OBJ
  *
  * @author Chaos
  * @date 2025-07-21
  */
 @Data
 @TableName(value = "DPP_QUALITY_TASK_OBJ")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("DPP_QUALITY_TASK_OBJ_seq")
 @Builder
 @NoArgsConstructor
@@ -44,22 +44,22 @@ public class DppQualityTaskObjDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 数据质量任务ID */
+    /** Data quality task ID */
     private Long taskId;
 
-    /** 稽查对象名称 */
+    /** Audit object name */
     private String name;
 
-    /** 数据源id */
+    /** data source id */
     private Long datasourceId;
 
-    /** 表名称 */
+    /** table name */
     private String tableName;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 

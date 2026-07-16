@@ -41,7 +41,7 @@ public class DoubleDataColumn extends DataColumn {
     }
 
     /**
-     * Double无法表示准确的小数数据，我们不推荐使用该方法保存Double数据，建议使用String作为构造入参
+     * Double cannot represent accurate decimal data. We do not recommend using this method to save Double data. It is recommended to use String as the constructor input parameter.
      */
     public DoubleDataColumn(final Double data) {
         this(data == null ? (String) null
@@ -49,7 +49,7 @@ public class DoubleDataColumn extends DataColumn {
     }
 
     /**
-     * Float无法表示准确的小数数据，我们不推荐使用该方法保存Float数据，建议使用String作为构造入参
+     * Float cannot represent accurate decimal data. We do not recommend using this method to save Float data. It is recommended to use String as the construction input parameter.
      */
     public DoubleDataColumn(final Float data) {
         this(data == null ? (String) null

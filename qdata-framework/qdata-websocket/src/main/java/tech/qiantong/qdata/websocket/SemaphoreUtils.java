@@ -24,19 +24,19 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Semaphore;
 
 /**
- * 信号量相关处理
+ * Semaphore utility methods
  *
  * @author qdata
  */
 public class SemaphoreUtils
 {
     /**
-     * SemaphoreUtils 日志控制器
+     * SemaphoreUtils logger
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(SemaphoreUtils.class);
 
     /**
-     * 获取信号量
+     * Acquire semaphore
      *
      * @param semaphore
      * @return
@@ -58,7 +58,7 @@ public class SemaphoreUtils
     }
 
     /**
-     * 释放信号量
+     * Release semaphore
      *
      * @param semaphore
      */

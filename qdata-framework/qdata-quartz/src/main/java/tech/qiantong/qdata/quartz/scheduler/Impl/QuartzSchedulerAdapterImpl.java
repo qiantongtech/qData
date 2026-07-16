@@ -15,8 +15,8 @@ import tech.qiantong.qdata.quartz.enums.JobErrorEnum;
 import tech.qiantong.qdata.quartz.service.IQuartzJobService;
 
 /**
- * Handle Quartz scheduling operations.
- * Handle Quartz scheduling operations.
+ * Quartz 调度器适配器。
+ * 作用是把业务模块传来的通用调度参数，转成 qData 原有 Quartz 的 SysJob 调用。
  */
 @Component
 public class QuartzSchedulerAdapterImpl implements ISchedulerAdapter {

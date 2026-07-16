@@ -28,7 +28,7 @@ import java.util.Date;
 
 
 /**
- * 数据源 Response VO 对象 DA_DATASOURCE
+ * Data source Response VO object DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21

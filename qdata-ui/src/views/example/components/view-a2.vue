@@ -150,7 +150,7 @@ const params = ref({
 
     const viewA2ChartRef = ref(null);
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             viewA2ChartRef.value.resize();
         }, 300);

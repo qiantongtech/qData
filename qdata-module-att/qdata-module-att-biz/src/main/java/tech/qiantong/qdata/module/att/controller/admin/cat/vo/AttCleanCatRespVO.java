@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 清洗规则类目 Response VO 对象 ATT_CLEAN_CAT
+ * Cleaning Rule Category Response VO ATT_CLEAN_CAT
  *
  * @author qdata
  * @date 2025-08-11

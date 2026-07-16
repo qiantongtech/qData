@@ -26,11 +26,11 @@
     />
 
     <!-- <div class="mt20" v-if="ruleDetail.intervalList && ruleDetail.intervalList.length">
-      <div class="section-title mb15">脱敏区间</div>
+      <div class="section-title mb15">Desensitization interval</div>
       <el-table :data="ruleDetail.intervalList" border stripe>
-        <el-table-column label="区间号" prop="intervalNo" width="100" />
-        <el-table-column label="起始位置" prop="startNum" />
-        <el-table-column label="截止位置" prop="endNum" />
+        <el-table-column label="interval number" prop="intervalNo" width="100" />
+        <el-table-column label="start position" prop="startNum" />
+        <el-table-column label="End position" prop="endNum" />
       </el-table>
     </div> -->
   </div>

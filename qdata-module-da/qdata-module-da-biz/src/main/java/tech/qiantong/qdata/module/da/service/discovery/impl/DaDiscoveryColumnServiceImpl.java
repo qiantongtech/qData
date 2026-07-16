@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据发现字段Service业务层处理
+ * Data Discovery Column Service business layer processing
  *
  * @author qdata
  * @date 2025-02-11
@@ -92,23 +92,23 @@ public class DaDiscoveryColumnServiceImpl  extends ServiceImpl<DaDiscoveryColumn
 
     @Override
     public int updateDaDiscoveryColumn(DaDiscoveryColumnSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现字段
+        // Update data discovery column
         DaDiscoveryColumnDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryColumnDO.class);
         return daDiscoveryColumnMapper.updateById(updateObj);
     }
 
     @Override
     public int updateDaDiscoveryColumn(DaDiscoveryColumnDO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现字段
+        // Update data discovery column
         return daDiscoveryColumnMapper.updateById(updateReqVO);
     }
     @Override
     public int removeDaDiscoveryColumn(Collection<Long> idList) {
-        // 批量删除数据发现字段
+        // Batch delete data discovery columns
         return daDiscoveryColumnMapper.deleteBatchIds(idList);
     }
 
@@ -129,19 +129,19 @@ public class DaDiscoveryColumnServiceImpl  extends ServiceImpl<DaDiscoveryColumn
                 .collect(Collectors.toMap(
                         DaDiscoveryColumnDO::getId,
                         daDiscoveryColumnDO -> daDiscoveryColumnDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据发现字段数据
+         * Import data discovery column data
          *
-         * @param importExcelList 数据发现字段数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data discovery column data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operating user
+         * @return result
          */
         @Override
         public String importDaDiscoveryColumn(List<DaDiscoveryColumnRespVO> importExcelList, boolean isUpdateSupport, String operName) {

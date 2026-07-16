@@ -23,14 +23,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 标签管理 DO 对象 ATT_TAG
+ * Tag Management DO ATT_TAG
  *
  * @author qdata
  * @date 2025-07-11
  */
 @Data
 @TableName(value = "ATT_TAG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("ATT_TAG_seq")
 @Builder
 @NoArgsConstructor
@@ -44,37 +44,37 @@ public class AttTagDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 类目名称 */
+    /** Category Name */
     private String catName;
 
-    /** 资产数量 */
+    /** Asset Count */
     private Long aeestCount;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 扩展信息别名 */
+    /** Alias */
     private String alias;
 
-    /** 近义词 */
+    /** Near Synonyms */
     private String nearSynonyms;
 
-    /** 同义词 */
+    /** Synonyms */
     private String synonyms;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

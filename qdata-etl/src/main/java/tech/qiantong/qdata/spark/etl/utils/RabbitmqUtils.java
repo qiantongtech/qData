@@ -32,7 +32,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * <P>
- * 用途:rabbitmq消息中间件工具类
+ * Purpose: rabbitmq message middleware tool class
  * </p>
  *
  * @author: FXB
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeoutException;
  **/
 public class RabbitmqUtils {
     public static Boolean convertAndSend(JSONObject config, String exchange, String routingKey, Object object) {
-        // 创建连接工厂
+        // Create connection factory
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(config.getString("host"));
         factory.setPort(config.getIntValue("port"));
@@ -50,28 +50,28 @@ public class RabbitmqUtils {
         Connection connection = null;
         Channel channel = null;
         try {
-            // 建立连接和通道
+            // Establish connections and channels
             connection = factory.newConnection();
             channel = connection.createChannel();
-            // 声明队列（如果不存在则创建）
+            // Declare the queue (create it if it does not exist)
             channel.queueDeclare(routingKey, true, false, false, null);
 
-            // 使用 Jackson 序列化为 JSON
+            // Serialize to JSON using Jackson
             ObjectMapper objectMapper = new ObjectMapper();
             byte[] body = objectMapper.writeValueAsBytes(object);
 
-            // 设置消息属性（JSON 格式）
+            // Set message properties (JSON format)
             AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
                     .contentType("application/json")
                     .contentEncoding("utf-8")
                     .build();
 
-            // 发送消息
+            // Send message
             channel.basicPublish(
-                    exchange,         // 使用默认交换机（直接交换）
-                    routingKey, // 路由键（这里直接用队列名称）
-                    props,      // 消息属性
-                    body // 消息体转换为字节数组
+                    exchange,         // Use default switch (direct swap)
+                    routingKey, // Routing key (queue name is used directly here)
+                    props,      // Message properties
+                    body // Convert message body to byte array
             );
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,8 @@
 /**
- * 数据源类型
- * key: 数据源类型标识跟config关联 不要改...
- * label: 数据源类型名称 用于展示
- * value: 数据源类型标识 用于传给后端
+ * Data source type
+ * key: The data source type identifier is associated with config. Do not change it...
+ * label: data source type name for display
+ * value: data source type identifier used to pass to the backend
  */
 export const DatasourceTypes = {
     MySql: { key: 'MySql', label: 'MySql', value: 'MySql', type: 'primary' },
@@ -39,9 +39,9 @@ export const DatasourceTypes = {
 };
 
 /**
- * 数据源类型配置
- * key: 数据源类型标识
- * value: 1正常 2禁用 3隐藏
+ * Data source type configuration
+ * key: data source type identifier
+ * value: 1 normal 2 disabled 3 hidden
  */
 const globalConfig = {
     API: 3,
@@ -51,11 +51,11 @@ const globalConfig = {
     SparkSQL: 3
 };
 export const config = {
-    // 数据连接
+    // data connection
     datasource: {
         ...globalConfig
     },
-    // 资产地图
+    // Asset Map
     daAsset: {
         Phoenix: 2,
         MongoDB: 2,
@@ -68,7 +68,7 @@ export const config = {
         ...globalConfig,
         ClickHouse: 1
     },
-    // 资产地图-非结构化
+    // Asset Map - Unstructured
     daAssetUnstructured: {
         Oracle11: 3,
         MySql: 3,
@@ -90,7 +90,7 @@ export const config = {
         RabbitMQ: 3,
         ...globalConfig
     },
-    // 数据查询
+    // Data query
     daDataQuery: {
         Phoenix: 3,
         MongoDB: 3,
@@ -102,7 +102,7 @@ export const config = {
         OSS_ALIYUN: 3,
         ...globalConfig
     },
-    // 数据发现
+    // data discovery
     daDiscovery: {
         OSCAR: 2,
         DB2: 2,
@@ -118,7 +118,7 @@ export const config = {
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 逻辑模型
+    // logic model
     dpModel: {
         Phoenix: 2,
         MongoDB: 2,
@@ -130,7 +130,7 @@ export const config = {
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 数据质量
+    // Data quality
     daQuality: {
         // SQL_Server2008: 2,
         // OSCAR: 2,
@@ -148,14 +148,14 @@ export const config = {
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 数据集成-输入-Spark
+    // Data Integration-Input-Spark
     dppIntegratioTaskInSPARK: {
         Phoenix: 2,
         FTP: 2,
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 数据集成-输出-Spark
+    // Data Integration-Output-Spark
     dppIntegratioTaskOutSPARK: {
         Phoenix: 2,
         Kafka: 2,
@@ -163,7 +163,7 @@ export const config = {
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 数据集成-输入-Flink
+    // Data integration-input-Flink
     dppIntegratioTaskInFLINK: {
         SQL_Server2008: 2,
         OSCAR: 2,
@@ -181,7 +181,7 @@ export const config = {
         OSS_ALIYUN: 2,
         ...globalConfig
     },
-    // 数据集成-输出-Flink
+    // Data integration-output-Flink
     dppIntegratioTaskOutFLINK: {
         SQL_Server2008: 2,
         OSCAR: 2,

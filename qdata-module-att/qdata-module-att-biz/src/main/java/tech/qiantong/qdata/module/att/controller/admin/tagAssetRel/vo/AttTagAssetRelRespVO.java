@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 标签与资产关联关系 Response VO 对象 ATT_TAG_ASSET_REL
+ * Tag-Asset Relationship Response VO ATT_TAG_ASSET_REL
  *
  * @author qdata
  * @date 2025-07-11

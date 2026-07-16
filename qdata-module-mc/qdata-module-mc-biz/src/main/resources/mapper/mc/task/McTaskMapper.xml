@@ -16,10 +16,10 @@
         <result property="collectionMode"    column="COLLECTION_MODE"    />
         <result property="collectionScope"    column="COLLECTION_SCOPE"    />
         <result property="status"    column="STATUS"    />
-        <!-- Handle task-related data and operations. -->
+        <!-- 采集任务只展示调度器，执行引擎由后台按调度器自动推导。 -->
         <result property="scheduler"    column="SCHEDULER"    />
 
-        <!-- Implementation details. -->
+        <!-- Add new field -->
         <result property="collectType" column="COLLECT_TYPE" />
         <result property="blacklist" column="BLACKLIST" />
 

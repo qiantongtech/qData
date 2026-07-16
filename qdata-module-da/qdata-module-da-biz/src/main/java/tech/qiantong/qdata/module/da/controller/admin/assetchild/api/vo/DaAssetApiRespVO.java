@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据资产-外部API Response VO 对象 DA_ASSET_API
+ * Data Asset - External API Response VO DA_ASSET_API
  *
  * @author qdata
  * @date 2025-04-14

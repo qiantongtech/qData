@@ -25,12 +25,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 系统配置 创建/修改 Request VO system_content
+ * System Config Create/Update Request VO system_content
  *
  * @author qdata
  * @date 2024-12-31
  */
-@Schema(description = "系统配置 Response VO")
+@Schema(description = "System Config Response VO")
 @Data
 public class SystemContentSaveReqVO extends BaseEntity {
 
@@ -39,43 +39,43 @@ public class SystemContentSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "系统名称", example = "")
-    @Size(max = 256, message = "系统名称长度不能超过256个字符")
+    @Schema(description = "System Name", example = "")
+    @Size(max = 256, message = "System Name must not exceed 256 characters")
     private String sysName;
 
     @Schema(description = "loginLogo", example = "")
-    @Size(max = 256, message = "loginLogo长度不能超过256个字符")
+    @Size(max = 256, message = "loginLogo must not exceed 256 characters")
     private String loginLogo;
 
     @Schema(description = "logo", example = "")
-    @Size(max = 256, message = "logo长度不能超过256个字符")
+    @Size(max = 256, message = "logo must not exceed 256 characters")
     private String logo;
 
-    @Schema(description = "轮播图", example = "")
-    @Size(max = 256, message = "轮播图长度不能超过256个字符")
+    @Schema(description = "Carousel Image", example = "")
+    @Size(max = 256, message = "Carousel Image must not exceed 256 characters")
     private String carouselImage;
 
-    @Schema(description = "联系电话", example = "")
-    @Size(max = 256, message = "联系电话长度不能超过256个字符")
+    @Schema(description = "Contact Number", example = "")
+    @Size(max = 256, message = "Contact Number must not exceed 256 characters")
     private String contactNumber;
 
-    @Schema(description = "电子邮箱", example = "")
-    @Size(max = 256, message = "电子邮箱长度不能超过256个字符")
+    @Schema(description = "Email", example = "")
+    @Size(max = 256, message = "Email must not exceed 256 characters")
     private String email;
 
-    @Schema(description = "版权方", example = "")
-    @Size(max = 256, message = "版权方长度不能超过256个字符")
+    @Schema(description = "Copyright", example = "")
+    @Size(max = 256, message = "Copyright must not exceed 256 characters")
     private String copyright;
 
-    @Schema(description = "备案号", example = "")
-    @Size(max = 256, message = "备案号长度不能超过256个字符")
+    @Schema(description = "Record Number", example = "")
+    @Size(max = 256, message = "Record Number must not exceed 256 characters")
     private String recordNumber;
 
-    @Schema(description = "状态", example = "")
+    @Schema(description = "Status", example = "")
     private Integer status;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "Remark must not exceed 256 characters")
     private String remarks;
 
 

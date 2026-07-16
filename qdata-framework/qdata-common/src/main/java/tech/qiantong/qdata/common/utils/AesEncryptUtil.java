@@ -26,7 +26,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * @Description: AES 加密
+ * @Description: AES encryption
  * @author: jeecg-boot
  * @date: 2022/3/30 11:48
  */
@@ -35,18 +35,18 @@ public class AesEncryptUtil {
     private static final String KEY = "AD42F6697B035B75";
 
     /**
-     * 加密方法
+     * Encryption method
      *
-     * @param data 要加密的数据
-     * @param key  加密key
-     * @param iv   加密iv
-     * @return 加密的结果
+     * @param data The data to be encrypted
+     * @param key encryption key
+     * @param iv encryption iv
+     * @return encrypted result
      * @throws Exception
      */
     public static String encrypt(String data, String key, String iv) throws Exception {
         try {
 
-            //"算法/模式/补码方式"NoPadding PkcsPadding
+            //"Algorithm/Mode/Complementary Code Method"NoPadding PkcsPadding
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             int blockSize = cipher.getBlockSize();
 
@@ -74,12 +74,12 @@ public class AesEncryptUtil {
     }
 
     /**
-     * 解密方法
+     * Decryption method
      *
-     * @param data 要解密的数据
-     * @param key  解密key
-     * @param iv   解密iv
-     * @return 解密的结果
+     * @param data data to decrypt
+     * @param key decryption key
+     * @param iv decrypt iv
+     * @return decrypted result
      * @throws Exception
      */
     public static String desEncrypt(String data, String key, String iv) throws Exception {
@@ -102,7 +102,7 @@ public class AesEncryptUtil {
     }
 
     /**
-     * 使用默认的key和iv加密
+     * Use default key and iv encryption
      *
      * @param data
      * @return
@@ -113,7 +113,7 @@ public class AesEncryptUtil {
     }
 
     /**
-     * 使用默认的key和iv解密
+     * Decrypt using default key and iv
      *
      * @param data
      * @return

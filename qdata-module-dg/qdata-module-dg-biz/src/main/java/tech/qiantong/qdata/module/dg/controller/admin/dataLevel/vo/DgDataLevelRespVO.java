@@ -26,7 +26,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 数据分级 Response VO 对象 DG_DATA_LEVEL
+ * Data Level Response VO - DG_DATA_LEVEL
  *
  * @author qdata
  * @date 2026-04-03

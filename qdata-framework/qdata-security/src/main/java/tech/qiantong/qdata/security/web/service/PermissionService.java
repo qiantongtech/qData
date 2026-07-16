@@ -30,7 +30,7 @@ import tech.qiantong.qdata.security.context.PermissionContextHolder;
 import java.util.Set;
 
 /**
- * 自定义权限实现，ss取自SpringSecurity首字母
+ * Custom permission implementation, ss is taken from the first letter of SpringSecurity
  *
  * @author qdata
  */
@@ -38,10 +38,10 @@ import java.util.Set;
 public class PermissionService
 {
     /**
-     * 验证用户是否具备某权限
+     * Verify whether the user has certain permissions
      *
-     * @param permission 权限字符串
-     * @return 用户是否具备某权限
+     * @param permission permission string
+     * @return Whether the user has certain permissions
      */
     public boolean hasPermi(String permission)
     {
@@ -59,10 +59,10 @@ public class PermissionService
     }
 
     /**
-     * 验证用户是否不具备某权限，与 hasPermi逻辑相反
+     * Verify whether the user does not have certain permissions, which is the opposite logic of hasPermi
      *
-     * @param permission 权限字符串
-     * @return 用户是否不具备某权限
+     * @param permission permission string
+     * @return Whether the user does not have certain permissions
      */
     public boolean lacksPermi(String permission)
     {
@@ -70,10 +70,10 @@ public class PermissionService
     }
 
     /**
-     * 验证用户是否具有以下任意一个权限
+     * Verify whether the user has any of the following permissions
      *
-     * @param permissions 以 PERMISSION_DELIMETER 为分隔符的权限列表
-     * @return 用户是否具有以下任意一个权限
+     * @param permissions Permission list separated by PERMISSION_DELIMETER
+     * @return Whether the user has any of the following permissions
      */
     public boolean hasAnyPermi(String permissions)
     {
@@ -99,10 +99,10 @@ public class PermissionService
     }
 
     /**
-     * 判断用户是否拥有某个角色
+     * Determine whether the user has a specified role
      *
-     * @param role 角色字符串
-     * @return 用户是否具备某角色
+     * @param role role string
+     * @return Whether the user has a certain role
      */
     public boolean hasRole(String role)
     {
@@ -127,10 +127,10 @@ public class PermissionService
     }
 
     /**
-     * 验证用户是否不具备某角色，与 isRole逻辑相反。
+     * Verify whether the user does not have a certain role, which is the opposite logic of isRole.
      *
-     * @param role 角色名称
-     * @return 用户是否不具备某角色
+     * @param role role name
+     * @return Whether the user does not have a certain role
      */
     public boolean lacksRole(String role)
     {
@@ -138,10 +138,10 @@ public class PermissionService
     }
 
     /**
-     * 验证用户是否具有以下任意一个角色
+     * Verify that the user has any of the following roles
      *
-     * @param roles 以 ROLE_NAMES_DELIMETER 为分隔符的角色列表
-     * @return 用户是否具有以下任意一个角色
+     * @param roles A list of roles separated by ROLE_NAMES_DELIMETER
+     * @return Whether the user has any of the following roles
      */
     public boolean hasAnyRoles(String roles)
     {
@@ -165,11 +165,11 @@ public class PermissionService
     }
 
     /**
-     * 判断是否包含权限
+     * Determine whether permissions are included
      *
-     * @param permissions 权限列表
-     * @param permission 权限字符串
-     * @return 用户是否具备某权限
+     * @param permissions permission list
+     * @param permission permission string
+     * @return Whether the user has certain permissions
      */
     private boolean hasPermissions(Set<String> permissions, String permission)
     {

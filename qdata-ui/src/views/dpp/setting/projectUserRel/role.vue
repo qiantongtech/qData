@@ -77,7 +77,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button> -->
+        <!-- <el-button type="primary" icon="Search" @click="handleQuery">Search</el-button> -->
         <el-button
           plain
           type="primary"
@@ -125,7 +125,7 @@
       ></right-toolbar>
     </div>
 
-    <!-- 表格数据 -->
+    <!-- tabular data -->
     <el-table
       stripe
       v-loading="loading"
@@ -234,7 +234,7 @@
     />
   </div>
 
-  <!-- 新增或修改角色配置对话框 -->
+  <!-- Add or modify role configuration dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -354,7 +354,7 @@
     </template>
   </el-dialog>
 
-  <!-- 分配角色数据权限对话框 -->
+  <!-- Assign role data permissions dialog box -->
   <el-dialog
     :title="title"
     v-model="openDataScope"
@@ -469,7 +469,7 @@ const openDataScope = ref(false);
 const menuRef = ref(null);
 const deptRef = ref(null);
 const expandedKeys = ref([]);
-/** 数据范围选项*/
+/** Data range options*/
 const dataScopeOptions = computed(() => [
   { value: "1", label: td("dpp.setting.projectUserRel.allDataScope") },
   { value: "2", label: td("dpp.setting.projectUserRel.customDataScope") },
@@ -502,6 +502,11 @@ const data = reactive({
         message: td("dpp.setting.projectUserRel.roleKeyRequired"),
         trigger: "blur",
       },
+      {
+        pattern: /^[a-zA-Z0-9_:]+$/,
+        message: td("dpp.setting.projectUserRel.roleKeyInvalid", "权限字符仅支持字母、数字、下划线和冒号"),
+        trigger: "blur",
+      },
     ],
     roleSort: [
       {
@@ -509,12 +514,22 @@ const data = reactive({
         message: td("dpp.setting.projectUserRel.roleSortRequired"),
         trigger: "blur",
       },
+      {
+        validator: (_rule, value, callback) => {
+          if (!Number.isInteger(Number(value)) || Number(value) < 0) {
+            callback(new Error(td("dpp.setting.projectUserRel.roleSortInvalid", "显示顺序不合法，请输入非负整数")));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur",
+      },
     ],
   },
 });
 
 const { queryParams, form, rules } = toRefs(data);
-// 监听 userStore 中的 projectId 变化
+// Monitor projectId changes in userStore
 watch(
   () => userStore.projectId,
   (newValue, oldValue) => {
@@ -525,7 +540,7 @@ watch(
   },
   { immediate: true }
 );
-/** 查询角色列表 */
+/** Query role list */
 function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
@@ -539,20 +554,20 @@ function getList() {
   }
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const roleIds = row.roleId || ids.value;
   proxy.$modal
@@ -572,7 +587,7 @@ function handleDelete(row) {
     .catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "system/role/export",
@@ -583,14 +598,14 @@ function handleExport() {
   );
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.roleId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 角色状态修改 */
+/** Character status modification */
 function handleStatusChange(row) {
   let text =
     row.status === "0"
@@ -619,7 +634,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** 更多操作 */
+/** More actions */
 function handleCommand(command, row) {
   switch (command) {
     case "handleDataScope":
@@ -633,12 +648,12 @@ function handleCommand(command, row) {
   }
 }
 
-/** 分配用户 */
+/** Assign users */
 function handleAuthUser(row) {
   router.push("/system/role-auth/user/" + row.roleId);
 }
 
-/** 查询菜单树结构 */
+/** Query menu tree structure */
 function getMenuTreeselect() {
   menuTreeselect().then((response) => {
     menuOptions.value = response.data;
@@ -646,17 +661,17 @@ function getMenuTreeselect() {
   });
 }
 
-/** 所有部门节点数据 */
+/** All department node data */
 function getDeptAllCheckedKeys() {
-  // 目前被选中的部门节点
+  // The currently selected department node
   let checkedKeys = deptRef.value.getCheckedKeys();
-  // 半选中的部门节点
+  // Half-selected department node
   let halfCheckedKeys = deptRef.value.getHalfCheckedKeys();
   checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
   return checkedKeys;
 }
 
-/** 重置新增的表单以及其他数据  */
+/** Reset newly added forms and other data  */
 function reset() {
   if (menuRef.value != undefined) {
     menuRef.value.setCheckedKeys([]);
@@ -681,7 +696,7 @@ function reset() {
   proxy.resetForm("roleRef");
 }
 
-/** 新增角色 */
+/** Add new role */
 function handleAdd() {
   reset();
   getMenuTreeselect();
@@ -689,7 +704,7 @@ function handleAdd() {
   title.value = td("dpp.setting.projectUserRel.addRole", "新增角色");
 }
 
-/** 修改角色 */
+/** Modify role */
 function handleUpdate(row) {
   reset();
   const roleId = row.roleId || ids.value;
@@ -712,7 +727,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 根据角色ID查询菜单树结构 */
+/** Query the menu tree structure based on role ID */
 function getRoleMenuTreeselect(roleId) {
   return roleMenuTreeselectDpp(roleId).then((response) => {
     menuOptions.value = response.menus;
@@ -722,7 +737,7 @@ function getRoleMenuTreeselect(roleId) {
   });
 }
 
-/** 根据角色ID查询部门树结构 */
+/** Query department tree structure based on role ID */
 function getDeptTree(roleId) {
   return deptTreeSelect(roleId).then((response) => {
     deptOptions.value = response.depts;
@@ -730,7 +745,7 @@ function getDeptTree(roleId) {
   });
 }
 
-/** 树权限（展开/折叠）*/
+/** Tree permissions (expand/collapse)*/
 function handleCheckedTreeExpand(value, type) {
   if (type == "menu") {
     let treeList = menuOptions.value;
@@ -745,7 +760,7 @@ function handleCheckedTreeExpand(value, type) {
   }
 }
 
-/** 树权限（全选/全不选） */
+/** Tree permissions (select all/unselect all) */
 function handleCheckedTreeNodeAll(value, type) {
   if (type == "menu") {
     menuRef.value.setCheckedNodes(value ? menuOptions.value : []);
@@ -754,7 +769,7 @@ function handleCheckedTreeNodeAll(value, type) {
   }
 }
 
-/** 树权限（父子联动） */
+/** Tree permissions (parent-child linkage) */
 function handleCheckedTreeConnect(value, type) {
   if (type == "menu") {
     form.value.menuCheckStrictly = value ? true : false;
@@ -763,17 +778,17 @@ function handleCheckedTreeConnect(value, type) {
   }
 }
 
-/** 所有菜单节点数据 */
+/** All menu node data */
 function getMenuAllCheckedKeys() {
-  // 目前被选中的菜单节点
+  // The currently selected menu node
   let checkedKeys = menuRef.value.getCheckedKeys();
-  // 半选中的菜单节点
+  // Half-selected menu node
   let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
   checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
   return checkedKeys;
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["roleRef"].validate((valid) => {
     if (valid) {
@@ -798,20 +813,20 @@ function submitForm() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 选择角色权限范围触发 */
+/** Select role permission scope to trigger */
 function dataScopeSelectChange(value) {
   if (value !== "2") {
     deptRef.value.setCheckedKeys([]);
   }
 }
 
-/** 分配数据权限操作 */
+/** Assign data permission actions */
 function handleDataScope(row) {
   reset();
   const deptTreeSelect = getDeptTree(row.roleId);
@@ -834,7 +849,7 @@ function handleDataScope(row) {
   });
 }
 
-/** 提交按钮（数据权限） */
+/** Submit button (data permissions) */
 function submitDataScope() {
   if (form.value.roleId != undefined) {
     form.value.deptIds = getDeptAllCheckedKeys();
@@ -846,7 +861,7 @@ function submitDataScope() {
   }
 }
 
-/** 取消按钮（数据权限）*/
+/** Cancel button (data permissions)*/
 function cancelDataScope() {
   openDataScope.value = false;
   reset();

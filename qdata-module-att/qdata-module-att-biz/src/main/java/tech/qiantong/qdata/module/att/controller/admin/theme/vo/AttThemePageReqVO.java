@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 主题 Request VO 对象 ATT_THEME
+ * Theme Request VO ATT_THEME
  *
  * @author qdata
  * @date 2025-01-20

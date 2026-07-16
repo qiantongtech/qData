@@ -36,7 +36,7 @@ import java.util.*;
 
 /**
  * <P>
- * 用途:EXCEL输入组件
+ * Purpose: Excel input component
  * </p>
  *
  * @author: FXB
@@ -46,12 +46,12 @@ public class ExcelReaderComponent implements ComponentItem {
     @Override
     public Map<String, Object> parse(Map<String, Object> params) {
         Map<String, Object> taskParams = new LinkedHashMap<>();
-        taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>())); // 默认空列表
-        taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>())); // 默认空列表
-        taskParams.put("customConfig", params.getOrDefault("customConfig", 1)); // 默认写死1
-        taskParams.put("xms", params.getOrDefault("xms", 1)); // 默认1
-        taskParams.put("xmx", params.getOrDefault("xmx", 1)); // 默认1
-        taskParams.put("json", buildJson(params)); // 默认空的JSON字符串
+        taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>())); // Default empty list
+        taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>())); // Default empty list
+        taskParams.put("customConfig", params.getOrDefault("customConfig", 1)); // Default fixed to 1
+        taskParams.put("xms", params.getOrDefault("xms", 1)); // Default 1
+        taskParams.put("xmx", params.getOrDefault("xmx", 1)); // Default 1
+        taskParams.put("json", buildJson(params)); // Default empty JSON string
         return taskParams;
     }
 
@@ -63,43 +63,43 @@ public class ExcelReaderComponent implements ComponentItem {
 
     public static String buildJson(Map<String, Object> taskParams) {
 
-        // 创建最外层的 jobJson Map
+        // Create outermost jobJson Map
         Map<String, Object> jobJson = new HashMap<>();
 
-        // 设置 job 相关的 setting 配置
+        // Set job-related setting config
         Map<String, Object> setting = new HashMap<>();
 
-        // speed 配置，默认值已直接赋予
+        // Speed config, default values assigned directly
         Map<String, Object> speed = new HashMap<>();
-        speed.put("channel", 1);  // 默认值
-        speed.put("bytes", 0);    // 默认值
+        speed.put("channel", 1);  // Default value
+        speed.put("bytes", 0);    // Default value
         setting.put("speed", speed);
 
-        // errorLimit 配置，默认值已直接赋予
+        // ErrorLimit config, default values assigned directly
         Map<String, Object> errorLimit = new HashMap<>();
-        errorLimit.put("record", 999999999);  // 默认值
+        errorLimit.put("record", 999999999);  // Default value
         setting.put("errorLimit", errorLimit);
 
-        // restore 配置，默认值已直接赋予
+        // Restore config, default values assigned directly
         Map<String, Object> restore = new HashMap<>();
-        restore.put("maxRowNumForCheckpoint", 0);   // 默认值
-        restore.put("isRestore", false);            // 默认值
-        restore.put("restoreColumnName", "");       // 默认值
-        restore.put("restoreColumnIndex", 0);       // 默认值
+        restore.put("maxRowNumForCheckpoint", 0);   // Default value
+        restore.put("isRestore", false);            // Default value
+        restore.put("restoreColumnName", "");       // Default value
+        restore.put("restoreColumnIndex", 0);       // Default value
         setting.put("restore", restore);
 
-        // log 配置，默认值已直接赋予
+        // Log config, default values assigned directly
         Map<String, Object> log = new HashMap<>();
-        log.put("isLogger", false);  // 默认值
-        log.put("level", "debug");   // 默认值
-        log.put("path", "");         // 默认值
-        log.put("pattern", "");      // 默认值
+        log.put("isLogger", false);  // Default value
+        log.put("level", "debug");   // Default value
+        log.put("path", "");         // Default value
+        log.put("pattern", "");      // Default value
         setting.put("log", log);
 
         jobJson.put("setting", setting);
 
 
-        //输入writerDatasource
+        //Input writerDatasource
         Map<String, Object> writerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "writerDatasource");
 
         DbQueryProperty writerProperty = MD5Util.buildJobDatasource(writerDatasource);
@@ -110,11 +110,11 @@ public class ExcelReaderComponent implements ComponentItem {
         Object target_columns = MapUtils.getObject(taskParams, "target_columns");
         String writeMode = "insert";
 
-        // 创建 job 相关的 content 配置
+        // Create job-related content config
         List<Map<String, Object>> content = new ArrayList<>();
         Map<String, Object> contentItem = new HashMap<>();
 
-        // reader 配置
+        // Reader config
         Map<String, Object> reader = new HashMap<>();
         reader.put("name", "txtfilereader");
         Map<String, Object> readerParameter = new HashMap<>();
@@ -124,13 +124,13 @@ public class ExcelReaderComponent implements ComponentItem {
         readerParameter.put("fieldDelimiter", ",");
         reader.put("parameter", readerParameter);
 
-        // writer 配置
+        // Writer config
         Map<String, Object> writer = new HashMap<>();
         writer.put("name", writerProperty.trainToJdbcWriterName());
         Map<String, Object> writerParameter = new HashMap<>();
         writerParameter.put("username", writerProperty.getUsername());
         writerParameter.put("password", writerProperty.getPassword());
-        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // 默认1024
+        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // Default 1024
         //
         writerParameter.put("writeMode", writeMode);
         writerParameter.put("column", target_columns);
@@ -142,7 +142,7 @@ public class ExcelReaderComponent implements ComponentItem {
         writerParameter.put("connection", writerConnection);
         writer.put("parameter", writerParameter);
 
-        // 将 reader 和 writer 添加到 content 中
+        // Add reader and writer to content
         contentItem.put("reader", reader);
         contentItem.put("writer", writer);
         content.add(contentItem);
@@ -150,23 +150,23 @@ public class ExcelReaderComponent implements ComponentItem {
         jobJson.put("content", content);
         Map<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("job", jobJson);
-        // 转换为 JSON 字符串并返回
+        // Convert to JSON string and return
         return JSON.toJSONString(objectObjectHashMap);
     }
 
     @Override
     public Map<String, Object> parse2(String nodeCode, Integer nodeVersion, TaskComponentTypeEnum componentType, Map<String, Object> taskParams, String resourceUrl, List<DsResource> resourceList) {
-        // reader 配置
+        // Reader config
         Map<String, Object> reader = new HashMap<>();
         reader.put("nodeCode", nodeCode);
         reader.put("nodeVersion", nodeVersion);
         reader.put("componentType", componentType.getCode());
 
-        //参数
+        //Parameters
         Map<String, Object> parameter = new HashMap<>();
         reader.put("parameter", parameter);
 
-        //复制文件到静态资源中
+        //Copy file to static resources
 //        String path = resourceUrl + DateUtil.format(new Date(), "yyyyMMdd") + File.separator + nodeCode + ".csv";
 //        String csvFile = (String) taskParams.get("csvFile");
 //        FileUtil.copy(csvFile, path, true);

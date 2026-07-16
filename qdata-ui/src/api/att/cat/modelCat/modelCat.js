@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询逻辑模型类目管理列表
+// Query the logical model category management list
 export function listAttModelCat(query) {
   return request({
     url: '/att/modelCat/list',
@@ -27,7 +27,7 @@ export function listAttModelCat(query) {
   })
 }
 
-// 查询逻辑模型类目管理详细
+// Query logical model category management details
 export function getAttModelCat(ID) {
   return request({
     url: '/att/modelCat/' + ID,
@@ -35,7 +35,7 @@ export function getAttModelCat(ID) {
   })
 }
 
-// 新增逻辑模型类目管理
+// Added logical model category management
 export function addAttModelCat(data) {
   return request({
     url: '/att/modelCat',
@@ -44,7 +44,7 @@ export function addAttModelCat(data) {
   })
 }
 
-// 修改逻辑模型类目管理
+// Modify logical model category management
 export function updateAttModelCat(data) {
   return request({
     url: '/att/modelCat',
@@ -53,7 +53,7 @@ export function updateAttModelCat(data) {
   })
 }
 
-// 删除逻辑模型类目管理
+// Delete logical model category management
 export function delAttModelCat(ID) {
   return request({
     url: '/att/modelCat/' + ID,

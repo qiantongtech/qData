@@ -9,7 +9,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.sensitiveLevel.DgSensitiveLe
 import java.util.Collection;
 
 /**
- * 敏感等级Service接口
+ * Sensitive Level Service Interface
  *
  * @author Chaos
  * @date 2025-01-21
@@ -17,48 +17,48 @@ import java.util.Collection;
 public interface IDgSensitiveLevelService extends IService<DgSensitiveLevelDO> {
 
     /**
-     * 获得敏感等级分页列表
+     * Get sensitive level paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 敏感等级分页列表
+     * @param pageReqVO Pagination request
+     * @return Sensitive level paginated list
      */
     PageResult<DgSensitiveLevelDO> getDgSensitiveLevelPage(DgSensitiveLevelPageReqVO pageReqVO);
 
     /**
-     * 创建敏感等级
+     * Create sensitive level
      *
-     * @param createReqVO 敏感等级信息
-     * @return 敏感等级编号
+     * @param createReqVO Sensitive level information
+     * @return Sensitive level ID
      */
     Long createDgSensitiveLevel(DgSensitiveLevelSaveReqVO createReqVO);
 
     /**
-     * 更新敏感等级
+     * Update sensitive level
      *
-     * @param updateReqVO 敏感等级信息
+     * @param updateReqVO Sensitive level information
      */
     int updateDgSensitiveLevel(DgSensitiveLevelSaveReqVO updateReqVO);
 
     /**
-     * 删除敏感等级
+     * Delete sensitive level
      *
-     * @param idList 敏感等级编号
+     * @param idList Sensitive level IDs
      */
     int removeDgSensitiveLevel(Collection<Long> idList);
 
     /**
-     * 获得敏感等级详情
+     * Get sensitive level details
      *
-     * @param id 敏感等级编号
-     * @return 敏感等级
+     * @param id Sensitive level ID
+     * @return Sensitive level
      */
     DgSensitiveLevelDO getDgSensitiveLevelById(Long id);
 
     /**
-     * 修改状态
+     * Update status
      *
-     * @param id     主键
-     * @param status 状态值
+     * @param id     Primary key
+     * @param status Status value
      * @return
      */
     Boolean updateStatus(Long id, Long status);

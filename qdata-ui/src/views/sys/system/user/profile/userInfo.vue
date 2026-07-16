@@ -60,7 +60,7 @@ const rules = ref({
   phonenumber: [{ required: true, message: td('sys.system.userInfo.phoneRequired'), trigger: "blur" }, { pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: td('sys.system.userInfo.phoneFormat'), trigger: "blur" }],
 });
 
-/** 提交按钮 */
+/** submit button */
 function submit() {
   proxy.$refs.userRef.validate(valid => {
     if (valid) {
@@ -73,12 +73,12 @@ function submit() {
   });
 };
 
-/** 关闭按钮 */
+/** close button */
 function close() {
   proxy.$tab.closePage();
 };
 
-// 回显当前登录用户信息
+// Return current logged in user information
 watch(() => props.user, user => {
   if (user) {
     form.value = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex };

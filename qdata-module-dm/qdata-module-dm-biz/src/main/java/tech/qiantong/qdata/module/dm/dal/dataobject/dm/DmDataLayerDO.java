@@ -25,14 +25,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数仓分层管理 DO 对象 DM_DATA_LAYER
+ * Data Warehouse Layer DO - DM_DATA_LAYER
  *
  * @author FXB
  * @date 2026-03-24
  */
 @Data
 @TableName(value = "DM_DATA_LAYER")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DM_DATA_LAYER_seq")
 @Builder
 @NoArgsConstructor
@@ -45,30 +45,30 @@ public class DmDataLayerDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 英文缩写 */
+    /** English Abbreviation */
     private String engName;
 
-    /** 负责人ID */
+    /** Owner User ID */
     private Long ownerUserId;
 
-    /** 分类 */
+    /** Category */
     private String category;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 
     /**
-     * 统计数量
+     * Count
      */
     @TableField(exist = false)
     private Long num;

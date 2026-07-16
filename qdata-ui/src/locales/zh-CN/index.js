@@ -1,4 +1,4 @@
-// 简体中文语言包入口
+// Simplified Chinese language pack entrance
 import common from './common'
 import login from './login'
 import router from './router'

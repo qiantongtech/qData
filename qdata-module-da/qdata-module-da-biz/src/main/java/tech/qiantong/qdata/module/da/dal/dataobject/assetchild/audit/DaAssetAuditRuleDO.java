@@ -25,14 +25,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据资产质量结果记录 DO 对象 DA_ASSET_AUDIT_RULE
+ * Data Asset Quality Result Record DO - DA_ASSET_AUDIT_RULE
  *
  * @author qdata
  * @date 2025-05-09
  */
 @Data
 @TableName(value = "DA_ASSET_AUDIT_RULE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_AUDIT_RULE_seq")
 @Builder
 @NoArgsConstructor
@@ -46,52 +46,52 @@ public class DaAssetAuditRuleDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产ID */
+    /** Asset ID */
     private Long assetId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 字段名称/英文名称 */
+    /** Column Name / English Name */
     private String columnName;
 
-    /** 字段注释/中文名称 */
+    /** Column Comment / Chinese Name */
     private String columnComment;
 
-    /** 规则名称 */
+    /** Rule Name */
     private String ruleName;
 
-    /** 质量维度 */
+    /** Quality Dimension */
     private String qualityDim;
 
-    /** 规则类型 */
+    /** Rule Type */
     private String ruleType;
 
-    /** 规则级别 */
+    /** Rule Level */
     private String ruleLevel;
 
-    /** 规则描述 */
+    /** Rule Description */
     private String ruleDescription;
 
-    /** 规则配置 */
+    /** Rule Configuration */
     private String ruleConfig;
 
-    /** 校验总数 */
+    /** Total Check Count */
     private Long totalCount;
 
-    /** 问题数 */
+    /** Issue Count */
     private Long issueCount;
 
-    /** 稽查时间 */
+    /** Audit Time */
     private Date auditTime;
 
-    /** 稽查批次号 */
+    /** Audit Batch Number */
     private String batchNo;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

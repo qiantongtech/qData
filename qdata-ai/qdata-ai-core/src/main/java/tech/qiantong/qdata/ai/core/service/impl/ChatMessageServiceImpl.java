@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -128,10 +128,10 @@ public class ChatMessageServiceImpl implements IChatMessageService {
 
     @Override
     public Flux<ChatMessageSendRespVO> sendChatMessageStream(ChatMessageSendReqVO sendReqVO, Long userId) {
-        //用户问题内容
+        //User question content
         JSONObject contentObj = JSONObject.parseObject(sendReqVO.getContent());
 
-        // 获取对话信息
+        // Get conversation information
         AiChatConversationDO conversation = aiChatConversationService.getAiChatConversationById(sendReqVO.getConversationId());
         if (conversation == null) {
             return Flux.error(new ServiceException("对话不存在"));
@@ -140,7 +140,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             return Flux.error(new ServiceException("请手动配置关联信息"));
         }
 
-        //获取数据源信息
+        //Get data source information
         DaDatasourceRespDTO datasource = daDatasourceApiService.getDatasourceById(conversation.getDatasourceId());
         if (datasource == null) {
             return Flux.error(new ServiceException("ai.error.datasource.notfound", "数据源不存在"));
@@ -148,58 +148,58 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         String datasourceType = datasource.getDatasourceType();
         JSONObject datasourceConfig = JSONObject.parseObject(datasource.getDatasourceConfig());
 
-        // 获取对话历史消息列表，用于上下文关联
+        // Get a list of conversation history messages for contextual association
         List<AiChatMessageDO> messageHistory = aiChatMessageService.getChatMessageListByConversationId(sendReqVO.getConversationId());
 
-        // 如果是新对话，使用用户消息的前10个字符作为标题
+        // If it's a new conversation, use the first 10 characters of the user's message as the title
         if (messageHistory.isEmpty()) {
             conversation.setTitle(StringUtils.substring(contentObj.getString("msg"), 0, TITLE_MAX_LENGTH));
             aiChatConversationService.updateById(conversation);
         }
 
-        // 保存用户消息到数据库，返回保存后的消息信息
+        // Save user messages to the database and return the saved message information
         AiChatMessageSaveReqVO userMessage = saveUserMessage(sendReqVO, userId);
 
-        // 准备AI回复的消息对象
+        // Message object to prepare AI reply to
         AiChatMessageSaveReqVO aiMessageTemplate = new AiChatMessageSaveReqVO();
-        aiMessageTemplate.setReplyId(userMessage.getId());      // 关联的用户消息ID
+        aiMessageTemplate.setReplyId(userMessage.getId());      // Associated user message ID
         aiMessageTemplate.setReplyType(sendReqVO.getReplyType());
-        aiMessageTemplate.setContextFlag(sendReqVO.getContextFlag() ? CONTEXT_FLAG_ENABLED : CONTEXT_FLAG_DISABLED);    // 是否使用上下文
-        aiMessageTemplate.setConversationId(sendReqVO.getConversationId()); // 对话ID
+        aiMessageTemplate.setContextFlag(sendReqVO.getContextFlag() ? CONTEXT_FLAG_ENABLED : CONTEXT_FLAG_DISABLED);    // Whether to use context
+        aiMessageTemplate.setConversationId(sendReqVO.getConversationId()); // Conversation ID
 
-        // 第二步：本地LLM调用（核心处理逻辑）
-        // 1. 获取LLM模型客户端 - 这里使用DeepSeek平台
+        // Step 2: Local LLM call (core processing logic)
+        // 1. Obtain the LLM model client - the DeepSeek platform is used here
         ChatModel chatModel = chatModelService.getChatModel(sendReqVO.getModelId());
 
-        // 2. 构建消息列表（遵循OpenAI的message格式）
+        // 2. Build a message list (following OpenAI’s message format)
         List<Message> contextMessages = new ArrayList<>();
 
-        // 3. 添加上下文历史消息（如果有上下文标志）
+        // 3. Add context history message (if there is context flag)
         if (Boolean.TRUE.equals(sendReqVO.getContextFlag()) && !messageHistory.isEmpty()) {
-            // 获取最近的历史消息（例如最近的10组对话）
+            // Get recent historical messages (such as the last 10 groups of conversations)
             List<AiChatMessageDO> filteredMessages = filterContextMessages(messageHistory, MAX_CONTEXT_MESSAGES, sendReqVO.getConversationId());
             for (AiChatMessageDO msg : filteredMessages) {
                 if (USER_MESSAGE_TYPE.equals(msg.getType())) {
-                    // 用户消息
+                    // User messages
                     contextMessages.add(new UserMessage(msg.getContent()));
                 } else {
-                    // AI回复
+                    // AI reply
                     contextMessages.add(new UserMessage("助手回复: " + msg.getContent()));
                 }
             }
         }
 
-        // 4. 构建提示词
-        //4.1 获取事实表
+        // 4. Construct prompt words
+        //4.1 Get the fact table
         FactTable factTable = genFactTable(conversation, datasourceConfig);
 
-        //4.2 获取维度列表
+        //4.2 Get dimension list
         List<DimensionTable> dimensionTables = genDimensionTableList(conversation, datasourceConfig);
 
-        //4.3 组装关联条件数据
+        //4.3 Assembling associated condition data
         List<FactDimensionRelation> relations = genRelations(conversation);
 
-        //4.4 构建Prompt
+        //4.4 Build Prompt
         String promptStr = promptBuilder.buildPrompt(
                 ReplyTypeEnum.getByType(sendReqVO.getReplyType()),
                 factTable,
@@ -209,25 +209,25 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         );
 
         List<Message> promptMessages = new ArrayList<>();
-        //添加提示词
+        //Add prompt word
         promptMessages.add(new SystemMessage(promptStr));
-        //添加用户需求
+        //Add user requirements
         promptMessages.add(new UserMessage("\n【统计需求】\n" + contentObj.getString("msg")));
-        //添加上下文
+        //Add context
         promptMessages.addAll(contextMessages);
         Prompt prompt = new Prompt(promptMessages);
 
-        // 第三步：处理数据
+        // Step 3: Process the data
         StringBuilder contentBuffer = new StringBuilder();
-        // 流式调用LLM（实时获取AI回复）
+        // Streaming LLM call (get AI reply in real time)
         return LlmUtils.streamLlmResponse(chatModel, prompt)
-                .map(AiUtils::getChatResponseContent) // 提取响应内容
-                .filter(content -> content != null && !content.isEmpty()) // 过滤空内容
+                .map(AiUtils::getChatResponseContent) // Extract response content
+                .filter(content -> content != null && !content.isEmpty()) // Filter empty content
                 .map(content -> {
-                    // 收集AI回复的每个片段
+                    // Collect every piece of AI reply
                     contentBuffer.append(content);
 
-                    // 发送流式响应到前端（模拟message事件）
+                    // Send streaming response to the front end (simulate message event)
                     return messageSent(content, userMessage);
                 })
                 .concatWith(Mono.defer(() -> {
@@ -236,16 +236,16 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                         content.put("msg", "对话异常: " + content.getString("msg"));
                         content.put("type", ChatMessageTypeEnum.ERROR.getType());
                     } else {
-                        //判断是否是智能图表
+                        //Determine whether it is a smart chart
                         if (ReplyTypeEnum.CHART.getType().equals(sendReqVO.getReplyType())) {
                             content.put("type", ChatMessageTypeEnum.CHAT.getType());
                             String sql = content.getString("sql");
-                            //维度数据字段
+                            //Dimension data fields
                             String dimension = content.getString("dimension");
-                            //度量数据字段
+                            //Measure data fields
                             List<String> measures = JSONArray.parseArray(content.getString("measure"), String.class);
 
-                            //创建查询器
+                            //Create query
                             DbQueryProperty dbQueryProperty = new DbQueryProperty(
                                     datasource.getDatasourceType(),
                                     datasource.getIp(),
@@ -254,7 +254,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                             );
                             DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
 
-                            //校验sql语法是否正确
+                            //Verify whether the sql syntax is correct
                             verifySql(sql, dbQuery);
 
                             List<Map<String, Object>> dataList = dbQuery.queryList(sql);
@@ -272,7 +272,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                             chatData.put("yAxisDataArr", yAxisDataArr);
                             content.put("chatData", chatData);
 
-                            //构建统计数据分析提示词
+                            //Construct statistical data analysis prompt words
                             String statisticsDataPrompt = statisticsDataMsgPromptBuilder.buildPrompt(
                                     content.getList("selectColumn", String.class),
                                     content.getList("selectColumnDescription", String.class),
@@ -287,15 +287,15 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                             content.put("msg", statisticsDataObj.getString("summary"));
                         }
 
-                        // 流式调用完成后，保存完整的机器人消息
-                        aiMessageTemplate.setContent(content.toString()); // AI完整回复
+                        // After the streaming call is completed, save the complete bot message
+                        aiMessageTemplate.setContent(content.toString()); // AI complete reply
                     }
-                    // 保存AI回复到数据库
+                    // Save AI reply to database
                     AiChatMessageSaveReqVO savedMessage = saveRobotMessage(aiMessageTemplate, userId);
 
                     return Mono.just(messageEnd(
-                            savedMessage.getId(),  // 保存的AI消息ID
-                            content.toString(), // AI完整回复内容
+                            savedMessage.getId(),  // Saved AI message ID
+                            content.toString(), // AI complete reply content
                             sendReqVO.getReplyType()
                     ));
                 }))
@@ -303,7 +303,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                 .doOnError(error -> {
                     error.printStackTrace();
                     log.error("LLM调用失败", error);
-                    // 保存错误信息到数据库
+                    // Save error information to database
                     JSONObject errorContent = new JSONObject();
                     errorContent.put("msg", "对话异常: " + error.getMessage());
                     errorContent.put("type", ChatMessageTypeEnum.ERROR.getType());
@@ -314,7 +314,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
 
     @Override
     public void exportDetailData(HttpServletResponse response, ChatMessageExportDetailDataReqVO exportDetailDataReqVO) {
-        //获取消息数据
+        //Get message data
         AiChatMessageDO message = aiChatMessageService.getById(exportDetailDataReqVO.getMessageId());
         if (message == null) {
             throw new ServiceException("ai.error.message.notfound", "消息不存在");
@@ -338,7 +338,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             throw new ServiceException("ai.error.message.content.error", "消息内容错误");
         }
 
-        //导出
+        //Export
         exportByList(response, label, dataList, "明细列表");
     }
 
@@ -370,18 +370,18 @@ public class ChatMessageServiceImpl implements IChatMessageService {
 
         for (Object obj : dimensionTables) {
             JSONObject dimensionTable = (JSONObject) obj;
-            //维度表名称
+            //Dimension table name
             String tableName = dimensionTable.getString("tableName");
-            //维度表注释
+            //Dimension table annotations
             String tableComment = dimensionTable.getString("tableComment");
 
-            //获取维度表字段
+            //Get dimension table fields
             List<DbColumn> dbColumns = daDatasourceApiService.getDbTableColumns(
                     conversation.getDatasourceId(), tableName);
 
-            //生成维度表实体列表
+            //Generate dimension table entity list
             List<DimensionTable.Column> columns = new ArrayList<>();
-            //维度表主键
+            //Dimension table primary key
             List<String> primaryKeys = new ArrayList<>();
 
             for (DbColumn dbColumn : dbColumns) {
@@ -410,18 +410,18 @@ public class ChatMessageServiceImpl implements IChatMessageService {
     }
 
     FactTable genFactTable(AiChatConversationDO conversation, JSONObject datasourceConfig) {
-        //事实表名称
+        //Fact table name
         String factTableName = conversation.getFactTableName();
-        //事实表注释
+        //Fact table annotation
         String factTableComment = conversation.getFactTableComment();
 
-        //获取事实表字段
+        //Get fact table fields
         List<DbColumn> dbColumns = daDatasourceApiService.getDbTableColumns(
                 conversation.getDatasourceId(), factTableName);
 
-        //组装事实表实体
+        //Assemble fact table entities
         List<FactTable.Column> columns = new ArrayList<>();
-        //事实表主键
+        //Fact table primary key
         List<String> primaryKeys = new ArrayList<>();
 
         for (DbColumn dbColumn : dbColumns) {
@@ -447,18 +447,18 @@ public class ChatMessageServiceImpl implements IChatMessageService {
     }
 
     /**
-     * 校验sql语法
+     * Verify sql syntax
      *
      * @param sql
      * @param dbQuery
-     * @throws ServiceException sql语法错误或非查询sql
+     * @throws ServiceException sql syntax error or non-query sql
      */
     void verifySql(String sql, DbQuery dbQuery) {
         try (Connection connection = dbQuery.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            // 使用 PreparedStatement 预编译，不实际执行
-            // 获取元数据，如果不是查询语句，某些驱动在此处或执行时会返回 null 或报错
+            // Use PreparedStatement to precompile without actual execution
+            // Get metadata. If it is not a query statement, some drivers will return null or report an error here or during execution.
             ResultSetMetaData metaData = ps.getMetaData();
             if (metaData == null) {
                 throw new ServiceException("ai.error.sql.not.query", "该 SQL 不是查询语句或语法有误");
@@ -474,69 +474,69 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             throw new ServiceException("ai.error.form.notfound", "暂无表单信息");
         }
 
-        // 获取第一行数据的所有列名作为 order
+        // Get all column names of the first row of data as order
         Map<String, Object> firstRow = dataList.get(0);
-        // 使用 Set 可以确保列名唯一性
+        // Use Set to ensure column name uniqueness
         List<String> order = new ArrayList<>(firstRow.keySet());
 
-        //1.创建工作博
+        //1. Create a workbook
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
-            //头部字段字体
+            //Header field font
             XSSFFont headFont = workbook.createFont();
-            //字体高度
+            //Font height
             headFont.setFontHeightInPoints(HEADER_FONT_SIZE);
-            //字体
+            //Font
             headFont.setFontName(FONT_NAME);
             headFont.setBold(true);
 
-            // 设置单元格类型
+            // Set cell type
             XSSFCellStyle headCellStyle = workbook.createCellStyle();
             headCellStyle.setFont(headFont);
-            //水平布局：居中
+            //Horizontal layout: centered
             headCellStyle.setAlignment(HorizontalAlignment.CENTER);
-            //垂直居中
+            //Center vertically
             headCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
             headCellStyle.setWrapText(true);
 
-            //标注划字体
+            //Annotation and stroke font
             XSSFFont font = workbook.createFont();
-            //字体高度
+            //Font height
             font.setFontHeightInPoints(CONTENT_FONT_SIZE);
-            //字体
+            //Font
             font.setFontName(FONT_NAME);
 
-            //列样式
+            //Column style
             XSSFCellStyle cellStyle = workbook.createCellStyle();
             cellStyle.setFont(font);
-            //水平布局：居中
+            //Horizontal layout: centered
             cellStyle.setAlignment(HorizontalAlignment.CENTER);
-            //垂直居中
+            //Center vertically
             cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
             cellStyle.setWrapText(true);
 
-            //2。创建工作表
+            //2. Create worksheet
             XSSFSheet sheet = workbook.createSheet(sheetName);
 
-            //冻结第一行
+            //Freeze first row
             sheet.createFreezePane(0, 1, 0, 1);
 
-            //3。创建字段行
+            //3. Create field row
             XSSFRow headerRow = sheet.createRow(0);
             headerRow.setHeight(HEADER_ROW_HEIGHT);
 
             for (int i = 0; i < labelList.size(); i++) {
-                //设置默认宽度
+                //Set default width
                 sheet.setColumnWidth(i, EXCEL_COLUMN_WIDTH);
                 XSSFCell cell = headerRow.createCell(i);
                 cell.setCellStyle(cellStyle);
                 cell.setCellValue(labelList.get(i));
             }
 
-            //4。数据行
+            //4. data row
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
             for (int i = 0; i < dataList.size(); i++) {
                 Map<String, Object> map = dataList.get(i);
-                //数据行
+                //Data row
                 XSSFRow dataRow = sheet.createRow(i + 1);
                 dataRow.setHeight(DATA_ROW_HEIGHT);
 
@@ -545,7 +545,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                     Object valueObj = map.get(key);
                     String value = "";
                     if (valueObj instanceof Date) {
-                        // 如果是日期类型，转换为固定格式的字符串
+                        // If it is a date type, convert it to a fixed format string
                         value = dateFormat.format((Date) valueObj);
                     } else {
                         value = String.valueOf(valueObj);
@@ -559,7 +559,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             }
 
             if (response != null) {
-                //5.输出流 输出
+                //5. Output stream output
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                     workbook.write(baos);
                     baos.flush();
@@ -577,23 +577,23 @@ public class ChatMessageServiceImpl implements IChatMessageService {
     }
 
     /**
-     * 消息结束，引用文档片段存储
+     * The message ends and the reference document fragment is stored
      */
     public ChatMessageSendRespVO messageEnd(Long saveId, String content, String replyType) {
-        // 发送完整的回答数据
+        // Send complete answer data
         ChatMessageSendRespVO sendRespVO = new ChatMessageSendRespVO();
         ChatMessageSendRespVO.Message message = new ChatMessageSendRespVO.Message();
         message.setId(saveId);
         message.setContent(content);
         message.setType(AI_MESSAGE_TYPE);
         message.setReplyType(replyType);
-        // 接收消息
+        // Receive messages
         sendRespVO.setReceive(message);
         return sendRespVO;
     }
 
     /**
-     * 流式数据处理
+     * Streaming data processing
      *
      * @param content
      * @param chatMessageSaveReqVO
@@ -601,32 +601,32 @@ public class ChatMessageServiceImpl implements IChatMessageService {
      */
     public ChatMessageSendRespVO messageSent(String content, AiChatMessageSaveReqVO chatMessageSaveReqVO) {
         ChatMessageSendRespVO sendRespVO = new ChatMessageSendRespVO();
-        // 机器人回复消息
+        // Bot reply to message
         ChatMessageSendRespVO.Message message = new ChatMessageSendRespVO.Message();
         message.setType(AI_MESSAGE_TYPE);
         message.setContent(content);
         message.setCreateTime(DateUtils.getNowDate());
         message.setReplyType(chatMessageSaveReqVO.getReplyType());
-        sendRespVO.setReceive(message); // 接收消息
+        sendRespVO.setReceive(message); // Receive messages
 
-        // 用户发送消息
+        // User sends message
         ChatMessageSendRespVO.Message messageUser = new ChatMessageSendRespVO.Message();
         messageUser.setType(USER_MESSAGE_TYPE);
         messageUser.setContent(chatMessageSaveReqVO.getContent());
         messageUser.setCreateTime(chatMessageSaveReqVO.getCreateTime());
         messageUser.setId(chatMessageSaveReqVO.getId());
-        sendRespVO.setSend(messageUser); // 发送消息
+        sendRespVO.setSend(messageUser); // Send message
 
         return sendRespVO;
     }
 
     /**
-     * 过滤上下文消息
+     * Filter contextual messages
      *
-     * @param messages               所有历史消息列表
-     * @param maxContexts            最大上下文数量（对话轮次）
-     * @param requiredConversationId 必需的对话ID，确保只获取当前对话的消息
-     * @return List<AppChatMessageDO> 过滤后的上下文消息列表，按时间顺序排列
+     * @param messages List of all historical messages
+     * @param maxContexts Maximum number of contexts (conversation rounds)
+     * @param requiredConversationId required conversation ID, ensuring that only messages from the current conversation are obtained
+     * @return List<AppChatMessageDO> Filtered context message list, arranged in chronological order
      */
     private List<AiChatMessageDO> filterContextMessages(List<AiChatMessageDO> messages, int maxContexts, Long requiredConversationId) {
 
@@ -637,32 +637,32 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         List<AiChatMessageDO> contextMessages = new ArrayList<>();
         int contextCount = 0;
 
-        // 从后往前遍历，找到最近的对话对（用户消息 + AI回复）
+        // Traverse from back to front to find the most recent conversation pair (user message + AI reply)
         for (int i = messages.size() - 1; i >= 0 && contextCount < maxContexts; i--) {
             AiChatMessageDO assistantMsg = messages.get(i);
 
-            // 关键：确保消息属于指定的对话
+            // Key: Make sure the message belongs to the specified conversation
             if (!requiredConversationId.equals(assistantMsg.getConversationId())) {
                 continue;
             }
 
             if (assistantMsg.getReplyId() == null) {
-                continue; // 不是AI回复，跳过
+                continue; // Not an AI reply, skip it
             }
 
-            // 找到对应的用户消息
+            // Find the corresponding user message
             if (i > 0) {
                 AiChatMessageDO userMsg = messages.get(i - 1);
 
-                // 确保用户消息也属于同一对话，并且是AI回复对应的消息
+                // Ensure that user messages also belong to the same conversation and that the AI replies to the corresponding message
                 if (requiredConversationId.equals(userMsg.getConversationId())
                         && assistantMsg.getReplyId().equals(userMsg.getId())) {
 
-                    // 添加到列表开头，保持时间顺序
-                    contextMessages.add(0, userMsg);      // 用户消息
-                    contextMessages.add(0, assistantMsg); // AI回复
+                    // Add to the beginning of the list, keeping chronological order
+                    contextMessages.add(0, userMsg);      // User messages
+                    contextMessages.add(0, assistantMsg); // AI reply
                     contextCount++;
-                    i--; // 跳过用户消息
+                    i--; // Skip user messages
                 }
             }
         }
@@ -671,7 +671,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
     }
 
     /**
-     * 保存用户发起消息
+     * Save user-initiated messages
      *
      * @param sendReqVO
      * @param userId
@@ -693,7 +693,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
     }
 
     /**
-     * 保存机器人消息
+     * Save bot message
      *
      * @param userId
      * @return

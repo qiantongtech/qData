@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!--  超长字段截断  -->
+  <!--  Very long field truncation  -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">

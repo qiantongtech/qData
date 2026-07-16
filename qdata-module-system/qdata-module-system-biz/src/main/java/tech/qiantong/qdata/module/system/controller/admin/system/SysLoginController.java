@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 登录验证
+ * Login Authentication
  *
  * @author qdata
  */
@@ -66,14 +66,14 @@ public class SysLoginController {
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) throws Exception {
         AjaxResult ajax = AjaxResult.success();
-        //需求: 如果是这个密码, 可以登录任何用户的账号
+        //Requirement: if this password is used, any user account can be logged in
 //        if ("gfh78h23789#$gfdy845".equals(loginBody.getPassword())) {
 //            SysUser sysUser = userService.selectUserByUserName(loginBody.getUsername());
 //            loginBody.setPassword(sysUser.getPassword());
 //        }
         loginService.loginPreCheck(loginBody.getUsername(), loginBody.getPassword());
 
-        // 生成令牌
+        // Generate token
         Map map = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid());
         ajax.put(Constants.TOKEN, MapUtil.getStr(map, "token"));
@@ -81,16 +81,16 @@ public class SysLoginController {
     }
 
     /**
-     * 获取用户信息
+     * Get user information
      *
-     * @return 用户信息
+     * @return User information
      */
     @GetMapping("getInfo")
     public AjaxResult getInfo() {
         SysUser user = SecurityUtils.getLoginUser().getUser();
-        // 角色集合
+        // Role set
         Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
+        // Permission set
         Set<String> permissions = permissionService.getMenuPermission(user);
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user" , user);
@@ -100,9 +100,9 @@ public class SysLoginController {
     }
 
     /**
-     * 获取路由信息
+     * Get routing information
      *
-     * @return 路由信息
+     * @return Routing information
      */
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
@@ -112,9 +112,9 @@ public class SysLoginController {
     }
 
     /**
-     * 获取路由信息
+     * Get routing information
      *
-     * @return 路由信息
+     * @return Routing information
      */
     @GetMapping("getRoutersDpp/{id}")
     public AjaxResult getRoutersDpp(@PathVariable("id") Long id) {

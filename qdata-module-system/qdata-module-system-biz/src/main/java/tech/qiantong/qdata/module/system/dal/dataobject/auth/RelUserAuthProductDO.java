@@ -24,14 +24,14 @@ import lombok.*;
 
 
 /**
- * 用户与认证中心关系 DO 对象 rel_user_auth_product
+ * User and Authentication Center Relationship DO object rel_user_auth_product
  *
  * @author qdata
  * @date 2024-11-07
  */
 @Data
 @TableName(value = "rel_user_auth_product")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary key in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. For MySQL etc., this can be omitted.
 // @KeySequence("rel_user_auth_product_seq")
 @EqualsAndHashCode(callSuper = false)
 @Builder
@@ -42,13 +42,13 @@ public class RelUserAuthProductDO {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** 用户ID */
+    /** User ID */
     private Long userId;
 
-    /** 统一身份认证id */
+    /** Unified identity authentication ID */
     private String authId;
 
-    /** 认证平台类型 */
+    /** Authentication platform type */
     private Integer authProductType;
 
 

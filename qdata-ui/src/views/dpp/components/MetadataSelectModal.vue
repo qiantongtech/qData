@@ -28,7 +28,7 @@
           />
         </div>
         <div class="module-body infotop technical-info">
-          <!-- 左侧：来源系统树 -->
+          <!-- Left: source phylogenetic tree -->
           <div class="column-box">
             <div class="box-title">{{ td('dpp.metadataSelect.sourceSystem', '来源系统架构') }}</div>
             <div class="box-content">
@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <!-- 中间：表列表 -->
+          <!-- Middle: table list -->
           <div class="column-box">
             <div class="box-title">{{ td('dpp.metadataSelect.tableList', '表列表') }}</div>
             <div class="box-content">
@@ -108,14 +108,14 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "confirm"]);
 
-// --- 状态定义 ---
+// ---State definition ---
 const visible = ref(false);
 const sourceSystemTreeRef = ref(null);
 const tableRef = ref(null);
 
 const selectedTableList = ref([]);
 
-// --- 表列表配置 ---
+// --- Table list configuration ---
 const tableColumns = [
   {
     type: "selection",
@@ -177,12 +177,12 @@ const tableQueryParams = reactive({
   tableName: "",
   tableComment: "",
   keyWord: "",
-  dataType: 1, // 结构化
+  dataType: 1, // structured
   assetType: undefined,
   hideTableIds: props.hideTableIds,
 });
 
-// 监听 hideTableIds 变化
+// Monitor hideTableIds changes
 watch(
   () => props.hideTableIds,
   (val) => {
@@ -190,7 +190,7 @@ watch(
   }
 );
 
-// --- 监听器 ---
+// --- Listener ---
 watch(
   () => props.modelValue,
   (val) => {
@@ -208,10 +208,10 @@ watch(visible, (val) => {
   }
 });
 
-// --- 方法定义 ---
+// ---Method definition ---
 
 /**
- * 初始化弹窗状态
+ * Initialize pop-up window state
  */
 const initDialog = () => {
   resetState();
@@ -222,7 +222,7 @@ const initDialog = () => {
 };
 
 /**
- * 重置状态
+ * reset state
  */
 const resetState = () => {
   selectedTableList.value = [];
@@ -236,7 +236,7 @@ const resetState = () => {
 };
 
 /**
- * 外部调用的显示方法
+ * Display method of external call
  */
 const show = () => {
   visible.value = true;
@@ -244,27 +244,27 @@ const show = () => {
 };
 
 /**
- * 输入处理（防抖搜索）
+ * Input processing (anti-shake search)
  */
 const handleInput = debounce(() => {
   tableRef.value?.resetQuery();
 }, 500);
 
 /**
- * 搜索处理（立即搜索）
+ * Search Processing (Search Now)
  */
 const handleSearch = () => {
   handleInput.cancel();
   tableRef.value?.resetQuery();
 };
 
-// 组件卸载前清除防抖计时器
+// Clear the anti-shake timer before component uninstallation
 onBeforeUnmount(() => {
   handleInput.cancel();
 });
 
 /**
- * 树节点点击处理
+ * Tree node click processing
  */
 const handleNodeClick = (data) => {
   tableQueryParams.sourceSystemId = undefined;
@@ -287,25 +287,25 @@ const handleNodeClick = (data) => {
 };
 
 /**
- * 表勾选变化（多选）
+ * Table check changes (multiple selections)
  */
 const handleSelectionChange = (selection) => {
   selectedTableList.value = selection;
 };
 
 /**
- * 取消处理
+ * Cancel processing
  */
 const handleCancel = () => {
   visible.value = false;
 };
 
 /**
- * 确认处理
+ * Confirm processing
  */
 const handleConfirm = () => {
   if (selectedTableList.value.length > 0) {
-    // 仅返回必要的标准字段，避免携带冗余的 API 内部字段
+    // Only return necessary standard fields to avoid carrying redundant API internal fields
     const results = selectedTableList.value.map((table) => ({
       id: table.id,
       tableName: table.tableName,
@@ -319,7 +319,7 @@ const handleConfirm = () => {
   }
 };
 
-// 暴露方法给父组件
+// Expose methods to parent component
 defineExpose({
   show,
 });

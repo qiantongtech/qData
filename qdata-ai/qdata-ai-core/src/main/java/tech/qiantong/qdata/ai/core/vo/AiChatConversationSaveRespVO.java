@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <P>
- * 用途:会话创建
+ * Purpose: session creation
  * </p>
  *
  * @author: FXB

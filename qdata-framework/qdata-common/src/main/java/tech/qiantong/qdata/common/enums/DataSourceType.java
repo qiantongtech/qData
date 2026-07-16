@@ -19,19 +19,19 @@
 package tech.qiantong.qdata.common.enums;
 
 /**
- * 数据源
+ * Data source
  *
  * @author qdata
  */
 public enum DataSourceType
 {
     /**
-     * 主库
+     * Primary database
      */
     MASTER,
 
     /**
-     * 从库
+     * Replica database
      */
     SLAVE
 }

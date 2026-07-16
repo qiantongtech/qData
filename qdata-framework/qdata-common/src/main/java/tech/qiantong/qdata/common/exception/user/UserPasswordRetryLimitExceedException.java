@@ -19,7 +19,7 @@
 package tech.qiantong.qdata.common.exception.user;
 
 /**
- * 用户错误最大次数异常类
+ * Maximum number of user errors exception class
  *
  * @author qdata
  */

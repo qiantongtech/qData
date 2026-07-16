@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 脱敏白名单与用户关联关系 Request VO 对象 DG_DESENSITIZE_USER_REL
+ * Desensitize Whitelist User Relationship Request VO Object DG_DESENSITIZE_USER_REL
  *
  * @author qdata
  * @date 2026-04-09

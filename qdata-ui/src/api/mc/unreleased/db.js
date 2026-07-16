@@ -1,6 +1,6 @@
 import request from '@/utils/request.js';
 
-// 查询库元数据列表
+// Query library metadata list
 export function listDb(query) {
     return request({
         url: '/mc/db/list',
@@ -9,7 +9,7 @@ export function listDb(query) {
     });
 }
 
-// 查询库元数据详细
+// Query library metadata details
 export function getDb(id) {
     return request({
         url: '/mc/db/' + id,
@@ -17,7 +17,7 @@ export function getDb(id) {
     });
 }
 
-// 新增库元数据
+// Add new library metadata
 export function addDb(data) {
     return request({
         url: '/mc/db',
@@ -26,7 +26,7 @@ export function addDb(data) {
     });
 }
 
-// 修改库元数据
+// Modify library metadata
 export function updateDb(data) {
     return request({
         url: '/mc/db',
@@ -35,7 +35,7 @@ export function updateDb(data) {
     });
 }
 
-// 删除库元数据
+// Delete library metadata
 export function delDb(id) {
     return request({
         url: '/mc/unreleased/db/' + id,
@@ -43,7 +43,7 @@ export function delDb(id) {
     });
 }
 
-// 修改库元数据状态
+// Modify library metadata status
 export function updateDbStatus(data) {
     return request({
         url: '/mc/unreleased/db/toggle',
@@ -52,7 +52,7 @@ export function updateDbStatus(data) {
     });
 }
 
-// 获取库元数据可删除的列
+// Get the deleteable columns of library metadata
 export function batchDeleteCheck(id) {
     return request({
         url: '/mc/unreleased/db/batchDeleteCheck/' + id,

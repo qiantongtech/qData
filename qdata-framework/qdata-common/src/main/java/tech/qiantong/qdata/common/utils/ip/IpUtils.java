@@ -26,23 +26,23 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 获取IP方法
+ * Get IP method
  *
  * @author qdata
  */
 public class IpUtils
 {
     public final static String REGX_0_255 = "(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)";
-    // 匹配 ip
+    // Match ip
     public final static String REGX_IP = "((" + REGX_0_255 + "\\.){3}" + REGX_0_255 + ")";
     public final static String REGX_IP_WILDCARD = "(((\\*\\.){3}\\*)|(" + REGX_0_255 + "(\\.\\*){3})|(" + REGX_0_255 + "\\." + REGX_0_255 + ")(\\.\\*){2}" + "|((" + REGX_0_255 + "\\.){3}\\*))";
-    // 匹配网段
+    // Match network segment
     public final static String REGX_IP_SEG = "(" + REGX_IP + "\\-" + REGX_IP + ")";
 
     /**
-     * 获取客户端IP
+     * Get client IP
      *
-     * @return IP地址
+     * @return IP address
      */
     public static String getIpAddr()
     {
@@ -50,10 +50,10 @@ public class IpUtils
     }
 
     /**
-     * 获取客户端IP
+     * Get client IP
      *
-     * @param request 请求对象
-     * @return IP地址
+     * @param request request object
+     * @return IP address
      */
     public static String getIpAddr(HttpServletRequest request)
     {
@@ -88,10 +88,10 @@ public class IpUtils
     }
 
     /**
-     * 检查是否为内部IP地址
+     * Check if it is an internal IP address
      *
-     * @param ip IP地址
-     * @return 结果
+     * @param ip IP address
+     * @return result
      */
     public static boolean internalIp(String ip)
     {
@@ -100,10 +100,10 @@ public class IpUtils
     }
 
     /**
-     * 检查是否为内部IP地址
+     * Check if it is an internal IP address
      *
-     * @param addr byte地址
-     * @return 结果
+     * @param addr byte address
+     * @return result
      */
     private static boolean internalIp(byte[] addr)
     {
@@ -143,10 +143,10 @@ public class IpUtils
     }
 
     /**
-     * 将IPv4地址转换成字节
+     * Convert IPv4 address to bytes
      *
-     * @param text IPv4地址
-     * @return byte 字节
+     * @param text IPv4 address
+     * @return byte byte
      */
     public static byte[] textToNumericFormatV4(String text)
     {
@@ -231,9 +231,9 @@ public class IpUtils
     }
 
     /**
-     * 获取IP地址
+     * Get IP address
      *
-     * @return 本地IP地址
+     * @return local IP address
      */
     public static String getHostIp()
     {
@@ -248,9 +248,9 @@ public class IpUtils
     }
 
     /**
-     * 获取主机名
+     * Get hostname
      *
-     * @return 本地主机名
+     * @return local host name
      */
     public static String getHostName()
     {
@@ -265,14 +265,14 @@ public class IpUtils
     }
 
     /**
-     * 从多级反向代理中获得第一个非unknown IP地址
+     * Get the first non-unknown IP address from a multi-level reverse proxy
      *
-     * @param ip 获得的IP地址
-     * @return 第一个非unknown IP地址
+     * @param ip obtained IP address
+     * @return the first non-unknown IP address
      */
     public static String getMultistageReverseProxyIp(String ip)
     {
-        // 多级反向代理检测
+        // Multi-level reverse proxy detection
         if (ip != null && ip.indexOf(",") > 0)
         {
             final String[] ips = ip.trim().split(",");
@@ -289,10 +289,10 @@ public class IpUtils
     }
 
     /**
-     * 检测给定字符串是否为未知，多用于检测HTTP请求相关
+     * Detect whether a given string is unknown, mostly used to detect HTTP requests.
      *
-     * @param checkString 被检测的字符串
-     * @return 是否未知
+     * @param checkString The string being detected
+     * @return Is it unknown?
      */
     public static boolean isUnknown(String checkString)
     {
@@ -300,7 +300,7 @@ public class IpUtils
     }
 
     /**
-     * 是否为IP
+     * Is it an IP
      */
     public static boolean isIP(String ip)
     {
@@ -308,7 +308,7 @@ public class IpUtils
     }
 
     /**
-     * 是否为IP，或 *为间隔的通配符地址
+     * Whether it is an IP, or * is a spaced wildcard address
      */
     public static boolean isIpWildCard(String ip)
     {
@@ -316,7 +316,7 @@ public class IpUtils
     }
 
     /**
-     * 检测参数是否在ip通配符里
+     * Check whether the parameter is in the ip wildcard
      */
     public static boolean ipIsInWildCardNoCheck(String ipWildCard, String ip)
     {
@@ -335,7 +335,7 @@ public class IpUtils
     }
 
     /**
-     * 是否为特定格式如:“10.10.10.1-10.10.10.99”的ip段字符串
+     * Is it an IP segment string in a specific format such as "10.10.10.1-10.10.10.99"
      */
     public static boolean isIPSegment(String ipSeg)
     {
@@ -343,7 +343,7 @@ public class IpUtils
     }
 
     /**
-     * 判断ip是否在指定网段中
+     * Determine whether the IP is in the specified network segment
      */
     public static boolean ipIsInNetNoCheck(String iparea, String ip)
     {
@@ -368,11 +368,11 @@ public class IpUtils
     }
 
     /**
-     * 校验ip是否符合过滤串规则
+     * Verify whether the IP complies with the filter string rules
      *
-     * @param filter 过滤IP列表,支持后缀'*'通配,支持网段如:`10.10.10.1-10.10.10.99`
-     * @param ip 校验IP地址
-     * @return boolean 结果
+     * @param filter Filter IP list, support suffix '*' wildcard, support network segments such as: `10.10.10.1-10.10.10.99`
+     * @param ip Verify IP address
+     * @return boolean result
      */
     public static boolean isMatchedIp(String filter, String ip)
     {

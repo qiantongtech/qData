@@ -23,41 +23,41 @@ import tech.qiantong.qdata.generator.domain.GenTableColumn;
 import java.util.List;
 
 /**
- * 业务字段 服务层
+ * Business field service layer
  *
  * @author qdata
  */
 public interface IGenTableColumnService
 {
     /**
-     * 查询业务字段列表
+     * Query business field list
      *
-     * @param tableId 业务字段编号
-     * @return 业务字段集合
+     * @param tableId business field number
+     * @return business field collection
      */
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId);
 
     /**
-     * 新增业务字段
+     * Add new business fields
      *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
+     * @param genTableColumn business field information
+     * @return result
      */
     public int insertGenTableColumn(GenTableColumn genTableColumn);
 
     /**
-     * 修改业务字段
+     * Modify business fields
      *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
+     * @param genTableColumn business field information
+     * @return result
      */
     public int updateGenTableColumn(GenTableColumn genTableColumn);
 
     /**
-     * 删除业务字段信息
+     * Delete business field information
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data ID to be deleted
+     * @return result
      */
     public int deleteGenTableColumnByIds(String ids);
 }

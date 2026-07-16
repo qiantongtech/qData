@@ -19,7 +19,7 @@
 <template>
   <div class="app-containers" ref="app-container">
     <div class="flex-container">
-      <!-- 右侧主内容 -->
+      <!-- Main content on the right -->
       <div class="right-pane" v-loading="loading">
         <el-empty
           :description="td('common.noTaskProcess')"
@@ -32,7 +32,7 @@
           ref="graphContainers"
         ></div>
         <TeleportContainer />
-        <!-- 工具栏 -->
+        <!-- Toolbar -->
         <div class="toolbar" v-if="nodeData?.locations">
           <template v-for="item in toolbar" :key="item.id">
             <el-tooltip
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <!-- 动态表单 -->
+    <!-- dynamic form -->
     <component
       :is="currentFormComponent"
       :visible="drawer"
@@ -61,7 +61,7 @@
       :info="route.query.info"
       :graph="graph"
     />
-    <!-- 字段预览弹窗 -->
+    <!-- Field preview pop-up window -->
     <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
 </template>
@@ -72,19 +72,20 @@ import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-// 输入组件
+// input component
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
-// 转换组件 src/views/dpp/task/integratioTask/components/transform/dedupFilter.vue
+// src/views/dpp/task/integratioTask/components/transform/dedupFilter.vue
 import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
-// 清洗组件
+// Transform component
+// Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
-// 排序组件
+// sorting component
 import OrderConfig from "@/views/dpp/task/integratioTask/components/transform/orderConfig.vue";
-// 字段派生期
+// Field derivation period
 import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/fieldBuilder.vue";
-// 输出表组件
+// Output table component
 import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
 import useUserStore from "@/store/system/user";
 import { Export } from "@antv/x6-plugin-export";
@@ -182,7 +183,7 @@ const props = defineProps({
 const undoDisabled = ref(null);
 let loading = ref(false);
 function getList() {
-  // 如果父组件传来的 detail 已经包含 draftJson，就直接用
+  // If the detail passed by the parent component already contains draftJson, use it directly.
   if (props.dppEtlTaskDetail?.draftJson) {
     nodeData.value = props.dppEtlTaskDetail;
     renderGraphs(graph, nodeData.value, 2);
@@ -190,7 +191,7 @@ function getList() {
     return;
   }
   if (!route.query.id) return;
-  // 否则再去接口拉取
+  // Otherwise, go to the interface to pull it.
   etlTask(route.query.id).then((response) => {
     nodeData.value = response.data;
     nodeData.value.taskConfig = {
@@ -207,7 +208,7 @@ const openDialog = (node, data, title) => {
   fieldPreviewDialog.value.show(node, data, title);
 };
 /**
- * 组件右键删除
+ * Right click on component to delete
  * @param {*}
  */
 let selectedEdge = ref();
@@ -236,13 +237,13 @@ function initializeGraph() {
       maxScale: 3,
     },
   });
-  // 禁用 Dnd
+  // Disable Dnd
   dnd = new Dnd({
     target: graph,
     scaled: false,
     validateNode: () => false,
   });
-  // Selection 插件
+  // Selection plugin
   graph.use(
     new Selection({
       enabled: true,
@@ -255,14 +256,14 @@ function initializeGraph() {
   graph.use(new Export());
   usePlugins(graph);
 }
-// 保存 没有code
+// Save without code
 const closeDialog = () => {
   if (!currentNode.value.data.code) {
-    graph.removeNode(currentNode.value.id); // 根据组件 ID 删除组件
+    graph.removeNode(currentNode.value.id); // Remove component based on component ID
   }
   drawer.value = false;
 };
-// 绑定事件
+// Binding events
 function bindGraphEvents() {
   graph.on("node:added", handleNodeAdded);
 
@@ -272,7 +273,7 @@ function bindGraphEvents() {
   }
 }
 
-// / 处理节点添加事件
+// / Handle node addition event
 async function handleNodeAdded({ node }) {
   if (!node.data.code) {
     node.data.code = await fetchNodeUniqueKey();
@@ -304,7 +305,7 @@ async function handleNodeAdded({ node }) {
   }
 }
 
-// 处理已有节点的情况
+// Handle the situation of existing nodes
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
     proxy.$message.warning(td('dpp.utils.onlyOneOutputComponent'));
@@ -313,7 +314,7 @@ function handleExistingNode(node) {
   }
   graph.removeNode(node.id);
 }
-// 处理非输入节点
+// Handle non-input nodes
 function handleNonInputNode(node) {
   const edges = graph.getEdges();
   edges.forEach((edge) => {
@@ -321,7 +322,7 @@ function handleNonInputNode(node) {
       sourceNode.value = edge.getSourceNode();
     }
   });
-  // drawer.value = true; // 控制抽屉显示
+  // drawer.value = true; //Control drawer display
 }
 function handleNodeDblClick({ node }, type = "edit") {
   graph.cleanSelection();
@@ -329,12 +330,12 @@ function handleNodeDblClick({ node }, type = "edit") {
   currentNode.value = node;
   drawer.value = true;
 }
-// 重置操作逻辑
+// Reset operation logic
 const handleCancel = () => {
   proxy.$modal
     .confirm(td('dpp.utils.resetConfirm'))
     .then(() => {
-      // 刷新当前页签
+      // Refresh the current tab
       proxy.$tab.refreshPage(route);
     });
 };
@@ -389,7 +390,7 @@ watch(
       getList();
     }
   },
-  { immediate: true, deep: true } // immediate 保证第一次也会触发
+  { immediate: true, deep: true } // immediate guarantees that it will be triggered for the first time
 );
 const getAssetsFile = (url) => {
   return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
@@ -449,7 +450,7 @@ defineExpose({ updateFlow });
   }
 }
 
-/* X6 图画布样式 */
+/* X6 chart canvas style */
 :deep(.x6-widget-selection-box) {
   fill: rgba(0, 123, 255, 0.3);
   stroke: #007bff;

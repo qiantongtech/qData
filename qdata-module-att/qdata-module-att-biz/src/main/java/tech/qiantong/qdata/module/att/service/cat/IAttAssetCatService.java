@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产类目管理Service接口
+ * Data Asset Category Management Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -38,78 +38,78 @@ import java.util.Map;
 public interface IAttAssetCatService extends IService<AttAssetCatDO> {
 
     /**
-     * 获得数据资产类目管理分页列表
+     * Get data asset category management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产类目管理分页列表
+     * @param pageReqVO Page request
+     * @return Data asset category management paginated list
      */
     PageResult<AttAssetCatDO> getAttAssetCatPage(AttAssetCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据资产类目管理
+     * Create data asset category management
      *
-     * @param createReqVO 数据资产类目管理信息
-     * @return 数据资产类目管理编号
+     * @param createReqVO Data asset category management info
+     * @return Data asset category management ID
      */
     Long createAttAssetCat(AttAssetCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产类目管理
+     * Update data asset category management
      *
-     * @param updateReqVO 数据资产类目管理信息
+     * @param updateReqVO Data asset category management info
      */
     int updateAttAssetCat(AttAssetCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产类目管理
+     * Delete data asset category management
      *
-     * @param idList 数据资产类目管理编号
+     * @param idList Data asset category management ID list
      */
     int removeAttAssetCat(Collection<Long> idList);
 
 
     /**
-     * 获得数据资产类目管理详情
+     * Get data asset category management details
      *
-     * @param id 数据资产类目管理编号
-     * @return 数据资产类目管理
+     * @param id Data asset category management ID
+     * @return Data asset category management
      */
     AttAssetCatDO getAttAssetCatById(Long id);
 
     /**
-     * 获得全部数据资产类目管理列表
+     * Get all data asset category management list
      *
-     * @return 数据资产类目管理列表
+     * @return Data asset category management list
      */
     List<AttAssetCatDO> getAttAssetCatList();
 
     /**
-     * 获得全部数据资产类目管理列表
+     * Get all data asset category management list
      *
-     * @return 数据资产类目管理列表
+     * @return Data asset category management list
      */
     List<AttAssetCatDO> getAttAssetCatList(AttAssetCatPageReqVO reqVO);
 
     /**
-     * 获得全部数据资产类目管理 Map
+     * Get all data asset category management Map
      *
-     * @return 数据资产类目管理 Map
+     * @return Data asset category management Map
      */
     Map<Long, AttAssetCatDO> getAttAssetCatMap();
 
 
     /**
-     * 导入数据资产类目管理数据
+     * Import data asset category management data
      *
-     * @param importExcelList 数据资产类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset category management data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importAttAssetCat(List<AttAssetCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

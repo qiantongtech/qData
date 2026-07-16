@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成任务类目管理Service接口
+ * Data Integration Task Category Management Service Interface
  *
  * @author qdata
  * @date 2025-03-11
@@ -37,77 +37,77 @@ import java.util.Map;
 public interface IAttTaskCatService extends IService<AttTaskCatDO> {
 
     /**
-     * 获得数据集成任务类目管理分页列表
+     * Get data integration task category management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务类目管理分页列表
+     * @param pageReqVO page request
+     * @return data integration task category management paginated list
      */
     PageResult<AttTaskCatDO> getAttTaskCatPage(AttTaskCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务类目管理
+     * Create data integration task category management
      *
-     * @param createReqVO 数据集成任务类目管理信息
-     * @return 数据集成任务类目管理编号
+     * @param createReqVO data integration task category management info
+     * @return data integration task category management ID
      */
     Long createAttTaskCat(AttTaskCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成任务类目管理
+     * Update data integration task category management
      *
-     * @param updateReqVO 数据集成任务类目管理信息
+     * @param updateReqVO data integration task category management info
      */
     int updateAttTaskCat(AttTaskCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务类目管理
+     * Delete data integration task category management
      *
-     * @param idList 数据集成任务类目管理编号
+     * @param idList data integration task category management ID list
      */
     int removeAttTaskCat(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务类目管理详情
+     * Get data integration task category management details
      *
-     * @param id 数据集成任务类目管理编号
-     * @return 数据集成任务类目管理
+     * @param id data integration task category management ID
+     * @return data integration task category management
      */
     AttTaskCatDO getAttTaskCatById(Long id);
 
     /**
-     * 获得全部数据集成任务类目管理列表
+     * Get all data integration task category management list
      *
-     * @return 数据集成任务类目管理列表
+     * @return data integration task category management list
      */
     List<AttTaskCatDO> getAttTaskCatList();
 
     /**
-     * 获得全部数据集成任务类目管理列表
+     * Get all data integration task category management list
      *
-     * @return 数据集成任务类目管理列表
+     * @return data integration task category management list
      */
     List<AttTaskCatDO> getAttTaskCatList(AttTaskCatPageReqVO reqVO);
 
     /**
-     * 获得全部数据集成任务类目管理 Map
+     * Get all data integration task category management Map
      *
-     * @return 数据集成任务类目管理 Map
+     * @return data integration task category management Map
      */
     Map<Long, AttTaskCatDO> getAttTaskCatMap();
 
 
     /**
-     * 导入数据集成任务类目管理数据
+     * Import data integration task category management data
      *
-     * @param importExcelList 数据集成任务类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data integration task category management data list
+     * @param isUpdateSupport whether to support update, if already exists, update the data
+     * @param operName operator
+     * @return result
      */
     String importAttTaskCat(List<AttTaskCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

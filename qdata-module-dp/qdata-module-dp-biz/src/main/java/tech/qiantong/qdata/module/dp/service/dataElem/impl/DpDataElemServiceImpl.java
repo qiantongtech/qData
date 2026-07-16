@@ -49,7 +49,7 @@ import tech.qiantong.qdata.module.dp.service.document.IDpDocumentService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 数据元Service业务层处理
+ * Data Element Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -85,9 +85,9 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
                 .eqIfPresent(DpDataElemDO::getDocumentId, reqVO.getDocumentId())
                 .eqIfPresent(DpDataElemDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DpDataElemDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DpDataElemDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort descending by createTime field
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns);
 
         return dpDataElemMapper.selectList(queryWrapper);
@@ -102,21 +102,21 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
 
     @Override
     public int updateDpDataElem(DpDataElemSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据元
+        // Update data element
         DpDataElemDO updateObj = BeanUtils.toBean(updateReqVO, DpDataElemDO.class);
         return dpDataElemMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpDataElem(List<Long> idList) {
-        //判断当前元数据是否被模型及资产使用
+        // Check whether the current data element is used by models or assets
         Long count = dpDataElemMapper.checkHasRel(idList);
         if (count > 0) {
             throw new ServiceException("dp.error.elem.ref", "数据元被模型或资产使用，请先解除关联关系");
         }
-        // 批量删除数据元
+        // Batch delete data element
         return dpDataElemMapper.deleteBatchIds(idList);
     }
 
@@ -154,19 +154,19 @@ public class DpDataElemServiceImpl extends ServiceImpl<DpDataElemMapper, DpDataE
                 .collect(Collectors.toMap(
                         DpDataElemDO::getId,
                         dpDataElemDO -> dpDataElemDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据元数据
+     * Import data element data
      *
-     * @param importExcelList 数据元数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpDataElem(List<DpDataElemRespVO> importExcelList, boolean isUpdateSupport, String operName) {

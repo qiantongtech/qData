@@ -26,9 +26,9 @@ import java.util.List;
 public interface IAttApiCatApiService {
 
     /**
-     * 获得全部数据服务类目管理列表  服务资源模块使用
+     * Get all data service category management list, used by service resource module
      *
-     * @return 数据服务类目管理列表
+     * @return Data Service Category Management list
      */
     List<AttApiCatRespDTO> getAttApiCatList(AttApiCatReqDTO attApiCatReqDTO);
 }

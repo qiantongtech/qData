@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询应用管理列表
+// Query application management list
 export function listClient(query) {
   return request({
     url: '/auth/client/list',
@@ -27,7 +27,7 @@ export function listClient(query) {
   })
 }
 
-// 查询应用管理详细
+// Query application management details
 export function getClient(id) {
   return request({
     url: '/auth/client/' + id,
@@ -35,7 +35,7 @@ export function getClient(id) {
   })
 }
 
-// 新增应用管理
+// Added application management
 export function addClient(data) {
   return request({
     url: '/auth/client',
@@ -44,7 +44,7 @@ export function addClient(data) {
   })
 }
 
-// 修改应用管理
+// Modify application management
 export function updateClient(data) {
   return request({
     url: '/auth/client',
@@ -53,7 +53,7 @@ export function updateClient(data) {
   })
 }
 
-// 删除应用管理
+// Delete application management
 export function delClient(id) {
   return request({
     url: '/auth/client/' + id,

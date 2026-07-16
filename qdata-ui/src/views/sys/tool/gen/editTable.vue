@@ -63,7 +63,7 @@
               </template>
             </el-table-column>
 
-            <!--          <el-table-column label="插入" width="60" align="center">
+            <!--          <el-table-column label="insert" width="60" align="center">
                         <template #default="scope">
                           <el-checkbox true-label="1" false-label="0" v-model="scope.row.isInsert"></el-checkbox>
                         </template>
@@ -166,7 +166,7 @@ const columns = ref([]);
 const dictOptions = ref([]);
 const info = ref({});
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
   const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
@@ -209,13 +209,13 @@ function close() {
 (() => {
   const tableId = route.params && route.params.tableId;
   if (tableId) {
-    // 获取表详细信息
+    // Get table details
     getGenTable(tableId).then(res => {
       columns.value = res.data.rows;
       info.value = res.data.info;
       tables.value = res.data.tables;
     });
-    /** 查询字典下拉列表 */
+    /** Query dictionary drop-down list */
     getDictOptionselect().then(response => {
       dictOptions.value = response.data;
     });

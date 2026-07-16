@@ -26,9 +26,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * 物化方法 创建/修改 Request VO
+ * Materialized Method Save Request VO
  *
- * 用于 createMaterializedTable
+ * Used for createMaterializedTable
  *
  * @author qdata
  * @date 2025-01-21
@@ -49,7 +49,7 @@ public class DpMaterializedMethodReqVO extends BaseEntity {
     private String datasourceName;
 
     /**
-     * 后端流转，非前端传递字段
+     * Backend processing, not a front-end input field
      */
     private String dbName;
 
@@ -65,6 +65,6 @@ public class DpMaterializedMethodReqVO extends BaseEntity {
     @Schema(description = "端口号", example = "3306")
     private Long port;
 
-    /**  发布模式 1：删除重建  2：增量发布 */
+    /** Release mode 1: Drop and recreate 2: Incremental publish */
     private String releaseMode;
 }

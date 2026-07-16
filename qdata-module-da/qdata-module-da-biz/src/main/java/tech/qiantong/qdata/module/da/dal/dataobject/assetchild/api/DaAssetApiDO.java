@@ -24,14 +24,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据资产-外部API DO 对象 DA_ASSET_API
+ * Data Asset - External API DO - DA_ASSET_API
  *
  * @author qdata
  * @date 2025-04-14
  */
 @Data
 @TableName(value = "DA_ASSET_API")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Not needed for MySQL and similar databases.
 // @KeySequence("DA_ASSET_API_seq")
 @Builder
 @NoArgsConstructor
@@ -45,10 +45,10 @@ public class DaAssetApiDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** API路径 */
+    /** API Path */
     private String url;
 
     @Schema(description = "开发者", example = "")
@@ -57,13 +57,13 @@ public class DaAssetApiDO extends BaseEntity {
     @Schema(description = "应用名称", example = "")
     private String appName;
 
-    /** 请求方式 */
+    /** Request Method */
     private String httpMethod;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     @TableLogic
     private Boolean delFlag;
 

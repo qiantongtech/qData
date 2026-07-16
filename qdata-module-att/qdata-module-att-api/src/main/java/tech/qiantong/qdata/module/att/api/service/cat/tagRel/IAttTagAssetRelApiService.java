@@ -26,9 +26,9 @@ import java.util.List;
 public interface IAttTagAssetRelApiService {
 
     /**
-     * 获得全部类目关联资产信息
+     * Get all category-related asset info
      *
-     * @return 数据类目管理列表
+     * @return Data Category Management list
      */
     List<AttTagAssetRelRespDTO> getApiList(AttTagAssetRelReqDTO attApiCatReqDTO);
     void deleteRelByUpdateTag(Long assetId);

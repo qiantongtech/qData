@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询数据资产类目管理列表
+// Query the data asset category management list
 export function listAttAssetCat(query) {
   return request({
     url: '/att/assetCat/list',
@@ -27,7 +27,7 @@ export function listAttAssetCat(query) {
   })
 }
 
-// 查询数据资产类目管理详细
+// Query data asset category management details
 export function getAttAssetCat(id) {
   return request({
     url: '/att/assetCat/' + id,
@@ -35,7 +35,7 @@ export function getAttAssetCat(id) {
   })
 }
 
-// 新增数据资产类目管理
+// Added new data asset category management
 export function addAttAssetCat(data) {
   return request({
     url: '/att/assetCat',
@@ -44,7 +44,7 @@ export function addAttAssetCat(data) {
   })
 }
 
-// 修改数据资产类目管理
+// Modify data asset category management
 export function updateAttAssetCat(data) {
   return request({
     url: '/att/assetCat',
@@ -53,7 +53,7 @@ export function updateAttAssetCat(data) {
   })
 }
 
-// 删除数据资产类目管理
+// Delete data asset category management
 export function delAttAssetCat(id) {
   return request({
     url: '/att/assetCat/' + id,

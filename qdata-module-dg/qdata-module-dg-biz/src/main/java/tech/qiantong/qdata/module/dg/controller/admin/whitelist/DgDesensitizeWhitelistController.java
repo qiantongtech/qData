@@ -48,12 +48,12 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeWhite
 import tech.qiantong.qdata.module.dg.service.whitelist.IDgDesensitizeWhitelistService;
 
 /**
- * 脱敏白名单Controller
+ * Desensitization Whitelist Controller
  *
  * @author qdata
  * @date 2026-04-09
  */
-@Tag(name = "脱敏白名单")
+@Tag(name = "Desensitize Whitelist")
 @RestController
 @RequestMapping("/dg/desensitizeWhitelist")
 @Validated
@@ -61,7 +61,7 @@ public class DgDesensitizeWhitelistController extends BaseController {
     @Resource
     private IDgDesensitizeWhitelistService dgDesensitizeWhitelistService;
 
-    @Operation(summary = "查询脱敏白名单列表")
+    @Operation(summary = "Query desensitize whitelist list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDesensitizeWhitelistRespVO>> list(DgDesensitizeWhitelistPageReqVO dgDesensitizeWhitelist) {
@@ -69,20 +69,20 @@ public class DgDesensitizeWhitelistController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDesensitizeWhitelistRespVO.class));
     }
 
-    @Operation(summary = "导出脱敏白名单列表")
+    @Operation(summary = "Export desensitize whitelist list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:export')")
-    @Log(title = "脱敏白名单", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.whitelist", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeWhitelistPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeWhitelistDO> list = (List<DgDesensitizeWhitelistDO>) dgDesensitizeWhitelistService.getDgDesensitizeWhitelistPage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeWhitelistRespVO> util = new ExcelUtil<>(DgDesensitizeWhitelistRespVO.class);
-        util.exportExcel(response, DgDesensitizeWhitelistConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeWhitelistConvert.INSTANCE.convertToRespVOList(list), "Desensitize Whitelist");
     }
 
-    @Operation(summary = "导入脱敏白名单列表")
+    @Operation(summary = "Import desensitize whitelist")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:import')")
-    @Log(title = "脱敏白名单", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.whitelist", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeWhitelistRespVO> util = new ExcelUtil<>(DgDesensitizeWhitelistRespVO.class);
@@ -92,7 +92,7 @@ public class DgDesensitizeWhitelistController extends BaseController {
         return success(message);
     }
 
-    @Operation(summary = "获取脱敏白名单详细信息")
+    @Operation(summary = "Get desensitize whitelist detail")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDesensitizeWhitelistRespVO> getInfo(@PathVariable("id") Long id) {
@@ -100,9 +100,9 @@ public class DgDesensitizeWhitelistController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDesensitizeWhitelistDO, DgDesensitizeWhitelistRespVO.class));
     }
 
-    @Operation(summary = "新增脱敏白名单")
+    @Operation(summary = "Create desensitize whitelist")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:add')")
-    @Log(title = "脱敏白名单", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.whitelist", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeWhitelistSaveReqVO dgDesensitizeWhitelist) {
         dgDesensitizeWhitelist.setCreatorId(getUserId());
@@ -111,9 +111,9 @@ public class DgDesensitizeWhitelistController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeWhitelistService.createDgDesensitizeWhitelist(dgDesensitizeWhitelist));
     }
 
-    @Operation(summary = "修改脱敏白名单")
+    @Operation(summary = "Update desensitize whitelist")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:edit')")
-    @Log(title = "脱敏白名单", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.whitelist", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeWhitelistSaveReqVO dgDesensitizeWhitelist) {
         dgDesensitizeWhitelist.setUpdatorId(getUserId());
@@ -122,9 +122,9 @@ public class DgDesensitizeWhitelistController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeWhitelistService.updateDgDesensitizeWhitelist(dgDesensitizeWhitelist));
     }
 
-    @Operation(summary = "删除脱敏白名单")
+    @Operation(summary = "Delete desensitize whitelist")
     @PreAuthorize("@ss.hasPermi('dg:desensitizewhitelist:remove')")
-    @Log(title = "脱敏白名单", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.whitelist", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeWhitelistService.removeDgDesensitizeWhitelist(Arrays.asList(ids)));

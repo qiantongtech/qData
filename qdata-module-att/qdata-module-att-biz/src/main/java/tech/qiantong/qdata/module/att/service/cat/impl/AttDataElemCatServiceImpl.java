@@ -49,7 +49,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据元类目管理Service业务层处理
+ * Data Element Category Management - Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -82,18 +82,18 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
         if (attDataElemCatDO == null) {
             return 0;
         }
-        // 更新数据元类目管理
+        // Update Data Element Category Management
         AttDataElemCatDO updateObj = BeanUtils.toBean(updateReqVO, AttDataElemCatDO.class);
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = dataElemApiService.getCountByCatCode(attDataElemCatDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.elem", "存在数据元，不允许禁用");
+                throw new ServiceException("att.error.disable.elem", "Data elements exist, disable not allowed");
             }
             attDataElemCatMapper.updateValidFlag(attDataElemCatDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttDataElemCatDO parent = attDataElemCatMapper.selectById(attDataElemCatDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Parent must be enabled first");
             }
         }
         return attDataElemCatMapper.updateById(updateObj);
@@ -104,9 +104,9 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
         int count = 0;
         for (Long id : idList) {
             AttDataElemCatDO cat = baseMapper.selectById(id);
-            //判断是否存在数据资产
+            // Check if data assets exist
             if (dataElemApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.elem", "存在数据元，不允许删除");
+                throw new ServiceException("att.error.delete.elem", "Data elements exist, Delete not allowed");
             }
             if (cat != null) {
                 count += baseMapper.delete(Wrappers.lambdaQuery(AttDataElemCatDO.class)
@@ -148,19 +148,19 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
                 .collect(Collectors.toMap(
                         AttDataElemCatDO::getId,
                         attDataElemCatDO -> attDataElemCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据元类目管理数据
+     * Import Data Element Category Management data
      *
-     * @param importExcelList 数据元类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList Data Element Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttDataElemCat(List<AttDataElemCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -184,16 +184,16 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
                             attDataElemCatMapper.updateById(attDataElemCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attDataElemCatId + " 的数据元类目管理记录。", attDataElemCatId, "数据元类目管理"));
+                                    "数据Update 成功，ID为 " + attDataElemCatId + " 的数据元类目管理记录。", attDataElemCatId, "数据元类目管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attDataElemCatId + " 的数据元类目管理记录不存在。", attDataElemCatId, "数据元类目管理"));
+                                    "数据Update 失败，ID为 " + attDataElemCatId + " 的数据元类目管理记录不存在。", attDataElemCatId, "数据元类目管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttDataElemCatDO> queryWrapper = new QueryWrapper<>();
@@ -236,12 +236,12 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node with no sibling elements: YouBianCodeUtil.getSubYouBianCode(parentCode, null);
+         * 3. Adding child node with sibling elements: YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the last largest code value
         LambdaQueryWrapper<AttDataElemCatDO> query = new LambdaQueryWrapper<AttDataElemCatDO>()
                 .eq(AttDataElemCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttDataElemCatDO::getCode, parentCode)
@@ -250,15 +250,15 @@ public class AttDataElemCatServiceImpl extends ServiceImpl<AttDataElemCatMapper,
         List<AttDataElemCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttDataElemCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 项目与用户关联关系 Response VO 对象 ATT_PROJECT_USER_REL
+ * Project-User Relationship Response VO ATT_PROJECT_USER_REL
  *
  * @author qdata
  * @date 2025-02-11
@@ -111,6 +111,6 @@ public class AttProjectUserRelRespVO implements Serializable {
     @Schema(description = "角色id集合", example = "")
     private List<Long> roleIdList;
 
-    /** 用户角色多个一逗号拼接 */
+    /** User roles concatenated with commas when multiple */
     private String roleStr;
 }

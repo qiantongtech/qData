@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据质量任务-评测规则 Request VO 对象 DPP_QUALITY_TASK_EVALUATE
+ * Data Quality Task - Evaluation Rule Request VO DPP_QUALITY_TASK_EVALUATE
  *
  * @author Chaos
  * @date 2025-07-21
  */
-@Schema(description = "数据质量任务-评测规则 Request VO")
+@Schema(description = "Data Quality Task - Evaluation Rule Page Request VO")
 @Data
 public class DppQualityTaskEvaluatePageReqVO extends PageParam {
 

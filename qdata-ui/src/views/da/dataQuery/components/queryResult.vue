@@ -19,7 +19,7 @@
 <template>
   <el-dialog v-model="visibleDialog" draggable class="medium-dialog" :title="effectiveTitle" destroy-on-close @close="clearData">
     <div>
-      <!-- 导出按钮 -->
+      <!-- Export button -->
       <el-button :disabled="!callData.dataTotal > 0" type="warning" plain icon="Download"
         @click="downloadMethodNotification" :loading="downloadLoading">{{ td('da.qualityTask.dataQuery.queryResult.export') }}</el-button>
 
@@ -33,12 +33,12 @@
           </template>
         </el-table-column>
 
-        <!-- 动态生成列 -->
+        <!-- Dynamic column generation -->
         <template v-for="column in callData.columnList" :key="column">
           <el-table-column :prop="column" :label="column" align="center" :min-width="180" :show-overflow-tooltip="{effect: 'light'}" />
         </template>
 
-        <!-- 如果没有数据时，显示暂无记录 -->
+        <!-- Show no records when no data -->
         <template #empty>
           <div class="emptyBg">
             <!-- <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" /> -->
@@ -68,7 +68,7 @@ const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   visible: { type: Boolean, default: true },
-  title: { type: String, default: "查询结果" },
+  title: { type: String, default: "Query Result" },
   queryParams: { type: Object, default: () => ({}) },
   spl: { type: String, default: "" },
 });
@@ -80,7 +80,7 @@ const callData = ref({
   dataList: [],
   columnList: [],
   pageNum: 1,
-  pageSize: 20, // 查询每页默认20条
+  pageSize: 20, // Default 20 records per page for queries
   dataTotal: 0,
 });
 
@@ -120,7 +120,7 @@ async function handleQuery() {
     callData.value.columnList = columnList;
     callData.value.dataTotal = data.total || 0;
   } catch (error) {
-    throw error; // 👈 抛出错误给调用方处理
+    throw error; // Throwing error to caller
   } finally {
     loading.value = false;
   }
@@ -143,10 +143,10 @@ const clearData = () => {
   callData.value.dataTotal = 0;
 };
 
-// 计算总文件数（导出用）
+// Calculate total file count (for export)
 const totalFiles = computed(() => Math.ceil(callData.value.dataTotal / 5000));
 
-// 导出逻辑（不影响当前分页）
+// Export logic (does not affect current pagination)
 const downloadMethod = () => {
   const pageSize = 5000;
   const total = callData.value.dataTotal;
@@ -184,7 +184,7 @@ const downloadMethod = () => {
   downloadLoading.value = false;
 };
 
-// 导出确认提示
+// Export confirmation prompt
 const downloadMethodNotification = () => {
   const totalFilesCount = totalFiles.value;
 

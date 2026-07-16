@@ -25,7 +25,7 @@ import tech.qiantong.qdata.api.ds.api.etl.DsSchedulerUpdateReqDTO;
 
 /**
  * <P>
- * 用途:ds调度相关接口
+ * Description: DS scheduler related interfaces
  * </p>
  *
  * @author: FXB
@@ -34,36 +34,36 @@ import tech.qiantong.qdata.api.ds.api.etl.DsSchedulerUpdateReqDTO;
 public interface IDsEtlSchedulerService {
 
     /**
-     * 创建调度器 (只有任务发布了才能调用该接口)
+     * Create scheduler (can only be called after the task is released)
      */
     DsSchedulerRespDTO saveScheduler(DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO, String projectCode);
 
     /**
-     * 修改调度器
+     * Update scheduler
      */
     DsSchedulerRespDTO updateScheduler(DsSchedulerUpdateReqDTO dsSchedulerUpdateReqDTO, String projectCode);
 
     /**
-     * 上线调度器 (只有任务发布了才能调用该接口)
+     * Online scheduler (can only be called after the task is released)
      *
      * @param projectCode
-     * @param id          调度表中dsId
+     * @param id          dsId in the scheduler table
      * @return
      */
     DsStatusRespDTO onlineScheduler(String projectCode, Long id);
 
     /**
-     * 下线调度器 (只有任务发布了才能调用该接口)
+     * Offline scheduler (can only be called after the task is released)
      *
      * @param projectCode
-     * @param id          调度表中dsId
+     * @param id          dsId in the scheduler table
      * @return
      */
     DsStatusRespDTO offlineScheduler(String projectCode, Long id);
 
 
     /**
-     * 根据任务编码获取调度信息
+     * Get scheduler info by task code
      *
      * @param taskCode
      * @return

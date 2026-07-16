@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 数据资产 DTO 对象 DA_ASSET
+ * Data Asset DTO DA_ASSET
  *
  * @author lhs
  * @date 2025-01-21
@@ -35,43 +35,43 @@ public class DaAssetRespDTO {
     /** ID */
     private Long id;
 
-    /** 资产名称 */
+    /** Asset Name */
     private String name;
 
     @Schema(description = "资产类型", example = "")
     private String type;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    /** 数据连接id */
+    /** Datasource ID */
     private String datasourceId;
 
-    /** 表名称 */
+    /** Table Name */
     private String tableName;
 
-    /** 表描述 */
+    /** Table Description */
     private String tableComment;
 
-    /** 数据量 */
+    /** Data Count */
     private Long dataCount;
 
-    /** 字段量 */
+    /** Field Count */
     private Long fieldCount;
 
-    /** 来源;1:数据发现；2:数据模型； */
+    /** Source; 1: Data Discovery; 2: Data Model; */
     private String source;
 
-    /** 状态 */
+    /** Status */
     private String STATUS;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
     @Schema(description = "创建类型", example = "")
     private String createType;

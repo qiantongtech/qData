@@ -21,7 +21,7 @@ package tech.qiantong.qdata.module.da.api.daAssetApply.dto;
 import lombok.Data;
 
 /**
- * 数据资产申请 DTO 对象 DA_ASSET_APPLY
+ * Data Asset Apply DTO DA_ASSET_APPLY
  *
  * @author shu
  * @date 2025-03-19
@@ -34,28 +34,28 @@ public class DaAssetApplyReqDTO {
     /** ID */
     private Long id;
 
-    /** 资产id */
+    /** Asset ID */
     private Long assetId;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 申请理由 */
+    /** Apply Reason */
     private String applyReason;
 
-    /** 审批理由 */
+    /** Approval Reason */
     private String approvalReason;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

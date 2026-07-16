@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据源与项目关联关系Service业务层处理
+ * Service business layer processing for datasource-project association relationships
  *
  * @author qdata
  * @date 2025-03-13
@@ -71,16 +71,16 @@ public class DaDatasourceProjectRelServiceImpl extends ServiceImpl<DaDatasourceP
 
     @Override
     public int updateDaDatasourceProjectRel(DaDatasourceProjectRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据源与项目关联关系
+        // Update datasource-project association relationship
         DaDatasourceProjectRelDO updateObj = BeanUtils.toBean(updateReqVO, DaDatasourceProjectRelDO.class);
         return daDatasourceProjectRelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDaDatasourceProjectRel(Collection<Long> idList) {
-        // 批量删除数据源与项目关联关系
+        // Batch delete datasource-project association relationships
         return daDatasourceProjectRelMapper.deleteBatchIds(idList);
     }
 
@@ -125,19 +125,19 @@ public class DaDatasourceProjectRelServiceImpl extends ServiceImpl<DaDatasourceP
                 .collect(Collectors.toMap(
                         DaDatasourceProjectRelDO::getId,
                         daDatasourceProjectRelDO -> daDatasourceProjectRelDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据源与项目关联关系数据
+     * Import datasource-project association relationship data
      *
-     * @param importExcelList 数据源与项目关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList list of datasource-project association relationship data
+     * @param isUpdateSupport whether to support update; if already exists, then update the data
+     * @param operName        operating user
+     * @return result
      */
     @Override
     public String importDaDatasourceProjectRel(List<DaDatasourceProjectRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {

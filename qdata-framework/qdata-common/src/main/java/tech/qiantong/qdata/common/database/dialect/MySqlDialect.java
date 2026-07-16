@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * MySql 数据库方言
+ * MySql database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class MySqlDialect extends AbstractDbDialect {
 
 
-    // 定义一个包含常见MySQL保留关键字的集合（全部转换为大写便于比较）
+    // Define a set containing common MySQL reserved keywords (all converted to uppercase for easier comparison)
     private static final String[] MYSQL_RESERVED_WORDS = {
             "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "ASENSITIVE",
             "BEFORE", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BY", "CALL", "CASCADE",
@@ -146,7 +146,7 @@ public class MySqlDialect extends AbstractDbDialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Generate CREATE TABLE statement
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
@@ -155,12 +155,12 @@ public class MySqlDialect extends AbstractDbDialect {
 
                 sql.append("  ").append(this.escapeReservedKeyword(colName)).append(" ");
 
-                // 转换数据类型为MySQL支持的类型
+                // Convert data types to types supported by MySQL
                 switch (columnType) {
                     case "varchar":
                     case "varchar2":
                     case "VARCHAR":
-                    case "VARCHAR2":  // MySQL不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2":  // MySQL does not support VARCHAR2, mapping to VARCHAR
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
@@ -224,16 +224,16 @@ public class MySqlDialect extends AbstractDbDialect {
                         sql.append("YEAR");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Handle unknown types by default
                         break;
                 }
 
-                // 检查是否必填
+                // Check if required
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Default value handling
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     sql.append(" DEFAULT ").append(column.getDataDefault());
 //                    if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
@@ -241,16 +241,16 @@ public class MySqlDialect extends AbstractDbDialect {
 //                    } else {
 //                        sql.append(" DEFAULT ").append(column.getDataDefault());
 //                    }
-                } else if (column.getNullable() && !column.getColKey()) {//不存在默认值并且允许为NULL
+                } else if (column.getNullable() && !column.getColKey()) {//There is no default value and NULL is allowed
                     sql.append(" DEFAULT NULL");
                 }
 
-                // 添加字段备注（COMMENT）
+                // Add field comments (COMMENT)
                 if (StringUtils.isNotEmpty(column.getColComment())) {
                     sql.append(" COMMENT '").append(DatabaseUtil.escapeSingleQuotes(column.getColComment())).append("'");
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Add the field to the primary key list, if it is a primary key
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -258,23 +258,23 @@ public class MySqlDialect extends AbstractDbDialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Remove final comma and newline
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Add primary key constraints
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Remove final comma and space
                 sql.append(")");
             }
 
             sql.append("\n) ENGINE=InnoDB ");
 
-            // 添加表备注
+            // Add table notes
             if (StringUtils.isNotEmpty(tableComment)) {
                 sql.append("COMMENT='").append(DatabaseUtil.escapeSingleQuotes(tableComment));
                 sql.append("'\n");
@@ -307,20 +307,20 @@ public class MySqlDialect extends AbstractDbDialect {
     public static String generateColumnSQLMySql(String columnType, String columnLength, String columnScale, int maxLength, int maxScale) {
         StringBuilder sql = new StringBuilder(columnType);
 
-        // 仅当是需要长度和小数位数的类型时，才处理长度
+        // Handle length only if it is a type that requires length and number of decimal places
         if (columnType.equalsIgnoreCase("DECIMAL") || columnType.equalsIgnoreCase("FLOAT")) {
             if (StringUtils.isNotEmpty(columnLength)) {
                 int length = Integer.parseInt(columnLength);
-                // 限制长度不超过最大长度
+                // Limit the length to no more than the maximum length
                 if (length > maxLength) {
                     length = maxLength;
                 }
                 sql.append("(").append(length);
 
-                // 如果列类型是 DECIMAL 并且提供了小数位数，则附加小数位
+                // If the column type is DECIMAL and the number of decimal places is provided, append the decimal places
                 if (columnType.equalsIgnoreCase("DECIMAL") && StringUtils.isNotEmpty(columnScale)) {
                     int scale = Integer.parseInt(columnScale);
-                    // 限制小数位数不超过最大值
+                    // Limit the number of decimal places to the maximum
                     if (scale > maxScale) {
                         scale = maxScale;
                     }
@@ -341,16 +341,16 @@ public class MySqlDialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(column -> escapeReservedKeyword(column.getColName()))
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + tableName;
     }
 
@@ -367,31 +367,31 @@ public class MySqlDialect extends AbstractDbDialect {
     @Override
     public String getDbName(DbName dbName) {
         int level = dbName == null ? 1 : dbName.getLevel() + 1;
-        // 只有一个层级：数据库（库）
+        // Only one level is used: database
         if (level == 1) {
             return "SELECT schema_name AS DBNAME, 1 AS TOTALLEVELS \n" +
                     "FROM information_schema.schemata\n" +
                     "WHERE schema_name NOT IN ('information_schema','mysql','performance_schema','sys')";
         }
-        // 没有第二层
+        // No second layer
         throw new UnsupportedOperationException("MySQL only has one level");
     }
 
 
     /**
-     * 功能说明：统计 MySQL 中各数据库（Schema）的物理空间使用信息。
-     * 数据来源：information_schema.tables。
+     * Function description: Statistics of physical space usage information of each database (Schema) in MySQL.
+     * Data source: information_schema.tables.
      * <p>
-     * 查询结果字段说明：
+     * Query result field description:
      * -------------------------------------------------------------------------
-     * dbName          : 数据库名称（Schema 名）。
-     * tableCount      : 数据库中表的数量（仅统计 BASE TABLE 类型，不含视图）。
-     * viewCount       : 数据库中视图的数量（仅统计 VIEW 类型）。
-     * dataSizeMB      : 数据文件总大小（单位 MB），即所有表 data_length 之和。
-     * indexSizeMB     : 索引文件总大小（单位 MB），即所有表 index_length 之和。
-     * totalSizeMB     : 数据 + 索引的总占用空间（单位 MB）。
-     * rowCountApprox  : 各表记录数的近似总和（InnoDB 为估算值）。
-     * collectedAt     : 数据采集时间（执行查询的时间戳）。
+     * dbName: Database name (Schema name).
+     * tableCount: The number of tables in the database (only counts BASE TABLE type, excluding views).
+     * viewCount: The number of views in the database (only counts VIEW type).
+     * dataSizeMB: The total size of the data file (in MB), which is the sum of data_length of all tables.
+     * indexSizeMB: The total size of the index file (unit MB), that is, the sum of index_length of all tables.
+     * totalSizeMB: The total space occupied by data + index (in MB).
+     * rowCountApprox: The approximate sum of the number of records in each table (InnoDB is an estimate).
+     * collectedAt: Data collection time (timestamp of query execution).
      * -------------------------------------------------------------------------
      */
 //    @Override
@@ -511,7 +511,7 @@ public class MySqlDialect extends AbstractDbDialect {
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        //判断是否开启ssl
+        //Determine whether to enable ssl
         if (checkUseSSL(property)) {
             url = url.replace("useSSL=false", "useSSL=true");
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
@@ -734,10 +734,10 @@ public class MySqlDialect extends AbstractDbDialect {
         List<String> sqlList = new ArrayList<>();
         String fullTableName = getTableName(dbQueryProperty, tableName);
 
-        // 首先删除现有的主键约束
+        // First delete the existing primary key constraint
         sqlList.add("ALTER TABLE " + fullTableName + " DROP PRIMARY KEY");
 
-        // 如果提供了新的主键字段列表，则添加新的主键约束
+        // If a new primary key field list is provided, add a new primary key constraint
         if (colKeyDbColumnList != null && !colKeyDbColumnList.isEmpty()) {
             StringBuilder sql = new StringBuilder();
             sql.append("ALTER TABLE ").append(fullTableName).append(" ADD PRIMARY KEY (");
@@ -763,7 +763,7 @@ public class MySqlDialect extends AbstractDbDialect {
             case "varchar":
             case "varchar2":
             case "VARCHAR":
-            case "VARCHAR2":  // MySQL不支持VARCHAR2，映射为VARCHAR
+            case "VARCHAR2":  // MySQL does not support VARCHAR2, mapping to VARCHAR
                 return "VARCHAR";
             case "CHAR":
             case "char":
@@ -808,7 +808,7 @@ public class MySqlDialect extends AbstractDbDialect {
             case "YEAR":
                 return "YEAR";
             default:
-                return columnType; // 默认处理未知类型
+                return columnType; // Handle unknown types by default
         }
     }
 

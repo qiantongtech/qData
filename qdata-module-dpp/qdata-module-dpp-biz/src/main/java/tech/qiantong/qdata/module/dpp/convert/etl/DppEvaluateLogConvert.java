@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEvaluateLogDO;
 import java.util.List;
 
 /**
- * 评测规则结果 Convert
+ * Evaluation Rule Result Convert
  *
  * @author qdata
  * @date 2025-07-21
@@ -38,29 +38,29 @@ public interface DppEvaluateLogConvert {
     DppEvaluateLogConvert INSTANCE = Mappers.getMapper(DppEvaluateLogConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dppEvaluateLogPageReqVO 请求参数
+     * Convert PageReqVO to DO
+     * @param dppEvaluateLogPageReqVO request parameters
      * @return DppEvaluateLogDO
      */
      DppEvaluateLogDO convertToDO(DppEvaluateLogPageReqVO dppEvaluateLogPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dppEvaluateLogSaveReqVO 保存请求参数
+     * Convert SaveReqVO to DO
+     * @param dppEvaluateLogSaveReqVO save request parameters
      * @return DppEvaluateLogDO
      */
      DppEvaluateLogDO convertToDO(DppEvaluateLogSaveReqVO dppEvaluateLogSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dppEvaluateLogDO 实体对象
+     * Convert DO to RespVO
+     * @param dppEvaluateLogDO entity object
      * @return DppEvaluateLogRespVO
      */
      DppEvaluateLogRespVO convertToRespVO(DppEvaluateLogDO dppEvaluateLogDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dppEvaluateLogDOList 实体对象列表
+     * Convert DO List to RespVO List
+     * @param dppEvaluateLogDOList entity object list
      * @return List<DppEvaluateLogRespVO>
      */
      List<DppEvaluateLogRespVO> convertToRespVOList(List<DppEvaluateLogDO> dppEvaluateLogDOList);

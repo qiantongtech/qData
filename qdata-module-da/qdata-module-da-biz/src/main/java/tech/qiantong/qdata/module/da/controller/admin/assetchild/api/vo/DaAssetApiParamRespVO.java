@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 数据资产-外部API-参数 Response VO 对象 DA_ASSET_API_PARAM
+ * Data Asset - External API - Parameter Response VO DA_ASSET_API_PARAM
  *
  * @author qdata
  * @date 2025-04-14

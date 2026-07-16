@@ -24,7 +24,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -33,24 +33,24 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 @Data
 public class DppEtlTaskInstanceTreeListReqVO extends PageParam {
 
-    @Schema(description = "项目编码", example = "")
+    @Schema(description = "Project Code", example = "")
     private String projectCode;
 
-    @Schema(description = "类目编码", example = "")
+    @Schema(description = "Category Code", example = "")
     private String catCode;
 
-    @Schema(description = "任务实例名称", example = "")
+    @Schema(description = "Task Instance Name", example = "")
     private String name;
 
-    @Schema(description = "右查询名称", example = "")
+    @Schema(description = "Right Query Name", example = "")
     private String jobName;
 
-    @Schema(description = "执行状态", example = "")
+    @Schema(description = "Execution Status", example = "")
     private String status;
 
-    @Schema(description = "执行开始时间(格式 yyyy-MM-dd)", example = "")
+    @Schema(description = "Execution Start Time (format yyyy-MM-dd)", example = "")
     private String startTime;
 
-    @Schema(description = "执行结束时间(格式 yyyy-MM-dd)", example = "")
+    @Schema(description = "Execution End Time (format yyyy-MM-dd)", example = "")
     private String endTime;
 }

@@ -35,19 +35,19 @@
 
     <dependencies>
 
-        <!-- SpringBoot Web容器 -->
+        <!-- SpringBoot web container -->
          <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- SpringBoot 拦截器 -->
+        <!-- SpringBoot interceptor -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- 验证码 -->
+        <!-- Verification code -->
         <dependency>
             <groupId>pro.fessional</groupId>
             <artifactId>kaptcha</artifactId>
@@ -59,7 +59,7 @@
             </exclusions>
         </dependency>
 
-        <!-- 获取系统信息 -->
+        <!-- Get system information -->
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>

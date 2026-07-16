@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 元数据信息 Response VO 对象 MC_TABLE
+ * Metadata information Response VO object MC_TABLE
  *
  * @author qdata
  * @date 2026-02-11
@@ -173,46 +173,46 @@ public class McTableRespVO implements Serializable {
     @TableField(exist = false)
     private Long columnCount;
 
-    /** cron表达式 */
+    /** cron expression */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
-    /** 表的行数 */
+    /** Number of rows in the table */
     @Schema(description = "行数", example = "")
     private Long rowCount;
 
-    /** 表的索引信息 */
+    /** Index information of the table */
     @Schema(description = "索引", example = "")
     private String tbIndex;
 
-    /** 表的分区字段信息 */
+    /** Table partition field information */
     @Schema(description = "分区字段", example = "")
     private String partitionKey;
     /**
-     * 存储引擎
+     * Storage engine
      */
     @Schema(description = "存储引擎", example = "")
     private String storageEngine;
     /**
-     * 负责部门
+     * Responsible department
      */
     @Schema(description = "负责部门", example = "")
     private Long responsibleDept;
 
     /**
-     * 主键字段
+     * Primary key field
      */
     @Schema(description = "主键字段", example = "")
     private String primaryKey;
 
     /**
-     * 表创建时间
+     * Table creation time
      */
     @Excel(name = "表创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -220,7 +220,7 @@ public class McTableRespVO implements Serializable {
     private Date tbCreateTime;
 
     /**
-     * 数据更新时间
+     * Data update time
      */
     @Excel(name = "数据更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -228,30 +228,30 @@ public class McTableRespVO implements Serializable {
     private Date dataUpdateTime;
 
     /**
-     * 是否已经关联资产
+     * Whether assets have been associated
      */
     @Schema(description = "是否已经关联资产", example = "")
     private Boolean dssetFlag;
 
     /**
-     * 创建人电话
+     * Creator phone number
      */
     private String createPhoneNumber;
 
     /**
-     * 更新人电话
+     * Updater’s phone number
      */
     private String updatePhoneNumber;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

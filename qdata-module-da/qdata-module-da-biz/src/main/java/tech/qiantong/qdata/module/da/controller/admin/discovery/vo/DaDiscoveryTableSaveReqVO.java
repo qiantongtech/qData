@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * 数据发现库信息 创建/修改 Request VO DA_DISCOVERY_TABLE
+ * Data Discovery Database Table Create/Update Request VO DA_DISCOVERY_TABLE
  *
  * @author qdata
  * @date 2025-02-11

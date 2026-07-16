@@ -338,7 +338,7 @@ function handleDialogSuccess() {
   else ids = store.rows.map((x) => x.id).join(",");
   if (!ids) return;
   proxy.$modal
-    .confirm('是否确认删除编号为"' + ids + '"的数据项？')
+    .confirm('Are you sure to delete the data item numbered "' + ids + '"?')
     .then(function () {
       return delDesensitizeRules(ids);
     })
@@ -357,7 +357,7 @@ function handleDelete(row) {
     message.value=td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为{id}的数据项？', { id: row.id })
   }else {
     store.rows.forEach(item => {
-      // 当 validFlag 为 false 时，记录 id
+      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }

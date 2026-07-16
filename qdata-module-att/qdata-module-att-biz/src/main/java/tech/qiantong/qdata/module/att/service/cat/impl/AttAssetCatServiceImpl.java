@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产类目管理Service业务层处理
+ * Data Asset Category Management - Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -94,7 +94,7 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
                 throw new ServiceException("att.error.parent.disabled", "须先启用父级");
             }
         }
-        // 更新数据资产类目管理
+        // Update Data Asset Category Management
         AttAssetCatDO updateObj = BeanUtils.toBean(updateReqVO, AttAssetCatDO.class);
         return attAssetCatMapper.updateById(updateObj);
     }
@@ -104,9 +104,9 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
         int count = 0;
         for (Long id : idList) {
             AttAssetCatDO cat = baseMapper.selectById(id);
-            //判断是否存在数据资产
+            // Check if data assets exist
             if (daAssetApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.asset", "存在数据资产，不允许删除");
+                throw new ServiceException("att.error.delete.asset", "存在数据资产，不允许Delete ");
             }
             if (cat != null) {
                 count += baseMapper.delete(Wrappers.lambdaQuery(AttAssetCatDO.class)
@@ -144,19 +144,19 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
                 .collect(Collectors.toMap(
                         AttAssetCatDO::getId,
                         attAssetCatDO -> attAssetCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产类目管理数据
+     * Import Data Asset Category Management data
      *
-     * @param importExcelList 数据资产类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList Data Asset Category Management data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttAssetCat(List<AttAssetCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -180,16 +180,16 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
                             attAssetCatMapper.updateById(attAssetCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attAssetCatId + " 的数据资产类目管理记录。", attAssetCatId, "数据资产类目管理"));
+                                    "数据Update 成功，ID为 " + attAssetCatId + " 的数据资产类目管理记录。", attAssetCatId, "数据资产类目管理"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attAssetCatId + " 的数据资产类目管理记录不存在。", attAssetCatId, "数据资产类目管理"));
+                                    "数据Update 失败，ID为 " + attAssetCatId + " 的数据资产类目管理记录不存在。", attAssetCatId, "数据资产类目管理"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttAssetCatDO> queryWrapper = new QueryWrapper<>();
@@ -232,12 +232,12 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three cases
+         * 1. No data in database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node with no sibling elements: YouBianCodeUtil.getSubYouBianCode(parentCode, null);
+         * 3. Adding child node with sibling elements: YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the last largest code value
         LambdaQueryWrapper<AttAssetCatDO> query = new LambdaQueryWrapper<AttAssetCatDO>()
                 .eq(AttAssetCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttAssetCatDO::getCode, parentCode)
@@ -246,15 +246,15 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
         List<AttAssetCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttAssetCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

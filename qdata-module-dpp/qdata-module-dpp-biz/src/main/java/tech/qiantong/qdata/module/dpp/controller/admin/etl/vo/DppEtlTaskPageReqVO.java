@@ -23,12 +23,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据集成任务 Request VO 对象 DPP_ETL_TASK
+ * Data Integration Task Request VO Object DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务 Request VO")
+@Schema(description = "Data Integration Task Request VO")
 @Data
 public class DppEtlTaskPageReqVO extends PageParam {
 
@@ -36,60 +36,60 @@ public class DppEtlTaskPageReqVO extends PageParam {
     @Schema(description = "ID", example = "")
     private Long id;
 
-    @Schema(description = "任务类型", example = "1：离线任务 2：实时任务 3：数据开发任务 4：作业任务")
+    @Schema(description = "Task Type", example = "1: Offline Task 2: Real-time Task 3: Data Development Task 4: Job Task")
     private String type;
 
-    @Schema(description = "处理类型", example = "1 流处理  2 批处理")
+    @Schema(description = "Process Type", example = "1: Stream Processing  2: Batch Processing")
     private String processType;
 
-    @Schema(description = "数据源类型", example = "")
+    @Schema(description = "Datasource Type", example = "")
     private String datasourceType;
 
-    @Schema(description = "任务名称", example = "")
+    @Schema(description = "Task Name", example = "")
     private String name;
 
-    @Schema(description = "任务的执行策略", example = "")
+    @Schema(description = "Task Execution Strategy", example = "")
     private String executionType;
 
-    @Schema(description = "任务编码", example = "")
+    @Schema(description = "Task Code", example = "")
     private String code;
 
-    @Schema(description = "任务版本", example = "")
+    @Schema(description = "Task Version", example = "")
     private Long version;
 
-    @Schema(description = "项目id", example = "")
+    @Schema(description = "Project ID", example = "")
     private Long projectId;
 
-    @Schema(description = "项目编码", example = "")
+    @Schema(description = "Project Code", example = "")
     private String projectCode;
 
-    @Schema(description = "责任人", example = "")
+    @Schema(description = "Person in Charge", example = "")
     private String personCharge;
 
-    @Schema(description = "节点坐标信息", example = "")
+    @Schema(description = "Node Coordinate Info", example = "")
     private String locations;
 
-    @Schema(description = "描述", example = "")
+    @Schema(description = "Description", example = "")
     private String description;
 
-    @Schema(description = "超时时间", example = "")
+    @Schema(description = "Timeout", example = "")
     private Long timeout;
 
-    @Schema(description = "抽取量", example = "")
+    @Schema(description = "Extraction Count", example = "")
     private Long extractionCount;
 
-    @Schema(description = "写入量", example = "")
+    @Schema(description = "Write Count", example = "")
     private Long writeCount;
 
-    @Schema(description = "任务状态", example = "")
+    @Schema(description = "Task Status", example = "")
     private String status;
 
-    @Schema(description = "DolphinScheduler的id", example = "")
+    @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    /** 类目编码 */
+    /** Category Code */
     private String catCode;
 
-    @Schema(description = "草稿任务配置信息", example = "")
+    @Schema(description = "Draft Task Config", example = "")
     private String draftJson;
 }

@@ -156,7 +156,7 @@ const params = ref({
     }
     getChartData();
     function handleShrinkChange(e) {
-        console.log('收缩区域状态改变', e);
+        console.log("Collapse area state changed", e);
         setTimeout(() => {
             dpChartARef.value.resize();
         }, 300);

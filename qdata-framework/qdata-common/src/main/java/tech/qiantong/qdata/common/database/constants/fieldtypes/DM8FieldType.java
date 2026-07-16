@@ -27,38 +27,38 @@ import java.util.List;
 import java.util.Set;
 
 public enum DM8FieldType {
-    // 短文本类型
+    // Short text type
     CHAR("CHAR", 32767, "1"),
     VARCHAR("VARCHAR", 32767, "255"),
     VARCHAR2("VARCHAR2", 32767, "255"),
 
-    // 长文本类型
+    // Long text type
     TEXT("TEXT", Integer.MAX_VALUE, ""),
     CLOB("CLOB", Integer.MAX_VALUE, ""),
     NCLOB("NCLOB", Integer.MAX_VALUE, ""),
 
-    // 整数类型
+    // Integer type
     TINYINT("TINYINT", 3, ""),
     SMALLINT("SMALLINT", 5, ""),
     INT("INT", 10, ""),
     INTEGER("INTEGER", 10, ""),
     BIGINT("BIGINT", 19, ""),
 
-    // 小数类型
+    // Decimal type
     DECIMAL("DECIMAL", 38, "10,0"),
     NUMERIC("NUMERIC", 38, "10,0"),
     NUMBER("NUMBER", 38, "10,0"),
 
-    // 浮点数类型
+    // Floating point type
     FLOAT("FLOAT", 38, ""),
     DOUBLE("DOUBLE", 38, ""),
     REAL("REAL", 38, ""),
 
-    // 布尔类型
+    // Boolean type
     BIT("BIT", 1, ""),
     BOOLEAN("BOOLEAN", 1, ""),
 
-    // 日期时间类型
+    // Datetime type
     DATE("DATE", 0, ""),
     TIME("TIME", 0, ""),
     TIMESTAMP("TIMESTAMP", 6, "6"),
@@ -66,20 +66,20 @@ public enum DM8FieldType {
     INTERVAL_YEAR_TO_MONTH("INTERVAL YEAR TO MONTH", 0, ""),
     INTERVAL_DAY_TO_SECOND("INTERVAL DAY TO SECOND", 0, ""),
 
-    // 二进制类型
+    // Binary type
     VARBINARY("VARBINARY", 32767, "255"),
     RAW("RAW", 32767, "255"),
     LONG_VARBINARY("LONG VARBINARY", Integer.MAX_VALUE, ""),
 
-    // 大对象类型
+    // Large object type
     BLOB("BLOB", Integer.MAX_VALUE, ""),
     IMAGE("IMAGE", Integer.MAX_VALUE, ""),
 
-    // JSON/XML 类型
+    // JSON/XML type
     JSON("JSON", Integer.MAX_VALUE, ""),
     XML("XML", Integer.MAX_VALUE, ""),
 
-    // 其他类型
+    // Other types
     ROWID("ROWID", 0, ""),
     UUID("UUID", 36, "36"),
     GEOMETRY("GEOMETRY", Integer.MAX_VALUE, ""),
@@ -89,7 +89,7 @@ public enum DM8FieldType {
 
     private final String type;
     private final int maxLength;
-    private final String defaultValue; // 默认值（长度、参数等）
+    private final String defaultValue; // Default values (length, parameters, etc.)
 
     DM8FieldType(String type, int maxLength, String defaultValue) {
         this.type = type;
@@ -110,7 +110,7 @@ public enum DM8FieldType {
     }
 
     /**
-     * 根据数据类型获取枚举
+     * Get enumeration based on data type
      */
     public static DM8FieldType getByType(String dataType) {
         for (DM8FieldType type : DM8FieldType.values()) {
@@ -122,7 +122,7 @@ public enum DM8FieldType {
     }
 
     /**
-     * 校验 DbColumn 是否符合规范
+     * Verify whether DbColumn conforms to the specification
      */
     public static List<String> validateColumn(DbColumn column) {
         List<String> errors = new ArrayList<>();
@@ -140,21 +140,21 @@ public enum DM8FieldType {
         Boolean nullable = column.getNullable();
         String dataDefault = column.getDataDefault();
 
-        // 1. 列名不能为空，且长度不能超过30个字符
+        // 1. The column name cannot be empty and the length cannot exceed 30 characters.
         if (colName == null || colName.trim().isEmpty()) {
             errors.add("列名不能为空。");
         } else if (colName.length() > 30) {
             errors.add("字段 '" + colName + "' 长度不能超过30个字符。");
         }
 
-        // 2. 数据类型必须为达梦支持的类型
+        // 2. The data type must be a type supported by Dameng
         DM8FieldType fieldType = getTypeByName(dataType);
         if (fieldType == null) {
             errors.add("字段 '" + colName + "' 的数据类型 '" + dataType + "' 不支持。");
-            return errors; // 不支持的类型，直接返回
+            return errors; // Unsupported types are returned directly.
         }
 
-        // 3. 长度校验（仅对有长度限制的类型）
+        // 3. Length check (only for types with length restrictions)
         if (fieldType.getMaxLength() > 0) {
             if (dataLength == null || !dataLength.matches("\\d+")) {
                 errors.add("字段 '" + colName + "' 的数据长度必须为正整数。");
@@ -166,19 +166,19 @@ public enum DM8FieldType {
             }
         }
 
-        // 4. 小数位校验（仅对小数类型）
+        // 4. Decimal place verification (only for decimal types)
         if (isDecimal(fieldType.getType())) {
             if (dataScale != null && !dataScale.matches("\\d+")) {
                 errors.add("字段 '" + colName + "' 的小数位必须为正整数。");
             }
         }
 
-        // 5. 主键字段不允许为空
+        // 5. The primary key field is not allowed to be empty.
         if (Boolean.TRUE.equals(colKey) && Boolean.TRUE.equals(nullable)) {
             errors.add("字段 '" + colName + "' 作为主键时不能为空。");
         }
 
-        // 6. 默认值校验（主要针对时间类型）
+        // 6. Default value verification (mainly for time type)
         if (isTime(fieldType.getType()) && dataDefault != null) {
             if (!dataDefault.matches("^\\d{4}-\\d{2}-\\d{2}( \\d{2}:\\d{2}:\\d{2})?$")) {
                 errors.add("字段 '" + colName + "' 的默认值格式错误，正确格式应为 'YYYY-MM-DD' 或 'YYYY-MM-DD HH:MI:SS'。");
@@ -189,7 +189,7 @@ public enum DM8FieldType {
     }
 
     /**
-     * 判断数据类型是否存在
+     * Determine whether the data type exists
      */
     public static DM8FieldType getTypeByName(String dataType) {
         for (DM8FieldType type : DM8FieldType.values()) {
@@ -201,7 +201,7 @@ public enum DM8FieldType {
     }
 
     /**
-     * 是否为小数类型
+     * Whether it is a decimal type
      */
     public static boolean isDecimal(String dataType) {
         return dataType != null && (
@@ -212,7 +212,7 @@ public enum DM8FieldType {
     }
 
     /**
-     * 是否为时间类型
+     * Whether it is time type
      */
     public static boolean isTime(String dataType) {
         return dataType != null && (
@@ -225,12 +225,12 @@ public enum DM8FieldType {
 
 
     /**
-     *  映射 DM8 数据库列类型
+     * Mapping DM8 database column types
      */
     public static String mapDmColumnType(DbColumn col) {
         DM8FieldType typeEnum = getByType(col.getDataType());
         if (typeEnum == null) {
-            return col.getDataType(); // 不支持的类型，直接返回原值
+            return col.getDataType(); // If the type is not supported, the original value will be returned directly.
         }
 
         Long length = MD5Util.getStringToLong(col.getDataLength());
@@ -254,7 +254,7 @@ public enum DM8FieldType {
                 return "TIMESTAMP";
             case TEXT:
             case CLOB:
-                return "TEXT"; // 达梦也可使用 CLOB
+                return "TEXT"; // Dameng can also use CLOB
             default:
                 return typeEnum.getType();
         }
@@ -262,7 +262,7 @@ public enum DM8FieldType {
 
 
     /**
-     * 判断是否为字符串类型
+     * Determine whether it is a string type
      */
     private static final Set<DM8FieldType> STRING_TYPES = EnumSet.of(
             VARCHAR, VARCHAR2, CHAR, CLOB, TEXT

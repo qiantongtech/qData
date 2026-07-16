@@ -57,7 +57,7 @@ const fileDesc = computed(() => {
 const table = ref([
   // {
   //   key: "name",
-  //   label: "应用名称",
+  //   label: "Application Name",
   //   value: "",
   // },
   {
@@ -73,7 +73,7 @@ const table = ref([
 
   // {
   //   key: "allowUrl",
-  //   label: "授权路径",
+  //   label: "Authorization path",
   //   value: "",
   // },
   {

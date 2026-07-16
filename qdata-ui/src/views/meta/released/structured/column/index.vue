@@ -318,7 +318,7 @@ const searchStore = reactive({
   ],
 });
 
-// 获取业务域路径
+// Get business domain path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -331,7 +331,7 @@ const getDomainPath = computed(() => {
   };
 });
 
-// 获取业务域列表
+// Get business domain list
 function getDomains() {
   listDomain().then((res) => {
     store.domains = [...res.data];
@@ -346,7 +346,7 @@ function getDomains() {
   });
 }
 
-// 获取库元素列表
+// Get a list of library elements
 function getMetaDatabases() {
   store.metaDatabases.splice(0, store.metaDatabases.length);
   return listDb({ pageSize: 1000 }).then((res) => {
@@ -360,7 +360,7 @@ function getMetaDatabases() {
   });
 }
 
-// 获取表元素列表
+// Get list of table elements
 function getMetaTables() {
   store.metaTables.splice(0, store.metaTables.length);
   return listTable({ pageSize: 1000 }).then((res) => {
@@ -374,7 +374,7 @@ function getMetaTables() {
   });
 }
 
-// 详情
+// Details
 function handleDetailClick(row, tab) {
   router.push({
     path: BASE_URL + "/detail",

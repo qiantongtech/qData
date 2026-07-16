@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成任务-扩展数据Service业务层处理
+ * Data Integration Task - Extended Data Service business layer processing
  *
  * @author qdata
  * @date 2025-04-16
@@ -70,16 +70,16 @@ public class DppEtlTaskExtServiceImpl extends ServiceImpl<DppEtlTaskExtMapper, D
 
     @Override
     public int updateDppEtlTaskExt(DppEtlTaskExtSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成任务-扩展数据
+        // Update Data Integration Task - Extended Data
         DppEtlTaskExtDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskExtDO.class);
         return dppEtlTaskExtMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDppEtlTaskExt(Collection<Long> idList) {
-        // 批量删除数据集成任务-扩展数据
+        // Batch delete Data Integration Task - Extended Data
         return dppEtlTaskExtMapper.deleteBatchIds(idList);
     }
 
@@ -100,19 +100,19 @@ public class DppEtlTaskExtServiceImpl extends ServiceImpl<DppEtlTaskExtMapper, D
                 .collect(Collectors.toMap(
                         DppEtlTaskExtDO::getId,
                         dppEtlTaskExtDO -> dppEtlTaskExtDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成任务-扩展数据数据
+     * Import Data Integration Task - Extended Data
      *
-     * @param importExcelList 数据集成任务-扩展数据数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data Integration Task - Extended Data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName        operator user
+     * @return Result
      */
     @Override
     public String importDppEtlTaskExt(List<DppEtlTaskExtRespVO> importExcelList, boolean isUpdateSupport, String operName) {

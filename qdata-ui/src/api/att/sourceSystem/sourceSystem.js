@@ -18,7 +18,7 @@
 
 import request from '@/utils/request'
 
-// 查询来源系统列表
+// Query source system list
 export function listSourceSystem(query) {
   return request({
     url: '/att/sourceSystem/list',
@@ -27,7 +27,7 @@ export function listSourceSystem(query) {
   })
 }
 
-// 查询所有来源系统列表
+// Query the list of all source systems
 export function listValidSourceSystem(query) {
   return request({
     url: '/att/sourceSystem/listValid',
@@ -36,7 +36,7 @@ export function listValidSourceSystem(query) {
   })
 }
 
-// 查询来源系统详细
+// Query source system details
 export function getSourceSystem(id) {
   return request({
     url: '/att/sourceSystem/' + id,
@@ -44,7 +44,7 @@ export function getSourceSystem(id) {
   })
 }
 
-// 新增来源系统
+// Add source system
 export function addSourceSystem(data) {
   return request({
     url: '/att/sourceSystem',
@@ -53,7 +53,7 @@ export function addSourceSystem(data) {
   })
 }
 
-// 修改来源系统
+// Modify source system
 export function updateSourceSystem(data) {
   return request({
     url: '/att/sourceSystem',
@@ -62,7 +62,7 @@ export function updateSourceSystem(data) {
   })
 }
 
-// 删除来源系统
+// Delete source system
 export function delSourceSystem(id) {
   return request({
     url: '/att/sourceSystem/' + id,

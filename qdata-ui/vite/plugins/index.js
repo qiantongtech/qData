@@ -33,8 +33,8 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
   //   visualizer({
   //     gzipSize: true,
   //     brotliSize: true,
-  //     filename: "err.html", // 默认在项目根目录下生成stats.html文件，可自定义
-  //     open: true, //生成后自动打开浏览器查看
+  //     filename: "err.html", // The stats.html file is generated in the project root directory by default and can be customized
+  //     open: true, //Automatically open the browser for viewing after generation
   //   }),
   // );
   isBuild && vitePlugins.push(...createCompression(viteEnv));

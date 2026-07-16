@@ -22,7 +22,7 @@ import { i18n } from "@/plugins/vueI18n";
 export function timeAgo(timeStr) {
   const date = new Date(timeStr);
   const now = new Date();
-  const diff = (now - date) / 1000; // 秒
+  const diff = (now - date) / 1000; // seconds
 
   if (diff < 60) {
     return moment(timeStr).format("HH:mm");

@@ -21,26 +21,26 @@ package tech.qiantong.qdata.ai.core.service;
 import org.springframework.ai.chat.model.ChatModel;
 
 /**
- * springAi chatModel 服务
+ * springAi chatModel service
  *
  * @author fabian
  */
 public interface IChatModelService {
     /**
-     * 获取 chatModel
+     * Get chatModel
      *
-     * @param platForm  平台名称
+     * @param platForm platform name
      * @param baseUrl   baseUrl
      * @param apiKey    apiKey
-     * @param modelName 模型名称
+     * @param modelName model name
      * @return chatModel
      */
     ChatModel getChatModel(String platForm, String baseUrl, String apiKey, String modelName);
 
     /**
-     * 获取 chatModel
+     * Get chatModel
      *
-     * @param modelId 模型id
+     * @param modelId model id
      * @return chatModel
      */
     ChatModel getChatModel(Long modelId);

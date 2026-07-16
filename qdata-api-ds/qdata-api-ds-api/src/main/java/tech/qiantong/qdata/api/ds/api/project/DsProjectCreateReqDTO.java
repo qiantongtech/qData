@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <P>
- * 用途:项目保存修改DTO
+ * Description: Project create request DTO
  * </p>
  *
  * @author: FXB
@@ -38,12 +38,12 @@ import lombok.NoArgsConstructor;
 public class DsProjectCreateReqDTO {
 
     /**
-     * 项目名称（必填）
+     * Project name (required)
      */
     private String projectName;
 
     /**
-     * 项目描述
+     * Project description
      */
     private String description;
 }

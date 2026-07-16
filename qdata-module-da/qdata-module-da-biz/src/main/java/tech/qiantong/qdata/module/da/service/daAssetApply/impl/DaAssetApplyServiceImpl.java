@@ -48,7 +48,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产申请Service业务层处理
+ * Data asset application Service business layer processing
  *
  * @author shu
  * @date 2025-03-19
@@ -116,9 +116,9 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
 
     @Override
     public int updateDaAssetApply(DaAssetApplySaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产申请
+        // Update data asset application
         DaAssetApplyDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetApplyDO.class);
         int updateById = daAssetApplyMapper.updateById(updateObj);
         if (updateById > 0 && !"1".equals(updateObj.getStatus())) {
@@ -140,7 +140,7 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
 
     @Override
     public int removeDaAssetApply(Collection<Long> idList) {
-        // 批量删除数据资产申请
+        // Batch delete data asset applications
         return daAssetApplyMapper.deleteBatchIds(idList);
     }
 
@@ -179,19 +179,19 @@ public class DaAssetApplyServiceImpl extends ServiceImpl<DaAssetApplyMapper, DaA
                 .collect(Collectors.toMap(
                         DaAssetApplyDO::getId,
                         daAssetApplyDO -> daAssetApplyDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据资产申请数据
+     * Import data asset application data
      *
-     * @param importExcelList 数据资产申请数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data asset application data list
+     * @param isUpdateSupport Whether update is supported; if the record already exists, perform an update
+     * @param operName        Operator user
+     * @return Result
      */
     @Override
     public String importDaAssetApply(List<DaAssetApplyRespVO> importExcelList, boolean isUpdateSupport, String operName) {

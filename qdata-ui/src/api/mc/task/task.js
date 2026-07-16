@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询采集任务列表
+// Query collection task list
 export function listTask(query) {
   return request({
     url: '/mc/task/list',
@@ -9,7 +9,7 @@ export function listTask(query) {
   })
 }
 
-// 查询采集任务详细
+// Query collection task details
 export function getTask(id) {
   return request({
     url: '/mc/task/' + id,
@@ -17,7 +17,7 @@ export function getTask(id) {
   })
 }
 
-// 新增采集任务
+// Add new collection tasks
 export function addTask(data) {
   return request({
     url: '/mc/task',
@@ -26,7 +26,7 @@ export function addTask(data) {
   })
 }
 
-// 修改采集任务
+// Modify collection tasks
 export function updateTask(data) {
   return request({
     url: '/mc/task',
@@ -35,7 +35,7 @@ export function updateTask(data) {
   })
 }
 
-// 删除采集任务
+// Delete collection task
 export function delTask(id) {
   return request({
     url: '/mc/task/' + id,
@@ -43,7 +43,7 @@ export function delTask(id) {
   })
 }
 
-// 获取采集范围
+// Get collection range
 export function getRealtimeMcTaskScopeList(id) {
   return request({
     url: '/mc/task/getRealtimeMcTaskScopeList/' + id,
@@ -51,7 +51,7 @@ export function getRealtimeMcTaskScopeList(id) {
   })
 }
 
-// 任务上下线
+// Task online and offline
 export function updateReleaseJobTask(data) {
   return request({
     url: 'mc/task/updateReleaseJobTask',
@@ -60,7 +60,7 @@ export function updateReleaseJobTask(data) {
   })
 }
 
-// 调度上下线
+// Scheduling online and offline
 export function updateReleaseSchedule(data) {
   return request({
     url: 'mc/task/updateReleaseSchedule',
@@ -69,7 +69,7 @@ export function updateReleaseSchedule(data) {
   })
 }
 
-//执行一次
+//Execute once
 export function runJobOnce(data) {
   return request({
     url: `/mc/task/runJobOnce`,
@@ -78,7 +78,7 @@ export function runJobOnce(data) {
   })
 }
 
-// 获取来源系统树
+// Get source system tree
 export function sourceSystemTree(query) {
   return request({
     url: '/mc/task/sourceSystemTree',
@@ -86,7 +86,7 @@ export function sourceSystemTree(query) {
     params: query
   })
 }
-// 批量删除采集任务
+// Delete collection tasks in batches
 export function batchDeleteCheck(id) {
   return request({
     url: '/mc/task/batchDeleteCheck/' + id,

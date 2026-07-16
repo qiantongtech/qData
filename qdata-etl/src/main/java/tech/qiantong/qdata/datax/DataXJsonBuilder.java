@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handle DataX task configuration and execution.
+ * DataX job.json 生成工具类。
  */
 public final class DataXJsonBuilder {
 
@@ -48,7 +48,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 构建 DataX reader 节点配置，负责源表、源字段和源数据源连接信息。
      */
     private static Map<String, Object> buildReader(Map<String, Object> readerNodeJsonMap, Map<String, Object> writerNodeJsonMap) {
         Map<String, Object> readerDatasource = parseDatasource(readerNodeJsonMap, "readerDatasource");
@@ -60,7 +60,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 构建 DataX writer 节点配置，负责目标表、目标字段和目标数据源连接信息。
      */
     private static Map<String, Object> buildWriter(Map<String, Object> writerNodeJsonMap) {
         Map<String, Object> writerDatasource = parseDatasource(writerNodeJsonMap, "writerDatasource");
@@ -72,7 +72,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 组装 reader/writer 通用参数，保留 DataX 两端一致的字段、SQL、账号和连接结构。
      */
     private static Map<String, Object> buildParameter(Map<String, Object> nodeJsonMap,
                                                       Map<String, Object> columnNodeJsonMap,
@@ -108,8 +108,8 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle DataX task configuration and execution.
-     * @param type parameter value
+     * where、preSql、postSql 为空时不写入，避免生成无意义的 DataX 参数。
+     * @param type 数据类型："string" 或 "list"
      */
     private static void putSqlParameter(Map<String, Object> parameter, Map<String, Object> nodeJsonMap, String key, String type) {
         Object object = nodeJsonMap.get(key);
@@ -129,14 +129,14 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle JSON data for this operation.
+     * 节点内的数据源以 JSON 字符串保存，这里统一转成 Map 供后续构建连接信息。
      */
     private static Map<String, Object> parseDatasource(Map<String, Object> nodeJsonMap, String datasourceKey) {
         return JSONUtils.convertTaskDefinitionJsonMap(String.valueOf(nodeJsonMap.get(datasourceKey)));
     }
 
     /**
-     * Maintain compatibility with existing data and configurations.
+     * 兼容明文和加密密码：解密失败时沿用原值。
      */
     private static String decryptPassword(Map<String, Object> datasourceConfig) {
         String password = datasourceConfig.get("password").toString();
@@ -148,7 +148,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle DataX task configuration and execution.
+     * 构建 DataX connection 配置；reader 的 jdbcUrl 使用列表，writer 沿用原字符串结构。
      */
     private static List<Map<String, Object>> buildConnection(String tableName,
                                                              Map<String, Object> datasource,
@@ -170,7 +170,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle node-related data and operations.
+     * 数据去重等处理节点配置会写入 processor.nodes。
      */
     private static Map<String, Object> buildProcessor(Map<String, Object> definitionJsonMap) {
         Map<String, Object> processor = new HashMap<>();
@@ -179,7 +179,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * Handle JDBC SQL execution.
+     * 根据数据源类型模板生成 JDBC URL，并替换前端保存的数据源连接参数。
      */
     private static String buildJdbcUrl(Map<String, Object> datasource) {
         String datasourceType = String.valueOf(datasource.get("datasourceType"));

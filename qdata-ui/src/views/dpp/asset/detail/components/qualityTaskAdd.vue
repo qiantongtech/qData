@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <!-- 资产质量的弹窗 -->
+  <!-- Asset quality pop-up window -->
   <el-dialog
     v-model="visible"
     :title="title"
@@ -32,12 +32,12 @@
       <div v-loading="loadingList">
         <!-- <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                                  @submit.prevent :label-position="labelPosition">
-                                <el-form-item label="规则名称" prop="name" :label-position="labelPosition">
+                                <el-form-item label="Rule name" prop="name" :label-position="labelPosition">
                                     <el-input class="el-form-input-width" v-model="queryParams.name"
-                                        placeholder="请输入规则名称" clearable @keyup.enter="handleQuery" />
+                                        placeholder="Please enter the rule name" clearable @keyup.enter="handleQuery" />
                                 </el-form-item>
-                                <el-form-item label="质量维度" prop="dimensionType" :label-position="labelPosition">
-                                    <el-select v-model="queryParams.dimensionType" placeholder="请选择质量维度"
+                                <el-form-item label="Quality Dimension" prop="dimensionType" :label-position="labelPosition">
+                                    <el-select v-model="queryParams.dimensionType" placeholder="Please select quality dimension"
                                         style="width: 210px;">
                                         <el-option v-for="dict in att_rule_audit_q_dimension" :key="dict.value"
                                             :label="dict.label" :value="dict.value"></el-option>
@@ -47,8 +47,8 @@
                                 <el-form-item :label="td('common.texts.status')" prop="publishStatus" :label-position="labelPosition">
                                     <el-select v-model="queryParams.publishStatus" :placeholder="t('common.form.statusPlaceholder')" clearable
                                         class="el-form-input-width">
-                                        <el-option label="上线" value="online" />
-                                        <el-option label="下线" value="offline" />
+                                        <el-option label="online" value="online" />
+                                        <el-option label="offline" value="offline" />
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item :label-position="labelPosition">
@@ -260,7 +260,7 @@ function convertAssetToTask(asset) {
   ];
 }
 
-let loadingInstance = ref(null); // 全局 loading 实例
+let loadingInstance = ref(null); // Global loading instance
 let originList = ref([]);
 function getIconByValue(value) {
   const node = treeData.find(
@@ -302,12 +302,12 @@ let deptOptions = ref([]);
 let userList = ref([]);
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 function handleShowCron() {
   expression.value = form.value.cycle;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 async function crontabFill(value) {
   form.value.cycle = value;
   await nextTick();
@@ -396,7 +396,7 @@ function renameRuleToRuleConfig(data, obj) {
         try {
           parsedRule = JSON.parse(item.rule || "{}");
         } catch (e) {
-          console.warn(`rule JSON 解析失败: ${item.rule}`, e);
+          console.warn(`Failed to parse rule JSON: ${item.rule}`, e);
         }
 
         const evaColumnStr = col.columnName;
@@ -439,19 +439,19 @@ async function selectInspectionRule() {
 
           let addedCount = 0;
           obj.forEach((newRule) => {
-            // 规则唯一标识
+            // Rule unique identifier
             const key = `${newRule.tableName}_${newRule.evaColumn}_${newRule.ruleName}`;
 
-            // 查找是否已存在相同规则
+            // Find if the same rule already exists
             const existIndex = originList.value.findIndex(
               (r) => `${r.tableName}_${r.evaColumn}_${r.ruleName}` === key
             );
 
             if (existIndex > -1) {
-              // 覆盖
+              // Cover
               originList.value.splice(existIndex, 1, newRule);
             } else {
-              // 追加
+              // Append
               originList.value.push(newRule);
               addedCount++;
             }
@@ -469,7 +469,7 @@ async function selectInspectionRule() {
         }
       } catch (err) {
         console.warn(
-          `获取规则失败: datasourceId=${item.datasourceId}, tableName=${item.tableName}`,
+          `Failed to fetch rules: datasourceId=${item.datasourceId}, tableName=${item.tableName}`,
           err
         );
       }
@@ -554,7 +554,7 @@ async function submitForm() {
             dppQualityTaskEvaluateSaveReqVO.value,
         });
 
-    // 响应处理
+    // response handling
     if (res.code == "200") {
       handleClose();
       emit("submit-success");
@@ -580,8 +580,8 @@ function getDppQualityTaskinfo(data) {
 
   try {
     const {
-      dppQualityTaskObjSaveReqVO, //对象
-      dppQualityTaskEvaluateRespVOS, // 规则
+      dppQualityTaskObjSaveReqVO, //object
+      dppQualityTaskEvaluateRespVOS, // rules
       ...obj
     } = data;
     originList.value = dppQualityTaskEvaluateRespVOS;

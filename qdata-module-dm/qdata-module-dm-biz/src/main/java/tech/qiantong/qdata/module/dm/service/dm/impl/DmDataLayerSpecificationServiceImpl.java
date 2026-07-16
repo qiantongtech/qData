@@ -46,7 +46,7 @@ import tech.qiantong.qdata.module.dm.service.dm.IDmDataLayerSpecificationService
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 数仓分层-规范管理Service业务层处理
+ * Data Warehouse Layer Specification Service - Business Layer Processing
  *
  * @author FXB
  * @date 2026-03-24
@@ -72,16 +72,16 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
 
     @Override
     public int updateDmDataLayerSpecification(DmDataLayerSpecificationSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数仓分层-规范管理
+        // Update data warehouse layer specification
         DmDataLayerSpecificationDO updateObj = BeanUtils.toBean(updateReqVO, DmDataLayerSpecificationDO.class);
         return dmDataLayerSpecificationMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDmDataLayerSpecification(Collection<Long> idList) {
-        // 批量删除数仓分层-规范管理
+        // Batch delete data warehouse layer specifications
         return dmDataLayerSpecificationMapper.deleteBatchIds(idList);
     }
 
@@ -108,24 +108,24 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
                 .collect(Collectors.toMap(
                         DmDataLayerSpecificationDO::getId,
                         dmDataLayerSpecificationDO -> dmDataLayerSpecificationDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数仓分层-规范管理数据
+     * Import data warehouse layer specification data
      *
-     * @param importExcelList 数仓分层-规范管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data warehouse layer specification data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName        Operation user
+     * @return Result
      */
     @Override
     public String importDmDataLayerSpecification(List<DmDataLayerSpecificationRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dm.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -144,16 +144,16 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
                             dmDataLayerSpecificationMapper.updateById(dmDataLayerSpecificationDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
-                                    "数据更新成功，ID为 " + dmDataLayerSpecificationId + " 的数仓分层-规范管理记录。", dmDataLayerSpecificationId, "数仓分层-规范管理"));
+                                    "Data update successful, data warehouse layer specification record with ID " + dmDataLayerSpecificationId + ".", dmDataLayerSpecificationId, "DataWarehouseLayerSpecification"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
-                                    "数据更新失败，ID为 " + dmDataLayerSpecificationId + " 的数仓分层-规范管理记录不存在。", dmDataLayerSpecificationId, "数仓分层-规范管理"));
+                                    "Data update failed, data warehouse layer specification record with ID " + dmDataLayerSpecificationId + " does not exist.", dmDataLayerSpecificationId, "DataWarehouseLayerSpecification"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, a record has no ID."));
                     }
                 } else {
                     QueryWrapper<DmDataLayerSpecificationDO> queryWrapper = new QueryWrapper<>();
@@ -163,17 +163,17 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
                         dmDataLayerSpecificationMapper.insert(dmDataLayerSpecificationDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
-                                "数据插入成功，ID为 " + dmDataLayerSpecificationId + " 的数仓分层-规范管理记录。", dmDataLayerSpecificationId, "数仓分层-规范管理"));
+                                "Data insert successful, data warehouse layer specification record with ID " + dmDataLayerSpecificationId + ".", dmDataLayerSpecificationId, "DataWarehouseLayerSpecification"));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
-                                "数据插入失败，ID为 " + dmDataLayerSpecificationId + " 的数仓分层-规范管理记录已存在。", dmDataLayerSpecificationId, "数仓分层-规范管理"));
+                                "Data insert failed, data warehouse layer specification record with ID " + dmDataLayerSpecificationId + " already exists.", dmDataLayerSpecificationId, "DataWarehouseLayerSpecification"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
-                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                        "Data import failed, error: " + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -182,12 +182,12 @@ public class DmDataLayerSpecificationServiceImpl extends ServiceImpl<DmDataLayer
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! " + failureNum + " records have incorrect format, errors below:<br/>" + failureDetails,
                     failureNum, failureDetails));
             throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "All data imported successfully! Total " + successNum + " records.", successNum));
         }
         return resultMsg.toString();
     }

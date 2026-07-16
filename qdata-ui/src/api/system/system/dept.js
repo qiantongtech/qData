@@ -18,7 +18,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询部门列表
+// Query department list
 export function listDept(query) {
   return request({
     url: '/system/dept/list',
@@ -27,7 +27,7 @@ export function listDept(query) {
   })
 }
 
-// 查询部门列表（排除节点）
+// Query department list (exclude nodes)
 export function listDeptExcludeChild(deptId) {
   return request({
     url: '/system/dept/list/exclude/' + deptId,
@@ -35,7 +35,7 @@ export function listDeptExcludeChild(deptId) {
   })
 }
 
-// 查询部门详细
+// Query department details
 export function getDept(deptId) {
   return request({
     url: '/system/dept/' + deptId,
@@ -43,7 +43,7 @@ export function getDept(deptId) {
   })
 }
 
-// 新增部门
+// Add new department
 export function addDept(data) {
   return request({
     url: '/system/dept',
@@ -52,7 +52,7 @@ export function addDept(data) {
   })
 }
 
-// 修改部门
+// Modify department
 export function updateDept(data) {
   return request({
     url: '/system/dept',
@@ -61,7 +61,7 @@ export function updateDept(data) {
   })
 }
 
-// 删除部门
+// Delete department
 export function delDept(deptId) {
   return request({
     url: '/system/dept/' + deptId,

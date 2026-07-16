@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 清洗规则 Response VO 对象 ATT_CLEAN_RULE
+ * Cleaning Rule Response VO ATT_CLEAN_RULE
  *
  * @author qdata
  * @date 2025-01-20
@@ -111,32 +111,32 @@ public class AttCleanRuleRespVO implements Serializable {
     private String remark;
 
     /**
-     * 数据元规则关联id
+     * Data element rule association ID
      */
     private Long ruleRelId;
 
     /**
-     * tree数据类型 1:规则类型 2:规则
+     * Tree data type 1: rule type 2: rule
      */
     private String dataType;
 
     /**
-     * 父级ID
+     * Parent ID
      */
     private Long parentId;
 
     /**
-     * 规则配置
+     * Rule configuration
      */
     private String ruleConfig;
 
     /**
-     * 子节点列表
+     * Child node list
      */
     private List<AttCleanRuleRespVO> children;
 
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
     @TableField(exist = false)

@@ -34,12 +34,12 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        // 检查是否有名为createTime的字段，如果有则自动填充当前时间
+        // Check if there is a field named createTime, if so then automatically fill in the current time
         boolean hasCreateTime = metaObject.hasSetter("createTime");
         if (hasCreateTime) {
             metaObject.setValue("createTime", new Date());
         }
-        // 检查是否有名为updateTime的字段，如果有则自动填充当前时间 部分表设置的updateTime不能为空
+        // Check whether there is a field named updateTime, and if so, automatically fill in the current time. The updateTime set in some tables cannot be empty.
         boolean hasUpdateTime = metaObject.hasSetter("updateTime");
         if (hasUpdateTime) {
             metaObject.setValue("updateTime", new Date());
@@ -52,7 +52,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         try {
             loginUser = (LoginUser) SecurityUtils.getAuthentication().getPrincipal();
         } catch (Exception e) {
-//            logger.info("获取用户信息异常:{}", e);
+// logger.info("Exception in obtaining user information: {}", e);
         }
         if (loginUser != null) {
             if (hasCreatorId) {
@@ -74,7 +74,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        // 检查是否有名为updateTime的字段，如果有则自动填充当前时间
+        // Check if there is a field named updateTime, if so, automatically fill in the current time
         boolean hasUpdateTime = metaObject.hasSetter("updateTime");
         if (hasUpdateTime) {
             metaObject.setValue("updateTime", new Date());
@@ -87,7 +87,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         try {
             loginUser = (LoginUser) SecurityUtils.getAuthentication().getPrincipal();
         } catch (Exception e) {
-//            logger.info("获取用户信息异常:{}", e);
+// logger.info("Exception in obtaining user information: {}", e);
         }
         if (loginUser != null) {
             if (hasUpdatorId) {

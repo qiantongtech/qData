@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 主题Controller
+ * Theme Controller
  *
  * @author qdata
  * @date 2025-01-20
@@ -77,7 +77,7 @@ public class AttThemeController extends BaseController {
 
     @Operation(summary = "导出主题列表")
     @PreAuthorize("@ss.hasPermi('att:theme:export')")
-    @Log(title = "主题", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.theme", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttThemePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
@@ -88,7 +88,7 @@ public class AttThemeController extends BaseController {
 
     @Operation(summary = "导入主题列表")
     @PreAuthorize("@ss.hasPermi('att:theme:import')")
-    @Log(title = "主题", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.theme", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttThemeRespVO> util = new ExcelUtil<>(AttThemeRespVO.class);
@@ -108,7 +108,7 @@ public class AttThemeController extends BaseController {
 
     @Operation(summary = "新增主题")
     @PreAuthorize("@ss.hasPermi('att:theme:add')")
-    @Log(title = "主题", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.theme", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttThemeSaveReqVO attTheme) {
         attTheme.setCreatorId(getUserId());
@@ -119,7 +119,7 @@ public class AttThemeController extends BaseController {
 
     @Operation(summary = "修改主题")
     @PreAuthorize("@ss.hasPermi('att:theme:edit')")
-    @Log(title = "主题", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.theme", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttThemeSaveReqVO attTheme) {
         attTheme.setUpdatorId(getUserId());
@@ -130,7 +130,7 @@ public class AttThemeController extends BaseController {
 
     @Operation(summary = "删除主题")
     @PreAuthorize("@ss.hasPermi('att:theme:remove')")
-    @Log(title = "主题", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.theme", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attThemeService.removeAttTheme(Arrays.asList(ids)));

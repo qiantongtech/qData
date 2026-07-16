@@ -23,41 +23,41 @@ import tech.qiantong.qdata.module.system.domain.SysRoleDept;
 import java.util.List;
 
 /**
- * 角色与部门关联表 数据层
+ * Role-department association table data layer
  *
  * @author qdata
  */
 public interface SysRoleDeptMapper
 {
     /**
-     * 通过角色ID删除角色和部门关联
+     * Delete role-department association by role ID
      *
-     * @param roleId 角色ID
-     * @return 结果
+     * @param roleId role ID
+     * @return result
      */
     public int deleteRoleDeptByRoleId(Long roleId);
 
     /**
-     * 批量删除角色部门关联信息
+     * Batch delete role-department association information
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data IDs to delete
+     * @return result
      */
     public int deleteRoleDept(Long[] ids);
 
     /**
-     * 查询部门使用数量
+     * Query department usage count
      *
-     * @param deptId 部门ID
-     * @return 结果
+     * @param deptId department ID
+     * @return result
      */
     public int selectCountRoleDeptByDeptId(Long deptId);
 
     /**
-     * 批量新增角色部门信息
+     * Batch insert role-department information
      *
-     * @param roleDeptList 角色部门列表
-     * @return 结果
+     * @param roleDeptList role-department list
+     * @return result
      */
     public int batchRoleDept(List<SysRoleDept> roleDeptList);
 }

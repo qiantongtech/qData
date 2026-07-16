@@ -1,7 +1,7 @@
-// 数据标准模块翻译
+// Data Standard Module Translation
 export default {
   dataElem: {
-    // 数据元列表
+    // Data element list
     treePlaceholder: '请输入数据元类目',
     searchTitle: '数据元查询',
     nameZh: '中文名称',
@@ -40,7 +40,7 @@ export default {
     treeRootName: '数据元类目',
     previewNotAvailable: '文件路径不存在，无法预览',
     selectToDeleteWarning: '未选择要删除的数据元数据规则关联信息，请选择后重试',
-    // 代码字典
+    // code dictionary
     codeValue: '代码值',
     codeValuePlaceholder: '请输入代码值',
     codeValueRequired: '代码值不能为空',
@@ -65,7 +65,7 @@ export default {
       updateSuccess: '修改成功',
       deleteSuccess: '删除成功'
     },
-    // 代码映射
+    // code mapping
     originalValue: '原始值',
     originalValuePlaceholder: '请输入原始值',
     originalValueRequired: '原始值不能为空',
@@ -90,7 +90,7 @@ export default {
       deleteSuccess: '删除成功',
       detailTitle: '数据元代码映射详情'
     },
-    // 资产关联
+    // Asset correlation
     assetName: '资产名称',
     dataTable: '数据表',
     relatedField: '关联字段',
@@ -98,7 +98,7 @@ export default {
     editAssetRelTitle: '修改数据元数据资产关联信息',
     assetRelDetailTitle: '数据元数据资产关联信息详情',
     confirmDeleteAsset: '是否确认删除数据元数据资产关联信息编号为"{id}"的数据项？',
-    // 数据元详情
+    // Data element details
     detail: {
       cleanRule: '关联清洗规则',
       auditRule: '关联稽查规则',
@@ -120,7 +120,7 @@ export default {
     }
   },
   model: {
-    // 逻辑模型列表
+    // Logical model list
     treeRootName: '逻辑模型类目',
     treePlaceholder: '请输入分层/分域/主题名称',
     createTable: '创建表',
@@ -153,7 +153,7 @@ export default {
     materialization: {
       publishModel: '发布模型'
     },
-    // 模型详情
+    // Model details
     detail: {
       chineseName: '中文名称',
       englishName: '英文名称',
@@ -166,7 +166,7 @@ export default {
     }
   },
   modelForm: {
-    // 模型表单
+    // model form
     basicInfo: '基础信息',
     createType: '创建方式',
     createTypeTip: '手工录入：手动添加标准数据元，逐步构建一个完整的逻辑数据模型。<br/>发布表生成：系统自动扫描已存在的物理数据库表（如 MySQL、Oracle 中的表），提取其结构信息（列名、类型、主键等），并反向生成对应的逻辑模型。',
@@ -243,10 +243,19 @@ export default {
     confirmDeleteModel: '是否确认删除逻辑模型编号为"{id}"的数据项？',
     tableNamePattern: '表名只能包含字母、数字和下划线，且必须以字母开头',
     maxLength: '500个字符',
-    defaultLengthError: '默认值长度不能超过属性长度{length}'
+    defaultLengthError: '默认值长度不能超过属性长度{length}',
+    defaultValueNumericOnly: '数值类型的默认值只能为数字',
+    defaultValueIntegerError: '整数类型的默认值不能包含小数点',
+    defaultValueIntPartError: '整数部分长度不能超过<int>位',
+    defaultValueDecPartError: '小数部分长度不能超过<scale>位',
+    defaultStringMaxLengthError: '字符串长度不能超过<length>个字符',
+    defaultValueDateError: '日期格式不正确，请使用YYYY-MM-DD格式',
+    defaultValueDateInvalid: '日期值无效',
+    defaultValueDatetimeError: '日期时间格式不正确，请使用YYYY-MM-DD HH:mm:ss格式',
+    defaultValueDatetimeInvalid: '日期时间值无效'
   },
   materializedModel: {
-    // 物化模型列表
+    // Materialized model list
     publishModel: '发布模型',
     releaseStatus: '发布状态',
     releaseDatabase: '已发布数据源',
@@ -281,7 +290,7 @@ export default {
     confirmDeleteRecord: '是否确认删除发布模型记录编号为"{id}"的数据项？'
   },
   document: {
-    // 标准列表
+    // Standard list
     treeRootName: '标准类目',
     selectStandardCategory: '请输入标准类目',
     previewNotAvailable: '文件路径不存在，无法预览',
@@ -359,7 +368,7 @@ export default {
     releaseLog: '发布日志',
     virtualAssetCreate: '虚拟资产创建',
     fullAssetCreate: '完整资产创建',
-    // 数据元资产关联
+    // Data element asset association
     asset: {
       title: '数据元数据资产关联信息',
       addTitle: '新增数据元数据资产关联信息',

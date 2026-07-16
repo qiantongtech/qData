@@ -33,9 +33,9 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
 
     public DefaultSqlCache(int capacity, long expire) {
         super((int) Math.ceil(capacity / 0.75) + 1, 0.75f, true);
-        // 容量
+        // Capacity
         this.capacity = capacity;
-        // 固定过期时间
+        // Fixed expiration time
         this.expire = expire;
     }
 
@@ -47,7 +47,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         }
         lock.writeLock().lock();
         try {
-            // 封装成过期时间节点
+            // Wrap as expiration time node
             put(key, new ExpireNode<>(expireTime, value));
         } finally {
             lock.writeLock().unlock();
@@ -66,7 +66,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         if (expireNode == null) {
             return null;
         }
-        // 惰性删除过期的
+        // Lazy deletion of expired entries
         if (this.expire > -1L && expireNode.expire < System.currentTimeMillis()) {
             try {
                 lock.writeLock().lock();
@@ -84,7 +84,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         try {
             lock.writeLock().lock();
             Iterator<Map.Entry<String, ExpireNode<Object>>> iterator = super.entrySet().iterator();
-            // 清除key的缓存
+            // Clear the cache entry for the given key
             while (iterator.hasNext()) {
                 Map.Entry<String, ExpireNode<Object>> entry = iterator.next();
                 if (entry.getKey().equals(key)) {
@@ -102,12 +102,12 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         if (this.expire > -1L && size() > capacity) {
             clean();
         }
-        // lru淘汰
+        // LRU eviction
         return size() > this.capacity;
     }
 
     /**
-     * 清理已过期的数据
+     * Clean up expired data
      */
     private void clean() {
         try {
@@ -116,7 +116,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
             long now = System.currentTimeMillis();
             while (iterator.hasNext()) {
                 Map.Entry<String, ExpireNode<Object>> next = iterator.next();
-                // 判断是否过期
+                // Check if expired
                 if (next.getValue().expire < now) {
                     iterator.remove();
                 }
@@ -128,7 +128,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
 
 
     /**
-     * 过期时间节点
+     * Expiration time node
      */
     static class ExpireNode<V> {
         long expire;

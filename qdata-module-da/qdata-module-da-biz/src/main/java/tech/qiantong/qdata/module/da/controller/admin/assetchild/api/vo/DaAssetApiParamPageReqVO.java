@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据资产-外部API-参数 Request VO 对象 DA_ASSET_API_PARAM
+ * Data Asset - External API - Parameter Request VO DA_ASSET_API_PARAM
  *
  * @author qdata
  * @date 2025-04-14

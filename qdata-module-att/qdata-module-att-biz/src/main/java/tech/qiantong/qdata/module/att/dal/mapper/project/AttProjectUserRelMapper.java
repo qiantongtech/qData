@@ -29,7 +29,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.Arrays;
 
 /**
- * 项目与用户关联关系Mapper接口
+ * Project-User Relationship Mapper Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -37,7 +37,7 @@ import java.util.Arrays;
 public interface AttProjectUserRelMapper extends BaseMapperX<AttProjectUserRelDO> {
 
     default PageResult<AttProjectUserRelDO> selectPage(AttProjectUserRelPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define sortable fields (prevent SQL injection, must match database column names)
         MPJLambdaWrapper<AttProjectUserRelDO> lambdaWrapper = new MPJLambdaWrapper();
         String sql = "";
         if(StringUtils.equals("mysql", MasterDataSourceConfig.getDatabaseType())){

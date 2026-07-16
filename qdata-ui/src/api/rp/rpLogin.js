@@ -18,7 +18,7 @@
 
 import request from "@/utils/rpRequest";
 
-// 查询服务资源门户区域字典列表
+// Query service resource portal area dictionary list
 export function rpLogin(username, password, code, uuid) {
   const data = {
     username,
@@ -36,7 +36,7 @@ export function rpLogin(username, password, code, uuid) {
     data: data,
   });
 }
-// 获取用户详细信息
+// Get user details
 export function rpGetInfo() {
   return request({
     url: "/rp/getInfo",
@@ -44,14 +44,14 @@ export function rpGetInfo() {
   });
 }
 
-// 退出方法
+// Exit method
 export function rpLogout() {
   return request({
     url: "/rp/logout",
     method: "post",
   });
 }
-// 获取验证码
+// Get verification code
 export function rpCodeImg() {
   return request({
     url: "/rp/captchaImage",

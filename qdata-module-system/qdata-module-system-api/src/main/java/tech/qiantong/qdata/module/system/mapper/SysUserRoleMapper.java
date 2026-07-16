@@ -24,82 +24,82 @@ import tech.qiantong.qdata.module.system.domain.SysUserRole;
 import java.util.List;
 
 /**
- * 用户与角色关联表 数据层
+ * User-role association table data layer
  *
  * @author qdata
  */
 public interface SysUserRoleMapper
 {
     /**
-     * 通过用户ID删除用户和角色关联
+     * Delete user-role association by user ID
      *
-     * @param userId 用户ID
-     * @return 结果
+     * @param userId user ID
+     * @return result
      */
     public int deleteUserRoleByUserId(Long userId);
 
     /**
-     * 批量删除用户和角色关联
+     * Batch delete user-role associations
      *
-     * @param sysUserRoleList 用户ID和角色id
-     * @return 结果
+     * @param sysUserRoleList user ID and role ID list
+     * @return result
      */
     public int deleteUserRoleList(@Param("sysUserRoleList") List<SysUserRole> sysUserRoleList);
 
     /**
-     * 根据用户id集合查询信息
+     * Query user-role information by user ID list
      *
-     * @param userIdList 用户ID
-     * @return 结果
+     * @param userIdList user ID list
+     * @return result
      */
     public List<SysUserRole> getByUserIdList(@Param("userIdList") List<Long> userIdList);
 
     /**
-     * 批量删除用户和角色关联
+     * Batch delete user-role associations by IDs
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data IDs to delete
+     * @return result
      */
     public int deleteUserRole(Long[] ids);
 
     /**
-     * 通过角色ID查询角色使用数量
+     * Count role usage by role ID
      *
-     * @param roleId 角色ID
-     * @return 结果
+     * @param roleId role ID
+     * @return result
      */
     public int countUserRoleByRoleId(Long roleId);
 
     /**
-     * 通过角色ID查询角色
+     * Query user-role by role ID
      *
-     * @param roleId 角色ID
-     * @return 结果
+     * @param roleId role ID
+     * @return result
      */
     public List<SysUserRole> getUserRoleByRoleId(Long roleId);
 
     /**
-     * 批量新增用户角色信息
+     * Batch insert user-role information
      *
-     * @param userRoleList 用户角色列表
-     * @return 结果
+     * @param userRoleList user-role list
+     * @return result
      */
     public int batchUserRole(List<SysUserRole> userRoleList);
 
     /**
-     * 删除用户和角色关联信息
+     * Delete user-role association information
      *
-     * @param userRole 用户和角色关联信息
-     * @return 结果
+     * @param userRole user-role association information
+     * @return result
      */
     public int deleteUserRoleInfo(SysUserRole userRole);
 
     /**
-     * 批量取消授权用户角色
+     * Batch revoke user-role authorization
      *
-     * @param roleId 角色ID
-     * @param userIds 需要删除的用户数据ID
-     * @return 结果
+     * @param roleId  role ID
+     * @param userIds user data IDs to delete
+     * @return result
      */
     public int deleteUserRoleInfos(@Param("roleId") Long roleId, @Param("userIds") Long[] userIds);
 }

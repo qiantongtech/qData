@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询清洗规则列表
+// Query the list of cleaning rules
 export function listDgRule(query) {
     return request({
         url: '/dg/cleanRule/list',
@@ -9,7 +9,7 @@ export function listDgRule(query) {
     })
 }
 
-// 查询清洗规则详细
+// Query detailed cleaning rules
 export function getDgRule(id) {
     return request({
         url: '/dg/cleanRule/' + id,
@@ -17,7 +17,7 @@ export function getDgRule(id) {
     })
 }
 
-// 新增清洗规则
+// Add cleaning rules
 export function addDgRule(data) {
     return request({
         url: '/dg/cleanRule',
@@ -26,7 +26,7 @@ export function addDgRule(data) {
     })
 }
 
-// 修改清洗规则
+// Modify cleaning rules
 export function updateDgRule(data) {
     return request({
         url: '/dg/cleanRule',
@@ -35,7 +35,7 @@ export function updateDgRule(data) {
     })
 }
 
-// 删除清洗规则
+// Delete cleaning rules
 export function delDgRule(id) {
     return request({
         url: '/dg/cleanRule/' + id,
@@ -52,7 +52,7 @@ export function treeDgRule(params) {
     })
 }
 
-// 数据集成用到的 清洗规则
+// Cleaning rules used in data integration
 export function listAll(params) {
     return request({
         url: '/dg/cleanRule/listAll',

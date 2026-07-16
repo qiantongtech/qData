@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.dataLevel.vo.DgDataLevelSa
 import tech.qiantong.qdata.module.dg.controller.admin.dataLevel.vo.DgDataLevelPageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 /**
- * 数据分级Service接口
+ * Data Level Service Interface
  *
  * @author qdata
  * @date 2026-04-03
@@ -36,65 +36,65 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataLevel.DgDataLevelDO;
 public interface IDgDataLevelService extends IService<DgDataLevelDO> {
 
     /**
-     * 获得数据分级分页列表
+     * Get data level paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据分级分页列表
+     * @param pageReqVO Pagination request
+     * @return Data level paginated list
      */
     PageResult<DgDataLevelDO> getDgDataLevelPage(DgDataLevelPageReqVO pageReqVO);
 
     /**
-     * 创建数据分级
+     * Create data level
      *
-     * @param createReqVO 数据分级信息
-     * @return 数据分级编号
+     * @param createReqVO Data level information
+     * @return Data level ID
      */
     Long createDgDataLevel(DgDataLevelSaveReqVO createReqVO);
 
     /**
-     * 更新数据分级
+     * Update data level
      *
-     * @param updateReqVO 数据分级信息
+     * @param updateReqVO Data level information
      */
     int updateDgDataLevel(DgDataLevelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据分级
+     * Delete data level
      *
-     * @param idList 数据分级编号
+     * @param idList Data level IDs
      */
     int removeDgDataLevel(Collection<Long> idList);
 
     /**
-     * 获得数据分级详情
+     * Get data level details
      *
-     * @param id 数据分级编号
-     * @return 数据分级
+     * @param id Data level ID
+     * @return Data level
      */
     DgDataLevelDO getDgDataLevelById(Long id);
 
     /**
-     * 获得全部数据分级列表
+     * Get all data level list
      *
-     * @return 数据分级列表
+     * @return Data level list
      */
     List<DgDataLevelDO> getDgDataLevelList();
 
     /**
-     * 获得全部数据分级 Map
+     * Get all data level Map
      *
-     * @return 数据分级 Map
+     * @return Data level Map
      */
     Map<Long, DgDataLevelDO> getDgDataLevelMap();
 
 
     /**
-     * 导入数据分级数据
+     * Import data level data
      *
-     * @param importExcelList 数据分级数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data level data list
+     * @param isUpdateSupport Whether to update support, if exists then update data
+     * @param operName Operator user
+     * @return Result
      */
     String importDgDataLevel(List<DgDataLevelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

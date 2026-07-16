@@ -27,7 +27,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 数据发现节点实例-日志 DO 对象 DA_DISCOVERY_LOG_BODY
+ * Data Discovery Node Instance - Log Body DO - DA_DISCOVERY_LOG_BODY
  *
  * @author qdata
  * @date 2025-10-15
@@ -42,40 +42,40 @@ public class DaDiscoveryLogBodyDO extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /** 时间; 日志入库的时间 */
+    /** Time; log ingestion time */
     private Date tm;
 
-    /** 任务id */
+    /** Task ID */
     private Long taskId;
 
-    /** 日志内容 */
+    /** Log Content */
     private String logContent;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Valid Flag; 0: Invalid, 1: Valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Delete Flag; 1: Deleted, 0: Not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 创建人 */
+    /** Creator */
     private String createBy;
 
-    /** 创建人id */
+    /** Creator ID */
     private Long creatorId;
 
-    /** 创建时间 */
+    /** Creation Time */
     private Date createTime;
 
-    /** 更新人 */
+    /** Updater */
     private String updateBy;
 
-    /** 更新人id */
+    /** Updater ID */
     private Long updaterId;
 
-    /** 更新时间 */
+    /** Update Time */
     private Date updateTime;
 
-    /** 备注 */
+    /** Remark */
     private String remark;
 }

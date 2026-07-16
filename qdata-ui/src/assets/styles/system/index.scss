@@ -29,7 +29,7 @@
 }
 @for $i from 1 through 20 {
   .ellipsis-#{$i} {
-    // vue下，单行和多行显示省略号需要单独处理
+    // Under vue, single-line and multi-line display of ellipses need to be processed separately.
     @if $i == "1" {
       overflow: hidden;
       white-space: nowrap;
@@ -160,7 +160,7 @@ div:focus {
 //   }
 // }
 
-//main-container全局样式
+//main-container global style
 // .app-container {
 //   // padding: 15px;
 //   margin: 15px;

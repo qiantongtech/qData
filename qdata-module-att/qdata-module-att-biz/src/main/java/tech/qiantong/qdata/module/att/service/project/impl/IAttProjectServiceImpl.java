@@ -405,8 +405,8 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
         List<Long> userIdList = projectUserRelDOList.stream()
                 .map(AttProjectUserRelDO::getUserId)
                 .collect(Collectors.toList());
-        AttProjectDO projectDO = attProjectMapper.selectById(user.getProjectId());
-        userIdList.add(projectDO.getManagerId());
+        //AttProjectDO projectDO = attProjectMapper.selectById(user.getProjectId());
+        //userIdList.add(projectDO.getManagerId());
         userIdList.add(1L);
         SysUser sysUser = new SysUser();
         sysUser.setUserIdList(userIdList);

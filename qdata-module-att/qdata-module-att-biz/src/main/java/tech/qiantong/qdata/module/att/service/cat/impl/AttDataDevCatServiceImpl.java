@@ -86,7 +86,7 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
         normalizeAndValidate(updateReqVO);
         AttDataDevCatDO existing = attDataDevCatMapper.selectById(updateReqVO.getId());
         if (existing == null) {
-            throw new ServiceException("类目不存在");
+            throw new ServiceException("att.error.cat.notfound", "类目不存在");
         }
         checkDuplicate(updateReqVO.getId(), updateReqVO.getParentId(), updateReqVO.getName());
         checkParentCycle(existing, updateReqVO.getParentId());
@@ -99,6 +99,37 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
                     .set(AttDataDevCatDO::getValidFlag, false).update();
         }
         return rows;
+    }
+
+    @Override
+    public boolean hasDataDevelopmentTask(Long id) {
+        AttDataDevCatDO category = attDataDevCatMapper.selectById(id);
+        if (category == null) {
+            throw new ServiceException("att.error.cat.notfound", "类目不存在");
+        }
+        return dppEtlTaskService.getCountByCatCode(
+                category.getCode(), java.util.Collections.singletonList("3")) > 0;
+    }
+
+    @Override
+    public boolean isNameUsed(Long id, Long parentId, String name) {
+        if (StringUtils.isBlank(name)) {
+            return false;
+        }
+        return this.lambdaQuery()
+                .eq(AttDataDevCatDO::getParentId, parentId)
+                .eq(AttDataDevCatDO::getName, name.trim())
+                .ne(id != null, AttDataDevCatDO::getId, id)
+                .count() > 0;
+    }
+
+    @Override
+    public long getDataDevelopmentTaskCount(Long id) {
+        if (attDataDevCatMapper.selectById(id) == null) {
+            throw new ServiceException("att.error.cat.notfound", "类目不存在");
+        }
+        return dppEtlTaskService.getCountByCatId(
+                id, java.util.Collections.singletonList("3"));
     }
 
     @Override
@@ -117,7 +148,8 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
                     .ne(AttDataDevCatDO::getId, category.getId()).count();
             long taskCount = dppEtlTaskService.getCountByCatCode(category.getCode(), java.util.Collections.singletonList("3"));
             if (childCount > 0 || taskCount > 0) {
-                throw new ServiceException("该类目包含" + childCount + "个子类目和" + taskCount + "个任务，不能直接删除。");
+                throw new ServiceException("att.error.cat.delete.children.tasks",
+                        "该类目包含" + childCount + "个子类目和" + taskCount + "个任务，不能直接删除。", childCount, taskCount);
             }
         }
         return attDataDevCatMapper.deleteBatchIds(idList);
@@ -127,10 +159,10 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
         reqVO.setName(reqVO.getName() == null ? null : reqVO.getName().trim());
         if (StringUtils.isBlank(reqVO.getName()) || reqVO.getName().matches(".*\\s+.*")
                 || !reqVO.getName().matches(".*[A-Za-z0-9\\u4e00-\\u9fa5].*")) {
-            throw new ServiceException("类目名称不能为空、不能包含空白字符或仅由符号组成");
+            throw new ServiceException("att.error.cat.name.invalid", "类目名称不能为空、不能包含空白字符或仅由符号组成");
         }
         if (reqVO.getSortOrder() != null && reqVO.getSortOrder() < 0) {
-            throw new ServiceException("排序值不合法，请输入非负整数");
+            throw new ServiceException("att.error.cat.sort.invalid", "排序值不合法，请输入非负整数");
         }
     }
 
@@ -138,18 +170,18 @@ public class AttDataDevCatServiceImpl extends ServiceImpl<AttDataDevCatMapper, A
         long count = this.lambdaQuery().eq(AttDataDevCatDO::getParentId, parentId)
                 .eq(AttDataDevCatDO::getName, name).ne(id != null, AttDataDevCatDO::getId, id).count();
         if (count > 0) {
-            throw new ServiceException("当前上级类目下已存在同名类目，请修改。");
+            throw new ServiceException("att.error.cat.name.duplicate", "当前上级类目下已存在同名类目，请修改。");
         }
     }
 
     private void checkParentCycle(AttDataDevCatDO current, Long parentId) {
         if (parentId == null || parentId == 0) return;
         if (parentId.equals(current.getId())) {
-            throw new ServiceException("上级类目不能选择自身或其子级。");
+            throw new ServiceException("att.error.cat.parent.cycle", "上级类目不能选择自身或其子级。");
         }
         AttDataDevCatDO parent = attDataDevCatMapper.selectById(parentId);
         if (parent == null || (parent.getCode() != null && parent.getCode().startsWith(current.getCode()))) {
-            throw new ServiceException("上级类目不能选择自身或其子级。");
+            throw new ServiceException("att.error.cat.parent.cycle", "上级类目不能选择自身或其子级。");
         }
     }
 

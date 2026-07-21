@@ -234,7 +234,9 @@ const data = reactive({
       pageSize: 10,
       noticeTitle: undefined,
       createBy: undefined,
-      status: undefined
+      status: undefined,
+      orderByColumn: "createTime",
+      isAsc: "descending"
    },
    rules: {
       noticeTitle: [{ required: true, message: td('sys.system.notice.noticeTitleRequired'), trigger: "blur" }],
@@ -250,7 +252,9 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
    loading.value = true;
    listNotice(queryParams.value).then(response => {
-      noticeList.value = response.rows;
+      noticeList.value = [...(response.rows || [])].sort(
+         (a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime()
+      );
       total.value = response.total;
       loading.value = false;
    });

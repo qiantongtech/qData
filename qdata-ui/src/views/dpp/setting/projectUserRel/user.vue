@@ -219,6 +219,7 @@
             link
             type="danger"
             icon="Delete"
+            :disabled="isDeleteDisabled(scope.row)"
             @click="handleDelete(scope.row)"
             v-hasPermi="['att:projectUserRel:remove']"
             >{{ td("common.button.delete") }}</el-button
@@ -354,7 +355,13 @@
         <el-button size="mini" @click="cancel">{{
           td("common.button.cancel")
         }}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">{{
+        <el-button
+          type="primary"
+          size="mini"
+          :loading="submitLoading"
+          :disabled="submitLoading"
+          @click="submitForm"
+        >{{
           td("common.button.confirm")
         }}</el-button>
       </div>
@@ -503,7 +510,12 @@
         <el-button size="mini" @click="openTwo = false">{{
           td("common.button.cancel")
         }}</el-button>
-        <el-button type="primary" size="mini" @click="submitFormUser">{{
+        <el-button
+          type="primary"
+          size="mini"
+          :disabled="!idsUser.length"
+          @click="submitFormUser"
+        >{{
           td("common.button.confirm")
         }}</el-button>
       </div>
@@ -560,10 +572,12 @@ const openTwo = ref(false);
 const openDetail = ref(false);
 const loading = ref(true);
 const loadingUser = ref(true);
+const submitLoading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const idsUser = ref([]);
 const userName = ref([]);
+const selectedRows = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
@@ -572,6 +586,15 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const roleList = ref([]);
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
 /*** User import parameters */
 const upload = reactive({
   // Whether to display the pop-up layer (user import)
@@ -654,35 +677,47 @@ function handleDateChange(value) {
 function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
-    listAttProjectUserRel(queryParams.value).then((response) => {
-      AttProjectUserRelList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-    addUserAndProject(queryParams.value.projectId).then((response) => {
-      addUserAdnProject.value = response.data;
-    });
+    listAttProjectUserRel(queryParams.value, warningRequestOptions)
+      .then((response) => {
+        AttProjectUserRelList.value = response?.data?.rows || [];
+        total.value = response?.data?.total || 0;
+      })
+      .catch(showRequestWarning)
+      .finally(() => {
+        loading.value = false;
+      });
+    addUserAndProject(queryParams.value.projectId, warningRequestOptions)
+      .then((response) => {
+        addUserAdnProject.value = response?.data || false;
+      })
+      .catch(showRequestWarning);
+  } else {
+    loading.value = false;
   }
 }
 
 function getListUser() {
   loadingUser.value = true;
-  noProjectUser(queryParamsUser.value).then((response) => {
-    userList.value = response.rows;
-    openTwo.value = true;
-    totalUser.value = response.total;
-    loadingUser.value = false;
-    console.log(userList.value, "userList");
+  noProjectUser(queryParamsUser.value, warningRequestOptions)
+    .then((response) => {
+      userList.value = response?.rows || [];
+      openTwo.value = true;
+      totalUser.value = response?.total || 0;
+      console.log(userList.value, "userList");
 
-    // After the table is loaded, set the previously selected user
-    nextTick(() => {
-      userList.value.forEach((user) => {
-        if (form.value.userIdList.includes(user.userId)) {
-          proxy.$refs.userTableRef.toggleRowSelection(user, true);
-        }
+      // After the table is loaded, set the previously selected user
+      nextTick(() => {
+        userList.value.forEach((user) => {
+          if (form.value.userIdList.includes(user.userId)) {
+            proxy.$refs.userTableRef.toggleRowSelection(user, true);
+          }
+        });
       });
+    })
+    .catch(showRequestWarning)
+    .finally(() => {
+      loadingUser.value = false;
     });
-  });
 }
 /** Search button action */
 function handleQueryUser() {
@@ -715,10 +750,12 @@ function handleSelectionChangeUser(selection) {
 }
 function getRoleList() {
   if (queryParams.value.projectId) {
-    listRole(queryParams.value).then((response) => {
-      roleList.value = response.rows;
-      console.log(roleList.value, "roleList");
-    });
+    listRole(queryParams.value, warningRequestOptions)
+      .then((response) => {
+        roleList.value = response?.rows || [];
+        console.log(roleList.value, "roleList");
+      })
+      .catch(showRequestWarning);
   }
 }
 // Cancel button
@@ -775,6 +812,7 @@ function resetQuery() {
 
 // Multiple selection box selected data
 function handleSelectionChange(selection) {
+  selectedRows.value = selection;
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
@@ -800,42 +838,53 @@ function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
   getRoleList();
-  getRoleUser(_id).then((response) => {
-    form.value = response.data;
-    console.log(form.value, "form");
-    open.value = true;
-    title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
-  });
+  getRoleUser(_id, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      console.log(form.value, "form");
+      open.value = true;
+      title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
+    })
+    .catch(showRequestWarning);
 }
 
 /** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttProjectUserRel(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td(
-      "dpp.setting.projectUserRel.memberDetail",
-      "项目与用户关联关系详情"
-    );
-  });
+  getAttProjectUserRel(_id, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      openDetail.value = true;
+      title.value = td(
+        "dpp.setting.projectUserRel.memberDetail",
+        "项目与用户关联关系详情"
+      );
+    })
+    .catch(showRequestWarning);
 }
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
   proxy.$refs["AttProjectUserRelRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
+        submitLoading.value = true;
         proxy.$modal
           .confirm('修改角色后，该成员可能无法继续维护部分任务，请确认。')
-          .then(() => editUserListAndRoleList(form.value))
+          .then(() => editUserListAndRoleList(form.value, warningRequestOptions))
           .then(() => {
               proxy.$modal.msgSuccess(td("common.message.editSuccess"));
               open.value = false;
               getList();
           })
-          .catch(() => {});
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       } else {
         // Add additional verification when adding
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
@@ -847,14 +896,18 @@ function submitForm() {
           );
           return;
         }
+        submitLoading.value = true;
         form.value.projectId = userStore.projectId;
-        addUserListAndRoleList(form.value)
+        addUserListAndRoleList(form.value, warningRequestOptions)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       }
     }
   });
@@ -862,11 +915,15 @@ function submitForm() {
 
 /** Delete button action */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
-  const selectedRows = row.id
+  const _ids = row?.id || ids.value;
+  const selectedRows = row?.id
     ? [row]
     : AttProjectUserRelList.value.filter((item) => ids.value.includes(item.id));
   const selectedUserIds = selectedRows.map((item) => item.userId);
+  if (isDeleteDisabled(selectedRows)) {
+    showDeleteDisabledMessage(selectedRows);
+    return;
+  }
   const removingSelf = selectedUserIds.includes(userStore.id);
   const confirmText = removingSelf
     ? '确认移除自己的项目权限吗？操作后可能无法继续管理项目。'
@@ -879,13 +936,48 @@ function handleDelete(row) {
   proxy.$modal
     .confirm(confirmText)
     .then(function () {
-      return delAttProjectUserRel(_ids);
+      return delAttProjectUserRel(_ids, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
+}
+
+function isCurrentUser(row) {
+  return String(row?.userId) === String(userStore.id);
+}
+
+function getMemberTotal() {
+  return total.value || AttProjectUserRelList.value.length;
+}
+
+function isDeleteDisabled(rows) {
+  const deleteRows = Array.isArray(rows) ? rows : rows ? [rows] : [];
+  if (!deleteRows.length) return true;
+  if (deleteRows.some(isCurrentUser)) return true;
+  return getMemberTotal() - deleteRows.length < 1;
+}
+
+function showDeleteDisabledMessage(rows) {
+  const deleteRows = Array.isArray(rows) ? rows : rows ? [rows] : [];
+  if (!deleteRows.length) {
+    proxy.$modal.msgWarning(td("common.message.selectRecord", "请选择要删除的数据"));
+    return;
+  }
+  if (deleteRows.some(isCurrentUser)) {
+    proxy.$modal.msgWarning(
+      td("dpp.setting.projectUserRel.cannotDeleteSelf", "自己不能删除自己")
+    );
+    return;
+  }
+  proxy.$modal.msgWarning(
+    td(
+      "dpp.setting.projectUserRel.keepOneMember",
+      "项目至少保留一个成员，不能全部移除"
+    )
+  );
 }
 
 /** Export button action */

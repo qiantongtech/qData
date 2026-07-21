@@ -164,6 +164,13 @@ public class DaDatasourceController extends BaseController {
         return CommonResult.toAjax(daDatasourceService.createDaDatasource(daDatasource));
     }
 
+    @Operation(summary = "新增前测试数据源连接")
+    @PreAuthorize("@ss.hasPermi('da:dataSource:add')")
+    @PostMapping("/testConnection")
+    public CommonResult<Boolean> testConnection(@Valid @RequestBody DaDatasourceSaveReqVO daDatasource) {
+        return CommonResult.success(daDatasourceService.testDatasourceConnection(daDatasource));
+    }
+
     @Operation(summary = "修改数据源")
     @PreAuthorize("@ss.hasPermi('da:dataSource:edit')")
     @Log(title = "log.op.title.da.datasource", businessType = BusinessType.UPDATE)

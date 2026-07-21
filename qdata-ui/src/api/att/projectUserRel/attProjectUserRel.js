@@ -18,121 +18,138 @@
 
 import request from '@/utils/request';
 
+const buildHeaders = (options = {}) => ({
+    hideErrorMessage: options.hideErrorMessage === true
+});
+
 // Query the list of relationships between projects and users
-export function listAttProjectUserRel(query) {
+export function listAttProjectUserRel(query, options = {}) {
     return request({
         url: '/att/projectUserRel/list',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
 // Query the detailed relationship between items and users
-export function getAttProjectUserRel(id) {
+export function getAttProjectUserRel(id, options = {}) {
     return request({
         url: '/att/projectUserRel/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
 // Query the detailed relationship between items and users
-export function getRoleUser(id) {
+export function getRoleUser(id, options = {}) {
     return request({
         url: '/att/projectUserRel/roleUser/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
 // Add new project-user relationship
-export function addAttProjectUserRel(data) {
+export function addAttProjectUserRel(data, options = {}) {
     return request({
         url: '/att/projectUserRel',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Add new project-user relationship
-export function addUserListAndRoleList(data) {
+export function addUserListAndRoleList(data, options = {}) {
     return request({
         url: '/att/projectUserRel/addUserListAndRoleList',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Modify the relationship between projects and users
-export function updateAttProjectUserRel(data) {
+export function updateAttProjectUserRel(data, options = {}) {
     return request({
         url: '/att/projectUserRel',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Modify the relationship between projects and users
-export function editUserListAndRoleList(data) {
+export function editUserListAndRoleList(data, options = {}) {
     return request({
         url: '/att/projectUserRel/editUserListAndRoleList',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Delete the relationship between project and user
-export function delAttProjectUserRel(id) {
+export function delAttProjectUserRel(id, options = {}) {
     return request({
         url: '/att/projectUserRel/' + id,
-        method: 'delete'
+        method: 'delete',
+        headers: buildHeaders(options)
     });
 }
 
 // Query role list
-export function listRole(query) {
+export function listRole(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/list',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
 // Query role details
-export function getRole(roleId) {
+export function getRole(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/' + roleId,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
 // Add new role
-export function addRole(data) {
+export function addRole(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Modify role
-export function updateRole(data) {
+export function updateRole(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Role data permissions
-export function dataScope(data) {
+export function dataScope(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/dataScope',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Character status modification
-export function changeRoleStatus(roleId, status) {
+export function changeRoleStatus(roleId, status, options = {}) {
     const data = {
         roleId,
         status
@@ -140,67 +157,75 @@ export function changeRoleStatus(roleId, status) {
     return request({
         url: '/att/projectUserRel/role/changeStatus',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Delete role
-export function delRole(roleId) {
+export function delRole(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/' + roleId,
-        method: 'delete'
+        method: 'delete',
+        headers: buildHeaders(options)
     });
 }
 
 // Query the list of users authorized by the role
-export function allocatedUserList(query) {
+export function allocatedUserList(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/allocatedList',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
 // Query the list of users whose role is not authorized
-export function unallocatedUserList(query) {
+export function unallocatedUserList(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/unallocatedList',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
 // Cancel user authorization role
-export function authUserCancel(data) {
+export function authUserCancel(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/cancel',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Cancel user authorization roles in batches
-export function authUserCancelAll(data) {
+export function authUserCancelAll(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/cancelAll',
         method: 'put',
-        params: data
+        params: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Authorized user selection
-export function authUserSelectAll(data) {
+export function authUserSelectAll(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/selectAll',
         method: 'put',
-        params: data
+        params: data,
+        headers: buildHeaders(options)
     });
 }
 
 // Query department tree structure based on role ID
-export function deptTreeSelect(roleId) {
+export function deptTreeSelect(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/deptTree/' + roleId,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }

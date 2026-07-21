@@ -97,6 +97,29 @@ public class AttTaskCatController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(attTaskCatDO, AttTaskCatRespVO.class));
     }
 
+    @Operation(summary = "检查类目及其子类目下是否存在数据集成任务")
+    @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
+    @GetMapping("/hasIntegrationTask/{id}")
+    public CommonResult<Boolean> hasIntegrationTask(@PathVariable("id") Long id) {
+        return CommonResult.success(attTaskCatService.hasIntegrationTask(id));
+    }
+
+    @Operation(summary = "检查同一上级类目下名称是否已被使用")
+    @PreAuthorize("@ss.hasAnyPermi('att:taskCat:add,att:taskCat:edit')")
+    @GetMapping("/nameUsed")
+    public CommonResult<Boolean> isNameUsed(@RequestParam(required = false) Long id,
+                                            @RequestParam Long parentId,
+                                            @RequestParam String name) {
+        return CommonResult.success(attTaskCatService.isNameUsed(id, parentId, name));
+    }
+
+    @Operation(summary = "查询类目关联的数据集成任务数量")
+    @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
+    @GetMapping("/integrationTaskCount/{id}")
+    public CommonResult<Long> getIntegrationTaskCount(@PathVariable("id") Long id) {
+        return CommonResult.success(attTaskCatService.getIntegrationTaskCount(id));
+    }
+
     @Operation(summary = "新增数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:add')")
     @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.INSERT)

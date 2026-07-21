@@ -94,7 +94,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         boolean remainsAdmin = updateReqVO.getRoleIdList() != null && updateReqVO.getRoleIdList().stream()
                 .anyMatch(adminRoleIds::contains);
         if (currentIsAdmin && !remainsAdmin && getProjectAdminUserIds(updateReqVO.getProjectId()).size() <= 1) {
-            throw new ServiceException("项目至少需要保留一名项目管理员");
+            throw new ServiceException("att.error.project.admin.required", "项目至少需要保留一名项目管理员");
         }
 
         // Update project-user relationship
@@ -139,7 +139,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         Set<Long> adminUserIds = getProjectAdminUserIds(projectId);
         long deletingAdminCount = userId.stream().distinct().filter(adminUserIds::contains).count();
         if (!adminUserIds.isEmpty() && deletingAdminCount >= adminUserIds.size()) {
-            throw new ServiceException("项目至少需要保留一名项目管理员");
+            throw new ServiceException("att.error.project.admin.required", "项目至少需要保留一名项目管理员");
         }
         List<SysUserRole> byUserIdList = sysUserRoleMapper.getByUserIdList(userId);
         SysRole sysRole = new SysRole();
@@ -296,7 +296,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         for (Long userId : attProject.getUserIdList()) {
             SysUser user = sysUserMapper.selectUserById(userId);
             if (user == null || !"0".equals(user.getStatus())) {
-                throw new ServiceException("该系统用户已停用，不能添加为项目成员。");
+                throw new ServiceException("att.error.project.user.disabled", "该系统用户已停用，不能添加为项目成员。");
             }
             AttProjectUserRelDO attProjectUserRelDO = new AttProjectUserRelDO();
             attProjectUserRelDO.setUserId(userId);

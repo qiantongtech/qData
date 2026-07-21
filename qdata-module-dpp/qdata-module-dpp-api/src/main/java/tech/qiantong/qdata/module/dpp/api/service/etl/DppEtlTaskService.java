@@ -40,4 +40,10 @@ public interface DppEtlTaskService {
      * Count tasks under a category and all of its descendants.
      */
     long getCountByCatCode(String catCode, List<String> taskTypes);
+
+    /**
+     * Count tasks directly associated with a category.
+     */
+    long getCountByCatId(Long catId, List<String> taskTypes);
+
 }

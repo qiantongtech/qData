@@ -97,6 +97,29 @@ public class AttDataDevCatController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(attDataDevCatDO, AttDataDevCatRespVO.class));
     }
 
+    @Operation(summary = "检查类目及其子类目下是否存在数据开发任务")
+    @PreAuthorize("@ss.hasPermi('att:dataDevCat:edit')")
+    @GetMapping("/hasDataDevelopmentTask/{id}")
+    public CommonResult<Boolean> hasDataDevelopmentTask(@PathVariable("id") Long id) {
+        return CommonResult.success(attDataDevCatService.hasDataDevelopmentTask(id));
+    }
+
+    @Operation(summary = "检查同一上级类目下名称是否已被使用")
+    @PreAuthorize("@ss.hasAnyPermi('att:dataDevCat:add,att:dataDevCat:edit')")
+    @GetMapping("/nameUsed")
+    public CommonResult<Boolean> isNameUsed(@RequestParam(required = false) Long id,
+                                            @RequestParam Long parentId,
+                                            @RequestParam String name) {
+        return CommonResult.success(attDataDevCatService.isNameUsed(id, parentId, name));
+    }
+
+    @Operation(summary = "查询类目关联的数据开发任务数量")
+    @PreAuthorize("@ss.hasPermi('att:dataDevCat:edit')")
+    @GetMapping("/dataDevelopmentTaskCount/{id}")
+    public CommonResult<Long> getDataDevelopmentTaskCount(@PathVariable("id") Long id) {
+        return CommonResult.success(attDataDevCatService.getDataDevelopmentTaskCount(id));
+    }
+
     @Operation(summary = "新增数据开发类目管理")
     @PreAuthorize("@ss.hasPermi('att:dataDevCat:add')")
     @Log(title = "log.op.title.att.data.dev.cat", businessType = BusinessType.INSERT)

@@ -60,6 +60,21 @@ public interface IAttTaskCatService extends IService<AttTaskCatDO> {
     int updateAttTaskCat(AttTaskCatSaveReqVO updateReqVO);
 
     /**
+     * Check whether data integration tasks exist under the category or its descendants.
+     */
+    boolean hasIntegrationTask(Long id);
+
+    /**
+     * Check whether a category name is already used under the same parent.
+     */
+    boolean isNameUsed(Long id, Long parentId, String name);
+
+    /**
+     * Count data integration tasks directly associated with the category.
+     */
+    long getIntegrationTaskCount(Long id);
+
+    /**
      * Delete data integration task category management
      *
      * @param idList data integration task category management ID list

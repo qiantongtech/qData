@@ -847,7 +847,13 @@ const handleClick = (tab) => {
 };
 // Help documentation
 function openDocumentation() {
-  window.open("https://qdata.qiantong.tech/docs", "_blank");
+  const lang = localeStore.getCurrentLocale.lang || locale.value;
+  const localePathMap = {
+    "en-US": "/en",
+    "ja-JP": "/ja",
+  };
+  const localePath = localePathMap[lang] || "";
+  window.open(`https://community.qdata.tech${localePath}/docs/start/introduction.html`, "_blank");
 }
 function toggleSideBar() {
   appStore.toggleSideBar();

@@ -230,6 +230,7 @@
               link
               type="danger"
               icon="Delete"
+              :disabled="scope.row.validFlag === true"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:taskCat:remove']"
               >{{ td("common.button.delete") }}</el-button
@@ -272,6 +273,8 @@
             <el-form-item
               :label="td('dpp.setting.taskCat.categoryName')"
               prop="name"
+              required
+              :show-message="false"
              :label-position="labelPosition">
               <el-input
                 v-model="form.name"
@@ -524,6 +527,9 @@ import {
   delAttTaskCat,
   addAttTaskCat,
   updateAttTaskCat,
+  hasIntegrationTask,
+  isTaskCatNameUsed,
+  getTaskCatIntegrationTaskCount,
 } from "@/api/att/cat/taskCat/taskCat";
 import { getToken } from "@/utils/auth";
 import useUserStore from "@/store/system/user";
@@ -532,6 +538,27 @@ const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 const submitLoading = ref(false);
+const originalName = ref("");
+let taskCatNameMessageInstance = null;
+let taskCatNameMessageText = "";
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
+
+async function withRequestWarning(requestPromise) {
+  try {
+    return await requestPromise;
+  } catch (error) {
+    showRequestWarning(error);
+    throw error;
+  }
+}
 
 const AttTaskCatList = ref([]);
 
@@ -645,8 +672,7 @@ const data = reactive({
   rules: {
     name: [
       {
-        required: true,
-        message: td("dpp.setting.taskCat.nameRequired"),
+        validator: validateTaskCatName,
         trigger: "blur",
       },
     ],
@@ -681,16 +707,21 @@ function getList() {
   loading.value = true;
   queryParams.value.projectId = userStore.projectId;
   queryParams.value.projectCode = userStore.projectCode;
-  listAttTaskCat(queryParams.value).then((response) => {
-    AttTaskCatList.value = proxy.handleTree(response.data, "id", "parentId");
-    total.value = response.data.total;
-    loading.value = false;
+  listAttTaskCat(queryParams.value, warningRequestOptions)
+    .then((response) => {
+      const rows = response?.data || [];
+      AttTaskCatList.value = proxy.handleTree(rows, "id", "parentId");
+      total.value = rows.total || 0;
 
-    attTaskCatOptions.value = [];
-    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
-    data.children = proxy.handleTree(response.data, "id", "parentId");
-    attTaskCatOptions.value.push(data);
-  });
+      attTaskCatOptions.value = [];
+      const data = { id: 0, name: td('common.texts.topNode'), children: [] };
+      data.children = proxy.handleTree(rows, "id", "parentId");
+      attTaskCatOptions.value.push(data);
+    })
+    .catch(showRequestWarning)
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 // Cancel button
@@ -702,6 +733,7 @@ function cancel() {
 
 // form reset
 function reset() {
+  originalName.value = "";
   form.value = {
     id: null,
     name: null,
@@ -765,45 +797,62 @@ function handleAdd(row) {
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCat(_id).then((response) => {
-    form.value = response.data;
-    open.value = true;
-    title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
-  });
+  getAttTaskCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      originalName.value = response.data.name || "";
+      open.value = true;
+      title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
+    })
+    .catch(showRequestWarning);
 }
 
 /** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCat(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
-  });
+  getAttTaskCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      openDetail.value = true;
+      title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
+    })
+    .catch(showRequestWarning);
 }
 
 /** submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
-  proxy.$refs["AttTaskCatRef"].validate((valid) => {
+  proxy.$refs["AttTaskCatRef"].validate(async (valid) => {
     if (valid) {
       if (form.value.id != null) {
-        updateAttTaskCatd(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-            open.value = false;
-            getList();
-            submitLoading.value = false;
-          })
-          .catch((error) => {
-            submitLoading.value = false;
-          });
+        try {
+          if ((form.value.name || "").trim() !== originalName.value.trim()) {
+            const response = await withRequestWarning(
+              getTaskCatIntegrationTaskCount(form.value.id, warningRequestOptions)
+            );
+            await proxy.$modal.confirm(
+              td(
+                "dpp.setting.taskCat.confirmRenameWithTaskCount",
+                "该类目已被 {count} 个数据集成任务使用，修改名称后任务归属显示将同步变化。",
+                { count: response.data || 0 }
+              )
+            );
+          }
+          await withRequestWarning(updateAttTaskCat(form.value, warningRequestOptions));
+          proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+          open.value = false;
+          getList();
+        } catch (error) {
+          // The request interceptor displays API errors; cancelling only stops submission.
+        } finally {
+          submitLoading.value = false;
+        }
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
-        addAttTaskCatd(form.value)
+        addAttTaskCat(form.value, warningRequestOptions)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
@@ -811,6 +860,7 @@ function submitForm() {
             submitLoading.value = false;
           })
           .catch((error) => {
+            showRequestWarning(error);
             submitLoading.value = false;
           });
       }
@@ -820,24 +870,121 @@ function submitForm() {
   });
 }
 
+async function validateTaskCatName(_rule, value, callback) {
+  const name = String(value || "").trim();
+  if (!name) {
+    showTaskCatNameValidateMessage(td("dpp.setting.taskCat.nameRequired"));
+    callback(new Error(td("dpp.setting.taskCat.nameRequired")));
+    return;
+  }
+  if (form.value.id != null) {
+    callback();
+    return;
+  }
+  try {
+    const response = await isTaskCatNameUsed({
+      parentId: form.value.parentId,
+      name,
+    }, warningRequestOptions);
+    if (response.data === true) {
+      const message = td("dpp.setting.taskCat.nameUsed", "名称已被使用");
+      showTaskCatNameValidateMessage(message);
+      callback(new Error(message));
+      return;
+    }
+    callback();
+  } catch (error) {
+    const message = td("dpp.setting.taskCat.nameValidationFailed", "名称校验失败");
+    showTaskCatNameValidateMessage(message);
+    callback(new Error(message));
+  }
+}
+
+function showTaskCatNameValidateMessage(message) {
+  if (taskCatNameMessageInstance && taskCatNameMessageText === message) {
+    return;
+  }
+  taskCatNameMessageInstance?.close();
+  taskCatNameMessageText = message;
+  taskCatNameMessageInstance = ElMessage.warning({
+    message,
+    duration: 2000,
+    onClose: () => {
+      taskCatNameMessageInstance = null;
+      taskCatNameMessageText = "";
+    },
+  });
+}
+
 /** Change enabled status value */
-function handleStatusChange(row) {
+async function handleStatusChange(row) {
+  if (row.validFlag === true && row.parentId != null && Number(row.parentId) !== 0) {
+    const parent = findCategoryById(AttTaskCatList.value, row.parentId);
+    if (!parent || parent.validFlag !== true) {
+      row.validFlag = false;
+      proxy.$modal.msgWarning(
+        td(
+          "dpp.setting.taskCat.enableParentFirst",
+          '请先启用父节点“{name}”，再启用当前节点。',
+          { name: parent?.name || row.parentId }
+        )
+      );
+      return;
+    }
+  }
+
   const text = row.validFlag === true ? td('dpp.setting.taskCat.enable') : td('dpp.setting.taskCat.disable');
-  proxy.$modal
-    .confirm(td('dpp.setting.taskCat.confirmChangeStatus', '', { status: text, name: row.name }))
-    .then(function () {
-      updateAttTaskCatd({ id: row.id, validFlag: row.validFlag })
-        .then((response) => {
-          proxy.$modal.msgSuccess(text + td('common.message.success'));
-          getList();
-        })
-        .catch((err) => {
-          row.validFlag = !row.validFlag;
-        });
-    })
-    .catch(function () {
-      row.validFlag = !row.validFlag;
-    });
+  const isDisabling = row.validFlag === false;
+  const confirmMessage = isDisabling && row.children?.length
+    ? td(
+        'dpp.setting.taskCat.confirmDisableParent',
+        '停用父类目将同步影响子类目，请确认'
+      )
+    : td('dpp.setting.taskCat.confirmChangeStatus', '', { status: text, name: row.name });
+
+  try {
+    await proxy.$modal.confirm(confirmMessage);
+
+    if (isDisabling) {
+      const response = await withRequestWarning(hasIntegrationTask(row.id, warningRequestOptions));
+      if (response.data === true) {
+        row.validFlag = true;
+        proxy.$modal.msgWarning(
+          td(
+            'dpp.setting.taskCat.integrationTaskExistsCannotDisable',
+            '存在数据集成任务，不允许禁用'
+          )
+        );
+        return;
+      }
+    }
+
+    await withRequestWarning(updateAttTaskCat({
+      id: row.id,
+      projectId: row.projectId,
+      projectCode: row.projectCode,
+      name: row.name,
+      parentId: row.parentId,
+      sortOrder: row.sortOrder,
+      description: row.description,
+      validFlag: row.validFlag,
+      code: row.code,
+      remark: row.remark,
+    }, warningRequestOptions));
+    proxy.$modal.msgSuccess(text + td('common.message.success'));
+    getList();
+  } catch (error) {
+    row.validFlag = !row.validFlag;
+  }
+}
+
+function findCategoryById(categories, id) {
+  for (const category of categories) {
+    if (String(category.id) === String(id)) return category;
+    const child = findCategoryById(category.children || [], id);
+    if (child) return child;
+  }
+  return null;
 }
 
 /** Delete button action */
@@ -851,13 +998,13 @@ function handleDelete(row) {
       ).replace("{id}", _ids)
     )
     .then(function () {
-      return delAttTaskCatd(_ids);
+      return delAttTaskCat(_ids, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
 }
 
 /** Export button action */

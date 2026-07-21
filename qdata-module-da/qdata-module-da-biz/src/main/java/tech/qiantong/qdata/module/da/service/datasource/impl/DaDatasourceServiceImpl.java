@@ -278,7 +278,9 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         normalizeDatasource(createReqVO);
         validateDatasourceConfig(createReqVO);
         checkDuplicateDatasource(createReqVO);
-        ensureEnabledDatasourceConnectable(createReqVO);
+        if (!Boolean.TRUE.equals(createReqVO.getSkipConnectionValidation())) {
+            ensureEnabledDatasourceConnectable(createReqVO);
+        }
 
         DaDatasourceDO dictType = BeanUtils.toBean(createReqVO, DaDatasourceDO.class);
         daDatasourceMapper.insert(dictType);
@@ -305,6 +307,24 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         int i = daDatasourceMapper.updateById(updateObj);
         redisService.hashPut("datasource", datasourceId.toString(), com.alibaba.fastjson2.JSONObject.toJSONString(this.getDaDatasourceById(datasourceId).simplify()));
         return i;
+    }
+
+    @Override
+    public boolean testDatasourceConnection(DaDatasourceSaveReqVO datasource) {
+        try {
+            normalizeDatasource(datasource);
+            validateDatasourceConfig(datasource);
+            DbQueryProperty property = new DbQueryProperty(
+                    datasource.getDatasourceType(),
+                    datasource.getIp(),
+                    datasource.getPort(),
+                    datasource.getDatasourceConfig()
+            );
+            return clientTest(property);
+        } catch (Exception exception) {
+            log.warn("Datasource connection validation failed before creation", exception);
+            return false;
+        }
     }
 
     private void normalizeDatasource(DaDatasourceSaveReqVO datasource) {

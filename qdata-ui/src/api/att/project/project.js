@@ -18,6 +18,10 @@
 
 import request from '@/utils/request';
 
+const buildHeaders = (options = {}) => ({
+    hideErrorMessage: options.hideErrorMessage === true
+});
+
 // Query project list
 export function listAttProject(query) {
     return request({
@@ -36,11 +40,12 @@ export function currentUser() {
 }
 
 // Query the list of projects to which the current user belongs
-export function noProjectUser(query) {
+export function noProjectUser(query, options = {}) {
     return request({
         url: '/att/project/noProjectUser/list',
         method: 'post',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
@@ -53,10 +58,11 @@ export function getAttProject(id) {
 }
 
 // Get whether the current user has user addition and project administrator
-export function addUserAndProject(id) {
+export function addUserAndProject(id, options = {}) {
     return request({
         url: '/att/project/addUserAndProject/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 

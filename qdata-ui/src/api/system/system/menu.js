@@ -18,6 +18,10 @@
 
 import request from '@/utils/request.js';
 
+const buildHeaders = (options = {}) => ({
+    hideErrorMessage: options.hideErrorMessage === true
+});
+
 // Query menu list
 export function listMenu(query) {
     return request({
@@ -52,18 +56,20 @@ export function roleMenuTreeselect(roleId) {
 }
 
 // Query menu drop-down tree structure (limited to data research and development module)
-export function treeselectDpp() {
+export function treeselectDpp(options = {}) {
     return request({
         url: '/system/menu/treeselectDpp',
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
 // Query the menu drop-down tree structure based on the role ID (only in the data research and development module)
-export function roleMenuTreeselectDpp(roleId) {
+export function roleMenuTreeselectDpp(roleId, options = {}) {
     return request({
         url: '/system/menu/roleMenuTreeselectDpp/' + roleId,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 

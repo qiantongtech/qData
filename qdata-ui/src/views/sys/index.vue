@@ -865,9 +865,13 @@ function initModule6() {
   let query = {
     pageNum: 1,
     pageSize: 5,
+    orderByColumn: "createTime",
+    isAsc: "descending",
   };
   listNotice(query).then((response) => {
-    module6.value = response.rows;
+    module6.value = [...(response.rows || [])].sort(
+      (a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime()
+    );
   });
 }
 

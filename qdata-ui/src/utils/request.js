@@ -115,6 +115,7 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use(res => {
+  const hideErrorMessage = (res.config.headers || {}).hideErrorMessage === true || (res.config.headers || {}).hideErrorMessage === 'true'
   // If the status code is not set, the default success status is
   const code = res.data.code || 200;
   // Get error message
@@ -137,19 +138,26 @@ service.interceptors.response.use(res => {
     }
     return Promise.reject(i18n.global.t('common.request.expiredSession'))
   } else if (code === 500) {
-    ElMessage({ message: msg, type: 'error' })
+    if (!hideErrorMessage) {
+      ElMessage({ message: msg, type: 'error' })
+    }
     return Promise.reject(new Error(msg))
   } else if (code === 601) {
-    ElMessage({ message: msg, type: 'warning' })
+    if (!hideErrorMessage) {
+      ElMessage({ message: msg, type: 'warning' })
+    }
     return Promise.reject(new Error(msg))
   } else if (code !== 200) {
-    ElNotification.warning({ title: msg })
+    if (!hideErrorMessage) {
+      ElNotification.warning({ title: msg })
+    }
     return Promise.reject('error')
   } else {
     return Promise.resolve(res.data)
   }
 },
   error => {
+    const hideErrorMessage = (error.config?.headers || {}).hideErrorMessage === true || (error.config?.headers || {}).hideErrorMessage === 'true'
     console.log('err' + error)
     let { message } = error;
 
@@ -165,7 +173,9 @@ service.interceptors.response.use(res => {
       ElMessage({ message: error.message, type: 'warning' });
       return Promise.reject(error);
     }
-    ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
+    if (!hideErrorMessage) {
+      ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
+    }
     return Promise.reject(error)
   }
 )

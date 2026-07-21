@@ -91,6 +91,7 @@ export default {
     jsonFormatError: '不是一个正确的JSON格式',
     // Confirm message
     confirmDelete: '是否确认删除数据源编号为"{ids}"的数据项？',
+    connectionValidationFailedConfirm: '数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用',
     // success message
     addSuccess: '新增成功',
     editSuccess: '修改成功',
@@ -125,7 +126,13 @@ export default {
       editDataDevCat: '修改数据开发类目',
       dataDevCatDetail: '数据开发类目详情',
       nameRequired: '数据开发类目名称不能为空',
+      nameUsed: '名称已被使用',
+      nameValidationFailed: '名称校验失败',
       parentRequired: '上级类目不能为空',
+      enableParentFirst: '请先启用父节点“{name}”，再启用当前节点。',
+      confirmDisableParent: '停用父类目将同步影响子类目，请确认',
+      developmentTaskExistsCannotDisable: '存在数据开发任务，不允许禁用',
+      confirmRenameWithTaskCount: '该类目已被 {count} 个数据开发任务使用，修改名称后任务归属显示将同步变化。',
       confirmChangeStatus: '确认要"{status}""{name}"数据开发类目吗？',
       confirmDelete: '是否确认删除数据开发类目管理编号为"{id}"的数据项？',
       dataDevCatImport: '数据开发类目管理导入'
@@ -149,9 +156,15 @@ export default {
       editTaskCat: '修改数据集成类目',
       taskCatDetail: '数据集成类目详情',
       nameRequired: '数据集成类目名称不能为空',
+      nameUsed: '当前上级类目下已存在同名类目，请修改',
+      nameValidationFailed: '名称校验失败',
       parentRequired: '上级类目不能为空',
       updateExistData: '是否更新已经存在的数据集成类目管理数据',
       downloadTemplate: '下载模板',
+      enableParentFirst: '请先启用父节点“{name}”，再启用当前节点。',
+      confirmDisableParent: '停用父类目将同步影响子类目，请确认',
+      integrationTaskExistsCannotDisable: '存在数据集成任务，不允许禁用',
+      confirmRenameWithTaskCount: '该类目已被 {count} 个数据集成任务使用，修改名称后任务归属显示将同步变化。',
       confirmChangeStatus: '确认要"{status}""{name}"数据集成类目吗？',
       confirmDelete: '是否确认删除数据集成类目管理编号为"{id}"的数据项？',
       taskCatImport: '数据集成类目管理导入'
@@ -217,6 +230,7 @@ export default {
       editRole: '修改角色',
       assignDataScope: '分配数据权限',
       confirmDeleteRole: '是否确认删除角色编号为"{id}"的数据项？',
+      roleInUseCannotDelete: '角色“{name}”已被成员使用，不能删除。',
       confirmChangeRoleStatus: '确认要"{status}""{name}"角色吗？'
     }
   },
@@ -1334,6 +1348,10 @@ export default {
     addSuffix: '加后綴',
     removePrefix: '去除前缀',
     removeSuffix: '去除后缀',
+    addPrefixExample: '加前缀示例：原值123，标记值{mark} → {mark}123',
+    addSuffixExample: '加后缀示例：原值123，标记值{mark} → 123{mark}',
+    removePrefixExample: '去除前缀示例：原值{mark}123，标记值{mark} → 123',
+    removeSuffixExample: '去除后缀示例：原值123{mark}，标记值{mark} → 123',
     exampleAgeOver150: '示例: 如果年龄 > 150，则设置为 150。',
     exampleIncomeUnder1000: '示例: 如果收入 < 1000，则设置为 1000。',
     exampleBoth: '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。',

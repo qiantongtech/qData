@@ -112,7 +112,7 @@
             type="danger"
             plain
             icon="Delete"
-            :disabled="multiple"
+            :disabled="multiple || hasEnabledSelectedRole"
             @click="handleDelete"
             v-hasPermi="['att:project:role:remove']"
             >{{ td("common.button.delete") }}</el-button
@@ -213,6 +213,7 @@
             link
             type="danger"
             icon="Delete"
+            :disabled="scope.row.status === '0'"
             @click="handleDelete(scope.row)"
             v-hasPermi="['att:project:role:remove']"
             v-if="
@@ -347,7 +348,12 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="cancel">{{ td("common.button.cancel") }}</el-button>
-        <el-button type="primary" @click="submitForm">{{
+        <el-button
+          type="primary"
+          :loading="submitLoading"
+          :disabled="submitLoading"
+          @click="submitForm"
+        >{{
           td("common.button.confirm")
         }}</el-button>
       </div>
@@ -415,7 +421,12 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="submitDataScope">{{
+        <el-button
+          type="primary"
+          :loading="dataScopeSubmitLoading"
+          :disabled="dataScopeSubmitLoading"
+          @click="submitDataScope"
+        >{{
           td("common.button.confirm")
         }}</el-button>
         <el-button @click="cancelDataScope">{{
@@ -436,6 +447,7 @@ import {
   listRole,
   updateRole,
   deptTreeSelect,
+  allocatedUserList,
 } from "@/api/att/projectUserRel/attProjectUserRel.js";
 import {
   roleMenuTreeselectDpp,
@@ -452,10 +464,13 @@ const userStore = useUserStore();
 const roleList = ref([]);
 const open = ref(false);
 const loading = ref(true);
+const submitLoading = ref(false);
+const dataScopeSubmitLoading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
+const hasEnabledSelectedRole = ref(false);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
@@ -469,6 +484,16 @@ const openDataScope = ref(false);
 const menuRef = ref(null);
 const deptRef = ref(null);
 const expandedKeys = ref([]);
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
+
 /** Data range options*/
 const dataScopeOptions = computed(() => [
   { value: "1", label: td("dpp.setting.projectUserRel.allDataScope") },
@@ -544,13 +569,18 @@ watch(
 function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
-    listRole(proxy.addDateRange(queryParams.value, dateRange.value)).then(
+    listRole(proxy.addDateRange(queryParams.value, dateRange.value), warningRequestOptions).then(
       (response) => {
-        roleList.value = response.rows;
-        total.value = response.total;
-        loading.value = false;
+        roleList.value = response?.rows || [];
+        total.value = response?.total || 0;
       }
-    );
+    )
+      .catch(showRequestWarning)
+      .finally(() => {
+        loading.value = false;
+      });
+  } else {
+    loading.value = false;
   }
 }
 
@@ -568,7 +598,36 @@ function resetQuery() {
 }
 
 /** Delete button action */
-function handleDelete(row) {
+async function handleDelete(row = {}) {
+  const selectedRoleIds = row.roleId ? [row.roleId] : [...ids.value];
+  let assignedResults = [];
+  try {
+    assignedResults = await Promise.all(
+      selectedRoleIds.map((roleId) =>
+        allocatedUserList({ roleId, pageNum: 1, pageSize: 1 }, warningRequestOptions)
+      )
+    );
+  } catch (error) {
+    showRequestWarning(error);
+    return;
+  }
+  const assignedRoleIds = selectedRoleIds.filter(
+    (_roleId, index) => Number(assignedResults[index]?.total || 0) > 0
+  );
+
+  if (assignedRoleIds.length > 0) {
+    const assignedRoleNames = roleList.value
+      .filter((role) => assignedRoleIds.includes(role.roleId))
+      .map((role) => role.roleName);
+    proxy.$modal.msgWarning(
+      td("dpp.setting.projectUserRel.roleInUseCannotDelete").replace(
+        "{name}",
+        assignedRoleNames.join(", ") || assignedRoleIds.join(", ")
+      )
+    );
+    return;
+  }
+
   const roleIds = row.roleId || ids.value;
   proxy.$modal
     .confirm(
@@ -578,13 +637,13 @@ function handleDelete(row) {
       ).replace("{id}", roleIds)
     )
     .then(function () {
-      return delRole(roleIds);
+      return delRole(roleIds, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
 }
 
 /** Export button action */
@@ -603,6 +662,7 @@ function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.roleId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
+  hasEnabledSelectedRole.value = selection.some((item) => item.status === "0");
 }
 
 /** Character status modification */
@@ -622,14 +682,15 @@ function handleStatusChange(row) {
         td("dpp.setting.projectUserRel.role", "角色吗?")
     )
     .then(function () {
-      return changeRoleStatus(row.roleId, row.status);
+      return changeRoleStatus(row.roleId, row.status, warningRequestOptions);
     })
     .then(() => {
       proxy.$modal.msgSuccess(
         text + td("dpp.setting.projectUserRel.success", "成功")
       );
     })
-    .catch(function () {
+    .catch(function (error) {
+      showRequestWarning(error);
       row.status = row.status === "0" ? "1" : "0";
     });
 }
@@ -655,10 +716,13 @@ function handleAuthUser(row) {
 
 /** Query menu tree structure */
 function getMenuTreeselect() {
-  menuTreeselect().then((response) => {
-    menuOptions.value = response.data;
-    expandedKeys.value = response.data.map((item) => item.id);
-  });
+  menuTreeselect(warningRequestOptions)
+    .then((response) => {
+      const menus = response?.data || [];
+      menuOptions.value = menus;
+      expandedKeys.value = menus.map((item) => item.id);
+    })
+    .catch(showRequestWarning);
 }
 
 /** All department node data */
@@ -708,40 +772,52 @@ function handleAdd() {
 function handleUpdate(row) {
   reset();
   const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselect(roleId);
-  getRole(roleId).then((response) => {
-    form.value = response.data;
-    form.value.roleSort = Number(form.value.roleSort);
-    open.value = true;
-    nextTick(() => {
-      roleMenu.then((res) => {
-        let checkedKeys = res.checkedKeys;
-        checkedKeys.forEach((v) => {
-          nextTick(() => {
-            menuRef.value.setChecked(v, true, false);
+  const roleMenu = getRoleMenuTreeselect(roleId).catch(() => null);
+  getRole(roleId, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      form.value.roleSort = Number(form.value.roleSort);
+      open.value = true;
+      nextTick(() => {
+        roleMenu.then((res) => {
+          if (!res) return;
+          let checkedKeys = res.checkedKeys;
+          checkedKeys.forEach((v) => {
+            nextTick(() => {
+              menuRef.value.setChecked(v, true, false);
+            });
           });
         });
       });
-    });
-    title.value = td("dpp.setting.projectUserRel.editRole", "修改角色");
-  });
+      title.value = td("dpp.setting.projectUserRel.editRole", "修改角色");
+    })
+    .catch(showRequestWarning);
 }
 
 /** Query the menu tree structure based on role ID */
 function getRoleMenuTreeselect(roleId) {
-  return roleMenuTreeselectDpp(roleId).then((response) => {
-    menuOptions.value = response.menus;
-    expandedKeys.value = response.menus.map((item) => item.id);
+  return roleMenuTreeselectDpp(roleId, warningRequestOptions).then((response) => {
+    const menus = response?.menus || [];
+    menuOptions.value = menus;
+    expandedKeys.value = menus.map((item) => item.id);
     console.log(expandedKeys.value, "expandedKeys");
-    return response;
+    return { ...response, menus };
+  }).catch((error) => {
+    showRequestWarning(error);
+    throw error;
   });
 }
 
 /** Query department tree structure based on role ID */
 function getDeptTree(roleId) {
-  return deptTreeSelect(roleId).then((response) => {
-    deptOptions.value = response.depts;
-    return response;
+  return deptTreeSelect(roleId, warningRequestOptions).then((response) => {
+    const depts = response?.depts || [];
+    deptOptions.value = depts;
+    return { ...response, depts };
+  }).catch((error) => {
+    showRequestWarning(error);
+    throw error;
   });
 }
 
@@ -790,24 +866,36 @@ function getMenuAllCheckedKeys() {
 
 /** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
   proxy.$refs["roleRef"].validate((valid) => {
     if (valid) {
+      submitLoading.value = true;
       if (form.value.roleId != undefined) {
         form.value.projectId = userStore.projectId;
         form.value.menuIds = getMenuAllCheckedKeys();
-        updateRole(form.value).then((response) => {
-          proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-          open.value = false;
-          getList();
-        });
+        updateRole(form.value, warningRequestOptions)
+          .then((response) => {
+            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+            open.value = false;
+            getList();
+          })
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       } else {
         form.value.menuIds = getMenuAllCheckedKeys();
         form.value.projectId = userStore.projectId;
-        addRole(form.value).then((response) => {
-          proxy.$modal.msgSuccess(td("common.message.addSuccess"));
-          open.value = false;
-          getList();
-        });
+        addRole(form.value, warningRequestOptions)
+          .then((response) => {
+            proxy.$modal.msgSuccess(td("common.message.addSuccess"));
+            open.value = false;
+            getList();
+          })
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       }
     }
   });
@@ -829,35 +917,46 @@ function dataScopeSelectChange(value) {
 /** Assign data permission actions */
 function handleDataScope(row) {
   reset();
-  const deptTreeSelect = getDeptTree(row.roleId);
-  getRole(row.roleId).then((response) => {
-    form.value = response.data;
-    openDataScope.value = true;
-    nextTick(() => {
-      deptTreeSelect.then((res) => {
-        nextTick(() => {
-          if (deptRef.value) {
-            deptRef.value.setCheckedKeys(res.checkedKeys);
-          }
+  const deptTreeSelect = getDeptTree(row.roleId).catch(() => null);
+  getRole(row.roleId, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      openDataScope.value = true;
+      nextTick(() => {
+        deptTreeSelect.then((res) => {
+          if (!res) return;
+          nextTick(() => {
+            if (deptRef.value) {
+              deptRef.value.setCheckedKeys(res.checkedKeys);
+            }
+          });
         });
       });
-    });
-    title.value = td(
-      "dpp.setting.projectUserRel.assignDataScope",
-      "分配数据权限"
-    );
-  });
+      title.value = td(
+        "dpp.setting.projectUserRel.assignDataScope",
+        "分配数据权限"
+      );
+    })
+    .catch(showRequestWarning);
 }
 
 /** Submit button (data permissions) */
 function submitDataScope() {
+  if (dataScopeSubmitLoading.value) return;
   if (form.value.roleId != undefined) {
+    dataScopeSubmitLoading.value = true;
     form.value.deptIds = getDeptAllCheckedKeys();
-    dataScope(form.value).then((response) => {
-      proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-      openDataScope.value = false;
-      getList();
-    });
+    dataScope(form.value, warningRequestOptions)
+      .then((response) => {
+        proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+        openDataScope.value = false;
+        getList();
+      })
+      .catch(showRequestWarning)
+      .finally(() => {
+        dataScopeSubmitLoading.value = false;
+      });
   }
 }
 

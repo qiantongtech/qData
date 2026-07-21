@@ -60,6 +60,21 @@ public interface IAttDataDevCatService extends IService<AttDataDevCatDO> {
     int updateAttDataDevCat(AttDataDevCatSaveReqVO updateReqVO);
 
     /**
+     * Check whether data development tasks exist under the category or its descendants.
+     */
+    boolean hasDataDevelopmentTask(Long id);
+
+    /**
+     * Check whether a category name is already used under the same parent.
+     */
+    boolean isNameUsed(Long id, Long parentId, String name);
+
+    /**
+     * Count data development tasks directly associated with the category.
+     */
+    long getDataDevelopmentTaskCount(Long id);
+
+    /**
      * Delete data development category management
      *
      * @param idList data development category management ID list

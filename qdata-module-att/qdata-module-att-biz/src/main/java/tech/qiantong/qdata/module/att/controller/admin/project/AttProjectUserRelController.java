@@ -38,6 +38,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -224,9 +225,9 @@ public class AttProjectUserRelController extends BaseController {
     public AjaxResult add(@Validated @RequestBody SysRole role) {
         role.setRoleName(role.getRoleName().trim());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("角色名称已存在，请修改");
+            return error(MessageUtils.messageWithFallback("att.error.role.name.exists", "角色名称已存在，请修改"));
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("权限字符已存在，请修改");
+            return error(MessageUtils.messageWithFallback("att.error.role.key.exists", "权限字符已存在，请修改"));
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -244,9 +245,9 @@ public class AttProjectUserRelController extends BaseController {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("角色名称已存在，请修改");
+            return error(MessageUtils.messageWithFallback("att.error.role.name.exists", "角色名称已存在，请修改"));
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("权限字符已存在，请修改");
+            return error(MessageUtils.messageWithFallback("att.error.role.key.exists", "权限字符已存在，请修改"));
         }
         role.setUpdateBy(getUsername());
 
@@ -260,7 +261,8 @@ public class AttProjectUserRelController extends BaseController {
             }
             return success();
         }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+        return error(MessageUtils.messageWithFallback("att.error.role.update.fail",
+                "修改角色'" + role.getRoleName() + "'失败，请联系管理员", role.getRoleName()));
     }
 
     /**
@@ -287,7 +289,8 @@ public class AttProjectUserRelController extends BaseController {
         if ("1".equals(role.getStatus())) {
             int count = roleService.countUserRoleByRoleId(role.getRoleId());
             if (count > 0) {
-                throw new ServiceException("该角色已分配给" + count + "名成员，不能直接停用");
+                throw new ServiceException("att.error.role.assigned.disable",
+                        "该角色已分配给" + count + "名成员，不能直接停用", count);
             }
         }
         role.setUpdateBy(getUsername());

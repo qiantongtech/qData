@@ -232,6 +232,7 @@
               link
               type="danger"
               icon="Delete"
+              :disabled="scope.row.validFlag === true"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:dataDevCat:remove']"
               >{{ td("common.button.delete") }}</el-button
@@ -526,6 +527,9 @@ import {
   delAttDataDevCat,
   addAttDataDevCat,
   updateAttDataDevCat,
+  hasDataDevelopmentTask,
+  isDataDevCatNameUsed,
+  getDataDevelopmentTaskCount,
 } from "@/api/att/cat/dataDevCat/dataDevCat";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
@@ -534,6 +538,25 @@ const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 const submitLoading = ref(false);
+const originalName = ref("");
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
+
+async function withRequestWarning(requestPromise) {
+  try {
+    return await requestPromise;
+  } catch (error) {
+    showRequestWarning(error);
+    throw error;
+  }
+}
 
 const AttDataDevCatList = ref([]);
 
@@ -650,6 +673,10 @@ const data = reactive({
         message: td("dpp.setting.dataDevCat.nameRequired"),
         trigger: "blur",
       },
+      {
+        validator: validateDataDevCatName,
+        trigger: "blur",
+      },
     ],
     parentId: [
       {
@@ -684,16 +711,21 @@ function getList() {
   loading.value = true;
   queryParams.value.projectId = userStore.projectId;
   queryParams.value.projectCode = userStore.projectCode;
-  listAttDataDevCat(queryParams.value).then((response) => {
-    AttDataDevCatList.value = proxy.handleTree(response.data, "id", "parentId");
-    // total.value = response.data.total;
-    loading.value = false;
+  listAttDataDevCat(queryParams.value, warningRequestOptions)
+    .then((response) => {
+      const rows = response?.data || [];
+      AttDataDevCatList.value = proxy.handleTree(rows, "id", "parentId");
+      // total.value = response.data.total;
 
-    attDataDevCatOptions.value = [];
-    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
-    data.children = proxy.handleTree(response.data, "id", "parentId");
-    attDataDevCatOptions.value.push(data);
-  });
+      attDataDevCatOptions.value = [];
+      const data = { id: 0, name: td('common.texts.topNode'), children: [] };
+      data.children = proxy.handleTree(rows, "id", "parentId");
+      attDataDevCatOptions.value.push(data);
+    })
+    .catch(showRequestWarning)
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 // Cancel button
@@ -705,6 +737,7 @@ function cancel() {
 
 // form reset
 function reset() {
+  originalName.value = "";
   form.value = {
     id: null,
     name: null,
@@ -767,71 +800,142 @@ function handleAdd(row) {
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttDataDevCat(_id).then((response) => {
-    form.value = response.data;
-    open.value = true;
-    title.value = td(
-      "dpp.setting.dataDevCat.editDataDevCat",
-      "修改数据开发类目"
-    );
-  });
+  getAttDataDevCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      originalName.value = response.data.name || "";
+      open.value = true;
+      title.value = td(
+        "dpp.setting.dataDevCat.editDataDevCat",
+        "修改数据开发类目"
+      );
+    })
+    .catch(showRequestWarning);
 }
 
 /** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttDataDevCat(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td(
-      "dpp.setting.dataDevCat.dataDevCatDetail",
-      "数据开发类目管理详情"
-    );
-  });
+  getAttDataDevCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      openDetail.value = true;
+      title.value = td(
+        "dpp.setting.dataDevCat.dataDevCatDetail",
+        "数据开发类目管理详情"
+      );
+    })
+    .catch(showRequestWarning);
 }
 
 /** Change enabled status value */
-function handleStatusChange(row) {
+async function handleStatusChange(row) {
+  if (row.validFlag === true && row.parentId != null && Number(row.parentId) !== 0) {
+    const parent = findCategoryById(AttDataDevCatList.value, row.parentId);
+    if (!parent || parent.validFlag !== true) {
+      row.validFlag = false;
+      proxy.$modal.msgWarning(
+        td(
+          "dpp.setting.dataDevCat.enableParentFirst",
+          '请先启用父节点“{name}”，再启用当前节点。',
+          { name: parent?.name || row.parentId }
+        )
+      );
+      return;
+    }
+  }
+
   const text = row.validFlag === true ? td('dpp.setting.dataDevCat.enable') : td('dpp.setting.dataDevCat.disable');
-  proxy.$modal
-    .confirm(td('dpp.setting.dataDevCat.confirmChangeStatus', '', { status: text, name: row.name }))
-    .then(function () {
-      updateAttDataDevCatd({ id: row.id, validFlag: row.validFlag })
-        .then((response) => {
-          proxy.$modal.msgSuccess(text + td('common.message.success'));
-          getList();
-        })
-        .catch((err) => {
-          row.validFlag = !row.validFlag;
-        });
-    })
-    .catch(function () {
-      row.validFlag = !row.validFlag;
-    });
+  const isDisabling = row.validFlag === false;
+  const confirmMessage = isDisabling && row.children?.length
+    ? td(
+        'dpp.setting.dataDevCat.confirmDisableParent',
+        '停用父类目将同步影响子类目，请确认'
+      )
+    : td('dpp.setting.dataDevCat.confirmChangeStatus', '', { status: text, name: row.name });
+
+  try {
+    await proxy.$modal.confirm(confirmMessage);
+
+    if (isDisabling) {
+      const response = await withRequestWarning(hasDataDevelopmentTask(row.id, warningRequestOptions));
+      if (response.data === true) {
+        row.validFlag = true;
+        proxy.$modal.msgWarning(
+          td(
+            'dpp.setting.dataDevCat.developmentTaskExistsCannotDisable',
+            '存在数据开发任务，不允许禁用'
+          )
+        );
+        return;
+      }
+    }
+
+    await withRequestWarning(updateAttDataDevCat({
+      id: row.id,
+      projectId: row.projectId,
+      projectCode: row.projectCode,
+      name: row.name,
+      parentId: row.parentId,
+      sortOrder: row.sortOrder,
+      description: row.description,
+      validFlag: row.validFlag,
+      code: row.code,
+      remark: row.remark,
+    }, warningRequestOptions));
+    proxy.$modal.msgSuccess(text + td('common.message.success'));
+    getList();
+  } catch (error) {
+    row.validFlag = !row.validFlag;
+  }
+}
+
+function findCategoryById(categories, id) {
+  for (const category of categories) {
+    if (String(category.id) === String(id)) return category;
+    const child = findCategoryById(category.children || [], id);
+    if (child) return child;
+  }
+  return null;
 }
 
 /** submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
-  proxy.$refs["AttDataDevCatRef"].validate((valid) => {
+  proxy.$refs["AttDataDevCatRef"].validate(async (valid) => {
     if (valid) {
       if (form.value.id != null) {
-        updateAttDataDevCatd(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-            open.value = false;
-            getList();
-            submitLoading.value = false;
-          })
-          .catch((error) => {
-            submitLoading.value = false;
-          });
+        try {
+          if ((form.value.name || "").trim() !== originalName.value.trim()) {
+            const response = await withRequestWarning(
+              getDataDevelopmentTaskCount(form.value.id, warningRequestOptions)
+            );
+            const taskCount = Number(response.data || 0);
+            if (taskCount > 0) {
+              await proxy.$modal.confirm(
+                td(
+                  "dpp.setting.dataDevCat.confirmRenameWithTaskCount",
+                  "该类目已被 {count} 个数据开发任务使用，修改名称后任务归属显示将同步变化。",
+                  { count: taskCount }
+                )
+              );
+            }
+          }
+          await withRequestWarning(updateAttDataDevCat(form.value, warningRequestOptions));
+          proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+          open.value = false;
+          getList();
+        } catch (error) {
+          // The request interceptor displays API errors; cancelling only stops submission.
+        } finally {
+          submitLoading.value = false;
+        }
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
-        addAttDataDevCat(form.value)
+        addAttDataDevCat(form.value, warningRequestOptions)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
@@ -839,6 +943,7 @@ function submitForm() {
             submitLoading.value = false;
           })
           .catch((error) => {
+            showRequestWarning(error);
             submitLoading.value = false;
           });
       }
@@ -846,6 +951,26 @@ function submitForm() {
       submitLoading.value = false;
     }
   });
+}
+
+async function validateDataDevCatName(_rule, value, callback) {
+  if (!value || form.value.id != null) {
+    callback();
+    return;
+  }
+  try {
+    const response = await isDataDevCatNameUsed({
+      parentId: form.value.parentId,
+      name: value.trim(),
+    }, warningRequestOptions);
+    if (response.data === true) {
+      callback(new Error(td("dpp.setting.dataDevCat.nameUsed", "名称已被使用")));
+      return;
+    }
+    callback();
+  } catch (error) {
+    callback(new Error(td("dpp.setting.dataDevCat.nameValidationFailed", "名称校验失败")));
+  }
 }
 
 /** Delete button action */
@@ -859,13 +984,13 @@ function handleDelete(row) {
       ).replace("{id}", _ids)
     )
     .then(function () {
-      return delAttDataDevCat(_ids);
+      return delAttDataDevCat(_ids, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
 }
 
 /** Export button action */

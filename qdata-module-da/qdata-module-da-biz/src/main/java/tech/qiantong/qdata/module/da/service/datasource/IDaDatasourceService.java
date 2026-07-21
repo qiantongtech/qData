@@ -93,6 +93,11 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     int updateDaDatasource(DaDatasourceSaveReqVO updateReqVO);
 
     /**
+     * Test connection information before creating a datasource.
+     */
+    boolean testDatasourceConnection(DaDatasourceSaveReqVO datasource);
+
+    /**
      * Delete datasource
      *
      * @param idList datasource ID list

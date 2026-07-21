@@ -167,6 +167,7 @@
                     :key="dict.columnName"
                     :label="dict.label"
                     :value="dict.columnName"
+                    :disabled="shouldDisableField(dict)"
                   />
                 </el-select>
                 <el-select
@@ -244,6 +245,12 @@ const processedFields = computed(() => {
       ? `${item.columnName} / ${item.columnComment}`
       : item.columnName,
   }));
+});
+const isFieldValueToUpperRule = computed(() => {
+  return (
+    form.ruleCode == "022" ||
+    String(form.ruleName || "").includes("字段值转大写")
+  );
 });
 const columnsDisplayText = computed(() => {
   if (isMultipleSelect.value) {
@@ -336,7 +343,10 @@ const shouldDisableField = computed(() => {
       return !isNumericColumnType(dict.columnType);
     }
 
-    if (["009", "010", "011", "012", "022"].includes(form.ruleCode)) {
+    if (
+      ["009", "010", "011", "012"].includes(form.ruleCode) ||
+      isFieldValueToUpperRule.value
+    ) {
       return !isTextColumnType(dict.columnType);
     }
 
@@ -353,6 +363,24 @@ const shouldDisableField = computed(() => {
     return false;
   };
 });
+watch(
+  [() => form.ruleCode, () => form.ruleName, processedFields],
+  () => {
+    const selectableNames = new Set(
+      processedFields.value
+        .filter((item) => !shouldDisableField.value(item))
+        .map((item) => item.columnName)
+    );
+    if (isMultipleSelect.value) {
+      const values = Array.isArray(form.columns) ? form.columns : [];
+      form.columns = values.filter((item) => selectableNames.has(item));
+      return;
+    }
+    if (form.columns && !selectableNames.has(form.columns)) {
+      form.columns = "";
+    }
+  }
+);
 let title = ref();
 
 // Computed property: current rule configuration

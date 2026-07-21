@@ -518,8 +518,8 @@ const saveData = async () => {
       form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
-    taskParams.tableFields = tableFields.value;
-    taskParams.outputFields = inputFields.value;
+    taskParams.tableFields = deepCopy(tableFields.value);
+    taskParams.outputFields = deepCopy(inputFields.value);
     emit("confirm", form.value);
   } catch (error) {
     console.error("Failed to save data:", error);
@@ -553,8 +553,8 @@ watchEffect(() => {
   }
   form.value = deepCopy(props.currentNode?.data || {});
   nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  inputFields.value = props.currentNode?.data?.taskParams?.inputFields;
-  tableFields.value = props.currentNode?.data?.taskParams?.tableFields;
+  inputFields.value = deepCopy(props.currentNode?.data?.taskParams?.inputFields || []);
+  tableFields.value = deepCopy(props.currentNode?.data?.taskParams?.tableFields || []);
   setSort();
 });
 </script>

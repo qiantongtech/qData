@@ -94,4 +94,7 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
     @Schema(description = "是否有效", example = "false")
     private Boolean validFlag;
 
+    @Schema(description = "连接验证失败后是否确认继续新增", example = "false")
+    private Boolean skipConnectionValidation;
+
 }

@@ -2164,6 +2164,14 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     }
 
     @Override
+    public long getCountByCatId(Long catId, List<String> taskTypes) {
+        return this.lambdaQuery()
+                .eq(DppEtlTaskDO::getCatId, catId)
+                .in(taskTypes != null && !taskTypes.isEmpty(), DppEtlTaskDO::getType, taskTypes)
+                .count();
+    }
+
+    @Override
     public DppEtlNewNodeSaveReqVO createEtlTaskFront(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
 
         // Generate task code

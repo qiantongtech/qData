@@ -49,12 +49,17 @@
               : []
           "
         >
-          <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">{{ td('dpp.cleanRule.addPrefix', '加前綴') }}</el-radio>
-            <el-radio :value="'2'">{{ td('dpp.cleanRule.addSuffix', '加后綴') }}</el-radio>
-            <el-radio :value="'3'">{{ td('dpp.cleanRule.removePrefix', '去除前缀') }}</el-radio>
-            <el-radio :value="'4'">{{ td('dpp.cleanRule.removeSuffix', '去除后缀') }}</el-radio>
-          </el-radio-group>
+          <div class="affix-handle-content">
+            <el-radio-group v-model="form.handleType" :disabled="falg">
+              <el-radio :value="'1'">{{ td('dpp.cleanRule.addPrefix', '加前綴') }}</el-radio>
+              <el-radio :value="'2'">{{ td('dpp.cleanRule.addSuffix', '加后綴') }}</el-radio>
+              <el-radio :value="'3'">{{ td('dpp.cleanRule.removePrefix', '去除前缀') }}</el-radio>
+              <el-radio :value="'4'">{{ td('dpp.cleanRule.removeSuffix', '去除后缀') }}</el-radio>
+            </el-radio-group>
+            <div v-if="affixExample" class="affix-example">
+              {{ affixExample }}
+            </div>
+          </div>
         </el-form-item>
       </el-col>
     </el-row>
@@ -64,7 +69,7 @@
 
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang"
-import { reactive, ref, watch } from "vue";
+import { computed, reactive, ref } from "vue";
 const { td } = useDefaultLang();
 const props = defineProps({
   form: Object,
@@ -72,33 +77,40 @@ const props = defineProps({
   falg: Boolean,
 });
 
-const emit = defineEmits(["update:form"]);
-
 const formRef = ref(null);
 
 const form = reactive({ ...props.form });
-const boundaryExamples = computed(() => {
+const affixExample = computed(() => {
+  const mark = form.stringValue || "qq";
   switch (form.handleType) {
-    case "3":
-      return [td('dpp.cleanRule.exampleAgeOver150', '示例: 如果年龄 > 150，则设置为 150。')];
-    case "2":
-      return [td('dpp.cleanRule.exampleIncomeUnder1000', '示例: 如果收入 < 1000，则设置为 1000。')];
     case "1":
-      return [
-        td('dpp.cleanRule.exampleBoth', '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。'),
-      ];
+      return td(
+        'dpp.cleanRule.addPrefixExample',
+        '加前缀示例：原值123，标记值{mark} → {mark}123',
+        { mark }
+      );
+    case "2":
+      return td(
+        'dpp.cleanRule.addSuffixExample',
+        '加后缀示例：原值123，标记值{mark} → 123{mark}',
+        { mark }
+      );
+    case "3":
+      return td(
+        'dpp.cleanRule.removePrefixExample',
+        '去除前缀示例：原值{mark}123，标记值{mark} → 123',
+        { mark }
+      );
+    case "4":
+      return td(
+        'dpp.cleanRule.removeSuffixExample',
+        '去除后缀示例：原值123{mark}，标记值{mark} → 123',
+        { mark }
+      );
     default:
-      return [];
+      return "";
   }
 });
-const handleTypeText = computed(() => {
-  if (form.handleType === "1") return td('dpp.cleanRule.addPrefix', '加前綴');
-  if (form.handleType === "2") return td('dpp.cleanRule.addSuffix', '加后綴');
-  if (form.handleType === "3") return td('dpp.cleanRule.removePrefix', '去除前缀');
-  if (form.handleType === "4") return td('dpp.cleanRule.removeSuffix', '去除后缀');
-  return "-";
-});
-const loading = ref(false);
 const exposedFields = ["stringValue", "handleType"];
 function validate() {
   return new Promise((resolve) => {
@@ -127,5 +139,13 @@ defineExpose({ validate });
 }
 .rule-half {
   width: 100%;
+}
+.affix-handle-content {
+  width: 100%;
+}
+.affix-example {
+  margin-top: 12px;
+  color: #606266;
+  line-height: 24px;
 }
 </style>

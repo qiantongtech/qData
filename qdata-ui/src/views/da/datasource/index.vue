@@ -216,6 +216,7 @@
               v-model="scope.row.validFlag"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              :loading="statusLoadingMap[scope.row.id] === true"
               @change="handleStatusChange(scope.row)"
             >
             </el-switch>
@@ -245,6 +246,7 @@
               link
               type="primary"
               icon="Connection"
+              :loading="testConnectionLoadingMap[scope.row.id] === true"
               @click="handleTestConnection(scope.row)"
               v-hasPermi="['da:dataSource:edit']"
               >{{ td('dpp.datasource.testConnection') }}
@@ -926,6 +928,9 @@
 </template>
 
 <script setup name="DataSource">
+import { onActivated, onBeforeUnmount } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
+import { ElMessageBox } from "element-plus";
 import {
   listDaDatasource,
   getDaDatasource,
@@ -933,6 +938,7 @@ import {
   delDaDatasource,
   removeDppOrDa,
   addDaDatasource,
+  testDatasourceConnection,
   updateDaDatasource,
   listDaDatasourceByProjectCode,
   editDatasourceStatus,
@@ -995,6 +1001,19 @@ const loadingProject = ref(false);
 const projectIdAndCodeList = ref([]);
 const route = useRoute();
 let type = route.query.type || null;
+let isDatasourcePageActive = true;
+
+onActivated(() => {
+  isDatasourcePageActive = true;
+});
+
+onBeforeRouteLeave(() => {
+  isDatasourcePageActive = false;
+});
+
+onBeforeUnmount(() => {
+  isDatasourcePageActive = false;
+});
 
 /*** User Import Parameters */
 const upload = reactive({
@@ -1242,6 +1261,7 @@ function reset() {
     dataSize: null,
     description: null,
     validFlag: false,
+    skipConnectionValidation: false,
     createBy: null,
     creatorId: null,
     createTime: null,
@@ -1383,19 +1403,24 @@ function handleDetail(row) {
 
 /** Detail button operation */
 function handleTestConnection(row) {
-  loading.value = true; // Start loading
   reset();
   const _id = row.id || ids.value;
-  clientsTest(_id)
+  testConnectionLoadingMap.value[_id] = true;
+  clientsTest(_id, { hideErrorMessage: true })
     .then((response) => {
       console.log(response);
       proxy.$modal.msgSuccess(response.msg);
     })
+    .catch((error) => {
+      proxy.$modal.msgWarning(error.message);
+    })
     .finally(() => {
-      loading.value = false; // End loading
+      testConnectionLoadingMap.value[_id] = false;
     });
 }
 const btnLoading = ref(false);
+const testConnectionLoadingMap = ref({});
+const statusLoadingMap = ref({});
 /** Submit button */
 function submitForm() {
   proxy.$refs["daDatasourceRef"].validate((valid) => {
@@ -1449,7 +1474,27 @@ function submitForm() {
           endpoint: form.value.endpoint,
           domain: form.value.domain,
         });
-        addDaDatasource(form.value)
+        testDatasourceConnection(form.value)
+          .then((response) => response.data === true)
+          .catch(() => false)
+          .then((isConnected) => {
+            if (isConnected) {
+              form.value.skipConnectionValidation = false;
+              return true;
+            }
+            return proxy.$modal
+              .confirm(
+                td(
+                  'da.datasource.connectionValidationFailedConfirm',
+                  '数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用'
+                )
+              )
+              .then(() => {
+                form.value.skipConnectionValidation = true;
+                form.value.validFlag = false;
+              });
+          })
+          .then(() => addDaDatasource(form.value))
           .then((response) => {
             proxy.$modal.msgSuccess(td('da.datasource.addSuccess'));
             open.value = false;
@@ -1553,20 +1598,49 @@ function routeTo(link, row) {
 
 /** Toggle enable status value */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? td('da.datasource.enable') : td('da.datasource.disable');
-  const status = row.validFlag === true ? 1 : 0;
+  const isEnabling = row.validFlag === true;
+  const text = isEnabling ? td('da.datasource.enable') : td('da.datasource.disable');
+  const status = isEnabling ? 1 : 0;
   proxy.$modal
     .confirm(td('da.datasource.confirmStatusChange', '', { text: text, name: row.datasourceName }))
     .then(function () {
-      return editDatasourceStatus(row.id, status).then(() => {
-        proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
-      });
+      statusLoadingMap.value[row.id] = true;
+      return editDatasourceStatus(row.id, status, {
+        hideErrorMessage: isEnabling,
+      })
+        .then(() => {
+          if (isDatasourcePageActive) {
+            proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
+          }
+        })
+        .catch((error) => {
+          if (!isEnabling) {
+            return Promise.reject(error);
+          }
+          if (!isDatasourcePageActive) {
+            return Promise.reject(error);
+          }
+          return ElMessageBox.alert(
+            td('da.datasource.enableFailedMessage', '数据连接启动失败,请查看数据库连接信息'),
+            td('da.datasource.enableFailedTitle', '数据连接'),
+            {
+              type: "warning",
+              confirmButtonText: td("common.button.confirm"),
+              closeOnClickModal: false,
+              closeOnPressEscape: false,
+              showClose: false,
+            }
+          ).then(() => Promise.reject(error));
+        });
     })
     .catch(function () {
       row.validFlag = !row.validFlag;
     })
     .finally(function () {
-      getList();
+      statusLoadingMap.value[row.id] = false;
+      if (isDatasourcePageActive) {
+        getList();
+      }
     });
 }
 

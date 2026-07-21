@@ -88,10 +88,13 @@ export function getDaDatasource(id) {
 }
 
 // Query data source details
-export function clientsTest(id) {
+export function clientsTest(id, options = {}) {
     return request({
         url: '/da/dataSource/clientsTest/' + id,
-        method: 'get'
+        method: 'get',
+        headers: {
+            hideErrorMessage: options.hideErrorMessage === true
+        }
     });
 }
 
@@ -99,6 +102,15 @@ export function clientsTest(id) {
 export function addDaDatasource(data) {
     return request({
         url: '/da/dataSource',
+        method: 'post',
+        data: data
+    });
+}
+
+// Test datasource connection before creation
+export function testDatasourceConnection(data) {
+    return request({
+        url: '/da/dataSource/testConnection',
         method: 'post',
         data: data
     });
@@ -130,10 +142,13 @@ export function removeDppOrDa(id, type) {
 }
 
 // Modify status
-export function editDatasourceStatus(id, status) {
+export function editDatasourceStatus(id, status, options = {}) {
     return request({
         url: `/da/dataSource/editDatasourceStatus/${id}/${status}`,
-        method: 'get'
+        method: 'get',
+        headers: {
+            hideErrorMessage: options.hideErrorMessage === true
+        }
     });
 }
 

@@ -114,7 +114,7 @@
                     </el-col>
                     <el-col :span="12" v-if="form.taskParams.clmt == '0'">
                         <el-form-item :label="td('dpp.integration.selectTable', '选择表')" prop="taskParams.asset_id"
-                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', '请选择表'), trigger: 'change' }]" :label-position="labelPosition">
+                            required :rules="[{ validator: validateSelectedTable, trigger: 'change' }]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id" filterable @change="handleChange"
                                 :loading="loadingTables">
                                 <el-option v-for="item in TablesByDataSource" :key="item.tableName"
@@ -282,9 +282,11 @@
                 :dateIncrementConfig_dateFormat="form.taskParams.dateIncrementConfig.dateFormat" />
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
+                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="taskParams.where"
+                        :rules="[{ validator: validateWhereRule, trigger: 'change' }]" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.taskParams.where" type="textarea"
-                            :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')" />
+                            :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')"
+                            @input="handleWhereInput" />
                         <div class="form-readonly" v-else>{{ form.taskParams.where || '-' }}</div>
                     </el-form-item>
                 </el-col>
@@ -389,6 +391,7 @@ let dpModelRefs = ref();
 let form = ref({});
 const tableFields = ref([]); // Source form
 const createTypeList = ref([]); // Data source list
+const skipSelectTableValidate = ref(false);
 // Modify the time range to increase
 const open = ref(false);
 let row = ref({});
@@ -432,6 +435,30 @@ const checkInteger = (rule, value, callback) => {
 
     callback()
 }
+const validateSelectedTable = (rule, value, callback) => {
+    if (skipSelectTableValidate.value) {
+        callback();
+        return;
+    }
+    if (value === '' || value === null || value === undefined) {
+        callback(new Error(td('dpp.integration.selectTableRequired', '请选择表')));
+        return;
+    }
+    callback();
+};
+const validateWhereRule = (rule, value, callback) => {
+    const result = validateWhereCondition(value);
+    if (!result.valid) {
+        callback(new Error(result.message));
+        return;
+    }
+    callback();
+};
+const handleWhereInput = () => {
+    nextTick(() => {
+        dpModelRefs.value?.validateField('taskParams.where').catch(() => {});
+    });
+};
 // Get a list of data sources
 const getDatasourceList = async () => {
     try {
@@ -483,25 +510,51 @@ const fetchData = async (requestFn, params, loadingState) => {
     }
 };
 
+const clearSelectedTableConfig = () => {
+    const taskParams = form.value.taskParams;
+    taskParams.asset_id = '';
+    taskParams.table_name = '';
+    taskParams.tableFields = [];
+    taskParams.inputFields = [];
+    taskParams.columns = [];
+    taskParams.columnsList = [];
+    if (taskParams.dateIncrementConfig) {
+        taskParams.dateIncrementConfig.column = [];
+    }
+    if (taskParams.idIncrementConfig) {
+        taskParams.idIncrementConfig.incrementColumn = null;
+    }
+    nextTick(() => {
+        dpModelRefs.value?.clearValidate('taskParams.asset_id');
+    });
+};
+
 // Handle data source changes
 const resetAndFetchTables = async (selectedDatasource) => {
-    TablesByDataSource.value = [];
-    ColumnByAssettab.value = [];
-    let { datasourceType, datasourceConfig, ip, port, id } = selectedDatasource;
-    let code = JSON.parse(datasourceConfig);
-    form.value.taskParams.readerDatasource = {
-        datasourceType,
-        datasourceConfig,
-        ip,
-        port,
-        dbname: code.dbname,
-        datasource_id: id,
-        datasourceId: id
-    };
-    form.value.taskParams.dateIncrementConfig.column = [];
-    form.value.taskParams.idIncrementConfig.incrementColumn = null;
+    skipSelectTableValidate.value = true;
+    try {
+        TablesByDataSource.value = [];
+        ColumnByAssettab.value = [];
+        tableFields.value = [];
+        clearSelectedTableConfig();
+        let { datasourceType, datasourceConfig, ip, port, id } = selectedDatasource;
+        let code = JSON.parse(datasourceConfig);
+        form.value.taskParams.readerDatasource = {
+            datasourceType,
+            datasourceConfig,
+            ip,
+            port,
+            dbname: code.dbname,
+            datasource_id: id,
+            datasourceId: id
+        };
 
-    await getTablesByDatasourceId(id);
+        await getTablesByDatasourceId(id);
+    } finally {
+        await nextTick();
+        dpModelRefs.value?.clearValidate('taskParams.asset_id');
+        skipSelectTableValidate.value = false;
+    }
 };
 
 // Handle data source changes
@@ -629,6 +682,8 @@ const off = () => {
 // save data
 const saveData = async () => {
     try {
+        skipSelectTableValidate.value = false;
+        await nextTick();
         // Asynchronous validation form
         const valid = await dpModelRefs.value.validate();
         if (!valid) return;

@@ -19,6 +19,7 @@
 package tech.qiantong.qdata.common.core.domain;
 
 import tech.qiantong.qdata.common.constant.HttpStatus;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.Serializable;
 
@@ -45,12 +46,14 @@ public class R<T> implements Serializable
 
     public static <T> R<T> ok()
     {
-        return restResult(null, SUCCESS, "操作成功");
+        return restResult(null, SUCCESS, MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"));
     }
 
     public static <T> R<T> ok(T data)
     {
-        return restResult(data, SUCCESS, "操作成功");
+        return restResult(data, SUCCESS, MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"));
     }
 
     public static <T> R<T> ok(T data, String msg)
@@ -60,7 +63,8 @@ public class R<T> implements Serializable
 
     public static <T> R<T> fail()
     {
-        return restResult(null, FAIL, "操作失败");
+        return restResult(null, FAIL, MessageUtils.messageWithFallback(
+                "common.operation.fail", "Operation failed"));
     }
 
     public static <T> R<T> fail(String msg)
@@ -70,7 +74,8 @@ public class R<T> implements Serializable
 
     public static <T> R<T> fail(T data)
     {
-        return restResult(data, FAIL, "操作失败");
+        return restResult(data, FAIL, MessageUtils.messageWithFallback(
+                "common.operation.fail", "Operation failed"));
     }
 
     public static <T> R<T> fail(T data, String msg)

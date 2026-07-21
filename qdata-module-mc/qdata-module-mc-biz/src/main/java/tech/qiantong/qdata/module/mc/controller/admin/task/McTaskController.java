@@ -60,7 +60,7 @@ public class McTaskController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTaskDO> list = (List<McTaskDO>) mcTaskService.getMcTaskPage(exportReqVO).getRows();
         ExcelUtil<McTaskRespVO> util = new ExcelUtil<>(McTaskRespVO.class);
-        util.exportExcel(response, McTaskConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTaskConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入采集任务列表")

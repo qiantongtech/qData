@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * API服务 DTO 对象 DS_API
+ * API service DTO DS_API
  *
  * @author lhs
  * @date 2025-02-12
@@ -43,46 +43,46 @@ public class DsApiReqDTO {
 
     private List<Long> idList;
 
-    /** 类目id */
+    /** Category ID */
     private Long catId;
     private List<String> catIds;
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 类目名称 */
+    /** Category name */
     private String catName;
 
-    /** API服务名称 */
+    /** API service name */
     private String name;
 
-    /** API版本 */
+    /** API version */
     private String apiVersion;
 
-    /** API路径 */
+    /** API path */
     private String apiUrl;
 
-    /** 请求方式 */
+    /** Request method */
     private String reqMethod;
 
-    /** 服务提供类型 */
+    /** Service provider type */
     private String apiServiceType;
 
-    /** 返回结果类型
-     * 1-详情、2-列表、3-分页
+    /** Result type
+     * 1: detail, 2: list, 3: paginated
      * */
     private String resDataType;
 
-    /** IP黑名单多个，隔开 */
+    /** Multiple IP blacklist entries, separated by commas */
     private String denyIp;
 
-    /** 执行配置JSON */
+    /** Execution configuration JSON */
     private String configJson;
 
-    /** 限流配置JSON */
+    /** Rate-limit configuration JSON */
     private String limitJson;
 
     /**
-     *转发类型;1:API 2:地理空间数据'
+     *Forwarding type (1: API, 2: geospatial data)
      */
     private String transmitType;
 
@@ -92,15 +92,15 @@ public class DsApiReqDTO {
     private String apiId;
 
     /**
-     *Header配置json
+     *Header configuration JSON
      */
     private String headerJson;
 
-    /** 请求参数 */
+    /** Request parameters */
     @TableField(value = "REQ_PARAMS", exist = false, typeHandler = JacksonTypeHandler.class)
     private List<ReqParam> reqParamsList;
 
-    /** 返回参数 */
+    /** Response parameters */
     @TableField(value = "RES_PARAMS",exist = false, typeHandler = JacksonTypeHandler.class)
     private List<ResParam> resParamsList;
 
@@ -108,82 +108,82 @@ public class DsApiReqDTO {
 
     private String reqParams;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 
     private ExecuteConfig executeConfig;
 
-    /** 开放属性 */
+    /** Open properties */
     private String openAttribute;
 
-    /** 信息提供方 */
+    /** Information provider */
     private String provider;
 
-    /** 共享类型 */
+    /** Sharing type */
     private String shareType;
 
-    /** 更新周期 */
+    /** Update cycle */
     private String updatePeriod;
 
-    /** 发布时间 */
+    /** Publication time */
     private String createTime;
-    /** 更新时间 */
+    /** Update time */
     private String updateTime;
-    /** 流程状态，0：审批中，1：审批通过，2：审批拒绝，3：审批撤回，4：审批异常 */
+    /** Process status (0: pending approval, 1: approved, 2: rejected, 3: withdrawn, 4: approval error) */
     private String actStatus;
-    /** 流程业务实例id */
+    /** Process business instance ID */
     private String processInstanceId;
 
 
-    /** 被申请次数 */
+    /** Application count */
     private Integer count;
     /**
-     * 是否开启缓存 0:否 1:是
+     * Whether caching is enabled (0: no, 1: yes)
      */
     private String cacheSwitch;
 
-    /** 操作用户 */
+    /** Operator */
     private Long userId;
 
     private List<String> processInstanceIdList;
 
-    /** 申请人id */
+    /** Applicant ID */
     private Long applyId;
 
-    /** 申请人 */
+    /** Applicant */
     private String applyBy;
 
-    /** 申请时间 */
+    /** Application time */
     private Date applyTime;
 
-    /** 申请理由 */
+    /** Application reason */
     private String applyReason;
 
-    /** 有效期类型 */
+    /** Validity period type */
     private String validType;
 
-    /** 时效开始时间 */
+    /** Validity start time */
     private Date validStartTime;
 
-    /** 时效结束时间 */
+    /** Validity end time */
     private Date validEndTime;
 
-    /** 数据权限 */
+    /** Data permissions */
     private String authId;
 
     private String authName;
 
-    //写个方法将resParams、reqParams转换成reqParamsList、resParamsList
+    //Convert resParams and reqParams into reqParamsList and resParamsList.
     public  void setResParamsList() {
         if (this.resParams != null) {
             this.resParamsList = JSONArray.parseArray(this.resParams, ResParam.class);

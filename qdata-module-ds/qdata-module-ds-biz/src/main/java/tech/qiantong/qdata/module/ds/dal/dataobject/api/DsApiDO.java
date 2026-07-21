@@ -31,14 +31,14 @@ import tech.qiantong.qdata.module.ds.dal.dataobject.dto.ResParam;
 import java.util.List;
 
 /**
- * API服务 DO 对象 DS_API
+ * API service DO DS_API
  *
  * @author lhs
  * @date 2025-02-12
  */
 @Data
 @TableName(value = "DS_API")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, and H2; optional for databases such as MySQL.
 // @KeySequence("DS_API_seq")
 @Builder
 @NoArgsConstructor
@@ -51,47 +51,47 @@ public class DsApiDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 类目id */
+    /** Category ID */
     private Long catId;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 类目名称 */
+    /** Category name */
     @TableField(exist = false)
     private String catName;
 
-    /** API服务名称 */
+    /** API service name */
     private String name;
 
-    /** API版本 */
+    /** API version */
     private String apiVersion;
 
-    /** API路径 */
+    /** API path */
     private String apiUrl;
 
-    /** 请求方式 */
+    /** Request method */
     private String reqMethod;
 
-    /** 服务提供类型 */
+    /** Service provider type */
     private String apiServiceType;
 
-    /** 返回结果类型
-     * 1-详情、2-列表、3-分页
+    /** Result type
+     * 1: detail, 2: list, 3: paginated
      * */
     private String resDataType;
 
-    /** IP黑名单多个，隔开 */
+    /** Multiple IP blacklist entries, separated by commas */
     private String denyIp;
 
-    /** 执行配置JSON */
+    /** Execution configuration JSON */
     private String configJson;
 
-    /** 限流配置JSON */
+    /** Rate-limit configuration JSON */
     private String limitJson;
 
     /**
-     *转发类型;1:API 2:地理空间数据'
+     *Forwarding type (1: API, 2: geospatial data)
      */
     private String transmitType;
 
@@ -101,15 +101,15 @@ public class DsApiDO extends BaseEntity {
     private String apiId;
 
     /**
-     *Header配置json
+     *Header configuration JSON
      */
     private String headerJson;
 
-    /** 请求参数 */
+    /** Request parameters */
     @TableField(value = "REQ_PARAMS", exist = false, typeHandler = JacksonTypeHandler.class)
     private List<ReqParam> reqParamsList;
 
-    /** 返回参数 */
+    /** Response parameters */
     @TableField(value = "RES_PARAMS",exist = false, typeHandler = JacksonTypeHandler.class)
     private List<ResParam> resParamsList;
 
@@ -117,16 +117,16 @@ public class DsApiDO extends BaseEntity {
 
     private String reqParams;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 
@@ -136,13 +136,13 @@ public class DsApiDO extends BaseEntity {
 
 
     /**
-     * 是否开启缓存 0:否 1:是
+     * Whether caching is enabled (0: no, 1: yes)
      */
     @TableField(exist = false)
     private String cacheSwitch;
 
 
-    //写个方法将resParams、reqParams转换成reqParamsList、resParamsList
+    //Convert resParams and reqParams into reqParamsList and resParamsList.
     public  void setResParamsList() {
         if (this.resParams != null) {
             this.resParamsList = JSONArray.parseArray(this.resParams, ResParam.class);

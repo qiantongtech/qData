@@ -272,7 +272,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
      * The 14-bit clock sequence value is constructed from the clock_seq field of this UUID. The clock_seq field is used to ensure time uniqueness within a time-based UUID.
      * <p>
      * The {@code clockSequence} value is only meaningful in time-based UUIDs whose version type is 1. If this UUID is not a time-based UUID, this method throws
-     * UnsupportedOperationException。
+     * UnsupportedOperationException.
      *
      * @return the clock sequence for this {@code UUID}
      *

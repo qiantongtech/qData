@@ -76,7 +76,7 @@ public class AttDataElemCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttDataElemCatDO> list = (List<AttDataElemCatDO>) attDataElemCatService.getAttDataElemCatPage(exportReqVO).getRows();
         ExcelUtil<AttDataElemCatRespVO> util = new ExcelUtil<>(AttDataElemCatRespVO.class);
-        util.exportExcel(response, AttDataElemCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttDataElemCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据元类目管理列表")

@@ -114,5 +114,5 @@ dm8:
   # Main library username
   username: QDATA
   # Main database password
-  password: 密码
+  password: password
 

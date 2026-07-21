@@ -33,37 +33,37 @@
      :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.parentCategory', '上级分类')" prop="parentId" :label-position="labelPosition">
+          <el-form-item :label="td('dm.businessCategory.parentCategory', 'Parent Category')" prop="parentId" :label-position="labelPosition">
             <el-tree-select
               filterable
               v-model="form.parentId"
               :data="treeOptions"
               :props="{ value: 'id', label: 'name', children: 'children' }"
               value-key="id"
-              :placeholder="td('dm.businessCategory.parentPlaceholder', '请选择上级')"
+              :placeholder="td('dm.businessCategory.parentPlaceholder', 'Please select parent')"
               check-strictly
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.name', '业务分类名称')" prop="name" :label-position="labelPosition">
-            <el-input v-model="form.name" :placeholder="td('dm.businessCategory.namePlaceholder', '请输入业务分类名称')" />
+          <el-form-item :label="td('dm.businessCategory.name', 'Business Category Name')" prop="name" :label-position="labelPosition">
+            <el-input v-model="form.name" :placeholder="td('dm.businessCategory.namePlaceholder', 'Please enter business category name')" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
+          <el-form-item :label="td('dm.businessCategory.engName', 'English Abbreviation')" prop="engName" :label-position="labelPosition">
             <el-input
               v-model="form.engName"
-              :placeholder="td('dm.businessCategory.engNamePlaceholder', '请输入英文缩写')"
+              :placeholder="td('dm.businessCategory.engNamePlaceholder', 'Please enter English abbreviation')"
               @input="handleEngNameInput"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.dataDomain', '关联数据域')" prop="domainIds" :label-position="labelPosition">
+          <el-form-item :label="td('dm.businessCategory.dataDomain', 'Related Data Domain')" prop="domainIds" :label-position="labelPosition">
             <el-select
               v-model="form.domainIds"
-              :placeholder="td('dm.businessCategory.dataDomainIdsPlaceholder', '请选择关联数据域')"
+              :placeholder="td('dm.businessCategory.dataDomainIdsPlaceholder', 'Please select related data domain')"
               filterable
               clearable
               multiple
@@ -81,11 +81,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.ownerId', '负责人')" prop="ownerId" :label-position="labelPosition">
+          <el-form-item :label="td('dm.businessCategory.ownerId', 'Responsible Person')" prop="ownerId" :label-position="labelPosition">
             <el-select
               v-model="form.ownerId"
               filterable
-              :placeholder="td('dm.businessCategory.ownerIdPlaceholder', '请选择负责人')"
+              :placeholder="td('dm.businessCategory.ownerIdPlaceholder', 'Please select responsible person')"
               style="width: 100%"
               @change="handleContactChange"
             >
@@ -99,10 +99,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item :label="td('dm.businessCategory.ownerPhone', '负责人电话')" prop="ownerPhone" :label-position="labelPosition">
+          <el-form-item :label="td('dm.businessCategory.ownerPhone', 'Responsible Person Phone')" prop="ownerPhone" :label-position="labelPosition">
             <el-input
               v-model="form.ownerPhone"
-              :placeholder="td('dm.businessCategory.ownerPhonePlaceholder', '请输入负责人电话')"
+              :placeholder="td('dm.businessCategory.ownerPhonePlaceholder', 'Please enter responsible person phone')"
               disabled
             />
           </el-form-item>
@@ -110,20 +110,20 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.status', '状态')" prop="validFlag" :label-position="labelPosition">
-            <el-radio v-model="form.validFlag" :label="false">{{ td('dm.businessCategory.disableText', '禁用') }}</el-radio>
-            <el-radio v-model="form.validFlag" :label="true">{{ td('dm.businessCategory.enableText', '启用') }}</el-radio>
+          <el-form-item :label="td('common.texts.status', 'Status')" prop="validFlag" :label-position="labelPosition">
+            <el-radio v-model="form.validFlag" :label="false">{{ td('dm.businessCategory.disableText', 'Disable') }}</el-radio>
+            <el-radio v-model="form.validFlag" :label="true">{{ td('dm.businessCategory.enableText', 'Enable') }}</el-radio>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+          <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"
               show-word-limit
-              :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
+              :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
               v-model="form.description"
               :rows="3"
             />
@@ -132,12 +132,12 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
+          <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
             <el-input
               type="textarea"
               maxlength="500"
               show-word-limit
-              :placeholder="td('common.form.remarkPlaceholder', '请输入备注')"
+              :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
               v-model="form.remark"
               :rows="3"
             />
@@ -147,9 +147,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="onCancel">{{ td('common.button.cancel', '取消') }}</el-button>
+        <el-button @click="onCancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
         <el-button type="primary" @click="onSubmit" :loading="loading"
-          >{{ td('common.button.confirm', '确定') }}</el-button
+          >{{ td('common.button.confirm', 'Confirm') }}</el-button
         >
       </div>
     </template>
@@ -200,17 +200,17 @@ const form = ref({ ...defaultForm });
 
 // Default validation rules
 const defaultRules = {
-  name: [{ required: true, message: td('dm.businessCategory.nameRequired', '业务分类名称不能为空'), trigger: "blur" }],
+  name: [{ required: true, message: td('dm.businessCategory.nameRequired', 'Business category name cannot be empty'), trigger: "blur" }],
   engName: [
-    { required: true, message: td('dm.businessCategory.engNameRequired', '英文缩写不能为空'), trigger: "blur" },
-    { pattern: /^[a-zA-Z]+$/, message: td('dm.dataDomain.englishOnly', '只能输入英文字符'), trigger: "blur" },
+    { required: true, message: td('dm.businessCategory.engNameRequired', 'English abbreviation cannot be empty'), trigger: "blur" },
+    { pattern: /^[a-zA-Z]+$/, message: td('dm.dataDomain.englishOnly', 'Only English characters are allowed'), trigger: "blur" },
   ],
-  parentId: [{ required: true, message: td('dm.businessCategory.categoryEmpty', '上级分类不能为空'), trigger: "blur" }],
+  parentId: [{ required: true, message: td('dm.businessCategory.categoryEmpty', 'Parent category cannot be empty'), trigger: "blur" }],
   domainIds: [
     {
       required: true,
       type: "array",
-      message: td('dm.businessCategory.dataDomainRequired', '请选择关联数据域'),
+      message: td('dm.businessCategory.dataDomainRequired', 'Please select related data domain'),
       trigger: "change",
     },
   ],
@@ -274,7 +274,7 @@ const processTreeData = (excludeId) => {
   treeOptions.value = [
     {
       id: 0,
-      name: td('common.texts.topNode', '顶级节点'),
+      name: td('common.texts.topNode', 'Top Node'),
       children: proxy.handleTree(rows, "id", "parentId"),
     },
   ];
@@ -292,7 +292,7 @@ const getTreeData = (excludeId) => {
  * @param {Object} options configuration items
  */
 const open = (options = {}) => {
-  title.value = options.title || td('dm.common.edit', '修改');
+  title.value = options.title || td('dm.common.edit', 'Edit');
   customRules.value = options.rules || null;
 
   // 1. Obtain the associated data fields (reacquire each time it is opened and in reverse chronological order)

@@ -64,7 +64,7 @@ public class IDpModelColumnServiceTest {
         DpModelColumnSaveReqVO case1 = new DpModelColumnSaveReqVO();
         case1.setModelId(1001L);
         case1.setEngName("column_name_1");
-        case1.setCnName("字段名称1");
+        case1.setCnName("Field Name 1");
         case1.setColumnType("VARCHAR");
         case1.setColumnLength(255L);
         case1.setColumnScale(null);
@@ -80,14 +80,14 @@ public class IDpModelColumnServiceTest {
         case1.setUpdatorId(102L);
         case1.setUpdateBy("editor");
         case1.setUpdateTime(new Date());
-        case1.setRemark("测试用例 1");
+        case1.setRemark("Test Case 1");
         dpModelColumnList.add(case1);
 
         // Use Case 2: Integer and Default Value Testing
         DpModelColumnSaveReqVO case2 = new DpModelColumnSaveReqVO();
         case2.setModelId(1002L);
         case2.setEngName("column_name_2");
-        case2.setCnName("字段名称2");
+        case2.setCnName("Field Name 2");
         case2.setColumnType("INTEGER");
         case2.setColumnLength(10L);
         case2.setColumnScale(null);
@@ -103,14 +103,14 @@ public class IDpModelColumnServiceTest {
         case2.setUpdatorId(null);
         case2.setUpdateBy(null);
         case2.setUpdateTime(null);
-        case2.setRemark("测试用例 2");
+        case2.setRemark("Test Case 2");
         dpModelColumnList.add(case2);
 
         // Use case 3: Decimal type testing
         DpModelColumnSaveReqVO case3 = new DpModelColumnSaveReqVO();
         case3.setModelId(1003L);
         case3.setEngName("column_name_3");
-        case3.setCnName("字段名称3");
+        case3.setCnName("Field Name 3");
         case3.setColumnType("DECIMAL");
         case3.setColumnLength(18L);
         case3.setColumnScale(2L);
@@ -126,7 +126,7 @@ public class IDpModelColumnServiceTest {
         case3.setUpdatorId(104L);
         case3.setUpdateBy("hr_admin");
         case3.setUpdateTime(new Date());
-        case3.setRemark("测试用例 3");
+        case3.setRemark("Test Case 3");
         dpModelColumnList.add(case3);
         return dpModelColumnList;
     }

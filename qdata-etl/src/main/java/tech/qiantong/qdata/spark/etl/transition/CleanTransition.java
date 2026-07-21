@@ -599,10 +599,10 @@ public class CleanTransition implements Transition {
      */
     private Dataset<Row> applyDateFormatStd(Dataset<Row> dataset, JSONObject cfg) {
 
-        System.out.println("序列填充后的字段结构：");
+        System.out.println("Field schema after sequence filling: ");
         dataset.printSchema();
 
-        System.out.println("前10条数据：");
+        System.out.println("First 10 rows: ");
         dataset.show(10, false);
 
         String colName = cfg.getJSONArray("columns").getString(0);
@@ -694,10 +694,10 @@ public class CleanTransition implements Transition {
         }
         dataset = dataset.withColumn(colName, outCol);
 
-        System.out.println("序列填充后的字段结构：");
+        System.out.println("Field schema after sequence filling: ");
         dataset.printSchema();
 
-        System.out.println("前10条数据：");
+        System.out.println("First 10 rows: ");
         dataset.show(10, false);
 
         return dataset;

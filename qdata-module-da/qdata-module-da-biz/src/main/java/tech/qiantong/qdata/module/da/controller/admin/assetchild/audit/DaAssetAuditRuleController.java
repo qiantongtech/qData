@@ -77,7 +77,7 @@ public class DaAssetAuditRuleController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetAuditRuleDO> list = (List<DaAssetAuditRuleDO>) daAssetAuditRuleService.getDaAssetAuditRulePage(exportReqVO).getRows();
         ExcelUtil<DaAssetAuditRuleRespVO> util = new ExcelUtil<>(DaAssetAuditRuleRespVO.class);
-        util.exportExcel(response, DaAssetAuditRuleConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetAuditRuleConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产质量结果记录列表")

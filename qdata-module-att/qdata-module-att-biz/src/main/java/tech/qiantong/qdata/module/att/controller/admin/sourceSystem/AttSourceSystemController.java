@@ -85,7 +85,7 @@ public class AttSourceSystemController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttSourceSystemDO> list = (List<AttSourceSystemDO>) attSourceSystemService.getAttSourceSystemPage(exportReqVO).getRows();
         ExcelUtil<AttSourceSystemRespVO> util = new ExcelUtil<>(AttSourceSystemRespVO.class);
-        util.exportExcel(response, AttSourceSystemConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttSourceSystemConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入来源系统列表")

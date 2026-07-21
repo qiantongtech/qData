@@ -298,7 +298,7 @@ function handleDownloadClick(row) {
     const content = res.data?.logContent || td("common.noLog");
     const taskName = row.name || 'task';
     const instanceId = String(row.id).replace(/[^\w\-]/g, '_');
-    const fileName = td('mc.instance.structured.logFileName', "{name}_{id}_日志.log", {name: taskName, id: instanceId});
+    const fileName = td('mc.instance.structured.logFileName', "{name}_{id}_log.log", {name: taskName, id: instanceId});
     proxy.downloadContent(content, fileName);
   });
 }

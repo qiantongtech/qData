@@ -30,7 +30,7 @@
     <artifactId>qdata-etl</artifactId>
 
     <description>
-        etl入口
+        ETL service entry point
     </description>
 
     <dependencies>

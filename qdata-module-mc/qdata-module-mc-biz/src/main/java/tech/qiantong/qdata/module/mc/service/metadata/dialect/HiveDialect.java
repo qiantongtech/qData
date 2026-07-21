@@ -23,7 +23,7 @@ public class HiveDialect implements DatabaseDialect {
             // Hive uses HDFS storage, return Hive here
             return "Hive";
         } catch (Exception e) {
-            log.error("获取Hive存储引擎失败", e);
+            log.error("Failed to get the Hive storage engine", e);
             return null;
         }
     }
@@ -46,7 +46,7 @@ public class HiveDialect implements DatabaseDialect {
     @Override
     public boolean isColumnAutoIncrement(McDbDO mcDbDO, String tableName, String columnName) {
         // Hive does not support auto-increment fields and returns false directly.
-        log.info("Hive不支持自增字段");
+        log.info("Hive does not support auto-increment columns");
         return false;
     }
 
@@ -66,7 +66,7 @@ public class HiveDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }
@@ -86,7 +86,7 @@ public class HiveDialect implements DatabaseDialect {
         try {
             password = AesEncryptUtil.desEncrypt(password).trim();
         } catch (Exception e) {
-            log.error("解密密码失败", e);
+            log.error("Failed to decrypt password", e);
             return null;
         }
 
@@ -142,7 +142,7 @@ public class HiveDialect implements DatabaseDialect {
                 dbMetadata.setStorageSize((int) (totalSizeBytes / 1024.0 / 1024.0));
             }
         } catch (Exception e) {
-            log.error("批量获取Hive数据库元数据失败", e);
+            log.error("Failed to fetch Hive database metadata in batch", e);
         }
         return dbMetadata;
     }
@@ -220,7 +220,7 @@ public class HiveDialect implements DatabaseDialect {
                         return outputFormat.format(date);
                     } catch (Exception e) {
                         // Parsing failed; return the original time
-                        log.error("时间转换失败：{}", e.getMessage());
+                        log.error("Time conversion failed: {}", e.getMessage());
                         return originalTime;
                     }
                 }
@@ -287,7 +287,7 @@ public class HiveDialect implements DatabaseDialect {
                         }
                     }
                 }catch (SQLException e) {
-                    log.warn("非hive分区表: {}", e.getMessage());
+                    log.warn("Not a Hive partitioned table: {}", e.getMessage());
                     metadata.setPartitionFields("");
                 }
 
@@ -306,7 +306,7 @@ public class HiveDialect implements DatabaseDialect {
                                 // Convert to MB to two decimal places
                                 metadata.setTableSize(size);
                             } catch (NumberFormatException e) {
-                                log.warn("解析Hive表存储大小失败: {}", sizeStr);
+                                log.warn("Failed to parse Hive table storage size: {}", sizeStr);
                             }
                             break;
                         }
@@ -338,7 +338,7 @@ public class HiveDialect implements DatabaseDialect {
                                 createTime = outputFormat.format(date);
                             } catch (Exception e) {
                                 // Parsing failed; return the original time
-                                log.error("时间转换失败：{}", e.getMessage());
+                                log.error("Time conversion failed: {}", e.getMessage());
                             }
                         }
                     }
@@ -366,12 +366,12 @@ public class HiveDialect implements DatabaseDialect {
                         metadata.setStorageEngine("Hive");
                     }
                 } catch (SQLException e) {
-                    log.warn("获取Hive表创建时间和存储引擎失败: {}", e.getMessage());
+                    log.warn("Failed to get Hive table creation time and storage engine: {}", e.getMessage());
                     metadata.setStorageEngine("Hive");
                 }
             }
         } catch (Exception e) {
-            log.error("批量获取Hive表元数据失败", e);
+            log.error("Failed to fetch Hive table metadata in batch", e);
         }
         return metadata;
     }
@@ -413,7 +413,7 @@ public class HiveDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("批量获取Hive字段元数据失败", e);
+            log.error("Failed to fetch Hive column metadata in batch", e);
         }
         return metadata;
     }

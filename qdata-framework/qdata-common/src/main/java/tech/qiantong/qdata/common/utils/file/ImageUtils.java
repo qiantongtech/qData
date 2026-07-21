@@ -50,7 +50,7 @@ public class ImageUtils
         }
         catch (Exception e)
         {
-            log.error("图片加载异常 {}", e);
+            log.error("Failed to load image {}", e);
             return null;
         }
         finally
@@ -69,7 +69,7 @@ public class ImageUtils
         }
         catch (Exception e)
         {
-            log.error("获取图片异常 {}", e);
+            log.error("Failed to get image {}", e);
         }
         return null;
     }
@@ -106,7 +106,7 @@ public class ImageUtils
         }
         catch (Exception e)
         {
-            log.error("获取文件路径异常 {}", e);
+            log.error("Failed to get file path {}", e);
             return null;
         }
         finally

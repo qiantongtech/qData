@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McDbDO;
 
 import java.sql.Connection;
@@ -42,7 +43,7 @@ public class MySqlDialect implements DatabaseDialect {
                 return "InnoDB";
             }
         } catch (Exception e) {
-            log.error("获取MySQL存储引擎失败", e);
+            log.error("Failed to get the MySQL storage engine", e);
             return null;
         }
     }
@@ -83,7 +84,7 @@ public class MySqlDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }
@@ -103,7 +104,7 @@ public class MySqlDialect implements DatabaseDialect {
         try {
             password = AesEncryptUtil.desEncrypt(password).trim();
         } catch (Exception e) {
-            log.error("解密密码失败", e);
+            log.error("Failed to decrypt password", e);
             return null;
         }
 
@@ -146,7 +147,8 @@ public class MySqlDialect implements DatabaseDialect {
     private Connection getConnection(McDbDO mcDbDO) throws Exception {
         HikariDataSource dataSource = buildDataSource(mcDbDO);
         if (dataSource == null) {
-            throw new Exception("获取数据源失败");
+            throw new Exception(MessageUtils.messageWithFallback(
+                    "mc.error.datasource.get.fail", "Failed to get data source"));
         }
         return dataSource.getConnection();
     }
@@ -254,7 +256,7 @@ public class MySqlDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL表元数据失败", e);
+            log.error("Failed to fetch MySQL table metadata in batch", e);
         }
         return metadata;
     }
@@ -287,7 +289,7 @@ public class MySqlDialect implements DatabaseDialect {
                 metadata.setUnique(isUnique);
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL字段元数据失败", e);
+            log.error("Failed to fetch MySQL column metadata in batch", e);
         }
         return metadata;
     }
@@ -312,7 +314,7 @@ public class MySqlDialect implements DatabaseDialect {
 
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL数据库元数据失败", e);
+            log.error("Failed to fetch MySQL database metadata in batch", e);
         }
         return dbMetadata;
     }

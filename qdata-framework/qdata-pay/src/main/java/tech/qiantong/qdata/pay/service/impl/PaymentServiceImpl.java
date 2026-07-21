@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import tech.qiantong.qdata.pay.domain.*;
 import tech.qiantong.qdata.pay.service.PayGatewayClient;
 import tech.qiantong.qdata.pay.service.PaymentService;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -44,7 +45,9 @@ public class PaymentServiceImpl implements PaymentService {
         } else if (request.getPaymentType() == PaymentType.WECHAT) {
             return wechatPayClient.initiatePayment(request);
         } else {
-            throw new UnsupportedOperationException("不支持的支付类型: " + request.getPaymentType());
+            throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                    "sys.error.payment.type.unsupported", "Unsupported payment type: {0}",
+                    request.getPaymentType()));
         }
     }
 
@@ -56,7 +59,9 @@ public class PaymentServiceImpl implements PaymentService {
         } else if (request.getPaymentType() == PaymentType.WECHAT) {
             return wechatPayClient.refund(request);
         } else {
-            throw new UnsupportedOperationException("不支持的支付类型: " + request.getPaymentType());
+            throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                    "sys.error.payment.type.unsupported", "Unsupported payment type: {0}",
+                    request.getPaymentType()));
         }
     }
 
@@ -68,7 +73,8 @@ public class PaymentServiceImpl implements PaymentService {
         } else if (paymentId.startsWith("WECHAT")) {
             return wechatPayClient.queryStatus(paymentId);
         } else {
-            throw new UnsupportedOperationException("不支持的支付ID类型: " + paymentId);
+            throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                    "sys.error.payment.id.type.unsupported", "Unsupported payment ID type: {0}", paymentId));
         }
     }
 }

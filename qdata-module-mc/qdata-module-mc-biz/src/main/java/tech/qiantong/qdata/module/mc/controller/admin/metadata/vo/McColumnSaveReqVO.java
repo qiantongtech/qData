@@ -180,8 +180,10 @@ public class McColumnSaveReqVO extends BaseEntity {
                     new BigInteger(defaultValue);
                 }
             } catch (NumberFormatException e) {
-                log.error("默认值非法", e);
-                throw new ServiceException("字段" + columnName + "的默认值[" + defaultValue + "]是非法的" + columnType + "字段类型");
+                log.error("Invalid default value", e);
+                throw new ServiceException("mc.error.column.default.invalid",
+                        "Default value [{1}] of field {0} is invalid for column type {2}",
+                        columnName, defaultValue, columnType);
             }
         }
     }

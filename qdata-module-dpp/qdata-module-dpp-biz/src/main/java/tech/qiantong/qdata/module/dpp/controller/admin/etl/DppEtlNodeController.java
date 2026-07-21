@@ -77,7 +77,7 @@ public class DppEtlNodeController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEtlNodeDO> list = (List<DppEtlNodeDO>) dppEtlNodeService.getDppEtlNodePage(exportReqVO).getRows();
         ExcelUtil<DppEtlNodeRespVO> util = new ExcelUtil<>(DppEtlNodeRespVO.class);
-        util.exportExcel(response, DppEtlNodeConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEtlNodeConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成节点列表")

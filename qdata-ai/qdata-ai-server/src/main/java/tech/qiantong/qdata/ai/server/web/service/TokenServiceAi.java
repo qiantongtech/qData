@@ -95,7 +95,7 @@ public class TokenServiceAi {
             }
             catch (Exception e)
             {
-                log.error("获取用户信息异常'{}'", e.getMessage());
+                log.error("Failed to get user information: '{}'", e.getMessage());
             }
         }
         return null;

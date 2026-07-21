@@ -10,7 +10,7 @@
 
     <name>qdata</name>
     <url>https://qiantong.tech</url>
-    <description>qData开源版</description>
+    <description>qData Open Source Edition</description>
 
     <properties>
         <qdata.version>1.6.0</qdata.version>

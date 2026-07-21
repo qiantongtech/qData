@@ -160,16 +160,16 @@ public class FlinkxJson {
     }
 
     /**
-     * 从节点列表里找到指定组件类型的节点。
-     * 本地 DataX 一期只认数据库输入和数据库输出，所以这里只按组件类型查。
+     * Finds a node of the specified component type in the node list.
+     * The initial local DataX implementation supports only database input and output, so lookup uses component type only.
      */
     public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
         for (DppEtlNodeRespVO node : nodeList) {
-            // 节点为空时跳过，避免脏数据导致空指针。
+            // Skip null nodes to prevent invalid data from causing a null pointer exception.
             if (node == null) {
                 continue;
             }
-            // 组件类型匹配时，这个节点就是我们要找的 reader 或 writer。
+            // A matching component type identifies the required reader or writer node.
             if (StringUtils.equals(componentType, node.getComponentType())) {
                 return node;
             }

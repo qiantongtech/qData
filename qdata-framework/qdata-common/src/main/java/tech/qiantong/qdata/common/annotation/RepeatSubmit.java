@@ -40,5 +40,10 @@ public @interface RepeatSubmit
     /**
      * Prompt message
      */
-    public String message() default "不允许重复提交，请稍候再试";
+    public String message() default "Duplicate submissions are not allowed; please try again later";
+
+    /**
+     * Internationalization message key
+     */
+    public String messageCode() default "sys.error.repeat.submit";
 }

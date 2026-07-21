@@ -21,6 +21,7 @@ package tech.qiantong.qdata.common.httpClient;
 import cn.hutool.core.io.FileUtil;
 import lombok.Getter;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -57,7 +58,8 @@ public class HttpTaskLogger {
     // Constructor that accepts folder path and file name as parameters
     public HttpTaskLogger(String folderPath, String fileName) {
         if(StringUtils.isBlank(folderPath) || StringUtils.isBlank(fileName)){
-            throw  new RuntimeException("路径、文件名 都不能为空");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.log.path.filename.empty", "Path and file name cannot be empty"));
         }
         // Initialize folder path
         this.folderPath = folderPath;

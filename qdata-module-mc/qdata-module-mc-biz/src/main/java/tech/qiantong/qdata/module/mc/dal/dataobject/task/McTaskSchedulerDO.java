@@ -37,10 +37,10 @@ public class McTaskSchedulerDO extends BaseEntity {
     /** DolphinScheduler task encoding (for API calls) */
     private String taskCode;
 
-    /** 调度引擎 */
+    /** Scheduling engine */
     private String taskScheduler;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
     /** End time */

@@ -47,10 +47,10 @@ public class McTaskReqDTO {
     /** Task status */
     private String status;
 
-    /** 调度器 */
+    /** Scheduler */
     private String scheduler;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /** Delete flag */

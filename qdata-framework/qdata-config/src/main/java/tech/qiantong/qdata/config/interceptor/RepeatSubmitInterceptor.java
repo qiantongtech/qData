@@ -24,6 +24,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import tech.qiantong.qdata.common.annotation.RepeatSubmit;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.ServletUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +51,9 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
             {
                 if (this.isRepeatSubmit(request, annotation))
                 {
-                    AjaxResult ajaxResult = AjaxResult.error(annotation.message());
+                    String message = MessageUtils.messageWithFallback(
+                            annotation.messageCode(), annotation.message());
+                    AjaxResult ajaxResult = AjaxResult.error(message);
                     ServletUtils.renderString(response, JSON.toJSONString(ajaxResult));
                     return false;
                 }

@@ -30,7 +30,7 @@
     <artifactId>qdata-module-dg-api</artifactId>
 
     <description>
-        qdata-module-dg-api系统模块
+        qdata-module-dg-api system module
     </description>
 
     <dependencies>

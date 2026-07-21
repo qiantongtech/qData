@@ -75,7 +75,7 @@ public class ChatModelServiceImpl implements IChatModelService {
             case TONG_YI -> chatModel = this.getDashScopeChatModel(baseUrl, apiKey, modelName);
             case OLLAMA -> chatModel = this.getOllamaChatModel(baseUrl, modelName);
             case DEEP_SEEK -> chatModel = this.getDeepSeekChatModel(apiKey, modelName);
-            default -> throw new ServiceException("ai.error.platform.unsupported", "暂时不支持该平台");
+            default -> throw new ServiceException("ai.error.platform.unsupported", "This platform is not currently supported");
         }
         return chatModel;
     }
@@ -99,7 +99,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private OpenAiChatModel getOpenAiChatModel(String baseUrl, String apiKey, String modelName) {
         if (StrUtil.hasBlank(baseUrl, apiKey, modelName)) {
-            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "Required fields cannot be empty");
         }
         return OpenAiChatModel.builder()
                 .openAiApi(OpenAiApi.builder().baseUrl(baseUrl).apiKey(apiKey).build())
@@ -118,7 +118,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private DashScopeChatModel getDashScopeChatModel(String baseUrl, String apiKey, String modelName) {
         if (StrUtil.hasBlank(apiKey, modelName)) {
-            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "Required fields cannot be empty");
         }
         return DashScopeChatModel.builder()
                 .dashScopeApi(DashScopeApi.builder().apiKey(apiKey).build())
@@ -135,7 +135,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private OllamaChatModel getOllamaChatModel(String baseUrl, String modelName) {
         if (StrUtil.hasBlank(baseUrl, modelName)) {
-            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "Required fields cannot be empty");
         }
         return OllamaChatModel.builder()
                 .ollamaApi(OllamaApi.builder().baseUrl(baseUrl).build())
@@ -152,7 +152,7 @@ public class ChatModelServiceImpl implements IChatModelService {
      */
     private DeepSeekChatModel getDeepSeekChatModel(String apiKey, String modelName) {
         if (StrUtil.hasBlank(apiKey, modelName)) {
-            throw new ServiceException("ai.error.field.required", "必要字段不能为空");
+            throw new ServiceException("ai.error.field.required", "Required fields cannot be empty");
         }
         return DeepSeekChatModel.builder()
                 .deepSeekApi(DeepSeekApi.builder().apiKey(apiKey).build())

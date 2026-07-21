@@ -55,6 +55,7 @@ export default {
     nextStep: '次へ',
     previousStep: '前へ',
     query: '検索',
+    search: '検索',
     refresh: '更新',
     reset: 'リセット',
     return: '戻る',

@@ -76,7 +76,7 @@ public class DpDataElemAssetRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpDataElemAssetRelDO> list = (List<DpDataElemAssetRelDO>) dpDataElemAssetRelService.getDpDataElemAssetRelPage(exportReqVO).getRows();
         ExcelUtil<DpDataElemAssetRelRespVO> util = new ExcelUtil<>(DpDataElemAssetRelRespVO.class);
-        util.exportExcel(response, DpDataElemAssetRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpDataElemAssetRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据元数据资产关联信息列表")

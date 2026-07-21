@@ -30,11 +30,11 @@
     <artifactId>qdata-module-dpp-api</artifactId>
 
     <description>
-        qdata-module-dpp-api系统模块
+        qdata-module-dpp-api system module
     </description>
 
     <dependencies>
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

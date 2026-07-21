@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 import tech.qiantong.qdata.common.exception.ErrorCode;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -76,7 +77,9 @@ public class CommonResult<T> implements Serializable {
     }
 
     public static <T> CommonResult<T> error(Integer code, String message) {
-        Assert.isTrue(!GlobalErrorCodeConstants.SUCCESS.getCode().equals(code), "code 必须是错误的！");
+        Assert.isTrue(!GlobalErrorCodeConstants.SUCCESS.getCode().equals(code),
+                MessageUtils.messageWithFallback("common.error.code.must.error",
+                        "Code must represent an error"));
         CommonResult<T> result = new CommonResult<>();
         result.code = code;
         result.msg = message;

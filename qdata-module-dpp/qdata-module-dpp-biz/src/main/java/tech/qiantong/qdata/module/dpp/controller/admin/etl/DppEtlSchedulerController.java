@@ -77,7 +77,7 @@ public class DppEtlSchedulerController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEtlSchedulerDO> list = (List<DppEtlSchedulerDO>) dppEtlSchedulerService.getDppEtlSchedulerPage(exportReqVO).getRows();
         ExcelUtil<DppEtlSchedulerRespVO> util = new ExcelUtil<>(DppEtlSchedulerRespVO.class);
-        util.exportExcel(response, DppEtlSchedulerConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEtlSchedulerConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成调度信息列表")

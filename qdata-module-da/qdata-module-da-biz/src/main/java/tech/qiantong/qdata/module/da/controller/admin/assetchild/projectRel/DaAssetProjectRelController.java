@@ -77,7 +77,7 @@ public class DaAssetProjectRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetProjectRelDO> list = (List<DaAssetProjectRelDO>) daAssetProjectRelService.getDaAssetProjectRelPage(exportReqVO).getRows();
         ExcelUtil<DaAssetProjectRelRespVO> util = new ExcelUtil<>(DaAssetProjectRelRespVO.class);
-        util.exportExcel(response, DaAssetProjectRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetProjectRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产与项目关联关系列表")

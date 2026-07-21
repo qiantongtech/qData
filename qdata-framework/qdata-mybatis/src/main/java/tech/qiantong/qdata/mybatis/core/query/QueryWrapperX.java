@@ -165,7 +165,7 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
      * @return this
      */
     public QueryWrapperX<T> limitN(int n) {
-        Assert.notNull(SqlConstants.DB_TYPE, "获取不到数据库的类型");
+        Assert.notNull(SqlConstants.DB_TYPE, "Unable to determine the database type");
         switch (SqlConstants.DB_TYPE) {
             case ORACLE:
             case ORACLE_12C:

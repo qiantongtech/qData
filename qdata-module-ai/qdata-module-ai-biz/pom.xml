@@ -12,7 +12,7 @@
     <artifactId>qdata-module-ai-biz</artifactId>
 
     <description>
-        qdata-module-ai-biz模块
+        qdata-module-ai-biz module
     </description>
     <dependencies>
         <!-- Core module config-->

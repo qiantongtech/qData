@@ -30,7 +30,7 @@
     <artifactId>qdata-module-att-biz</artifactId>
 
     <description>
-        system系统模块
+        System module
     </description>
 
     <dependencies>

@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="taskId"    column="TASK_ID"    />
         <result property="jobId"    column="JOB_ID"    />
         <result property="taskCode"    column="TASK_CODE"    />
-        <!-- TASK_SCHEDULER 是隐藏执行引擎：Quartz 保存 DATAX，DS 保存 SPARK。 -->
+        <!-- TASK_SCHEDULER stores the hidden execution engine: Quartz uses DATAX and DS uses SPARK. -->
         <result property="taskScheduler"    column="TASK_SCHEDULER"    />
         <result property="startTime"    column="START_TIME"    />
         <result property="endTime"    column="END_TIME"    />

@@ -59,13 +59,15 @@ public enum ParamType {
                 try {
                     return (java.lang.String)obj;
                 } catch (Exception e) {
-                    throw new ServiceException("参数值[" + obj + "]不是" + String.getVal() + "数据类型]");
+                    throw new ServiceException("sys.error.param.type.mismatch",
+                            "Parameter value [{0}] is not of type {1}", obj, String.getVal());
                 }
             case Float:
                 try {
                     return new BigDecimal(obj.toString()).doubleValue();
                 } catch (Exception e) {
-                    throw new ServiceException("参数值[" + obj + "]不是" + Float.getVal() + "数据类型]");
+                    throw new ServiceException("sys.error.param.type.mismatch",
+                            "Parameter value [{0}] is not of type {1}", obj, Float.getVal());
                 }
             case Integer:
                 try {
@@ -73,13 +75,15 @@ public enum ParamType {
                         return new Integer(obj.toString());
                     }
                 } catch (Exception e) {
-                    throw new ServiceException("参数值[" + obj + "]不是" + Integer.getVal() + "数据类型]");
+                    throw new ServiceException("sys.error.param.type.mismatch",
+                            "Parameter value [{0}] is not of type {1}", obj, Integer.getVal());
                 }
             case List:
                 try {
                     return (java.util.List<?>)obj;
                 } catch (Exception e) {
-                    throw new ServiceException("参数值[" + obj + "]不是" + List.getVal() + "数据类型]");
+                    throw new ServiceException("sys.error.param.type.mismatch",
+                            "Parameter value [{0}] is not of type {1}", obj, List.getVal());
                 }
             case Date:
                 try {
@@ -88,7 +92,8 @@ public enum ParamType {
                     try {
                         return DateUtil.parse(obj.toString(), "yyyy-MM-dd");
                     } catch (Exception ex) {
-                        throw new ServiceException("参数值[" + obj + "]不是" + Date.getVal() + "数据类型]");
+                        throw new ServiceException("sys.error.param.type.mismatch",
+                                "Parameter value [{0}] is not of type {1}", obj, Date.getVal());
                     }
                 }
         }

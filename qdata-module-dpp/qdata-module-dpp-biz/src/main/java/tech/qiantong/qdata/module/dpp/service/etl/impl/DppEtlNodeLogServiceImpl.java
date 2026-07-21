@@ -150,7 +150,7 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
     @Override
     public String importDppEtlNodeLog(List<DppEtlNodeLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -169,16 +169,16 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
                             dppEtlNodeLogMapper.updateById(dppEtlNodeLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                    "数据更新成功，ID为 " + dppEtlNodeLogId + " 的数据集成节点-日志记录。", dppEtlNodeLogId, "数据集成节点-日志"));
+                                    "Data update successful, ID {0} {1} record.", dppEtlNodeLogId, MessageUtils.messageWithFallback("dpp.entity.etl.node.log", "Data integration node log")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                    "数据更新失败，ID为 " + dppEtlNodeLogId + " 的数据集成节点-日志记录不存在。", dppEtlNodeLogId, "数据集成节点-日志"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dppEtlNodeLogId, MessageUtils.messageWithFallback("dpp.entity.etl.node.log", "Data integration node log")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DppEtlNodeLogDO> queryWrapper = new QueryWrapper<>();
@@ -188,17 +188,17 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
                         dppEtlNodeLogMapper.insert(dppEtlNodeLogDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                "数据插入成功，ID为 " + dppEtlNodeLogId + " 的数据集成节点-日志记录。", dppEtlNodeLogId, "数据集成节点-日志"));
+                                "Data insert successful, ID {0} {1} record.", dppEtlNodeLogId, MessageUtils.messageWithFallback("dpp.entity.etl.node.log", "Data integration node log")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                "数据插入失败，ID为 " + dppEtlNodeLogId + " 的数据集成节点-日志记录已存在。", dppEtlNodeLogId, "数据集成节点-日志"));
+                                "Data insert failed, ID {0} {1} record already exists.", dppEtlNodeLogId, MessageUtils.messageWithFallback("dpp.entity.etl.node.log", "Data integration node log")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -207,12 +207,12 @@ public class DppEtlNodeLogServiceImpl extends ServiceImpl<DppEtlNodeLogMapper, D
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

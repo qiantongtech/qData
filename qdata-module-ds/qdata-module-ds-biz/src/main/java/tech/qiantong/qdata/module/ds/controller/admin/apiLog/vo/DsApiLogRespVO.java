@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * API服务调用日志 Response VO 对象 DS_API_LOG
+ * API service call log Response VO DS_API_LOG
  *
  * @author lhs
  * @date 2025-02-12

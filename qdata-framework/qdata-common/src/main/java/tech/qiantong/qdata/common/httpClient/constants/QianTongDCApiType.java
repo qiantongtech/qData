@@ -82,7 +82,7 @@ public enum QianTongDCApiType {
      */
     DELETE_PROCESS_DEFINITION_VERSION("11", "删除流程历史版本接口", "/projects/{projectCode}/process-definition/{code}/versions/{version}", "DELETE"),
 
-    //Project related interface starts》》》》》》》》》
+    // Project-related interfaces start
 
     /**
      * Query project information interface through project ID
@@ -104,7 +104,7 @@ public enum QianTongDCApiType {
      */
     CREATE_PROJECT("15", "创建项目接口", "/v2/projects", "POST"),
 
-    //Project related interface ended》》》》》》》》》
+    // Project-related interfaces end
     /**
      * Query the access token interface of the specified user
      */
@@ -172,7 +172,7 @@ public enum QianTongDCApiType {
      */
     GEN_TASK_DEFINITION_CODES("28", "分页查询任务实例列表接口", "/v2/tasks/gen-task-codes", "GET"),
 
-    //Task definition related interface acceptance ends》》》》》》》》》
+    // Task-definition-related interfaces end
 
     /**
      * Obtain scheduling information based on process coding

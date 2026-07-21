@@ -108,7 +108,7 @@
               v-for="(it, idx) in form.intervalList"
               :key="idx"
           >
-            <div class="range-label">{{ td('dg.desensitizationRules.intervalLabel', '区间 {i}：', { i: idx + 1 }) }}</div>
+            <div class="range-label">{{ td('dg.desensitizationRules.intervalLabel', 'Interval {i}:', { i: idx + 1 }) }}</div>
             <el-input-number
                 v-model="it.startNum"
                 :min="1"

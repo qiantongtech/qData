@@ -81,7 +81,7 @@ public class DoubleDataColumn extends DataColumn {
         try {
             return new BigDecimal((String) this.getRawData());
         } catch (NumberFormatException e) {
-            throw DBException.asDataXException(String.format("String[%s] 无法转换为Double类型 .",
+            throw DBException.asDataXException(String.format("String[%s] cannot be converted to Double.",
                     (String) this.getRawData()));
         }
     }
@@ -137,22 +137,22 @@ public class DoubleDataColumn extends DataColumn {
 
     @Override
     public Boolean asBoolean() {
-        throw DBException.asDataXException("Double类型无法转为Bool .");
+        throw DBException.asDataXException("Double cannot be converted to Bool.");
     }
 
     @Override
     public Date asDate() {
-        throw DBException.asDataXException("Double类型无法转为Date类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Date.");
     }
 
     @Override
     public Date asDate(String dateFormat) {
-        throw DBException.asDataXException("Double类型无法转为Date类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Date.");
     }
 
     @Override
     public byte[] asBytes() {
-        throw DBException.asDataXException("Double类型无法转为Bytes类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Bytes.");
     }
 
     private void validate(final String data) {
@@ -168,7 +168,7 @@ public class DoubleDataColumn extends DataColumn {
         try {
             new BigDecimal(data);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[%s]无法转为Double类型 .", data));
+            throw DBException.asDataXException(String.format("String[%s] cannot be converted to Double.", data));
         }
     }
 

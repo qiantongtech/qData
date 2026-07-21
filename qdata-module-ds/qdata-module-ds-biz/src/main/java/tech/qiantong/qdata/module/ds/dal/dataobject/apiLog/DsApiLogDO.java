@@ -27,14 +27,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.time.LocalDateTime;
 
 /**
- * API服务调用日志 DO 对象 DS_API_LOG
+ * API service call log DO DS_API_LOG
  *
  * @author lhs
  * @date 2025-02-12
  */
 @Data
 @TableName(value = "DS_API_LOG")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, and H2; optional for databases such as MySQL.
 // @KeySequence("DS_API_LOG_seq")
 @Builder
 @NoArgsConstructor
@@ -47,17 +47,17 @@ public class DsApiLogDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 类目ID */
+    /** Category ID */
     private Long catId;
 
-    /** 类目编码 */
+    /** Category code */
     private String catCode;
 
-    /** 类目名称 */
+    /** Category name */
     @TableField(exist = false)
     private String catName;
 
-    /** 调用API服务Id */
+    /** Called API service ID */
     private Long apiId;
 
     @TableField(exist = false)
@@ -66,48 +66,48 @@ public class DsApiLogDO extends BaseEntity {
     @TableField(exist = false)
     private String reqMethod;
 
-    /** 调用者id */
+    /** Caller ID */
     private String callerId;
 
-    /** 调用者 */
+    /** Caller */
     private String callerBy;
 
-    /** 调用者ip */
+    /** Caller IP */
     private String callerIp;
 
-    /** 调用url */
+    /** Called URL */
     private String callerUrl;
 
-    /** 调用参数 */
+    /** Call parameters */
     private String callerParams;
 
-    /** 调用开始时间 */
+    /** Call start time */
     private LocalDateTime callerStartDate;
 
-    /** 调用结束时间 */
+    /** Call end time */
     private LocalDateTime callerEndDate;
 
-    /** 调用数据量 */
+    /** Called record count */
     private int callerSize;
 
-    /** 调用耗时(毫秒) */
+    /** Call duration in milliseconds */
     private Long callerTime;
 
-    /** 信息记录 */
+    /** Information record */
     private String msg;
 
-    /** 状态 */
+    /** Status */
     private Integer status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /**
-     * 返回参数
+     * Response parameters
      */
     private String fieldParameters;
 
-    /** 删除标志 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 

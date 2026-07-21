@@ -30,7 +30,7 @@
     <artifactId>qdata-file</artifactId>
 
     <description>
-        file模块
+        File module
     </description>
 
     <dependencies>

@@ -30,7 +30,7 @@ export default [
                 path: 'tag/detail',
                 component: () => import('@/views/att/tag/detail/index.vue'),
                 name: 'tagDetail',
-                meta: { title: '标签详情', activeMenu: '/da/tag', lang: 'public.tagDetail' }
+                meta: { title: 'Tag Details', activeMenu: '/da/tag', lang: 'public.tagDetail' }
             }
         ]
     },

@@ -48,55 +48,55 @@ public class DpDocumentDO extends BaseEntity {
     /** ID */
     private Long id;
 
-    /** 编码 */
+    /** Code */
     private String code;
 
-    /** 名称 */
+    /** Name */
     private String name;
 
-    /** 类目code */
+    /** Category code */
     private String catCode;
 
     @TableField(exist = false)
     private String catName;
 
-    /** 文件标准类型字段， */
+    /** Document standard type field */
     private String type;
 
-    /** 文件状态 */
+    /** Document status */
     private String status;
 
-    /** 发布机构名称，例如“中国国家标准化管理委员会” */
+    /** Publishing organization name, for example, "Standardization Administration of China" */
     private String issuingAgency;
 
-    /** 版本号 */
+    /** Version */
     private String version;
 
-    /** 发布日期 */
+    /** Publication date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date releaseDate;
 
-    /** 实施日期 */
+    /** Effective date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date implementationDate;
 
-    /** 废止日期 */
+    /** Abolition date */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date abolitionDate;
 
-    /** 文件url */
+    /** Document URL */
 
     private String fileUrl;
     private String fileName;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

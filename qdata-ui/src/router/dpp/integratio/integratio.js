@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/instance/integratioTask/detail/index.vue'),
                 name: 'integratioDetail',
-                meta: { title: '数据集成任务实例', activeMenu: '/dpp/instance/integratioTask', lang: 'public.dataIntegrationTaskInstance' }
+                meta: { title: 'Data Integration Task Instance', activeMenu: '/dpp/instance/integratioTask', lang: 'public.dataIntegrationTaskInstance' }
             }
         ]
     }

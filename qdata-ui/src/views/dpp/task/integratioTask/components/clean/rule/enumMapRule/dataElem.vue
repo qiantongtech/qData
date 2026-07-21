@@ -30,7 +30,7 @@
         <DeptTree
           :deptOptions="deptOptions"
           :leftWidth="leftWidth"
-          :placeholder="td('dpp.cleanRule.inputStandardDataElemCat', '请输入标准数据元类目')"
+          :placeholder="td('dpp.cleanRule.inputStandardDataElemCat', 'Please enter standard data element category')"
           @node-click="handleNodeClick"
           ref="DeptTreeRef"
           :showFilter="false"
@@ -56,14 +56,14 @@
         >
           <el-table-column
             v-if="getColumnVisibility(0)"
-            :label="td('common.texts.number', '编号')"
+            :label="td('common.texts.number', 'No.')"
             align="left"
             prop="id"
             width="80"
           />
           <el-table-column
             v-if="getColumnVisibility(1)"
-            :label="td('dpp.cleanRule.chineseName', '中文名称')"
+            :label="td('dpp.cleanRule.chineseName', 'Chinese Name')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -73,7 +73,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(2)"
-            :label="td('dpp.cleanRule.englishName', '英文名称')"
+            :label="td('dpp.cleanRule.englishName', 'English Name')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -83,7 +83,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(3)"
-            :label="td('dpp.cleanRule.type', '类型')"
+            :label="td('dpp.cleanRule.type', 'Type')"
             align="left"
             prop="type"
           >
@@ -92,7 +92,7 @@
           <el-table-column
             v-if="getColumnVisibility(6)"
             width="140"
-            :label="td('dpp.cleanRule.metaDescription', '元描述')"
+            :label="td('dpp.cleanRule.metaDescription', 'Meta Description')"
             align="left"
             prop="description"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -102,7 +102,7 @@
             }}</template>
           </el-table-column>
           <el-table-column
-            :label="td('common.texts.operation', '操作')"
+            :label="td('common.texts.operation', 'Operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -115,7 +115,7 @@
                 icon="view"
                 @click="showDialog(scope.row)"
                 v-hasPermi="['dp:dataElem:dataelem:edit']"
-                >{{ td('dpp.cleanRule.view', '查看') }}
+                >{{ td('dpp.cleanRule.view', 'View') }}
               </el-button>
             </template>
           </el-table-column>
@@ -125,7 +125,7 @@
                 src="../../../../../../../../assets/images/system/no_data/empty-nodata.png"
                 alt=""
               />
-              <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+              <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
             </div>
           </template>
         </el-table>
@@ -147,14 +147,14 @@
     <!-- bottom button -->
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleCancel">{{ td('common.button.cancel', '取消') }}</el-button>
+        <el-button @click="handleCancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
         <el-button
           type="primary"
           @click="handleConfirm"
           :disabled="!selectedRow"
           :loading="loading"
         >
-          {{ td('common.button.save', '保存') }}
+          {{ td('common.button.save', 'Save') }}
         </el-button>
       </div>
     </template>
@@ -190,12 +190,12 @@ const dpDataElemRuleRelList = ref([]);
 
 // Show hidden information
 const columns = ref([
-  { key: 1, label: td('dpp.cleanRule.chineseName', '中文名称'), visible: true },
-  { key: 2, label: td('dpp.cleanRule.englishName', '英文名称'), visible: true },
-  { key: 3, label: td('dpp.cleanRule.type', '类型'), visible: true },
-  { key: 4, label: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'), visible: true },
-  { key: 5, label: td('common.texts.status', '状态'), visible: true },
-  { key: 6, label: td('dpp.cleanRule.metaDescription', '元描述'), visible: true },
+  { key: 1, label: td('dpp.cleanRule.chineseName', 'Chinese Name'), visible: true },
+  { key: 2, label: td('dpp.cleanRule.englishName', 'English Name'), visible: true },
+  { key: 3, label: td('dpp.cleanRule.type', 'Type'), visible: true },
+  { key: 4, label: td('dpp.cleanRule.standardDataElemCat', 'Standard Data Element Category'), visible: true },
+  { key: 5, label: td('common.texts.status', 'Status'), visible: true },
+  { key: 6, label: td('dpp.cleanRule.metaDescription', 'Meta Description'), visible: true },
 ]);
 const dialogRef = ref();
 function handleQuery() {
@@ -299,7 +299,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'),
+        name: td('dpp.cleanRule.standardDataElemCat', 'Standard Data Element Category'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -313,7 +313,7 @@ const visible = ref(false);
  * Open pop-up window
  * @param {String} dialogTitle pop-up window title
  */
-function openDialog(dialogTitle = td('dpp.cleanRule.selectData', '选择数据')) {
+function openDialog(dialogTitle = td('dpp.cleanRule.selectData', 'Select Data')) {
   title.value = dialogTitle;
   visible.value = true;
   getDeptTree();
@@ -363,7 +363,7 @@ async function ElemCode(id) {
  */
 async function handleConfirm() {
   if (!selectedRow.value) {
-    proxy.$modal.msgWarning(td('dpp.cleanRule.selectRecord', '请选择一条记录'));
+    proxy.$modal.msgWarning(td('dpp.cleanRule.selectRecord', 'Please select a record'));
     return;
   }
   // const list = await ElemCode(selectedRow.value.id);

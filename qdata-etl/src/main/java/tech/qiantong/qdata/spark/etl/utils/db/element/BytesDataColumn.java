@@ -57,42 +57,42 @@ public class BytesDataColumn extends DataColumn {
         try {
             return ColumnCast.bytes2String(this);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("Bytes[%s]不能转为String .", this.toString()));
+            throw DBException.asDataXException(String.format("Bytes[%s] cannot be converted to String.", this.toString()));
         }
     }
 
     @Override
     public Long asLong() {
-        throw DBException.asDataXException("Bytes类型不能转为Long .");
+        throw DBException.asDataXException("Bytes cannot be converted to Long.");
     }
 
     @Override
     public BigDecimal asBigDecimal() {
-        throw DBException.asDataXException("Bytes类型不能转为BigDecimal .");
+        throw DBException.asDataXException("Bytes cannot be converted to BigDecimal.");
     }
 
     @Override
     public BigInteger asBigInteger() {
-        throw DBException.asDataXException("Bytes类型不能转为BigInteger .");
+        throw DBException.asDataXException("Bytes cannot be converted to BigInteger.");
     }
 
     @Override
     public Double asDouble() {
-        throw DBException.asDataXException("Bytes类型不能转为Long .");
+        throw DBException.asDataXException("Bytes cannot be converted to Long.");
     }
 
     @Override
     public Date asDate() {
-        throw DBException.asDataXException("Bytes类型不能转为Date .");
+        throw DBException.asDataXException("Bytes cannot be converted to Date.");
     }
 
     @Override
     public Date asDate(String dateFormat) {
-        throw DBException.asDataXException("Bytes类型不能转为Date .");
+        throw DBException.asDataXException("Bytes cannot be converted to Date.");
     }
 
     @Override
     public Boolean asBoolean() {
-        throw DBException.asDataXException("Bytes类型不能转为Boolean .");
+        throw DBException.asDataXException("Bytes cannot be converted to Boolean.");
     }
 }

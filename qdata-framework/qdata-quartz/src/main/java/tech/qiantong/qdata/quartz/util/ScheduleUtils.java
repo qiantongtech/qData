@@ -63,7 +63,7 @@ public class ScheduleUtils
     }
 
     /**
-     * 构建任务触发对象
+     * Builds a task trigger.
      */
     public static TriggerKey getTriggerKey(Long jobId, String jobGroup, String namespace)
     {
@@ -79,7 +79,7 @@ public class ScheduleUtils
     }
 
     /**
-     * 构建带命名空间的任务键，避免不同任务表的自增ID互相冲突。
+     * Builds a namespaced task key to prevent auto-increment IDs from different task tables from colliding.
      */
     public static JobKey getJobKey(Long jobId, String jobGroup, String namespace)
     {
@@ -95,7 +95,7 @@ public class ScheduleUtils
     }
 
     /**
-     * 创建带命名空间的定时任务。
+     * Creates a namespaced scheduled task.
      */
     public static void createScheduleJob(Scheduler scheduler, SysJob job, String namespace)
             throws SchedulerException, TaskException

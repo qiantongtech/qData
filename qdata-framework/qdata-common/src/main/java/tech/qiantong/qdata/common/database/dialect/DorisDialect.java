@@ -7,6 +7,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -512,7 +513,9 @@ public class DorisDialect extends AbstractDbDialect {
         if (level == 1) {
             return "SHOW DATABASES";
         }
-        throw new UnsupportedOperationException("Doris 默认仅支持 level=1（Database 层）");
+        throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                "sys.error.database.doris.level.unsupported",
+                "Doris supports only level=1 (Database level) by default"));
     }
 
     @Override

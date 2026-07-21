@@ -22,18 +22,18 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.minValue', '最小值')"
+          :label="td('dpp.cleanRule.minValue', 'Min Value')"
           prop="min"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.inputMinValue', '请输入最小值'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputMinValue', 'Please enter min value'), trigger: 'blur' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.min"
-            :placeholder="td('dpp.cleanRule.noMinLimit', '不填写表示不限制最小值')"
+            :placeholder="td('dpp.cleanRule.noMinLimit', 'Leave empty for no minimum limit')"
             type="number"
             class="rule-half"
           />
@@ -42,18 +42,18 @@
       </el-col>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.maxValue', '最大值')"
+          :label="td('dpp.cleanRule.maxValue', 'Max Value')"
           prop="max"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.inputMaxValue', '请输入最大值'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputMaxValue', 'Please enter max value'), trigger: 'blur' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.max"
-            :placeholder="td('dpp.cleanRule.noMaxLimit', '不填写表示不限制最大值')"
+            :placeholder="td('dpp.cleanRule.noMaxLimit', 'Leave empty for no maximum limit')"
             type="number"
             class="rule-half"
           />
@@ -64,18 +64,18 @@
     <el-row>
       <el-col :span="24" class="hasMsg">
         <el-form-item
-          :label="td('dpp.cleanRule.handleMethod', '处理方式')"
+          :label="td('dpp.cleanRule.handleMethod', 'Handling Method')"
           prop="handleType"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.selectHandleMethod', '请选择处理方式'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.selectHandleMethod', 'Please select handling method'), trigger: 'blur' }]
               : []
           "
         >
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'3'">{{ td('dpp.cleanRule.adjustToMax', '超出最大值时调整为最大值') }}</el-radio>
-            <el-radio :value="'2'">{{ td('dpp.cleanRule.adjustToMin', '超出最小值时调整为最小值') }}</el-radio>
-            <el-radio :value="'1'">{{ td('dpp.cleanRule.adjustToBoundary', '两种情况都调整到对应的边界值') }}</el-radio>
+            <el-radio :value="'3'">{{ td('dpp.cleanRule.adjustToMax', 'Adjust to max value when exceeded') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.cleanRule.adjustToMin', 'Adjust to min value when below') }}</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.cleanRule.adjustToBoundary', 'Adjust to corresponding boundary value in both cases') }}</el-radio>
           </el-radio-group>
           <div class="msg">
             <div v-for="(msg, index) in boundaryExamples" :key="index">
@@ -109,21 +109,21 @@ const form = reactive({ ...props.form });
 const boundaryExamples = computed(() => {
   switch (form.handleType) {
     case "3":
-      return [td('dpp.cleanRule.exampleAgeOver150', '示例: 如果年龄 > 150，则设置为 150。')];
+      return [td('dpp.cleanRule.exampleAgeOver150', 'Example: If age > 150, set to 150.')];
     case "2":
-      return [td('dpp.cleanRule.exampleIncomeUnder1000', '示例: 如果收入 < 1000，则设置为 1000。')];
+      return [td('dpp.cleanRule.exampleIncomeUnder1000', 'Example: If income < 1000, set to 1000.')];
     case "1":
       return [
-        td('dpp.cleanRule.exampleBoth', '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。'),
+        td('dpp.cleanRule.exampleBoth', 'Example 1: If age > 150, set to 150. If income < 1000, set to 1000.'),
       ];
     default:
       return [];
   }
 });
 const handleTypeText = computed(() => {
-  if (form.handleType === "3") return td('dpp.cleanRule.adjustToMax', '超出最大值时调整为最大值');
-  if (form.handleType === "2") return td('dpp.cleanRule.adjustToMin', '超出最小值时调整为最小值');
-  if (form.handleType === "1") return td('dpp.cleanRule.adjustToBoundary', '两种情况都调整到对应的边界值');
+  if (form.handleType === "3") return td('dpp.cleanRule.adjustToMax', 'Adjust to max value when exceeded');
+  if (form.handleType === "2") return td('dpp.cleanRule.adjustToMin', 'Adjust to min value when below');
+  if (form.handleType === "1") return td('dpp.cleanRule.adjustToBoundary', 'Adjust to corresponding boundary value in both cases');
   return "-";
 });
 const loading = ref(false);

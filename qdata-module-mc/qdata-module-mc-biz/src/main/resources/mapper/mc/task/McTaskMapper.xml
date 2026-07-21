@@ -16,7 +16,7 @@
         <result property="collectionMode"    column="COLLECTION_MODE"    />
         <result property="collectionScope"    column="COLLECTION_SCOPE"    />
         <result property="status"    column="STATUS"    />
-        <!-- 采集任务只展示调度器，执行引擎由后台按调度器自动推导。 -->
+        <!-- Collection tasks expose only the scheduler; the backend derives the execution engine from the scheduler. -->
         <result property="scheduler"    column="SCHEDULER"    />
 
         <!-- Add new field -->

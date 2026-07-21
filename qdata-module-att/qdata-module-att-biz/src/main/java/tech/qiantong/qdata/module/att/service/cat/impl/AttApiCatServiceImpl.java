@@ -85,13 +85,13 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = dsApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.api", "存在API服务，不允许禁用");
+                throw new ServiceException("att.error.disable.api", "API service exists, disable not allowed");
             }
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttApiCatDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
         // Update Data Service Category Management
@@ -105,7 +105,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         for (AttApiCatDO catDO : attApiCatDOS) {
             Long countData = dsApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.delete.api", "存在API服务，不允许Delete ");
+                throw new ServiceException("att.error.delete.api", "API service exists, deletion not allowed");
             }
         }
         // Batch delete Data Service Category Management
@@ -192,7 +192,7 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
     @Override
     public String importAttApiCat(List<AttApiCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -211,16 +211,16 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                             attApiCatMapper.updateById(attApiCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
+                                    "Data update successful, ID {0} {1} record.", attApiCatId, MessageUtils.messageWithFallback("att.entity.data.service.category", "Data service category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attApiCatId + " 的数据服务类目管理记录不存在。", attApiCatId, "数据服务类目管理"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attApiCatId, MessageUtils.messageWithFallback("att.entity.data.service.category", "Data service category")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttApiCatDO> queryWrapper = new QueryWrapper<>();
@@ -230,17 +230,17 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
                         attApiCatMapper.insert(attApiCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attApiCatId + " 的数据服务类目管理记录。", attApiCatId, "数据服务类目管理"));
+                                "Data insert successful, ID {0} {1} record.", attApiCatId, MessageUtils.messageWithFallback("att.entity.data.service.category", "Data service category")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attApiCatId + " 的数据服务类目管理记录已存在。", attApiCatId, "数据服务类目管理"));
+                                "Data insert failed, ID {0} {1} record already exists.", attApiCatId, MessageUtils.messageWithFallback("att.entity.data.service.category", "Data service category")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -249,12 +249,12 @@ public class AttApiCatServiceImpl extends ServiceImpl<AttApiCatMapper, AttApiCat
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

@@ -24,6 +24,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
  * Get IP method
@@ -261,7 +262,7 @@ public class IpUtils
         catch (UnknownHostException e)
         {
         }
-        return "未知";
+        return MessageUtils.messageWithFallback("common.unknown", "Unknown");
     }
 
     /**

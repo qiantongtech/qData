@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/task/integratioTask/edit/index.vue'),
                 name: 'integratioTaskEdit',
-                meta: { title: '数据集成任务配置任务', activeMenu: '/dpp/task/integratioTask', lang: 'public.dataIntegrationTaskConfig' }
+                meta: { title: 'Configure Data Integration Task', activeMenu: '/dpp/task/integratioTask', lang: 'public.dataIntegrationTaskConfig' }
             },
         ]
     },
@@ -43,7 +43,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/task/integratioTask/detail/index.vue'),
                 name: 'integratioTaskDetail',
-                meta: { title: '数据集成任务详情', activeMenu: '/dpp/task/integratioTask', lang: 'public.dataIntegrationTaskDetail' }
+                meta: { title: 'Data Integration Task Details', activeMenu: '/dpp/task/integratioTask', lang: 'public.dataIntegrationTaskDetail' }
             }
         ]
     },

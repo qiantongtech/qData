@@ -79,7 +79,7 @@ class EtlApplicationTest {
             data = ReaderFactory.getReader(readerComponentType.getCode())
                     .read(spark, reader, readerColumns, readerLogParams);
             if (data == null) {
-                LogUtils.writeLog(readerLogParams, "任务失败");
+                LogUtils.writeLog(readerLogParams, "Task failed");
                 updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                 //Update input node instance execution failed
                 updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
@@ -87,11 +87,11 @@ class EtlApplicationTest {
                 return;
             }
         } catch (Exception e) {
-            log.error("任务失败", e);
+            log.error("Task failed", e);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
             //Update input node instance execution failed
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(readerLogParams, "任务失败");
+            LogUtils.writeLog(readerLogParams, "Task failed");
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
             spark.stop();
             return;
@@ -99,7 +99,7 @@ class EtlApplicationTest {
 
         //Update input node instance executed successfully
         updateTask(readerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-        LogUtils.writeLog(readerLogParams, "任务成功");
+        LogUtils.writeLog(readerLogParams, "Task succeeded");
         LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
 
 //        if (readParameter.containsKey("batchSize")) {
@@ -127,14 +127,14 @@ class EtlApplicationTest {
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
-                    LogUtils.writeLog(transitionLogParams, "任务失败");
+                    LogUtils.writeLog(transitionLogParams, "Task failed");
                     LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
                     spark.stop();
                     return;
                 }
                 //Update input node instance executed successfully
                 updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-                LogUtils.writeLog(transitionLogParams, "任务成功");
+                LogUtils.writeLog(transitionLogParams, "Task succeeded");
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
         }
@@ -155,18 +155,18 @@ class EtlApplicationTest {
             flag = WriterFactory.getWriter(writerComponentType.getCode())
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
-            log.error("任务失败", e);
+            log.error("Task failed", e);
         }
 
         if (flag) {
             updateTask(writerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务成功");
+            LogUtils.writeLog(writerLogParams, "Task succeeded");
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
         } else {
             updateTask(writerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务失败");
+            LogUtils.writeLog(writerLogParams, "Task failed");
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
         }
         spark.stop();

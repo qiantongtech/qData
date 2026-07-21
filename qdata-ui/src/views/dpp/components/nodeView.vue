@@ -82,11 +82,11 @@ const iconWhite = computed(() => {
 
 // Status configuration
 const toolbar = [
-    { id: "1", icon: "icon-zzzx", tip: td('dpp.node.statusExecuting', '正在执行') },
-    { id: "5", icon: "icon-tz", tip: td('dpp.node.statusStopped', '停止') },
-    { id: "6", icon: "icon-status-sb", tip: td('dpp.node.statusFailed', '失败') },
-    { id: "7", icon: "icon-status-cg", tip: td('dpp.node.statusSuccess', '成功') },
-    { id: "14", icon: "icon-dd", tip: td('dpp.node.statusWaiting', '等待') },
+    { id: "1", icon: "icon-zzzx", tip: td('dpp.node.statusExecuting', 'Executing') },
+    { id: "5", icon: "icon-tz", tip: td('dpp.node.statusStopped', 'Stopped') },
+    { id: "6", icon: "icon-status-sb", tip: td('dpp.node.statusFailed', 'Failed') },
+    { id: "7", icon: "icon-status-cg", tip: td('dpp.node.statusSuccess', 'Succeeded') },
+    { id: "14", icon: "icon-dd", tip: td('dpp.node.statusWaiting', 'Waiting') },
 ]
 
 const statusItem = computed(() => {
@@ -98,7 +98,7 @@ const statusIcon = computed(() => {
     return new URL(`/src/assets/images/dpp/etl/${iconFile}.svg`, import.meta.url).href
 })
 
-const statusTip = computed(() => statusItem.value?.tip || td('dpp.node.unknownStatus', '未知状态'))
+const statusTip = computed(() => statusItem.value?.tip || td('dpp.node.unknownStatus', 'Unknown Status'))
 
 const emitClick = () => {
     emits("nodeClick", nodeData.value)

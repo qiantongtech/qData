@@ -44,50 +44,50 @@ public class DpModelColumnDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 逻辑模型表ID */
+    /** Logical model table ID */
     private Long modelId;
 
-    /** 英文名称 */
+    /** English name */
     private String engName;
 
-    /** 中文名称 */
+    /** Chinese name */
     private String cnName;
 
-    /** 数据类型 */
+    /** Data type */
     private String columnType;
 
-    /** 属性长度 */
+    /** Attribute length */
     private Long columnLength;
 
-    /** 小数长度 */
+    /** Decimal length */
     private Long columnScale;
 
-    /** 默认值 */
+    /** Default value */
     private String defaultValue;
 
-    /** 是否主键 */
+    /** Whether the column is a primary key */
     private String pkFlag;
 
-    /** 是否必填 */
+    /** Whether the column is required */
     private String nullableFlag;
 
-    /** 排序 */
+    /** Sort order */
     private Long sortOrder;
 
-    /** 权威部门 */
+    /** Authoritative department */
     private Long authorityDept;
 
-    /** 数据元id */
+    /** Data element ID */
     private Long dataElemId;
 
-    /** 数据元名称 */
+    /** Data element name */
     @TableField(exist = false)
     private String dataElemName;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     @TableLogic
     private Boolean delFlag;
 

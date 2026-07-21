@@ -195,7 +195,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataQueryException("db.error.connection", "获取数据库连接出错");
+            throw new DataQueryException("db.error.connection", "Failed to get database connection");
         }
     }
 
@@ -228,7 +228,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         } else if (dataSource instanceof SimpleDataSource) {
             ((SimpleDataSource) dataSource).close();
         } else {
-            throw new DataQueryException("db.error.invalid.datasource", "不合法数据源类型");
+            throw new DataQueryException("db.error.invalid.datasource", "Invalid datasource type");
         }
     }
 
@@ -416,7 +416,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             FileDialect fileDialect = (FileDialect) dbDialect;
             return fileDialect.getFiles(dbQueryProperty, path);
         }
-        throw new ServiceException("当前数据源不支持获取文件列表");
+        throw new ServiceException("sys.error.datasource.file.list.unsupported",
+                "The current data source does not support retrieving file lists");
     }
 
     @Override
@@ -609,7 +610,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     protected String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
@@ -636,7 +637,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
         if (StringUtils.isEmpty(dbName)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         String dataStorageSizeSql = dbDialect.getDataStorageSize(dbName);
         List<Map<String, Object>> dataStorageSizeResult = namedJdbcTemplate.query(dataStorageSizeSql, new MyRowMapper());
@@ -974,7 +975,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataQueryException("db.error.sql.parse", "SQL解析失败");
+            throw new DataQueryException("db.error.sql.parse", "SQL parsing failed");
         } finally {
             if (stmt != null) {
                 try {
@@ -1009,7 +1010,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             fileDialect.uploadFile(dbQueryProperty, path, file);
             return;
         }
-        throw new ServiceException("当前数据源不支持上传文件");
+        throw new ServiceException("sys.error.datasource.file.upload.unsupported",
+                "The current data source does not support file uploads");
     }
 
     @Override
@@ -1105,7 +1107,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         String getTableInfoSql = dbDialect.table(dbQueryProperty, tableName);
         List<DbTable> dbTableList = jdbcTemplate.query(getTableInfoSql, dbDialect.tableMapper());
         if (dbTableList == null || dbTableList.size() == 0) {
-            throw new ServiceException("表不存在");
+            throw new ServiceException("sys.error.table.notfound", "Table does not exist");
         }
         //Target database table information
         DbTable targetDbTable = dbTableList.get(0);

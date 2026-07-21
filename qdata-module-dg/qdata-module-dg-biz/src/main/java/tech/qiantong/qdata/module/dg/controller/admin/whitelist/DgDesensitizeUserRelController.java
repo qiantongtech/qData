@@ -77,7 +77,7 @@ public class DgDesensitizeUserRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeUserRelDO> list = (List<DgDesensitizeUserRelDO>) dgDesensitizeUserRelService.getDgDesensitizeUserRelPage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeUserRelRespVO> util = new ExcelUtil<>(DgDesensitizeUserRelRespVO.class);
-        util.exportExcel(response, DgDesensitizeUserRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeUserRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入脱敏白名单与用户关联关系列表")

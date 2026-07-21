@@ -85,7 +85,7 @@ public class DgDataLevelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDataLevelDO> list = (List<DgDataLevelDO>) dgDataLevelService.getDgDataLevelPage(exportReqVO).getRows();
         ExcelUtil<DgDataLevelRespVO> util = new ExcelUtil<>(DgDataLevelRespVO.class);
-        util.exportExcel(response, DgDataLevelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDataLevelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据分级列表")

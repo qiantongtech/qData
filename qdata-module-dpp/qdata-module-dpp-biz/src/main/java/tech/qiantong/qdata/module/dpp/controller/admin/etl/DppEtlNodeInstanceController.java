@@ -47,6 +47,7 @@ import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
@@ -97,7 +98,7 @@ public class DppEtlNodeInstanceController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEtlNodeInstanceDO> list = (List<DppEtlNodeInstanceDO>) dppEtlNodeInstanceService.getDppEtlNodeInstancePage(exportReqVO).getRows();
         ExcelUtil<DppEtlNodeInstanceRespVO> util = new ExcelUtil<>(DppEtlNodeInstanceRespVO.class);
-        util.exportExcel(response, DppEtlNodeInstanceConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEtlNodeInstanceConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成节点实例列表")
@@ -195,9 +196,10 @@ public class DppEtlNodeInstanceController extends BaseController {
             logger.error(e.getMessage(), e);
             try {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("文件下载失败：" + e.getMessage());
+                response.getWriter().write(MessageUtils.messageWithFallback(
+                        "dpp.error.file.download.fail", "File download failed: {0}", e.getMessage()));
             } catch (IOException ioException) {
-                logger.error("写入错误信息失败", ioException);
+                logger.error("Failed to write error information", ioException);
             }
         }
     }

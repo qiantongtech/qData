@@ -139,9 +139,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				SELECT
 				t.table_name,
-				COALESCE(pd.description, '') AS table_comment,  -- 获取表的注释，如果没有注释则返回空字符串
-				'' AS create_time,  -- 暂时无法直接获取创建时间
-				'' AS update_time   -- 暂时无法直接获取更新时间
+				COALESCE(pd.description, '') AS table_comment,  -- Get the table comment, or return an empty string when absent
+				'' AS create_time,  -- Creation time cannot currently be retrieved directly
+				'' AS update_time   -- Update time cannot currently be retrieved directly
 				FROM
 				information_schema.tables t
 				LEFT JOIN
@@ -149,12 +149,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				LEFT JOIN
 				pg_description pd ON pd.objoid = c.oid
 				WHERE
-				t.table_schema = current_schema()  -- 获取当前会话的模式
-				AND t.table_name NOT LIKE 'qrtz\_%'      -- 排除以 'qrtz_' 开头的表
-				AND t.table_name NOT LIKE 'gen\_%'        -- 排除以 'gen_' 开头的表
+				t.table_schema = current_schema()  -- Get the current session schema
+				AND t.table_name NOT LIKE 'qrtz\_%'      -- Exclude tables starting with 'qrtz_'
+				AND t.table_name NOT LIKE 'gen\_%'        -- Exclude tables starting with 'gen_'
 				AND t.table_name NOT IN (SELECT table_name FROM gen_table)
-				AND c.relkind = 'r'  -- 确保只查询普通表（'r'代表普通表对象）
-				AND pd.objsubid = 0  -- 确保只获取表的注释（objsubid=0表示对象本身的注释）
+				AND c.relkind = 'r'  -- Query ordinary tables only (relkind r)
+				AND pd.objsubid = 0  -- Get table comments only (objsubid=0 represents the object itself)
 			</when>
 		</choose>
 
@@ -216,21 +216,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				SELECT
 				t.table_name,
-				COALESCE(pd.description, '') AS table_comment,  -- 获取表注释，如果没有则返回空字符串
-				'' AS create_time,  -- 暂时无法直接获取创建时间
-				'' AS update_time   -- 暂时无法直接获取更新时间
+				COALESCE(pd.description, '') AS table_comment,  -- Get the table comment, or return an empty string when absent
+				'' AS create_time,  -- Creation time cannot currently be retrieved directly
+				'' AS update_time   -- Update time cannot currently be retrieved directly
 				FROM
 				information_schema.tables t
 				LEFT JOIN
-				pg_class c ON c.relname = t.table_name  -- 获取表的描述
+				pg_class c ON c.relname = t.table_name  -- Get the table description
 				LEFT JOIN
-				pg_description pd ON pd.objoid = c.oid  -- 获取表的注释
+				pg_description pd ON pd.objoid = c.oid  -- Get the table comment
 				WHERE
-				t.table_schema = current_schema()  -- 获取当前会话的模式
-				AND t.table_name NOT LIKE 'qrtz\_%'  -- 排除以 'qrtz_' 开头的表
-				AND t.table_name NOT LIKE 'gen\_%'    -- 排除以 'gen_' 开头的表
-				AND pd.objsubid = 0  -- 只获取表的注释，objsubid = 0 表示表本身的注释
-				AND t.table_name IN  -- 过滤特定的表名
+				t.table_schema = current_schema()  -- Get the current session schema
+				AND t.table_name NOT LIKE 'qrtz\_%'  -- Exclude tables starting with 'qrtz_'
+				AND t.table_name NOT LIKE 'gen\_%'    -- Exclude tables starting with 'gen_'
+				AND pd.objsubid = 0  -- Get table comments only; objsubid = 0 represents the table itself
+				AND t.table_name IN  -- Filter specific table names
 			</when>
 		</choose>
 	    <foreach collection="array" item="name" open="(" separator="," close=")">

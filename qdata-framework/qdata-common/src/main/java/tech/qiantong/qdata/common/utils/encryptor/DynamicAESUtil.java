@@ -42,7 +42,7 @@ public class DynamicAESUtil {
             SecretKey secretKey = keyGen.generateKey();
             return Base64.getEncoder().encodeToString(secretKey.getEncoded());
         } catch (Exception e) {
-            throw new ServiceException("sys.error.encrypt.key", "生成随机密钥失败");
+            throw new ServiceException("sys.error.encrypt.key", "Failed to generate random key");
         }
     }
 
@@ -61,7 +61,7 @@ public class DynamicAESUtil {
             byte[] encrypted = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
-            throw new ServiceException("sys.error.encrypt.fail", "加密失败");
+            throw new ServiceException("sys.error.encrypt.fail", "Encryption failed");
         }
     }
 
@@ -80,7 +80,7 @@ public class DynamicAESUtil {
             byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
             return new String(decrypted);
         } catch (Exception e) {
-            throw new ServiceException("sys.error.decrypt.fail", "解密失败");
+            throw new ServiceException("sys.error.decrypt.fail", "Decryption failed");
         }
     }
 

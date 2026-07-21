@@ -37,6 +37,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.api.project.dto.AttProjectReqDTO;
@@ -130,7 +131,7 @@ public class DaDatasourceController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDatasourceDO> list = (List<DaDatasourceDO>) daDatasourceService.getDaDatasourcePage(exportReqVO).getRows();
         ExcelUtil<DaDatasourceRespVO> util = new ExcelUtil<>(DaDatasourceRespVO.class);
-        util.exportExcel(response, DaDatasourceConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDatasourceConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据源列表")
@@ -196,9 +197,11 @@ public class DaDatasourceController extends BaseController {
     public AjaxResult editDatasourceStatus(@PathVariable Long id, @PathVariable Long status) {
         Boolean isOk = daDatasourceService.editDatasourceStatus(id, status);
         if (!isOk) {
-            return AjaxResult.error("任务状态修改失败，请联系系统管理员");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "common.task.status.update.fail", "Failed to update task status; contact the administrator"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.update.success", "Update successful"));
     }
 
 
@@ -242,10 +245,12 @@ public class DaDatasourceController extends BaseController {
     @PostMapping("/sqlParse")
     public AjaxResult sqlParse(@RequestBody JSONObject jsonObject) {
         if (StringUtils.isEmpty(jsonObject.getStr("sourceId"))) {
-            return AjaxResult.error("请携带数据源!");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "da.error.datasource.required", "Data source is required"));
         }
         if (StringUtils.isEmpty(jsonObject.getStr("sql"))) {
-            return AjaxResult.error("请输入SQL语句!");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "da.error.sql.required", "SQL statement is required"));
         }
        /* try {
             jsonObject.set("sql",AesEncryptUtil.desEncrypt(jsonObject.getStr("sql")).trim());

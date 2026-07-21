@@ -21,6 +21,7 @@ package tech.qiantong.qdata.server.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 
 /**
@@ -34,7 +35,8 @@ public class DefaultController {
 
     @RequestMapping({"/dev-api/example/**", "/prod-api/example/**", "/example/**"})
     public AjaxResult example404() {
-        return AjaxResult.error("[示例模块 qdata-module-example - 已禁用]");
+        return AjaxResult.error(MessageUtils.messageWithFallback(
+                "sys.error.example.module.disabled", "Example module qdata-module-example is disabled"));
     }
 
 }

@@ -77,7 +77,7 @@ public class AttClientController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttClientDO> list = (List<AttClientDO>) attClientService.getAttClientPage(exportReqVO).getRows();
         ExcelUtil<AttClientRespVO> util = new ExcelUtil<>(AttClientRespVO.class);
-        util.exportExcel(response, AttClientConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttClientConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入应用管理列表")

@@ -34,6 +34,7 @@ import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.enums.*;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.uuid.IdUtils;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
@@ -57,10 +58,10 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 
 /**
- * 数据开发 JDBC 任务执行器。
+ * Data development JDBC task runner.
  * <p>
- * 负责将数据开发任务中的 SQL 开发、存储过程开发节点转成本地 JDBC 执行流程，
- * 并统一处理任务实例、执行日志、运行锁、事务提交和异常回滚。
+ * Converts SQL-development and stored-procedure-development nodes in data development tasks into a local JDBC execution flow,
+ * with centralized handling for task instances, execution logs, run locks, transaction commits, and exception rollbacks.
  *
  * @author qdata
  */
@@ -80,21 +81,23 @@ public class DataDevelopmentJdbcTaskRunner {
     private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
     /**
-     * 执行数据开发任务中的 JDBC 节点。
+     * Executes the JDBC nodes in a data development task.
      *
-     * @param task    数据开发任务详情，必须包含节点定义列表
-     * @param instance 当前任务实例
-     * @param taskLog 任务运行日志缓冲区
+     * @param task    Data development task details; must include the node definition list
+     * @param instance Current task instance
+     * @param taskLog Task execution log buffer
      */
     @Transactional
     public void run(DppEtlTaskDO task, DppEtlTaskInstanceDO instance, StringBuilder taskLog) {
-        // 同一个任务同一时间只允许一个执行实例，避免重复点击或调度重入。
+        // Allow only one execution instance of a task at a time to prevent duplicate clicks or scheduler re-entry.
         Date startTime = new Date();
         String redisKey = buildDataDevelopmentRunLockKey(task.getId());
         redisService.delete(redisKey);
-        // 获取锁失败表示同一任务已有执行实例，禁止重复执行。
+        // Failure to acquire the lock means another instance of the same task is already running.
         if (!acquireDataDevelopmentRunLock(redisKey)) {
-            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "dpp.error.data.development.task.running",
+                    "A previous execution of this data development task is still running. Please try again later."));
         }
 
         int totalUpdateCount = 0;
@@ -105,17 +108,18 @@ public class DataDevelopmentJdbcTaskRunner {
         LogUtils.appendLocalLogLine(taskLog, "Send task status RUNNING_EXECUTION");
         LogUtils.appendLocalLogLine(taskLog, "Create TaskChannel: qData DataDevelopmentJdbcTaskRunner successfully");
 
-        // 只执行 SQL 开发和存储过程开发节点，其它清洗、输入、输出节点不属于本地 JDBC 执行范围。
+        // Execute only SQL-development and stored-procedure-development nodes; cleaning, input, and output nodes are outside the local JDBC execution scope.
         List<DppEtlNodeRespVO> sqlNodes = getDataDevelopmentSqlNodes(task);
-        // 没有可执行 JDBC 节点时直接作为任务配置错误处理。
+        // Treat a task with no executable JDBC nodes as a configuration error.
         if (CollectionUtils.isEmpty(sqlNodes)) {
-            throw new ServiceException("数据开发任务未找到SQL或存储过程节点");
+            throw new ServiceException("dpp.error.data.development.jdbc.node.missing",
+                    "No SQL-development or stored-procedure node was found for the data development task.");
         }
 
         LogUtils.appendLocalLogLine(taskLog, "********************************* Execute task instance *************************************");
-        // 汇总所有节点的影响行数和结果行数，方便实例日志里快速判断执行规模。
+        // Aggregate affected-row and result-row counts so the execution scale is visible in the instance log.
         for (DppEtlNodeRespVO node : sqlNodes) {
-            // 创建节点实例
+            // Create the node instance
             Long nodeInstanceId = createNodeInstance(task, node, instance);
             try {
                 LogUtils.appendLocalLogLine(taskLog, "Start executing node: " + node.getName());
@@ -125,20 +129,20 @@ public class DataDevelopmentJdbcTaskRunner {
                 totalResultCount += result.getResultCount();
                 LogUtils.appendLocalLogLine(taskLog, String.format("Node execution completed: %s, affected rows=%d, result rows=%d",
                         node.getName(), result.getUpdateCount(), result.getResultCount()));
-                // 更新节点实例状态为成功
+                // Mark the node instance as successful
                 updateNodeInstance(nodeInstanceId, TaskExecutionStatus.SUCCESS);
-                // 更新任务实例状态为成功
+                // Mark the task instance as successful
                 markDataDevelopmentSuccess(instance);
                 LogUtils.appendLocalLogLine(taskLog, String.format("Data development task executed successfully: node count=%d, affected rows=%d, result rows=%d",
                         sqlNodes.size(), totalUpdateCount, totalResultCount));
             } catch (Exception e) {
-                // 业务异常和 JDBC 异常统一记录到实例状态与实例日志中，方便页面查看失败原因。
+                // Record business and JDBC exceptions in the instance status and log so the failure reason is visible in the UI.
                 markDataDevelopmentFail(instance, e);
                 LogUtils.appendLocalLogLine(taskLog, "Data development task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
             } finally {
-                // 无论成功失败都释放锁，并在方法结尾一次性写入本次执行的完整日志。
+                // Always release the lock and write the complete execution log once at the end of the method.
                 redisService.delete(redisKey);
-                // 异常路径尚未设置结束时间时，在最终清理阶段补齐。
+                // Set the end time during final cleanup if the failure path has not already set it.
                 if (instance.getEndTime() == null) {
                     instance.setEndTime(new Date());
                 }
@@ -149,15 +153,15 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 创建数据开发节点实例。
+     * Creates a data development node instance.
      *
-     * @param task     数据开发任务详情
-     * @param node     当前节点配置
-     * @param instance 所属任务实例
-     * @return 生成的节点实例 ID
+     * @param task     Data development task details
+     * @param node     Current node configuration
+     * @param instance Owning task instance
+     * @return Generated node instance ID
      */
     private Long createNodeInstance(DppEtlTaskDO task, DppEtlNodeRespVO node, DppEtlTaskInstanceDO instance) {
-        log.info("任务实例创建消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Starting task instance creation");
         long id = IdUtils.generateArtificialId();
         try {
             JSONObject params = JSONObject.parseObject(node.getParameters());
@@ -175,21 +179,21 @@ public class DataDevelopmentJdbcTaskRunner {
                     .state(TaskExecutionStatus.RUNNING_EXECUTION)
                     .build());
         } catch (Exception e) {
-            // 节点实例落库失败只记录错误，实际 SQL 执行结果仍由主流程处理。
-            log.error("创建任务实例异常:{}", e.getMessage());
+            // Log node-instance persistence failures only; the main flow still handles the actual SQL result.
+            log.error("Failed to create task instance: {}", e.getMessage());
         }
-        log.info("任务实例创建消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Task instance creation completed");
         return id;
     }
 
     /**
-     * 更新数据开发任务实例。
+     * Updates a data development task instance.
      *
-     * @param id     节点实例 ID
-     * @param status 目标执行状态
+     * @param id     Node instance ID
+     * @param status Target execution status
      */
     private void updateNodeInstance(Long id, TaskExecutionStatus status) {
-        log.info("任务实例更新消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Starting task instance update");
         Date date = new Date();
         try {
             dppEtlNodeInstanceService.updateNodeInstance(TaskInstance.builder()
@@ -199,50 +203,50 @@ public class DataDevelopmentJdbcTaskRunner {
                     .state(status)
                     .build());
         } catch (Exception e) {
-            // 状态更新异常不能替代 SQL 的真实执行结果，只记录服务端日志。
-            log.error("更新任务实例异常:{}", e.getMessage());
+            // A status-update error must not replace the actual SQL result, so log it only on the server.
+            log.error("Failed to update task instance: {}", e.getMessage());
         }
-        log.info("任务实例更新消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.info("Task instance update completed");
     }
 
     /**
-     * 构造数据开发任务执行锁 key。
+     * Builds the data development task run-lock key.
      *
-     * @param taskId 任务 ID
-     * @return Redis 锁 key
+     * @param taskId Task ID
+     * @return Redis lock key
      */
     private String buildDataDevelopmentRunLockKey(Long taskId) {
         return "dpp:data-development:run:" + taskId;
     }
 
     /**
-     * 获取运行锁。
+     * Acquires the run lock.
      *
-     * @param redisKey Redis 锁 key
-     * @return true 表示获取成功，false 表示已有任务正在运行
+     * @param redisKey Redis lock key
+     * @return true when acquired; false when another task instance is already running
      */
     private boolean acquireDataDevelopmentRunLock(String redisKey) {
         String status = redisService.get(redisKey);
-        // Redis 中状态为 1 表示任务仍在运行，直接拒绝本次启动。
+        // A Redis status of 1 means the task is still running, so reject this start attempt.
         if (StringUtils.isNotEmpty(status) && "1".equals(status)) {
             return false;
         }
-        // 锁有效期设置为 12 小时，避免异常退出后永久锁死。
+        // Expire the lock after 12 hours to avoid a permanent lock after an abnormal exit.
         redisService.set(redisKey, "1", 60 * 60 * 12);
         return true;
     }
 
     /**
-     * 创建数据开发任务实例。
+     * Creates a data development task instance.
      *
-     * @param task 数据开发任务详情
-     * @return 已持久化的任务实例
+     * @param task Data development task details
+     * @return Persisted task instance
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public DppEtlTaskInstanceDO createDataDevelopmentTaskInstance(DppEtlTaskDO task) {
-        // 状态使用 DolphinScheduler 兼容码：1 表示运行中。
+        // Use the DolphinScheduler-compatible status code 1 for a running task.
         DppEtlTaskInstanceDO instance = DppEtlTaskInstanceDO.builder()
-                // 本地 JDBC 执行没有 DolphinScheduler 的 processInstanceId，且 DM 表 ID 为非空字段，所以这里由应用侧生成实例主键。
+                // Local JDBC execution has no DolphinScheduler processInstanceId, and the DM table requires a non-null ID, so the application generates the instance primary key.
                 .id(IdUtils.generateArtificialId())
                 .catId(task.getCatId())
                 .catCode(task.getCatCode())
@@ -273,15 +277,15 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 从任务节点列表中过滤出 JDBC 可执行节点。
+     * Filters JDBC-executable nodes from the task node list.
      *
-     * @param task 数据开发任务详情
-     * @return SQL 开发和存储过程开发节点列表
+     * @param task Data development task details
+     * @return List of SQL-development and stored-procedure-development nodes
      */
     private List<DppEtlNodeRespVO> getDataDevelopmentSqlNodes(DppEtlTaskDO task) {
-        // 查询这个任务保存下来的节点配置，里面包含数据源、表名、字段等 DataX 参数。
+        // Load the saved node configuration, including DataX parameters such as the data source, table name, and fields.
         List<DppEtlNodeRespVO> nodeList = iDppEtlNodeService.listNodeByTaskId(task.getId());
-        // 没有节点时返回空列表，由上层统一转成业务异常。
+        // Return an empty list when no nodes exist; the caller converts it to a business exception.
         if (CollectionUtils.isEmpty(nodeList)) {
             return Collections.emptyList();
         }
@@ -298,34 +302,35 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 执行单个数据开发 JDBC 节点。
+     * Executes a single data development JDBC node.
      *
-     * @param node    节点配置
-     * @param taskLog 任务日志
-     * @return JDBC 执行结果
-     * @throws Exception 执行失败时抛出，外层统一更新任务实例状态
+     * @param node    Node configuration
+     * @param taskLog Task log
+     * @return JDBC execution result
+     * @throws Exception Thrown on failure so the caller can update the task instance status
      */
     private JdbcExecuteResult executeDataDevelopmentNodeSql(DppEtlNodeRespVO node, StringBuilder taskLog) throws Exception {
-        // 节点参数是前端组件保存的 JSON，包含 SQL、SQL 类型和数据源配置。
+        // Node parameters are JSON saved by the frontend component and include the SQL, SQL type, and data source configuration.
         JSONObject params = JSONObject.parseObject(node.getParameters());
-        // JSON 解析为空表示节点没有有效执行参数，不能继续创建数据库连接。
+        // A null JSON result means the node has no valid execution parameters, so a database connection cannot be created.
         if (params == null) {
-            throw new ServiceException("节点参数为空：" + node.getName());
+            throw new ServiceException("dpp.error.data.development.node.parameters.missing",
+                    "Node parameters are missing: {0}", node.getName());
         }
 
-        // SQL 开发节点使用 sql 字段，存储过程节点使用 method 字段。
+        // SQL-development nodes use the sql field; stored-procedure nodes use the method field.
         String sql = getNodeSql(node, params);
-        // SQL 类型决定查询使用 executeQuery，非查询和存储过程使用通用 execute。
+        // The SQL type selects executeQuery for queries and the generic execute method for non-queries and stored procedures.
         String sqlType = getNodeSqlType(node, params);
-        // segm 是前端配置的分段执行符号，未配置时继续使用默认 SQL 脚本拆分逻辑。
+        // segm is the statement delimiter configured by the frontend; when absent, use the default SQL script splitting logic.
         String sqlSegmentDelimiter = getNodeSqlSegmentDelimiter(params);
-        // 将节点内的数据源 JSON 转成项目通用 DbQueryProperty，复用已有 JDBC URL 生成逻辑。
+        // Convert the node data source JSON to the shared DbQueryProperty and reuse the existing JDBC URL generation logic.
         DbQueryProperty dbQueryProperty = buildNodeDbQueryProperty(params);
 
         LogUtils.appendLocalLogLine(taskLog, "Initialize sql task parameter " + JSONUtils.formatJson(params.toJSONString()));
         LogUtils.appendLocalLogLine(taskLog, "Database type: " + dbQueryProperty.getDbType());
         LogUtils.appendLocalLogLine(taskLog, "SQL type: " + sqlType);
-        // 只有用户显式配置分隔符时才输出，便于判断复杂过程脚本是否会按预期拆分。
+        // Log the delimiter only when explicitly configured so complex procedure-script splitting can be verified.
         if (StringUtils.isNotEmpty(sqlSegmentDelimiter)) {
             LogUtils.appendLocalLogLine(taskLog, "SQL segment delimiter: " + sqlSegmentDelimiter);
         }
@@ -334,9 +339,9 @@ public class DataDevelopmentJdbcTaskRunner {
 
         Class.forName(getDriverClassName(dbQueryProperty.getDbType()));
 
-        Long failRetryInterval = params.getLong("failRetryInterval"); // '失败重试间隔'，单位：分钟
-        Long failRetryTimes = params.getLong("failRetryTimes"); // '失败重试次数:'，单位：次
-        Long delayTime = params.getLong("delayTime");//'延迟执行时间:'，单位：分钟
+        Long failRetryInterval = params.getLong("failRetryInterval"); // Failure retry interval in minutes
+        Long failRetryTimes = params.getLong("failRetryTimes"); // Number of retries after failure
+        Long delayTime = params.getLong("delayTime"); // Execution delay in minutes
         SqlExecutionTiming timing = buildSqlExecutionTiming(failRetryTimes, failRetryInterval, delayTime);
 
         LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
@@ -344,7 +349,7 @@ public class DataDevelopmentJdbcTaskRunner {
         sleepBeforeSqlExecution(timing.getDelayMillis(), taskLog, "Delay before SQL execution");
 
         Exception lastException = null;
-        // maxAttempts 已包含首次执行，因此 failRetryTimes=0 时循环只执行一次。
+        // maxAttempts includes the initial attempt, so failRetryTimes=0 executes the loop only once.
         for (int attempt = 1; attempt <= timing.getMaxAttempts(); attempt++) {
             LogUtils.appendLocalLogLine(taskLog, String.format("Start SQL execution attempt %d/%d", attempt, timing.getMaxAttempts()));
             try {
@@ -355,18 +360,18 @@ public class DataDevelopmentJdbcTaskRunner {
                         dbQueryProperty.getPassword())) {
                     connection.setAutoCommit(false);
                     try {
-                        // pre、main、post SQL 共用同一连接和事务，全部成功后统一提交。
+                        // pre, main, and post SQL share one connection and transaction and are committed only after all stages succeed.
                         JdbcExecuteResult result = executeJdbcSql(connection, sql.trim(), dbQueryProperty.getDbType(), sqlType,
                                 sqlSegmentDelimiter, params, taskLog);
                         connection.commit();
 
-                        // 仅重试成功时额外记录恢复信息，首次成功无需重复输出。
+                        // Log recovery information only after a successful retry; do not duplicate it for an initial success.
                         if (attempt > 1) {
                             LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution retry succeeded on attempt %d/%d", attempt, timing.getMaxAttempts()));
                         }
                         return result;
                     } catch (Exception e) {
-                        // 任意阶段失败都回滚本次连接中尚未提交的 SQL。
+                        // Roll back all uncommitted SQL on the current connection when any stage fails.
                         connection.rollback();
                         LogUtils.appendLocalLogLine(taskLog, "SQL execution failed, transaction rolled back: "
                                 + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
@@ -376,7 +381,7 @@ public class DataDevelopmentJdbcTaskRunner {
             } catch (Exception e) {
                 log.error("Execute SQL failed", e);
                 lastException = e;
-                // 已达到最大尝试次数时直接向上抛出，不再进入等待流程。
+                // Throw immediately after the maximum number of attempts instead of entering another wait cycle.
                 if (attempt >= timing.getMaxAttempts()) {
                     LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution failed after %d attempt(s)", timing.getMaxAttempts()));
                     throw e;
@@ -387,25 +392,25 @@ public class DataDevelopmentJdbcTaskRunner {
                 sleepBeforeSqlExecution(timing.getRetryIntervalMillis(), taskLog, "Wait before SQL retry");
             }
         }
-        // 理论上循环失败会在最后一次尝试中抛出，这里保留最后异常作为防御性兜底。
+        // The final attempt should throw on failure; retain the last exception here as a defensive fallback.
         if (lastException != null) {
             throw lastException;
         }
-        throw new ServiceException("dpp.error.scheduler.execute", "执行SQL失败！");
+        throw new ServiceException("dpp.error.scheduler.execute", "SQL execution failed.");
     }
 
     /**
-     * 根据节点配置构造 SQL 延迟和重试时间参数。
+     * Builds SQL delay and retry timing parameters from the node configuration.
      *
-     * @param failRetryTimes    失败后重试次数
-     * @param failRetryInterval 重试间隔，单位分钟
-     * @param delayTime         首次执行前延迟，单位分钟
-     * @return 标准化后的执行时间配置
+     * @param failRetryTimes    Number of retries after failure
+     * @param failRetryInterval Retry interval in minutes
+     * @param delayTime         Delay before the initial execution in minutes
+     * @return Normalized execution timing configuration
      */
     static SqlExecutionTiming buildSqlExecutionTiming(Long failRetryTimes, Long failRetryInterval, Long delayTime) {
         long retryTimes = normalizeNonNegative(failRetryTimes);
         long maxAttempts = retryTimes + 1;
-        // 防止极端配置在转换为 int 时溢出。
+        // Prevent extreme configuration values from overflowing during int conversion.
         if (maxAttempts > Integer.MAX_VALUE) {
             maxAttempts = Integer.MAX_VALUE;
         }
@@ -417,10 +422,10 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 将空值或负数统一转换为零。
+     * Converts null or negative values to zero.
      */
     private static long normalizeNonNegative(Long value) {
-        // 延迟、间隔和重试次数都不允许为负数。
+        // Delay, interval, and retry count cannot be negative.
         if (value == null || value < 0) {
             return 0L;
         }
@@ -428,14 +433,14 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 在首次执行或重试前等待指定时间。
+     * Waits for the specified duration before the initial execution or a retry.
      *
-     * @param millis  等待毫秒数
-     * @param taskLog 任务日志
-     * @param action  当前等待动作描述
+     * @param millis  Wait duration in milliseconds
+     * @param taskLog Task log
+     * @param action  Description of the current wait action
      */
     private void sleepBeforeSqlExecution(long millis, StringBuilder taskLog, String action) throws InterruptedException {
-        // 未配置等待时间时直接继续，避免无意义的线程休眠。
+        // Continue immediately when no wait duration is configured to avoid unnecessary thread sleep.
         if (millis <= 0) {
             return;
         }
@@ -443,7 +448,7 @@ public class DataDevelopmentJdbcTaskRunner {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            // 恢复中断标记，使上层调度器能够感知任务已被取消或中断。
+            // Restore the interrupt flag so the parent scheduler can detect cancellation or interruption.
             Thread.currentThread().interrupt();
             LogUtils.appendLocalLogLine(taskLog, action + " interrupted");
             throw e;
@@ -451,7 +456,7 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * SQL 执行的延迟及重试配置值对象。
+     * Value object for SQL execution delay and retry settings.
      */
     static class SqlExecutionTiming {
         private final int maxAttempts;
@@ -459,7 +464,7 @@ public class DataDevelopmentJdbcTaskRunner {
         private final long delayMillis;
 
         /**
-         * 创建执行时间配置。
+         * Creates an execution timing configuration.
          */
         SqlExecutionTiming(int maxAttempts, long retryIntervalMillis, long delayMillis) {
             this.maxAttempts = maxAttempts;
@@ -467,87 +472,89 @@ public class DataDevelopmentJdbcTaskRunner {
             this.delayMillis = delayMillis;
         }
 
-        /** 返回包含首次执行在内的最大尝试次数。 */
+        /** Returns the maximum number of attempts, including the initial execution. */
         int getMaxAttempts() {
             return maxAttempts;
         }
 
-        /** 返回失败后的重试间隔毫秒数。 */
+        /** Returns the retry interval in milliseconds. */
         long getRetryIntervalMillis() {
             return retryIntervalMillis;
         }
 
-        /** 返回首次执行前的延迟毫秒数。 */
+        /** Returns the delay before the initial execution in milliseconds. */
         long getDelayMillis() {
             return delayMillis;
         }
     }
 
     /**
-     * 解析节点 SQL 文本。
+     * Parses the node SQL text.
      *
-     * @param node   节点配置
-     * @param params 节点参数 JSON
-     * @return 待执行 SQL 文本
+     * @param node   Node configuration
+     * @param params Node parameter JSON
+     * @return SQL text to execute
      */
     private String getNodeSql(DppEtlNodeRespVO node, JSONObject params) {
         String sql;
-        // 存储过程组件按 DolphinScheduler 结构保存到 method 字段。
+        // The stored-procedure component saves its content in the method field using the DolphinScheduler structure.
         if (StringUtils.equals(TaskComponentTypeEnum.PROCEDURE_DEV.getCode(), node.getComponentType())) {
             sql = params.getString("method");
         } else {
-            // SQL 开发组件保存到 sql 字段。
+            // The SQL-development component saves its content in the sql field.
             sql = params.getString("sql");
         }
-        // SQL 为空没有执行意义，直接作为配置错误返回。
+        // Empty SQL has no execution meaning, so return it as a configuration error.
         if (StringUtils.isEmpty(sql)) {
-            throw new ServiceException("节点SQL为空：" + node.getName());
+            throw new ServiceException("dpp.error.data.development.node.sql.missing",
+                    "Node SQL is missing: {0}", node.getName());
         }
         return sql;
     }
 
     /**
-     * 解析 SQL 类型。
+     * Parses the SQL type.
      *
-     * @param node   节点配置
-     * @param params 节点参数 JSON
-     * @return SQL 类型：0 查询、1 非查询、2 存储过程
+     * @param node   Node configuration
+     * @param params Node parameter JSON
+     * @return SQL type: 0 query, 1 non-query, 2 stored procedure
      */
     private String getNodeSqlType(DppEtlNodeRespVO node, JSONObject params) {
         String sqlType = params.getString("sqlType");
-        // 前端已经传 sqlType 时优先使用前端配置，便于日志还原用户选择。
+        // Prefer the frontend sqlType when present so logs reflect the user selection.
         if (StringUtils.isNotEmpty(sqlType)) {
             return sqlType;
         }
-        // 存储过程组件没有 sqlType 时默认按存储过程记录。
+        // Default to the stored-procedure type when a stored-procedure component has no sqlType.
         if (StringUtils.equals(TaskComponentTypeEnum.PROCEDURE_DEV.getCode(), node.getComponentType())) {
             return "2";
         }
-        // SQL 开发组件没有 sqlType 时按非查询脚本兜底。
+        // Default to a non-query script when an SQL-development component has no sqlType.
         return "1";
     }
 
     /**
-     * 解析 SQL 分段执行符号。
+     * Parses the SQL statement delimiter.
      *
-     * @param params 节点参数 JSON
-     * @return 分段执行符号，未配置时返回 null
+     * @param params Node parameter JSON
+     * @return Statement delimiter, or null when not configured
      */
     private String getNodeSqlSegmentDelimiter(JSONObject params) {
         return normalizeSqlSegmentDelimiter(params.getString("segm"));
     }
 
     /**
-     * 解析节点数据源配置。
+     * Parses the node data source configuration.
      *
-     * @param params 节点参数 JSON
-     * @return JDBC 查询属性
+     * @param params Node parameter JSON
+     * @return JDBC query properties
      */
     private DbQueryProperty buildNodeDbQueryProperty(JSONObject params) {
-        // datasource 是 SQL/存储过程组件保存的数据源连接信息。
+        // datasource contains the connection information saved by the SQL or stored-procedure component.
         JSONObject datasource = params.getJSONObject("datasources");
         if (datasource == null) {
-            throw new ServiceException("节点数据源配置为空");
+            throw new ServiceException("dpp.error.data.development.node.datasource.missing",
+                    "Node data source configuration is missing.");
         }
         return new DbQueryProperty(
                 datasource.getString("datasourceType"),
@@ -558,59 +565,60 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 标准化数据库类型。
+     * Normalizes the database type.
      *
-     * @param dbType 节点中的数据库类型
-     * @return 项目 DbType 枚举使用的数据库类型编码
+     * @param dbType Database type from the node
+     * @return Database type code used by the project DbType enum
      */
     private String normalizeDbType(String dbType) {
         if (StringUtils.isEmpty(dbType)) {
-            throw new ServiceException("数据库类型不能为空");
+            throw new ServiceException("dpp.error.data.development.database.type.missing",
+                    "Database type is required.");
         }
-        // MySQL 组件通常传 mysql，项目 DbType 使用 MySql。
+        // MySQL components usually send mysql, while the project DbType uses MySql.
         if (StringUtils.equalsIgnoreCase(dbType, "mysql")) {
             return DbType.MYSQL.getDb();
         }
-        // Oracle 统一走 Oracle12c 方言，兼容分页和常见连接生成逻辑。
+        // Use the Oracle12c dialect for Oracle to support pagination and common connection-generation logic.
         if (StringUtils.equalsIgnoreCase(dbType, "oracle") || StringUtils.equalsIgnoreCase(dbType, "oracle12c")) {
             return DbType.ORACLE_12C.getDb();
         }
-        // 达梦兼容 dm 和 dm8 两种前端传值。
+        // DM accepts both dm and dm8 values from the frontend.
         if (StringUtils.equalsIgnoreCase(dbType, "dm8") || StringUtils.equalsIgnoreCase(dbType, "dm")) {
             return DbType.DM8.getDb();
         }
-        // 人大金仓兼容 king base 和 king base8 两种前端传值。
+        // Kingbase accepts both king base and king base8 values from the frontend.
         if (StringUtils.equalsIgnoreCase(dbType, "kingbase") || StringUtils.equalsIgnoreCase(dbType, "kingbase8")) {
             return DbType.KINGBASE8.getDb();
         }
-        // 未知类型原样返回，由后续驱动匹配抛出不支持异常。
+        // Return unknown types unchanged and let later driver matching throw the unsupported-type exception.
         return dbType;
     }
 
     /**
-     * 解密数据源密码。
+     * Decrypts the data source password.
      *
-     * @param password 原始密码
-     * @return 可用于 JDBC 连接的密码
+     * @param password Original password
+     * @return Password usable for the JDBC connection
      */
     private String decryptPasswordIfNeeded(String password) {
         if (StringUtils.isEmpty(password)) {
             return password;
         }
         try {
-            // 兼容平台保存的 AES 密文密码。
+            // Support AES-encrypted passwords stored by the platform.
             return AesEncryptUtil.desEncrypt(password).trim();
         } catch (Exception e) {
-            // 解密失败说明可能已经是明文，直接返回原值。
+            // If decryption fails, the value may already be plaintext, so return it unchanged.
             return password;
         }
     }
 
     /**
-     * 根据数据库类型获取 JDBC 驱动类名。
+     * Returns the JDBC driver class name for the database type.
      *
-     * @param dbType 标准化后的数据库类型
-     * @return JDBC 驱动类名
+     * @param dbType Normalized database type
+     * @return JDBC driver class name
      */
     private String getDriverClassName(String dbType) {
         if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)) {
@@ -625,16 +633,17 @@ public class DataDevelopmentJdbcTaskRunner {
         if (StringUtils.equals(DbType.KINGBASE8.getDb(), dbType)) {
             return "com.kingbase8.Driver";
         }
-        throw new ServiceException("不支持的数据库类型：" + dbType);
+        throw new ServiceException("dpp.error.data.development.database.type.unsupported",
+                "Unsupported database type: {0}", dbType);
     }
 
     /**
-     * 执行 SQL 脚本。
+     * Executes an SQL script.
      *
-     * @param connection JDBC 连接
-     * @param sql        SQL 脚本文本
-     * @return 执行结果
-     * @throws SQLException SQL 执行异常
+     * @param connection JDBC connection
+     * @param sql        SQL script text
+     * @return Execution result
+     * @throws SQLException SQL execution exception
      */
     private JdbcExecuteResult executeJdbcSql(Connection connection, String sql, String dbType, String sqlType,
                                               String sqlSegmentDelimiter, JSONObject params,
@@ -642,57 +651,60 @@ public class DataDevelopmentJdbcTaskRunner {
         int updateCount = 0;
         int resultCount = 0;
 
-        // localParams 与 DolphinScheduler SQL 参数结构兼容，用于替换 ${name} 和 !{name} 占位符。
+        // localParams is compatible with the DolphinScheduler SQL parameter structure and replaces ${name} and !{name} placeholders.
         List<JSONObject> localParams = Optional.ofNullable(params.getJSONArray("localParams"))
                 .map(array -> array.toJavaList(JSONObject.class)).orElse(Collections.emptyList());
-        // limit 控制 JDBC 最多返回的查询行数；displayRows 只控制写入任务日志的展示行数。
+        // limit controls the maximum rows returned by JDBC; displayRows controls only the rows written to the task log.
         int queryLimit = params.getIntValue("limit", 10000);
         int displayRows = params.getIntValue("displayRows", 10);
 
-        // 预置语句和后置语句都按非查询脚本处理，并与主 SQL 共用当前连接和事务。
+        // Treat pre- and post-statements as non-query scripts that share the current connection and transaction with the main SQL.
         List<String> preStatements = getStringList(params, "preStatements");
         List<String> postStatements = getStringList(params, "postStatements");
 
-        // 先执行预置 SQL，任意一条失败都会抛出异常并由外层回滚整个节点事务。
+        // Execute pre-SQL first; any failure throws and causes the caller to roll back the entire node transaction.
         updateCount += executeNonQueryStatements(connection, preStatements, dbType, sqlSegmentDelimiter,
                 localParams, queryLimit, "pre", taskLog);
 
-        // 主 SQL 先按自定义分隔符或数据库方言拆分，再逐条绑定参数并执行。
+        // Split the main SQL by the custom delimiter or database dialect, then bind parameters and execute each statement.
         List<String> mainStatements = splitJdbcSqlScript(sql, dbType, sqlSegmentDelimiter);
         for (String item : mainStatements) {
             SqlBind sqlBind = buildSqlBind(item, localParams);
-            // sqlType=0 是纯查询，明确调用 executeQuery 并统计、展示结果集。
+            // sqlType=0 is a query; call executeQuery explicitly and count and display the result set.
             if (StringUtils.equals("0", sqlType)) {
                 resultCount += executeQueryStatement(connection, sqlBind, queryLimit, displayRows, taskLog);
-            // sqlType=1/2 可能包含 DDL、DML、过程定义或过程调用，使用 execute 兼容不同结果类型。
+            // sqlType=1 or 2 may contain DDL, DML, procedure definitions, or procedure calls; use execute to support different result types.
             } else if (StringUtils.equals("1", sqlType) || StringUtils.equals("2", sqlType)) {
                 JdbcExecuteResult result = executeStatement(connection, sqlBind, queryLimit, taskLog);
                 updateCount += result.getUpdateCount();
                 resultCount += result.getResultCount();
             } else {
-                throw new SQLException("不支持的sqlType：" + sqlType + "，有效值为0（查询）、1（非查询）、2（存储过程）");
+                throw new SQLException(MessageUtils.messageWithFallback(
+                        "dpp.error.data.development.sql.type.unsupported",
+                        "Unsupported sqlType: {0}. Valid values are 0 (query), 1 (non-query), and 2 (stored procedure).",
+                        sqlType));
             }
         }
 
-        // 主 SQL 全部成功后执行后置 SQL，保持 DolphinScheduler 的 pre-main-post 执行顺序。
+        // Execute post-SQL after all main SQL succeeds to preserve DolphinScheduler pre-main-post ordering.
         updateCount += executeNonQueryStatements(connection, postStatements, dbType, sqlSegmentDelimiter,
                 localParams, queryLimit, "post", taskLog);
         return new JdbcExecuteResult(updateCount, resultCount);
     }
 
     /**
-     * 执行预置或后置非查询脚本。
+     * Executes pre- or post-non-query scripts.
      *
-     * @param connection          当前节点 JDBC 连接
-     * @param scripts             待执行脚本集合
-     * @param dbType              数据库类型
-     * @param sqlSegmentDelimiter 自定义分隔符
-     * @param localParams         本地 SQL 参数
-     * @param queryLimit          JDBC 最大返回行数
-     * @param handlerType         日志阶段名称，pre 或 post
-     * @param taskLog             任务日志
-     * @return 累计影响行数
-     * @throws SQLException SQL 执行异常
+     * @param connection          Current node JDBC connection
+     * @param scripts             Scripts to execute
+     * @param dbType              Database type
+     * @param sqlSegmentDelimiter Custom delimiter
+     * @param localParams         Local SQL parameters
+     * @param queryLimit          Maximum rows returned by JDBC
+     * @param handlerType         Log stage name: pre or post
+     * @param taskLog             Task log
+     * @return Cumulative affected-row count
+     * @throws SQLException SQL execution exception
      */
     private int executeNonQueryStatements(Connection connection, List<String> scripts, String dbType,
                                             String sqlSegmentDelimiter, List<JSONObject> localParams,
@@ -700,7 +712,7 @@ public class DataDevelopmentJdbcTaskRunner {
                                             StringBuilder taskLog) throws SQLException {
         int updateCount = 0;
         for (String script : scripts) {
-            // 单个 pre/post 配置项本身也可能包含多条 SQL，因此仍需经过统一拆分器。
+            // A single pre or post item may contain multiple SQL statements, so it must still pass through the common splitter.
             for (String statement : splitJdbcSqlScript(script, dbType, sqlSegmentDelimiter)) {
                 LogUtils.appendLocalLogLine(taskLog, "Execute " + handlerType + " sql: " + statement);
                 JdbcExecuteResult result = executeStatement(connection, buildSqlBind(statement, localParams), queryLimit, taskLog);
@@ -711,9 +723,9 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 使用 JDBC 通用 execute 方法执行一条 SQL，并消费其全部结果集和更新计数。
+     * Executes one SQL statement with the generic JDBC execute method and consumes all result sets and update counts.
      *
-     * @return 当前 SQL 的影响行数及结果行数
+     * @return Affected-row and result-row counts for the current SQL statement
      */
     private JdbcExecuteResult executeStatement(Connection connection, SqlBind sqlBind, int queryLimit,
                                                 StringBuilder taskLog) throws SQLException {
@@ -723,14 +735,14 @@ public class DataDevelopmentJdbcTaskRunner {
         try (PreparedStatement statement = prepareStatement(connection, sqlBind, queryLimit)) {
             boolean hasResultSet = statement.execute();
             while (true) {
-                // execute 返回 true 表示当前结果是 ResultSet，并不代表执行成功与否。
+                // execute returning true means the current result is a ResultSet; it does not indicate success or failure.
                 if (hasResultSet) {
                     try (ResultSet resultSet = statement.getResultSet()) {
                         resultCount += countResultSetRows(resultSet, 0, taskLog);
                     }
                 } else {
                     int count = statement.getUpdateCount();
-                    // 更新计数为 -1 表示当前 SQL 已经没有更多执行结果。
+                    // An update count of -1 means the current SQL statement has no more results.
                     if (count == -1) {
                         break;
                     }
@@ -738,7 +750,7 @@ public class DataDevelopmentJdbcTaskRunner {
                         updateCount += count;
                     }
                 }
-                // 存储过程可能连续返回多个结果集和更新计数，必须循环读取到结束。
+                // A stored procedure may return multiple result sets and update counts, so consume them until completion.
                 hasResultSet = statement.getMoreResults();
             }
         }
@@ -746,7 +758,7 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 执行纯查询 SQL，并统计结果总行数及输出指定数量的结果日志。
+     * Executes query-only SQL, counts all result rows, and logs the configured number of rows.
      */
     private int executeQueryStatement(Connection connection, SqlBind sqlBind, int queryLimit, int displayRows,
                                       StringBuilder taskLog) throws SQLException {
@@ -758,11 +770,11 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 创建 PreparedStatement、设置最大返回行数并按顺序绑定参数。
+     * Creates a PreparedStatement, sets the maximum returned rows, and binds parameters in order.
      */
     private PreparedStatement prepareStatement(Connection connection, SqlBind sqlBind, int queryLimit) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(sqlBind.sql);
-        // 未配置或配置为非正数时使用与 DolphinScheduler 一致的默认上限 10000。
+        // Use the DolphinScheduler-compatible default limit of 10000 when the value is absent or non-positive.
         statement.setMaxRows(queryLimit <= 0 ? 10000 : queryLimit);
         for (int i = 0; i < sqlBind.values.size(); i++) {
             statement.setObject(i + 1, sqlBind.values.get(i));
@@ -771,13 +783,13 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 统计结果集行数。
+     * Counts result-set rows.
      *
-     * @param resultSet JDBC 结果集
-     * @param displayRows 写入日志的最大行数，0 表示只统计不展示
-     * @param taskLog     任务日志
-     * @return 结果行数
-     * @throws SQLException 读取结果集异常
+     * @param resultSet JDBC result set
+     * @param displayRows Maximum rows written to the log; 0 counts without displaying
+     * @param taskLog     Task log
+     * @return Result-row count
+     * @throws SQLException Result-set read exception
      */
     private int countResultSetRows(ResultSet resultSet, int displayRows, StringBuilder taskLog) throws SQLException {
         if (resultSet == null) {
@@ -787,7 +799,7 @@ public class DataDevelopmentJdbcTaskRunner {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
         while (resultSet.next()) {
-            // 超过 displayRows 后不再构造日志对象，但继续消费结果集并统计总行数。
+            // After displayRows is reached, stop building log objects but continue consuming and counting the result set.
             Map<String, Object> row = count < displayRows ? new LinkedHashMap<>() : null;
             for (int i = 1; i <= columnCount; i++) {
                 Object value = resultSet.getObject(i);
@@ -804,10 +816,10 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 从节点 JSON 参数中读取字符串数组，缺失时返回空集合。
+     * Reads a string array from node JSON parameters and returns an empty collection when absent.
      */
     private List<String> getStringList(JSONObject params, String key) {
-        // 老任务可能没有 preStatements/postStatements 字段，需要保持向后兼容。
+        // Legacy tasks may lack preStatements or postStatements, so preserve backward compatibility.
         if (params.getJSONArray(key) == null) {
             return Collections.emptyList();
         }
@@ -816,10 +828,10 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 将节点 SQL 转换为可预编译 SQL 及对应参数值。
+     * Converts node SQL to prepared SQL and its corresponding parameter values.
      * <p>
-     * !{name} 直接替换原值，适用于表名、字段名等不能使用 JDBC 占位符的位置；
-     * ${name} 替换为问号并通过 PreparedStatement 绑定，适用于普通条件值。
+     * !{name} directly substitutes the raw value for structural positions such as table and column names where JDBC placeholders cannot be used;
+     * ${name} becomes a question mark and is bound through PreparedStatement for ordinary condition values.
      */
     private SqlBind buildSqlBind(String sql, List<JSONObject> localParams) throws SQLException {
         Map<String, Object> values = new HashMap<>();
@@ -827,26 +839,30 @@ public class DataDevelopmentJdbcTaskRunner {
             values.put(param.getString("prop"), param.get("value"));
         }
 
-        // 原值参数不参与预编译，调用者应只将其用于可信的结构性 SQL 片段。
+        // Raw-value parameters are not prepared; callers must use them only for trusted structural SQL fragments.
         Matcher rawMatcher = Pattern.compile("['\"]*!\\{(.*?)}['\"]*").matcher(sql);
         StringBuffer rawSql = new StringBuffer();
         while (rawMatcher.find()) {
             String name = rawMatcher.group(1);
             if (!values.containsKey(name)) {
-                throw new SQLException("SQL参数不存在：" + name);
+                throw new SQLException(MessageUtils.messageWithFallback(
+                        "dpp.error.data.development.sql.parameter.missing",
+                        "SQL parameter does not exist: {0}", name));
             }
             rawMatcher.appendReplacement(rawSql, Matcher.quoteReplacement(String.valueOf(values.get(name))));
         }
         rawMatcher.appendTail(rawSql);
 
-        // 普通参数统一转换为 JDBC 问号占位符，避免直接拼接参数值。
+        // Convert ordinary parameters to JDBC question-mark placeholders to avoid direct value concatenation.
         Matcher bindMatcher = Pattern.compile("\\$\\{(.*?)}").matcher(rawSql.toString());
         StringBuffer bindSql = new StringBuffer();
         List<Object> bindValues = new ArrayList<>();
         while (bindMatcher.find()) {
             String name = bindMatcher.group(1);
             if (!values.containsKey(name)) {
-                throw new SQLException("SQL参数不存在：" + name);
+                throw new SQLException(MessageUtils.messageWithFallback(
+                        "dpp.error.data.development.sql.parameter.missing",
+                        "SQL parameter does not exist: {0}", name));
             }
             bindValues.add(values.get(name));
             bindMatcher.appendReplacement(bindSql, "?");
@@ -856,9 +872,9 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     private static class SqlBind {
-        /** 替换完成、可交给 PreparedStatement 的 SQL。 */
+        /** SQL after substitution, ready for PreparedStatement. */
         private final String sql;
-        /** 按问号出现顺序排列的绑定值。 */
+        /** Bound values ordered by question-mark position. */
         private final List<Object> values;
 
         private SqlBind(String sql, List<Object> values) {
@@ -868,32 +884,32 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 根据数据库类型和可选自定义分段执行符号拆分 SQL 脚本。
+     * Splits an SQL script by database type and an optional custom statement delimiter.
      * <p>
-     * 自定义分段执行符号由节点参数 segm 提供；未提供时保持原数据库类型拆分逻辑。
+     * The custom delimiter comes from the segm node parameter; when absent, retain the database-specific splitting logic.
      *
-     * @param sql                 SQL 脚本文本
-     * @param dbType              项目内部数据库类型编码
-     * @param sqlSegmentDelimiter 自定义分段执行符号
-     * @return JDBC 可逐条执行的 SQL 列表
+     * @param sql                 SQL script text
+     * @param dbType              Internal project database type code
+     * @param sqlSegmentDelimiter Custom statement delimiter
+     * @return List of SQL statements executable individually through JDBC
      */
     private List<String> splitJdbcSqlScript(String sql, String dbType, String sqlSegmentDelimiter) {
         String segmentDelimiter = normalizeSqlSegmentDelimiter(sqlSegmentDelimiter);
-        // 显式配置 segm 时必须优先按原始脚本拆分，避免过程体内部的分号被 Druid 误拆或移除。
+        // When segm is explicitly configured, split the original script first so Druid does not incorrectly split or remove semicolons inside procedure bodies.
         if (StringUtils.isNotEmpty(segmentDelimiter)) {
             return Arrays.stream(sql.split(Pattern.quote(segmentDelimiter)))
                     .map(String::trim)
                     .filter(StringUtils::isNotEmpty)
                     .collect(Collectors.toList());
         }
-        // 未配置自定义分隔符时，根据实际数据库方言选择 Druid 拆分器。
+        // When no custom delimiter is configured, select the Druid splitter for the actual database dialect.
         if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)) {
             String cleanSQL = SQLParserUtils.removeComment(sql, com.alibaba.druid.DbType.mysql);
             return SQLParserUtils.split(cleanSQL, com.alibaba.druid.DbType.mysql);
         }
         if (StringUtils.equals(DbType.ORACLE.getDb(), dbType)
                 || StringUtils.equals(DbType.ORACLE_12C.getDb(), dbType)) {
-            // Oracle PL/SQL 块包含内部分号，交给 Oracle 专用语法解析器保持块完整。
+            // Oracle PL/SQL blocks contain internal semicolons; use the Oracle parser to keep each block intact.
             if (sql.toUpperCase().contains("BEGIN") && sql.toUpperCase().contains("END")) {
                 return new OracleStatementParser(sql).parseStatementList().stream().map(SQLStatement::toString)
                         .collect(Collectors.toList());
@@ -908,16 +924,16 @@ public class DataDevelopmentJdbcTaskRunner {
             String cleanSQL = SQLParserUtils.removeComment(sql, com.alibaba.druid.DbType.kingbase);
             return SQLParserUtils.splitAndRemoveComment(cleanSQL, com.alibaba.druid.DbType.kingbase);
         }
-        // 未识别数据库使用 Druid 通用方言兜底。
+        // Use the generic Druid dialect as a fallback for unrecognized databases.
         String cleanSQL = SQLParserUtils.removeComment(sql, com.alibaba.druid.DbType.other);
         return SQLParserUtils.split(cleanSQL, com.alibaba.druid.DbType.other);
     }
 
     /**
-     * 标准化 SQL 分段执行符号。
+     * Normalizes the SQL statement delimiter.
      *
-     * @param delimiter 原始分段执行符号
-     * @return 去掉首尾空白后的分段执行符号
+     * @param delimiter Original statement delimiter
+     * @return Statement delimiter with surrounding whitespace removed
      */
     private String normalizeSqlSegmentDelimiter(String delimiter) {
         if (StringUtils.isEmpty(delimiter)) {
@@ -931,25 +947,25 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 标记任务实例执行成功。
+     * Marks the task instance as successful.
      *
-     * @param instance 任务实例
+     * @param instance Task instance
      */
     private void markDataDevelopmentSuccess(DppEtlTaskInstanceDO instance) {
-        // SQL 节点全部成功后，将任务实例更新为成功并记录结束时间。
+        // After all SQL nodes succeed, mark the task instance successful and record its end time.
         instance.setStatus(String.valueOf(WorkflowExecutionStatus.SUCCESS.getCode()));
         instance.setEndTime(new Date());
         dppEtlTaskInstanceService.updateById(instance);
     }
 
     /**
-     * 标记任务实例执行失败。
+     * Marks the task instance as failed.
      *
-     * @param instance 任务实例
-     * @param e        失败异常
+     * @param instance Task instance
+     * @param e        Failure exception
      */
     private void markDataDevelopmentFail(DppEtlTaskInstanceDO instance, Exception e) {
-        // 保存原始异常消息，方便任务实例页面直接展示失败原因。
+        // Preserve the original exception message so the task instance page can display the failure reason.
         instance.setStatus(String.valueOf(WorkflowExecutionStatus.FAILURE.getCode()));
         instance.setEndTime(new Date());
         instance.setRemark(e.getMessage());
@@ -957,28 +973,28 @@ public class DataDevelopmentJdbcTaskRunner {
     }
 
     /**
-     * 计算任务耗时。
+     * Calculates task duration.
      *
-     * @param startTime 任务实例
-     * @return 耗时秒数
+     * @param startTime Task instance
+     * @return Duration in seconds
      */
     private long calcDurationSeconds(Date startTime) {
-        // 日志只需要秒级耗时，毫秒差值直接向下取整。
+        // The log needs second-level duration only, so truncate the millisecond difference.
         Date endTime = new Date();
         return (endTime.getTime() - startTime.getTime()) / 1000;
     }
 
     /**
-     * 安全写入任务实例日志。
+     * Writes the task instance log safely.
      *
-     * @param nodeInstanceId 节点实例 ID
-     * @param instanceId 任务实例 ID
-     * @param task       任务详情
-     * @param msg        日志内容
+     * @param nodeInstanceId Node instance ID
+     * @param instanceId Task instance ID
+     * @param task       Task details
+     * @param msg        Log content
      */
     private void safeDataDevelopmentLog(Long nodeInstanceId, Long instanceId, DppEtlTaskDO task, String msg) {
         try {
-            // run 方法会在结尾一次性传入完整日志，这里直接保存原文，避免重复追加或重复加日志前缀。
+            // The run method passes the complete log once at the end; save it unchanged to avoid duplicate appends or prefixes.
             dppEtlNodeInstanceLogService.save(DppEtlNodeInstanceLogDO.builder()
                     .nodeId(task.getId())
                     .nodeCode(task.getCode())
@@ -991,8 +1007,8 @@ public class DataDevelopmentJdbcTaskRunner {
                     .delFlag(Boolean.FALSE)
                     .build());
         } catch (Exception e) {
-            // 日志失败不能覆盖真正的 SQL 执行异常，只记录本地错误日志。
-            log.error("数据开发任务实例日志写入失败 instanceId={}, msg={}", instanceId, msg, e);
+            // A log-write failure must not mask the actual SQL exception, so record it only in the local error log.
+            log.error("Failed to write the data development task instance log: instanceId={}, msg={}", instanceId, msg, e);
         }
     }
 }

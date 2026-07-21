@@ -36,6 +36,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.annotation.Excels;
 import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.exception.UtilException;
 import tech.qiantong.qdata.common.utils.DateUtils;
@@ -270,7 +271,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("导入Excel异常{}", e.getMessage());
+            log.error("Failed to import Excel: {}", e.getMessage());
             throw new UtilException(e.getMessage());
         }
         finally
@@ -309,7 +310,8 @@ public class ExcelUtil<T>
         Sheet sheet = StringUtils.isNotEmpty(sheetName) ? wb.getSheet(sheetName) : wb.getSheetAt(0);
         if (sheet == null)
         {
-            throw new IOException("文件sheet不存在");
+            throw new IOException(MessageUtils.messageWithFallback(
+                    "sys.error.excel.sheet.notfound", "Excel sheet does not exist"));
         }
         boolean isXSSFWorkbook = !(wb instanceof HSSFWorkbook);
         Map<String, PictureData> pictures;
@@ -596,7 +598,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("导出Excel异常{}", e.getMessage());
+            log.error("Failed to export Excel: {}", e.getMessage());
         }
         finally
         {
@@ -622,8 +624,9 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("导出Excel异常{}", e.getMessage());
-            throw new UtilException("导出Excel失败，请联系网站管理员！");
+            log.error("Failed to export Excel: {}", e.getMessage());
+            throw new UtilException(MessageUtils.messageWithFallback(
+                    "sys.error.excel.export.fail", "Failed to export Excel; contact the administrator"));
         }
         finally
         {
@@ -1103,7 +1106,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("导出Excel失败{}", e);
+            log.error("Excel export failed: {}", e);
         }
         return cell;
     }
@@ -1314,7 +1317,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("不能格式化数据 " + excel.handler(), e.getMessage());
+            log.error("Failed to format data " + excel.handler(), e.getMessage());
         }
         return Convert.toStr(value);
     }
@@ -1353,7 +1356,7 @@ public class ExcelUtil<T>
             Set<Integer> keys = statistics.keySet();
             Cell cell = row.createCell(0);
             cell.setCellStyle(styles.get("total"));
-            cell.setCellValue("合计");
+            cell.setCellValue(MessageUtils.messageWithFallback("common.total", "Total"));
 
             for (Integer key : keys)
             {
@@ -1777,7 +1780,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("获取对象异常{}", e.getMessage());
+            log.error("Failed to get object: {}", e.getMessage());
         }
         return method;
     }

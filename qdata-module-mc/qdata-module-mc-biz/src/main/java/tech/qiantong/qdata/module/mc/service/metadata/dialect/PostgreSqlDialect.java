@@ -32,7 +32,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
             // PostgreSQL uses tablespace, here returns PostgreSQL
             return "PostgreSQL";
         } catch (Exception e) {
-            log.error("获取PostgreSQL存储引擎失败", e);
+            log.error("Failed to get the PostgreSQL storage engine", e);
             return null;
         }
     }
@@ -61,7 +61,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取PostgreSQL表行数失败", e);
+            log.error("Failed to get the PostgreSQL table row count", e);
         }
         return 0L;
     }
@@ -96,7 +96,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
                 return indexes.toString();
             }
         } catch (Exception e) {
-            log.error("获取PostgreSQL表索引信息失败", e);
+            log.error("Failed to get PostgreSQL table index information", e);
         }
         return "";
     }
@@ -131,7 +131,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
                 return partitionFields.toString();
             }
         } catch (Exception e) {
-            log.error("获取PostgreSQL表分区字段信息失败", e);
+            log.error("Failed to get PostgreSQL table partition-column information", e);
         }
         return "";
     }
@@ -161,7 +161,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取PostgreSQL字段自增信息失败", e);
+            log.error("Failed to get PostgreSQL column auto-increment information", e);
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
                 return rs.next();
             }
         } catch (Exception e) {
-            log.error("判断PostgreSQL字段是否为分区字段失败", e);
+            log.error("Failed to determine whether the PostgreSQL column is a partition column", e);
         }
         return false;
     }
@@ -209,7 +209,7 @@ public class PostgreSqlDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }

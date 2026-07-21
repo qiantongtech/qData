@@ -26,7 +26,7 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 import java.util.*;
 
 /**
- * 带参数sql处理工具类
+ * Utility for SQL with named parameters.
  */
 public class NamedParameterUtil {
 
@@ -56,13 +56,13 @@ public class NamedParameterUtil {
     private NamedParameterUtil() {}
 
     /**
-     * 定义特殊字符（增加最后的自定义的'}'）
+     * Defines special characters, including the custom trailing '}'.
      */
     private static final char[] PARAMETER_SEPARATORS =
             new char[] {'"', '\'', ':', '&', ',', ';', '(', ')', '|', '=', '+', '-', '*', '%', '/', '\\', '<', '>', '^', '}'};
 
     /**
-     * 对带参数sql的统计式封装，便于后续肢解拼装
+     * Encapsulates SQL statistics with parameters for subsequent decomposition and assembly.
      * @param originalSql
      * @return
      */
@@ -105,7 +105,7 @@ public class NamedParameterUtil {
     }
 
     /**
-     * 获得不带参数的sql，即替换参数为？
+     * Returns SQL without named parameters by replacing them with question marks.
      * @param parsedSql
      * @param params
      * @return
@@ -133,7 +133,7 @@ public class NamedParameterUtil {
     }
 
     /**
-     * 获得sql所需参数K,V
+     * Returns the parameter key-value pairs required by the SQL.
      * @param parsedSql
      * @param params
      * @return
@@ -142,7 +142,7 @@ public class NamedParameterUtil {
         List<String> paramNames = parsedSql.getParamNames();
         LinkedHashMap<String, Object> acceptedFilters = new LinkedHashMap<>(parsedSql.getTotalParamCount());
         if (parsedSql.getNamedParamCount() > 0 && parsedSql.getUnnamedParamCount() > 0) {
-            throw new ServiceException("ds.error.param.mixed", "parameter方式与？方式不能混合！");
+            throw new ServiceException("ds.error.param.mixed", "Named parameters and ? placeholders cannot be mixed!");
         }
         for (int i = 0; i < paramNames.size(); i++) {
             String keyName = paramNames.get(i);

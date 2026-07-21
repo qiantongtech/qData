@@ -33,7 +33,7 @@ public class QualitySqlGenerateFactory {
     public QualitySqlGenerator getGenerator(String ruleType) {
         QualitySqlGenerator generator = generatorMap.get(ruleType);
         if (generator == null) {
-            throw new ServiceException("quality.error.rule.type.unsupported", "不支持的规则类型：" + ruleType, ruleType);
+            throw new ServiceException("quality.error.rule.type.unsupported", "Unsupported rule type", ruleType);
         }
         return generator;
     }

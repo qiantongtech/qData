@@ -77,7 +77,7 @@ public class MappingHandlerMapping {
 
     public static String buildMappingKey(String requestMethod, String requestMapping) {
         String valByKey = null;
-        //如果requestMethod是数字判断
+        //Handle numeric requestMethod values.
         if("1".equals(requestMethod)||"2".equals(requestMethod)){
             valByKey = RequestMethodEnum.getValByKey(requestMethod.toUpperCase());
         }else{
@@ -87,14 +87,14 @@ public class MappingHandlerMapping {
     }
 
     /**
-     * 注册请求映射
+     * Registers request mappings.
      *
      * @param api
      */
     public void registerMapping(DsApiDO api) {
         String mappingKey = getMappingKey(api);
         if (mappings.containsKey(mappingKey)) {
-            // 取消注册
+            // Unregister the mapping.
             mappings.remove(mappingKey);
             requestMappingHandlerMapping.unregisterMapping(getRequestMapping(api));
         }
@@ -102,20 +102,20 @@ public class MappingHandlerMapping {
         mappings.put(mappingKey, api);
         requestMappingHandlerMapping.registerMapping(requestMapping, handler, method);
         mappings.keySet().forEach(key -> {
-//            log.info("已注册接口:{}", mappings.get(key));
+//            log.info("Registered API:{}", mappings.get(key));
         });
     }
 
     /**
-     * 取消注册请求映射
+     * Unregisters request mappings.
      *
      * @param api
      */
     public void unregisterMapping(DsApiDO api) {
-        log.info("取消注册接口:{}", api.getName());
+        log.info("Unregistered API:{}", api.getName());
         String mappingKey = getMappingKey(api);
         if (mappings.containsKey(mappingKey)) {
-            // 取消注册
+            // Unregister the mapping.
             mappings.remove(mappingKey);
             requestMappingHandlerMapping.unregisterMapping(getRequestMapping(api));
         }
@@ -130,7 +130,7 @@ public class MappingHandlerMapping {
     }
 
     /**
-     * 调用接口 /services/v1.0.0/user/1
+     * Calls the API /services/v1.0.0/user/1.
      * @param version
      * @param path
      * @return

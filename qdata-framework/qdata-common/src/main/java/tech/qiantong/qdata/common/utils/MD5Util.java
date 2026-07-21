@@ -71,10 +71,10 @@ public class MD5Util {
         try {
             String value = "1246656415670484994";
             MD5Util mt = new MD5Util();
-            System.out.println("加密前的字符：" + value);
-            System.out.println("加密后的字符：" + mt.encode(value));
-            System.out.println("解密后的字符：" + mt.decode(mt.encode(value)));
-            System.out.println("字符串的MD5值："+ getMD5Value(value));
+            System.out.println("Text before encryption: " + value);
+            System.out.println("Text after encryption: " + mt.encode(value));
+            System.out.println("Text after decryption: " + mt.decode(mt.encode(value)));
+            System.out.println("MD5 value of the string: "+ getMD5Value(value));
         } catch (Exception e) {
             e.printStackTrace();
         }

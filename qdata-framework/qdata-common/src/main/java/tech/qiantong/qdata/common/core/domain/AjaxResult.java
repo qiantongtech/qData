@@ -19,6 +19,7 @@
 package tech.qiantong.qdata.common.core.domain;
 
 import tech.qiantong.qdata.common.constant.HttpStatus;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 import java.util.HashMap;
@@ -85,7 +86,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult success()
     {
-        return AjaxResult.success("操作成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"));
     }
 
     /**
@@ -95,7 +97,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult success(Object data)
     {
-        return AjaxResult.success("操作成功", data);
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"), data);
     }
 
     /**
@@ -151,7 +154,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult error()
     {
-        return AjaxResult.error("操作失败");
+        return AjaxResult.error(MessageUtils.messageWithFallback(
+                "common.operation.fail", "Operation failed"));
     }
 
     /**

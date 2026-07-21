@@ -12,8 +12,8 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import javax.annotation.Resource;
 
 /**
- * Quartz 调度器服务
- * 用于管理数据采集任务的调度和执行
+ * Quartz scheduler service.
+ * Manages scheduling and execution for data collection tasks.
  *
  * @author qdata
  * @date 2026-07-07
@@ -27,10 +27,10 @@ public class McTaskQuartzService {
 
     /**
      * Quartz
-     * 创建调度器
+     * Creates a scheduler.
      *
-     * @param taskCode 任务编码
-     * @return 调度器ID
+     * @param taskCode task code
+     * @return scheduler ID
      */
     public Long createSchedulerQuartz(McTaskDO taskCode) {
         Long schedule = null;
@@ -38,7 +38,7 @@ public class McTaskQuartzService {
             schedule = schedulerAdapter.createSchedule(ScheduleCommand.builder().jobName(taskCode.getName()).jobGroup(taskCode.getName())
                     .cronExpression(taskCode.getCronExpression()).invokeTarget("mcTaskExecutorJob.runExecuteTask(" + taskCode.getId() + "L)").remark(taskCode.getRemark()).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.scheduler.create", "创建调度器失败！");
+            throw new ServiceException("mc.error.scheduler.create", "Failed to create scheduler!");
         }
         return schedule;
     }
@@ -53,13 +53,13 @@ public class McTaskQuartzService {
             schedulerAdapter.updateSchedule(ScheduleCommand.builder().id(Long.valueOf(scheduler.getJobId())).remark(taskCode.getRemark()).jobId(Long.valueOf(scheduler.getJobId()))
                     .jobName(taskCode.getName()).jobGroup(taskCode.getName()).status(scheduler.getStatus()).invokeTarget("mcTaskExecutorJob.runExecuteTask(" + taskCode.getId() + "L)").cronExpression(cronExpression).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.scheduler.update", "更新调度器失败！");
+            throw new ServiceException("mc.error.scheduler.update", "Failed to update scheduler!");
         }
     }
 
     /**
      * Quartz
-     * 上线调度器（单独上线调度器，不操作任务）
+     * Activates the scheduler without changing the task.
      *
      * @param schedulerId
      */
@@ -67,13 +67,13 @@ public class McTaskQuartzService {
         try {
             schedulerAdapter.online(ScheduleCommand.builder().id(schedulerId).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.scheduler.online", "上线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.online", "Failed to online scheduler!");
         }
     }
 
     /**
      * Quartz
-     * 下线调度器（单独下线调度器，不操作任务）
+     * Deactivates the scheduler without changing the task.
      *
      * @param schedulerId
      */
@@ -81,21 +81,21 @@ public class McTaskQuartzService {
         try {
             schedulerAdapter.offline(ScheduleCommand.builder().id(schedulerId).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.offline", "Failed to offline scheduler!");
         }
     }
 
     /**
      * Quartz
-     * 启动任务（立即执行一次）
+     * Starts the task for one immediate execution.
      *
-     * @param taskId 任务编码
+     * @param taskId task code
      */
     public void startTaskQuartz(Long taskId) {
         try {
             schedulerAdapter.trigger(ScheduleCommand.builder().id(taskId).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.task.start", "启动任务失败：" + e.getMessage());
+            throw new ServiceException("mc.error.task.start", "Failed to start task");
         }
     }
 
@@ -107,7 +107,7 @@ public class McTaskQuartzService {
         try {
             schedulerAdapter.delete(ScheduleCommand.builder().id(taskId).build());
         } catch (Exception e) {
-            throw new ServiceException("mc.error.task.delete", "删除任务失败：" + e.getMessage());
+            throw new ServiceException("mc.error.task.delete", "Failed to delete task!");
         }
     }
 }

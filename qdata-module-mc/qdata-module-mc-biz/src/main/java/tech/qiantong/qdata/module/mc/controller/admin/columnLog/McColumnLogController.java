@@ -54,7 +54,7 @@ public class McColumnLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McColumnLogDO> list = (List<McColumnLogDO>) mcColumnLogService.getMcColumnLogPage(exportReqVO).getRows();
         ExcelUtil<McColumnLogRespVO> util = new ExcelUtil<>(McColumnLogRespVO.class);
-        util.exportExcel(response, McColumnLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McColumnLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取元数据字段信息 - 日志详细信息")

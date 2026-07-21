@@ -80,7 +80,7 @@ public class DppEvaluateLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEvaluateLogDO> list = (List<DppEvaluateLogDO>) dppEvaluateLogService.getDppEvaluateLogPage(exportReqVO).getRows();
         ExcelUtil<DppEvaluateLogRespVO> util = new ExcelUtil<>(DppEvaluateLogRespVO.class);
-        util.exportExcel(response, DppEvaluateLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEvaluateLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入评测规则结果列表")

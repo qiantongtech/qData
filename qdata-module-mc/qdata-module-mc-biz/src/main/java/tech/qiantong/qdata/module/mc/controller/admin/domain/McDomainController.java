@@ -64,7 +64,7 @@ public class McDomainController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McDomainDO> list = (List<McDomainDO>) mcDomainService.getMcDomainPage(exportReqVO).getRows();
         ExcelUtil<McDomainRespVO> util = new ExcelUtil<>(McDomainRespVO.class);
-        util.exportExcel(response, McDomainConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McDomainConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取业务域详细信息")
@@ -111,7 +111,6 @@ public class McDomainController extends BaseController {
         return CommonResult.success(result);
     }
 }
-
 
 
 

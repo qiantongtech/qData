@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/model/detail/index.vue'),
                 name: 'modelDetail',
-                meta: { title: '逻辑模型详情', activeMenu: '/dm/model/create', lang: 'public.logicalModelDetail' }
+                meta: { title: 'Logical Model Details', activeMenu: '/dm/model/create', lang: 'public.logicalModelDetail' }
             }
         ]
     },
@@ -43,7 +43,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/model/detail/index.vue'),
                 name: 'materializedModelDetail',
-                meta: { title: '发布模型详情', activeMenu: '/dm/model/materializedModel', lang: 'public.publishedModelDetail' }
+                meta: { title: 'Published Model Details', activeMenu: '/dm/model/materializedModel', lang: 'public.publishedModelDetail' }
             }
         ]
     },

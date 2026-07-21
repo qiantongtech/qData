@@ -35,6 +35,6 @@ public class DynamicDataSourceAspect {
 
     @Before("@annotation(ds)")
     public void beforeChangeDataSource(DS ds) {
-        log.info("切换数据源: {}", ds.value());
+        log.info("Switching data source: {}", ds.value());
     }
 }

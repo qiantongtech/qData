@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,7 +218,9 @@ public class Oracle12cDialect extends OracleDialect {
         StringBuilder sql = new StringBuilder("");
 
         if(columnLength == null){
-            throw new UnsupportedOperationException("属性类型：格式错误，数字类型长度未填充");
+            throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                    "sys.error.database.numeric.length.missing",
+                    "Invalid attribute type format: numeric type length is missing"));
         }
 
         // If columnLength is empty, maxLength is used as the default value

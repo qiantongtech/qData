@@ -32,7 +32,7 @@ public class OracleDialect implements DatabaseDialect {
             // Oracle database uses table space, return Oracle Database here
             return "Oracle Database";
         } catch (Exception e) {
-            log.error("获取Oracle存储引擎失败", e);
+            log.error("Failed to get the Oracle storage engine", e);
             return null;
         }
     }
@@ -61,7 +61,7 @@ public class OracleDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取Oracle表行数失败", e);
+            log.error("Failed to get the Oracle table row count", e);
         }
         return 0L;
     }
@@ -96,7 +96,7 @@ public class OracleDialect implements DatabaseDialect {
                 return indexes.toString();
             }
         } catch (Exception e) {
-            log.error("获取Oracle表索引信息失败", e);
+            log.error("Failed to get Oracle table index information", e);
         }
         return "";
     }
@@ -131,7 +131,7 @@ public class OracleDialect implements DatabaseDialect {
                 return partitionFields.toString();
             }
         } catch (Exception e) {
-            log.error("获取Oracle表分区字段信息失败", e);
+            log.error("Failed to get Oracle table partition-column information", e);
         }
         return "";
     }
@@ -161,7 +161,7 @@ public class OracleDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取Oracle字段自增信息失败", e);
+            log.error("Failed to get Oracle column auto-increment information", e);
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class OracleDialect implements DatabaseDialect {
                 return rs.next();
             }
         } catch (Exception e) {
-            log.error("判断Oracle字段是否为分区字段失败", e);
+            log.error("Failed to determine whether the Oracle column is a partition column", e);
         }
         return false;
     }
@@ -209,7 +209,7 @@ public class OracleDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }

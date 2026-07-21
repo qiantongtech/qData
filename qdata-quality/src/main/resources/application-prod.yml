@@ -49,7 +49,7 @@ spring:
     host: 127.0.0.1
     port: 40003
     username: admin
-    password: 密码
+    password: password
     #    listener:
     #      simple:
     #        acknowledge-mode: manual
@@ -142,7 +142,7 @@ dm8:
   # Main library username
   username: QDATA
   # Main database password
-  password: 密码
+  password: password
 
 # NPC Treasury configuration file
 kingbase8:

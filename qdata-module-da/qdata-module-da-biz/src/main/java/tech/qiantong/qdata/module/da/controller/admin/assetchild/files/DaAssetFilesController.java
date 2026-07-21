@@ -77,7 +77,7 @@ public class DaAssetFilesController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetFilesDO> list = (List<DaAssetFilesDO>) daAssetFilesService.getDaAssetFilesPage(exportReqVO).getRows();
         ExcelUtil<DaAssetFilesRespVO> util = new ExcelUtil<>(DaAssetFilesRespVO.class);
-        util.exportExcel(response, DaAssetFilesConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetFilesConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产-文件服务列表")

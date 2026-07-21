@@ -22,14 +22,14 @@
     <el-row>
       <el-col :span="12" class="hasMsg">
         <el-form-item
-          :label="td('dpp.cleanRule.decimalPlaces', '小数位数')"
+          :label="td('dpp.cleanRule.decimalPlaces', 'Decimal Places')"
           prop="stringValue"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数'),
+                    message: td('dpp.cleanRule.inputDecimalPlaces', 'Please enter decimal places'),
                     trigger: 'change',
                   },
                   {
@@ -50,7 +50,7 @@
           <el-input
             v-if="!falg"
             v-model="form.stringValue"
-            :placeholder="td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数')"
+            :placeholder="td('dpp.cleanRule.inputDecimalPlaces', 'Please enter decimal places')"
             type="number"
             min="0"
             max="18"
@@ -60,7 +60,7 @@
           <span class=”msg”
             ><el-icon>
               <InfoFilled /> </el-icon
-            >{{ td('dpp.cleanRule.decimalHint', '如”2”表示保留两位小数') }}</span
+            >{{ td('dpp.cleanRule.decimalHint', 'e.g. "2" means keep two decimal places') }}</span
           >
         </el-form-item>
       </el-col>

@@ -114,7 +114,7 @@ public class MessageUtils
         }
 
         // 5. Final hardcoded fallback
-        log.warn("无法获取消息键'{}'的国际化翻译，使用默认错误消息", code);
+        log.warn("Cannot resolve the localized translation for message key '{}'; using the default error message", code);
         return DEFAULT_ERROR_MESSAGE;
     }
 
@@ -152,7 +152,7 @@ public class MessageUtils
         }
 
         // 3. Final hardcoded fallback
-        log.warn("无法获取消息键'{}'的英文翻译，使用默认错误消息", code);
+        log.warn("Cannot resolve the English translation for message key '{}'; using the default error message", code);
         return DEFAULT_ERROR_MESSAGE;
     }
 

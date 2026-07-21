@@ -66,13 +66,13 @@ public class McTaskInstanceRespDTO {
     /** status */
     private String status;
 
-    /** 调度引擎 */
+    /** Scheduling engine */
     private String taskScheduler;
 
-    /** Quartz调度任务id */
+    /** Quartz scheduled task ID */
     private Long quartzId;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /** Delete flag */

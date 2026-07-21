@@ -30,6 +30,7 @@ import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDocumentCatPageReqVO;
@@ -83,7 +84,7 @@ public class AttDocumentCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttDocumentCatDO> list = (List<AttDocumentCatDO>) attDocumentCatService.getAttDocumentCatPage(exportReqVO).getRows();
         ExcelUtil<AttDocumentCatRespVO> util = new ExcelUtil<>(AttDocumentCatRespVO.class);
-        util.exportExcel(response, AttDocumentCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttDocumentCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
 
@@ -123,7 +124,9 @@ public class AttDocumentCatController extends BaseController {
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long id) {
         if (attDocumentCatService.hasChildByAttDocumentCatId(id)) {
-            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),"存在子标准信息分类管理，无法删除。");
+            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),
+                    MessageUtils.messageWithFallback("att.error.document.category.has.children",
+                            "The category contains child standard information categories and cannot be deleted"));
         }
         return CommonResult.toAjax(attDocumentCatService.removeAttDocumentCat(id));
     }

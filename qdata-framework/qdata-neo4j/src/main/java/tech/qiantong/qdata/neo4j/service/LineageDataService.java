@@ -213,7 +213,7 @@ public class LineageDataService {
         // 2. Task 1
         TaskNode task1 = taskRepository.save(
                 TaskNode.builder()
-                        .name("任务名称")
+                .name("Task Name")
                         .taskId(3L)
                         .taskCode("4000000000")
                         .build());

@@ -29,7 +29,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.Arrays;
 
 /**
- * API服务调用日志Mapper接口
+ * API service call log mapper interface
  *
  * @author lhs
  * @date 2025-02-12
@@ -37,7 +37,7 @@ import java.util.Arrays;
 public interface DsApiLogMapper extends BaseMapperX<DsApiLogDO> {
 
     default PageResult<DsApiLogDO> selectPage(DsApiLogPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Defines sortable fields to prevent SQL injection; values must match database column names.
         MPJLambdaWrapper<DsApiLogDO> wrapper = new MPJLambdaWrapper<>();
         wrapper.selectAll(DsApiLogDO.class)
                 .select("t2.NAME AS apiName,t2.REQ_METHOD as reqMethod,t3.NAME as catName")
@@ -55,7 +55,7 @@ public interface DsApiLogMapper extends BaseMapperX<DsApiLogDO> {
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()),
                         StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
 
-        // 构造动态查询条件
+        // Build dynamic query conditions.
         return selectJoinPage(reqVO, DsApiLogDO.class, wrapper);
     }
 

@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * API服务-申请 DTO 对象 DS_API_APPLY
+ * API service application DTO DS_API_APPLY
  *
  * @author qdata
  * @date 2025-04-22
@@ -43,80 +43,80 @@ public class DsApiApplyRespDTO {
     /** API id */
     private String apiId;
 
-    /** 申请人 */
+    /** Applicant */
     private String applyBy;
 
-    /** 申请人手机号码 */
+    /** Applicant mobile number */
     private String applyByPhone;
 
-    /** 申请人部门 */
+    /** Applicant department */
     private String applyByDeptName;
 
-    /** 申请人部门集合 */
+    /** Applicant department collection */
     private List<Long> applyByDeptIdList;
 
-    /** 申请时间 */
+    /** Application time */
     private Date applyTime;
 
-    /** 申请理由 */
+    /** Application reason */
     private String applyReason;
 
-    /** 审批人 */
+    /** Approver */
     private String approverBy;
 
-    /** 审批时间 */
+    /** Approval time */
     private Date approvalTime;
 
-    /** 审批理由 */
+    /** Approval reason */
     private String approvalReason;
 
-    /** 有效期类型 */
+    /** Validity period type */
     private String validType;
 
-    /** 时效开始时间 */
+    /** Validity start time */
     private Date validStartTime;
 
-    /** 时效结束时间 */
+    /** Validity end time */
     private Date validEndTime;
 
-    /** 流程状态，0：审批中，1：审批中，2：审批通过，3：审批拒绝，4：审批撤回，5：审批异常 */
+    /** Process status (0: pending approval, 1: pending approval, 2: approved, 3: rejected, 4: withdrawn, 5: approval error) */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     private Boolean delFlag;
 
     private String apiName;
 
     private String apiUrl;
 
-    /** 流程业务实例id */
+    /** Process business instance ID */
     private String processInstanceId;
 
 
     private Long creatorId;
 
     /**
-     * 创建者
+     * Creator
      */
     private String createBy;
 
     /**
-     * 创建时间
+     * Creation time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 
-    /** 区域id */
+    /** Region ID */
     private String rpAreaDictId;
 
-    /** 区域id */
+    /** Region ID */
     private List<Long> rpAreaDictIdList;
 
-    /** 区域id */
+    /** Region ID */
     private String rpAreaDictName;
 
     private Object dsApi;

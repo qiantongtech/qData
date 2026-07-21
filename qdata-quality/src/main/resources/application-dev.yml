@@ -49,7 +49,7 @@ spring:
     host: 127.0.0.1
     port: 40003
     username: admin
-    password: 密码
+    password: password
     listener:
       simple:
         acknowledge-mode: manual
@@ -58,7 +58,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://sjzt:Desl9Y4eIQP1BHh7@127.0.0.1:27017/data?authSource=admin
-      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy # 自动转驼峰
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy # Automatically map snake_case to camelCase
       print: true
       slowQuery: true
       slowTime: 1000
@@ -134,7 +134,7 @@ dm8:
   # Main library username
   username: QDATA
   # Main database password
-  password: 密码
+  password: password
 
 # NPC Treasury configuration file
 kingbase8:

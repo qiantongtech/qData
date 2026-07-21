@@ -162,7 +162,7 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
     public String importAttAuditRule(List<AttAuditRuleRespVO> importExcelList, boolean isUpdateSupport,
                                      String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -181,16 +181,16 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
                             attAuditRuleMapper.updateById(attAuditRuleDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attAuditRuleId + " 的稽查规则记录。", attAuditRuleId, "稽查规则"));
+                                    "Data update successful, ID {0} {1} record.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attAuditRuleId + " 的稽查规则记录不存在。", attAuditRuleId, "稽查规则"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttAuditRuleDO> queryWrapper = new QueryWrapper<>();
@@ -200,17 +200,17 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
                         attAuditRuleMapper.insert(attAuditRuleDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attAuditRuleId + " 的稽查规则记录。", attAuditRuleId, "稽查规则"));
+                                "Data insert successful, ID {0} {1} record.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attAuditRuleId + " 的稽查规则记录已存在。", attAuditRuleId, "稽查规则"));
+                                "Data insert failed, ID {0} {1} record already exists.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -219,12 +219,12 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

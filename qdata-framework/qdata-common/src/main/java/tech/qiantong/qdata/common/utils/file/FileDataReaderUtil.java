@@ -18,6 +18,7 @@
 
 package tech.qiantong.qdata.common.utils.file;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -73,13 +74,16 @@ public class FileDataReaderUtil {
 
         // Check if the file exists
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         // Get file extension
         String extension = getFileExtension(filePath);
         if (!SUPPORTED_EXTENSIONS.contains(extension.toLowerCase())) {
-            throw new RuntimeException("不支持的文件格式: " + extension + "，支持格式: " + SUPPORTED_EXTENSIONS);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.format.unsupported", "Unsupported file format: {0}; supported formats: {1}",
+                    extension, SUPPORTED_EXTENSIONS));
         }
 
         try {
@@ -90,8 +94,9 @@ public class FileDataReaderUtil {
                 return readExcelFile(filePath, pageNum, pageSize, startRow, startColumn, filter);
             }
         } catch (Exception e) {
-            log.error("读取文件数据失败: {}", filePath, e);
-            throw new RuntimeException("读取文件数据失败: " + e.getMessage());
+            log.error("Failed to read file data: {}", filePath, e);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.read.fail", "Failed to read file data: {0}", e.getMessage()));
         }
     }
 
@@ -107,7 +112,7 @@ public class FileDataReaderUtil {
      */
     public static Map<String, Object> readFileData(JSONObject jsonObject) {
         if (jsonObject == null) {
-            throw new ServiceException("sys.error.param.empty", "参数不能为空");
+            throw new ServiceException("sys.error.param.empty", "Parameter cannot be empty");
         }
 
         String filePath = jsonObject.getStr("filePath");
@@ -125,7 +130,8 @@ public class FileDataReaderUtil {
      */
     public static Long getFileTotalRows(String filePath) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         String extension = getFileExtension(filePath);
@@ -141,7 +147,8 @@ public class FileDataReaderUtil {
      */
     public static List<Map<String, Object>> getFileColumns(String filePath, Integer startRow, Integer startColumn) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         String extension = getFileExtension(filePath);
@@ -473,15 +480,15 @@ public class FileDataReaderUtil {
      */
     private static void validateParams(String filePath, Long pageNum, Long pageSize) {
         if (StrUtil.isBlank(filePath)) {
-            throw new ServiceException("sys.error.file.path.empty", "文件路径不能为空");
+            throw new ServiceException("sys.error.file.path.empty", "File path cannot be empty");
         }
 
         if (pageNum == null || pageNum < 1) {
-            throw new ServiceException("sys.error.page.num.invalid", "页码不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.num.invalid", "Page number cannot be empty and must be greater than 0");
         }
 
         if (pageSize == null || pageSize < 1) {
-            throw new ServiceException("sys.error.page.size.invalid", "每页条数不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.size.invalid", "Page size cannot be empty and must be greater than 0");
         }
     }
 
@@ -516,7 +523,7 @@ public class FileDataReaderUtil {
                 Map<String, Object> data = readFileData(filePath, pageNum, pageSize, startRow, startColumn, null);
                 results.put(filePath, data);
             } catch (Exception e) {
-                log.error("读取文件失败: {}", filePath, e);
+                log.error("Failed to read file: {}", filePath, e);
                 results.put(filePath, createEmptyResult());
             }
         }
@@ -529,7 +536,8 @@ public class FileDataReaderUtil {
      */
     public static Map<String, Object> getFileInfo(String filePath) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         File file = new File(filePath);

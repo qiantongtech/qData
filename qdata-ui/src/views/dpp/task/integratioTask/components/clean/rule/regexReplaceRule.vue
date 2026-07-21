@@ -28,14 +28,14 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.regex', '正则表达式')"
+          :label="td('dpp.cleanRule.regex', 'Regular Expression')"
           prop="regex"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.inputRegex', '请输入正则表达式'),
+                    message: td('dpp.cleanRule.inputRegex', 'Please enter regular expression'),
                     trigger: 'blur',
                   },
                 ]
@@ -45,7 +45,7 @@
           <el-input
             v-if="!falg"
             v-model="form.regex"
-            :placeholder="td('dpp.cleanRule.inputRegex', '请输入正则表达式')"
+            :placeholder="td('dpp.cleanRule.inputRegex', 'Please enter regular expression')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.regex || "-" }}</div>
@@ -53,18 +53,18 @@
       </el-col>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.replaceWith', '替换为')"
+          :label="td('dpp.cleanRule.replaceWith', 'Replace With')"
           prop="replacement"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.inputReplacement', '请输入替换内容'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputReplacement', 'Please enter replacement content'), trigger: 'blur' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.replacement"
-            :placeholder="td('dpp.cleanRule.inputReplacement', '请输入替换内容')"
+            :placeholder="td('dpp.cleanRule.inputReplacement', 'Please enter replacement content')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.replacement || "-" }}</div>
@@ -95,7 +95,7 @@ const rules = {
     {
       validator: (rule, value, callback) => {
         if (!value) {
-          callback(new Error(td('dpp.cleanRule.inputRegex', '请输入正则表达式')));
+          callback(new Error(td('dpp.cleanRule.inputRegex', 'Please enter regular expression')));
         } else {
           try {
             new RegExp(value);
@@ -113,12 +113,12 @@ const rules = {
       type: "array",
       required: true,
       min: 1,
-      message: td('dpp.cleanRule.selectAllowedChars', '请选择允许的字符类型'),
+      message: td('dpp.cleanRule.selectAllowedChars', 'Please select allowed character types'),
       trigger: "change",
     },
   ],
   ignoreNullValue: [
-    { required: true, message: td('dpp.cleanRule.selectIgnoreNull', '请选择忽略空值'), trigger: "change" },
+    { required: true, message: td('dpp.cleanRule.selectIgnoreNull', 'Please select ignore null value'), trigger: "change" },
   ],
 };
 const exposedFields = ["regex", "replacement"];

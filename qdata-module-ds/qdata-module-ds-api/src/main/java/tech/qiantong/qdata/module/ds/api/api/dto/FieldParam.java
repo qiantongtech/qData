@@ -28,62 +28,62 @@ public class FieldParam implements Serializable {
     private static final long serialVersionUID=1L;
 
     /**
-     * 列名
+     * Column name
      */
     private String columnName;
 
     /**
-     * 数据类型
+     * Data type
      */
     private String dataType;
 
     /**
-     * 数据长度
+     * Data length
      */
     private Long dataLength;
 
     /**
-     * 数据精度
+     * Data precision
      */
     private Long dataPrecision;
 
     /**
-     * 数据小数位
+     * Decimal places
      */
     private Long dataScale;
 
     /**
-     * 是否主键
+     * Whether the column is a primary key
      */
     private String columnKey;
 
     /**
-     * 是否允许为空
+     * Whether null values are allowed
      */
     private String columnNullable;
 
     /**
-     * 列的序号
+     * Column ordinal
      */
     private Long columnPosition;
 
     /**
-     * 列默认值
+     * Column default value
      */
     private String dataDefault;
 
     /**
-     * 列注释
+     * Column comment
      */
     private String columnComment;
 
     /**
-     * 作为请求参数
+     * Used as a request parameter
      */
     private String reqable;
 
     /**
-     * 作为返回参数
+     * Used as a response parameter
      */
     private String resable;
 }

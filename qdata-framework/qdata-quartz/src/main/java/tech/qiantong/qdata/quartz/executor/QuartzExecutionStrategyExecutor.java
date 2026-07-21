@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Quartz执行策略控制器。
+ * Controls Quartz execution strategies.
  */
 public class QuartzExecutionStrategyExecutor {
 

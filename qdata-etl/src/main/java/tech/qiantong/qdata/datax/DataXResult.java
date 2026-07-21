@@ -3,31 +3,31 @@ package tech.qiantong.qdata.datax;
 import java.nio.file.Path;
 
 /**
- * DataX 执行结果。
+ * DataX execution result.
  * <p>
- * 保存 DataX 进程退出码、实际执行的 job.json 文件路径以及进程输出内容。
+ * Stores the DataX process exit code, executed job.json file path, and process output.
  */
 public class DataXResult {
 
     /**
-     * DataX 进程退出码，0 表示执行成功。
+     * DataX process exit code; 0 indicates success.
      */
     private final int exitCode;
     /**
-     * 本次执行使用的 job.json 文件路径。
+     * Path to the job.json file used for this execution.
      */
     private final Path jobFile;
     /**
-     * DataX 进程标准输出和标准错误合并后的文本。
+     * Combined standard output and standard error from the DataX process.
      */
     private final String output;
 
     /**
-     * 创建 DataX 执行结果。
+     * Creates a DataX execution result.
      *
-     * @param exitCode DataX 进程退出码
-     * @param jobFile 本次执行使用的 job.json 文件路径
-     * @param output DataX 进程输出
+     * @param exitCode DataX process exit code
+     * @param jobFile path to the job.json file used for this execution
+     * @param output DataX process output
      */
     public DataXResult(int exitCode, Path jobFile, String output) {
         this.exitCode = exitCode;
@@ -36,45 +36,45 @@ public class DataXResult {
     }
 
     /**
-     * 判断 DataX 是否执行成功。
+     * Determines whether DataX completed successfully.
      *
-     * @return true 表示退出码为 0
+     * @return {@code true} when the exit code is 0
      */
     public boolean isSuccess() {
         return exitCode == 0;
     }
 
     /**
-     * 获取 DataX 进程退出码。
+     * Returns the DataX process exit code.
      *
-     * @return DataX 进程退出码
+     * @return the DataX process exit code
      */
     public int getExitCode() {
         return exitCode;
     }
 
     /**
-     * 获取本次执行使用的 job.json 文件路径。
+     * Returns the job.json file path used for this execution.
      *
-     * @return job.json 文件路径
+     * @return the job.json file path
      */
     public Path getJobFile() {
         return jobFile;
     }
 
     /**
-     * 获取 DataX 进程输出。
+     * Returns the DataX process output.
      *
-     * @return DataX 进程输出
+     * @return the DataX process output
      */
     public String getOutput() {
         return output;
     }
 
     /**
-     * 返回便于日志查看的 DataX 执行结果文本。
+     * Returns a DataX execution result string suitable for logging.
      *
-     * @return DataX 执行结果文本
+     * @return the DataX execution result text
      */
     @Override
     public String toString() {

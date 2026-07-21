@@ -148,7 +148,7 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     @Override
     public String importDaAssetOperateLog(List<DaAssetOperateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -167,16 +167,16 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
                             daAssetOperateLogMapper.updateById(daAssetOperateLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                    "数据更新成功，ID为 " + daAssetOperateLogId + " 的数据资产操作记录记录。", daAssetOperateLogId, "数据资产操作记录"));
+                                    "Data update successful, ID {0} {1} record.", daAssetOperateLogId, MessageUtils.messageWithFallback("da.entity.asset.operation.record", "Data asset operation record")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                    "数据更新失败，ID为 " + daAssetOperateLogId + " 的数据资产操作记录记录不存在。", daAssetOperateLogId, "数据资产操作记录"));
+                                    "Data update failed, ID {0} {1} record does not exist.", daAssetOperateLogId, MessageUtils.messageWithFallback("da.entity.asset.operation.record", "Data asset operation record")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DaAssetOperateLogDO> queryWrapper = new QueryWrapper<>();
@@ -186,17 +186,17 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
                         daAssetOperateLogMapper.insert(daAssetOperateLogDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                "数据插入成功，ID为 " + daAssetOperateLogId + " 的数据资产操作记录记录。", daAssetOperateLogId, "数据资产操作记录"));
+                                "Data insert successful, ID {0} {1} record.", daAssetOperateLogId, MessageUtils.messageWithFallback("da.entity.asset.operation.record", "Data asset operation record")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                "数据插入失败，ID为 " + daAssetOperateLogId + " 的数据资产操作记录记录已存在。", daAssetOperateLogId, "数据资产操作记录"));
+                                "Data insert failed, ID {0} {1} record already exists.", daAssetOperateLogId, MessageUtils.messageWithFallback("da.entity.asset.operation.record", "Data asset operation record")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -205,12 +205,12 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -219,14 +219,17 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
     public void rollBack(Long id) {
         DaAssetOperateLogDO daAssetOperateLogById = this.getDaAssetOperateLogById(id);
         if (daAssetOperateLogById == null || daAssetOperateLogById.getDelFlag()) {
-            throw new AssetOperateException("未查询操作信息，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.operation.notfound", "Operation information was not found; refresh and try again"));
         }
         // Check status; status: 1: running, 2: failed, 3: success, 4: rollback failed, 5: rollback success
         String status = daAssetOperateLogById.getStatus();
         if (StringUtils.equals("1", status)
                 || StringUtils.equals("2", status)
                 || StringUtils.equals("5", status)) {
-            throw new AssetOperateException("此记录暂不支持回滚，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.rollback.unsupported",
+                    "This record does not support rollback; refresh and try again"));
         }
         String operateType = daAssetOperateLogById.getOperateType();
         DaAssetOperateLogSaveReqVO bean = BeanUtils.toBean(daAssetOperateLogById, DaAssetOperateLogSaveReqVO.class);
@@ -285,21 +288,25 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
         // 1. Validate asset and datasource
         DaAssetRespVO asset = iDaAssetService.getDaAssetByIdSimple(updateReqVO.getAssetId());
         if (asset == null || asset.getDelFlag()) {
-            throw new AssetOperateException("未查询到资产信息，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.notfound", "Asset information was not found; refresh and try again"));
         }
         DaDatasourceRespVO ds = iDaDatasourceService.getDaDatasourceByIdSimple(updateReqVO.getDatasourceId());
         if (ds == null) {
-            throw new AssetOperateException("未查询到数据源信息，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.datasource.notfound", "Data source information was not found; refresh and try again"));
         }
 
         // 2. Dispatch to specific operation
         String type = StringUtils.trimToNull(updateReqVO.getOperateType());
         if (type == null) {
-            throw new AssetOperateException("未获取到变动类型，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.change.type.missing", "Change type was not obtained; refresh and try again"));
         }
         PreContext ctx = prepareContext(ds, updateReqVO.getTableName());
         handlers.getOrDefault(type, (r, c) -> {
-            throw new AssetOperateException("不支持的操作类型: " + type);
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.operation.type.unsupported", "Unsupported operation type: {0}", type));
         }).accept(updateReqVO, ctx);
 
         // Update data asset operation log
@@ -317,21 +324,25 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
         // 1. Validate asset and datasource
         DaAssetRespVO asset = iDaAssetService.getDaAssetByIdSimple(reqVO.getAssetId());
         if (asset == null || asset.getDelFlag()) {
-            throw new AssetOperateException("未查询到资产信息，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.notfound", "Asset information was not found; refresh and try again"));
         }
         DaDatasourceRespVO ds = iDaDatasourceService.getDaDatasourceByIdSimple(reqVO.getDatasourceId());
         if (ds == null) {
-            throw new AssetOperateException("未查询到数据源信息，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.datasource.notfound", "Data source information was not found; refresh and try again"));
         }
 
         // 2. Dispatch to specific operation
         String type = StringUtils.trimToNull(reqVO.getOperateType());
         if (type == null) {
-            throw new AssetOperateException("未获取到变动类型，请刷新后重试！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.change.type.missing", "Change type was not obtained; refresh and try again"));
         }
         PreContext ctx = prepareContext(ds, reqVO.getTableName());
         handlers.getOrDefault(type, (r, c) -> {
-            throw new AssetOperateException("不支持的操作类型: " + type);
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.asset.operation.type.unsupported", "Unsupported operation type: {0}", type));
         }).accept(reqVO, ctx);
 
         // 3. Write log
@@ -345,16 +356,17 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
      */
     private PreContext prepareContext(DaDatasourceRespVO ds, String tableName) {
         if (StringUtils.isBlank(tableName)) {
-            throw new AssetOperateException("表名不能为空！");
+            throw new AssetOperateException(MessageUtils.messageWithFallback(
+                    "da.error.table.name.empty", "Table name cannot be empty"));
         }
         DbQueryProperty prop = new DbQueryProperty(
                 ds.getDatasourceType(), ds.getIp(), ds.getPort(), ds.getDatasourceConfig());
         DbQuery query = dataSourceFactory.createDbQuery(prop);
         if (!query.valid()) {
-            throw new DataQueryException("db.error.datasource.realtime.fail", "建立实时数据源链接失败！");
+            throw new DataQueryException("db.error.datasource.realtime.fail", "Failed to establish real-time datasource connection!");
         }
         if (query.generateCheckTableExistsSQL(prop, tableName) == 0) {
-            throw new DataQueryException("db.error.table.not.exist", "库表不存在，请查看数据库！");
+            throw new DataQueryException("db.error.table.not.exist", "Table does not exist, please check the database!");
         }
         List<DbColumn> cols = query.getTableColumns(prop, tableName);
         DbDialect dbDialect = DialectFactory.getDialect(DbType.getDbType(prop.getDbType()));
@@ -534,7 +546,8 @@ public class DaAssetOperateLogServiceImpl extends ServiceImpl<DaAssetOperateLogM
         return cols.stream()
                 .filter(c -> name.equals(c.getColName()))
                 .findFirst()
-                .orElseThrow(() -> new AssetOperateException("字段 " + name + " 不存在！"));
+                .orElseThrow(() -> new AssetOperateException(MessageUtils.messageWithFallback(
+                        "da.error.field.notfound", "Field {0} does not exist", name)));
     }
 
     /**

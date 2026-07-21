@@ -79,7 +79,8 @@ public class RateLimiterAspect
             Long number = redisTemplate.execute(limitScript, keys, count, time);
             if (StringUtils.isNull(number) || number.intValue() > count)
             {
-                throw new ServiceException("访问过于频繁，请稍候再试");
+                throw new ServiceException("sys.error.access.too.frequent",
+                        "Access is too frequent; please try again later");
             }
             log.info(MessageUtils.messageEn("log.rate.limit"), count, number.intValue(), combineKey);
         }
@@ -89,7 +90,7 @@ public class RateLimiterAspect
         }
         catch (Exception e)
         {
-            throw new ServiceException("sys.error.rate.limit", "服务器限流异常，请稍候再试");
+            throw new ServiceException("sys.error.rate.limit", "Server rate limit, please try again later");
         }
     }
 

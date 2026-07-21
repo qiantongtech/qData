@@ -3,6 +3,7 @@ package tech.qiantong.qdata.datax;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,16 +21,16 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * DataX 本地进程执行器。
+ * Local DataX process executor.
  * <p>
- * 负责校验 DataX 运行配置、准备 job.json、启动 DataX Python 进程、
- * 收集执行输出，并在执行结束后清理本次生成的临时任务目录。
+ * Validates the DataX runtime configuration, prepares job.json, starts the DataX Python process,
+ * collects process output, and cleans up the temporary job directory after execution.
  */
 @Component
 public class DataXExecutor {
 
     /**
-     * 临时任务目录名中的时间格式。
+     * Time format used in temporary job directory names.
      */
     private static final DateTimeFormatter FILE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
@@ -37,9 +38,9 @@ public class DataXExecutor {
     private final ObjectMapper objectMapper;
 
     /**
-     * 创建 DataX 执行器。
+     * Creates a DataX executor.
      *
-     * @param properties DataX 运行配置
+     * @param properties DataX runtime configuration
      */
     @Autowired
     public DataXExecutor(DataXProperties properties) {
@@ -47,10 +48,10 @@ public class DataXExecutor {
     }
 
     /**
-     * 创建 DataX 执行器，允许测试时注入自定义 JSON 解析器。
+     * Creates a DataX executor with a custom JSON parser for testing.
      *
-     * @param properties DataX 运行配置
-     * @param objectMapper JSON 解析器
+     * @param properties DataX runtime configuration
+     * @param objectMapper JSON parser
      */
     DataXExecutor(DataXProperties properties, ObjectMapper objectMapper) {
         this.properties = properties;
@@ -58,12 +59,12 @@ public class DataXExecutor {
     }
 
     /**
-     * 执行 DataX 任务。
+     * Executes a DataX job.
      *
-     * @param dataJson DataX job.json 内容，或已经存在的 job.json 文件路径
-     * @return DataX 进程退出码、任务文件路径和进程输出
-     * @throws IOException 准备任务文件、启动进程或清理临时目录失败
-     * @throws InterruptedException 等待 DataX 进程结束时被中断
+     * @param dataJson DataX job.json content or the path to an existing job.json file
+     * @return the DataX process exit code, job file path, and process output
+     * @throws IOException if preparing the job file, starting the process, or cleaning the temporary directory fails
+     * @throws InterruptedException if interrupted while waiting for the DataX process to finish
      */
     public DataXResult run(String dataJson) throws IOException, InterruptedException {
         checkConfig();
@@ -71,7 +72,7 @@ public class DataXExecutor {
         List<String> command = properties.buildCommand(jobFile);
 
         try {
-            // 合并标准错误和标准输出，保证调用方能在同一段日志里看到完整 DataX 输出。
+            // Merge standard error into standard output so callers receive the complete DataX output in one log stream.
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.redirectErrorStream(true);
             setWorkingDirectory(processBuilder);
@@ -79,7 +80,7 @@ public class DataXExecutor {
 
             Process process = processBuilder.start();
             StringBuilder output = new StringBuilder();
-            // 按 UTF-8 读取 DataX 输出，避免中文日志出现乱码。
+            // Read DataX output as UTF-8 to prevent garbled non-ASCII log messages.
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -90,35 +91,36 @@ public class DataXExecutor {
             int exitCode = process.waitFor();
             return new DataXResult(exitCode, jobFile, output.toString());
         } finally {
-            // 只清理本方法生成的临时目录，外部传入的已有任务文件会被保留。
+            // Clean only temporary directories created by this method; preserve externally supplied job files.
             deleteGeneratedJobDirectory(jobFile);
         }
     }
 
     /**
-     * 准备 DataX 任务文件。
+     * Prepares the DataX job file.
      * <p>
-     * 入参如果是已有文件路径，则校验文件 JSON 后直接使用；
-     * 入参如果是 JSON 字符串，则写入本次运行的临时 job.json。
+     * If the input is an existing file path, validates and uses that JSON file directly.
+     * If the input is a JSON string, writes it to a temporary job.json for this run.
      *
-     * @param dataJson DataX job.json 内容，或已经存在的 job.json 文件路径
-     * @return 可执行的 DataX job.json 文件路径
-     * @throws IOException 读取、校验或写入任务文件失败
+     * @param dataJson DataX job.json content or the path to an existing job.json file
+     * @return the executable DataX job.json file path
+     * @throws IOException if reading, validating, or writing the job file fails
      */
     Path prepareJobFile(String dataJson) throws IOException {
-        // 空任务内容无法生成 DataX 作业，直接拒绝执行。
+        // Reject empty input because it cannot produce a valid DataX job.
         if (dataJson == null || dataJson.trim().isEmpty()) {
-            throw new IllegalArgumentException("DataX任务JSON不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.datax.job.json.empty", "DataX job JSON cannot be empty"));
         }
 
         Path sourceFile = toExistingFile(dataJson);
-        // 已存在的文件路径只做 JSON 校验，不复制也不在执行结束后删除。
+        // Validate an existing job file without copying or deleting it after execution.
         if (sourceFile != null) {
             validateJson(new String(Files.readAllBytes(sourceFile), StandardCharsets.UTF_8));
             return sourceFile;
         }
 
-        // 非文件路径按 JSON 内容处理，写入独立临时目录用于本次 DataX 执行。
+        // Treat non-file input as JSON content and write it to a dedicated temporary directory for this run.
         validateJson(dataJson);
         Path jobDir = Paths.get(required(properties.getJobDir(), "datax.job-dir"));
         Files.createDirectories(jobDir);
@@ -130,24 +132,24 @@ public class DataXExecutor {
     }
 
     /**
-     * 校验 DataX 任务 JSON 格式。
+     * Validates the DataX job JSON format.
      *
-     * @param dataJson DataX job.json 内容
-     * @throws IOException JSON 格式不合法
+     * @param dataJson DataX job.json content
+     * @throws IOException if the JSON format is invalid
      */
     private void validateJson(String dataJson) throws IOException {
         objectMapper.readTree(dataJson);
     }
 
     /**
-     * 判断入参是否为已存在的任务文件路径。
+     * Determines whether the input points to an existing job file.
      *
-     * @param dataJson DataX job.json 内容，或任务文件路径
-     * @return 已存在的文件路径；不是文件路径时返回 null
+     * @param dataJson DataX job.json content or a job file path
+     * @return the existing file path, or {@code null} when the input is not a file path
      */
     private Path toExistingFile(String dataJson) {
         String value = dataJson.trim();
-        // 以 JSON 对象或数组开头时按内容处理，不再尝试解析为文件路径。
+        // Treat values beginning with a JSON object or array as content instead of attempting path resolution.
         if (value.startsWith("{") || value.startsWith("[")) {
             return null;
         }
@@ -155,13 +157,13 @@ public class DataXExecutor {
             Path path = Paths.get(value);
             return Files.isRegularFile(path) ? path : null;
         } catch (InvalidPathException ex) {
-            // 非法路径说明入参更可能是 JSON 内容，交给后续 JSON 校验处理。
+            // An invalid path is more likely JSON content; let the subsequent JSON validation handle it.
             return null;
         }
     }
 
     /**
-     * 校验 DataX 执行所需的必要配置。
+     * Validates the required DataX execution configuration.
      */
     private void checkConfig() {
         required(properties.getPythonCommand(), "datax.python-command");
@@ -170,28 +172,29 @@ public class DataXExecutor {
     }
 
     /**
-     * 获取必填配置值。
+     * Returns a required configuration value.
      *
-     * @param value 配置值
-     * @param name 配置项名称
-     * @return 非空配置值
+     * @param value configuration value
+     * @param name configuration property name
+     * @return the non-empty configuration value
      */
     private String required(String value, String name) {
-        // 必填配置缺失时尽早失败，避免启动进程后才暴露模糊错误。
+        // Fail early when required configuration is missing instead of surfacing an ambiguous process error later.
         if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArgumentException("缺少配置: " + name);
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.datax.config.missing", "Missing configuration: {0}", name));
         }
         return value;
     }
 
     /**
-     * 设置 DataX 进程工作目录。
+     * Configures the DataX process working directory.
      *
-     * @param processBuilder DataX 进程构建器
+     * @param processBuilder DataX process builder
      */
     private void setWorkingDirectory(ProcessBuilder processBuilder) {
         String home = properties.getHome();
-        // 配置了 DataX home 且目录存在时，使用它作为进程工作目录。
+        // Use DataX home as the working directory when it is configured and exists.
         if (home != null && !home.trim().isEmpty()) {
             Path homePath = Paths.get(home);
             if (Files.isDirectory(homePath)) {
@@ -201,56 +204,58 @@ public class DataXExecutor {
     }
 
     /**
-     * 设置 DataX 进程环境变量。
+     * Configures DataX process environment variables.
      *
-     * @param environment 进程环境变量集合
+     * @param environment process environment variables
      */
     private void setDataXEnvironment(Map<String, String> environment) {
-        // DATAX_HOME 供 DataX 脚本定位安装目录。
+        // DATAX_HOME allows the DataX script to locate the installation directory.
         if (properties.getHome() != null && !properties.getHome().trim().isEmpty()) {
             environment.put("DATAX_HOME", properties.getHome());
         }
-        // DATAX_LIB_DIR 供 DataX 脚本定位扩展依赖目录。
+        // DATAX_LIB_DIR allows the DataX script to locate extension dependencies.
         if (properties.getLibDir() != null && !properties.getLibDir().trim().isEmpty()) {
             environment.put("DATAX_LIB_DIR", properties.getLibDir());
         }
     }
 
     /**
-     * 生成当前时间文本。
+     * Generates the current timestamp text.
      *
-     * @return yyyyMMddHHmmss 格式时间
+     * @return the timestamp in yyyyMMddHHmmss format
      */
     private String nowText() {
         return LocalDateTime.now().format(FILE_TIME_FORMATTER);
     }
 
     /**
-     * 删除本次自动生成的 DataX 临时任务目录。
+     * Deletes the DataX temporary job directory generated for this run.
      *
-     * @param jobFile DataX job.json 文件路径
-     * @throws IOException 删除临时目录失败
+     * @param jobFile DataX job.json file path
+     * @throws IOException if deleting the temporary directory fails
      */
     private void deleteGeneratedJobDirectory(Path jobFile) throws IOException {
-        // 外部传入的已有任务文件不是本执行器创建的，不能删除。
+        // Do not delete an externally supplied job file that was not created by this executor.
         if (!isGeneratedJobFile(jobFile)) {
             return;
         }
         Path runDir = jobFile.getParent();
-        // 先删除子文件再删除目录本身。
+        // Delete child files before deleting the directory itself.
         try (java.util.stream.Stream<Path> paths = Files.walk(runDir)) {
             paths.sorted(Comparator.reverseOrder())
                     .forEach(path -> {
                         try {
                             Files.deleteIfExists(path);
                         } catch (IOException ex) {
-                            // Stream.forEach 不能直接抛 IOException，这里先包一层再在外层还原。
-                            throw new IllegalStateException("删除DataX临时任务目录失败: " + runDir, ex);
+                            // Stream.forEach cannot throw IOException directly, so wrap it here and restore it outside.
+                            throw new IllegalStateException(MessageUtils.messageWithFallback(
+                                    "etl.error.datax.temp.directory.delete.failed",
+                                    "Failed to delete the DataX temporary job directory: {0}", runDir), ex);
                         }
                     });
         } catch (IllegalStateException ex) {
             Throwable cause = ex.getCause();
-            // 保留 IOException 类型，方便上层按 IO 异常统一处理。
+            // Preserve the IOException type so callers can handle I/O failures consistently.
             if (cause instanceof IOException) {
                 throw (IOException) cause;
             }
@@ -259,19 +264,19 @@ public class DataXExecutor {
     }
 
     /**
-     * 判断任务文件是否为本执行器生成的临时 job.json。
+     * Determines whether the job file is a temporary job.json generated by this executor.
      *
-     * @param jobFile DataX job.json 文件路径
-     * @return true 表示可以在执行结束后删除所在临时目录
+     * @param jobFile DataX job.json file path
+     * @return {@code true} if its temporary directory can be deleted after execution
      */
     private boolean isGeneratedJobFile(Path jobFile) {
-        // 文件为空或没有父目录时无法定位运行目录，按非临时文件处理。
+        // Treat a null file or a file without a parent directory as a non-temporary file.
         if (jobFile == null || jobFile.getParent() == null) {
             return false;
         }
         Path jobDir = Paths.get(required(properties.getJobDir(), "datax.job-dir")).toAbsolutePath().normalize();
         Path runDir = jobFile.getParent().toAbsolutePath().normalize();
-        // 只有 job-dir/datax_job_*/job.json 这种结构才认定为本执行器创建的临时文件。
+        // Only job-dir/datax_job_*/job.json is recognized as a temporary file created by this executor.
         return "job.json".equals(jobFile.getFileName().toString())
                 && runDir.getFileName() != null
                 && runDir.getFileName().toString().startsWith("datax_job_")

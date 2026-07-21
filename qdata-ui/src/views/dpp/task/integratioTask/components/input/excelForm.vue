@@ -22,15 +22,15 @@
     <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading" :disabled="info" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name" :rules="[
-            { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.nodeName', 'Node Name')" prop="name" :rules="[
+            { required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
-            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
+          <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
+            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')" filterable disabled>
               <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
             </el-select>
           </el-form-item>
@@ -45,8 +45,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.uploadAttachment', '上传附件')" prop="taskParams.excelFile" :rules="[
-            { required: true, message: td('dpp.integration.uploadAttachmentRequired', '请上传附件'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.uploadAttachment', 'Upload Attachment')" prop="taskParams.excelFile" :rules="[
+            { required: true, message: td('dpp.integration.uploadAttachmentRequired', 'Please upload attachment'), trigger: 'change' },
           ]" :label-position="labelPosition">
             <!-- <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :file-type="['xlsx', 'xls']"
               :fileSize="50" @handleRemove="handleRemove" /> -->
@@ -55,20 +55,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.startRow', '起始行')" prop="taskParams.startData" :rules="[
-            { required: true, message: td('dpp.integration.startRowRequired', '请输入起始行'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startRow', 'Start Row')" prop="taskParams.startData" :rules="[
+            { required: true, message: td('dpp.integration.startRowRequired', 'Please enter start row'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startRowPlaceholder', '请输入起始行')" v-model="form.taskParams.startData"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startRowPlaceholder', 'Please enter start row')" v-model="form.taskParams.startData"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.startColumn', '起始列')" prop="taskParams.startColumn" :rules="[
-            { required: true, message: td('dpp.integration.startColumnRequired', '请输入起始列'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startColumn', 'Start Column')" prop="taskParams.startColumn" :rules="[
+            { required: true, message: td('dpp.integration.startColumnRequired', 'Please enter start column'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startColumnPlaceholder', '请输入起始列')" v-model="form.taskParams.startColumn"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startColumnPlaceholder', 'Please enter start column')" v-model="form.taskParams.startColumn"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
@@ -79,25 +79,25 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.integration.attributeFields', '属性字段') }}</span>
+        <span class="blue-text">{{ td('dpp.integration.attributeFields', 'Attribute Fields') }}</span>
       </el-divider>
       <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
-        <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
+        <el-table-column :label="td('common.display.index', 'Index')" type="index" width="80" align="left">
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.columnName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType">
+        <el-table-column :label="td('dpp.integration.fieldType', 'Field Type')" align="left" prop="columnType">
           <template #default="scope">
             {{ scope.row.columnType || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dateFormat', '日期格式')" align="left" prop="format">
+        <el-table-column :label="td('dpp.integration.dateFormat', 'Date Format')" align="left" prop="format">
           <template #default="scope">
             {{ scope.row.format || "-" }}
           </template>
@@ -116,7 +116,7 @@
       </div>
     </template>
   </el-dialog>
-  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')" @update:visible="open = $event" @confirm="handletaskConfig"
+  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', 'Attribute Field Edit')" @update:visible="open = $event" @confirm="handletaskConfig"
     :data="row" />
 </template>
 <script setup>
@@ -184,15 +184,15 @@ const isButtonDisabled = computed(() => {
 // Get column data
 const parseExcel = async (id) => {
   if (!form.value.taskParams.startData) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "解析失败，请添加起始行"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "Parse failed, please add start row"));
     return;
   }
   if (!form.value.taskParams.startColumn) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddStartColumn", "解析失败，请添加起始列"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartColumn", "Parse failed, please add start column"));
     return;
   }
   if (!form.value.taskParams.excelFile) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddAttachment", "解析失败，请添加附件"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddAttachment", "Parse failed, please add attachment"));
     return;
   }
   loadingList.value = true;
@@ -211,13 +211,13 @@ const parseExcel = async (id) => {
         columnType: "string",
       }));
 
-      ElMessage.success(td("dpp.integration.excelParseSuccess", "Excel解析成功，请确认属性字段类型！"));
+      ElMessage.success(td("dpp.integration.excelParseSuccess", "Excel parsed successfully, please confirm attribute field types!"));
     } else {
-      ElMessage.warning(td("dpp.integration.excelParseFailedNoData", "Excel解析失败，未获取到有效数据！"));
+      ElMessage.warning(td("dpp.integration.excelParseFailedNoData", "Excel parse failed, no valid data obtained!"));
     }
   } catch (error) {
     if (response.code == 200)
-      ElMessage.warning(td("dpp.integration.excelParseFailedCheckFile", "Excel解析失败，请检查文件格式或内容！"));
+      ElMessage.warning(td("dpp.integration.excelParseFailedCheckFile", "Excel parse failed, please check file format or content!"));
   } finally {
     loadingList.value = false;
   }
@@ -240,7 +240,7 @@ const saveData = async () => {
       form.value?.taskParams.type == "1" &&
       (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
-      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "校验未通过，请选择属性字段"));
+      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "Validation failed, please select attribute fields"));
     }
     // If there is no code, call the interface to get the unique code
     if (!form.value.code) {

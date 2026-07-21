@@ -51,7 +51,8 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("sys.error.security.user.id", "Failed to get user ID",
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -66,7 +67,8 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("sys.error.security.dept.id", "Failed to get department ID",
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -81,7 +83,8 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("sys.error.security.user.account", "Failed to get user account",
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -96,7 +99,8 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("sys.error.security.user.info", "Failed to get user information",
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 

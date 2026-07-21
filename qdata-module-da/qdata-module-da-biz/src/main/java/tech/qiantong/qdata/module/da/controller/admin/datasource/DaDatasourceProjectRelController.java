@@ -77,7 +77,7 @@ public class DaDatasourceProjectRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDatasourceProjectRelDO> list = (List<DaDatasourceProjectRelDO>) daDatasourceProjectRelService.getDaDatasourceProjectRelPage(exportReqVO).getRows();
         ExcelUtil<DaDatasourceProjectRelRespVO> util = new ExcelUtil<>(DaDatasourceProjectRelRespVO.class);
-        util.exportExcel(response, DaDatasourceProjectRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDatasourceProjectRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据源与项目关联关系列表")

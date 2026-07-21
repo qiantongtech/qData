@@ -133,21 +133,21 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
     List<DppEtlTaskTreeRespVO> getDppEtlTaskListTree(DppEtlTaskPageReqVO dppEtlTask);
 
     /**
-     * 启动任务
+     * Starts a task.
      * @param id
      * @return
      */
     AjaxResult startDppEtlTask(Long id);
 
     /**
-     * 启动任务数据集成
+     * Starts a data integration task.
      * @param id
      * @return
      */
     void startDppEtlTaskDataIntegration(Long id);
 
     /**
-     * 启动任务数据开发
+     * Starts a data development task.
      *
      * @param id
      */

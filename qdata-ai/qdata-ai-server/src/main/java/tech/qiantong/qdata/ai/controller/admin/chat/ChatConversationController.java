@@ -30,6 +30,7 @@ import tech.qiantong.qdata.ai.core.service.IChatConversationService;
 import tech.qiantong.qdata.ai.core.vo.AiChatConversationSaveRespVO;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatConversationRespVO;
@@ -82,7 +83,8 @@ public class ChatConversationController extends BaseController {
         appChatConversation.setCreatorId(getUserId());
         appChatConversation.setCreateBy(getNickName());
         appChatConversation.setCreateTime(DateUtil.date());
-        appChatConversation.setTitle(Optional.ofNullable(appChatConversation.getTitle()).orElse("新对话"));
+        appChatConversation.setTitle(Optional.ofNullable(appChatConversation.getTitle()).orElseGet(() ->
+                MessageUtils.messageWithFallback("ai.chat.title.default", "New Conversation")));
         return CommonResult.success(chatConversationService.createAiChatConversation(appChatConversation));
     }
 
@@ -105,7 +107,7 @@ public class ChatConversationController extends BaseController {
     @PostMapping("/setAssociations")
     public CommonResult<Integer> associations(@RequestBody AiChatConversationSaveReqVO appChatConversation) {
         if (StringUtils.isBlank(appChatConversation.getAssociations())) {
-            throw new ServiceException("ai.error.relation.required", "请设置关联关系！");
+            throw new ServiceException("ai.error.relation.required", "Please configure the relationship.");
         }
         appChatConversation.setUpdatorId(getUserId());
         appChatConversation.setUpdateBy(getNickName());

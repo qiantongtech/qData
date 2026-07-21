@@ -213,14 +213,14 @@ knife4j:
   enable: true
   documents:
     -
-      group: 2.X版本
-      name: 接口签名
+      group: 2.x Version
+      name: API Signature
       locations: classpath:sign/*
   setting:
     language: zh-CN
     enable-swagger-models: true
     enable-document-manage: true
-    swagger-model-name: 实体类列表
+    swagger-model-name: Model List
     enable-version: false
     enable-reload-cache-parameter: false
     enable-after-script: true
@@ -234,7 +234,7 @@ knife4j:
     enable-search: false
     enable-footer: false
     enable-footer-custom: true
-    footer-custom-content: Apache License 2.0 | Copyright  2025-[江苏千桐科技有限公司])
+    footer-custom-content: Apache License 2.0 | Copyright  2025-[Jiangsu Qiantong Technology Co., Ltd.])
     enable-dynamic-parameter: false
     enable-debug: true
     enable-open-api: true

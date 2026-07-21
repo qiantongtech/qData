@@ -26,43 +26,43 @@ public class FileTypeUtil {
 
     static {
         // Text class
-        FILE_TYPE_MAP.put("txt", "文本文件");
-        FILE_TYPE_MAP.put("csv", "CSV文件");
-        FILE_TYPE_MAP.put("log", "日志文件");
+        FILE_TYPE_MAP.put("txt", "Text file");
+        FILE_TYPE_MAP.put("csv", "CSV file");
+        FILE_TYPE_MAP.put("log", "Log file");
 
         // Code class
-        FILE_TYPE_MAP.put("java", "Java源文件");
-        FILE_TYPE_MAP.put("class", "Java类文件");
-        FILE_TYPE_MAP.put("jar", "JAR文件");
-        FILE_TYPE_MAP.put("xml", "XML文件");
-        FILE_TYPE_MAP.put("html", "HTML文件");
-        FILE_TYPE_MAP.put("htm", "HTML文件");
-        FILE_TYPE_MAP.put("js", "JavaScript文件");
-        FILE_TYPE_MAP.put("css", "CSS文件");
-        FILE_TYPE_MAP.put("json", "JSON文件");
+        FILE_TYPE_MAP.put("java", "Java source file");
+        FILE_TYPE_MAP.put("class", "Java class file");
+        FILE_TYPE_MAP.put("jar", "JAR file");
+        FILE_TYPE_MAP.put("xml", "XML file");
+        FILE_TYPE_MAP.put("html", "HTML file");
+        FILE_TYPE_MAP.put("htm", "HTML file");
+        FILE_TYPE_MAP.put("js", "JavaScript file");
+        FILE_TYPE_MAP.put("css", "CSS file");
+        FILE_TYPE_MAP.put("json", "JSON file");
 
         // Picture category
-        FILE_TYPE_MAP.put("jpg", "JPEG图片");
-        FILE_TYPE_MAP.put("jpeg", "JPEG图片");
-        FILE_TYPE_MAP.put("png", "PNG图片");
-        FILE_TYPE_MAP.put("gif", "GIF图片");
-        FILE_TYPE_MAP.put("bmp", "位图文件");
+        FILE_TYPE_MAP.put("jpg", "JPEG image");
+        FILE_TYPE_MAP.put("jpeg", "JPEG image");
+        FILE_TYPE_MAP.put("png", "PNG image");
+        FILE_TYPE_MAP.put("gif", "GIF image");
+        FILE_TYPE_MAP.put("bmp", "Bitmap image");
 
         // Compression type
-        FILE_TYPE_MAP.put("zip", "ZIP压缩文件");
-        FILE_TYPE_MAP.put("rar", "RAR压缩文件");
-        FILE_TYPE_MAP.put("7z", "7-Zip压缩文件");
-        FILE_TYPE_MAP.put("tar", "TAR归档文件");
-        FILE_TYPE_MAP.put("gz", "GZIP压缩文件");
+        FILE_TYPE_MAP.put("zip", "ZIP archive");
+        FILE_TYPE_MAP.put("rar", "RAR archive");
+        FILE_TYPE_MAP.put("7z", "7-Zip archive");
+        FILE_TYPE_MAP.put("tar", "TAR archive");
+        FILE_TYPE_MAP.put("gz", "GZIP archive");
 
         // Office documents
-        FILE_TYPE_MAP.put("doc", "Word文档");
-        FILE_TYPE_MAP.put("docx", "Word文档");
-        FILE_TYPE_MAP.put("xls", "Excel表格");
-        FILE_TYPE_MAP.put("xlsx", "Excel表格");
-        FILE_TYPE_MAP.put("ppt", "PowerPoint演示文稿");
-        FILE_TYPE_MAP.put("pptx", "PowerPoint演示文稿");
-        FILE_TYPE_MAP.put("pdf", "PDF文档");
+        FILE_TYPE_MAP.put("doc", "Word document");
+        FILE_TYPE_MAP.put("docx", "Word document");
+        FILE_TYPE_MAP.put("xls", "Excel spreadsheet");
+        FILE_TYPE_MAP.put("xlsx", "Excel spreadsheet");
+        FILE_TYPE_MAP.put("ppt", "PowerPoint presentation");
+        FILE_TYPE_MAP.put("pptx", "PowerPoint presentation");
+        FILE_TYPE_MAP.put("pdf", "PDF document");
     }
 
     /**
@@ -72,16 +72,17 @@ public class FileTypeUtil {
      */
     public static String getFileType(String fileName) {
         if (fileName == null || fileName.isEmpty()) {
-            return "文件";
+            return MessageUtils.messageWithFallback("file.type.generic", "File");
         }
 
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex < 0 || dotIndex == fileName.length() - 1) {
-            return "文件";
+            return MessageUtils.messageWithFallback("file.type.generic", "File");
         }
 
         String extension = fileName.substring(dotIndex + 1).toLowerCase();
-        String type = FILE_TYPE_MAP.getOrDefault(extension, "文件");
+        String defaultType = FILE_TYPE_MAP.getOrDefault(extension, "File");
+        String type = MessageUtils.messageWithFallback("file.type." + extension, defaultType);
 
         return type + "(" + "." + extension + ")";
     }

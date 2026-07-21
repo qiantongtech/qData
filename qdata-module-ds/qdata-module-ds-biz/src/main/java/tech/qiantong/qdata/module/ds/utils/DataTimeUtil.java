@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 /**
- * 时间工具类
+ * Time utility.
  * 2024-01-05
  */
 @Slf4j
@@ -34,19 +34,19 @@ public class DataTimeUtil {
 
 
     /**
-     * LocalDateTime格式对象转换成时间戳
+     * Converts a LocalDateTime value to a timestamp.
      * @param now
      * @return
      */
     public static long timeByTimeStamp(LocalDateTime now) {
         try {
-            // 转换为Instant对象
+            // Convert to an Instant.
             Instant instant = now.atZone(ZoneId.systemDefault()).toInstant();
-            // 从Instant对象获取时间戳（毫秒）
+            // Get the timestamp in milliseconds from the Instant.
             return instant.toEpochMilli();
         }catch (Exception e){
-            log.debug("LocalDateTime转换时间戳失败 now{}",now);
-            log.debug("LocalDateTime转换时间戳失败 e{}",e.toString());
+            log.debug("Failed to convert LocalDateTime to timestamp now{}",now);
+            log.debug("Failed to convert LocalDateTime to timestamp e{}",e.toString());
             return System.currentTimeMillis();
         }
     }

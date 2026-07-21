@@ -28,7 +28,7 @@ import tech.qiantong.qdata.module.ds.dal.dataobject.api.DsApiDO;
 import java.util.List;
 
 /**
- * API服务 Convert
+ * API service converter
  *
  * @author lhs
  * @date 2025-02-12
@@ -38,29 +38,29 @@ public interface DsApiConvert {
     DsApiConvert INSTANCE = Mappers.getMapper(DsApiConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param dsApiPageReqVO 请求参数
+     * Converts a PageReqVO to a DO.
+     * @param dsApiPageReqVO request parameters
      * @return DsApiDO
      */
      DsApiDO convertToDO(DsApiPageReqVO dsApiPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param dsApiSaveReqVO 保存请求参数
+     * Converts a SaveReqVO to a DO.
+     * @param dsApiSaveReqVO save request parameters
      * @return DsApiDO
      */
      DsApiDO convertToDO(DsApiSaveReqVO dsApiSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param dsApiDO 实体对象
+     * Converts a DO to a RespVO.
+     * @param dsApiDO entity
      * @return DsApiRespVO
      */
      DsApiRespVO convertToRespVO(DsApiDO dsApiDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param dsApiDOList 实体对象列表
+     * Converts a DO list to a RespVO list.
+     * @param dsApiDOList entity list
      * @return List<DsApiRespVO>
      */
      List<DsApiRespVO> convertToRespVOList(List<DsApiDO> dsApiDOList);

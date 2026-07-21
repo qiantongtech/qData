@@ -98,7 +98,7 @@ public class DbQueryProperty implements Serializable {
      */
     public void viald() {
         if (StringUtils.isBlank(dbType)) {
-            throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+            throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
         }
         DbType dbTypeEnum = DbType.getDbType(dbType);
         switch (dbTypeEnum) {
@@ -118,30 +118,30 @@ public class DbQueryProperty implements Serializable {
                         || StringUtils.isBlank(username)
                         || StringUtils.isBlank(password)
                         || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case REDIS:
                 if (StringUtils.isBlank(host)
                         || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case HIVE:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case HDFS:
             case KAFKA:
             case RABBITMQ:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case FTP:
                 if (StringUtils.isAnyBlank(host, username, password) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case OSS_ALIYUN:
@@ -150,11 +150,11 @@ public class DbQueryProperty implements Serializable {
                         || datasourceConfig.get("keySecret") == null
                         || datasourceConfig.get("bucket") == null
                         || datasourceConfig.get("endpoint") == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case OTHER:
-                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
     }
 
@@ -166,20 +166,20 @@ public class DbQueryProperty implements Serializable {
      */
     public DbQueryProperty(String datasourceType, String ip, Long port, String datasourceConfig) {
         if (org.apache.commons.lang.StringUtils.isEmpty(datasourceType)) {
-            throw new DataQueryException("db.error.datasource.type.empty", "数据库类型不能为空");
+            throw new DataQueryException("db.error.datasource.type.empty", "Database type cannot be empty");
         }
         if (StringUtils.isEmpty(datasourceConfig)) {
-            throw new DataQueryException("db.error.datasource.config.empty", "数据源配置不能为空");
+            throw new DataQueryException("db.error.datasource.config.empty", "Datasource configuration cannot be empty");
         }
         if (DbType.getDbType(datasourceType) == null) {
-            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
 
         JSONObject configJson;
         try {
             configJson = JSON.parseObject(datasourceConfig);
         } catch (Exception e) {
-            throw new DataQueryException("db.error.datasource.config.json", "数据源配置格式错误，应为合法的JSON");
+            throw new DataQueryException("db.error.datasource.config.json", "Invalid datasource configuration format, must be valid JSON");
         }
         this.datasourceConfig = configJson;
 
@@ -218,7 +218,7 @@ public class DbQueryProperty implements Serializable {
                 && !StringUtils.equals(DbType.RABBITMQ.getDb(), dbType)
                 && !StringUtils.equals(DbType.OSS_ALIYUN.getDb(), dbType)) {
             if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-                throw new DataQueryException("db.error.datasource.config.auth", "数据源配置中必须包含username、password");
+                throw new DataQueryException("db.error.datasource.config.auth", "Datasource configuration must include username and password");
             }
         }
     }
@@ -244,7 +244,7 @@ public class DbQueryProperty implements Serializable {
     public String trainToJdbcUrl() {
         DbType dbType = DbType.getDbType(this.getDbType());
         if (dbType == null) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         DbDialect dbDialect = DialectFactory.getDialect(dbType);
         return dbDialect.trainToJdbcUrl(this);
@@ -337,7 +337,7 @@ public class DbQueryProperty implements Serializable {
 
         // Validate whether the database type exists
         if (dbTypeEnum == null) {
-            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
 
         // Generate truncate table statement based on database type
@@ -357,7 +357,7 @@ public class DbQueryProperty implements Serializable {
             case KINGBASE8:
                 return "DELETE FROM " + tableName + ""; // KingbaseES truncate statement, may need RESTART IDENTITY (reset auto-increment fields)
             default:
-                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
     }
 

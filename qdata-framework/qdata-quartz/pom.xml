@@ -30,7 +30,7 @@
     <artifactId>qdata-quartz</artifactId>
 
     <description>
-        quartz定时任务
+        Quartz scheduled tasks
     </description>
 
     <dependencies>

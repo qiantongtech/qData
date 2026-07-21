@@ -99,7 +99,7 @@ public class McTaskDolphinSchedulerService {
                 dsSchedulerSaveReqDTO, String.valueOf(projectCode));
 
         if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.scheduler.create", "创建调度器失败！");
+            throw new ServiceException("mc.error.scheduler.create", "Failed to create scheduler!");
         }
 
         Schedule schedule = dsSchedulerRespDTO.getData();
@@ -121,7 +121,7 @@ public class McTaskDolphinSchedulerService {
                 schedulerUpdateRequest, String.valueOf(projectCode));
 
         if (dsSchedulerRespDTO == null || !dsSchedulerRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.scheduler.update", "更新调度器失败！");
+            throw new ServiceException("mc.error.scheduler.update", "Failed to update scheduler!");
         }
 
         Schedule schedule = dsSchedulerRespDTO.getData();
@@ -137,7 +137,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.task.publish.fail", "发布任务失败！");
+            throw new ServiceException("mc.error.task.publish.fail", "Failed to publish task!");
         }
     }
 
@@ -150,7 +150,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                 String.valueOf(projectCode), Long.parseLong(schedulerId));
         if (!offlined.getData()) {
-            throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.offline", "Failed to offline scheduler!");
         }
     }
 
@@ -163,7 +163,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = iDsEtlSchedulerService.onlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!dsStatusRespDTO.getData()) {
-            throw new ServiceException("mc.error.scheduler.online", "上线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.online", "Failed to online scheduler!");
         }
     }
 
@@ -176,7 +176,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!offlined.getData()) {
-            throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.offline", "Failed to offline scheduler!");
         }
     }
 
@@ -191,14 +191,14 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE",
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.task.publish.fail", "发布任务失败！");
+            throw new ServiceException("mc.error.task.publish.fail", "Failed to publish task!");
         }
 
         // Online scheduler
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(
                 String.valueOf(projectCode), schedulerId);
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("mc.error.scheduler.online", "上线调度器失败！");
+            throw new ServiceException("mc.error.scheduler.online", "Failed to online scheduler!");
         }
     }
 
@@ -215,7 +215,7 @@ public class McTaskDolphinSchedulerService {
         if (respDTO == null || !respDTO.getSuccess()) {
             if (respDTO == null) log.error("respDTO is null");
             else log.error("respDTO={}", JSONUtils.toJson(respDTO));
-            throw new ServiceException("mc.error.task.offline", "下线任务失败！");
+            throw new ServiceException("mc.error.task.offline", "Failed to offline task!");
         }
 
         // Additionally make sure the scheduler is also offline
@@ -223,7 +223,7 @@ public class McTaskDolphinSchedulerService {
             DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(
                     String.valueOf(projectCode), schedulerId);
             if (!offlined.getData()) {
-                throw new ServiceException("mc.error.scheduler.offline", "下线调度器失败！");
+                throw new ServiceException("mc.error.scheduler.offline", "Failed to offline scheduler!");
             }
         }
     }
@@ -237,7 +237,7 @@ public class McTaskDolphinSchedulerService {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(
                 String.valueOf(projectCode), taskCode);
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("mc.error.task.delete", "删除任务失败！");
+            throw new ServiceException("mc.error.task.delete", "Failed to delete task!");
         }
     }
 
@@ -252,10 +252,13 @@ public class McTaskDolphinSchedulerService {
             DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.startTask(
                     dsStartTaskReqDTO, String.valueOf(projectCode));
             if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-                throw new ServiceException("mc.error.task.start", "启动任务失败：" + (dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误"), dsStatusRespDTO != null ? dsStatusRespDTO.getMsg() : "未知错误");
+                String errorMessage = dsStatusRespDTO != null
+                        ? dsStatusRespDTO.getMsg()
+                        : MessageUtils.messageWithFallback("mc.error.unknown", "Unknown error");
+                throw new ServiceException("mc.error.task.start.detail", "Failed to start task: {0}", errorMessage);
             }
         } catch (Exception e) {
-            throw new ServiceException("dpp.error.scheduler.start", "执行调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.start", "Executing the scheduler, failed!");
         }
     }
 
@@ -273,7 +276,7 @@ public class McTaskDolphinSchedulerService {
                 McTaskConverter.stringToLong(String.valueOf(projectCode)));
 
         if (!task.getSuccess()) {
-            throw new ServiceException("mc.error.task.create", "创建任务定义失败，请联系系统管理员");
+            throw new ServiceException("mc.error.task.create", "Failed to create task definition, please contact admin");
         }
         return task.getData();
     }
@@ -291,7 +294,7 @@ public class McTaskDolphinSchedulerService {
                 String.valueOf(projectCode), input.getTaskCode());
 
         if (!task.getSuccess()) {
-            throw new ServiceException("mc.error.task.update", "更新任务定义失败，请联系系统管理员");
+            throw new ServiceException("mc.error.task.update", "Failed to update task definition, please contact admin");
         }
         return task.getData();
     }
@@ -304,8 +307,8 @@ public class McTaskDolphinSchedulerService {
             DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(projectCode);
             return dsNodeGenCodeRespDTO.getData().get(0);
         } catch (Exception e) {
-            log.error("生成节点编码失败", e);
-            throw new ServiceException("mc.error.node.code", "生成节点编码失败，请联系系统管理员");
+            log.error("Failed to generate node code", e);
+            throw new ServiceException("mc.error.node.code", "Failed to generate node code, please contact admin");
         }
     }
 }

@@ -31,7 +31,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/detail/index.vue'),
                 name: 'dsApiDetail',
-                meta: { title: 'API服务详情', activeMenu: '/ds/api', lang: 'public.apiServiceDetail' }
+                meta: { title: 'API Service Details', activeMenu: '/ds/api', lang: 'public.apiServiceDetail' }
             }
         ]
     },
@@ -46,7 +46,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/edit/index.vue'),
                 name: 'dsApiEdit',
-                meta: { title: 'API服务修改', activeMenu: '/ds/api', lang: 'public.apiServiceEdit' }
+                meta: { title: 'Edit API Service', activeMenu: '/ds/api', lang: 'public.apiServiceEdit' }
             }
         ]
     },
@@ -60,7 +60,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/api/edit/index.vue'),
                 name: 'dsApiAdd',
-                meta: { title: 'API服务新增', activeMenu: '/ds/api', lang: 'public.apiServiceAdd' }
+                meta: { title: 'Add API Service', activeMenu: '/ds/api', lang: 'public.apiServiceAdd' }
             }
         ]
     },

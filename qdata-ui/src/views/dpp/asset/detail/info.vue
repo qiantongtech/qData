@@ -70,40 +70,40 @@ const detailData = computed(() => {
 
 const itemsForDesc = computed(() => {
   const commonFields = [
-    { key: "tableType", label: td('dpp.asset.dataType', '数据类型'), dictOptions: table_type.value },
-    { key: "tagNames", label: td('dpp.asset.dataTag', '数据标签'), type: "tags" },
-    { key: "createBy", label: td('common.texts.createdBy', '创建人') },
-    { key: "createUserPhoneNumber", label: td('dpp.asset.contactNumber', '联系方式') },
-    { key: "updateBy", label: td('common.texts.updatedBy', '更新人') },
-    { key: "updateUserPhoneNumber", label: td('dpp.asset.contactNumber', '联系方式') },
+    { key: "tableType", label: td('dpp.asset.dataType', 'Data Type'), dictOptions: table_type.value },
+    { key: "tagNames", label: td('dpp.asset.dataTag', 'Data Tags'), type: "tags" },
+    { key: "createBy", label: td('common.texts.createdBy', 'Created By') },
+    { key: "createUserPhoneNumber", label: td('dpp.asset.contactNumber', 'Contact Info') },
+    { key: "updateBy", label: td('common.texts.updatedBy', 'Updated By') },
+    { key: "updateUserPhoneNumber", label: td('dpp.asset.contactNumber', 'Contact Info') },
   ];
 
   if (props.form1.type == 1) {
     return [
-      { key: "datasourceName", label: td('dpp.asset.datasourceName', '数据连接名称') },
-      { key: "datasourceType", label: td('dpp.asset.datasourceType', '数据连接类型') },
-      { key: "datasourceIp", label: td('dpp.asset.datasourceIp', '数据连接名称IP') },
-      { key: "dataCount", label: td('dpp.asset.rowCount', '行数') },
-      { key: "fieldCount", label: td('dpp.asset.columnCount', '列数') },
+      { key: "datasourceName", label: td('dpp.asset.datasourceName', 'Data Connection Name') },
+      { key: "datasourceType", label: td('dpp.asset.datasourceType', 'Data Connection Type') },
+      { key: "datasourceIp", label: td('dpp.asset.datasourceIp', 'Data Connection IP') },
+      { key: "dataCount", label: td('dpp.asset.rowCount', 'Row Count') },
+      { key: "fieldCount", label: td('dpp.asset.columnCount', 'Column Count') },
       ...commonFields,
     ];
   } else if (props.form1.type == 2) {
     return [
-      { key: "appName", label: td('dpp.asset.appName', '应用名称') },
-      { key: "developerName", label: td('dpp.asset.developerName', '开发者') },
-      { key: "url", label: td('dpp.asset.serviceUrl', '服务地址') },
-      { key: "httpMethod", label: td('dpp.asset.httpMethod', '请求类型') },
+      { key: "appName", label: td('dpp.asset.appName', 'Application Name') },
+      { key: "developerName", label: td('dpp.asset.developerName', 'Developer') },
+      { key: "url", label: td('dpp.asset.serviceUrl', 'Service URL') },
+      { key: "httpMethod", label: td('dpp.asset.httpMethod', 'Request Type') },
       ...commonFields,
     ];
   } else if (props.form1.type == 7) {
     return [
-      { key: "datasourceName", label: td('dpp.asset.datasourceName', '数据连接名称') },
-      { key: "datasourceType", label: td('dpp.asset.datasourceType', '数据连接类型') },
-      { key: "fileName", label: td('dpp.asset.fileName', '文件名') },
-      { key: "fileType", label: td('dpp.asset.fileType', '文件类型') },
-      { key: "fileSize", label: td('dpp.asset.fileSize', '文件大小（字节）') },
-      { key: "filePath", label: td('dpp.asset.filePath', '文件路径') },
-      { key: "fileLastModified", label: td('common.texts.updatedTime', '更新时间'), type: "time" },
+      { key: "datasourceName", label: td('dpp.asset.datasourceName', 'Data Connection Name') },
+      { key: "datasourceType", label: td('dpp.asset.datasourceType', 'Data Connection Type') },
+      { key: "fileName", label: td('dpp.asset.fileName', 'File Name') },
+      { key: "fileType", label: td('dpp.asset.fileType', 'File Type') },
+      { key: "fileSize", label: td('dpp.asset.fileSize', 'File Size (bytes)') },
+      { key: "filePath", label: td('dpp.asset.filePath', 'File Path') },
+      { key: "fileLastModified", label: td('common.texts.updatedTime', 'Updated Time'), type: "time" },
       ...commonFields,
     ];
   }

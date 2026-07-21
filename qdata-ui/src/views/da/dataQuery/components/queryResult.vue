@@ -189,7 +189,7 @@ const downloadMethodNotification = () => {
   const totalFilesCount = totalFiles.value;
 
   ElMessageBox.confirm(
-    td('da.qualityTask.dataQuery.queryResult.notification.exportConfirm', '', { total: callData.value.dataTotal, files: totalFilesCount }),
+    td('da.qualityTask.dataQuery.queryResult.notification.exportConfirm', 'Export {total} records in files of 5,000 records each, for a total of {files} files?', { total: callData.value.dataTotal, files: totalFilesCount }),
     td('da.qualityTask.dataQuery.queryResult.notification.title'),
     {
       dangerouslyUseHTMLString: true,

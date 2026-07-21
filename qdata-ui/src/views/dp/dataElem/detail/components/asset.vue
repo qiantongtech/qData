@@ -256,13 +256,13 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('dp.dataElem.asset.deleteConfirm', '', { id: _ids }))
+        .confirm(td('dp.dataElem.confirmDeleteAsset', 'Are you sure to delete the data element-asset relation with ID "{id}"?', { id: _ids }))
         .then(function () {
             return delDpDataElemAssetRel(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(td('dp.dataElem.asset.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
         })
         .catch(() => { });
 }

@@ -27,13 +27,13 @@
     <el-table stripe height="580px" v-loading="loading" :data="jobLogList">
       <el-table-column
         width="150"
-        :label="td('dpp.instance.integratioTask.id', '编号')"
+        :label="td('dpp.instance.integratioTask.id', 'No.')"
         align="left"
         prop="id"
       />
       <el-table-column
         :show-overflow-tooltip="{ effect: 'light' }"
-        :label="td('dpp.instance.integratioTask.taskInstanceName', '任务名称')"
+        :label="td('dpp.instance.integratioTask.taskInstanceName', 'Task Instance Name')"
         align="left"
         width="300"
         prop="taskInstanceName"
@@ -44,7 +44,7 @@
       </el-table-column>
       <el-table-column
         width="100"
-        :label="td('dpp.instance.integratioTask.executionType', '执行类型')"
+        :label="td('dpp.instance.integratioTask.executionType', 'Execution Type')"
         align="left"
         prop="commandType"
       >
@@ -57,7 +57,7 @@
       </el-table-column>
       <el-table-column
         width="100"
-        :label="td('dpp.instance.integratioTask.executionStatus', '执行状态')"
+        :label="td('dpp.instance.integratioTask.executionStatus', 'Execution Status')"
         align="left"
         prop="status"
       >
@@ -70,7 +70,7 @@
       </el-table-column>
       <el-table-column
         width="160"
-        :label="td('dpp.instance.integratioTask.startTime', '开始时间')"
+        :label="td('dpp.instance.integratioTask.startTime', 'Start Time')"
         align="left"
         prop="startTime"
         :show-overflow-tooltip="{ effect: 'light' }"
@@ -83,7 +83,7 @@
       </el-table-column>
       <el-table-column
         width="160"
-        :label="td('dpp.instance.integratioTask.endTime', '结束时间')"
+        :label="td('dpp.instance.integratioTask.endTime', 'End Time')"
         align="left"
         prop="endTime"
         :show-overflow-tooltip="{ effect: 'light' }"
@@ -96,7 +96,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="td('dpp.instance.integratioTask.extractionCount', '抽取量')"
+        :label="td('dpp.instance.integratioTask.extractionCount', 'Extraction Count')"
         align="left"
         prop="extractionCount"
         width="80"
@@ -106,7 +106,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.instance.integratioTask.writeCount', '写入量')"
+        :label="td('dpp.instance.integratioTask.writeCount', 'Write Count')"
         align="left"
         prop="writeCount"
         width="80"
@@ -116,7 +116,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.instance.integratioTask.responsiblePerson', '责任人')"
+        :label="td('dpp.instance.integratioTask.responsiblePerson', 'Responsible Person')"
         align="left"
         prop="personChargeName"
         width="80"
@@ -126,7 +126,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.operation', '操作')"
+        :label="td('common.texts.operation', 'Operation')"
         align="center"
         class-name="small-padding fixed-width"
         fixed="right"
@@ -139,7 +139,7 @@
             icon="View"
             @click="logDetailCatList(scope.row)"
             >{{
-              td("dpp.instance.integratioTask.detail", "查看日志")
+              td("dpp.instance.integratioTask.detail", "Detail")
             }}</el-button
           >
           <el-button
@@ -149,7 +149,7 @@
             icon="Download"
             @mousedown="(e) => e.preventDefault()"
           >
-            {{ td("dpp.instance.integratioTask.downloadLog", "下载日志") }}
+            {{ td("dpp.instance.integratioTask.downloadLog", "Download Log") }}
           </el-button>
         </template>
       </el-table-column>
@@ -169,14 +169,14 @@
     <template #footer>
       <div style="text-align: right">
         <el-button @click="visibleDialog = false">{{
-          td("common.button.close", "关闭")
+          td("common.button.close", "Close")
         }}</el-button>
       </div>
     </template>
   </el-dialog>
   <!-- Scheduling log details -->
   <el-dialog
-    :title="td('dpp.instance.integratioTask.detail', '查看日志')"
+    :title="td('dpp.instance.integratioTask.detail', 'Detail')"
     v-model="open"
     width="800px"
     :append-to="$refs['app-container']"
@@ -187,7 +187,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="open = false">{{
-          td("common.button.close", "关闭")
+          td("common.button.close", "Close")
         }}</el-button>
       </div>
     </template>

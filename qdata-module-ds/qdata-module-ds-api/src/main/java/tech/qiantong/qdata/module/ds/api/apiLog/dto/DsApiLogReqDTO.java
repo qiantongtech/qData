@@ -23,7 +23,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * API服务调用日志 DTO 对象 DS_API_LOG
+ * API service call log DTO DS_API_LOG
  *
  * @author lhs
  * @date 2025-02-12
@@ -36,46 +36,46 @@ public class DsApiLogReqDTO {
     /** ID */
     private Long ID;
 
-    /** 调用API服务Id */
+    /** Called API service ID */
     private String apiId;
 
-    /** 调用者id */
+    /** Caller ID */
     private String callerId;
 
-    /** 调用者 */
+    /** Caller */
     private Long callerBy;
 
-    /** 调用者ip */
+    /** Caller IP */
     private String callerIp;
 
-    /** 调用url */
+    /** Called URL */
     private String callerUrl;
 
-    /** 调用参数 */
+    /** Call parameters */
     private String callerParams;
 
-    /** 调用开始时间 */
+    /** Call start time */
     private Date callerStartDate;
 
-    /** 调用结束时间 */
+    /** Call end time */
     private Date callerEndDate;
 
-    /** 调用数据量 */
+    /** Called record count */
     private Long callerSize;
 
-    /** 调用耗时(毫秒) */
+    /** Call duration in milliseconds */
     private Long callerTime;
 
-    /** 信息记录 */
+    /** Information record */
     private String MSG;
 
-    /** 状态 */
+    /** Status */
     private String STATUS;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Deletion flag */
     private Boolean delFlag;
 
 

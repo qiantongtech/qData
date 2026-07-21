@@ -30,7 +30,7 @@
     <artifactId>qdata-common</artifactId>
 
     <description>
-        common通用工具
+        Common utilities
     </description>
 
     <dependencies>

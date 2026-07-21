@@ -30,7 +30,7 @@
     <artifactId>qdata-pay</artifactId>
 
     <description>
-        pay模块
+        Payment module
     </description>
 
     <dependencies>

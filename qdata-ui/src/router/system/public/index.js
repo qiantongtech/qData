@@ -66,7 +66,7 @@ export default [
                 path: '/index',
                 component: () => import('@/views/sys/index.vue'),
                 name: 'Index',
-                meta: { title: '首页', icon: 'dashboard', affix: true, lang: 'public.home' }
+                meta: { title: 'Home', icon: 'dashboard', affix: true, lang: 'public.home' }
             }
         ]
     },
@@ -79,7 +79,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/developing/index.vue'),
                 name: 'Developing',
-                meta: { title: '功能开发中', lang: 'public.featureDeveloping' }
+                meta: { title: 'Feature Under Development', lang: 'public.featureDeveloping' }
             }
         ]
     },
@@ -92,7 +92,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/message/index.vue'),
                 name: 'Message',
-                meta: { title: '我的消息', icon: 'message', lang: 'public.myMessages' },
+                meta: { title: 'My Messages', icon: 'message', lang: 'public.myMessages' },
                 hidden: true
             }
         ]
@@ -107,7 +107,7 @@ export default [
                 path: 'profile',
                 component: () => import('@/views/sys/system/user/profile/index.vue'),
                 name: 'Profile',
-                meta: { title: '个人中心', icon: 'user', lang: 'public.personalCenter' }
+                meta: { title: 'Personal Center', icon: 'user', lang: 'public.personalCenter' }
             }
         ]
     },
@@ -121,7 +121,7 @@ export default [
                 path: 'user',
                 component: () => import('@/views/sys/system/user/index.vue'),
                 name: 'User',
-                meta: { title: '用户管理', icon: 'user', lang: 'public.userManagement' }
+                meta: { title: 'User Management', icon: 'user', lang: 'public.userManagement' }
             }
         ]
     },
@@ -135,7 +135,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/notice/detail.vue'),
                 name: 'noticeDetail',
-                meta: { title: '公告详情', activeMenu: '/system/notice', lang: 'public.noticeDetail' }
+                meta: { title: 'Notice Details', activeMenu: '/system/notice', lang: 'public.noticeDetail' }
             }
         ]
     },

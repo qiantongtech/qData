@@ -31,7 +31,7 @@ export default [
                 path: 'studentDetail',
                 component: () => import('@/views/example/genStudent/detail/index.vue'),
                 name: 'studentDetail',
-                meta: { title: '学生详情', activeMenu: '/example/student', lang: 'public.studentDetail' }
+                meta: { title: 'Student Details', activeMenu: '/example/student', lang: 'public.studentDetail' }
             }
         ]
     },

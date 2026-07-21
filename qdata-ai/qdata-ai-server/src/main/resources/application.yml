@@ -70,6 +70,7 @@ spring:
   messages:
     # Internationalized resource file path (public + AI module exclusive)
     basename: i18n/messages,i18n/ai-messages,i18n/log-messages
+    encoding: UTF-8
   profiles:
     active: dev  # The environment activated by default, which can be overridden at startup
   config:

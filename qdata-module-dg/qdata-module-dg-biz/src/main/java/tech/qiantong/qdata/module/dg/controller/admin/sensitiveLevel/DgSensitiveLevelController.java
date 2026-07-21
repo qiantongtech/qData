@@ -12,6 +12,7 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.dg.controller.admin.sensitiveLevel.vo.DgSensitiveLevelPageReqVO;
 import tech.qiantong.qdata.module.dg.controller.admin.sensitiveLevel.vo.DgSensitiveLevelRespVO;
@@ -81,9 +82,11 @@ public class DgSensitiveLevelController extends BaseController {
     @PostMapping("/updateStatus/{id}/{status}")
     public AjaxResult updateStatus(@PathVariable Long id, @PathVariable Long status) {
         if (!service.updateStatus(id, status)) {
-            return AjaxResult.error("已被使用，不允许下线！");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "dg.error.sensitive.level.in.use", "The sensitivity level is in use and cannot be disabled"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.update.success", "Update successful"));
     }
 
     @Operation(summary = "删除敏感等级")

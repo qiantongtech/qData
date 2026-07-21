@@ -30,52 +30,52 @@
     <artifactId>qdata-module-dp-biz</artifactId>
 
     <description>
-        system系统模块
+        System module
     </description>
 
     <dependencies>
-        <!-- 核心模块 config-->
+        <!-- Core module configuration-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系統模块 websocket-->
+        <!-- system module websocket-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-websocket</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 qdata-security -->
+        <!-- system module qdata-security -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-security</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 mybatis -->
+        <!-- system module mybatis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 redis -->
+        <!-- system module redis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- 文件上传-->
+        <!-- File upload-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>

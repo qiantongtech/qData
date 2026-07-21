@@ -26,6 +26,7 @@ import com.github.yulichang.toolkit.MPJWrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.util.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -338,7 +339,8 @@ public class MPJLambdaWrapperX<T> extends MPJLambdaWrapper<T> {
                     .map(StrUtil::toUnderlineCase).collect(Collectors.toList());
             for (String column : columns) {
                 if (!allowedColumns.contains(column)) {
-                    throw new IllegalArgumentException("非法的排序字段：" + column);
+                    throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                            "sys.error.sort.column.invalid", "Invalid sort column: {0}", column));
                 }
             }
             super.orderByStr(true, "asc".equals(isAsc), columns);

@@ -34,19 +34,19 @@ public class ProjectRenamer {
         Scanner scanner = new Scanner(System.in);
 
         // Enter the project path before modification
-        System.out.print("请输入修改前的工程路径: ");
+        System.out.print("Enter the original project path: ");
         String originalDirectory = scanner.nextLine();
 
         // Enter the modified project path
-        System.out.print("请输入修改后的工程路径: ");
+        System.out.print("Enter the new project path: ");
         String newDirectory = scanner.nextLine();
 
         // Enter the project name before modification
-        System.out.print("请输入修改前的工程名称: ");
+        System.out.print("Enter the original project name: ");
         String oldProjectName = scanner.nextLine().toLowerCase();
 
         // Enter the modified project name
-        System.out.print("请输入修改后的工程名称: ");
+        System.out.print("Enter the new project name: ");
         String newProjectName = scanner.nextLine().toLowerCase();
 
         try {
@@ -61,7 +61,7 @@ public class ProjectRenamer {
             // Replace the original project name in the file content
             replaceInFiles(newDir, oldProjectName, newProjectName);
 
-            System.out.println("工程已成功从 " + originalDirectory + " 修改为 " + newDirectory);
+            System.out.println("Project successfully renamed from " + originalDirectory + " to " + newDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

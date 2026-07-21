@@ -27,6 +27,7 @@ import tech.qiantong.qdata.common.annotation.Log;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.quality.controller.quality.vo.CheckErrorDataReqDTO;
 import tech.qiantong.qdata.quality.controller.quality.vo.QualityRuleQueryReqDTO;
 import tech.qiantong.qdata.quality.service.quality.QualityTaskExecutorService;
@@ -61,7 +62,8 @@ public class QualityTaskExecutorController extends BaseController {
     @PostMapping("/pageErrorData")
     public AjaxResult pageErrorData(@RequestBody CheckErrorDataReqDTO checkErrorDataReqDTO) {
         if (StringUtils.isBlank(checkErrorDataReqDTO.getReportId())) {
-            return AjaxResult.error("参数不能为空");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "sys.error.param.empty", "Parameter cannot be empty"));
         }
         return AjaxResult.success(qualityTaskExecutorService.pageErrorData(PageRequest.of(checkErrorDataReqDTO.getPageNum() - 1, checkErrorDataReqDTO.getPageSize()), checkErrorDataReqDTO));
     }

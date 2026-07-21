@@ -30,7 +30,7 @@
     <artifactId>qdata-config</artifactId>
 
     <description>
-        qdata-config框架核心
+        qdata-config framework core
     </description>
 
     <dependencies>

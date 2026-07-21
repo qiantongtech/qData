@@ -30,7 +30,7 @@ import tech.qiantong.qdata.common.annotation.Anonymous;
 import tech.qiantong.qdata.module.ds.annotation.DsCheckClientToken;
 
 /**
- * DS模块 OAuth2 Server端 控制器
+ * OAuth2 server controller for the DS module.
  * @author Ming
  */
 @Tag(name = "API服务-鉴权")
@@ -39,7 +39,7 @@ import tech.qiantong.qdata.module.ds.annotation.DsCheckClientToken;
 public class DsAuthController {
 
     /**
-     * 处理 OAuth2 凭证式相关请求
+     * Handles OAuth2 client credentials requests.
      */
     @Anonymous
     @Operation(
@@ -52,7 +52,7 @@ public class DsAuthController {
             @RequestParam(name = "client_id") String clientId,
             @RequestParam(name = "client_secret") String clientSecret
     ) {
-        log.info("------- 进入请求: " + SaHolder.getRequest().getUrl());
+        log.info("------- Incoming request: " + SaHolder.getRequest().getUrl());
         return SaOAuth2ServerProcessor.instance.clientToken();
     }
 }

@@ -52,7 +52,7 @@ public class QDataApplication
 
         System.out.println(
                 BRAND_BLUE +
-                        "     (♥◠‿◠)ﾉﾞ  qData 千数平台启动成功！  ლ(´ڡ`ლ)ﾞ\n" +
+                        "     (♥◠‿◠)ﾉﾞ  qData Data Platform started successfully!  ლ(´ڡ`ლ)ﾞ\n" +
                         "═════════════════════════════════════════════════════\n" +
                         "           ____            _            \n" +
                         "    __ _  |  _ \\    __ _  | |_    __ _  \n" +
@@ -61,7 +61,7 @@ public class QDataApplication
                         "   \\__, | |____/   \\__,_|  \\__|  \\__,_| \n" +
                         "      |_|                                \n" +
                         "═════════════════════════════════════════════════════\n" +
-                        "     国 产 环 境  ·  稳 定  ·  高 效  ·  安 全" +
+                        "     LOCALIZED STACK  ·  STABLE  ·  EFFICIENT  ·  SECURE" +
                         RESET
         );
     }

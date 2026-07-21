@@ -46,7 +46,7 @@ public final class OverFlowUtil {
         boolean isOverFlow = OverFlowUtil.isLongOverflow(integer);
 
         if (isOverFlow) {
-            throw DBException.asDataXException(String.format("[%s] 转为Long类型出现溢出 .", integer.toString()));
+            throw DBException.asDataXException(String.format("Converting [%s] to Long caused an overflow.", integer.toString()));
         }
     }
 
@@ -68,7 +68,7 @@ public final class OverFlowUtil {
     public static void validateDoubleNotOverFlow(final BigDecimal decimal) {
         boolean isOverFlow = OverFlowUtil.isDoubleOverFlow(decimal);
         if (isOverFlow) {
-            throw DBException.asDataXException(String.format("[%s]转为Double类型出现溢出 .",
+            throw DBException.asDataXException(String.format("Converting [%s] to Double caused an overflow.",
                     decimal.toPlainString()));
         }
     }

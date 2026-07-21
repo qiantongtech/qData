@@ -32,6 +32,7 @@ import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.da.controller.admin.sensitiveLevel.vo.DaSensitiveLevelPageReqVO;
@@ -77,7 +78,7 @@ public class DaSensitiveLevelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaSensitiveLevelDO> list = (List<DaSensitiveLevelDO>) daSensitiveLevelService.getDaSensitiveLevelPage(exportReqVO).getRows();
         ExcelUtil<DaSensitiveLevelRespVO> util = new ExcelUtil<>(DaSensitiveLevelRespVO.class);
-        util.exportExcel(response, DaSensitiveLevelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaSensitiveLevelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入敏感等级列表")
@@ -128,9 +129,11 @@ public class DaSensitiveLevelController extends BaseController {
     @PostMapping("/updateStatus/{id}/{status}")
     public AjaxResult updateStatus(@PathVariable Long id, @PathVariable Long status) {
         if (!daSensitiveLevelService.updateStatus(id,status)){
-            return AjaxResult.error("已被使用，不允许下线！");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "da.error.sensitive.level.in.use", "The sensitivity level is in use and cannot be disabled"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.update.success", "Update successful"));
     }
 
     @Operation(summary = "删除敏感等级")

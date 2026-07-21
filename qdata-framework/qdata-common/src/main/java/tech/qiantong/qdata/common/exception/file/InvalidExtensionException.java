@@ -19,6 +19,7 @@
 package tech.qiantong.qdata.common.exception.file;
 
 import java.util.Arrays;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
  * File upload error exception class
@@ -35,7 +36,9 @@ public class InvalidExtensionException extends FileUploadException
 
     public InvalidExtensionException(String[] allowedExtension, String extension, String filename)
     {
-        super("文件[" + filename + "]后缀[" + extension + "]不正确，请上传" + Arrays.toString(allowedExtension) + "格式");
+        super(MessageUtils.messageWithFallback("sys.error.file.extension.invalid",
+                "File [{0}] has an invalid extension [{1}]; upload one of the following formats: {2}",
+                filename, extension, Arrays.toString(allowedExtension)));
         this.allowedExtension = allowedExtension;
         this.extension = extension;
         this.filename = filename;

@@ -30,26 +30,26 @@
       ref="daDiscoveryTaskRef"
       :model="form"
       :rules="
-        title == td('dpp.integratioTask.taskDetail', '任务详情') ? {} : rules
+        title == td('dpp.integratioTask.taskDetail', 'Task Details') ? {} : rules
       "
       label-width="146px"
       @submit.prevent
-      :disabled="title == td('dpp.integratioTask.taskDetail', '任务详情')"
+      :disabled="title == td('dpp.integratioTask.taskDetail', 'Task Details')"
      :label-position="labelPosition">
       <div class="h2-title">
-        {{ td("dpp.integratioTask.basicInfo", "基本信息") }}
+        {{ td("dpp.integratioTask.basicInfo", "Basic Info") }}
       </div>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.taskName', '任务名称')"
+            :label="td('dpp.integratioTask.taskName', 'Task Name')"
             prop="name"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               v-model="form.name"
               :placeholder="
-                td('dpp.integratioTask.inputTaskName', '请输入任务名称')
+                td('dpp.integratioTask.inputTaskName', 'Please enter task name')
               "
             />
             <div class="form-readonly" v-else>{{ form.name }}</div>
@@ -57,7 +57,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.taskCategory', '任务类目')"
+            :label="td('dpp.integratioTask.taskCategory', 'Task Category')"
             prop="catCode"
            :label-position="labelPosition">
             <el-tree-select
@@ -68,7 +68,7 @@
               :props="{ value: 'code', label: 'name', children: 'children' }"
               value-key="id"
               :placeholder="
-                td('dpp.integratioTask.selectTaskCategory', '请选择任务类目')
+                td('dpp.integratioTask.selectTaskCategory', 'Please select task category')
               "
               check-strictly
               @node-click="handleNodeClick"
@@ -80,7 +80,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.executionStrategy', '执行策略')"
+            :label="td('dpp.integratioTask.executionStrategy', 'Execution Strategy')"
             prop="executionType"
            :label-position="labelPosition">
             <el-select
@@ -90,7 +90,7 @@
               :placeholder="
                 td(
                   'dpp.integratioTask.selectExecutionStrategy',
-                  '请选择执行策略'
+                  'Please select execution strategy'
                 )
               "
               style="width: 100%"
@@ -113,14 +113,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.scheduleCycle', '调度周期')"
+            :label="td('dpp.integratioTask.scheduleCycle', 'Schedule Cycle')"
             prop="crontab"
            :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.crontab"
               :placeholder="
-                td('dpp.integratioTask.selectScheduleCycle', '请选择调度周期')
+                td('dpp.integratioTask.selectScheduleCycle', 'Please select schedule cycle')
               "
             >
               <template #append>
@@ -129,7 +129,7 @@
                   @click="handleShowCron"
                   style="background-color: #2666fb; color: #fff"
                 >
-                  {{ td("dpp.integratioTask.configure", "配置") }}
+                  {{ td("dpp.integratioTask.configure", "Configure") }}
                   <i class="el-icon-time el-icon--right"></i>
                 </el-button>
               </template>
@@ -141,7 +141,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-              :label="td('dpp.integratioTask.scheduler', '调度器')"
+              :label="td('dpp.integratioTask.scheduler', 'Scheduler')"
               prop="scheduler"
               :label-position="labelPosition"
           >
@@ -171,7 +171,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.responsiblePerson', '责任人')"
+            :label="td('dpp.integratioTask.responsiblePerson', 'Responsible Person')"
             prop="personCharge"
            :label-position="labelPosition">
             <el-tree-select
@@ -185,7 +185,7 @@
               }"
               value-key="ID"
               :placeholder="
-                td('dpp.integratioTask.selectResponsiblePerson', '请选择责任人')
+                td('dpp.integratioTask.selectResponsiblePerson', 'Please select responsible person')
               "
               check-strictly
               @change="handleContactChange"
@@ -194,14 +194,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.contactNumber', '联系电话')"
+            :label="td('dpp.integratioTask.contactNumber', 'Contact Phone')"
             prop="contactNumber"
            :label-position="labelPosition">
             <el-input
               v-if="title != td('dpp.integratioTask.taskDetail')"
               v-model="form.contactNumber"
               :placeholder="
-                td('dpp.integratioTask.inputContactNumber', '请输入联系电话')
+                td('dpp.integratioTask.inputContactNumber', 'Please enter contact phone')
               "
               disabled
             >
@@ -227,7 +227,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.taskStatus', '任务状态')"
+            :label="td('dpp.integratioTask.taskStatus', 'Task Status')"
             prop="releaseState"
            :label-position="labelPosition">
             <el-radio-group
@@ -255,20 +255,20 @@
         </el-col>
       </el-row>
       <div class="h2-title">
-        {{ td("dpp.integratioTask.attributeInfo", "属性信息") }}
+        {{ td("dpp.integratioTask.attributeInfo", "Attribute Info") }}
       </div>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.taskPriority', '任务优先级')"
+            :label="td('dpp.integratioTask.taskPriority', 'Task Priority')"
             prop="taskPriority"
            :label-position="labelPosition">
             <el-select
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               clearable
               v-model="form.taskPriority"
               :placeholder="
-                td('dpp.integratioTask.selectTaskPriority', '请选择任务优先级')
+                td('dpp.integratioTask.selectTaskPriority', 'Please select task priority')
               "
             >
               <el-option
@@ -289,14 +289,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.workerGroup', 'Worker分组')"
+            :label="td('dpp.integratioTask.workerGroup', 'Worker Group')"
             prop="workerGroup"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               v-model="form.workerGroup"
               :placeholder="
-                td('dpp.integratioTask.inputWorkerGroup', '请输入Worker分组')
+                td('dpp.integratioTask.inputWorkerGroup', 'Please enter worker group')
               "
               disabled
             />
@@ -307,22 +307,22 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.failRetryTimes', '失败重试次数')"
+            :label="td('dpp.integratioTask.failRetryTimes', 'Retry Count on Failure')"
             prop="failRetryTimes"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               type="number"
               v-model="form.failRetryTimes"
               :placeholder="
                 td(
                   'dpp.integratioTask.inputFailRetryTimes',
-                  '请输入失败重试次数'
+                  'Please enter retry count on failure'
                 )
               "
             >
               <template #append>{{
-                td("dpp.integratioTask.times", "次")
+                td("dpp.integratioTask.times", "times")
               }}</template>
             </el-input>
             <div class="form-readonly" v-else>
@@ -332,22 +332,22 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.failRetryInterval', '失败重试间隔')"
+            :label="td('dpp.integratioTask.failRetryInterval', 'Retry Interval')"
             prop="failRetryInterval"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               type="number"
               v-model="form.failRetryInterval"
               :placeholder="
                 td(
                   'dpp.integratioTask.inputFailRetryInterval',
-                  '请输入失败重试间隔'
+                  'Please enter retry interval'
                 )
               "
             >
               <template #append>{{
-                td("dpp.integratioTask.minutes", "分")
+                td("dpp.integratioTask.minutes", "min")
               }}</template>
             </el-input>
             <div class="form-readonly" v-else>
@@ -357,15 +357,15 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.delayExecutionTime', '延迟执行时间')"
+            :label="td('dpp.integratioTask.delayExecutionTime', 'Delay Execution Time')"
             prop="delayTime"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               type="number"
               v-model="form.delayTime"
               :placeholder="
-                td('dpp.integratioTask.inputDelayTime', '请输入延迟执行时间')
+                td('dpp.integratioTask.inputDelayTime', 'Please enter delay execution time')
               "
             >
               <template #append>分</template>
@@ -375,11 +375,11 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integratioTask.executionEngine', '执行引擎')"
+            :label="td('dpp.integratioTask.executionEngine', 'Execution Engine')"
             prop="taskType"
            :label-position="labelPosition">
             <el-radio-group
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
               v-model="form.taskType"
               class="el-form-input-width"
               :disabled="props.data.id"
@@ -403,15 +403,15 @@
         <template v-if="form.taskType == 'SPARK'">
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.driverCores', 'Driver核心数')"
+              :label="td('dpp.integratioTask.driverCores', 'Driver Cores')"
               prop="driverCores"
              :label-position="labelPosition">
               <el-input-number
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputDriverCores',
-                    '请输入Driver核心数'
+                    'Please enter driver cores'
                   )
                 "
                 v-model="form.driverCores"
@@ -426,16 +426,16 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.driverMemory', 'Driver内存数')"
+              :label="td('dpp.integratioTask.driverMemory', 'Driver Memory')"
               prop="driverMemory"
              :label-position="labelPosition">
               <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 v-model="form.driverMemory"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputDriverMemory',
-                    '请输入Driver内存数'
+                    'Please enter driver memory'
                   )
                 "
                 style="width: 100%"
@@ -448,15 +448,15 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.executorCount', 'Executor数量')"
+              :label="td('dpp.integratioTask.executorCount', 'Executor Count')"
               prop="numExecutors"
              :label-position="labelPosition">
               <el-input-number
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputExecutorCount',
-                    '请输入Executor数量'
+                    'Please enter executor count'
                   )
                 "
                 v-model="form.numExecutors"
@@ -471,16 +471,16 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.executorMemory', 'Executor内存数')"
+              :label="td('dpp.integratioTask.executorMemory', 'Executor Memory')"
               prop="executorMemory"
              :label-position="labelPosition">
               <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 v-model="form.executorMemory"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputExecutorMemory',
-                    '请输入Executor内存数'
+                    'Please enter executor memory'
                   )
                 "
                 style="width: 100%"
@@ -493,15 +493,15 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.executorCores', 'Executor核心数')"
+              :label="td('dpp.integratioTask.executorCores', 'Executor Cores')"
               prop="executorCores"
              :label-position="labelPosition">
               <el-input-number
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputExecutorCores',
-                    '请输入Executor核心数'
+                    'Please enter executor cores'
                   )
                 "
                 v-model="form.executorCores"
@@ -516,16 +516,16 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.integratioTask.yarnQueue', 'Yarn队列')"
+              :label="td('dpp.integratioTask.yarnQueue', 'Yarn Queue')"
               prop="yarnQueue"
              :label-position="labelPosition">
               <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
                 v-model="form.yarnQueue"
                 :placeholder="
                   td(
                     'dpp.integratioTask.inputYarnQueue',
-                    '请输入Yarn队列(选填)'
+                    'Please enter Yarn queue (optional)'
                   )
                 "
               >
@@ -549,21 +549,21 @@
       <div style="text-align: right">
         <template v-if="info">
           <el-button @click="closeDialog">{{
-            td("common.button.close", "关闭")
+            td("common.button.close", "Close")
           }}</el-button>
           <el-button
             type="primary"
             v-if="!route.query.info"
             @click="saveClose"
-            >{{ td("common.button.save", "保存") }}</el-button
+            >{{ td("common.button.save", "Save") }}</el-button
           >
         </template>
         <template v-else>
           <el-button @click="saveClose">{{
-            td("dpp.integratioTask.onlySave", "仅保存")
+            td("dpp.integratioTask.onlySave", "Save Only")
           }}</el-button>
           <el-button type="primary" @click="saveData">{{
-            td("dpp.integratioTask.saveAndConfigFlow", "保存并配置流程")
+            td("dpp.integratioTask.saveAndConfigFlow", "Save and Configure Flow")
           }}</el-button>
         </template>
       </div>
@@ -571,7 +571,7 @@
   </el-dialog>
 
   <el-dialog
-    :title="td('dpp.integratioTask.cronGenerator', 'Cron表达式生成器')"
+    :title="td('dpp.integratioTask.cronGenerator', 'Cron Expression Generator')"
     v-model="openCron"
     class="dialog"
     :append-to="$refs['app-container']"
@@ -638,14 +638,14 @@ const rules = {
   name: [
     {
       required: true,
-      message: td("dpp.integratioTask.inputTaskName", "任务名称不能为空"),
+      message: td("dpp.integratioTask.inputTaskName", "Please enter task name"),
       trigger: "change",
     },
   ],
   catCode: [
     {
       required: true,
-      message: td("dpp.integratioTask.selectTaskCategory", "任务类目不能为空"),
+      message: td("dpp.integratioTask.selectTaskCategory", "Please select task category"),
       trigger: "change",
     },
   ],
@@ -654,7 +654,7 @@ const rules = {
       required: true,
       message: td(
         "dpp.integratioTask.selectExecutionStrategy",
-        "执行策略不能为空"
+        "Please select execution strategy"
       ),
       trigger: "change",
     },
@@ -662,14 +662,14 @@ const rules = {
   scheduler: [
     {
       required: true,
-      message: td("dpp.integratioTask.selectScheduler", "调度器不能为空"),
+      message: td("dpp.integratioTask.selectScheduler", "Scheduler is required"),
       trigger: "change",
     },
   ],
   crontab: [
     {
       required: true,
-      message: td("dpp.integratioTask.selectScheduleCycle", "调度周期不能为空"),
+      message: td("dpp.integratioTask.selectScheduleCycle", "Please select schedule cycle"),
       trigger: "change",
     },
   ],
@@ -678,7 +678,7 @@ const rules = {
   taskType: [
     {
       required: true,
-      message: td("dpp.integratioTask.executionEngine", "执行引擎不能为空"),
+      message: td("dpp.integratioTask.executionEngine", "Execution Engine"),
       trigger: "change",
     },
   ],
@@ -687,7 +687,7 @@ const rules = {
       required: true,
       message: td(
         "dpp.integratioTask.selectResponsiblePerson",
-        "责任人不能为空"
+        "Please select responsible person"
       ),
       trigger: "change",
     },
@@ -732,7 +732,7 @@ const schedulerGuide = computed(() => {
     return {
       description: td(
         "dpp.integratioTask.dolphinSchedulerGuideDescription",
-        "使用前请确保 DolphinScheduler 服务已启动。"
+        "please ensure that the DolphinScheduler service is running"
       ),
     };
   }
@@ -740,7 +740,7 @@ const schedulerGuide = computed(() => {
   return {
     description: td(
       "dpp.integratioTask.quartzGuideDescription",
-      "由系统内置组件执行任务。"
+      "The task is executed by the built-in components of the system"
     ),
   };
 });
@@ -790,7 +790,7 @@ watch(
         console.log("🚀 ~ props.data.taskConfig:", props.data.taskConfig);
         let draftJson = JSON.parse(data.draftJson);
         form.value = { ...data, ...draftJson };
-        // 兼容老任务：以前没有 scheduler/actuator 时，默认还是走 DS + Spark。
+        // Preserve DS and Spark as defaults for legacy tasks without scheduler or actuator values.
         form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
         form.value.taskType = form.value.actuator == "DATAX" ? "DATAX" : form.value.taskType || "SPARK";
         updateSchedulerTypeList();
@@ -831,11 +831,11 @@ watch(actuator_type, updateSchedulerTypeList, { immediate: true });
 
 const handleExecutionEngineChange = (value) => {
   if (form.value.scheduler != "QUARTZ" && value == "DATAX") {
-    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "Currently, switching is not supported！"));
     form.value.taskType = "SPARK";
   }
   if (form.value.scheduler == "QUARTZ" && value != "DATAX") {
-    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "暂不支持切换"));
+    proxy.$modal.msgWarning(td("dpp.integratioTask.unsupportedEngineSwitch", "Currently, switching is not supported！"));
     form.value.taskType = "DATAX";
   }
   syncActuatorByEngine();
@@ -900,7 +900,7 @@ const saveData = async () => {
 const checkDSUpStart = async () => {
   const resp = await checkApi();
   if (!resp.data) {
-    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "Please start the DolphinScheduler scheduler！"));
   }
   return resp.data;
 }

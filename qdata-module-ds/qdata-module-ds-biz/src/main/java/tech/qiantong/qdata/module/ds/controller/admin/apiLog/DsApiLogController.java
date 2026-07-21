@@ -48,7 +48,7 @@ import tech.qiantong.qdata.module.ds.dal.dataobject.apiLog.DsApiLogDO;
 import tech.qiantong.qdata.module.ds.service.apiLog.IDsApiLogService;
 
 /**
- * API服务调用日志Controller
+ * API service call log controller
  *
  * @author lhs
  * @date 2025-02-12
@@ -77,7 +77,7 @@ public class DsApiLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DsApiLogDO> list = (List<DsApiLogDO>) dsApiLogService.getDsApiLogPage(exportReqVO).getRows();
         ExcelUtil<DsApiLogRespVO> util = new ExcelUtil<>(DsApiLogRespVO.class);
-        util.exportExcel(response, DsApiLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DsApiLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入API服务调用日志列表")

@@ -85,7 +85,7 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
         }
         //Check if it selected itself
         if (catDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("dg.error.parent.self", "切换上级不能选择自身作为上级类目");
+            throw new ServiceException("dg.error.parent.self", "Cannot select self as parent category");
         }
         //Check parent-child relationship change
         boolean flag = false;
@@ -113,7 +113,7 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
         for (DgDataCategoryCatDO catDO : attApiCatDOS) {
             Long countData = dgDataCategoryService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("dg.error.delete.category", "存在分类，不允许删除");
+                throw new ServiceException("dg.error.delete.category", "Contains sub-categories, deletion is not allowed");
             }
         }
         // Batch delete data category-category
@@ -154,7 +154,7 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
     @Override
     public String importDgDataCategoryCat(List<DgDataCategoryCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dg.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -173,16 +173,16 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
                             dgDataCategoryCatMapper.updateById(dgDataCategoryCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                    "数据更新成功，ID为 " + dgDataCategoryCatId + " 的数据分类-类目记录。", dgDataCategoryCatId, "数据分类-类目"));
+                                    "Data update successful, ID {0} {1} record.", dgDataCategoryCatId, MessageUtils.messageWithFallback("dg.entity.data.category.catalog", "Data category catalog")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                    "数据更新失败，ID为 " + dgDataCategoryCatId + " 的数据分类-类目记录不存在。", dgDataCategoryCatId, "数据分类-类目"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dgDataCategoryCatId, MessageUtils.messageWithFallback("dg.entity.data.category.catalog", "Data category catalog")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DgDataCategoryCatDO> queryWrapper = new QueryWrapper<>();
@@ -192,17 +192,17 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
                         dgDataCategoryCatMapper.insert(dgDataCategoryCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                "数据插入成功，ID为 " + dgDataCategoryCatId + " 的数据分类-类目记录。", dgDataCategoryCatId, "数据分类-类目"));
+                                "Data insert successful, ID {0} {1} record.", dgDataCategoryCatId, MessageUtils.messageWithFallback("dg.entity.data.category.catalog", "Data category catalog")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                "数据插入失败，ID为 " + dgDataCategoryCatId + " 的数据分类-类目记录已存在。", dgDataCategoryCatId, "数据分类-类目"));
+                                "Data insert failed, ID {0} {1} record already exists.", dgDataCategoryCatId, MessageUtils.messageWithFallback("dg.entity.data.category.catalog", "Data category catalog")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -211,12 +211,12 @@ public class DgDataCategoryCatServiceImpl extends ServiceImpl<DgDataCategoryCatM
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

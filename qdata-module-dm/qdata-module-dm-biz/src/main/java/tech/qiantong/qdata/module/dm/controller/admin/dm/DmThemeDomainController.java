@@ -77,7 +77,7 @@ public class DmThemeDomainController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DmThemeDomainDO> list = (List<DmThemeDomainDO>) dmThemeDomainService.getDmThemeDomainPage(exportReqVO).getRows();
         ExcelUtil<DmThemeDomainRespVO> util = new ExcelUtil<>(DmThemeDomainRespVO.class);
-        util.exportExcel(response, DmThemeDomainConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DmThemeDomainConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入主题域管理列表")

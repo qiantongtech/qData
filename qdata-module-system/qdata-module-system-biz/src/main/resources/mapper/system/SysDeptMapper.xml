@@ -55,14 +55,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND parent_id = #{parentId}
 		</if>
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				<if test="deptName != null and deptName != ''">
 					AND dept_name LIKE '%' || #{deptName} || '%'
 				</if>
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases (such as MySQL and DM) -->
 			<otherwise>
 				<if test="deptName != null and deptName != ''">
 					AND dept_name like concat('%', #{deptName}, '%')
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status != null and status != ''">
 			AND status = #{status}
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data-scope filter -->
 		${params.dataScope}
 		order by d.parent_id, d.order_num
     </select>
@@ -80,14 +80,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectDeptListAll" parameterType="SysDept" resultMap="SysDeptResult">
 		<include refid="selectDeptVo"/>
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				<if test="deptName != null and deptName != ''">
 					AND dept_name LIKE '%' || #{deptName} || '%'
 				</if>
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases (such as MySQL and DM) -->
 			<otherwise>
 				<if test="deptName != null and deptName != ''">
 					AND dept_name like concat('%', #{deptName}, '%')
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status != null and status != ''">
 			AND status = #{status}
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data-scope filter -->
 		${params.dataScope}
 		order by d.parent_id, d.order_num
 	</select>
@@ -131,14 +131,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectChildrenDeptById" parameterType="Long" resultMap="SysDeptResult">
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				SELECT *
 				FROM system_dept
 				WHERE position(#{deptId}::text IN ancestors) > 0;
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases (such as MySQL and DM) -->
 			<otherwise>
 				select * from system_dept where find_in_set(#{deptId}, ancestors)
 			</otherwise>
@@ -147,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectNormalChildrenDeptById" parameterType="Long" resultType="int">
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				SELECT count(*)
 				FROM system_dept
@@ -156,7 +156,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND position(#{deptId}::text IN ancestors) > 0;
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases (such as MySQL and DM) -->
 			<otherwise>
 				select count(*) from system_dept where status = 0 and del_flag = '0' and find_in_set(#{deptId}, ancestors)
 			</otherwise>
@@ -183,7 +183,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status != null and status != ''">
 			AND status = #{status}
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data-scope filter -->
 		${params.dataScope}
 		order by d.parent_id, d.order_num
 	</select>

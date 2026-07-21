@@ -27,7 +27,7 @@ import tech.qiantong.qdata.module.ds.annotation.handler.DsCheckClientTokenInterc
 import javax.annotation.Resource;
 
 /**
- * 注册拦截器
+ * Registers interceptors.
  * @author Ming
  */
 @Configuration
@@ -37,13 +37,13 @@ public class DsTokenConfigure implements WebMvcConfigurer {
     private DsCheckClientTokenInterceptor checkClientTokenInterceptor;
 
     /**
-     * 注册拦截器，打开注解式鉴权功能
+     * Register the interceptor to enable annotation-based authorization.
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SaInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(checkClientTokenInterceptor)
-                // 指定要拦截的路径模式
+                // Specify the path pattern to intercept.
                 .addPathPatterns("/**");
     }
 }

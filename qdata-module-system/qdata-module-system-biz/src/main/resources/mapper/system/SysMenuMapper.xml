@@ -56,14 +56,14 @@
 		<include refid="selectMenuVo"/>
 		<where>
 			<choose>
-				<!-- 如果数据库是 kingBase -->
+				<!-- For Kingbase databases -->
 				<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 					<if test="menuName != null and menuName != ''">
 						AND menu_name LIKE '%' || #{menuName} || '%'
 					</if>
 				</when>
 
-				<!-- 如果是其他数据库（如 MySQL、 DM） -->
+				<!-- For other databases (such as MySQL and DM) -->
 				<otherwise>
 					<if test="menuName != null and menuName != ''">
 						AND menu_name like concat('%', #{menuName}, '%')

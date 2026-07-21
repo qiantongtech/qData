@@ -210,7 +210,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     (dppQualityTaskDO.getSystemJobId() != null || !StringUtils.equals("0",dppQualityTaskDO.getTaskCode())) ) {
                 // Extract systemJobId
                 if(StringUtils.equals("0",dppQualityTaskDO.getStatus())){
-                    throw new ServiceException("dpp.error.task.online.delete", "上线任务，不允删除，请先下线！");
+                    throw new ServiceException("dpp.error.task.online.delete", "Online task cannot be deleted, please offline first!");
                 }
                 DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.deleteTask(projectCode, dppQualityTaskDO.getTaskCode());
             }
@@ -388,7 +388,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         @Override
         public String importDppQualityTask(List<DppQualityTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -407,16 +407,16 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                                 dppQualityTaskMapper.updateById(dppQualityTaskDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                        "数据更新成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。", dppQualityTaskId, "数据质量任务"));
+                                        "Data update successful, ID {0} {1} record.", dppQualityTaskId, MessageUtils.messageWithFallback("dpp.entity.quality.task", "Data quality task")));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                        "数据更新失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录不存在。", dppQualityTaskId, "数据质量任务"));
+                                        "Data update failed, ID {0} {1} record does not exist.", dppQualityTaskId, MessageUtils.messageWithFallback("dpp.entity.quality.task", "Data quality task")));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, record ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DppQualityTaskDO> queryWrapper = new QueryWrapper<>();
@@ -426,17 +426,17 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                             dppQualityTaskMapper.insert(dppQualityTaskDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                    "数据插入成功，ID为 " + dppQualityTaskId + " 的数据质量任务记录。", dppQualityTaskId, "数据质量任务"));
+                                    "Data insert successful, ID {0} {1} record.", dppQualityTaskId, MessageUtils.messageWithFallback("dpp.entity.quality.task", "Data quality task")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                    "数据插入失败，ID为 " + dppQualityTaskId + " 的数据质量任务记录已存在。", dppQualityTaskId, "数据质量任务"));
+                                    "Data insert failed, ID {0} {1} record already exists.", dppQualityTaskId, MessageUtils.messageWithFallback("dpp.entity.quality.task", "Data quality task")));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -445,12 +445,12 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                         failureNum, failureDetails));
                 throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data imported! Total: {0} records.", successNum));
             }
             return resultMsg.toString();
         }
@@ -478,9 +478,11 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             // Extract data
             String data = json.getString("data");
             if (StringUtils.equals("1",data)) {
-                return dppQualityTaskEvaluate.getTitle() + "，数据监测成功";
+                return MessageUtils.messageWithFallback("dpp.quality.monitor.success",
+                        "Data monitoring succeeded for {0}", dppQualityTaskEvaluate.getTitle());
             }
-            return dppQualityTaskEvaluate.getTitle() + "，不符合规则";
+            return MessageUtils.messageWithFallback("dpp.quality.monitor.rule.mismatch",
+                    "{0} does not comply with the rule", dppQualityTaskEvaluate.getTitle());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -490,10 +492,12 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     public AjaxResult startDppQualityTask(Long id) {
         DppQualityTaskDO dppQualityTaskDO = dppQualityTaskMapper.selectById(id);
         if(dppQualityTaskDO == null){
-            return error("任务不存在，请刷新后重试！");
+            return error(MessageUtils.messageWithFallback(
+                    "dpp.error.task.notfound.refresh", "Task does not exist; refresh and try again"));
         }
         if (!StringUtils.equals("0",dppQualityTaskDO.getStatus())){
-            return error("任务状态错误，请刷新后重试！");
+            return error(MessageUtils.messageWithFallback(
+                    "dpp.error.task.status.invalid", "The task status is invalid; refresh and try again"));
         }
 
         DsStartTaskReqDTO dsStartTaskReqDTO = DppTaskConverter.createDsStartTaskReqDTO(dppQualityTaskDO.getTaskCode());
@@ -590,7 +594,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
                     daDiscoveryTask.setSystemJobId(schedule.getId());
                 }
             } catch (Exception e){
-                throw new ServiceException("dpp.error.schedule.period.update", "调度周期修改失败，请联系系统管理员！");
+                throw new ServiceException("dpp.error.schedule.period.update", "Failed to modify schedule period, please contact admin!");
 
             }
         }
@@ -604,7 +608,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
     private void validateTaskStatus(DppQualityTaskRespVO daDiscoveryTaskById, String daDiscoveryTaskStatus) {
         if (daDiscoveryTaskById == null || daDiscoveryTaskStatus == null) {
-            throw new ServiceException("dpp.error.template.scheduler.missing", "任务模版错误，未查询到调度信息！");
+            throw new ServiceException("dpp.error.template.scheduler.missing", "Task template error, scheduler info not found!");
         }
     }
 
@@ -612,12 +616,12 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         if(daDiscoveryTaskById.getSystemJobId() != null &&  systemJobId > 0){
             DsStatusRespDTO respDTO = dsEtlTaskService.releaseTask("OFFLINE", String.valueOf(projectCode), daDiscoveryTaskById.getTaskCode());
             if (respDTO == null || !respDTO.getSuccess()) {
-                throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
+                throw new ServiceException("dpp.error.task.publish.fail", "Failed to publish or offline task!");
             }
 
             DsStatusRespDTO offlined = iDsEtlSchedulerService.offlineScheduler(projectCode, systemJobId);
             if (!offlined.getData()) {
-                throw new ServiceException("dpp.error.scheduler.offline", "下线调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.offline", "Failed to offline scheduler!");
             }
         }
 
@@ -672,7 +676,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
     private void updateTaskStatusAndScheduler(DppQualityTaskSaveReqVO daDiscoveryTask, Long systemJobId) {
         DsStatusRespDTO dsStatusRespDTO = dsEtlTaskService.releaseTask("ONLINE", String.valueOf(projectCode), daDiscoveryTask.getTaskCode());
         if (dsStatusRespDTO == null || !dsStatusRespDTO.getSuccess()) {
-            throw new ServiceException("dpp.error.task.publish.fail", "发布或下线任务，失败！");
+            throw new ServiceException("dpp.error.task.publish.fail", "Failed to publish or offline task!");
         }
 
         if (systemJobId != null && systemJobId > 0) {
@@ -683,7 +687,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
 
         DsStatusRespDTO dsStatusRespDTO1 = iDsEtlSchedulerService.onlineScheduler(projectCode, daDiscoveryTask.getSystemJobId());
         if (!dsStatusRespDTO1.getData()) {
-            throw new ServiceException("dpp.error.scheduler.online", "上线调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.online", "Failed to online scheduler!");
         }
 
         // Update data discovery task
@@ -722,7 +726,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             DsSchedulerSaveReqDTO dsSchedulerSaveReqDTO = DppTaskConverter.createSchedulerRequest(daDiscoveryTask.getCycle(),daDiscoveryTask.getTaskCode());
             DsSchedulerRespDTO saveScheduler = iDsEtlSchedulerService.saveScheduler(dsSchedulerSaveReqDTO, String.valueOf(projectCode));
             if(saveScheduler == null || !saveScheduler.getSuccess()){
-                throw new ServiceException("dpp.error.scheduler.create", "创建调度器，失败！");
+                throw new ServiceException("dpp.error.scheduler.create", "Failed to create scheduler!");
             }
             Schedule schedule = saveScheduler.getData();
 
@@ -734,7 +738,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsSchedulerUpdateReqDTO schedulerUpdateRequest = DppTaskConverter.createSchedulerUpdateRequest(schedule.getId(), daDiscoveryTask.getCycle(), daDiscoveryTask.getTaskCode());
         DsSchedulerRespDTO updated = iDsEtlSchedulerService.updateScheduler(schedulerUpdateRequest, String.valueOf(projectCode));
         if (updated == null || !updated.getSuccess()) {
-            throw new ServiceException("dpp.error.scheduler.update", "更新调度器，失败！");
+            throw new ServiceException("dpp.error.scheduler.update", "Failed to update scheduler!");
         }
     }
 
@@ -747,7 +751,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsTaskSaveRespDTO task = dsEtlTaskService.updateTask(dsTaskSaveReqDTO,projectCode,input.getTaskCode() );
 
         if (!task.getSuccess()) {
-            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // Throw task definition creation error exception
+            throw new ServiceException("dpp.error.task.status.update", "Failed to update task status, please contact admin"); // Throw task definition creation error exception
         }
         ProcessDefinition data = task.getData();
         return data; // Return creation result
@@ -762,7 +766,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
         DsTaskSaveRespDTO task = dsEtlTaskService.createTask(dsTaskSaveReqDTO,DppTaskConverter.stringToLong(projectCode) );
 
         if (!task.getSuccess()) {
-            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // Throw task definition creation error exception
+            throw new ServiceException("dpp.error.task.status.update", "Failed to update task status, please contact admin"); // Throw task definition creation error exception
         }
         ProcessDefinition data = task.getData();
         return data; // Return creation result
@@ -773,7 +777,7 @@ public class DppQualityTaskServiceImpl  extends ServiceImpl<DppQualityTaskMapper
             DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(projectCode);
             return dsNodeGenCodeRespDTO.getData().get(0);
         } catch (Exception e){
-            throw new ServiceException("dpp.error.task.status.update", "任务状态修改失败，请联系系统管理员"); // Throw task definition creation error exception
+            throw new ServiceException("dpp.error.task.status.update", "Failed to update task status, please contact admin"); // Throw task definition creation error exception
         }
     }
 

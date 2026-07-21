@@ -47,7 +47,7 @@ public class ExecuteConfig implements Serializable {
     private List<FieldParam> fieldParams;
 
     /**
-     * 解析SQL
+     * Parses SQL.
      */
     private String sqlText;
 }

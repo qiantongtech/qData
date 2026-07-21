@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * API服务调用日志 创建/修改 Request VO DS_API_LOG
+ * API service call log create/update Request VO DS_API_LOG
  *
  * @author lhs
  * @date 2025-02-12

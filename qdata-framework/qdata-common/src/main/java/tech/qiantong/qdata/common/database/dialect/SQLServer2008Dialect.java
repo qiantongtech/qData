@@ -27,6 +27,7 @@ import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -561,7 +562,9 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             // The second time: List all schemas under a database
             String dbName = dbNameVO.getDbName();
             if (dbName == null || dbName.trim().isEmpty()) {
-                throw new IllegalArgumentException("SQLServer level=2 需要上级 dbName");
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "sys.error.database.sqlserver.parent.required",
+                        "SQLServer level=2 requires a parent dbName"));
             }
             return "SELECT name AS DBNAME,  2 AS TOTALLEVELS " +
                     "FROM [" + dbName + "].sys.schemas " +
@@ -569,7 +572,8 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
                     "ORDER BY name";
         }
 
-        throw new UnsupportedOperationException("SQLServer 仅支持 1~2 层级");
+        throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                "sys.error.database.sqlserver.level.unsupported", "SQLServer supports only levels 1~2"));
     }
 
     @Override
@@ -633,13 +637,13 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
+            throw new DataQueryException("db.error.connection.retry", "Database connection failed, please try again later");
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    throw new DataQueryException("db.error.close.connection", "关闭数据库连接出错");
+                    throw new DataQueryException("db.error.close.connection", "Failed to close database connection");
                 }
             }
         }

@@ -11,6 +11,8 @@ export default {
     parentIdRequired: '親カテゴリは空にできません',
     codeRequired: 'コードは空にできません',
     nameRequired: '{nameLabel}は空にできません',
+    addTitle: '{nameLabel}を追加',
+    modifyTitle: '{nameLabel}を編集',
     editTitle: '編集'
   },
   catPage: {

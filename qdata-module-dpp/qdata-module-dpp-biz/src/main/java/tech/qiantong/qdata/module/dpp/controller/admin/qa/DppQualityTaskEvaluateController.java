@@ -84,7 +84,7 @@ public class DppQualityTaskEvaluateController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppQualityTaskEvaluateDO> list = (List<DppQualityTaskEvaluateDO>) dppQualityTaskEvaluateService.getDppQualityTaskEvaluatePage(exportReqVO).getRows();
         ExcelUtil<DppQualityTaskEvaluateRespVO> util = new ExcelUtil<>(DppQualityTaskEvaluateRespVO.class);
-        util.exportExcel(response, DppQualityTaskEvaluateConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppQualityTaskEvaluateConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量任务-评测规则列表")

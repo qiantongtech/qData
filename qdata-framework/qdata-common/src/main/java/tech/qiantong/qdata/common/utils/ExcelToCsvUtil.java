@@ -68,7 +68,8 @@ public class ExcelToCsvUtil {
             List<String> csvLines = new ArrayList<>();
 
             if (startColumn > sheet.getLastRowNum() + 1) {
-                throw new ServiceException("startColumn大于最后一行的行号，请检查startColumn的值");
+                throw new ServiceException("sys.error.excel.start.column.invalid",
+                        "startColumn exceeds the last row index; check the startColumn value");
             }
 
             //Read columns
@@ -100,7 +101,7 @@ public class ExcelToCsvUtil {
             columnList = Arrays.asList(columnStr.split(","));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServiceException("excel转csv失败");
+            throw new ServiceException("sys.error.excel.to.csv.fail", "Failed to convert Excel to CSV");
         }
         return columnList;
     }
@@ -148,13 +149,13 @@ public class ExcelToCsvUtil {
                 .setHeaderLineNo(0L);
         CsvParser parser = new CsvParser(reader, csvReadConfig);
         if (!parser.hasNext()) {
-            throw new ServiceException("csv为空无法解析");
+            throw new ServiceException("sys.error.csv.empty", "CSV is empty and cannot be parsed");
         }
         try {
             parser.next();
             parser.getHeader();
         } catch (Exception e) {
-            throw new ServiceException("csv解析失败");
+            throw new ServiceException("sys.error.csv.parse.fail", "Failed to parse CSV");
         }
         return parser.getHeader();
     }

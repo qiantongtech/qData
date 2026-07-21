@@ -98,7 +98,7 @@ public class AesEncryptUtil {
             byte[] original = cipher.doFinal(encrypted1);
             return removeZeroPadding(original);
         } catch (Exception e) {
-            log.error("解密失败");
+            log.error("Decryption failed");
             return null;
         }
     }

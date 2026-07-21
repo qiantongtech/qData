@@ -33,7 +33,7 @@ import java.util.List;
 import static tech.qiantong.qdata.common.constant.ScheduleConstants.QUARTZ_JOB_NAMESPACE;
 
 /**
- * 统一恢复 Quartz、SysJob 调度任务，确保系统任务和业务任务按固定顺序加载。
+ * Restores Quartz and SysJob schedules in a fixed order for both system and business tasks.
  */
 @Component
 public class JobInitializer implements ApplicationRunner {

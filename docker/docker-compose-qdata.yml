@@ -17,7 +17,7 @@
 version: "3.8"
 
 services:
-  # qdata 后端服务
+  # qData backend service
   qdata-api:
     image: ${QDATA_HUB}/qdata-server-ce:${QDATA_TAG}
     restart: always
@@ -42,7 +42,7 @@ services:
     networks:
       - qdatanet
 
-  # qdata 质控服务
+  # qData quality service
   qdata-quality:
     image: ${QDATA_HUB}/qdata-quality-ce:${QDATA_TAG}
     restart: always
@@ -69,7 +69,7 @@ services:
     networks:
       - qdatanet
 
-  # qdata ai服务
+  # qData AI service
   qdata-ai:
     privileged: true
     image: ${QDATA_HUB}/qdata-ai-ce:${QDATA_TAG}

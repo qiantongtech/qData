@@ -133,7 +133,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    // 编辑详情也返回 Quartz Job id，页面排查调度绑定关系时不用再单独查调度表。
+    // Return the Quartz job ID in edit details so the UI can inspect the schedule binding without another query.
     @Excel(name = "Quartz调度任务id")
     @Schema(description = "Quartz调度任务id", example = "")
     private Long quartzId;
@@ -226,7 +226,7 @@ public class DppEtlTaskUpdateQueryRespVO implements Serializable {
         this.locations = parseList(dppEtlTaskDO.getLocations());
         this.description = dppEtlTaskDO.getDescription();
         this.executionType = dppEtlTaskDO.getExecutionType();
-        // 任务表里保存了一份 Quartz Job id，这里同步带到编辑详情。
+        // Copy the Quartz job ID stored on the task into the edit details.
         this.quartzId = dppEtlTaskDO.getQuartzId();
         this.scheduler = dppEtlTaskDO.getScheduler();
         this.actuator = dppEtlTaskDO.getActuator();

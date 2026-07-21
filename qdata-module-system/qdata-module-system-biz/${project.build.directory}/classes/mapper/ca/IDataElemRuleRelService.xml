@@ -62,12 +62,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creatorId != null "> and creator_id = #{creatorId}</if>
 
             <choose>
-                <!-- 如果数据库是 kingBase -->
+                <!-- For Kingbase databases -->
                 <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
                     <if test="name != null  and name != ''"> and name like '%' || #{name} || '%'</if>
                 </when>
 
-                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <!-- For other databases such as MySQL and DM -->
                 <otherwise>
                     <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
                 </otherwise>

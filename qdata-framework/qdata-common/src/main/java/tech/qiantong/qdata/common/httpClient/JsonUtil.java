@@ -47,7 +47,7 @@ public class JsonUtil {
      */
     public static Map<String,Object> parseJsonToMap(String jsonString) {
         Map<String,Object> map = JSON.parseObject(jsonString, Map.class);
-        System.err.println("Json转Map:");
+        System.err.println("JSON to Map:");
         for (Object obj : map.keySet()) {
             System.err.print(obj + "-" + map.get(obj));
         }
@@ -63,7 +63,7 @@ public class JsonUtil {
      */
     public static List<Object>  parseJsonToListMap(String jsonString) {
         List<Object> list = JSON.parseObject(jsonString, new TypeReference<List<Object>>(){});
-        System.err.println("Json转List<Map>:");
+        System.err.println("JSON to List<Map>:");
         System.err.println("jsonString");
         return list;
     }
@@ -76,7 +76,7 @@ public class JsonUtil {
      */
     public static String parseMapToJson(Map<String, Object> map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }
@@ -89,7 +89,7 @@ public class JsonUtil {
      */
     public static String parseObjectToJson(Object map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }

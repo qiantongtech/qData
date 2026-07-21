@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * API服务 Response VO 对象 DS_API
+ * API service Response VO DS_API
  *
  * @author lhs
  * @date 2025-02-12
@@ -67,7 +67,7 @@ public class DsApiRespVO implements Serializable {
     private String apiUrl;
 
     /**
-     *转发类型;1:API 2:地理空间数据'
+     *Forwarding type (1: API, 2: geospatial data)
      */
     private String transmitType;
 
@@ -77,7 +77,7 @@ public class DsApiRespVO implements Serializable {
     private String apiId;
 
     /**
-     *Header配置json
+     *Header configuration JSON
      */
     private String headerJson;
 

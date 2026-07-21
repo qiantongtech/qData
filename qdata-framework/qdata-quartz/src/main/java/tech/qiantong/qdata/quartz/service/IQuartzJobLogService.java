@@ -11,14 +11,14 @@ package tech.qiantong.qdata.quartz.service;
 import tech.qiantong.qdata.quartz.domain.SysJobLog;
 
 /**
- * Quartz 业务任务日志服务。
+ * Service for Quartz business task logs.
  */
 public interface IQuartzJobLogService
 {
     /**
-     * 新增业务任务执行日志。
+     * Inserts a business task execution log.
      *
-     * @param jobLog 调度日志信息
+     * @param jobLog scheduling log information
      */
     void addJobLog(SysJobLog jobLog);
 }

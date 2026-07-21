@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'national',
-                meta: { title: '国家标准详情', activeMenu: '/dm/document/national', lang: 'public.nationalStandardDetail' }
+                meta: { title: 'National Standard Details', activeMenu: '/dm/document/national', lang: 'public.nationalStandardDetail' }
             },
         ]
     },
@@ -43,7 +43,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'industrylocal',
-                meta: { title: '行业标准详情', activeMenu: '/dm/document/industry', lang: 'public.industryStandardDetail' }
+                meta: { title: 'Industry Standard Details', activeMenu: '/dm/document/industry', lang: 'public.industryStandardDetail' }
             },
 
         ]
@@ -58,7 +58,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'provincial',
-                meta: { title: '地方标准详情', activeMenu: '/dm/document/provincial', lang: 'public.localStandardDetail' }
+                meta: { title: 'Local Standard Details', activeMenu: '/dm/document/provincial', lang: 'public.localStandardDetail' }
             },
 
         ]
@@ -71,7 +71,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'groupDetail',
-                meta: { title: '团体标准详情', activeMenu: '/dm/document/group', lang: 'public.groupStandardDetail' }
+                meta: { title: 'Group Standard Details', activeMenu: '/dm/document/group', lang: 'public.groupStandardDetail' }
             },
 
         ]
@@ -84,7 +84,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dp/document/detail/index.vue'),
                 name: 'search',
-                meta: { title: '标准检索详情', activeMenu: '/dm/document/search', lang: 'public.standardSearchDetail' }
+                meta: { title: 'Standard Search Details', activeMenu: '/dm/document/search', lang: 'public.standardSearchDetail' }
             },
         ]
     },

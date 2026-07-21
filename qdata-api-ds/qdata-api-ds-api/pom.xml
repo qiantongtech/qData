@@ -30,7 +30,7 @@
     <artifactId>qdata-api-ds-api</artifactId>
 
     <description>
-        qdata-api-ds-api系统模块
+        qdata-api-ds-api system module
     </description>
 
     <dependencies>

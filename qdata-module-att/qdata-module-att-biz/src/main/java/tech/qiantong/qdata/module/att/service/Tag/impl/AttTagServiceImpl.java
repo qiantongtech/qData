@@ -95,7 +95,7 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
         Map<String, AttTagCatDO> collect2 = attTagCatService.list().stream().collect(Collectors.toMap(s -> s.getCode(), Function.identity()));
         AttTagCatDO attTagCatDO = collect2.get(dictType.getCatCode());
         if (attTagCatDO == null) {
-            throw new ServiceException("att.error.tag.cat.notfound", "标签类目不存在");
+            throw new ServiceException("att.error.tag.cat.notfound", "Tag category does not exist");
         }
         dictType.setCatName(attTagCatDO.getName());
         attTagMapper.insert(dictType);
@@ -113,7 +113,7 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
             Map<String, AttTagCatDO> collect2 = attTagCatService.list().stream().collect(Collectors.toMap(s -> s.getCode(), Function.identity()));
             AttTagCatDO attTagCatDO = collect2.get(catCode);
             if (attTagCatDO == null) {
-                throw new ServiceException("att.error.tag.cat.notfound", "标签类目不存在");
+                throw new ServiceException("att.error.tag.cat.notfound", "Tag category does not exist");
             }
             if (attTagCatDO != null) {
                 updateObj.setCatName(attTagCatDO.getName());
@@ -131,7 +131,7 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
             queryWrapperX.eqIfPresent(AttTagAssetRelDO::getDelFlag, 0);
             List<AttTagAssetRelDO> collect = attTagAssetRelService.list(queryWrapperX);
             if (collect != null && collect.size() > 0) {
-                throw new ServiceException("att.error.tag.asset.exists", "存在资产信息，不允许Delete ");
+                throw new ServiceException("att.error.tag.asset.exists", "Asset info exists, deletion not allowed");
             }
         }
 
@@ -186,7 +186,7 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
     @Override
     public String importAttTag(List<AttTagRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -205,16 +205,16 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
                             attTagMapper.updateById(attTagDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attTagId + " 的标签管理记录。", attTagId, "标签管理"));
+                                    "Data update successful, ID {0} {1} record.", attTagId, MessageUtils.messageWithFallback("att.entity.tag", "Tag")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attTagId + " 的标签管理记录不存在。", attTagId, "标签管理"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attTagId, MessageUtils.messageWithFallback("att.entity.tag", "Tag")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttTagDO> queryWrapper = new QueryWrapper<>();
@@ -224,17 +224,17 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
                         attTagMapper.insert(attTagDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attTagId + " 的标签管理记录。", attTagId, "标签管理"));
+                                "Data insert successful, ID {0} {1} record.", attTagId, MessageUtils.messageWithFallback("att.entity.tag", "Tag")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attTagId + " 的标签管理记录已存在。", attTagId, "标签管理"));
+                                "Data insert failed, ID {0} {1} record already exists.", attTagId, MessageUtils.messageWithFallback("att.entity.tag", "Tag")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -243,12 +243,12 @@ public class AttTagServiceImpl extends ServiceImpl<AttTagMapper, AttTagDO> imple
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

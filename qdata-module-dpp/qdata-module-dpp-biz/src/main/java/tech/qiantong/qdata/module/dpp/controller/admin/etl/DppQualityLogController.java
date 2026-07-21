@@ -41,6 +41,7 @@ import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogPageReqVO;
@@ -79,7 +80,7 @@ public class DppQualityLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppQualityLogDO> list = (List<DppQualityLogDO>) dppQualityLogService.getDppQualityLogPage(exportReqVO).getRows();
         ExcelUtil<DppQualityLogRespVO> util = new ExcelUtil<>(DppQualityLogRespVO.class);
-        util.exportExcel(response, DppQualityLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppQualityLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量日志列表")
@@ -148,13 +149,15 @@ public class DppQualityLogController extends BaseController {
                 in.close();
             }
             // @TODO View log
-            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "查询日志成功");
+            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE,
+                    MessageUtils.messageWithFallback("dpp.log.query.success", "Log query succeeded"));
             LogResult logResult = new LogResult(0, 0, logContent, true);
             returnT.setContent(logResult);
             return returnT;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return new ReturnT<>(ReturnT.FAIL_CODE, "暂未找到日志文件信息");
+            return new ReturnT<>(ReturnT.FAIL_CODE, MessageUtils.messageWithFallback(
+                    "dpp.error.log.file.notfound", "No log file information is currently available"));
         }
     }
 

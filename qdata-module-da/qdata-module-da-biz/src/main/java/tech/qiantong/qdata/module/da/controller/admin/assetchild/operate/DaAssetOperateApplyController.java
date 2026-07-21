@@ -77,7 +77,7 @@ public class DaAssetOperateApplyController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetOperateApplyDO> list = (List<DaAssetOperateApplyDO>) daAssetOperateApplyService.getDaAssetOperateApplyPage(exportReqVO).getRows();
         ExcelUtil<DaAssetOperateApplyRespVO> util = new ExcelUtil<>(DaAssetOperateApplyRespVO.class);
-        util.exportExcel(response, DaAssetOperateApplyConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetOperateApplyConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产操作申请列表")

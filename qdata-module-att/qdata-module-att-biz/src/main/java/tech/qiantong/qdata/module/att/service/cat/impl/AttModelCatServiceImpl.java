@@ -85,13 +85,13 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = dpModelApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.model", "存在逻辑模型，不允许禁用");
+                throw new ServiceException("att.error.disable.model", "Logical model exists, disable not allowed");
             }
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttModelCatDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
         // Update Logical Model Category Management
@@ -106,7 +106,7 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
             AttModelCatDO cat = baseMapper.selectById(id);
             // Check if data exists
             if (dpModelApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许Delete ");
+                throw new ServiceException("att.error.delete.model", "Logical model exists, deletion not allowed");
             }
             if (cat != null) {
                 count += baseMapper.delete(Wrappers.lambdaQuery(AttModelCatDO.class)
@@ -122,7 +122,7 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         AttModelCatDO cat = baseMapper.selectById(id);
         // Check if data exists
         if (dpModelApiService.getCountByCatCode(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.delete.model", "存在逻辑模型，不允许Delete ");
+            throw new ServiceException("att.error.delete.model", "Logical model exists, deletion not allowed");
         }
         if (cat != null) {
             count += baseMapper.delete(Wrappers.lambdaQuery(AttModelCatDO.class)
@@ -175,7 +175,7 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
     @Override
     public String importAttModelCat(List<AttModelCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -194,16 +194,16 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
                             attModelCatMapper.updateById(attModelCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attModelCatId + " 的逻辑模型类目管理记录。", attModelCatId, "逻辑模型类目管理"));
+                                    "Data update successful, ID {0} {1} record.", attModelCatId, MessageUtils.messageWithFallback("att.entity.logical.model.category", "Logical model category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attModelCatId + " 的逻辑模型类目管理记录不存在。", attModelCatId, "逻辑模型类目管理"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attModelCatId, MessageUtils.messageWithFallback("att.entity.logical.model.category", "Logical model category")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttModelCatDO> queryWrapper = new QueryWrapper<>();
@@ -213,17 +213,17 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
                         attModelCatMapper.insert(attModelCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attModelCatId + " 的逻辑模型类目管理记录。", attModelCatId, "逻辑模型类目管理"));
+                                "Data insert successful, ID {0} {1} record.", attModelCatId, MessageUtils.messageWithFallback("att.entity.logical.model.category", "Logical model category")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attModelCatId + " 的逻辑模型类目管理记录已存在。", attModelCatId, "逻辑模型类目管理"));
+                                "Data insert failed, ID {0} {1} record already exists.", attModelCatId, MessageUtils.messageWithFallback("att.entity.logical.model.category", "Logical model category")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -232,12 +232,12 @@ public class AttModelCatServiceImpl extends ServiceImpl<AttModelCatMapper, AttMo
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

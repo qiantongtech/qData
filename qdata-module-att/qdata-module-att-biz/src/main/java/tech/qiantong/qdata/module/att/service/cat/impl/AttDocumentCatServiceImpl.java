@@ -92,13 +92,13 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = dpDocumentApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.document", "存在标准，不允许禁用");
+                throw new ServiceException("att.error.disable.document", "Standard exists, disable not allowed");
             }
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttDocumentCatDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
         // Update Standard Document Category Management
@@ -111,7 +111,7 @@ public class AttDocumentCatServiceImpl extends ServiceImpl<AttDocumentCatMapper,
         AttDocumentCatDO catDO = baseMapper.selectById(id);
         Long countData = dpDocumentApiService.getCountByCatCode(catDO.getCode());
         if (countData > 0) {
-            throw new ServiceException("att.error.delete.document", "存在标准，不允许删除");
+            throw new ServiceException("att.error.delete.document", "Standard exists, deletion not allowed");
         }
         // Delete Standard Document Category Management
         return baseMapper.deleteById(id);

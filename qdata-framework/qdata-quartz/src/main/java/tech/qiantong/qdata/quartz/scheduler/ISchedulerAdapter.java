@@ -6,59 +6,59 @@ import tech.qiantong.qdata.quartz.domain.ScheduleCommand;
 import tech.qiantong.qdata.quartz.domain.ScheduleRespDTO;
 
 /**
- * 调度器统一接口。
- * 后续无论接 Quartz、DolphinScheduler 还是别的调度器，业务侧都按这组方法调用。
+ * Unified scheduler interface.
+ * Business modules use these methods regardless of whether the backend is Quartz, DolphinScheduler, or another scheduler.
  */
 public interface ISchedulerAdapter {
     /**
-     * 通过调度任务ID查询调度信息
+     * Queries schedule information by scheduled task ID.
      *
-     * @param command 调度任务
-     * @return 调度任务对象信息
+     * @param command scheduled task
+     * @return scheduled task information
      */
     ScheduleRespDTO selectScheduleById(ScheduleCommand command);
 
     /**
-     * 创建一条调度任务，返回外部调度器里的任务 id。
+     * Creates a scheduled task and returns its ID in the external scheduler.
      *
      */
     Long createSchedule(ScheduleCommand command) throws SchedulerException, TaskException;
 
     /**
-     * 更新已有调度任务，返回更新后的外部调度任务 id。
+     * Updates an existing scheduled task and returns its external scheduler ID.
      *
      */
     Long updateSchedule(ScheduleCommand command) throws SchedulerException, TaskException;
 
     /**
-     * 把调度任务恢复为可触发状态
+     * Restores a scheduled task to a triggerable state.
      *
      */
     void online(ScheduleCommand command) throws SchedulerException;
 
     /**
-     * 暂停调度任务，但不删除配置
+     * Pauses a scheduled task without deleting its configuration.
      *
      */
     void offline(ScheduleCommand command) throws SchedulerException;
 
     /**
-     * 立即手动触发一次调度任务
+     * Manually triggers a scheduled task immediately.
      *
      */
     void trigger(ScheduleCommand command) throws SchedulerException;
 
     /**
-     * 删除外部调度器里的任务
+     * Deletes a task from the external scheduler.
      *
      */
     void delete(ScheduleCommand command);
 
     /**
-     * 生成唯一的任务编码
-     * 用于为调度任务创建唯一标识符，便于任务管理和追踪
+     * Generates a unique task code.
+     * The code uniquely identifies a scheduled task for management and tracking.
      *
-     * @return 生成的任务编码
+     * @return the generated task code
      */
     long generateTaskCode(Long projectCode);
 }

@@ -34,6 +34,7 @@ import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.sql.SqlUtil;
 import tech.qiantong.qdata.generator.domain.GenTable;
 import tech.qiantong.qdata.generator.domain.GenTableColumn;
@@ -170,7 +171,8 @@ public class GenController extends BaseController
         catch (Exception e)
         {
             logger.error(e.getMessage(), e);
-            return AjaxResult.error("创建表结构异常");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "sys.error.generator.table.create.fail", "Failed to create table structure"));
         }
     }
 

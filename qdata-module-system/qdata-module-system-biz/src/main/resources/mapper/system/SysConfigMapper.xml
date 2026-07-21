@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from system_config
     </sql>
 
-    <!-- 查询条件 -->
+    <!-- Query conditions -->
 	<sql id="sqlwhereSearch">
 		<where>
 			<if test="configId !=null">
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND config_type = #{configType}
 			</if>
             <choose>
-                <!-- 如果数据库是 kingBase -->
+                <!-- For Kingbase databases -->
                 <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
                     <if test="configName != null and configName != ''">
                         AND config_name LIKE '%' || #{configName} || '%'
@@ -71,15 +71,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     <if test="configKey != null and configKey != ''">
                         AND config_key LIKE '%' || #{configKey} || '%'
                     </if>
-                    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                    <if test="params.beginTime != null and params.beginTime != ''"><!-- Start-time filter -->
                         AND create_time &gt;= #{params.beginTime}
                     </if>
-                    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                    <if test="params.endTime != null and params.endTime != ''"><!-- End-time filter -->
                         AND create_time &lt;= #{params.endTime}
                     </if>
                 </when>
 
-                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <!-- For other databases (such as MySQL and DM) -->
                 <otherwise>
                     <if test="configName != null and configName != ''">
                         AND config_name like concat('%', #{configName}, '%')
@@ -87,10 +87,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     <if test="configKey != null and configKey != ''">
                         AND config_key like concat('%', #{configKey}, '%')
                     </if>
-                    <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                    <if test="params.beginTime != null and params.beginTime != ''"><!-- Start-time filter -->
                         and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
                     </if>
-                    <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                    <if test="params.endTime != null and params.endTime != ''"><!-- End-time filter -->
                         and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
                     </if>
                 </otherwise>

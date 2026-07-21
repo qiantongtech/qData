@@ -109,7 +109,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "Combination uniqueness check requires at least one field");
         }
         String baseWhereClause = rule.getWhereClause();
 
@@ -142,7 +142,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "Combination uniqueness check requires at least one field");
         }
         String baseWhereClause = rule.getWhereClause();
 

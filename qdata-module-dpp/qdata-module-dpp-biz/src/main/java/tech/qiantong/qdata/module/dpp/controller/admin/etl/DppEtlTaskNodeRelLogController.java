@@ -77,7 +77,7 @@ public class DppEtlTaskNodeRelLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEtlTaskNodeRelLogDO> list = (List<DppEtlTaskNodeRelLogDO>) dppEtlTaskNodeRelLogService.getDppEtlTaskNodeRelLogPage(exportReqVO).getRows();
         ExcelUtil<DppEtlTaskNodeRelLogRespVO> util = new ExcelUtil<>(DppEtlTaskNodeRelLogRespVO.class);
-        util.exportExcel(response, DppEtlTaskNodeRelLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEtlTaskNodeRelLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成任务节点关系-日志列表")

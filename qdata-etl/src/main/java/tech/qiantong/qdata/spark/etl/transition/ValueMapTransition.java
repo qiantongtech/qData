@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.spark.sql.*;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
@@ -34,9 +35,9 @@ public class ValueMapTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始值映射节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, "Starting value mapping node");
+        LogUtils.writeLog(logParams, "Task start time: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "Task parameters: " + transition.toJSONString(PrettyFormat));
         JSONObject parameter = transition.getJSONObject("parameter");
 
 
@@ -47,16 +48,19 @@ public class ValueMapTransition implements Transition {
 
         // Verify the legality of parameters
         if (StringUtils.isEmpty(inputField)) {
-            throw new IllegalArgumentException("使用的字段名称不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.source.field.required", "The source field name is required"));
         }
         if (StringUtils.isEmpty(outputField)) {
-            throw new IllegalArgumentException("目标字段不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.target.field.required", "The target field is required"));
         }
 //        if (StringUtils.isEmpty(defaultValue)) {
 // throw new IllegalArgumentException("The default value when not matching cannot be empty!");
 //        }
         if (tableFields == null || tableFields.isEmpty()) {
-            throw new IllegalArgumentException("值映射列表不能为空且必须为非空数组！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.list.invalid", "The value mapping list must be a non-empty array"));
         }
 
 
@@ -66,7 +70,7 @@ public class ValueMapTransition implements Transition {
             JSONObject mapItem = tableFields.getJSONObject(i);
             mappingMap.put(mapItem.getString("source"), mapItem.getString("target"));
         }
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, "Task parameters: " + transition.toJSONString(PrettyFormat));
 
         // Constructing when...otherwise expressions
         Column mappedColumn = null;

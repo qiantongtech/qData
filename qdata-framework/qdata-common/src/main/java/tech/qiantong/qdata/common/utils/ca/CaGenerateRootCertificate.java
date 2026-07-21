@@ -109,7 +109,7 @@ public class CaGenerateRootCertificate {
             deleteFile(certFilePath);
             deleteFile(privateKeyFilePath);
 
-            System.out.println("根证书和私钥已生成、转换为 MultipartFile 对象并删除原始文件");
+            System.out.println("Generated the root certificate and private key, converted them to MultipartFile objects, and deleted the original files");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,9 +128,9 @@ public class CaGenerateRootCertificate {
     private static void deleteFile(String filePath) {
         try {
             Files.delete(Paths.get(filePath));
-            System.out.println("文件已删除: " + filePath);
+            System.out.println("File deleted: " + filePath);
         } catch (Exception e) {
-            System.out.println("文件删除失败: " + filePath);
+            System.out.println("Failed to delete file: " + filePath);
             e.printStackTrace();
         }
     }
@@ -142,7 +142,7 @@ public class CaGenerateRootCertificate {
 
         // Print the generated file name
         for (MultipartFile file : files) {
-            System.out.println("生成的文件: " + file.getOriginalFilename());
+            System.out.println("Generated file: " + file.getOriginalFilename());
         }
     }
 }

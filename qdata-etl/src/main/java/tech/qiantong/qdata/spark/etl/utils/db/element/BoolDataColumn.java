@@ -107,17 +107,17 @@ public class BoolDataColumn extends DataColumn {
 
 	@Override
 	public Date asDate() {
-		throw DBException.asDataXException( "Bool类型不能转为Date .");
+		throw DBException.asDataXException("Bool cannot be converted to Date.");
 	}
 
 	@Override
 	public Date asDate(String dateFormat) {
-		throw DBException.asDataXException( "Bool类型不能转为Date .");
+		throw DBException.asDataXException("Bool cannot be converted to Date.");
 	}
 
 	@Override
 	public byte[] asBytes() {
-		throw DBException.asDataXException("Boolean类型不能转为Bytes .");
+		throw DBException.asDataXException("Boolean cannot be converted to Bytes.");
 	}
 
 	private void validate(final String data) {
@@ -129,6 +129,6 @@ public class BoolDataColumn extends DataColumn {
 			return;
 		}
 
-		throw DBException.asDataXException(String.format("String[%s]不能转为Bool .", data));
+		throw DBException.asDataXException(String.format("String[%s] cannot be converted to Bool.", data));
 	}
 }

@@ -51,13 +51,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="subjectId != null "> and subject_id = #{subjectId}</if>
             <choose>
-                <!-- 如果数据库是 kingBase -->
+                <!-- For Kingbase databases -->
                 <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
                     <if test="name != null  and name != ''"> and name like '%' || #{name} || '%'</if>
                     <if test="subjectName != null  and subjectName != ''"> and subject_name like '%' || #{subjectName} || '%'</if>
                 </when>
 
-                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <!-- For other databases such as MySQL and DM -->
                 <otherwise>
                     <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
                     <if test="subjectName != null  and subjectName != ''"> and subject_name like concat('%', #{subjectName}, '%')</if>

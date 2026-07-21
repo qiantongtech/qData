@@ -24,10 +24,10 @@
       <DeptTree
         :deptOptions="layerTreeOptions"
         :leftWidth="leftWidth"
-        :placeholder="td('dm.dataLayer.namePlaceholder', '请输入数仓分层名称')"
+        :placeholder="td('dm.dataLayer.namePlaceholder', 'Please enter data layer name')"
         ref="layerTreeRef"
         @node-click="handleNodeClick"
-        :title="td('dm.dataLayer.title', '数仓分层')"
+        :title="td('dm.dataLayer.title', 'Data Warehouse Layer')"
       >
       </DeptTree>
 
@@ -52,7 +52,7 @@
               @click="handleAdd"
               v-hasPermi="['dm:dataLayer:add']"
             >
-              {{ td('common.button.add', '新增') }}
+              {{ td('common.button.add', 'Add') }}
             </el-button>
           </template>
 
@@ -65,7 +65,7 @@
                 @click="handleUpdate(row)"
                 v-hasPermi="['dm:dataLayer:edit']"
               >
-                {{ td('common.button.update', '修改') }}
+                {{ td('common.button.update', 'Edit') }}
               </el-button>
               <el-button
                 link
@@ -74,7 +74,7 @@
                 @click="handleDelete(row)"
                 v-hasPermi="['dm:dataLayer:remove']"
               >
-                {{ td('common.button.delete', '删除') }}
+                {{ td('common.button.delete', 'Delete') }}
               </el-button>
               <el-button
                 link
@@ -83,7 +83,7 @@
                 @click="handleDetail(row)"
                 v-hasPermi="['dm:dataLayer:edit']"
               >
-                {{ td('common.button.details', '详情') }}
+                {{ td('common.button.details', 'Details') }}
               </el-button>
             </template>
 
@@ -124,26 +124,26 @@
        :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName" :label-position="labelPosition">
-              <el-input v-model="form.prefixName" :placeholder="td('dm.dataLayer.prefixNamePlaceholder', '请输入表前缀')" />
+            <el-form-item :label="td('dm.dataLayer.prefixName', 'Table Prefix')" prop="prefixName" :label-position="labelPosition">
+              <el-input v-model="form.prefixName" :placeholder="td('dm.dataLayer.prefixNamePlaceholder', 'Please enter table prefix')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName" :label-position="labelPosition">
+            <el-form-item :label="td('dm.dataLayer.businessEngName', 'Business English Abbreviation')" prop="businessEngName" :label-position="labelPosition">
               <el-input
                 v-model="form.businessEngName"
-                :placeholder="td('dm.dataLayer.businessEngNamePlaceholder', '请输入业务英文缩写')"
+                :placeholder="td('dm.dataLayer.businessEngNamePlaceholder', 'Please enter business English abbreviation')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
+            <el-form-item :label="td('dm.dataLayer.ownerUserId', 'Responsible Person')" prop="ownerUserId" :label-position="labelPosition">
               <el-select
                 v-model="form.ownerUserId"
                 filterable
-                :placeholder="td('dm.dataLayer.ownerUserIdPlaceholder', '请选择负责人')"
+                :placeholder="td('dm.dataLayer.ownerUserIdPlaceholder', 'Please select responsible person')"
                 @change="handleOwnerChange"
               >
                 <el-option
@@ -156,10 +156,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
+            <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', 'Responsible Person Phone')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
               <el-input
                 v-model="form.ownerUserPhoneNumber"
-                :placeholder="td('dm.dataLayer.ownerUserPhoneNumberPlaceholder', '请输入负责人电话')"
+                :placeholder="td('dm.dataLayer.ownerUserPhoneNumberPlaceholder', 'Please enter responsible person phone')"
                 disabled
               />
             </el-form-item>
@@ -167,7 +167,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.status', '状态')" prop="status" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.status', 'Status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in sys_normal_disable"
@@ -182,11 +182,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
-                :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
+                :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
                 :min-height="192"
                 show-word-limit
                 maxlength="500"
@@ -197,58 +197,58 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', 'Confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
 
     <!-- Specification Details Dialog Box -->
     <el-dialog
-      :title="td('dm.dataLayer.specificationDetail', '规范详情')"
+      :title="td('dm.dataLayer.specificationDetail', 'Specification Detail')"
       v-model="openDetail"
       :append-to="$refs['app-container']"
       draggable
       width="800px"
     >
       <el-form ref="specificationDetailRef" :model="form" label-width="140px" :label-position="labelPosition">
-        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number', 'No.') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.prefixName', '表前缀')" prop="prefixName" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataLayer.prefixName', 'Table Prefix')" prop="prefixName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.prefixName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.businessEngName', '业务英文缩写')" prop="businessEngName" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataLayer.businessEngName', 'Business English Abbreviation')" prop="businessEngName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.businessEngName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.ownerUserId', '负责人')" prop="ownerUserName" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataLayer.ownerUserId', 'Responsible Person')" prop="ownerUserName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataLayer.ownerUserPhoneNumber', 'Responsible Person Phone')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.status', '状态')" prop="status" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.status', 'Status')" prop="status" :label-position="labelPosition">
           <dict-tag :options="sys_normal_disable" :value="form.status" />
         </el-form-item>
-        <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.createdBy', 'Created By')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.createdTime', 'Created Time')" prop="createTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -257,14 +257,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.updatedBy', 'Updated By')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.updatedTime', 'Updated Time')" prop="updateTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -274,7 +274,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancelDetail">{{ td('common.button.close', '关闭') }}</el-button>
+          <el-button @click="cancelDetail">{{ td('common.button.close', 'Close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -353,16 +353,16 @@ const tableStore = reactive({
   },
   columns: [
     // { type: "selection", width: 55, align: "left" },
-    { label: td('common.texts.number', '编号'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number', 'No.'), prop: "id", width: 60, sortable: true },
     {
-      label: td('dm.dataLayer.prefixName', '表前缀'),
+      label: td('dm.dataLayer.prefixName', 'Table Prefix'),
       prop: "prefixName",
       align: "left",
       width: 180,
       showOverflowTooltip: true,
     },
     {
-      label: td('common.texts.description', '描述'),
+      label: td('common.texts.description', 'Description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -371,36 +371,36 @@ const tableStore = reactive({
       },
     },
     {
-      label: td('dm.dataLayer.businessEngName', '业务英文缩写'),
+      label: td('dm.dataLayer.businessEngName', 'Business English Abbreviation'),
       prop: "businessEngName",
       align: "left",
       width: 140,
     },
 
     {
-      label: td('common.texts.status', '状态'),
+      label: td('common.texts.status', 'Status'),
       prop: "status",
       align: "left",
       width: 100,
       slot: "status",
     },
-    { label: td('dm.dataLayer.ownerUserId', '负责人'), prop: "ownerUserName", align: "left", width: 120 },
+    { label: td('dm.dataLayer.ownerUserId', 'Responsible Person'), prop: "ownerUserName", align: "left", width: 120 },
     {
-      label: td('dm.dataLayer.ownerUserPhoneNumber', '负责人电话'),
+      label: td('dm.dataLayer.ownerUserPhoneNumber', 'Responsible Person Phone'),
       prop: "ownerUserPhoneNumber",
       align: "left",
       width: 140,
     },
 
     {
-      label: td('common.texts.createdBy', '创建人'),
+      label: td('common.texts.createdBy', 'Created By'),
       prop: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: td('common.texts.createdTime', '创建时间'),
+      label: td('common.texts.createdTime', 'Created Time'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -409,7 +409,7 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: td('common.texts.operation', '操作'),
+      label: td('common.texts.operation', 'Operation'),
       width: 240,
       slot: "action",
       fixed: "right",
@@ -424,24 +424,24 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: td('dm.dataLayer.prefixName', '表前缀'),
+      label: td('dm.dataLayer.prefixName', 'Table Prefix'),
       prop: "prefixName",
-      component: { is: "input", placeholder: td('dm.dataLayer.prefixNamePlaceholder', '请输入表前缀') },
+      component: { is: "input", placeholder: td('dm.dataLayer.prefixNamePlaceholder', 'Please enter table prefix') },
     },
     {
-      label: td('dm.dataLayer.businessEngName', '业务英文缩写'),
+      label: td('dm.dataLayer.businessEngName', 'Business English Abbreviation'),
       prop: "businessEngName",
-      component: { is: "input", placeholder: td('dm.dataLayer.businessEngNamePlaceholder', '请输入业务英文缩写') },
+      component: { is: "input", placeholder: td('dm.dataLayer.businessEngNamePlaceholder', 'Please enter business English abbreviation') },
     },
     {
-      label: td('dm.dataLayer.ownerUserId', '负责人'),
+      label: td('dm.dataLayer.ownerUserId', 'Responsible Person'),
       prop: "ownerUserId",
       component: {
         is: "tree-select",
         data: managerOptions,
         props: { value: "userId", label: "nickName", children: "children" },
         valueKey: "ID",
-        placeholder: td('dm.dataLayer.ownerUserIdPlaceholder', '请选择负责人'),
+        placeholder: td('dm.dataLayer.ownerUserIdPlaceholder', 'Please select responsible person'),
         checkStrictly: true,
       },
     },
@@ -456,14 +456,14 @@ const data = reactive({
   form: {},
   rules: {
     prefixName: [
-      { required: true, message: td('dm.dataLayer.prefixNameRequired', '表前缀不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.dataLayer.prefixNameRequired', 'Table prefix cannot be empty'), trigger: "blur" },
     ],
     businessEngName: [
-      { required: true, message: td('dm.dataLayer.businessEngNameRequired', '业务英文缩写不能为空'), trigger: "blur" },
-      { pattern: /^[a-zA-Z]+$/, message: td('dm.dataLayer.englishOnly', '只能输入英文字符'), trigger: "blur" },
+      { required: true, message: td('dm.dataLayer.businessEngNameRequired', 'Business English abbreviation cannot be empty'), trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: td('dm.dataLayer.englishOnly', 'Only English characters are allowed'), trigger: "blur" },
     ],
     ownerUserId: [
-      { required: true, message: td('dm.dataLayer.ownerUserIdRequired', '负责人不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.dataLayer.ownerUserIdRequired', 'Responsible person cannot be empty'), trigger: "blur" },
     ],
   },
 });
@@ -562,11 +562,11 @@ function reset() {
 function handleAdd() {
   reset();
   if (!currentLayer.value) {
-    proxy.$modal.msgError(td('dm.dataLayer.pleaseSelectLayer', '请先选择左侧数仓分层'));
+    proxy.$modal.msgError(td('dm.dataLayer.pleaseSelectLayer', 'Please select a data layer on the left first'));
     return;
   }
   open.value = true;
-  title.value = td('dm.dataLayer.addSpecification', '添加规范');
+  title.value = td('dm.dataLayer.addSpecification', 'Add Specification');
 }
 
 /** Modify button actions */
@@ -584,7 +584,7 @@ function handleUpdate(row) {
       }
     }
     open.value = true;
-    title.value = td('dm.dataLayer.editSpecification', '修改规范');
+    title.value = td('dm.dataLayer.editSpecification', 'Edit Specification');
   });
 }
 
@@ -606,7 +606,7 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         updateDataLayerSpecification(form.value).then(() => {
-          proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess', 'Updated successfully'));
           open.value = false;
           tableRef.value?.getList();
           submitLoading.value = false;
@@ -615,7 +615,7 @@ function submitForm() {
         });
       } else {
         addDataLayerSpecification(form.value).then(() => {
-          proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess', 'Added successfully'));
           open.value = false;
           tableRef.value?.getList();
           submitLoading.value = false;
@@ -633,27 +633,27 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmDeleteSpecification', '是否确认删除规范编号为"<id>"的数据项？').replace('<id>', _ids))
+    .confirm(td('dm.dataLayer.confirmDeleteSpecification', 'Are you sure to delete specification "<id>"?').replace('<id>', _ids))
     .then(function () {
       return delDataLayerSpecification(_ids);
     })
     .then(() => {
       tableRef.value?.getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', 'Deleted successfully'));
     })
     .catch(() => {});
 }
 
 /** Status modification */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? td('dm.dataLayer.enableText', '启用') : td('dm.dataLayer.disableText', '禁用');
+  let text = row.status === "0" ? td('dm.dataLayer.enableText', 'Enable') : td('dm.dataLayer.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', '确认要"<text>"规范"<id>"吗？').replace('<text>', text).replace('<id>', row.id))
+    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', 'Are you sure to "<text>" specification "<id>"?').replace('<text>', text).replace('<id>', row.id))
     .then(function () {
       return updateDataLayerSpecification({ id: row.id, status: row.status });
     })
     .then(() => {
-      proxy.$modal.msgSuccess(td('common.message.operationSuccess', '操作成功'));
+      proxy.$modal.msgSuccess(td('common.message.operationSuccess', 'Operation successful'));
     })
     .catch(function () {
       // Restore switch state

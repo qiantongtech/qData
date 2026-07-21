@@ -57,8 +57,8 @@ public class GlobalExceptionHandlerAi
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败,异常:{}", requestURI, e.getMessage());
-        String message = MessageUtils.messageWithFallback("sys.error", "没有权限，请联系管理员授权");
+        log.error("Authorization check failed for request URL '{}', exception: {}", requestURI, e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error", "Internal server error, please contact administrator");
         return AjaxResult.error(HttpStatus.FORBIDDEN, message);
     }
 
@@ -70,7 +70,7 @@ public class GlobalExceptionHandlerAi
             HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
+        log.error("Request URL '{}' does not support '{}' requests", requestURI, e.getMethod());
         String message = MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
         return AjaxResult.error(message);
     }
@@ -95,9 +95,9 @@ public class GlobalExceptionHandlerAi
     public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
+        log.error("Required path variable is missing from request path '{}'. A system exception occurred.", requestURI, e);
         String message = MessageUtils.messageWithFallback("sys.error.path.missing",
-                String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+                "Missing required path variable");
         return AjaxResult.error(message);
     }
 
@@ -113,9 +113,9 @@ public class GlobalExceptionHandlerAi
         {
             value = EscapeUtil.clean(value);
         }
-        log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
+        log.error("Request parameter type mismatch for '{}'. A system exception occurred.", requestURI, e);
         String message = MessageUtils.messageWithFallback("sys.error.param.type",
-                String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+                "Request parameter type mismatch");
         return AjaxResult.error(message);
     }
 
@@ -126,7 +126,7 @@ public class GlobalExceptionHandlerAi
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        log.error("An unknown exception occurred for request URL '{}'.", requestURI, e);
         String message = MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
         return AjaxResult.error(message);
     }
@@ -138,7 +138,7 @@ public class GlobalExceptionHandlerAi
     public AjaxResult handleException(Exception e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生系统异常.", requestURI, e);
+        log.error("A system exception occurred for request URL '{}'.", requestURI, e);
         String message = MessageUtils.messageWithFallback("sys.error", e.getMessage());
         return AjaxResult.error(message);
     }
@@ -171,7 +171,7 @@ public class GlobalExceptionHandlerAi
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)
     {
-        String message = MessageUtils.messageWithFallback("biz.error.demo", "演示模式，不允许操作");
+        String message = MessageUtils.messageWithFallback("biz.error.demo", "Demo mode, operation not allowed");
         return AjaxResult.error(message);
     }
 }

@@ -140,7 +140,7 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
             return sdf.parse(dateStr);
         } catch (ParseException e) {
             // Handle date parsing exceptions, such as returning null or logging
-            log.error("日期解析异常：{}", e.getMessage());
+            log.error("Date parsing failed: {}", e.getMessage());
             return null;
         }
     }

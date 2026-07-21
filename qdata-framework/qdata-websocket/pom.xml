@@ -30,7 +30,7 @@
     <artifactId>qdata-websocket</artifactId>
 
     <description>
-        websocket 框架核心
+        websocket framework core
     </description>
 
     <dependencies>

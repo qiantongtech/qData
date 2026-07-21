@@ -75,9 +75,9 @@ public class ApiMappingEngine {
     public Object execute(DsApiDO dataApi, Map<String, Object> params) {
         DaDatasourceRespDTO dataSource;
 
-        //返回结果类型 1:分页 2:列表 3:详情
+        //Result type (1: paginated, 2: list, 3: detail)
         String resDataType = dataApi.getResDataType();
-        //根据数据源id查询数据源信息
+        //Query data source information by ID.
         String configJson = dataApi.getConfigJson();
         ExecuteConfig executeConfig = JSONObject.parseObject(configJson, ExecuteConfig.class);
         dataApi.setExecuteConfig(executeConfig);
@@ -91,7 +91,7 @@ public class ApiMappingEngine {
         );
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
 
-        // 参数
+        // Parameter
         //Integer pageNum = Integer.parseInt((String) params.getOrDefault("pageNum", 1));
         //Integer pageSize = Integer.parseInt((String) params.getOrDefault("pageSize", 20));
         Integer pageNum = Integer.parseInt(MapUtils.getString(params, "pageNum", "1"));
@@ -113,7 +113,7 @@ public class ApiMappingEngine {
 
             sqlFilterResult = SqlBuilderUtil.getInstance().applyFilters(dataApi.getExecuteConfig().getSqlText(), params);
         } catch (Exception e) {
-            throw new ServiceException("ds.error.api.sql.build", "API调用动态构造SQL语句出错");
+            throw new ServiceException("ds.error.api.sql.build", "API call: failed to build dynamic SQL");
         }
         Map<String, Object> acceptedFilters = sqlFilterResult.getAcceptedFilters();
 
@@ -143,7 +143,7 @@ public class ApiMappingEngine {
                     break;
             }
         } catch (Exception e) {
-            throw new ServiceException("ds.error.api.query.rs", "API调用查询结果集出错");
+            throw new ServiceException("ds.error.api.query.rs", "API call: failed to query result set");
         }finally {
             dbQuery.close();
         }
@@ -154,16 +154,16 @@ public class ApiMappingEngine {
         String tableName = dataApi.getExecuteConfig().getTableName();
         String resParams1 = dataApi.getResParams();
         String reqParams = dataApi.getReqParams();
-        //转成
+        //Convert the result.
         List<ReqParam> reqParams1 = JSONArray.parseArray(reqParams, ReqParam.class);
         dataApi.setReqParamsList(reqParams1);
         dataApi.setResParamsList(JSONArray.parseArray(resParams1, ResParam.class));
         ExecuteConfig executeConfig = dataApi.getExecuteConfig();
         if (tech.qiantong.qdata.common.utils.StringUtils.isEmpty(executeConfig.getDbType())) {
-            //通过数据源id获取
+            //Get by data source ID.
             DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
             if (dataSource == null) {
-                throw new ServiceException("ds.error.datasource.notfound", "数据源不存在");
+                throw new ServiceException("ds.error.datasource.notfound", "Data source does not exist");
             }
             executeConfig.setDbType(dataSource.getDatasourceType());
             JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
@@ -192,7 +192,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API call: failed to query desensitization rules");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
@@ -216,7 +216,7 @@ public class ApiMappingEngine {
     }
 
     /**
-     * 数据脱敏
+     * Desensitizes data.
      *
      * @param data
      * @param apiId
@@ -230,7 +230,7 @@ public class ApiMappingEngine {
 //        try {
 //            metadataDsnRuleLinkList = metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
 //        } catch (Exception e) {
-//            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
+//            throw new ServiceException("ds.error.api.desensitize", "API call: failed to query desensitization rules");
 //        }
 //
 //        if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
@@ -269,22 +269,22 @@ public class ApiMappingEngine {
     }
 
     /**
-     * 文件的访问（支持上传的文件和指定目录下的文件）
+     * Accesses files, including uploads and files in configured directories.
      *
      * @param api
      * @return
      */
     @SneakyThrows
     public void executeFileService(DsApiDO api, HttpServletResponse response) {
-        //文件名称
+        //File name.
 //        String fileName = api.getFileName();
-//        //文件路径或目录路径(目录时需将整个目录压缩返回)
+//        //File or directory path; directories must be compressed before being returned.
 //        String filePath = api.getFilePath();
-//        // 设置响应内容类型
+//        // Set the response content type.
 //        response.setContentType("application/octet-stream;charset=UTF-8");
 //        File file = new File(filePath);
 //        if (!file.exists()) {
-//            throw new DataException("文件不存在！");
+//            throw new DataException("File does not exist.");
 //        }
 //        boolean delFlag = false;
 //        if (file.isFile()) {
@@ -300,7 +300,7 @@ public class ApiMappingEngine {
 //        byte[] fileBytes = FileUtil.readBytes(file);
 //        response.addHeader("Content-Length", "" + fileBytes.length);
 //        IoUtil.write(response.getOutputStream(), true, fileBytes);
-//        //删除文件
+//        //Delete the file.
 //        if (delFlag) {
 //            FileUtil.del(file);
 //        }
@@ -308,7 +308,7 @@ public class ApiMappingEngine {
 
 
     /**
-     * 进行三方服务的转发
+     * Forwards requests to a third-party service.
      *
      * @param api
      * @param params
@@ -346,15 +346,15 @@ public class ApiMappingEngine {
 //    }
 
         /**
-         * 校验、打包、封装参数
+         * Validates and packages parameters.
          *
          * @param mapData
-         * @param resType 回参type JSON、Map、List、不处理
+         * @param resType response type: JSON, Map, List, or no processing
          * @param api
          * @return
          */
     private static Object chackPackHttpData(String mapData, String resType, DsApiDO api) {
-        //判断类型封装
+        //Build the response according to its type.
         if (StringUtils.equals("不处理", resType)) {
             return mapData;
         }
@@ -365,7 +365,7 @@ public class ApiMappingEngine {
         try {
             if (StringUtils.equals("Map", resType) && !StringUtils.isBlank(mapData)) {
                 Map<String, Object> stringObjectMap = JsonUtil.parseJsonToMap(mapData);
-                //判断是否有api的是否返回限制
+                //Check whether the API has a response limit.
                 return JsonUtil.packFilterParameterOrMap(stringObjectMap, api);
             }
 
@@ -381,18 +381,18 @@ public class ApiMappingEngine {
     }
 
     /**
-     * 对于api进行校验，查看api是否禁用或者未查询到 等。。。
+     * Validates whether the API exists and is enabled.
      *
      * @param yApiConfigEntity
      */
 //    private static void chackYapiConfig(YApiConfigEntity yApiConfigEntity) {
-//        //判断是否为null
+//        //Check whether the value is null.
 //        if (yApiConfigEntity == null) {
-//            throw new ServiceException("API调用，未查询到api配置");
+//            throw new ServiceException("API configuration was not found");
 //        }
-//        //状态（0不启用，1启用）
+//        //Status (0: disabled, 1: enabled)
 //        if (!StringUtils.equals("1", yApiConfigEntity.getStatus())) {
-//            throw new ServiceException("API调用，未查询到api未启用");
+//            throw new ServiceException("The requested API is not enabled");
 //        }
 //    }
 

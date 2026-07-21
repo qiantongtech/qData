@@ -25,7 +25,7 @@
           <div class="cell-item">{{ item.label }}</div>
         </template>
         <div v-if="item.key == 'status'">
-          <el-tag :type="item.status == -1 ? 'warning' : 'success'">{{ item.status == -1 ? td('dpp.info.draft', '草稿') : td('dpp.info.completed', '完成')
+          <el-tag :type="item.status == -1 ? 'warning' : 'success'">{{ item.status == -1 ? td('dpp.info.draft', 'Draft') : td('dpp.info.completed', 'Completed')
           }}</el-tag>
         </div>
         <div v-else-if="item.key == 'type'">
@@ -68,37 +68,37 @@ const props = defineProps({
 
 // public fields
 const baseTable = [
-  { key: "status", label: td('dpp.info.configStatus', '配置状态'), value: "" },
-  { key: "crontab", label: td('dpp.info.scheduleCycle', '调度周期'), value: "" },
-  { key: "executionType", label: td('dpp.info.executionStrategy', '执行策略'), value: "" },
-  { key: "scheduler", label: td('dpp.info.scheduler', '调度器'), value: "" },
-  { key: "lastExecuteTime", label: td('dpp.info.recentRunTime', '最近运行时间'), value: "" },
-  { key: "lastExecuteStatus", label: td('dpp.info.recentExecutionResult', '最近执行结果'), value: "" },
-  { key: "taskPriority", label: td('dpp.info.taskPriority', '任务优先级'), value: "" },
-  { key: "workerGroup", label: td('dpp.info.workerGroup', 'Worker分组'), value: "" },
-  { key: "yarnQueue", label: td('dpp.info.yarnQueue', 'Yarn队列'), value: "" },
-  { key: "failRetryTimes", label: td('dpp.info.failRetryTimes', '失败重试次数'), value: "" },
-  { key: "failRetryInterval", label: td('dpp.info.failRetryInterval', '失败重试间隔'), value: "" },
-  { key: "delayTime", label: td('dpp.info.delayExecutionTime', '延迟执行时间'), value: "", type: "time" },
-  { key: "taskType", label: td('dpp.info.executionEngine', '执行引擎'), value: "" },
+  { key: "status", label: td('dpp.info.configStatus', 'Config Status'), value: "" },
+  { key: "crontab", label: td('dpp.info.scheduleCycle', 'Schedule Cycle'), value: "" },
+  { key: "executionType", label: td('dpp.info.executionStrategy', 'Execution Strategy'), value: "" },
+  { key: "scheduler", label: td('dpp.info.scheduler', 'Scheduler'), value: "" },
+  { key: "lastExecuteTime", label: td('dpp.info.recentRunTime', 'Recent Run Time'), value: "" },
+  { key: "lastExecuteStatus", label: td('dpp.info.recentExecutionResult', 'Recent Execution Result'), value: "" },
+  { key: "taskPriority", label: td('dpp.info.taskPriority', 'Task Priority'), value: "" },
+  { key: "workerGroup", label: td('dpp.info.workerGroup', 'Worker Group'), value: "" },
+  { key: "yarnQueue", label: td('dpp.info.yarnQueue', 'Yarn Queue'), value: "" },
+  { key: "failRetryTimes", label: td('dpp.info.failRetryTimes', 'Retry Count on Failure'), value: "" },
+  { key: "failRetryInterval", label: td('dpp.info.failRetryInterval', 'Retry Interval'), value: "" },
+  { key: "delayTime", label: td('dpp.info.delayExecutionTime', 'Delay Execution Time'), value: "", type: "time" },
+  { key: "taskType", label: td('dpp.info.executionEngine', 'Execution Engine'), value: "" },
 ];
 
 // Spark field
 const sparkFields = [
-  { key: "driverCores", label: td('dpp.info.driverCores', 'Driver核心数'), value: "" },
-  { key: "driverMemory", label: td('dpp.info.driverMemory', 'Driver内存数'), value: "" },
-  { key: "numExecutors", label: td('dpp.info.executorCount', 'Executor数量'), value: "" },
-  { key: "executorMemory", label: td('dpp.info.executorMemory', 'Executor内存数'), value: "" },
-  { key: "executorCores", label: td('dpp.info.executorCores', 'Executor核心数'), value: "" },
+  { key: "driverCores", label: td('dpp.info.driverCores', 'Driver Cores'), value: "" },
+  { key: "driverMemory", label: td('dpp.info.driverMemory', 'Driver Memory'), value: "" },
+  { key: "numExecutors", label: td('dpp.info.executorCount', 'Executor Count'), value: "" },
+  { key: "executorMemory", label: td('dpp.info.executorMemory', 'Executor Memory'), value: "" },
+  { key: "executorCores", label: td('dpp.info.executorCores', 'Executor Cores'), value: "" },
 ];
 
 // Flink fields
 const flinkFields = [
-  { key: "jobManagerMemory", label: td('dpp.info.jobManagerMemory', 'JobManager内存数'), value: "" },
-  { key: "taskManagerMemory", label: td('dpp.info.taskManagerMemory', 'TaskManager内存数'), value: "" },
-  { key: "slot", label: td('dpp.info.slotCount', 'Slot数量'), value: "" },
-  { key: "taskManager", label: td('dpp.info.taskManagerCount', 'TaskManager数量'), value: "" },
-  { key: "parallelism", label: td('dpp.info.parallelism', '并行度'), value: "" },
+  { key: "jobManagerMemory", label: td('dpp.info.jobManagerMemory', 'JobManager Memory'), value: "" },
+  { key: "taskManagerMemory", label: td('dpp.info.taskManagerMemory', 'TaskManager Memory'), value: "" },
+  { key: "slot", label: td('dpp.info.slotCount', 'Slot Count'), value: "" },
+  { key: "taskManager", label: td('dpp.info.taskManagerCount', 'TaskManager Count'), value: "" },
+  { key: "parallelism", label: td('dpp.info.parallelism', 'Parallelism'), value: "" },
 ];
 
 // Dynamically generate fileDesc

@@ -90,10 +90,10 @@ public class DppEtlTaskLogDO extends BaseEntity {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** quartId的id */
+    /** Quartz job ID */
     private Long quartzId;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /** Delete flag */

@@ -84,7 +84,7 @@ public enum AiPlatformEnum {
                 return platformEnum;
             }
         }
-        throw new ServiceException("ai.error.platform.invalid", "非法平台： " + platform, platform);
+        throw new ServiceException("ai.error.platform.invalid", "Invalid platform", platform);
     }
 
     public String[] array() {

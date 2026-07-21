@@ -58,7 +58,7 @@ jobs:
           echo "---- release body ----"
           cat release_body.md
 
-          # 创建或更新 GitHub Release，正文来自同步过来的 annotated tag 内容
+          # Create or update the GitHub release using the synchronized annotated tag content as the body.
           if gh release view "${TAG}" >/dev/null 2>&1; then
             gh release edit "${TAG}" \
               --title "${RELEASE_TITLE}" \

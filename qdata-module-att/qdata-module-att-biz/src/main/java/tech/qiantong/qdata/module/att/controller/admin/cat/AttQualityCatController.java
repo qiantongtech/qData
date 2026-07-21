@@ -73,7 +73,7 @@ public class AttQualityCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttQualityCatDO> list = (List<AttQualityCatDO>) attQualityCatService.getAttQualityCatPage(exportReqVO).getRows();
         ExcelUtil<AttQualityCatRespVO> util = new ExcelUtil<>(AttQualityCatRespVO.class);
-        util.exportExcel(response, AttQualityCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttQualityCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量类目列表")

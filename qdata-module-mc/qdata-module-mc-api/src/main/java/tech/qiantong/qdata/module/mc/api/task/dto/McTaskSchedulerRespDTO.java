@@ -24,13 +24,13 @@ public class McTaskSchedulerRespDTO {
     /** scheduler id */
     private String jobId;
 
-    /** 调度引擎 */
+    /** Scheduling engine */
     private String taskScheduler;
 
-    /** Quartz调度任务id */
+    /** Quartz scheduled task ID */
     private Long quartzId;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
     /** End time */

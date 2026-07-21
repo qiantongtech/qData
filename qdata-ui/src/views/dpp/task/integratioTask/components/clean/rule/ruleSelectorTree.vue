@@ -146,7 +146,7 @@ const props = defineProps({
   },
 });
 
-const computedPlaceholder = computed(() => props.placeholder || td("dpp.integration.inputDeptName", "请输入部门名称"));
+const computedPlaceholder = computed(() => props.placeholder || td("dpp.integration.inputDeptName", "Please enter department name"));
 
 const emit = defineEmits(["node-click", "update:deptName", "update:leftWidth"]);
 

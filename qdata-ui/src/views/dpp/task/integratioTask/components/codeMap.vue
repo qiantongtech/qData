@@ -29,17 +29,17 @@
 
     <!-- table part -->
     <el-table stripe height="300px" v-loading="loading" :data="dpCodeMapList">
-        <el-table-column :label="td('dpp.integration.originalValue', '原始值')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue">
+        <el-table-column :label="td('dpp.integration.originalValue', 'Original Value')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue">
             <template #default="scope">
                 {{ scope.row.originalValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dictName', '字典名')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictName">
+        <el-table-column :label="td('dpp.integration.dictName', 'Dictionary Name')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictName">
             <template #default="scope">
                 {{ scope.row.dictName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dictValue', '字典值')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictValue">
+        <el-table-column :label="td('dpp.integration.dictValue', 'Dictionary Value')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictValue">
             <template #default="scope">
                 {{ scope.row.dictValue || '-' }}
             </template>
@@ -53,7 +53,7 @@
         </el-table-column>
         <template #empty>
             <div class="emptyBg">
-                <p>{{ td('common.message.noData', '暂无数据') }}</p>
+                <p>{{ td('common.message.noData', 'No data') }}</p>
             </div>
         </template>
     </el-table>
@@ -63,20 +63,20 @@
         <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.originalValue', '原始值')" prop="originalValue" :label-position="labelPosition">
-                        <el-input v-model="form.originalValue" :placeholder="td('dpp.integration.originalValuePlaceholder', '请输入原始值')" />
+                    <el-form-item :label="td('dpp.integration.originalValue', 'Original Value')" prop="originalValue" :label-position="labelPosition">
+                        <el-input v-model="form.originalValue" :placeholder="td('dpp.integration.originalValuePlaceholder', 'Please enter original value')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictName', '字典名')" prop="dictName" :label-position="labelPosition">
-                        <el-input v-model="form.dictName" :placeholder="td('dpp.integration.dictNamePlaceholder', '请输入字典名')" />
+                    <el-form-item :label="td('dpp.integration.dictName', 'Dictionary Name')" prop="dictName" :label-position="labelPosition">
+                        <el-input v-model="form.dictName" :placeholder="td('dpp.integration.dictNamePlaceholder', 'Please enter dictionary name')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictValue', '字典值')" prop="dictValue" :label-position="labelPosition">
-                        <el-input v-model="form.dictValue" :placeholder="td('dpp.integration.dictValuePlaceholder', '代码值')" />
+                    <el-form-item :label="td('dpp.integration.dictValue', 'Dictionary Value')" prop="dictValue" :label-position="labelPosition">
+                        <el-input v-model="form.dictValue" :placeholder="td('dpp.integration.dictValuePlaceholder', 'Code value')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -128,9 +128,9 @@ const data = reactive({
         dictValue: null,
     },
     rules: {
-        originalValue: [{ required: true, message: td('dpp.integration.originalValueRequired', '原始值不能为空'), trigger: 'change' }],
-        dictName: [{ required: true, message: td('dpp.integration.dictNameRequired', '代码名不能为空'), trigger: 'change' }],
-        dictValue: [{ required: true, message: td('dpp.integration.dictValueRequired', '字典值不能为空'), trigger: 'change' }]
+        originalValue: [{ required: true, message: td('dpp.integration.originalValueRequired', 'Original value is required'), trigger: 'change' }],
+        dictName: [{ required: true, message: td('dpp.integration.dictNameRequired', 'Code name is required'), trigger: 'change' }],
+        dictValue: [{ required: true, message: td('dpp.integration.dictValueRequired', 'Dictionary value is required'), trigger: 'change' }]
     }
 });
 
@@ -161,7 +161,7 @@ function handleUpdate(row, index) {
 
 /** Delete button action */
 function handleDelete(index) {
-    proxy.$modal.confirm(td('dpp.integration.confirmDeleteData', '是否确认删除该数据项？'))
+    proxy.$modal.confirm(td('dpp.integration.confirmDeleteData', 'Are you sure to delete this data?'))
         .then(() => {
             dpCodeMapList.value.splice(index, 1);
             total.value = dpCodeMapList.value.length;
@@ -178,7 +178,7 @@ function submitForm() {
             // Check if originalValue already exists
             const isDuplicate = dpCodeMapList.value.some(item => item.originalValue === form.value.originalValue);
             if (!(oldOriginalValue.value !== null && oldOriginalValue.value === form.value.originalValue) && isDuplicate) {
-                proxy.$modal.msgWarning(td('dpp.integration.originalValueDuplicate', '原始值已存在，不能新增'));
+                proxy.$modal.msgWarning(td('dpp.integration.originalValueDuplicate', 'Original value already exists, cannot add'));
                 return; // Prevent execution from continuing
             }
 

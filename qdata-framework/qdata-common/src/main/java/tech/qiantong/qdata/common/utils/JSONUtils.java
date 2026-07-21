@@ -481,10 +481,10 @@ public final class JSONUtils {
     }
 
     /**
-     * 格式化 JSON 字符串
+     * Formats a JSON string.
      *
-     * @param json 原始 JSON 字符串
-     * @return 格式化后的 JSON 字符串
+     * @param json original JSON string
+     * @return the formatted JSON string
      */
     public static String formatJson(String json) {
         try {
@@ -494,7 +494,9 @@ public final class JSONUtils {
                     .writerWithDefaultPrettyPrinter()
                     .writeValueAsString(jsonObject);
         } catch (Exception e) {
-            throw new RuntimeException("JSON 格式化失败，请检查 JSON 内容是否正确", e);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.json.format.fail",
+                    "Failed to format JSON; check whether the JSON content is valid"), e);
         }
     }
 }

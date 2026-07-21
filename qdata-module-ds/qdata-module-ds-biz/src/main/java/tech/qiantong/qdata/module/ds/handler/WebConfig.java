@@ -25,7 +25,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
- ** 确保动态注册的请求映射优先于 @RequestMapping("services/**")
+ ** Ensures dynamically registered request mappings take precedence over @RequestMapping("services/**").
  */
 @Configuration
 public class WebConfig {

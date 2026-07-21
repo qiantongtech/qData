@@ -56,7 +56,7 @@
       </template>
       <template v-if="currItem.type == 'result'">
         <div class="result-view">
-          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">{{ td('components.sqlEditorConsole.fetchLatestData', '获取最新数据') }}</el-button>
+          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">{{ td('components.sqlEditorConsole.fetchLatestData', 'Fetch Latest Data') }}</el-button>
           <el-empty :description="td('common.noData')" />
         </div>
       </template>
@@ -171,22 +171,22 @@ const treeData = computed(() => ([
   {
     label: "FlinkSubmit",
     value: "1",
-    unit: td('common.time.second', '秒'),
+    unit: td('common.time.second', 'second'),
     children: [
       {
-        label: td('components.sqlEditorConsole.checkJob', '检查作业'),
+        label: td('components.sqlEditorConsole.checkJob', 'Check Job'),
         value: "9",
-        unit: td('common.time.millisecond', '毫秒'),
+        unit: td('common.time.millisecond', 'millisecond'),
       },
       {
-        label: td('components.sqlEditorConsole.executeJob', '执行作业'),
+        label: td('components.sqlEditorConsole.executeJob', 'Execute Job'),
         value: "1",
-        unit: td('common.time.second', '秒'),
+        unit: td('common.time.second', 'second'),
         children: [
           {
-            label: td('components.sqlEditorConsole.buildConfig', '构建配置信息'),
+            label: td('components.sqlEditorConsole.buildConfig', 'Build Configuration'),
             value: "31",
-            unit: td('common.time.millisecond', '毫秒'),
+            unit: td('common.time.millisecond', 'millisecond'),
           },
         ],
       },

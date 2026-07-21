@@ -124,7 +124,7 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
     @Override
     public String importDppQualityTaskObj(List<DppQualityTaskObjRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -143,16 +143,16 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
                             dppQualityTaskObjMapper.updateById(dppQualityTaskObjDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                    "数据更新成功，ID为 " + dppQualityTaskObjId + " 的数据质量任务-稽查对象记录。", dppQualityTaskObjId, "数据质量任务-稽查对象"));
+                                    "Data update successful, ID {0} {1} record.", dppQualityTaskObjId, MessageUtils.messageWithFallback("dpp.entity.quality.task.audit.object", "Data quality task audit object")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                    "数据更新失败，ID为 " + dppQualityTaskObjId + " 的数据质量任务-稽查对象记录不存在。", dppQualityTaskObjId, "数据质量任务-稽查对象"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dppQualityTaskObjId, MessageUtils.messageWithFallback("dpp.entity.quality.task.audit.object", "Data quality task audit object")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DppQualityTaskObjDO> queryWrapper = new QueryWrapper<>();
@@ -162,17 +162,17 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
                         dppQualityTaskObjMapper.insert(dppQualityTaskObjDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                "数据插入成功，ID为 " + dppQualityTaskObjId + " 的数据质量任务-稽查对象记录。", dppQualityTaskObjId, "数据质量任务-稽查对象"));
+                                "Data insert successful, ID {0} {1} record.", dppQualityTaskObjId, MessageUtils.messageWithFallback("dpp.entity.quality.task.audit.object", "Data quality task audit object")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                "数据插入失败，ID为 " + dppQualityTaskObjId + " 的数据质量任务-稽查对象记录已存在。", dppQualityTaskObjId, "数据质量任务-稽查对象"));
+                                "Data insert failed, ID {0} {1} record already exists.", dppQualityTaskObjId, MessageUtils.messageWithFallback("dpp.entity.quality.task.audit.object", "Data quality task audit object")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -181,12 +181,12 @@ public class DppQualityTaskObjServiceImpl  extends ServiceImpl<DppQualityTaskObj
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

@@ -19,7 +19,7 @@
           v-hasPermi="['dm:businesscategory:add']"
           @mousedown="(e) => e.preventDefault()"
         >
-          {{ td('common.button.add', '新增') }}
+          {{ td('common.button.add', 'Add') }}
         </el-button>
         <el-button
           class="toggle-expand-all"
@@ -33,7 +33,7 @@
           />
           <svg-icon v-else icon-class="expand" />
           <span>{{
-            tableStore.config.table.defaultExpandAll ? td('common.button.fold', '折叠') : td('common.button.expand', '展开')
+            tableStore.config.table.defaultExpandAll ? td('common.button.fold', 'Collapse') : td('common.button.expand', 'Expand')
           }}</span>
         </el-button>
       </template>
@@ -63,7 +63,7 @@
             :disabled="row.validFlag === true"
             v-hasPermi="['dm:businesscategory:edit']"
           >
-            {{ td('common.button.update', '修改') }}
+            {{ td('common.button.update', 'Edit') }}
           </el-button>
           <el-button
             link
@@ -72,11 +72,11 @@
             @click="handleAdd(row)"
             v-hasPermi="['dm:businesscategory:add']"
           >
-            {{ td('common.button.add', '新增') }}
+            {{ td('common.button.add', 'Add') }}
           </el-button>
           <el-popover placement="bottom" :width="150" trigger="click">
             <template #reference>
-              <el-button link type="primary" icon="ArrowDown">{{ td('common.button.more', '更多') }}</el-button>
+              <el-button link type="primary" icon="ArrowDown">{{ td('common.button.more', 'More') }}</el-button>
             </template>
             <div style="width: 100px" class="butgdlist">
               <el-button
@@ -87,7 +87,7 @@
                 v-hasPermi="['dm:businesscategory:remove']"
                 style="padding-left: 14px"
               >
-                {{ td('common.button.details', '详情') }}
+                {{ td('common.button.details', 'Details') }}
               </el-button>
               <el-button
                 link
@@ -97,7 +97,7 @@
                 v-hasPermi="['dm:businesscategory:remove']"
                 :disabled="row.validFlag === true"
               >
-                {{ td('common.button.delete', '删除') }}
+                {{ td('common.button.delete', 'Delete') }}
               </el-button>
             </div>
           </el-popover>
@@ -152,53 +152,53 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: td('dm.businessCategory.name', '业务分类名称'),
+      label: td('dm.businessCategory.name', 'Business Category Name'),
       prop: "name",
       align: "left",
       width: 250,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('common.texts.description', '描述'),
+      label: td('common.texts.description', 'Description'),
       prop: "description",
       align: "left",
       width: 250,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('dm.businessCategory.engName', '英文缩写'),
+      label: td('dm.businessCategory.engName', 'English Abbreviation'),
       prop: "engName",
       align: "left",
       width: 120,
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('dm.businessCategory.dataDomain', '关联数据域'),
+      label: td('dm.businessCategory.dataDomain', 'Related Data Domain'),
       slot: "dataDomainName",
       align: "left",
       width: 180,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: td('dm.businessCategory.ownerId', '负责人'), prop: "owner", width: 100 },
-    { label: td('dm.businessCategory.ownerPhone', '负责人电话'), prop: "ownerPhone", width: 120 },
-    { label: td('common.texts.status', '状态'), prop: "validFlag", width: 100, slot: "validFlag" },
+    { label: td('dm.businessCategory.ownerId', 'Responsible Person'), prop: "owner", width: 100 },
+    { label: td('dm.businessCategory.ownerPhone', 'Responsible Person Phone'), prop: "ownerPhone", width: 120 },
+    { label: td('common.texts.status', 'Status'), prop: "validFlag", width: 100, slot: "validFlag" },
     {
-      label: td('common.texts.remark', '备注'),
+      label: td('common.texts.remark', 'Remark'),
       prop: "remark",
       align: "left",
       width: 150,
       showOverflowTooltip: { effect: "light" },
     },
-    { label: td('common.texts.createdBy', '创建人'), prop: "createBy", width: 120 },
+    { label: td('common.texts.createdBy', 'Created By'), prop: "createBy", width: 120 },
     {
-      label: td('common.texts.createdTime', '创建时间'),
+      label: td('common.texts.createdTime', 'Created Time'),
       prop: "createTime",
       width: 150,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: td('common.texts.operation', '操作'), width: 250, fixed: "right", slot: "action" },
+    { label: td('common.texts.operation', 'Operation'), width: 250, fixed: "right", slot: "action" },
   ],
   func: listBusinessCategory,
   params: {
@@ -223,33 +223,33 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: td('dm.businessCategory.name', '业务分类名称'),
+      label: td('dm.businessCategory.name', 'Business Category Name'),
       prop: "name",
-      component: { is: "input", placeholder: td('dm.businessCategory.namePlaceholder', '请输入业务分类名称') },
+      component: { is: "input", placeholder: td('dm.businessCategory.namePlaceholder', 'Please enter business category name') },
     },
     {
-      label: td('dm.businessCategory.upperCategory', '上级业务分类'),
+      label: td('dm.businessCategory.upperCategory', 'Parent Business Category'),
       prop: "parentId",
       component: {
         is: "tree-select",
         data: businessLayerOptions,
         props: { value: "id", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: td('dm.businessCategory.parentIdPlaceholder', '请选择上级业务分类'),
+        placeholder: td('dm.businessCategory.parentIdPlaceholder', 'Please select parent business category'),
         checkStrictly: true,
         clearable: true,
         filterable: true,
       },
     },
     {
-      label: td('dm.businessCategory.ownerId', '负责人'),
+      label: td('dm.businessCategory.ownerId', 'Responsible Person'),
       prop: "ownerId",
       component: {
         is: "tree-select",
         data: managerOptions,
         props: { value: "userId", label: "nickName", children: "children" },
         valueKey: "userId",
-        placeholder: td('dm.businessCategory.ownerIdPlaceholder', '请选择负责人'),
+        placeholder: td('dm.businessCategory.ownerIdPlaceholder', 'Please select responsible person'),
         clearable: true,
         filterable: true,
         checkStrictly: true,
@@ -285,9 +285,9 @@ function handleDetail(row) {
   router.push({ path: "/dm/businessCategory/detail", query: { id: row.id } });
 }
 function handleStatusChange(row) {
-  const text = row.validFlag ? td('dm.businessCategory.enableText', '启用') : td('dm.businessCategory.disableText', '禁用');
+  const text = row.validFlag ? td('dm.businessCategory.enableText', 'Enable') : td('dm.businessCategory.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmStatusChange', '确认要"<text>","<name>"业务分类吗？').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dm.businessCategory.confirmStatusChange', 'Are you sure to "<text>" business category "<name>"?').replace('<text>', text).replace('<name>', row.name))
     .then(() =>
       updateBusinessCategory({
         id: row.id,
@@ -296,7 +296,7 @@ function handleStatusChange(row) {
       })
     )
     .then(() => {
-      proxy.$modal.msgSuccess(td('common.message.operationSuccess', '操作成功'));
+      proxy.$modal.msgSuccess(td('common.message.operationSuccess', 'Operation successful'));
       tableRef.value?.getList();
     })
     .catch(() => {
@@ -305,7 +305,7 @@ function handleStatusChange(row) {
 }
 function handleAdd(row) {
   businessLayerEditDialogRef.value.open({
-    title: td('dm.businessCategory.addTitle', '新增业务分类'),
+    title: td('dm.businessCategory.addTitle', 'Add Business Category'),
     managerOptions: managerOptions.value,
     form: { parentId: row?.id || 0, validFlag: false, sortOrder: 0 },
   });
@@ -319,7 +319,7 @@ function handleUpdate(row) {
       engName: res.data?.engName ?? res.data?.shortName,
     };
     businessLayerEditDialogRef.value.open({
-      title: td('dm.businessCategory.editTitle', '修改业务分类'),
+      title: td('dm.businessCategory.editTitle', 'Edit Business Category'),
       managerOptions: managerOptions.value,
       form: mappedForm,
     });
@@ -332,7 +332,7 @@ function onDialogSubmit(payload) {
       : addBusinessCategory(payload);
   apiCall
     .then(() => {
-      proxy.$modal.msgSuccess(payload.id ? td('common.message.editSuccess', '修改成功') : td('common.message.addSuccess', '新增成功'));
+      proxy.$modal.msgSuccess(payload.id ? td('common.message.editSuccess', 'Updated successfully') : td('common.message.addSuccess', 'Added successfully'));
       businessLayerEditDialogRef.value.close();
       businessLayerEditDialogRef.value.refreshTreeData(); // Refresh the internal tree cache of the pop-up window
       tableRef.value?.getList();
@@ -344,13 +344,13 @@ function onDialogSubmit(payload) {
 }
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmDelete', '是否确认删除业务分类名称为"<name>"的数据项？').replace('<name>', row.name))
+    .confirm(td('dm.businessCategory.confirmDelete', 'Are you sure to delete business category "<name>"?').replace('<name>', row.name))
     .then(() => delBusinessCategory(row.id))
     .then(() => {
       tableRef.value?.getList();
       getTreeData();
       businessLayerEditDialogRef.value.refreshTreeData(); // Refresh the internal tree cache of the pop-up window
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', 'Deleted successfully'));
     })
     .catch(() => {});
 }

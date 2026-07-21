@@ -28,7 +28,7 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 import java.util.Arrays;
 
 /**
- * API服务Mapper接口
+ * API service mapper interface
  *
  * @author lhs
  * @date 2025-02-12
@@ -36,7 +36,7 @@ import java.util.Arrays;
 public interface DsApiMapper extends BaseMapperX<DsApiDO> {
 
     default PageResult<DsApiDO> selectPage(DsApiPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Defines sortable fields to prevent SQL injection; values must match database column names.
         MPJLambdaWrapper<DsApiDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(DsApiDO.class)
                 .select("t2.NAME AS catName")

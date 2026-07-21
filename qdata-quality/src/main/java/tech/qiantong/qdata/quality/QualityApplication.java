@@ -53,7 +53,7 @@ import tech.qiantong.qdata.common.httpClient.DsRequestUtils;
 public class QualityApplication {
     public static void main(String[] args) {
         SpringApplication.run(QualityApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  数据质量启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
+        System.out.println("(♥◠‿◠)ﾉﾞ  Data Quality started successfully   ლ(´ڡ`ლ)ﾞ  \n" +
                 "    _            _         _        \n" +
                 "   / \\    _ __  (_)__   __(_)  __ _ \n" +
                 "  / _ \\  | '_ \\ | |\\ \\ / /| | / _` |\n" +

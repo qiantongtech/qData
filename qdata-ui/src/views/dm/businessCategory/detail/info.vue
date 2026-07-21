@@ -35,10 +35,10 @@ const props = defineProps({
 });
 
 const items = computed(() => [
-  { key: "createBy", label: td('common.texts.createdBy', '创建人') },
-  { key: "createTime", label: td('common.texts.createdTime', '创建时间'), type: "time" },
-  { key: "updateBy", label: td('common.texts.updatedBy', '更新人') },
-  { key: "updateTime", label: td('common.texts.updatedTime', '更新时间'), type: "time" },
-  { key: "remark", label: td('common.texts.remark', '备注'), span: 24 },
+  { key: "createBy", label: td('common.texts.createdBy', 'Created By') },
+  { key: "createTime", label: td('common.texts.createdTime', 'Created Time'), type: "time" },
+  { key: "updateBy", label: td('common.texts.updatedBy', 'Updated By') },
+  { key: "updateTime", label: td('common.texts.updatedTime', 'Updated Time'), type: "time" },
+  { key: "remark", label: td('common.texts.remark', 'Remark'), span: 24 },
 ]);
 </script>

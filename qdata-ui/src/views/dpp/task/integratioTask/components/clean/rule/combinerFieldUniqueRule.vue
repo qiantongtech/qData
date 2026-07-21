@@ -24,7 +24,7 @@
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button type="primary" plain @click="addtypecolumns">
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.cleanRule.addSortField', '新增排序字段') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.cleanRule.addSortField', 'Add Sort Field') }}
             </el-button>
           </el-col>
         </el-row>
@@ -37,7 +37,7 @@
         row-key="sort"
         ref="dragTable"
       >
-        <el-table-column :label="td('dpp.cleanRule.index', '序号')" width="80" align="left">
+        <el-table-column :label="td('dpp.cleanRule.index', 'No.')" width="80" align="left">
           <template #default="{ $index }">
             <div
               class="allowDrag"
@@ -55,12 +55,12 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="columns" :label="td('dpp.cleanRule.fieldName', '字段名称')" align="left">
+        <el-table-column prop="columns" :label="td('dpp.cleanRule.fieldName', 'Field Name')" align="left">
           <template #default="{ row }">
             <template v-if="!falg">
               <el-select
                 v-model="row.columns"
-                :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
+                :placeholder="td('dpp.cleanRule.selectCleanField', 'Please select clean field')"
                 clearable
               >
                 <el-option
@@ -82,54 +82,54 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="type" :label="td('dpp.cleanRule.selectSortOrder', '排序顺序')" align="left">
+        <el-table-column prop="type" :label="td('dpp.cleanRule.selectSortOrder', 'Sort Order')" align="left">
           <template #default="{ row }">
             <template v-if="!falg">
               <el-select v-model="row.type" placeholder="请选择" size="default">
-                <el-option :label="td('dpp.cleanRule.ascending', '升序')" value="1"></el-option>
-                <el-option :label="td('dpp.cleanRule.descending', '降序')" value="0"></el-option>
+                <el-option :label="td('dpp.cleanRule.ascending', 'Ascending')" value="1"></el-option>
+                <el-option :label="td('dpp.cleanRule.descending', 'Descending')" value="0"></el-option>
               </el-select>
             </template>
             <div v-else class="form-readonly">
-              {{ row.type === "1" ? td('dpp.cleanRule.ascending', '升序') : row.type === "0" ? td('dpp.cleanRule.descending', '降序') : "-" }}
+              {{ row.type === "1" ? td('dpp.cleanRule.ascending', 'Ascending') : row.type === "0" ? td('dpp.cleanRule.descending', 'Descending') : "-" }}
             </div>
           </template>
         </el-table-column>
         <template #empty>
           <div class="emptyBg">
-            <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+            <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
           </div>
         </template>
-        <el-table-column v-if="!falg" :label="td('common.texts.operation', '操作')" align="center" width="100">
+        <el-table-column v-if="!falg" :label="td('common.texts.operation', 'Operation')" align="center" width="100">
           <template #default="scope">
             <el-button
               link
               type="danger"
               icon="Delete"
               @click="handleDeletetypecolumns(scope.$index)"
-              >{{ td('common.button.delete', '删除') }}</el-button
+              >{{ td('common.button.delete', 'Delete') }}</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-form-item :label="td('dpp.cleanRule.dedupStrategy', '去重策略')" prop="handleType" style="margin-top: 20px">
+    <el-form-item :label="td('dpp.cleanRule.dedupStrategy', 'Dedup Strategy')" prop="handleType" style="margin-top: 20px">
       <el-radio-group
         v-model="form.handleType"
         class="strategy-radio-group"
         :disabled="falg"
       >
         <el-radio label="1" class="radio-item">
-          <span class="radio-label">{{ td('dpp.cleanRule.keepFirst', '保留首条记录') }}</span>
+          <span class="radio-label">{{ td('dpp.cleanRule.keepFirst', 'Keep First Record') }}</span>
         </el-radio>
         <p class="strategy-0ription">
-          {{ td('dpp.cleanRule.keepFirstDesc', '系统将根据去重条件保留满足去重规则记录中的第一条记录。') }}
+          {{ td('dpp.cleanRule.keepFirstDesc', 'System will keep the first record matching the dedup rule based on dedup conditions.') }}
         </p>
         <el-radio label="2" class="radio-item">
-          <span class="radio-label">{{ td('dpp.cleanRule.keepLatest', '保留最新记录') }}</span>
+          <span class="radio-label">{{ td('dpp.cleanRule.keepLatest', 'Keep Latest Record') }}</span>
         </el-radio>
         <p class="strategy-0ription">
-          {{ td('dpp.cleanRule.keepLatestDesc', '系统将根据去重条件保留满足去重规则记录中的最新记录。') }}
+          {{ td('dpp.cleanRule.keepLatestDesc', 'System will keep the latest record matching the dedup rule based on dedup conditions.') }}
         </p>
       </el-radio-group>
     </el-form-item>
@@ -220,7 +220,7 @@ function validate() {
       // Verify that each field name is not empty
       for (const item of form.stringValue) {
         if (!item.columns) {
-          ElMessage.error(td('dpp.cleanRule.sortFieldNameRequired', '排序字段名称不能为空'));
+          ElMessage.error(td('dpp.cleanRule.sortFieldNameRequired', 'Sort field name is required'));
           resolve({ valid: false });
           return;
         }
@@ -230,7 +230,7 @@ function validate() {
       const columnss = form.stringValue.map((item) => item.columns);
       const hasDuplicate = new Set(columnss).size !== columnss.length;
       if (hasDuplicate) {
-        ElMessage.error(td('dpp.cleanRule.sortFieldNameDuplicate', '排序字段名称不能重复'));
+        ElMessage.error(td('dpp.cleanRule.sortFieldNameDuplicate', 'Sort field name must be unique'));
         resolve({ valid: false });
         return;
       }

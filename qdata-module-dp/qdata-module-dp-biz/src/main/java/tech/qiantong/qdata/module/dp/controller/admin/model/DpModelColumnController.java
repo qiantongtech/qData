@@ -84,7 +84,7 @@ public class DpModelColumnController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpModelColumnDO> list = (List<DpModelColumnDO>) dpModelColumnService.getDpModelColumnPage(exportReqVO).getRows();
         ExcelUtil<DpModelColumnRespVO> util = new ExcelUtil<>(DpModelColumnRespVO.class);
-        util.exportExcel(response, DpModelColumnConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpModelColumnConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入逻辑模型属性信息列表")

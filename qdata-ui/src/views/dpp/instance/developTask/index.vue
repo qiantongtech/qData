@@ -26,7 +26,7 @@
         :placeholder="
           td(
             'dpp.instance.developTask.inputCategoryName',
-            '请输入数据开发类目名称'
+            'Please enter data development category name'
           )
         "
         @node-click="handleNodeClick"
@@ -45,7 +45,7 @@
           >
             <el-form-item
               :label="
-                td('dpp.instance.developTask.nodeInstanceName', '节点实例名称')
+                td('dpp.instance.developTask.nodeInstanceName', 'Node Instance Name')
               "
               prop="name"
             >
@@ -55,7 +55,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.developTask.inputNodeInstanceName',
-                    '请输入节点实例名称'
+                    'Please enter node instance name'
                   )
                 "
                 clearable
@@ -63,14 +63,14 @@
               />
             </el-form-item>
             <el-form-item
-              :label="td('dpp.instance.developTask.taskName', '任务名称')"
+              :label="td('dpp.instance.developTask.taskName', 'Task Name')"
               prop="taskInstanceName"
             >
               <el-input
                 class="el-form-input-width"
                 v-model="queryParams.taskInstanceName"
                 :placeholder="
-                  td('dpp.instance.developTask.inputTaskName', '请输入任务名称')
+                  td('dpp.instance.developTask.inputTaskName', 'Please enter task name')
                 "
                 clearable
                 @keyup.enter="handleQuery"
@@ -78,7 +78,7 @@
             </el-form-item>
             <el-form-item
               :label="
-                td('dpp.instance.developTask.executionStatus', '执行状态')
+                td('dpp.instance.developTask.executionStatus', 'Execution Status')
               "
               prop="status"
             >
@@ -87,7 +87,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.developTask.selectExecutionStatus',
-                    '请选择执行状态'
+                    'Please select execution status'
                   )
                 "
                 clearable
@@ -124,14 +124,14 @@
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i
-                >{{ td("common.button.search", "查询") }}
+                >{{ td("common.button.search", "Search") }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22378 mr5"></i
-                >{{ td("common.button.reset", "重置") }}
+                >{{ td("common.button.reset", "Reset") }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -159,7 +159,7 @@
             <el-table-column
               v-if="getColumnVisibility(0)"
               width="150"
-              :label="td('dpp.instance.developTask.id', '编号')"
+              :label="td('dpp.instance.developTask.id', 'No.')"
               align="left"
               prop="id"
             />
@@ -167,7 +167,7 @@
               v-if="getColumnVisibility(1)"
               :show-overflow-tooltip="{ effect: 'light' }"
               :label="
-                td('dpp.instance.developTask.nodeInstanceName', '节点实例名称')
+                td('dpp.instance.developTask.nodeInstanceName', 'Node Instance Name')
               "
               align="left"
               prop="name"
@@ -180,7 +180,7 @@
             <el-table-column
               v-if="getColumnVisibility(2)"
               :show-overflow-tooltip="{ effect: 'light' }"
-              :label="td('dpp.instance.developTask.taskName', '任务名称')"
+              :label="td('dpp.instance.developTask.taskName', 'Task Name')"
               align="left"
               prop="taskInstanceName"
               width="400"
@@ -192,7 +192,7 @@
 
             <el-table-column
               v-if="getColumnVisibility(3)"
-              :label="td('dpp.instance.developTask.executionType', '执行类型')"
+              :label="td('dpp.instance.developTask.executionType', 'Execution Type')"
               width="140"
               :show-overflow-tooltip="{ effect: 'light' }"
               align="left"
@@ -209,7 +209,7 @@
               v-if="getColumnVisibility(4)"
               width="140"
               :label="
-                td('dpp.instance.developTask.executionStatus', '执行状态')
+                td('dpp.instance.developTask.executionStatus', 'Execution Status')
               "
               align="left"
               prop="status"
@@ -224,7 +224,7 @@
             <el-table-column
               v-if="getColumnVisibility(5)"
               width="160"
-              :label="td('dpp.instance.developTask.startTime', '开始时间')"
+              :label="td('dpp.instance.developTask.startTime', 'Start Time')"
               align="left"
               prop="startTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -238,7 +238,7 @@
             <el-table-column
               v-if="getColumnVisibility(6)"
               width="160"
-              :label="td('dpp.instance.developTask.endTime', '结束时间')"
+              :label="td('dpp.instance.developTask.endTime', 'End Time')"
               align="left"
               prop="endTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -276,7 +276,7 @@
               v-if="getColumnVisibility(9)"
               width="160"
               :label="
-                td('dpp.instance.developTask.responsiblePerson', '责任人')
+                td('dpp.instance.developTask.responsiblePerson', 'Responsible Person')
               "
               align="left"
               prop="createBy"
@@ -287,7 +287,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(10)"
-              :label="td('dpp.instance.developTask.createBy', '创建人')"
+              :label="td('dpp.instance.developTask.createBy', 'Created By')"
               :show-overflow-tooltip="true"
               align="left"
               prop="createBy"
@@ -299,7 +299,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(11)"
-              :label="td('dpp.instance.developTask.createTime', '创建时间')"
+              :label="td('dpp.instance.developTask.createTime', 'Created Time')"
               align="left"
               prop="create_time"
               width="150"
@@ -314,7 +314,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="td('dpp.instance.developTask.operation', '操作')"
+              :label="td('dpp.instance.developTask.operation', 'Operation')"
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
@@ -327,7 +327,7 @@
                   icon="View"
                   @click="logDetailCatList(scope.row)"
                   >{{
-                    td("dpp.instance.developTask.viewLog", "查看日志")
+                    td("dpp.instance.developTask.viewLog", "View Log")
                   }}</el-button
                 >
                 <el-button
@@ -337,7 +337,7 @@
                   @click="handleExport(scope.row)"
                   @mousedown="(e) => e.preventDefault()"
                 >
-                  {{ td("dpp.instance.developTask.downloadLog", "下载日志") }}
+                  {{ td("dpp.instance.developTask.downloadLog", "Download Log") }}
                 </el-button>
               </template>
             </el-table-column>
@@ -358,7 +358,7 @@
           />
 
           <el-dialog
-            :title="td('dpp.instance.developTask.viewLog', '查看日志')"
+            :title="td('dpp.instance.developTask.viewLog', 'View Log')"
             v-model="open"
             width="1200px"
             :append-to="$refs['app-container']"
@@ -369,7 +369,7 @@
             <template #footer>
               <div class="dialog-footer">
                 <el-button @click="cancel">{{
-                  td("common.button.close", "关闭")
+                  td("common.button.close", "Close")
                 }}</el-button>
               </div>
             </template>
@@ -429,52 +429,52 @@ const columnVisible = ref({
 const columns = computed(() => [
   {
     key: 0,
-    label: td("dpp.instance.developTask.id", "编号"),
+    label: td("dpp.instance.developTask.id", "No."),
     visible: columnVisible.value[0],
   },
   {
     key: 1,
-    label: td("dpp.instance.developTask.nodeInstanceName", "节点实例名称"),
+    label: td("dpp.instance.developTask.nodeInstanceName", "Node Instance Name"),
     visible: columnVisible.value[1],
   },
   {
     key: 2,
-    label: td("dpp.instance.developTask.taskName", "任务名称"),
+    label: td("dpp.instance.developTask.taskName", "Task Name"),
     visible: columnVisible.value[2],
   },
   {
     key: 3,
-    label: td("dpp.instance.developTask.executionType", "执行类型"),
+    label: td("dpp.instance.developTask.executionType", "Execution Type"),
     visible: columnVisible.value[3],
   },
   {
     key: 4,
-    label: td("dpp.instance.developTask.executionStatus", "执行状态"),
+    label: td("dpp.instance.developTask.executionStatus", "Execution Status"),
     visible: columnVisible.value[4],
   },
   {
     key: 5,
-    label: td("dpp.instance.developTask.startTime", "开始时间"),
+    label: td("dpp.instance.developTask.startTime", "Start Time"),
     visible: columnVisible.value[5],
   },
   {
     key: 6,
-    label: td("dpp.instance.developTask.endTime", "结束时间"),
+    label: td("dpp.instance.developTask.endTime", "End Time"),
     visible: columnVisible.value[6],
   },
   {
     key: 9,
-    label: td("dpp.instance.developTask.responsiblePerson", "责任人"),
+    label: td("dpp.instance.developTask.responsiblePerson", "Responsible Person"),
     visible: columnVisible.value[9],
   },
   {
     key: 10,
-    label: td("dpp.instance.developTask.createBy", "创建人"),
+    label: td("dpp.instance.developTask.createBy", "Created By"),
     visible: columnVisible.value[10],
   },
   {
     key: 11,
-    label: td("dpp.instance.developTask.createTime", "创建时间"),
+    label: td("dpp.instance.developTask.createTime", "Created Time"),
     visible: columnVisible.value[11],
   },
 ]);
@@ -654,7 +654,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td("dpp.instance.developTask.dataDevCategory", "数据开发类目"),
+        name: td("dpp.instance.developTask.dataDevCategory", "Data Development Category"),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -755,7 +755,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dpp.developTask.confirmDeleteLog', '', { id: _ids }))
+    .confirm(td('dpp.developTask.confirmDeleteLog', 'Are you sure to delete the data development task log with ID "{id}"?', { id: _ids }))
     .then(function () {
       return delDppEtlNodeInstance(_ids);
     })

@@ -65,7 +65,7 @@ public class McDbController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McDbDO> list = (List<McDbDO>) mcDbService.getMcDbPage(exportReqVO).getRows();
         ExcelUtil<McDbRespVO> util = new ExcelUtil<>(McDbRespVO.class);
-        util.exportExcel(response, McDbConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McDbConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取数据库详细信息")

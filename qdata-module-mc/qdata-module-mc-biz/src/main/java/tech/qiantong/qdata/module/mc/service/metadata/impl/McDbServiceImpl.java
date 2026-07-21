@@ -87,7 +87,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
         //return mcDbMapper.deleteBatchIds(idList);
         // Delete library metadata in batches
         if (tableMapper.existsByDbIds(idList)) {
-            throw new ServiceException("mc.error.ref.table", "被表元数据引用，不可删除");
+            throw new ServiceException("mc.error.ref.table", "Referenced by table metadata, cannot be deleted");
         }
         return mcDbMapper.delete(Wrappers.lambdaQuery(McDbDO.class)
                 .in(McDbDO::getId, idList)

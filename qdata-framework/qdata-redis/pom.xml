@@ -30,7 +30,7 @@
     <artifactId>qdata-redis</artifactId>
 
     <description>
-        qdata-redis框架核心
+        qdata-redis framework core
     </description>
 
     <dependencies>

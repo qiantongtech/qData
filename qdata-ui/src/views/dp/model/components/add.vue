@@ -801,7 +801,7 @@ const getDaDatasourceListList = async () => {
     createTypeList.value = getAvailableDatasource(response, "dpModel");
     console.log("createTypeList.value", createTypeList.value);
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 // Table
@@ -828,7 +828,7 @@ const fetchDpModelColumnList = async () => {
     loading.value = false;
     // Process returned data
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
     loading.value = false;
   }
 };
@@ -1025,18 +1025,18 @@ function getDeptLabel(row) {
 }
 //New Table Fields
 function handleFormSubmit(formData) {
-  console.log("提交的表单数据:", formData);
+  console.log("Submitted form data:", formData);
   if (formData.index !== undefined && formData.index !== null) {
     // If index exists, change the corresponding index data directly
     tableData.value[formData.index] = { ...formData };
-    console.log("数据已修改:", tableData.value[formData.index]);
+    console.log("Data updated:", tableData.value[formData.index]);
   } else {
     // Add data if no index
     tableData.value.push({ ...formData });
-    console.log("新数据已新增:", formData);
+    console.log("New data added:", formData);
   }
 
-  console.log("当前表格数据:", tableData.value);
+  console.log("Current table data:", tableData.value);
 }
 
 function handleAdd() {

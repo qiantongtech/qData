@@ -8,41 +8,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DataX 本地执行配置。
+ * Local DataX execution configuration.
  * <p>
- * 读取 qdata.datax 前缀下的配置项，用于定位 DataX 安装目录、Python 命令、
- * datax.py 脚本、扩展依赖目录以及临时 job.json 存放目录。
+ * Reads properties under the datax prefix to locate the DataX installation, Python command,
+ * datax.py script, extension dependencies, and temporary job.json directory.
  */
 @Component
 @ConfigurationProperties(prefix = "datax")
 public class DataXProperties {
 
     /**
-     * DataX 安装目录。
+     * DataX installation directory.
      */
     private String home;
     /**
-     * 启动 DataX 的 Python 命令，默认使用 python3。
+     * Python command used to start DataX; defaults to python3.
      */
     private String pythonCommand = "python3";
     /**
-     * DataX 启动脚本 datax.py 的路径。
+     * Path to the DataX startup script datax.py.
      */
     private String dataxPyPath;
     /**
-     * DataX 扩展依赖目录。
+     * DataX extension dependency directory.
      */
     private String libDir;
     /**
-     * 本地生成 DataX job.json 的临时目录。
+     * Temporary directory for locally generated DataX job.json files.
      */
     private String jobDir;
 
     /**
-     * 构建 DataX 进程启动命令。
+     * Builds the DataX process command.
      *
-     * @param jobFile DataX job.json 文件路径
-     * @return 进程启动命令及参数
+     * @param jobFile DataX job.json file path
+     * @return the process command and arguments
      */
     public List<String> buildCommand(Path jobFile) {
         List<String> command = splitCommand(pythonCommand);
@@ -52,16 +52,16 @@ public class DataXProperties {
     }
 
     /**
-     * 拆分 Python 命令。
+     * Splits the Python command.
      * <p>
-     * 支持带空格参数的命令配置，并保留单引号或双引号包裹的整体参数。
+     * Supports command arguments containing spaces and preserves arguments enclosed in single or double quotes.
      *
-     * @param command Python 命令配置
-     * @return 拆分后的命令片段
+     * @param command configured Python command
+     * @return the parsed command segments
      */
     private List<String> splitCommand(String command) {
         List<String> result = new ArrayList<String>();
-        // 未配置时使用默认 python3，保证 DataX 有基础启动命令。
+        // Use python3 when no command is configured so DataX always has a basic launch command.
         if (command == null || command.trim().isEmpty()) {
             result.add("python3");
             return result;
@@ -71,12 +71,12 @@ public class DataXProperties {
         char quote = 0;
         for (int i = 0; i < command.length(); i++) {
             char ch = command.charAt(i);
-            // 引号仅用于分组参数，不作为最终命令内容的一部分。
+            // Quotes group arguments and are not included in the final command content.
             if ((ch == '\'' || ch == '"')) {
                 quote = quote == ch ? 0 : ch;
                 continue;
             }
-            // 未处于引号内时，空白字符表示一个参数结束。
+            // Outside quotes, whitespace terminates the current argument.
             if (Character.isWhitespace(ch) && quote == 0) {
                 if (current.length() > 0) {
                     result.add(current.toString());
@@ -86,11 +86,11 @@ public class DataXProperties {
             }
             current.append(ch);
         }
-        // 循环结束后补上最后一个参数。
+        // Add the final argument after the loop.
         if (current.length() > 0) {
             result.add(current.toString());
         }
-        // 极端情况下拆分结果为空，仍然兜底为 python3。
+        // Fall back to python3 if parsing unexpectedly produces no arguments.
         if (result.isEmpty()) {
             result.add("python3");
         }
@@ -98,90 +98,90 @@ public class DataXProperties {
     }
 
     /**
-     * 获取 DataX 安装目录。
+     * Returns the DataX installation directory.
      *
-     * @return DataX 安装目录
+     * @return the DataX installation directory
      */
     public String getHome() {
         return home;
     }
 
     /**
-     * 设置 DataX 安装目录。
+     * Sets the DataX installation directory.
      *
-     * @param home DataX 安装目录
+     * @param home DataX installation directory
      */
     public void setHome(String home) {
         this.home = home;
     }
 
     /**
-     * 获取启动 DataX 的 Python 命令。
+     * Returns the Python command used to start DataX.
      *
-     * @return Python 命令
+     * @return the Python command
      */
     public String getPythonCommand() {
         return pythonCommand;
     }
 
     /**
-     * 设置启动 DataX 的 Python 命令。
+     * Sets the Python command used to start DataX.
      *
-     * @param pythonCommand Python 命令
+     * @param pythonCommand Python command
      */
     public void setPythonCommand(String pythonCommand) {
         this.pythonCommand = pythonCommand;
     }
 
     /**
-     * 获取 datax.py 脚本路径。
+     * Returns the datax.py script path.
      *
-     * @return datax.py 脚本路径
+     * @return the datax.py script path
      */
     public String getDataxPyPath() {
         return dataxPyPath;
     }
 
     /**
-     * 设置 datax.py 脚本路径。
+     * Sets the datax.py script path.
      *
-     * @param dataxPyPath datax.py 脚本路径
+     * @param dataxPyPath datax.py script path
      */
     public void setDataxPyPath(String dataxPyPath) {
         this.dataxPyPath = dataxPyPath;
     }
 
     /**
-     * 获取 DataX 扩展依赖目录。
+     * Returns the DataX extension dependency directory.
      *
-     * @return DataX 扩展依赖目录
+     * @return the DataX extension dependency directory
      */
     public String getLibDir() {
         return libDir;
     }
 
     /**
-     * 设置 DataX 扩展依赖目录。
+     * Sets the DataX extension dependency directory.
      *
-     * @param libDir DataX 扩展依赖目录
+     * @param libDir DataX extension dependency directory
      */
     public void setLibDir(String libDir) {
         this.libDir = libDir;
     }
 
     /**
-     * 获取本地生成 DataX job.json 的临时目录。
+     * Returns the temporary directory for locally generated DataX job.json files.
      *
-     * @return job.json 临时目录
+     * @return the temporary job.json directory
      */
     public String getJobDir() {
         return jobDir;
     }
 
     /**
-     * 设置本地生成 DataX job.json 的临时目录。
+     * Sets the temporary directory for locally generated DataX job.json files.
      *
-     * @param jobDir job.json 临时目录
+     * @param jobDir temporary job.json directory
      */
     public void setJobDir(String jobDir) {
         this.jobDir = jobDir;

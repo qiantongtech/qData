@@ -758,7 +758,7 @@ function handleAdd(row) {
   }
 
   open.value = true;
-  title.value = td("dpp.setting.taskCat.addTaskCat", "新增数据集成类目");
+  title.value = td("dpp.setting.taskCat.addTaskCat", "Add Data Integration Category");
 }
 
 /** Modify button actions */
@@ -768,7 +768,7 @@ function handleUpdate(row) {
   getAttTaskCat(_id).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
+    title.value = td("dpp.setting.taskCat.editTaskCat", "Edit Data Integration Category");
   });
 }
 
@@ -779,7 +779,7 @@ function handleDetail(row) {
   getAttTaskCat(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
-    title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
+    title.value = td("dpp.setting.taskCat.taskCatDetail", "Data Integration Category Details");
   });
 }
 
@@ -847,7 +847,7 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.setting.taskCat.confirmDelete",
-        '是否确认删除数据集成类目管理编号为"{id}"的数据项？'
+        'Are you sure to delete data integration category with ID "{id}"?'
       ).replace("{id}", _ids)
     )
     .then(function () {

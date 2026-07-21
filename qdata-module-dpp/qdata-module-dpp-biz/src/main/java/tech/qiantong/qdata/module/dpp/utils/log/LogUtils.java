@@ -5,16 +5,16 @@ import java.util.Date;
 
 public class LogUtils {
     /**
-     * 日志
+     * Appends a log entry.
      * @param taskLog
      * @param msg
      */
     public static void appendLocalLogLine(StringBuilder taskLog, String msg) {
-        // 多条日志之间使用换行分隔，保持日志文件按行展示。
+        // Separate log entries with line breaks so the log file remains line-oriented.
         if (taskLog.length() > 0) {
             taskLog.append("\n");
         }
-        // 日志样例格式：[INFO] 2025-09-30 16:08:54.444 - message
+        // Example log format: [INFO] 2025-09-30 16:08:54.444 - message
         taskLog.append("[INFO] ")
                 .append(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"))
                 .append(" - ")

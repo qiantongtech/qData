@@ -53,15 +53,15 @@ public class EmbeddedRedisConfig {
 
                 // Print start information
                 log.info("-------------------------------------------------");
-                log.info("| 注意: 仅供测试使用，生产环境误用！！！           |");
-                log.info("| 注意: 本地嵌入式 Redis Server 正在启动...         |");
+                log.info("| WARNING: For testing only. Do not use in production! |");
+                log.info("| WARNING: The local embedded Redis Server is starting... |");
                 log.info("-------------------------------------------------");
 
                 // Waiting animation before starting the Redis server
                 String[] frames = new String[]{"-", "\\", "|", "/"};
                 for (int i = 0; i < 12; i++) {
                     for (String frame : frames) {
-                        System.out.print("\r" + frame + " 启动中... 仅供开发和测试使用，请勿用于生产环境！");
+                        System.out.print("\r" + frame + " Starting... For development and testing only. Do not use in production!");
                         System.out.flush();
                         TimeUnit.MILLISECONDS.sleep(50);
                     }
@@ -71,14 +71,14 @@ public class EmbeddedRedisConfig {
                 redisServer.start();
 
                 // Clear the current line and print a final success message
-                System.out.print("\r✓ 本地嵌入式 Redis Server 已成功启动于端口: " + redisServer.ports());
+                System.out.print("\r✓ Local embedded Redis Server started successfully on port: " + redisServer.ports());
                 System.out.println();
                 log.info("-------------------------------------------------");
-                log.info("| 成功: 本地嵌入式 Redis Server 已经启动完成。      |");
-                log.info("| 端口: {} ", redisServer.ports());
+                log.info("| SUCCESS: Local embedded Redis Server has started. |");
+                log.info("| Port: {} ", redisServer.ports());
                 log.info("-------------------------------------------------");
             } else {
-                log.warn("Redis 服务器端口 {} 已在使用中。跳过 Redis 启动。", redisPort);
+                log.warn("Redis server port {} is already in use. Skipping Redis startup.", redisPort);
             }
         }
     }

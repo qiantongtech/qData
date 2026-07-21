@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Json数据转换工具类
+ * JSON conversion utility.
  * @author chen
  */
 public class JsonUtil {
@@ -46,14 +46,14 @@ public class JsonUtil {
     public static final String TYPE_ArrayList = "ArrayList";
 
     /**
-     * 将Json字符串转成Map
+     * Converts a JSON string to a map.
      *
      * @param jsonString
      * @return map
      */
     public static Map<String,Object> parseJsonToMap(String jsonString) {
         Map<String,Object> map = JSON.parseObject(jsonString, Map.class);
-        System.err.println("Json转Map:");
+        System.err.println("JSON to Map:");
         for (Object obj : map.keySet()) {
             System.err.print(obj + "-" + map.get(obj));
         }
@@ -62,40 +62,40 @@ public class JsonUtil {
     }
 
     /**
-     * 将Json字符串转成List<Map<String, Object>>
+     * Converts a JSON string to List<Map<String, Object>>.
      *
-     * @param jsonString JSON字符串
-     * @return 转换后的List<Map<String, Object>>
+     * @param jsonString JSON string
+     * @return the converted List<Map<String, Object>>
      */
     public static List<Object>  parseJsonToListMap(String jsonString) {
         List<Object> list = JSON.parseObject(jsonString, new TypeReference<List<Object>>(){});
-        System.err.println("Json转List<Map>:");
+        System.err.println("JSON to List<Map>:");
         System.err.println("jsonString");
         return list;
     }
 
     /**
-     * 将Map转换成Json
+     * Converts a map to JSON.
      *
      * @param map
      * @return
      */
     public static String parseMapToJson(Map<String, Object> map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }
 
     /**
-     * 将Object转换成Json
+     * Converts an object to JSON.
      *
      * @param map
      * @return
      */
     public static String parseObjectToJson(Object map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }
@@ -103,32 +103,32 @@ public class JsonUtil {
 
 
     /**
-     * 参数打包过滤
+     * Packages and filters parameters.
      *
      * @param jsonToMap
      * @param api
      * @return
      */
     public static Map<String, Object> packFilterParameterOrMap(Map<String, Object> jsonToMap, DsApiDO api) {
-        //创建返回参数
+        //Create response parameters.
         Map<String,Object> parameter = new HashMap<>();
 
         try {
-            //获取设置的返回信息
+            //Get the configured response information.
             List<ResParam> resParams = api.getResParamsList();
-            //循环
+            //Iterate through the values.
             for (ResParam resParam : resParams) {
-                //字段名称
+                //Field name
                 String fieldName = resParam.getFieldName();
                 if(StringUtils.isBlank(fieldName)){
                     continue;
                 }
-                //获取信息
+                //Get information.
                 Object object = MapUtils.getObject(jsonToMap, fieldName, null);
-                //封装参数
+                //Build parameters.
                 JsonUtil.recursionPackFilterParameter(resParam, object,parameter);
             }
-            //返回
+            //Return the result.
             return parameter;
         }catch (Exception e){
             return jsonToMap;
@@ -137,20 +137,20 @@ public class JsonUtil {
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      * @param object
      * @param parameter
      * @return
      */
     public static void recursionPackFilterParameter(ResParam resParam, Object object, Map<String, Object> parameter) {
         String dataType = resParam.getDataType();
-        //字段名称
+        //Field name
         String fieldName = resParam.getFieldName();
         if(object == null){
             parameter.put(fieldName,object);
             return;
         }
-        //基本类型
+        //Primitive type.
         if(StringUtils.equals( TYPE_long ,dataType)
             || StringUtils.equals( TYPE_double ,dataType)
             || StringUtils.equals( TYPE_Boolean ,dataType)
@@ -172,19 +172,19 @@ public class JsonUtil {
             parameter.put(fieldName,objects);
             return;
         }
-        //默认
+        //Default handling.
         parameter.put(fieldName,object);
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      *  Map
      * @param object
      * @param parameter
      * @return
      */
     public static void recursionPackFilterMap(ResParam resParam, Object object, Map<String, Object> parameter) {
-        //字段名称
+        //Field name
         String fieldName = resParam.getFieldName();
         Map<Object, Object> objectmap = (Map<Object, Object>) object;
         if(MapUtils.isEmpty(objectmap)){
@@ -195,12 +195,12 @@ public class JsonUtil {
 
         Map<String, Object> paramMap = new HashMap<>();
         for (ResParam param : resParamList) {
-            //字段名称
+            //Field name
             String paramName = param.getFieldName();
             if(StringUtils.isBlank(paramName)){
                 continue;
             }
-            //获取信息
+            //Get information.
             Object objectparam = MapUtils.getObject(objectmap, paramName, null);
             recursionPackFilterParameter(param,objectparam,paramMap);
         }
@@ -208,7 +208,7 @@ public class JsonUtil {
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      *  list
      * @param o
      * @param parameter
@@ -217,10 +217,10 @@ public class JsonUtil {
     public static void recursionPackFilterList(ResParam resParam, Object o, List<Map>  parameter) {
         List<Map> objectList = (List<Map>) o;
 
-        // 获取要返回的字段
+        // Get the fields to return.
         List<ResParam> resParamList = resParam.getResParamList();
         for (Map map : objectList) {
-            //创建返回参数
+            //Create response parameters.
             Map<String,Object> param = new HashMap<>();
             for (ResParam resMap : resParamList) {
                 recursionPackFilterMap(resMap,map,param);

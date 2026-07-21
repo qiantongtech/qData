@@ -52,7 +52,7 @@ public class StringDataColumn extends DataColumn {
     private void validateDoubleSpecific(final String data) {
         if ("NaN".equals(data) || "Infinity".equals(data)
                 || "-Infinity".equals(data)) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]属于Double特殊类型，不能转为其他类型 .", data));
+            throw DBException.asDataXException(String.format("String[\"%s\"] is a special Double value and cannot be converted to another type.", data));
         }
 
         return;
@@ -69,7 +69,7 @@ public class StringDataColumn extends DataColumn {
         try {
             return this.asBigDecimal().toBigInteger();
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]不能转为BigInteger .", this.asString()));
+            throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to BigInteger.", this.asString()));
         }
     }
 
@@ -86,7 +86,7 @@ public class StringDataColumn extends DataColumn {
             OverFlowUtil.validateLongNotOverFlow(integer);
             return integer.longValue();
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]不能转为Long .", this.asString()));
+            throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to Long.", this.asString()));
         }
     }
 
@@ -102,7 +102,7 @@ public class StringDataColumn extends DataColumn {
             return new BigDecimal(this.asString());
         } catch (Exception e) {
             throw DBException.asDataXException(String.format(
-                    "String [\"%s\"] 不能转为BigDecimal .", this.asString()));
+                    "String [\"%s\"] cannot be converted to BigDecimal.", this.asString()));
         }
     }
 
@@ -145,7 +145,7 @@ public class StringDataColumn extends DataColumn {
             return false;
         }
 
-        throw DBException.asDataXException(String.format("String[\"%s\"]不能转为Bool .", this.asString()));
+        throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to Bool.", this.asString()));
     }
 
     @Override
@@ -153,7 +153,7 @@ public class StringDataColumn extends DataColumn {
         try {
             return ColumnCast.string2Date(this);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]不能转为Date .", this.asString()));
+            throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to Date.", this.asString()));
         }
     }
 
@@ -162,7 +162,7 @@ public class StringDataColumn extends DataColumn {
         try {
             return ColumnCast.string2Date(this, dateFormat);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]不能转为Date .", this.asString()));
+            throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to Date.", this.asString()));
         }
     }
 
@@ -171,7 +171,7 @@ public class StringDataColumn extends DataColumn {
         try {
             return ColumnCast.string2Bytes(this);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[\"%s\"]不能转为Bytes .", this.asString()));
+            throw DBException.asDataXException(String.format("String[\"%s\"] cannot be converted to Bytes.", this.asString()));
         }
     }
 }

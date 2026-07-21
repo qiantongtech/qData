@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * API服务调用日志Service接口
+ * API service call log service interface
  *
  * @author lhs
  * @date 2025-02-12
@@ -37,65 +37,65 @@ import java.util.Map;
 public interface IDsApiLogService extends IService<DsApiLogDO> {
 
     /**
-     * 获得API服务调用日志分页列表
+     * Returns a paginated API service call log list.
      *
-     * @param pageReqVO 分页请求
-     * @return API服务调用日志分页列表
+     * @param pageReqVO pagination request
+     * @return the paginated API service call log list
      */
     PageResult<DsApiLogDO> getDsApiLogPage(DsApiLogPageReqVO pageReqVO);
 
     /**
-     * 创建API服务调用日志
+     * Creates an API service call log.
      *
-     * @param createReqVO API服务调用日志信息
-     * @return API服务调用日志编号
+     * @param createReqVO API service call log information
+     * @return the API service call log ID
      */
     Long createDsApiLog(DsApiLogSaveReqVO createReqVO);
 
     /**
-     * 更新API服务调用日志
+     * Updates an API service call log.
      *
-     * @param updateReqVO API服务调用日志信息
+     * @param updateReqVO API service call log information
      */
     int updateDsApiLog(DsApiLogSaveReqVO updateReqVO);
 
     /**
-     * 删除API服务调用日志
+     * Deletes an API service call log.
      *
-     * @param idList API服务调用日志编号
+     * @param idList API service call log IDs
      */
     int removeDsApiLog(Collection<Long> idList);
 
     /**
-     * 获得API服务调用日志详情
+     * Returns API service call log details.
      *
-     * @param id API服务调用日志编号
-     * @return API服务调用日志
+     * @param id API service call log ID
+     * @return the API service call log
      */
     DsApiLogDO getDsApiLogById(Long id);
 
     /**
-     * 获得全部API服务调用日志列表
+     * Returns all API service call logs.
      *
-     * @return API服务调用日志列表
+     * @return the API service call log list
      */
     List<DsApiLogDO> getDsApiLogList();
 
     /**
-     * 获得全部API服务调用日志 Map
+     * Returns all API service call logs as a map.
      *
-     * @return API服务调用日志 Map
+     * @return API service call logs as a map
      */
     Map<Long, DsApiLogDO> getDsApiLogMap();
 
 
     /**
-     * 导入API服务调用日志数据
+     * Imports API service call log data.
      *
-     * @param importExcelList API服务调用日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList API service call log data list
+     * @param isUpdateSupport whether existing records should be updated
+     * @param operName operator
+     * @return the result
      */
     String importDsApiLog(List<DsApiLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

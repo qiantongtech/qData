@@ -25,7 +25,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * API服务 创建/修改 Request VO DS_API
+ * API service create/update Request VO DS_API
  *
  * @author lhs
  * @date 2025-02-12
@@ -53,7 +53,7 @@ public class DsApiSaveReqVO extends BaseEntity {
     private String catName;
 
     /**
-     *转发类型;1:API 2:地理空间数据'
+     *Forwarding type (1: API, 2: geospatial data)
      */
     private String transmitType;
 
@@ -63,7 +63,7 @@ public class DsApiSaveReqVO extends BaseEntity {
     private String apiId;
 
     /**
-     *Header配置json
+     *Header configuration JSON
      */
     private String headerJson;
 

@@ -55,6 +55,7 @@ export default {
     nextStep: '下一步',
     previousStep: '上一步',
     query: '查询',
+    search: '查询',
     refresh: '刷新',
     reset: '重置',
     return: '返回',

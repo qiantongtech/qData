@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/ds/client/detail/index.vue'),
                 name: 'clientDetail',
-                meta: { title: '应用管理详情', activeMenu: '/ds/client', lang: 'public.appManagementDetail' }
+                meta: { title: 'Application Management Details', activeMenu: '/ds/client', lang: 'public.appManagementDetail' }
             }
         ]
     },

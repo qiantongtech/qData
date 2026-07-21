@@ -21,6 +21,7 @@ package tech.qiantong.qdata.common.database.core;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import tech.qiantong.qdata.common.utils.FileTypeUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.util.Date;
 
@@ -42,7 +43,9 @@ public class FileInfo {
     private String type;
 
     public void fillType(){
-        type = isDirectory ? "目录" : FileTypeUtil.getFileType(name);
+        type = isDirectory
+                ? MessageUtils.messageWithFallback("file.type.directory", "Directory")
+                : FileTypeUtil.getFileType(name);
     }
 
 }

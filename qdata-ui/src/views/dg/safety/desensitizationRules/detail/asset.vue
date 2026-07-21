@@ -199,7 +199,7 @@ function handleDelete(row) {
   const ids = row?.id;
   if (!ids) return;
   proxy.$modal
-    .confirm(td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为"{id}"的数据项？', { id: ids }))
+    .confirm(td('dg.desensitizationRules.confirmDeleteId', 'Are you sure to delete item with ID "{id}"?', { id: ids }))
     .then(() => delDgDesensitizeList(ids))
     .then(() => {
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));

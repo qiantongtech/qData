@@ -88,7 +88,7 @@ public class DmDataLayerController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DmDataLayerDO> list = (List<DmDataLayerDO>) dmDataLayerService.getDmDataLayerPage(exportReqVO).getRows();
         ExcelUtil<DmDataLayerRespVO> util = new ExcelUtil<>(DmDataLayerRespVO.class);
-        util.exportExcel(response, DmDataLayerConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DmDataLayerConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数仓分层管理列表")

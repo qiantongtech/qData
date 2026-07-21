@@ -34,7 +34,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 异步保存API服务日志
+ * Saves API service logs asynchronously.
  */
 @Slf4j
 @Component
@@ -55,7 +55,7 @@ public class AsyncTask {
     private static String HANDLER_CANCEL = "2";
 
     /**
-     * 异步保存日志
+     * Saves logs asynchronously.
      * @param apiLogDto
      */
     @Async("threadPoolTaskExecutor")
@@ -68,7 +68,7 @@ public class AsyncTask {
     public void releaseOrCancelDataApi(Map<String, Object> map) {
         try {
             String id =(String) map.get("id");
-            String type = (String) map.get("type");//0:取消 1:发布
+            String type = (String) map.get("type");//0: cancel, 1: publish
             DsApiDO dsApiById = iDsApiService.getDsApiById(Long.valueOf(id));
             if (dsApiById != null) {
                 if (HANDLER_RELEASE.equals(type)) {

@@ -252,12 +252,12 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         List<McColumnDO> columnDOs = BeanUtils.toBean(createReqVO, McColumnDO.class);
         Set<String> columnNames = columnDOs.stream().map(McColumnDO::getColumnName).collect(Collectors.toSet());
         if (columnNames.size() != columnDOs.size()) {
-            throw new ServiceException("mc.error.column.duplicate", "字段名重复");
+            throw new ServiceException("mc.error.column.duplicate", "Duplicate column name");
         }
         List<McColumnDO> exists = mcColumnMapper.findByTableIdAndColumnNameIn(tableId, columnNames);
         if (!exists.isEmpty()) {
             String ex = exists.stream().map(McColumnDO::getColumnName).collect(Collectors.joining(","));
-            throw new ServiceException("mc.error.column.duplicate.ex", "与同表的其他字段名重复, [" + ex + "]", ex);
+            throw new ServiceException("mc.error.column.duplicate.ex", "Duplicate column name with other columns in the same table", ex);
         }
         mcColumnMapper.insertBatch(columnDOs);
         return createReqVO.size();

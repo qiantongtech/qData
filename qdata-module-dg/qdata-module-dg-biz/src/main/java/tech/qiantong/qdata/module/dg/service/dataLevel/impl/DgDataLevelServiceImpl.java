@@ -139,16 +139,16 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
                                 dgDataLevelMapper.updateById(dgDataLevelDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                        "数据更新成功，ID为 " + dgDataLevelId + " 的数据分级记录。", dgDataLevelId, "数据分级"));
+                                        "Data update successful, ID {0} {1} record.", dgDataLevelId, MessageUtils.messageWithFallback("dg.entity.data.level", "Data level")));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                        "数据更新失败，ID为 " + dgDataLevelId + " 的数据分级记录不存在。", dgDataLevelId, "数据分级"));
+                                        "Data update failed, ID {0} {1} record does not exist.", dgDataLevelId, MessageUtils.messageWithFallback("dg.entity.data.level", "Data level")));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, record ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DgDataLevelDO> queryWrapper = new QueryWrapper<>();
@@ -158,17 +158,17 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
                             dgDataLevelMapper.insert(dgDataLevelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                    "数据插入成功，ID为 " + dgDataLevelId + " 的数据分级记录。", dgDataLevelId, "数据分级"));
+                                    "Data insert successful, ID {0} {1} record.", dgDataLevelId, MessageUtils.messageWithFallback("dg.entity.data.level", "Data level")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                    "数据插入失败，ID为 " + dgDataLevelId + " 的数据分级记录已存在。", dgDataLevelId, "数据分级"));
+                                    "Data insert failed, ID {0} {1} record already exists.", dgDataLevelId, MessageUtils.messageWithFallback("dg.entity.data.level", "Data level")));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                            "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                            "Data import failed, error: {0}", e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -177,12 +177,12 @@ public class DgDataLevelServiceImpl  extends ServiceImpl<DgDataLevelMapper,DgDat
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                         failureNum, failureDetails));
                 throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data imported successfully! Total: {0} records.", successNum));
             }
             return resultMsg.toString();
         }

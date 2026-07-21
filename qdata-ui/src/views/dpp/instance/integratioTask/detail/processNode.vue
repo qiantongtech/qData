@@ -38,8 +38,8 @@
               :content="item.tip"
               placement="bottom"
               v-if="
-                item.tip !== td('common.button.reset', '重置') &&
-                item.tip !== td('common.button.export', '导出')
+                item.tip !== td('common.button.reset', 'Reset') &&
+                item.tip !== td('common.button.export', 'Export')
               "
             >
               <div class="toolbar-item" @click="toolbarClick(item)">
@@ -346,7 +346,7 @@ const handleCancel = () => {
     .confirm(
       td(
         "dpp.instance.integratioTask.resetConfirm",
-        "点击重置将清除所有未保存的更改，您确定要继续吗？"
+        "Clicking reset will clear all unsaved changes. Are you sure to continue?"
       )
     )
     .then(() => {

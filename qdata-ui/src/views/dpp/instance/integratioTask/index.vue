@@ -26,7 +26,7 @@
         :placeholder="
           td(
             'dpp.instance.integratioTask.inputCategoryName',
-            '请输入数据集成类目名称'
+            'Please enter data integration category name'
           )
         "
         @node-click="handleNodeClick"
@@ -46,7 +46,7 @@
               :label="
                 td(
                   'dpp.instance.integratioTask.taskInstanceName',
-                  '任务实例名称'
+                  'Task Instance Name'
                 )
               "
               prop="name"
@@ -57,7 +57,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.integratioTask.inputTaskInstanceName',
-                    '请输入任务实例名称'
+                    'Please enter task instance name'
                   )
                 "
                 clearable
@@ -66,7 +66,7 @@
             </el-form-item>
             <el-form-item
               :label="
-                td('dpp.instance.integratioTask.executionStatus', '执行状态')
+                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
               "
               prop="status"
             >
@@ -75,7 +75,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.integratioTask.selectExecutionStatus',
-                    '请选择执行状态'
+                    'Please select execution status'
                   )
                 "
                 clearable
@@ -112,14 +112,14 @@
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i
-                >{{ td("common.button.search", "查询") }}
+                >{{ td("common.button.search", "Search") }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22378 mr5"></i
-                >{{ td("common.button.reset", "重置") }}
+                >{{ td("common.button.reset", "Reset") }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -145,7 +145,7 @@
             <el-table-column
               v-if="getColumnVisibility(0)"
               width="150"
-              :label="td('dpp.instance.integratioTask.id', '编号')"
+              :label="td('dpp.instance.integratioTask.id', 'No.')"
               align="left"
               prop="id"
             />
@@ -155,7 +155,7 @@
               :label="
                 td(
                   'dpp.instance.integratioTask.taskInstanceName',
-                  '任务实例名称'
+                  'Task Instance Name'
                 )
               "
               align="left"
@@ -170,7 +170,7 @@
             <el-table-column
               v-if="getColumnVisibility(3)"
               :label="
-                td('dpp.instance.integratioTask.executionType', '执行类型')
+                td('dpp.instance.integratioTask.executionType', 'Execution Type')
               "
               width="140"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -188,7 +188,7 @@
               v-if="getColumnVisibility(4)"
               width="140"
               :label="
-                td('dpp.instance.integratioTask.executionStatus', '执行状态')
+                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
               "
               align="left"
               prop="status"
@@ -203,7 +203,7 @@
             <el-table-column
               v-if="getColumnVisibility(5)"
               width="160"
-              :label="td('dpp.instance.integratioTask.startTime', '开始时间')"
+              :label="td('dpp.instance.integratioTask.startTime', 'Start Time')"
               align="left"
               prop="startTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -215,7 +215,7 @@
             <el-table-column
               v-if="getColumnVisibility(6)"
               width="160"
-              :label="td('dpp.instance.integratioTask.endTime', '结束时间')"
+              :label="td('dpp.instance.integratioTask.endTime', 'End Time')"
               align="left"
               prop="endTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -231,7 +231,7 @@
               v-if="getColumnVisibility(9)"
               width="160"
               :label="
-                td('dpp.instance.integratioTask.responsiblePerson', '责任人')
+                td('dpp.instance.integratioTask.responsiblePerson', 'Responsible Person')
               "
               align="left"
               prop="createBy"
@@ -242,7 +242,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(10)"
-              :label="td('dpp.instance.integratioTask.createBy', '创建人')"
+              :label="td('dpp.instance.integratioTask.createBy', 'Created By')"
               :show-overflow-tooltip="true"
               align="left"
               prop="createBy"
@@ -254,7 +254,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(11)"
-              :label="td('dpp.instance.integratioTask.createTime', '创建时间')"
+              :label="td('dpp.instance.integratioTask.createTime', 'Created Time')"
               align="left"
               prop="create_time"
               width="150"
@@ -269,7 +269,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="td('dpp.instance.integratioTask.operation', '操作')"
+              :label="td('dpp.instance.integratioTask.operation', 'Operation')"
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
@@ -287,7 +287,7 @@
                     })
                   "
                   >{{
-                    td("dpp.instance.integratioTask.detail", "详情")
+                    td("dpp.instance.integratioTask.detail", "Detail")
                   }}</el-button
                 >
                 <el-button
@@ -298,7 +298,7 @@
                   @mousedown="(e) => e.preventDefault()"
                 >
                   {{
-                    td("dpp.instance.integratioTask.downloadLog", "下载日志")
+                    td("dpp.instance.integratioTask.downloadLog", "Download Log")
                   }}
                 </el-button>
               </template>
@@ -392,47 +392,47 @@ const columnVisible = ref({
 const columns = computed(() => [
   {
     key: 0,
-    label: td("dpp.instance.integratioTask.id", "编号"),
+    label: td("dpp.instance.integratioTask.id", "No."),
     visible: columnVisible.value[0],
   },
   {
     key: 1,
-    label: td("dpp.instance.integratioTask.taskInstanceName", "任务实例名称"),
+    label: td("dpp.instance.integratioTask.taskInstanceName", "Task Instance Name"),
     visible: columnVisible.value[1],
   },
   {
     key: 3,
-    label: td("dpp.instance.integratioTask.executionType", "执行类型"),
+    label: td("dpp.instance.integratioTask.executionType", "Execution Type"),
     visible: columnVisible.value[3],
   },
   {
     key: 4,
-    label: td("dpp.instance.integratioTask.executionStatus", "执行状态"),
+    label: td("dpp.instance.integratioTask.executionStatus", "Execution Status"),
     visible: columnVisible.value[4],
   },
   {
     key: 5,
-    label: td("dpp.instance.integratioTask.startTime", "开始时间"),
+    label: td("dpp.instance.integratioTask.startTime", "Start Time"),
     visible: columnVisible.value[5],
   },
   {
     key: 6,
-    label: td("dpp.instance.integratioTask.endTime", "结束时间"),
+    label: td("dpp.instance.integratioTask.endTime", "End Time"),
     visible: columnVisible.value[6],
   },
   {
     key: 9,
-    label: td("dpp.instance.integratioTask.responsiblePerson", "责任人"),
+    label: td("dpp.instance.integratioTask.responsiblePerson", "Responsible Person"),
     visible: columnVisible.value[9],
   },
   {
     key: 10,
-    label: td("dpp.instance.integratioTask.createBy", "创建人"),
+    label: td("dpp.instance.integratioTask.createBy", "Created By"),
     visible: columnVisible.value[10],
   },
   {
     key: 11,
-    label: td("dpp.instance.integratioTask.createTime", "创建时间"),
+    label: td("dpp.instance.integratioTask.createTime", "Created Time"),
     visible: columnVisible.value[11],
   },
 ]);
@@ -626,7 +626,7 @@ function getDeptTree() {
       {
         name: td(
           "dpp.instance.integratioTask.dataIntegrationCategory",
-          "数据集成类目"
+          "Data Integration Category"
         ),
         value: "",
         id: 0,
@@ -724,7 +724,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', '', { id: _ids }))
+    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', 'Are you sure to delete the data integration task log with ID "{id}"?', { id: _ids }))
     .then(function () {
       return delDppEtlNodeInstance(_ids);
     })

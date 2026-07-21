@@ -38,14 +38,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.nodeNameRequired',
-                  '请输入节点名称'
+                  'Please enter node name'
                 ),
                 trigger: 'change',
               },
@@ -55,7 +55,7 @@
               v-if="!info"
               v-model="form.name"
               :placeholder="
-                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+                td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')
               "
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
@@ -63,13 +63,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.type', '类型')"
+            :label="td('dpp.integration.type', 'Type')"
             prop="typeName"
            :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
-              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
               filterable
               disabled
             >
@@ -107,14 +107,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.targetDbConnection', '目标数据连接')"
+            :label="td('dpp.integration.targetDbConnection', 'Target Data Connection')"
             prop="taskParams.writerDatasource.datasourceId"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.targetDbConnectionRequired',
-                  '请选择目标数据连接'
+                  'Please select target data connection'
                 ),
                 trigger: 'change',
               },
@@ -126,7 +126,7 @@
               :placeholder="
                 td(
                   'dpp.integration.targetDbConnectionPlaceholder',
-                  '请选择目标数据连接'
+                  'Please select target data connection'
                 )
               "
               @change="handleDatasourceChange"
@@ -151,7 +151,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
+            :label="td('dpp.integration.dbConnectionType', 'Data Connection Type')"
             prop="taskParams.writerDatasource.datasourceType"
            :label-position="labelPosition">
             <el-input
@@ -160,7 +160,7 @@
               :placeholder="
                 td(
                   'dpp.integration.dbConnectionTypePlaceholder',
-                  '请输入数据连接类型'
+                  'Please enter data connection type'
                 )
               "
               disabled
@@ -174,7 +174,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')"
+            :label="td('dpp.integration.dbConnectionInstance', 'Data Connection Instance')"
             prop="taskParams.writerDatasource.dbname"
            :label-position="labelPosition">
             <el-input
@@ -183,7 +183,7 @@
               :placeholder="
                 td(
                   'dpp.integration.dbConnectionInstancePlaceholder',
-                  '请输入数据连接实例'
+                  'Please enter data connection instance'
                 )
               "
               disabled
@@ -195,12 +195,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.selectTable', '选择表')"
+            :label="td('dpp.integration.selectTable', 'Select Table')"
             prop="taskParams.target_asset_id"
             :rules="[
               {
                 required: true,
-                message: td('dpp.integration.selectTableRequired', '请选择表'),
+                message: td('dpp.integration.selectTableRequired', 'Please select table'),
                 trigger: 'change',
               },
             ]"
@@ -209,7 +209,7 @@
               v-if="!info"
               v-model="form.taskParams.target_asset_id"
               :placeholder="
-                td('dpp.integration.selectTablePlaceholder', '请选择表')
+                td('dpp.integration.selectTablePlaceholder', 'Please select table')
               "
               @change="handleChange"
               filterable
@@ -232,7 +232,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            :label="td('dpp.integration.whereCondition', 'where条件')"
+            :label="td('dpp.integration.whereCondition', 'Where Condition')"
             prop="where"
            :label-position="labelPosition">
             <el-input
@@ -242,7 +242,7 @@
               :placeholder="
                 td(
                   'dpp.integration.whereConditionPlaceholder',
-                  '请输入where条件'
+                  'e.g. id > 10 and id < 1000, do not end with semicolon'
                 )
               "
             />
@@ -254,7 +254,7 @@
       </el-row>
 
       <div class="h2-title">
-        {{ td("dpp.integration.fieldMapping", "字段映射") }}
+        {{ td("dpp.integration.fieldMapping", "Field Mapping") }}
       </div>
 
       <div style="margin-top: -20px">
@@ -267,13 +267,13 @@
         />
       </div>
       <div class="h2-title">
-        {{ td("dpp.integration.outputConfig", "输出配置") }}
+        {{ td("dpp.integration.outputConfig", "Output Config") }}
       </div>
 
       <el-row :gutter="20">
         <el-col :span="24" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.preSql', '前置SQL')"
+            :label="td('dpp.integration.preSql', 'Pre-SQL')"
             prop="preSql"
            :label-position="labelPosition">
             <el-input
@@ -281,14 +281,14 @@
               v-model="form.taskParams.preSql"
               type="textarea"
               :placeholder="
-                td('dpp.integration.preSqlPlaceholder', '请输入前置SQL')
+                td('dpp.integration.preSqlPlaceholder', 'Please enter pre-SQL')
               "
             />
             <div v-else class="form-readonly">{{ form.taskParams.preSql || "-" }}</div>
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.preSqlHint", "数据写入之前执行的SQL")
+                td("dpp.integration.preSqlHint", "SQL executed before data write")
               }}</span
             >
           </el-form-item>
@@ -297,14 +297,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.writeMode', '写入模式')"
+            :label="td('dpp.integration.writeMode', 'Write Mode')"
             prop="taskParams.writeModeType"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.writeModeRequired',
-                  '请选择写入模式'
+                  'Please select write mode'
                 ),
                 trigger: 'change',
               },
@@ -315,29 +315,29 @@
               v-model="form.taskParams.writeModeType"
             >
               <el-radio :value="2">{{
-                td("dpp.integration.append", "追加")
+                td("dpp.integration.append", "Append")
               }}</el-radio>
               <el-radio :value="1">{{
-                td("dpp.integration.fullVolume", "全量")
+                td("dpp.integration.fullVolume", "Full Volume")
               }}</el-radio>
               <el-radio :value="3">{{
-                td("dpp.integration.incrementalUpdate", "增量更新")
+                td("dpp.integration.incrementalUpdate", "Incremental Update")
               }}</el-radio>
             </el-radio-group>
             <div v-else class="form-readonly">
               {{
                 form.taskParams.writeModeType == 1
-                  ? td("dpp.integration.fullVolume", "全量")
+                  ? td("dpp.integration.fullVolume", "Full Volume")
                   : form.taskParams.writeModeType == 2
-                  ? td("dpp.integration.append", "追加")
-                  : td("dpp.integration.incrementalUpdate", "增量更新")
+                  ? td("dpp.integration.append", "Append")
+                  : td("dpp.integration.incrementalUpdate", "Incremental Update")
               }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.singleWriteData', '单次写入数据')"
+            :label="td('dpp.integration.singleWriteData', 'Single Write Count')"
             prop="taskParams.description"
            :label-position="labelPosition">
             <el-input
@@ -346,27 +346,27 @@
               :placeholder="
                 td(
                   'dpp.integration.singleWriteDataPlaceholder',
-                  '请输入单次写入数据条数'
+                  'Please enter single write count'
                 )
               "
               type="number"
             >
               <template #append>{{
-                td("dpp.integration.recordsUnit", "条")
+                td("dpp.integration.recordsUnit", "records")
               }}</template>
             </el-input>
             <div v-else class="form-readonly">
               {{
                 form.taskParams.description
                   ? form.taskParams.description +
-                    td("dpp.integration.recordsUnit", "条")
+                    td("dpp.integration.recordsUnit", "records")
                   : "-"
               }}
             </div>
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.singleWriteDataHint", "不输入默认值1000条")
+                td("dpp.integration.singleWriteDataHint", "Default 1000 records if not specified")
               }}</span
             >
           </el-form-item>
@@ -381,14 +381,14 @@
       >
         <el-col :span="24">
           <el-form-item
-            :label="td('dpp.integration.updatePrimaryKey', '更新主键字段')"
+            :label="td('dpp.integration.updatePrimaryKey', 'Update Primary Key Field')"
             prop="taskParams.selectedColumns"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.updatePrimaryKeyRequired',
-                  '请选择更新主键字段'
+                  'Please select update primary key field'
                 ),
                 trigger: 'change',
               },
@@ -416,7 +416,7 @@
       <el-row :gutter="20">
         <el-col :span="24" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.postSql', '后置SQL')"
+            :label="td('dpp.integration.postSql', 'Post-SQL')"
             prop="taskParams.postSql"
            :label-position="labelPosition">
             <el-input
@@ -424,7 +424,7 @@
               v-model="form.taskParams.postSql"
               type="textarea"
               :placeholder="
-                td('dpp.integration.postSqlPlaceholder', '请输入后置SQL')
+                td('dpp.integration.postSqlPlaceholder', 'Please enter post-SQL')
               "
             />
             <div v-else class="form-readonly">
@@ -433,7 +433,7 @@
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.postSqlHint", "数据同步完成后执行的SQL")
+                td("dpp.integration.postSqlHint", "SQL executed after data sync completes")
               }}</span
             >
           </el-form-item>

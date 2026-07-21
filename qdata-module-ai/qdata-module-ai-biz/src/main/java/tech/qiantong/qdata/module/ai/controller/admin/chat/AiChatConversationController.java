@@ -75,7 +75,7 @@ public class AiChatConversationController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AiChatConversationDO> list = (List<AiChatConversationDO>) aiChatConversationService.getAiChatConversationPage(exportReqVO).getRows();
         ExcelUtil<AiChatConversationRespVO> util = new ExcelUtil<>(AiChatConversationRespVO.class);
-        util.exportExcel(response, AiChatConversationConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AiChatConversationConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取ai聊天对话详细信息")

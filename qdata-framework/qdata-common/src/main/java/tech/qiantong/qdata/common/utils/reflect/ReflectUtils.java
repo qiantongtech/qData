@@ -93,7 +93,7 @@ public class ReflectUtils
         Field field = getAccessibleField(obj, fieldName);
         if (field == null)
         {
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            logger.debug("No field [" + fieldName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         E result = null;
@@ -103,7 +103,7 @@ public class ReflectUtils
         }
         catch (IllegalAccessException e)
         {
-            logger.error("不可能抛出的异常{}", e.getMessage());
+            logger.error("Unexpected exception: {}", e.getMessage());
         }
         return result;
     }
@@ -117,7 +117,7 @@ public class ReflectUtils
         if (field == null)
         {
             // throw new IllegalArgumentException("In [" + obj.getClass() + "], the field [" + fieldName + "] was not found");
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            logger.debug("No field [" + fieldName + "] was found in [" + obj.getClass() + "] ");
             return;
         }
         try
@@ -126,7 +126,7 @@ public class ReflectUtils
         }
         catch (IllegalAccessException e)
         {
-            logger.error("不可能抛出的异常: {}", e.getMessage());
+            logger.error("Unexpected exception: {}", e.getMessage());
         }
     }
 
@@ -146,7 +146,7 @@ public class ReflectUtils
         Method method = getAccessibleMethod(obj, methodName, parameterTypes);
         if (method == null)
         {
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
+            logger.debug("No method [" + methodName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         try
@@ -172,7 +172,7 @@ public class ReflectUtils
         if (method == null)
         {
             // If it is empty, no error will be reported and empty will be returned directly.
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
+            logger.debug("No method [" + methodName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         try

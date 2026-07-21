@@ -31,7 +31,7 @@ export default [
                 component: () => import('@/views/dg/safety/desensitizationRules/detail/index.vue'),
                 name: 'DataElemCodeDetail',
                 meta: {
-                    title: '脱敏规则详情',
+                    title: 'Desensitization Rule Details',
                     activeMenu: '/dg/safety/desensitizationRules',
                     lang: 'public.desensitizationRuleDetail'
                 }

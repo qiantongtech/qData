@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <el-dialog :title="td('dpp.cleanRule.detail', '详情')" v-model="visible" width="800px" draggable>
+  <el-dialog :title="td('dpp.cleanRule.detail', 'Details')" v-model="visible" width="800px" draggable>
     <el-table
       stripe
       height="65vh"
@@ -25,14 +25,14 @@
       :data="dpDataElemCodeList"
       :default-sort="defaultSort"
     >
-      <el-table-column :label="td('common.texts.number', '编号')" align="left" prop="id" width="80" />
-      <el-table-column :label="td('dpp.cleanRule.codeValue', '代码值')" align="left" prop="codeValue" width="160">
+      <el-table-column :label="td('common.texts.number', 'No.')" align="left" prop="id" width="80" />
+      <el-table-column :label="td('dpp.cleanRule.codeValue', 'Code Value')" align="left" prop="codeValue" width="160">
         <template #default="scope">
           {{ scope.row.codeValue || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.cleanRule.codeName', '代码名称')"
+        :label="td('dpp.cleanRule.codeName', 'Code Name')"
         align="left"
         prop="codeName"
         width="350"
@@ -41,13 +41,13 @@
           {{ scope.row.codeName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('common.texts.createdBy', '创建人')" align="left" prop="createBy" width="160">
+      <el-table-column :label="td('common.texts.createdBy', 'Created By')" align="left" prop="createBy" width="160">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.createdTime', '创建时间')"
+        :label="td('common.texts.createdTime', 'Created Time')"
         align="left"
         prop="createTime"
         width="220"
@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.remark', '备注')"
+        :label="td('common.texts.remark', 'Remark')"
         align="left"
         prop="remark"
         width="360"
@@ -75,7 +75,7 @@
             src="../../../../../../../../assets/images/system/no_data/empty-nodata.png"
             alt=""
           />
-          <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+          <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
         </div>
       </template>
     </el-table>
@@ -89,7 +89,7 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="handleClose">{{ td('common.button.close', '关闭') }}</el-button>
+        <el-button size="mini" @click="handleClose">{{ td('common.button.close', 'Close') }}</el-button>
       </div>
     </template>
   </el-dialog>

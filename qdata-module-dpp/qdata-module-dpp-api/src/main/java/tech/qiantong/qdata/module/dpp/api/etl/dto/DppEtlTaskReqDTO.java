@@ -80,10 +80,10 @@ public class DppEtlTaskReqDTO {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Quartz调度任务id，接口调用时也把任务绑定的 Quartz Job id 传过去。 */
+    /** Quartz scheduled task ID passed with API calls to identify the Quartz job bound to the task. */
     private Long quartzId;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /** Delete Flag */

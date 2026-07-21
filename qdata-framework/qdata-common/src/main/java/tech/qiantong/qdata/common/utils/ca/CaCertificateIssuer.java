@@ -28,6 +28,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import sun.security.x509.*;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import javax.security.auth.x500.X500Principal;
 import javax.servlet.http.HttpServletRequest;
@@ -186,7 +187,8 @@ public class CaCertificateIssuer {
     public static X509Certificate loadRootCertificate(String certUrl) throws Exception {
         try (InputStream certStream = new URL(getServerIpAndPort() + certUrl).openStream()) {
             if (certStream == null) {
-                throw new IllegalArgumentException("根证书文件未找到！");
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "sys.error.ca.root.certificate.notfound", "Root certificate file was not found"));
             }
             CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(certStream);
@@ -203,7 +205,8 @@ public class CaCertificateIssuer {
     public static PrivateKey loadRootPrivateKey(String privateKeyUrl) throws Exception {
         try (InputStream keyStream = new URL(getServerIpAndPort() + privateKeyUrl).openStream()) {
             if (keyStream == null) {
-                throw new IllegalArgumentException("私钥文件未找到！");
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "sys.error.ca.private.key.notfound", "Private key file was not found"));
             }
             PemReader pemReader = new PemReader(new InputStreamReader(keyStream));
             byte[] keyBytes = pemReader.readPemObject().getContent();
@@ -242,7 +245,7 @@ public class CaCertificateIssuer {
 
         // Print the generated file name
         for (MultipartFile file : files) {
-            System.out.println("生成的文件: " + file.getOriginalFilename());
+            System.out.println("Generated file: " + file.getOriginalFilename());
         }
     }
 }

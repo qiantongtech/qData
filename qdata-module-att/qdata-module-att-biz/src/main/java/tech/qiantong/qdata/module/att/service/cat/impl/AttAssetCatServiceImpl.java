@@ -85,13 +85,13 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = daAssetApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.asset", "存在数据资产，不允许禁用");
+                throw new ServiceException("att.error.disable.asset", "Data asset exists, disable not allowed");
             }
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttAssetCatDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
         // Update Data Asset Category Management
@@ -106,7 +106,7 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
             AttAssetCatDO cat = baseMapper.selectById(id);
             // Check if data assets exist
             if (daAssetApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.asset", "存在数据资产，不允许Delete ");
+                throw new ServiceException("att.error.delete.asset", "Data asset exists, deletion not allowed");
             }
             if (cat != null) {
                 count += baseMapper.delete(Wrappers.lambdaQuery(AttAssetCatDO.class)
@@ -161,7 +161,7 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
     @Override
     public String importAttAssetCat(List<AttAssetCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -180,16 +180,16 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
                             attAssetCatMapper.updateById(attAssetCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attAssetCatId + " 的数据资产类目管理记录。", attAssetCatId, "数据资产类目管理"));
+                                    "Data update successful, ID {0} {1} record.", attAssetCatId, MessageUtils.messageWithFallback("att.entity.data.asset.category", "Data asset category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attAssetCatId + " 的数据资产类目管理记录不存在。", attAssetCatId, "数据资产类目管理"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attAssetCatId, MessageUtils.messageWithFallback("att.entity.data.asset.category", "Data asset category")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttAssetCatDO> queryWrapper = new QueryWrapper<>();
@@ -199,17 +199,17 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
                         attAssetCatMapper.insert(attAssetCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attAssetCatId + " 的数据资产类目管理记录。", attAssetCatId, "数据资产类目管理"));
+                                "Data insert successful, ID {0} {1} record.", attAssetCatId, MessageUtils.messageWithFallback("att.entity.data.asset.category", "Data asset category")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attAssetCatId + " 的数据资产类目管理记录已存在。", attAssetCatId, "数据资产类目管理"));
+                                "Data insert failed, ID {0} {1} record already exists.", attAssetCatId, MessageUtils.messageWithFallback("att.entity.data.asset.category", "Data asset category")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -218,12 +218,12 @@ public class AttAssetCatServiceImpl extends ServiceImpl<AttAssetCatMapper, AttAs
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

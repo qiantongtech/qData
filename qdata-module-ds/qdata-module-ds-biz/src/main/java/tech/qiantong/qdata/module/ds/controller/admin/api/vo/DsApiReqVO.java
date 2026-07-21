@@ -24,7 +24,7 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * API服务 Request VO 对象 DS_API
+ * API service Request VO DS_API
  *
  * @author lhs
  * @date 2025-02-12
@@ -55,7 +55,7 @@ public class DsApiReqVO{
     private String endDate;
 
     /**
-     *转发类型;1:API 2:地理空间数据'
+     *Forwarding type (1: API, 2: geospatial data)
      */
     private String transmitType;
 
@@ -65,7 +65,7 @@ public class DsApiReqVO{
     private String apiId;
 
     /**
-     *Header配置json
+     *Header configuration JSON
      */
     private String headerJson;
 

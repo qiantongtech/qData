@@ -30,7 +30,7 @@
     <artifactId>qdata-mybatis</artifactId>
 
     <description>
-        qdata-mybatis框架核心
+        qdata-mybatis framework core
     </description>
 
     <dependencies>

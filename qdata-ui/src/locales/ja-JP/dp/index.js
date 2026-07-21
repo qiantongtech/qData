@@ -323,7 +323,10 @@ export default {
     detailInfo: '詳細情報',
     releaseLog: '公開ログ',
     virtualAssetCreate: '仮想アセット作成',
-    fullAssetCreate: '完全アセット作成'
+    fullAssetCreate: '完全アセット作成',
+    asset: {
+      deleteConfirm: '番号「{id}」のデータ要素とデータ資産の関連を削除してもよろしいですか？'
+    }
   },
   common: {
     query: '検索',

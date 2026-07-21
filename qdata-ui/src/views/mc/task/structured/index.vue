@@ -814,7 +814,7 @@ const searchStore = reactive({
 const DEFAULT_FORM = {
   collectionMode: "1",
   collectionScope: "2",
-  // 老逻辑默认走 DS，新建任务不选时也保持这个默认值。
+  // Preserve DS as the default for legacy behavior and new tasks without a selection.
   scheduler: "QUARTZ",
   tables: [],
 };
@@ -833,7 +833,7 @@ const schedulerGuide = computed(() => {
     return {
       description: td(
           "dpp.integratioTask.dolphinSchedulerGuideDescription",
-          "使用前请确保 DolphinScheduler 服务已启动。"
+          "please ensure that the DolphinScheduler service is running"
       ),
     };
   }
@@ -841,7 +841,7 @@ const schedulerGuide = computed(() => {
   return {
     description: td(
         "dpp.integratioTask.quartzGuideDescription",
-        "由系统内置组件执行任务。"
+        "The task is executed by the built-in components of the system"
     ),
   };
 });
@@ -977,7 +977,7 @@ function handleDetailClick(row) {
 // Click to add
 function handleAddClick() {
   dialog.title = td("mc.task.structured.addTask");
-  // 打开新增弹窗时兜底一次，避免上次编辑留下空值。
+  // Restore the default when opening the create dialog to avoid an empty value left by the previous edit.
   dialog.form.scheduler = dialog.form.scheduler || "DOLPHINSCHEDULER";
   dialog.open = true;
   dialog.func = addTask;
@@ -1043,7 +1043,7 @@ function handleEditClick(row) {
     }
     dialog.form = {
       ...res.data,
-      // 老任务没有 scheduler 字段时，页面按 DS 展示。
+      // Display DS for legacy tasks without a scheduler field.
       scheduler: res.data.scheduler || "DOLPHINSCHEDULER",
     };
     handleDatasourceChange(res.data.datasourceId, false);
@@ -1051,7 +1051,7 @@ function handleEditClick(row) {
 }
 
 function getSchedulerLabel(value) {
-  // 列表里把库里的枚举值翻译成人能看懂的名字。
+  // Convert stored enum values into user-friendly names in the list.
   return (
     toValue(dicts.scheduler_type).find((item) => item.value == value)?.label ||
     value ||
@@ -1209,14 +1209,14 @@ function handleSchedulerStatusChange(row, status) {
 }
 
 /**
- * DolphinScheduler调度器状态检查
+ * Checks DolphinScheduler status.
  * @returns {Promise<void>}
  */
 const handleSchedulerChange = async () => {
   if (dialog.form.scheduler !== "QUARTZ") {
     const resp = await checkApi();
     if (!resp.data) {
-      proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "请启动DolphinScheduler调度器！"));
+      proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "Please start the DolphinScheduler scheduler！"));
     }
     return resp.data;
   }

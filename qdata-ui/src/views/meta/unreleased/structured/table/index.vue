@@ -393,14 +393,14 @@ function handleDeleteColumnClick() {
     ElMessageBox.confirm(
       td(
         "meta.unreleased.structured.table.list.confirmBatchDelete",
-        "可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分"
+        "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?"
       )
         .replace("{canDelete}", canDeleteCount)
         .replace("{cannotDelete}", cannotDeleteCount),
-      td("common.message.systemPrompt", "系统提示"),
+      td("common.message.systemPrompt", "System Prompt"),
       {
-        confirmButtonText: td("common.button.confirm", "确定"),
-        cancelButtonText: td("common.button.cancel", "取消"),
+        confirmButtonText: td("common.button.confirm", "Confirm"),
+        cancelButtonText: td("common.button.cancel", "Cancel"),
         type: "warning",
       }
     )
@@ -422,11 +422,11 @@ function handleDeleteColumnClick() {
 // Delete
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
-      td("meta.unreleased.structured.table.list.confirmDelete", "是否确认删除编号为{id}的数据项？", {id: row.id}),
-      td("common.message.systemPrompt", "系统提示"),
+      td("meta.unreleased.structured.table.list.confirmDelete", "Are you sure to delete item with ID {id}?", {id: row.id}),
+      td("common.message.systemPrompt", "System Prompt"),
     {
-      confirmButtonText: td("common.button.confirm", "确定"),
-      cancelButtonText: td("common.button.cancel", "取消"),
+      confirmButtonText: td("common.button.confirm", "Confirm"),
+      cancelButtonText: td("common.button.cancel", "Cancel"),
       type: "warning",
     }
   )
@@ -455,17 +455,17 @@ function handleDetailClick(row, tab) {
 function handleStatusChange(row, status) {
   const action =
     status == 1
-      ? td("meta.unreleased.structured.table.list.publish", "发布")
-      : td("meta.unreleased.structured.table.list.unpublish", "取消发布");
+      ? td("meta.unreleased.structured.table.list.publish", "Publish")
+      : td("meta.unreleased.structured.table.list.unpublish", "Unpublish");
   ElMessageBox.confirm(
-      td("meta.unreleased.structured.table.list.confirmStatusChange", "是否确认{action}数据编号为{id}的表元数据吗？", {
+      td("meta.unreleased.structured.table.list.confirmStatusChange", "Are you sure to {action} table metadata with ID {id}?", {
         action,
         id: row.id
       }),
-    td("common.message.systemPrompt", "系统提示"),
+    td("common.message.systemPrompt", "System Prompt"),
     {
-      confirmButtonText: td("common.button.confirm", "确定"),
-      cancelButtonText: td("common.button.cancel", "取消"),
+      confirmButtonText: td("common.button.confirm", "Confirm"),
+      cancelButtonText: td("common.button.cancel", "Cancel"),
       type: "warning",
     }
   )
@@ -479,7 +479,7 @@ function handleStatusChange(row, status) {
       ElMessage.success(
         td(
           "meta.unreleased.structured.table.list.statusChangeSuccess",
-          "编号为{id}的表元数据{action}成功!"
+          "Table metadata with ID {id} {action} successful!"
         )
           .replace("{id}", row.id)
           .replace("{action}", action)

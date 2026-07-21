@@ -30,7 +30,7 @@
     <artifactId>qdata-quality</artifactId>
 
     <description>
-        数据质量服务入口
+        Data quality service entry point
     </description>
 
     <!-- Set up jitpack.io plug-in repository -->

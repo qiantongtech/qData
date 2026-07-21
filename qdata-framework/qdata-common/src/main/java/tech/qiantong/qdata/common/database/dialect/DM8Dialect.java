@@ -33,6 +33,7 @@ import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import javax.sql.DataSource;
 import java.security.Security;
@@ -402,8 +403,8 @@ public class DM8Dialect extends AbstractDbDialect {
                 dbQueryProperty.getPassword())) {
             return conn.isValid(0);
         } catch (SQLException e) {
-            log.error("数据库连接失败", e);
-            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
+            log.error("Database connection failed", e);
+            throw new DataQueryException("db.error.connection.retry", "Database connection failed, please try again later");
         }
     }
 
@@ -432,26 +433,31 @@ public class DM8Dialect extends AbstractDbDialect {
 
         // 1. Verification table name
         if (tableName == null || tableName.trim().isEmpty()) {
-            errors.add("表名不能为空");
+            errors.add(MessageUtils.messageWithFallback(
+                    "db.error.dm8.table.name.empty", "Table name cannot be empty"));
         } else {
             String tn = tableName.trim();
             // DM8 specification: Table names must start with an uppercase letter and can only contain uppercase letters, numbers, and underscores
             if (!tn.matches("^[A-Z][A-Z0-9_]*$")) {
-                errors.add("表名格式不符合DM8规范，必须以大写字母开头，且只能包含大写字母、数字和下划线");
+                errors.add(MessageUtils.messageWithFallback("db.error.dm8.table.name.invalid",
+                        "The table name must start with an uppercase letter and contain only uppercase letters, numbers, and underscores"));
             }
             if (tn.length() > 30) {
-                errors.add("表名长度不能超过30个字符");
+                errors.add(MessageUtils.messageWithFallback(
+                        "db.error.dm8.table.name.length", "Table name cannot exceed 30 characters"));
             }
         }
 
         // 2. Checklist comments
         if (tableComment == null || tableComment.trim().isEmpty()) {
-            errors.add("表注释不能为空");
+            errors.add(MessageUtils.messageWithFallback(
+                    "db.error.dm8.table.comment.empty", "Table comment cannot be empty"));
         }
 
         // 3. Check field list
         if (columns == null || columns.isEmpty()) {
-            errors.add("表必须至少包含一个字段");
+            errors.add(MessageUtils.messageWithFallback(
+                    "db.error.dm8.table.columns.empty", "The table must contain at least one column"));
         } else {
             for (DbColumn column : columns) {
                 List<String> strings = DM8FieldType.validateColumn(column);
@@ -540,7 +546,7 @@ public class DM8Dialect extends AbstractDbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (org.springframework.util.StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

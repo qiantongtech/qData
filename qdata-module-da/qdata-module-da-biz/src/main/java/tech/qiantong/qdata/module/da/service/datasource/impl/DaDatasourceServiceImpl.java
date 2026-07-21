@@ -332,13 +332,15 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     private void validateDatasourceConfig(DaDatasourceSaveReqVO datasource) {
         if (StrUtil.isBlank(datasource.getDatasourceConfig()) || !JSONUtil.isJsonObj(datasource.getDatasourceConfig())) {
-            throw new ServiceException("数据源配置格式不正确");
+            throw new ServiceException("da.error.datasource.config.invalid",
+                    "The data source configuration format is invalid");
         }
         JSONObject config = JSONUtil.parseObj(datasource.getDatasourceConfig());
         String type = datasource.getDatasourceType();
         if (!"OSS-ALIYUN".equals(type) && !"Kafka".equals(type) && !"HDFS".equals(type)
                 && StrUtil.isBlank(config.getStr("username"))) {
-            throw new ServiceException("账号不能为空或仅包含空格");
+            throw new ServiceException("da.error.datasource.account.empty",
+                    "Account cannot be empty or contain only spaces");
         }
     }
 
@@ -347,7 +349,8 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         nameWrapper.eq(DaDatasourceDO::getDatasourceName, datasource.getDatasourceName());
         excludeCurrentDatasource(nameWrapper, datasource.getId());
         if (this.count(nameWrapper) > 0) {
-            throw new ServiceException("已存在同名数据源，请修改数据源名称");
+            throw new ServiceException("da.error.datasource.name.duplicate",
+                    "A data source with the same name already exists; change the data source name");
         }
 
         LambdaQueryWrapper<DaDatasourceDO> connectionWrapper = new LambdaQueryWrapper<>();
@@ -367,7 +370,8 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             JSONObject existingConfig = JSONUtil.parseObj(existing.getDatasourceConfig());
             if (targetDbName.equals(StrUtil.nullToEmpty(existingConfig.getStr("dbname")))
                     && targetUsername.equals(StrUtil.nullToEmpty(existingConfig.getStr("username")))) {
-                throw new ServiceException("已存在相同连接信息的数据源，请勿重复创建");
+                throw new ServiceException("da.error.datasource.connection.duplicate",
+                        "A data source with the same connection information already exists");
             }
         }
     }
@@ -385,7 +389,8 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         DbQueryProperty property = new DbQueryProperty(
                 datasource.getDatasourceType(), datasource.getIp(), datasource.getPort(), datasource.getDatasourceConfig());
         if (!clientTest(property)) {
-            throw new ServiceException("当前数据源未测试通过，不能启用。");
+            throw new ServiceException("da.error.datasource.test.required",
+                    "The current data source has not passed testing and cannot be enabled");
         }
     }
 
@@ -412,7 +417,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public int removeDaDatasourceDppOrDa(List<Long> idList, Long type) {
         int datasource = dppEtlTaskService.checkTaskIdInDatasource(idList, null);
         if (datasource > 0) {
-            throw new ServiceException("da.error.delete.datasource.ref", "删除失败,数据源被项目引用!");
+            throw new ServiceException("da.error.delete.datasource.ref", "Deletion failed, data source is referenced by a project!");
         }
         if (!idList.isEmpty()) {
             QueryWrapper<DaDatasourceProjectRelDO> queryWrapper = new QueryWrapper<>();
@@ -479,7 +484,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @Override
     public String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -498,16 +503,16 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                             daDatasourceMapper.updateById(daDatasourceDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                    "数据更新成功，ID为 " + daDatasourceId + " 的数据源记录。", daDatasourceId, "数据源"));
+                                    "Data update successful, ID {0} {1} record.", daDatasourceId, MessageUtils.messageWithFallback("da.entity.datasource", "Data source")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                    "数据更新失败，ID为 " + daDatasourceId + " 的数据源记录不存在。", daDatasourceId, "数据源"));
+                                    "Data update failed, ID {0} {1} record does not exist.", daDatasourceId, MessageUtils.messageWithFallback("da.entity.datasource", "Data source")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DaDatasourceDO> queryWrapper = new QueryWrapper<>();
@@ -517,17 +522,17 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                         daDatasourceMapper.insert(daDatasourceDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                "数据插入成功，ID为 " + daDatasourceId + " 的数据源记录。", daDatasourceId, "数据源"));
+                                "Data insert successful, ID {0} {1} record.", daDatasourceId, MessageUtils.messageWithFallback("da.entity.datasource", "Data source")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                "数据插入失败，ID为 " + daDatasourceId + " 的数据源记录已存在。", daDatasourceId, "数据源"));
+                                "Data insert failed, ID {0} {1} record already exists.", daDatasourceId, MessageUtils.messageWithFallback("da.entity.datasource", "Data source")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -536,12 +541,12 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -552,10 +557,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         DbQuery dbQuery = this.buildDbQuery(id);
         if (dbQuery.valid()) {
             dbQuery.close();
-            return AjaxResult.success(MessageUtils.messageWithFallback("da.error.connection.success", "数据库连接成功"));
+            return AjaxResult.success(MessageUtils.messageWithFallback("da.error.connection.success", "Database connection successful"));
         }
         dbQuery.close();
-        return AjaxResult.error(MessageUtils.messageWithFallback("da.error.connection.fail", "数据库连接失败"));
+        return AjaxResult.error(MessageUtils.messageWithFallback("da.error.connection.fail", "Database connection failed"));
 
     }
 
@@ -594,7 +599,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public DbQuery buildDbQuery(Long id) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 daDatasourceBy.getDatasourceType(),
@@ -613,14 +618,14 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public List<DbTable> getDbTables(Long id) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
         List<DbTable> tables = dbQuery.getTables(dbQueryProperty);
         dbQuery.close();
@@ -720,7 +725,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 , datasourceCreaTeTableReqDTO.getIp(), datasourceCreaTeTableReqDTO.getPort(), datasourceCreaTeTableReqDTO.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
 
         int tableStatus = dbQuery.generateCheckTableExistsSQL(dbQueryProperty, datasourceCreaTeTableReqDTO.getTableName());
@@ -856,7 +861,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         List<Map<String, Object>> dataList = result.getData();
         // Remove the ROW_ID field from each record
         dataList.forEach(map -> map.remove("ROW_ID"));
-        String schemeName = "导出第" + paging[2] + "页数据-" + IdUtil.simpleUUID();
+            String schemeName = "Export-Page-" + paging[2] + "-Data-" + IdUtil.simpleUUID();
         exportByList(response, dataList, schemeName);
     }
 
@@ -866,7 +871,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         try {
             stmt = CCJSqlParserUtil.parse(sqlText);
         } catch (JSQLParserException e) {
-            throw new ServiceException("da.error.sql.parse", "SQL语法有问题，解析出错");
+            throw new ServiceException("da.error.sql.parse", "SQL syntax error, parsing failed");
         }
 
         // Query datasource info
@@ -889,11 +894,11 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 //            sqlText =  encryptedSqlText;
             sqlText = AesEncryptUtil.desEncrypt(encryptedSqlText).trim();
         } catch (Exception e) {
-            throw new ServiceException("da.error.decrypt.fail", "执行语句解密异常，请联系管理员！");
+            throw new ServiceException("da.error.decrypt.fail", "Failed to decrypt the execution statement. Please contact the administrator.");
         }
 
         if (sqlText == null || sqlText.isEmpty()) {
-            throw new DataQueryException("db.error.sql.empty", "SQL语句不能为空");
+            throw new DataQueryException("db.error.sql.empty", "SQL statement cannot be empty");
         }
 
         // Check if the separator ';' is present
@@ -903,18 +908,18 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             int lastIndex = sqlText.lastIndexOf(";");
             // If ';' does not appear only at the end, consider it as multiple SQL statements
             if (firstIndex != lastIndex || lastIndex != sqlText.length() - 1) {
-                throw new DataQueryException("db.error.sql.multi", "仅支持单个查询SQL语句，不允许存在多个语句");
+                throw new DataQueryException("db.error.sql.multi", "Only a single query SQL statement is allowed");
             }
             // Remove the trailing ';'
             sqlText = sqlText.substring(0, sqlText.length() - 1).trim();
             if (sqlText.contains(";")) {
-                throw new DataQueryException("db.error.sql.multi", "仅支持单个查询SQL语句，不允许存在多个语句");
+                throw new DataQueryException("db.error.sql.multi", "Only a single query SQL statement is allowed");
             }
         }
 
         // Ensure the SQL starts with "select" (case-insensitive)
         if (!sqlText.toLowerCase().startsWith("select")) {
-            throw new DataQueryException("db.error.sql.query.only", "仅允许执行查询操作的SQL语句");
+            throw new DataQueryException("db.error.sql.query.only", "Only SQL query operations are allowed");
         }
 
         // Further check for non-query SQL identifiers
@@ -939,7 +944,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             // \b ensures keyword boundary matching, avoiding partial field name matches
             if (Pattern.compile("\\b" + keyword + "\\b").matcher(lowerSql).find()) {
                 throw new DataQueryException("db.error.sql.keyword",
-                    "SQL语句中包含非查询操作标识: " + keyword, keyword);
+                    "SQL contains non-query operation keyword: {0}", keyword);
             }
         }
     }
@@ -950,7 +955,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     private DbQuery getDbQuery(DaDatasourcePageReqVO daDatasource) {
         DaDatasourceDO datasource = this.getDaDatasourceById(daDatasource.getId());
         if (datasource == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
         DbQueryProperty property = new DbQueryProperty(
                 datasource.getDatasourceType(),
@@ -960,7 +965,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         );
         DbQuery dbQuery = dataSourceFactory.createDbQuery(property);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
         return dbQuery;
     }
@@ -981,7 +986,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @SneakyThrows
     private static void exportByList(HttpServletResponse response, List<Map<String, Object>> dataList, String tableName) {
         if (dataList == null) {
-            throw new ServiceException("da.error.form.notfound", "暂无表单信息");
+            throw new ServiceException("da.error.form.notfound", "No form information is available.");
         }
 
         // Get all column names from the first row as the order
@@ -1084,7 +1089,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 response.setContentLength(aa.length);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new ServiceException("da.error.system", "系统错误");
+                throw new ServiceException("da.error.system", "System error.");
             } finally {
                 if (response.getOutputStream() != null) {
                     response.getOutputStream().flush();
@@ -1104,7 +1109,8 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @Override
     public Boolean editDatasourceStatus(Long datasourceId, Long status) {
         if (Objects.equals(status, 1L) && !clientTest(datasourceId)) {
-            throw new ServiceException("当前数据源未测试通过，不能启用。");
+            throw new ServiceException("da.error.datasource.test.required",
+                    "The current data source has not passed testing and cannot be enabled");
         }
         return this.update(Wrappers.lambdaUpdate(DaDatasourceDO.class)
                 .eq(DaDatasourceDO::getId, datasourceId)
@@ -1119,19 +1125,19 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @Override
     public List<DbColumn> getDbTableColumns(Long id, String tableName) {
         if (StringUtils.isEmpty(tableName)) {
-            throw new DataQueryException("db.error.table.empty", "表名不能为空");
+            throw new DataQueryException("db.error.table.empty", "Table name cannot be empty");
         }
 
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(id);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
         List<DbColumn> tableColumns = dbQuery.getTableColumns(dbQueryProperty, tableName);
         dbQuery.close();
@@ -1143,14 +1149,14 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public DbTable getDbTable(Long datasourceId, String tableName) {
         DaDatasourceDO daDatasourceBy = this.getDaDatasourceById(datasourceId);
         if (daDatasourceBy == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(daDatasourceBy.getDatasourceType()
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
         }
         List<DbTable> tables = dbQuery.getTables(dbQueryProperty);
         if (StringUtils.isNotEmpty(tableName)) {
@@ -1169,7 +1175,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     public List<DbName> getDatabaseListByDatasourceId(Long id) {
         DaDatasourceRespDTO datasource = this.getDatasourceById(id);
         if (datasource == null) {
-            throw new DataQueryException("db.error.datasource.detail.fail", "数据源详情信息查询失败");
+            throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
 
         DbQueryProperty baseProperty = new DbQueryProperty(
@@ -1184,7 +1190,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
         try {
             if (!rootQuery.valid()) {
-                throw new DataQueryException("db.error.connection.fail", "数据库连接失败");
+                throw new DataQueryException("db.error.connection.fail", "Database connection failed");
             }
             dbNames = rootQuery.getDbNames(null);
         } finally {
@@ -1238,24 +1244,29 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     }
 
     private List<DaDiscoveryTableDO> fetchDiscoveryTableList(DaDiscoveryTaskRespVO daDiscoveryTaskDO, Long daDiscoveryTaskLog) {
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始从本地库中获取发现任务表快照列表，任务ID：" + daDiscoveryTaskDO.getId());
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Begin loading the discovery task table snapshot list from the local database; task ID: " + daDiscoveryTaskDO.getId());
         DaDiscoveryTablePageReqVO daDiscoveryTablePageReqVO = new DaDiscoveryTablePageReqVO();
         daDiscoveryTablePageReqVO.setTaskId(daDiscoveryTaskDO.getId());
 
         List<DaDiscoveryTableDO> result = iDaDiscoveryTableService.getDaDiscoveryTableList(daDiscoveryTablePageReqVO);
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从本地库中获取发现任务表快照列表成功，表数量：" + (result != null ? result.size() : 0));
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Loaded the discovery task table snapshot list from the local database; table count: " + (result != null ? result.size() : 0));
         return result;
     }
 
     private List<DaDiscoveryColumnDO> fetchDaDiscoveryColumnDOList(DaDiscoveryTableDO matchedTable, Long daDiscoveryTaskLog) {
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "开始从本地库中获取表的列快照信息，表ID：" + matchedTable.getId() + "，任务ID：" + matchedTable.getTaskId());
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Begin loading table column snapshot information from the local database; table ID: "
+                        + matchedTable.getId() + ", task ID: " + matchedTable.getTaskId());
 
         DaDiscoveryColumnPageReqVO daDiscoveryTablePageReqVO = new DaDiscoveryColumnPageReqVO();
         daDiscoveryTablePageReqVO.setTaskId(matchedTable.getTaskId());
         daDiscoveryTablePageReqVO.setTableId(matchedTable.getId());
 
         List<DaDiscoveryColumnDO> result = iDaDiscoveryColumnService.getDaDiscoveryColumnList(daDiscoveryTablePageReqVO);
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "从本地库中获取表的列快照信息成功，列数量：" + (result != null ? result.size() : 0));
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Loaded table column snapshot information from the local database; column count: " + (result != null ? result.size() : 0));
         return result;
     }
 
@@ -1517,15 +1528,20 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 , daDatasourceBy.getIp(), daDatasourceBy.getPort(), daDatasourceBy.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
         if (!dbQuery.valid()) {
-            throw new DataQueryException("任务执行-根据数据源链接信息，建立实时数据源链接 失败！");
+            throw new DataQueryException("da.error.datasource.realtime.connection.fail",
+                    "Failed to establish a real-time data source connection from the task connection information");
         }
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接信息，建立实时数据源链接 成功");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Task execution - Established a live data source connection from the data source connection details");
 
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接，开始进入获取实时库中信息方法");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Task execution - Begin retrieving live database information through the data source connection");
         try {
             Map<String, Object> map = logSchemaModifications(dbQueryProperty, dbQuery, daDiscoveryTaskById, daDiscoveryTaskLog);
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据数据源链接，获取实时库中信息方法结束");
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-信息如下 map:" + map.toString());
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                    "Task execution - Finished retrieving live database information through the data source connection");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                    "Task execution - Retrieved information map: " + map);
             iDaDiscoveryTaskService.updateDaDiscoveryTask(daDiscoveryTaskById);
             return map;
         } catch (Exception e) {
@@ -1546,12 +1562,12 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         String key = "detectTableSchemaUpdates-" + id;
         String status = redisService.get(key);
         if (StringUtils.isEmpty(status) && StringUtils.equals("1", status)) {
-            throw new ServiceException("da.error.task.running", "历史任务未执行完毕，请稍后重试");
+            throw new ServiceException("da.error.task.running", "A previous task is still running. Please try again later.");
         }
         DaDiscoveryTaskRespVO daDiscoveryTaskById = iDaDiscoveryTaskService.getDaDiscoveryTaskById(id);
         if (daDiscoveryTaskById == null) {
             throw new DataQueryException("db.error.task.discovery.detail",
-                    "任务执行-根据发现任务编号，获取发现任务详细信息失败!");
+                    "Task execution: Failed to get discovery task details by task ID!");
         }
         redisService.set(key, "1", 1200);
         // Create a log record table
@@ -1561,9 +1577,10 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         createReqVO.populateFromTask(daDiscoveryTaskById);
         Long daDiscoveryTaskLog = iDaDiscoveryTaskLogService.createDaDiscoveryTaskLog(createReqVO);
         createReqVO.setId(daDiscoveryTaskLog);
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据发现任务编号，获取发现任务详细信息成功");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                "Task execution - Loaded discovery task details by task code");
 
-        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务开始执行");
+        iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution started");
 
         try {
             daDiscoveryTaskById.setLastExecuteTime(executionDate);
@@ -1577,19 +1594,21 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
             createReqVO.setModifiedTableCount((long) modifiedTables);
             createReqVO.setDeletedTableCount((long) deletedTables);
 
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据任务执行信息，开始对本次任务发放站内信");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                    "Task execution - Begin sending an in-app notification for this task");
             iSysMessageService.sendDbChangeMessage(daDiscoveryTaskById.getContactId(), map);
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务执行-根据任务执行信息，对本次任务站内信发放 完毕");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog,
+                    "Task execution - Finished sending the in-app notification for this task");
             createReqVO.setStatus("2");
         } catch (Exception e) {
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务失败");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution failed");
             createReqVO.setStatus("3");
             iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, e.getMessage().toString());
             redisService.set(key, "3", 300);
         } finally {
             iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "FINALIZE_SESSION");
             createReqVO.setPath("");
-            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "任务结束");
+            iDaDiscoveryLogBodyService.taskLogAppend(daDiscoveryTaskLog, "Task execution finished");
             createReqVO.setEndTime(DateUtils.getExecutionDate());
             iDaDiscoveryTaskLogService.updateDaDiscoveryTaskLog(createReqVO);
             redisService.set(key, "2", 300);

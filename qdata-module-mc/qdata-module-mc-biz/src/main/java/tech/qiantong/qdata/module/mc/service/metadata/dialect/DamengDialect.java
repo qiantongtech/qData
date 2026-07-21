@@ -25,7 +25,7 @@ public class DamengDialect implements DatabaseDialect {
             // Dameng 8 uses DM8 storage engine, return DM8 here
             return "DM8";
         } catch (Exception e) {
-            log.error("获取达梦8存储引擎失败", e);
+            log.error("Failed to get the DM8 storage engine", e);
             return null;
         }
     }
@@ -46,7 +46,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
             // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -58,7 +58,7 @@ public class DamengDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取达梦8表行数失败", e);
+            log.error("Failed to get the DM8 table row count", e);
         }
         return 0L;
     }
@@ -79,7 +79,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
             // Connect to the database and use the JDBC metadata API to obtain index information
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -98,7 +98,7 @@ public class DamengDialect implements DatabaseDialect {
                 return indexes.toString();
             }
         } catch (Exception e) {
-            log.error("获取达梦8表索引信息失败", e);
+            log.error("Failed to get DM8 table index information", e);
         }
         return "";
     }
@@ -119,7 +119,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
             // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -132,7 +132,7 @@ public class DamengDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取达梦8表分区字段信息失败", e);
+            log.error("Failed to get DM8 table partition-column information", e);
         }
         return "";
     }
@@ -153,7 +153,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
             // Connect to the database and use the JDBC metadata API to obtain field auto-increment information
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -165,7 +165,7 @@ public class DamengDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取达梦8字段自增信息失败", e);
+            log.error("Failed to get DM8 column auto-increment information", e);
         }
         return false;
     }
@@ -186,7 +186,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
             // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -199,7 +199,7 @@ public class DamengDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("判断达梦8字段是否为分区字段失败", e);
+            log.error("Failed to determine whether the DM8 column is a partition column", e);
         }
         return false;
     }
@@ -215,7 +215,7 @@ public class DamengDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }
@@ -237,7 +237,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
             }
 
             // Connect to the database and execute queries
@@ -281,7 +281,7 @@ public class DamengDialect implements DatabaseDialect {
                 metadata.setStorageEngine("Dameng");
             }
         } catch (Exception e) {
-            log.error("批量获取达梦8表元数据失败", e);
+            log.error("Failed to fetch DM8 table metadata in batch", e);
         }
         return metadata;
     }
@@ -303,7 +303,7 @@ public class DamengDialect implements DatabaseDialect {
             try {
                 password = AesEncryptUtil.desEncrypt(password).trim();
             } catch (Exception e) {
-                log.error("解密密码失败", e);
+                log.error("Failed to decrypt password", e);
                 return null;
             }
 
@@ -328,7 +328,7 @@ public class DamengDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("批量获取达梦8字段元数据失败", e);
+            log.error("Failed to fetch DM8 column metadata in batch", e);
         }
         return metadata;
     }

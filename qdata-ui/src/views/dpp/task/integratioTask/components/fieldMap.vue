@@ -23,10 +23,10 @@
       <el-row>
         <!-- Drag list on the left -->
         <el-col :span="8" :offset="3">
-          <p>{{ td('dpp.integration.sourceTableFields', '来源表字段：') }}</p>
+          <p>{{ td('dpp.integration.sourceTableFields', 'Source Table Fields:') }}</p>
           <!-- Select all checkbox -->
           <el-checkbox style="margin-top: -20px" v-model="leftSelectAll" :disabled="info"
-            v-if="readerForm.tableFields.length > 0">{{ td('dpp.integration.selectAll', '全选') }}</el-checkbox>
+            v-if="readerForm.tableFields.length > 0">{{ td('dpp.integration.selectAll', 'Select All') }}</el-checkbox>
           <draggable tag="div" class="draggable-list" :list="readerForm.tableFields" animation="300" item-key="id" :disabled="info">
             <template v-slot:item="{ element, index }">
               <div class="draggable-item fixed-height">
@@ -55,11 +55,11 @@
 
         <!-- Drag list on the right -->
         <el-col :span="8">
-          <p>{{ td('dpp.integration.targetFields', '目标字段：') }}</p>
+          <p>{{ td('dpp.integration.targetFields', 'Target Fields:') }}</p>
           <!-- Select all checkbox, only displayed if it is not hdfs and there are fields -->
           <el-checkbox v-if="readerForm.toColumnsList.length > 0" :disabled="type == 'hdfs' || info"
             v-model="rightSelectAll" style="margin-top: -20px">
-            {{ td('dpp.integration.selectAll', '全选') }}
+            {{ td('dpp.integration.selectAll', 'Select All') }}
           </el-checkbox>
           <!-- drag area -->
           <draggable tag="div" class="draggable-list" :list="readerForm.toColumnsList" animation="300" item-key="id" :disabled="info">
@@ -67,7 +67,7 @@
               <div class="draggable-item fixed-height">
                 <div class="custom-draggable-item">
                   <!-- Use tooltip to prompt the reason for disabling -->
-                  <el-tooltip v-if="type === 'hdfs'" :content="td('dpp.integration.hdfsNoSelect', 'HDFS 类型不可勾选')" placement="top">
+                  <el-tooltip v-if="type === 'hdfs'" :content="td('dpp.integration.hdfsNoSelect', 'HDFS type cannot be selected')" placement="top">
                     <el-checkbox class="checkbox" v-model="element.isChecked" :disabled="true">
                       <span class="column-name">{{ element.columnName }}</span>
                     </el-checkbox>

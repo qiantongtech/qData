@@ -29,6 +29,7 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.exception.job.TaskException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.quartz.domain.SysJob;
@@ -72,7 +73,7 @@ public class SysJobController extends BaseController
     {
         List<SysJob> list = jobService.selectJobList(sysJob);
         ExcelUtil<SysJob> util = new ExcelUtil<SysJob>(SysJob.class);
-        util.exportExcel(response, list, "定时任务");
+        util.exportExcel(response, list, "Scheduled Jobs");
     }
 
     /**
@@ -95,23 +96,28 @@ public class SysJobController extends BaseController
     {
         if (!CronUtils.isValid(job.getCronExpression()))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.create.cron.invalid",
+                    "Failed to create task ''{0}'': invalid Cron expression", job.getJobName()));
         }
         else if (StringUtils.containsIgnoreCase(job.getInvokeTarget(), Constants.LOOKUP_RMI))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.create.rmi.denied",
+                    "Failed to create task ''{0}'': RMI calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS }))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.create.ldap.denied",
+                    "Failed to create task ''{0}'': LDAP(S) calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.HTTP, Constants.HTTPS }))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.create.http.denied",
+                    "Failed to create task ''{0}'': HTTP(S) calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), Constants.JOB_ERROR_STR))
         {
-            return error("新增任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.create.target.invalid",
+                    "Failed to create task ''{0}'': the target string contains prohibited content", job.getJobName()));
         }
 //        else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
 //        {
@@ -131,23 +137,28 @@ public class SysJobController extends BaseController
     {
         if (!CronUtils.isValid(job.getCronExpression()))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.update.cron.invalid",
+                    "Failed to update task ''{0}'': invalid Cron expression", job.getJobName()));
         }
         else if (StringUtils.containsIgnoreCase(job.getInvokeTarget(), Constants.LOOKUP_RMI))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.update.rmi.denied",
+                    "Failed to update task ''{0}'': RMI calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS }))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.update.ldap.denied",
+                    "Failed to update task ''{0}'': LDAP(S) calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), new String[] { Constants.HTTP, Constants.HTTPS }))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.update.http.denied",
+                    "Failed to update task ''{0}'': HTTP(S) calls are not allowed in the target string", job.getJobName()));
         }
         else if (StringUtils.containsAnyIgnoreCase(job.getInvokeTarget(), Constants.JOB_ERROR_STR))
         {
-            return error("修改任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+            return error(MessageUtils.messageWithFallback("sys.error.quartz.job.update.target.invalid",
+                    "Failed to update task ''{0}'': the target string contains prohibited content", job.getJobName()));
         }
 //        else if (!ScheduleUtils.whiteList(job.getInvokeTarget()))
 //        {
@@ -179,7 +190,8 @@ public class SysJobController extends BaseController
     public AjaxResult run(@RequestBody SysJob job) throws SchedulerException
     {
         boolean result = jobService.run(job);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error(MessageUtils.messageWithFallback(
+                "sys.error.quartz.job.notfound.expired", "The task does not exist or has expired"));
     }
 
     /**

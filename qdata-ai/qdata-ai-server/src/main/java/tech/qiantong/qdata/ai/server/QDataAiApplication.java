@@ -58,7 +58,7 @@ public class QDataAiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(QDataAiApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  数据中台-chat-bi启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
+        System.out.println("(♥◠‿◠)ﾉﾞ  Data Platform Chat BI started successfully   ლ(´ڡ`ლ)ﾞ  \n" +
                 "    _            _         _        \n" +
                 "   / \\    _ __  (_)__   __(_)  __ _ \n" +
                 "  / _ \\  | '_ \\ | |\\ \\ / /| | / _` |\n" +

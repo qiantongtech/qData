@@ -79,7 +79,7 @@ public class DpDataElemRuleRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpDataElemRuleRelDO> list = (List<DpDataElemRuleRelDO>) dpDataElemRuleRelService.getDpDataElemRuleRelPage(exportReqVO).getRows();
         ExcelUtil<DpDataElemRuleRelRespVO> util = new ExcelUtil<>(DpDataElemRuleRelRespVO.class);
-        util.exportExcel(response, DpDataElemRuleRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpDataElemRuleRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据元数据规则关联信息列表")

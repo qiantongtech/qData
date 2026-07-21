@@ -55,7 +55,7 @@ services:
     networks:
       - qdatanet
 #    volumes:
-#      - ./hadoop/data:/data/dfs #挂载数据
+#      - ./hadoop/data:/data/dfs # Mount data storage
 
   resourcemanager:
     image: ${QDATA_HUB}/hadoop:3.3.6

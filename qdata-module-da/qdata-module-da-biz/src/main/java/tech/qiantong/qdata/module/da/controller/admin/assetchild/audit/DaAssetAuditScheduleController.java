@@ -77,7 +77,7 @@ public class DaAssetAuditScheduleController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetAuditScheduleDO> list = (List<DaAssetAuditScheduleDO>) daAssetAuditScheduleService.getDaAssetAuditSchedulePage(exportReqVO).getRows();
         ExcelUtil<DaAssetAuditScheduleRespVO> util = new ExcelUtil<>(DaAssetAuditScheduleRespVO.class);
-        util.exportExcel(response, DaAssetAuditScheduleConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetAuditScheduleConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入资产稽查调度列表")

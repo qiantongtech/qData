@@ -137,10 +137,10 @@ public class AlipayClientImpl implements PayGatewayClient {
 
             // Determine whether the refund is successful based on the API return result
             if (response.isSuccess()) {
-                System.out.println("退款成功");
+                System.out.println("Refund succeeded");
                 return new RefundResponse("ALIPAY_REFUND_SUCCESS", refunRequest.getOrderId());
             } else {
-                System.out.println("退款失败");
+                System.out.println("Refund failed");
                 return new RefundResponse("ALIPAY_REFUND_FAILURE", refunRequest.getOrderId());
             }
         } catch (Exception e) {

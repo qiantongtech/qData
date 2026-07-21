@@ -72,7 +72,7 @@
             AND r.project_id = #{projectId}
         </if>
         <choose>
-            <!-- 如果数据库是 kingBase -->
+            <!-- For Kingbase databases -->
             <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
                 <if test="roleName != null and roleName != ''">
                     AND r.role_name LIKE '%' || #{roleName} || '%'
@@ -80,16 +80,16 @@
                 <if test="roleKey != null and roleKey != ''">
                     AND r.role_key LIKE '%' || #{roleKey} || '%'
                 </if>
-                <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                <if test="params.beginTime != null and params.beginTime != ''"><!-- Start-time filter -->
                     AND r.create_time &gt;= #{params.beginTime}
                 </if>
-                <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                <if test="params.endTime != null and params.endTime != ''"><!-- End-time filter -->
                     AND r.create_time &lt;= #{params.endTime}
                 </if>
 
             </when>
 
-            <!-- 如果是其他数据库（如 MySQL、 DM） -->
+            <!-- For other databases (such as MySQL and DM) -->
             <otherwise>
                 <if test="roleName != null and roleName != ''">
                     AND r.role_name like concat('%', #{roleName}, '%')
@@ -97,15 +97,15 @@
                 <if test="roleKey != null and roleKey != ''">
                     AND r.role_key like concat('%', #{roleKey}, '%')
                 </if>
-                <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                <if test="params.beginTime != null and params.beginTime != ''"><!-- Start-time filter -->
                     and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
                 </if>
-                <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                <if test="params.endTime != null and params.endTime != ''"><!-- End-time filter -->
                     and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
                 </if>
             </otherwise>
         </choose>
-        <!-- 数据范围过滤 -->
+        <!-- Data-scope filter -->
         ${params.dataScope}
         order by r.role_sort
     </select>

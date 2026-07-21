@@ -26,7 +26,7 @@ export function checkApi() {
     });
 }
 
-// 查询API服务列表
+// Query the API service list.
 export function listDsApi(query) {
     return request({
         url: '/ds/api/list',

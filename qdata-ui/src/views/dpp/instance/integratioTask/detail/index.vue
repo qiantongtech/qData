@@ -43,7 +43,7 @@
           </el-col> -->
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', '任务实例名称333') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', 'Task Instance Name') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.name || '-' }}
               </div>
@@ -51,7 +51,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime', '创建时间') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime', 'Created Time') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
 
@@ -60,7 +60,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', '执行状态') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', 'Execution Status') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="dpp_etl_node_instance" :value="dppEtlTaskDetail.status" />
               </div>
@@ -68,7 +68,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdBy', '创建人') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdBy', 'Created By') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.createBy || '-' }}
               </div>
@@ -76,7 +76,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', '责任人') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', 'Responsible Person') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.personChargeName || '-' }}
               </div>
@@ -85,7 +85,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', '执行类型') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', 'Execution Type') }}</div>
               <div class="infotop-row-value">
 
                 <dict-tag :options="dpp_etl_task_instance_command_type" :value="dppEtlTaskDetail.commandType" />
@@ -96,7 +96,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', '开始时间') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', 'Start Time') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -110,7 +110,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', '结束时间') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', 'End Time') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -127,10 +127,10 @@
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('dpp.instance.taskFlow', '任务流程')" name="1" key="1">
+        <el-tab-pane :label="td('dpp.instance.taskFlow', 'Task Flow')" name="1" key="1">
           <processNode ref="compRef" />
         </el-tab-pane>
-        <el-tab-pane :label="td('dpp.instance.taskLog', '任务日志')" name="2" key="2">
+        <el-tab-pane :label="td('dpp.instance.taskLog', 'Task Log')" name="2" key="2">
           <instanceLog ref="compReftwo" />
         </el-tab-pane>
       </el-tabs>

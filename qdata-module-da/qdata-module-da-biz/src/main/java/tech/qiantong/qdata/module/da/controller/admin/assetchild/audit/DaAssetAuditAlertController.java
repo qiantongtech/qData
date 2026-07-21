@@ -77,7 +77,7 @@ public class DaAssetAuditAlertController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetAuditAlertDO> list = (List<DaAssetAuditAlertDO>) daAssetAuditAlertService.getDaAssetAuditAlertPage(exportReqVO).getRows();
         ExcelUtil<DaAssetAuditAlertRespVO> util = new ExcelUtil<>(DaAssetAuditAlertRespVO.class);
-        util.exportExcel(response, DaAssetAuditAlertConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetAuditAlertConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产-质量预警列表")

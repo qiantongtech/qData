@@ -323,7 +323,10 @@ export default {
     detailInfo: 'Detail Info',
     releaseLog: 'Release Log',
     virtualAssetCreate: 'Virtual Asset Creation',
-    fullAssetCreate: 'Full Asset Creation'
+    fullAssetCreate: 'Full Asset Creation',
+    asset: {
+      deleteConfirm: 'Are you sure to delete the data element-asset relation with ID "{id}"?'
+    }
   },
   common: {
     query: 'Search',

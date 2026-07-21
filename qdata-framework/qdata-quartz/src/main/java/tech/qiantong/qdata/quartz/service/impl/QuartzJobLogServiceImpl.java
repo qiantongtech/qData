@@ -14,7 +14,7 @@ import tech.qiantong.qdata.quartz.mapper.QuartzJobLogMapper;
 import tech.qiantong.qdata.quartz.service.IQuartzJobLogService;
 
 /**
- * Quartz 业务任务日志服务实现。
+ * Service implementation for Quartz business task logs.
  */
 @Service
 public class QuartzJobLogServiceImpl implements IQuartzJobLogService

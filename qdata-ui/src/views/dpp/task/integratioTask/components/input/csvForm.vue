@@ -38,14 +38,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.nodeNameRequired',
-                  '请输入节点名称'
+                  'Please enter node name'
                 ),
                 trigger: 'change',
               },
@@ -54,19 +54,19 @@
             <el-input
               v-model="form.name"
               :placeholder="
-                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+                td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')
               "
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.type', '类型')"
+            :label="td('dpp.integration.type', 'Type')"
             prop="typeName"
            :label-position="labelPosition">
             <el-select
               v-model="form.taskParams.typeName"
-              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
               filterable
               disabled
             >
@@ -97,14 +97,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.uploadAttachment', '上传附件')"
+            :label="td('dpp.integration.uploadAttachment', 'Upload Attachment')"
             prop="taskParams.file"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.uploadAttachmentRequired',
-                  '请上传附件'
+                  'Please upload attachment'
                 ),
                 trigger: 'change',
               },
@@ -129,14 +129,14 @@
             style="margin-left: 60px"
             :disabled="isButtonDisabled"
           >
-            {{ td("dpp.integration.parseCsv", "解析csv") }}
+            {{ td("dpp.integration.parseCsv", "Parse CSV") }}
           </el-button>
         </el-col>
       </el-row>
 
       <el-divider content-position="center">
         <span class="blue-text">{{
-          td("dpp.integration.attributeFields", "属性字段")
+          td("dpp.integration.attributeFields", "Attribute Fields")
         }}</span>
       </el-divider>
       <!-- <div class="justify-between mb15">
@@ -160,7 +160,7 @@
         :data="ColumnByAssettab"
       >
         <el-table-column
-          :label="td('common.display.index', '序号')"
+          :label="td('common.display.index', 'Index')"
           type="index"
           width="80"
           align="left"
@@ -170,7 +170,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.integration.fieldName', '字段名称')"
+          :label="td('dpp.integration.fieldName', 'Field Name')"
           align="left"
           prop="columnName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -180,7 +180,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.integration.fieldType', '字段类型')"
+          :label="td('dpp.integration.fieldType', 'Field Type')"
           align="left"
           prop="columnType"
         >
@@ -189,7 +189,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.integration.dateFormat', '日期格式')"
+          :label="td('dpp.integration.dateFormat', 'Date Format')"
           align="left"
           prop="format"
         >
@@ -229,7 +229,7 @@
   </el-dialog>
   <excelUploadDialog
     :visible="open"
-    :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')"
+    :title="td('dpp.integration.attributeFieldEdit', 'Attribute Field Edit')"
     @update:visible="open = $event"
     @confirm="handletaskConfig"
     :data="row"
@@ -435,7 +435,7 @@ function handleBeforeUpload(file) {
     proxy.$modal.msgWarning(
       td(
         "dpp.integration.fileFormatIncorrect",
-        "文件格式不正确, 请上传csv格式文件!"
+        "File format incorrect, please upload CSV file!"
       )
     );
     return false;

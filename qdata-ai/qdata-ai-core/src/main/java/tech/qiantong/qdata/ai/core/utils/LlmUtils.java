@@ -59,18 +59,18 @@ public class LlmUtils {
     public static Flux<ChatResponse> streamLlmResponse(ChatModel chatModel, Prompt prompt) {
         return chatModel.stream(prompt)
                 .doOnSubscribe(subscription -> {
-                    log.debug("LLM流式调用已订阅");
+                    log.debug("LLM streaming call subscribed");
                 })
                 .doOnNext(response -> {
                     if (log.isTraceEnabled()) {
-                        log.trace("收到LLM响应片段");
+                        log.trace("Received LLM response chunk");
                     }
                 })
                 .doOnComplete(() -> {
-                    log.debug("LLM流式调用完成");
+                    log.debug("LLM streaming call completed");
                 })
                 .doOnError(error -> {
-                    log.error("LLM流式调用出错", error);
+                    log.error("LLM streaming call failed", error);
                 });
     }
 
@@ -96,13 +96,13 @@ public class LlmUtils {
      */
     public static ChatResponse callLlm(ChatModel chatModel, Prompt prompt) {
         try {
-            log.debug("开始同步LLM调用");
+            log.debug("Starting synchronous LLM call");
             ChatResponse response = chatModel.call(prompt);
-            log.debug("同步LLM调用完成");
+            log.debug("Synchronous LLM call completed");
             return response;
         } catch (Exception e) {
-            log.error("同步LLM调用出错", e);
-            throw new ServiceException("ai.error.llm.call.fail", "LLM调用失败");
+            log.error("Synchronous LLM call failed", e);
+            throw new ServiceException("ai.error.llm.call.fail", "LLM call failed");
         }
     }
 }

@@ -64,7 +64,7 @@ public class TaskLogListener {
         try {
             dppEtlNodeInstanceService.taskInstanceLogInsert(taskInstanceId, processInstanceId, logStr);
         } catch (Exception e) {
-            log.error("任务实例日志插入异常:{}", e.getMessage());
+            log.error("Failed to insert task instance log: {}", e.getMessage());
         }
 
         // Manual acknowledgment

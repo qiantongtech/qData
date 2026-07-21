@@ -90,9 +90,9 @@ public class RequestHandler {
                          @RequestParam(required = false) Map<String, Object> requestParams,
                          @RequestBody(required = false) Map<String, Object> requestBodys) {
 
-        LocalDateTime now = LocalDateTime.now();//获取请求
-        // 的时间戳// 日志记录开始时间
-        //转换时间戳
+        LocalDateTime now = LocalDateTime.now();//Capture the request time.
+        // Request timestamp used as the log start time.
+        //Convert the timestamp.
         long timestamp = DataTimeUtil.timeByTimeStamp(now);
 
         DsApiDO api;
@@ -119,7 +119,7 @@ public class RequestHandler {
         String cat_code = "";
         try {
             api = MappingHandlerMapping.getMappingApiInfo(request);
-            {//封装参数
+            {//Build parameters.
                 api_id = api.getId();
                 cat_id = api.getCatId();
                 cat_code = api.getCatCode();
@@ -128,38 +128,38 @@ public class RequestHandler {
                 caller_ip = IPUtil.getIpAddr(request);
             }
 
-            // 序列化
+            // Serialize the result.
             api = objectMapper.readValue(objectMapper.writeValueAsString(api), DsApiDO.class);
-            // 执行前置拦截器
+            // Execute pre-interceptors.
             requestInterceptor.preHandle(request, response, api, params);
 
-            //创建返回值
+            //Create the response value.
             Object responseValuel;
-            //判断是什么类型的接口请求，1-数据服务。2-模型数据服务，3-三方api服务
+            //Determine the API request type: 1 data service, 2 model data service, or 3 third-party API service.
             String isIntegrate = api.getApiServiceType();
-            if (StringUtils.equals("3", isIntegrate)) {//三方api服务
-                //代码的执行
+            if (StringUtils.equals("3", isIntegrate)) {//Third-party API service.
+                //Execute the request.
                 apiMappingEngine.executeServiceForwarding(api, params, response);
-                //暂时对于三方接口，并不知道具体的返回信息，所以默认使用调取量1
+                //The third-party response size is unknown, so default the called record count to 1.
                 caller_size = 1;
                 return null;
-            } else if (StringUtils.equals("4", isIntegrate)) {//文件服务
-                //返回文件
+            } else if (StringUtils.equals("4", isIntegrate)) {//File service.
+                //Return the file.
                 apiMappingEngine.executeFileService(api, response);
-                //暂时对于三方接口，并不知道具体的返回信息，所以默认使用调取量1
+                //The third-party response size is unknown, so default the called record count to 1.
                 caller_size = 1;
                 return null;
             } else {
-                //代码的执行
+                //Execute the request.
                 Object value = apiMappingEngine.execute(api, params);
                 try {
                     if(StringUtils.isNotEmpty(api.getResDataType())){
-                        if(StringUtils.equals("1", api.getResDataType())){//详情只有一条
+                        if(StringUtils.equals("1", api.getResDataType())){//A detail response contains one record.
                             caller_size = 1;
-                        }else if(StringUtils.equals("2", api.getResDataType())){//列表
+                        }else if(StringUtils.equals("2", api.getResDataType())){//List response.
                             List<Map<String, Object>> list = (List<Map<String, Object>>)value;
                             caller_size = list.size();
-                        }else{//分页
+                        }else{//Paginated response.
                             PageResult<Map<String, Object>> r = (PageResult<Map<String, Object>>)value;
                             List<Map<String, Object>> data = r.getData();
                             if(StringUtils.isNotNull(data)){
@@ -168,10 +168,10 @@ public class RequestHandler {
                         }
                     }
                 }catch (Exception e){
-                    log.error("统计查询调用数据量异常",e);
+                    log.error("Failed to count query result volume",e);
                 }
                 responseValuel = value;
-                // 执行后置拦截器
+                // Execute post-interceptors.
                 requestInterceptor.postHandle(request, response, api, params, responseValuel);
                 return AjaxResult.success(responseValuel);
             }
@@ -179,23 +179,23 @@ public class RequestHandler {
             msg = e.getMessage();
             throw e;
         } finally {
-            //创建日志实体
+            //Create the log entity.
             DsApiLogDO apiLogDto = new DsApiLogDO();
             apiLogDto.setCallerStartDate(now);
-            // 计算响应时间
+            // Calculate the response time.
             long endTime = System.currentTimeMillis();
             long responseTime = endTime - timestamp;
-            //耗时
+            //Elapsed time.
             apiLogDto.setCallerTime(responseTime);
-            //信息记录
+            //Information record
             apiLogDto.setMsg(msg);
-            //处理请求是否成功
+            //Determine whether the request succeeded.
             Integer status = 1;
             if (msg != null) {
                 status = 0;
             }
             apiLogDto.setStatus(status);
-            //调用数据量
+            //Called record count
             apiLogDto.setCallerSize(caller_size);
             apiLogDto.setApiId(api_id);
             apiLogDto.setCallerUrl(caller_url);
@@ -206,7 +206,7 @@ public class RequestHandler {
             apiLogDto.setCatId(cat_id);
             apiLogDto.setCatCode(cat_code);
             log.info("asyncTask.doTask(apiLogDto);");
-            // 异步记录api日志
+            // Record the API log asynchronously.
             asyncTask.doTask(apiLogDto);
         }
     }

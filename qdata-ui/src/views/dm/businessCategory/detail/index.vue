@@ -26,8 +26,8 @@
         nameKey: 'name',
         statusKey: 'validFlag',
         statusOptions: [
-          { label: td('dm.businessCategory.enableText', '启用'), value: 'true', color: '#13ce66' },
-          { label: td('dm.businessCategory.disableText', '禁用'), value: 'false', color: '#ff4949' },
+          { label: td('dm.businessCategory.enableText', 'Enable'), value: 'true', color: '#13ce66' },
+          { label: td('dm.businessCategory.disableText', 'Disable'), value: 'false', color: '#ff4949' },
         ],
       }"
       :items="detailItems"
@@ -35,10 +35,10 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="td('dm.businessCategory.relatedDataDomain', '关联数据域')" name="1">
+        <el-tab-pane :label="td('dm.businessCategory.relatedDataDomain', 'Related Data Domain')" name="1">
           <asset :businessLayerDetail="businessLayerDetail"></asset>
         </el-tab-pane>
-        <el-tab-pane :label="td('dm.businessCategory.detailInfo', '详细信息')" name="2">
+        <el-tab-pane :label="td('dm.businessCategory.detailInfo', 'Detail Information')" name="2">
           <info :businessLayerDetail="businessLayerDetail"></info>
         </el-tab-pane>
       </el-tabs>
@@ -74,20 +74,20 @@ const data = reactive({
 const { businessLayerDetail } = toRefs(data);
 
 const detailItems = computed(() => [
-  { label: td('dm.businessCategory.upperCategory', '上级业务分类'), key: "parentName" },
-  { label: td('dm.businessCategory.englishAbbr', '英文简写'), key: "engName" },
-  { label: td('dm.businessCategory.ownerId', '负责人'), key: "ownerName" },
+  { label: td('dm.businessCategory.upperCategory', 'Parent Business Category'), key: "parentName" },
+  { label: td('dm.businessCategory.englishAbbr', 'English Abbreviation'), key: "engName" },
+  { label: td('dm.businessCategory.ownerId', 'Responsible Person'), key: "ownerName" },
   {
-    label: td('common.texts.description', '描述'),
+    label: td('common.texts.description', 'Description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",
     className: "mt2 mb2",
   },
-  { label: td('common.texts.createdBy', '创建人'), key: "createBy" },
-  { label: td('common.texts.createdTime', '创建时间'), key: "createTime" },
-  { label: td('common.texts.updatedTime', '更新时间'), key: "updateTime" },
-  { label: td('common.texts.remark', '备注'), key: "remark", span: 24 },
+  { label: td('common.texts.createdBy', 'Created By'), key: "createBy" },
+  { label: td('common.texts.createdTime', 'Created Time'), key: "createTime" },
+  { label: td('common.texts.updatedTime', 'Updated Time'), key: "updateTime" },
+  { label: td('common.texts.remark', 'Remark'), key: "remark", span: 24 },
 ]);
 
 function getDetail(id) {

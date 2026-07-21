@@ -77,7 +77,7 @@ public class DppEtlTaskLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppEtlTaskLogDO> list = (List<DppEtlTaskLogDO>) dppEtlTaskLogService.getDppEtlTaskLogPage(exportReqVO).getRows();
         ExcelUtil<DppEtlTaskLogRespVO> util = new ExcelUtil<>(DppEtlTaskLogRespVO.class);
-        util.exportExcel(response, DppEtlTaskLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppEtlTaskLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成任务-日志列表")

@@ -277,7 +277,7 @@ const getDpDataElem = async () => {
     DpData.value = response.data;
     console.log("DpData", DpData.value);
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 const handleDatasourceChange = (value) => {
@@ -462,9 +462,8 @@ const confirmDialog = () => {
       emit("confirm", form.value);
       closeDialog();
     } else {
-      console.log("表单验证失败");
+      console.log("Form validation failed");
     }
   });
 };
 </script>
-

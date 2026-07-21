@@ -30,7 +30,7 @@
     <artifactId>qdata-module-att-api</artifactId>
 
     <description>
-        qdata-module-att-api系统模块
+        qdata-module-att-api system module
     </description>
 
     <dependencies>

@@ -30,7 +30,7 @@
     <artifactId>qdata-security</artifactId>
 
     <description>
-        qdata-security 框架核心
+        qdata-security framework core
     </description>
 
     <dependencies>

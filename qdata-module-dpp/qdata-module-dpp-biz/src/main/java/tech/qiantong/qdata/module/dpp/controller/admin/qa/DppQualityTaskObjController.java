@@ -75,7 +75,7 @@ public class DppQualityTaskObjController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppQualityTaskObjDO> list = (List<DppQualityTaskObjDO>) dppQualityTaskObjService.getDppQualityTaskObjPage(exportReqVO).getRows();
         ExcelUtil<DppQualityTaskObjRespVO> util = new ExcelUtil<>(DppQualityTaskObjRespVO.class);
-        util.exportExcel(response, DppQualityTaskObjConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppQualityTaskObjConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量任务-稽查对象列表")

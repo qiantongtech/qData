@@ -20,6 +20,7 @@ package tech.qiantong.qdata.common.utils.sql;
 
 import tech.qiantong.qdata.common.exception.UtilException;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
  * sql operation tool class
@@ -50,11 +51,14 @@ public class SqlUtil
     {
         if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value))
         {
-            throw new UtilException("参数不符合规范，不能进行查询");
+            throw new UtilException(MessageUtils.messageWithFallback(
+                    "sys.error.sql.param.invalid", "The parameter is invalid; the query cannot be performed"));
         }
         if (StringUtils.length(value) > ORDER_BY_MAX_LENGTH)
         {
-            throw new UtilException("参数已超过最大限制，不能进行查询");
+            throw new UtilException(MessageUtils.messageWithFallback(
+                    "sys.error.sql.param.limit.exceeded",
+                    "The parameter exceeds the maximum limit; the query cannot be performed"));
         }
         return value;
     }
@@ -81,7 +85,8 @@ public class SqlUtil
         {
             if (StringUtils.indexOfIgnoreCase(value, sqlKeyword) > -1)
             {
-                throw new UtilException("参数存在SQL注入风险");
+                throw new UtilException(MessageUtils.messageWithFallback(
+                        "sys.error.sql.injection.risk", "The parameter poses an SQL injection risk"));
             }
         }
     }

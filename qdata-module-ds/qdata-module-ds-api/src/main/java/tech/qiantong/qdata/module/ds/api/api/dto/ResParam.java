@@ -33,27 +33,27 @@ public class ResParam implements Serializable {
 
     private String fieldId;
     /**
-     * 字段名称
+     * Field name
      */
     @NotBlank(message = "字段名称不能为空")
     private String fieldName;
 
     /**
-     * 描述
+     * Description
      */
     @NotBlank(message = "描述不能为空")
     private String fieldComment;
 
     /**
-     * 数据类型
+     * Data type
      */
     @NotBlank(message = "数据类型不能为空")
     private String dataType;
 
     private String exampleValue;
 
-//    @ApiModelProperty(value = "示例值")
-//    @NotBlank(message = "示例值不能为空")
+//    @ApiModelProperty(value = "Example value")
+//    @NotBlank(message = "Example value cannot be empty")
 //    private String exampleValue;
 
     private String fieldAliasName;

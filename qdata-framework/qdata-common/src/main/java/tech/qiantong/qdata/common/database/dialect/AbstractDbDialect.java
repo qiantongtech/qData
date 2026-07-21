@@ -113,8 +113,8 @@ public abstract class AbstractDbDialect implements DbDialect {
         try (Connection conn = dataSource.getConnection()) {
             return conn.isValid(0);
         } catch (SQLException e) {
-            log.error("数据库连接失败,稍后重试", e);
-            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
+            log.error("Database connection failed; retry later", e);
+            throw new DataQueryException("db.error.connection.retry", "Database connection failed, please try again later");
         }
     }
 
@@ -137,7 +137,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

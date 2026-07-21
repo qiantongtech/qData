@@ -70,7 +70,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
     @Override
     public AjaxResult getColumnByAssetId(DaAssetColumnPageReqVO pageReqVO) {
         if (StringUtils.isEmpty(pageReqVO.getAssetId())) {//Asset ID cannot be empty
-            return AjaxResult.error(MessageUtils.messageWithFallback("da.error.asset.id.empty", "资产id不能为空"));
+            return AjaxResult.error(MessageUtils.messageWithFallback("da.error.asset.id.empty", "Asset ID cannot be empty"));
         }
         List<DaAssetColumnDO> list = this.lambdaQuery()
                 .eq(DaAssetColumnDO::getAssetId, pageReqVO.getAssetId())
@@ -117,7 +117,8 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
                     daAssetColumnDO.setDataElemCodeName(dpDataElemRespDTO.getName());
                 }
                 if (dpDataElemRespDTO.getColumnId() != null && dpDataElemRespDTO.getColumnId().contains(daAssetColumnDO.getId())) {
-                    elementName = dpDataElemRespDTO.getName() + "等";
+            elementName = MessageUtils.messageWithFallback(
+                    "da.label.multiple.items", "{0} and others", dpDataElemRespDTO.getName());
                 }
             }
             daAssetColumnDO.setRelDataElmeName(elementName);
@@ -137,7 +138,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
     public int updateDaAssetColumn(DaAssetColumnSaveReqVO updateReqVO) {
         DaAssetDO daAssetDO = daAssetService.getById(updateReqVO.getAssetId());
         if (daAssetDO == null) {
-            throw new ServiceException("da.error.asset.notfound", "数据资产不存在");
+            throw new ServiceException("da.error.asset.notfound", "Data asset does not exist");
         }
         // Maintain data element asset relation info table
         DpDataElemAssetRelReqDTO dpDataElemAssetRelReqDTO = new DpDataElemAssetRelReqDTO();
@@ -203,7 +204,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
     @Override
     public String importDaAssetColumn(List<DaAssetColumnRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -222,16 +223,16 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
                             daAssetColumnMapper.updateById(daAssetColumnDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                    "数据更新成功，ID为 " + daAssetColumnId + " 的数据资产字段记录。", daAssetColumnId, "数据资产字段"));
+                                    "Data update successful, ID {0} {1} record.", daAssetColumnId, MessageUtils.messageWithFallback("da.entity.asset.column", "Data asset column")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                    "数据更新失败，ID为 " + daAssetColumnId + " 的数据资产字段记录不存在。", daAssetColumnId, "数据资产字段"));
+                                    "Data update failed, ID {0} {1} record does not exist.", daAssetColumnId, MessageUtils.messageWithFallback("da.entity.asset.column", "Data asset column")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DaAssetColumnDO> queryWrapper = new QueryWrapper<>();
@@ -241,17 +242,17 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
                         daAssetColumnMapper.insert(daAssetColumnDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                "数据插入成功，ID为 " + daAssetColumnId + " 的数据资产字段记录。", daAssetColumnId, "数据资产字段"));
+                                "Data insert successful, ID {0} {1} record.", daAssetColumnId, MessageUtils.messageWithFallback("da.entity.asset.column", "Data asset column")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                "数据插入失败，ID为 " + daAssetColumnId + " 的数据资产字段记录已存在。", daAssetColumnId, "数据资产字段"));
+                                "Data insert failed, ID {0} {1} record already exists.", daAssetColumnId, MessageUtils.messageWithFallback("da.entity.asset.column", "Data asset column")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -260,12 +261,12 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

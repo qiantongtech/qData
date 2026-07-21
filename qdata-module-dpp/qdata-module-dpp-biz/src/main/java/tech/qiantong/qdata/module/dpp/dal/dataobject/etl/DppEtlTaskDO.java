@@ -116,16 +116,16 @@ public class DppEtlTaskDO extends BaseEntity {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Quartz调度任务id，任务表也保存一份，方便按任务直接找到对应的 Quartz Job。 */
+    /** Quartz scheduled task ID stored on the task for direct lookup of the corresponding Quartz job. */
     private Long quartzId;
 
-    /** 调度器 */
+    /** Scheduler */
     private String scheduler;
 
-    /** 执行器 */
+    /** Executor */
     private String actuator;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
     /** Delete flag */

@@ -78,7 +78,7 @@ public class AttAuditRuleController extends BaseController {
         List<AttAuditRuleDO> list = (List<AttAuditRuleDO>) attAuditRuleService.getAttAuditRulePage(exportReqVO)
                 .getRows();
         ExcelUtil<AttAuditRuleRespVO> util = new ExcelUtil<>(AttAuditRuleRespVO.class);
-        util.exportExcel(response, AttAuditRuleConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttAuditRuleConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入稽查规则列表")

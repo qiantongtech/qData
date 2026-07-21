@@ -30,7 +30,7 @@ import tech.qiantong.qdata.module.att.api.client.dto.AttClientRespDTO;
 import javax.annotation.Resource;
 
 /**
- * Sa-Token OAuth2：自定义数据加载器
+ * Sa-Token OAuth2 custom data loader.
  * @author Ming
  */
 @Component
@@ -40,9 +40,9 @@ public class DsDataLoaderImpl implements SaOAuth2DataLoader {
     private ClientApi clientApi;
 
     /**
-     * 根据 clientId 获取 Client 信息
-     * @param clientId 应用id
-     * @return Client 应用信息 Model
+     * Gets client information by clientId.
+     * @param clientId application ID
+     * @return the client application model
      */
     @Override
     public SaClientModel getClientModel(String clientId) {
@@ -52,13 +52,13 @@ public class DsDataLoaderImpl implements SaOAuth2DataLoader {
             return new SaClientModel()
                     // client id
                     .setClientId(client.getId().toString())
-                    // client 秘钥
+                    // Client secret.
                     .setClientSecret(client.getSecret())
-                    // 所有允许授权的 url
+                    // All authorized URLs.
                     .addAllowRedirectUris("*")
-                    // 所有签约的权限
+                    // All granted permissions.
                     .addContractScopes("openid", "userid", "userinfo")
-                    // 所有允许的授权模式
+                    // All allowed grant types.
                     .addAllowGrantTypes(
                             GrantType.authorization_code,
                             GrantType.implicit,
@@ -72,14 +72,14 @@ public class DsDataLoaderImpl implements SaOAuth2DataLoader {
     }
 
     /**
-     * 根据 clientId 和 loginId 获取 openid
-     * @param clientId 应用id
-     * @param loginId 账号id
+     * Gets the openid by clientId and loginId.
+     * @param clientId application ID
+     * @param loginId account ID
      * @return openid
      */
     @Override
     public String getOpenid(String clientId, Object loginId) {
-        // todo 暂时随机生成
+        // TODO: currently generated randomly.
         return IdUtil.fastSimpleUUID();
     }
 

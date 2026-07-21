@@ -65,7 +65,7 @@ public class DgDataElemServiceImpl extends ServiceImpl<DgDataElemMapper, DgDataE
         // Batch delete data elements
         boolean exists = columnApiService.existsByDataElemIds(idList);
         if (exists) {
-            throw new ServiceException("dg.error.delete.ref.field", "被字段元数据引用，不可删除");
+            throw new ServiceException("dg.error.delete.ref.field", "Referenced by field metadata, cannot be deleted");
         }
         return mapper.deleteBatchIds(idList);
     }

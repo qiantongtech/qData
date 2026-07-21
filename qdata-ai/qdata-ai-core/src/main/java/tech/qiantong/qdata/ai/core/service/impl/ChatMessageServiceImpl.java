@@ -134,16 +134,17 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         // Get conversation information
         AiChatConversationDO conversation = aiChatConversationService.getAiChatConversationById(sendReqVO.getConversationId());
         if (conversation == null) {
-            return Flux.error(new ServiceException("对话不存在"));
+            return Flux.error(new ServiceException("ai.error.conversation.notfound", "Conversation does not exist"));
         }
         if (!conversation.getJoinConditionMatchFlag()) {
-            return Flux.error(new ServiceException("请手动配置关联信息"));
+            return Flux.error(new ServiceException("ai.error.relation.required",
+                    "Please configure the relationship manually"));
         }
 
         //Get data source information
         DaDatasourceRespDTO datasource = daDatasourceApiService.getDatasourceById(conversation.getDatasourceId());
         if (datasource == null) {
-            return Flux.error(new ServiceException("ai.error.datasource.notfound", "数据源不存在"));
+            return Flux.error(new ServiceException("ai.error.datasource.notfound", "Data source does not exist"));
         }
         String datasourceType = datasource.getDatasourceType();
         JSONObject datasourceConfig = JSONObject.parseObject(datasource.getDatasourceConfig());
@@ -184,7 +185,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                     contextMessages.add(new UserMessage(msg.getContent()));
                 } else {
                     // AI reply
-                    contextMessages.add(new UserMessage("助手回复: " + msg.getContent()));
+                    contextMessages.add(new UserMessage("Assistant response: " + msg.getContent()));
                 }
             }
         }
@@ -212,7 +213,7 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         //Add prompt word
         promptMessages.add(new SystemMessage(promptStr));
         //Add user requirements
-        promptMessages.add(new UserMessage("\n【统计需求】\n" + contentObj.getString("msg")));
+        promptMessages.add(new UserMessage("\n[Statistical Requirements]\n" + contentObj.getString("msg")));
         //Add context
         promptMessages.addAll(contextMessages);
         Prompt prompt = new Prompt(promptMessages);
@@ -233,7 +234,8 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                 .concatWith(Mono.defer(() -> {
                     JSONObject content = JSONObject.parseObject(contentBuffer.toString());
                     if (!content.getBoolean("success")) {
-                        content.put("msg", "对话异常: " + content.getString("msg"));
+                        content.put("msg", MessageUtils.messageWithFallback(
+                                "ai.error.conversation.detail", "Conversation error: {0}", content.getString("msg")));
                         content.put("type", ChatMessageTypeEnum.ERROR.getType());
                     } else {
                         //Determine whether it is a smart chart
@@ -302,10 +304,11 @@ public class ChatMessageServiceImpl implements IChatMessageService {
                 .publishOn(Schedulers.boundedElastic())
                 .doOnError(error -> {
                     error.printStackTrace();
-                    log.error("LLM调用失败", error);
+                    log.error("LLM call failed", error);
                     // Save error information to database
                     JSONObject errorContent = new JSONObject();
-                    errorContent.put("msg", "对话异常: " + error.getMessage());
+                    errorContent.put("msg", MessageUtils.messageWithFallback(
+                            "ai.error.conversation.detail", "Conversation error: {0}", error.getMessage()));
                     errorContent.put("type", ChatMessageTypeEnum.ERROR.getType());
                     aiMessageTemplate.setContent(errorContent.toString());
                     saveRobotMessage(aiMessageTemplate, userId);
@@ -317,29 +320,30 @@ public class ChatMessageServiceImpl implements IChatMessageService {
         //Get message data
         AiChatMessageDO message = aiChatMessageService.getById(exportDetailDataReqVO.getMessageId());
         if (message == null) {
-            throw new ServiceException("ai.error.message.notfound", "消息不存在");
+            throw new ServiceException("ai.error.message.notfound", "Message does not exist");
         }
         if (StringUtils.isBlank(message.getReplyType()) || !ReplyTypeEnum.CHART.getType().equals(message.getReplyType())) {
-            throw new ServiceException("ai.error.message.export.unsupported", "此消息不支持导出");
+            throw new ServiceException("ai.error.message.export.unsupported", "This message does not support export");
         }
         if (StringUtils.isBlank(message.getContent())) {
-            throw new ServiceException("ai.error.message.content.empty", "消息内容为空");
+            throw new ServiceException("ai.error.message.content.empty", "Message content is empty");
         }
 
         JSONObject content = JSONObject.parseObject(message.getContent());
         JSONObject detailData = content.getJSONObject("detailData");
         if (detailData == null) {
-            throw new ServiceException("ai.error.message.content.error", "消息内容错误");
+            throw new ServiceException("ai.error.message.content.error", "Message content error");
         }
 
         List<String> label = detailData.getList("label", String.class);
         List<JSONObject> dataList = detailData.getList("list", JSONObject.class);
         if (dataList == null || dataList.isEmpty()) {
-            throw new ServiceException("ai.error.message.content.error", "消息内容错误");
+            throw new ServiceException("ai.error.message.content.error", "Message content error");
         }
 
         //Export
-        exportByList(response, label, dataList, "明细列表");
+        exportByList(response, label, dataList,
+                MessageUtils.messageWithFallback("ai.export.detail.title", "Detail List"));
     }
 
     List<FactDimensionRelation> genRelations(AiChatConversationDO conversation) {
@@ -461,17 +465,17 @@ public class ChatMessageServiceImpl implements IChatMessageService {
             // Get metadata. If it is not a query statement, some drivers will return null or report an error here or during execution.
             ResultSetMetaData metaData = ps.getMetaData();
             if (metaData == null) {
-                throw new ServiceException("ai.error.sql.not.query", "该 SQL 不是查询语句或语法有误");
+                throw new ServiceException("ai.error.sql.not.query", "This SQL is not a query statement or has syntax errors");
             }
         } catch (SQLException e) {
-            throw new ServiceException("ai.error.sql.syntax", "SQL 语法错误: " + e.getMessage(), e.getMessage());
+            throw new ServiceException("ai.error.sql.syntax", "SQL syntax error", e.getMessage());
         }
     }
 
     @SneakyThrows
     private static void exportByList(HttpServletResponse response, List<String> labelList, List<JSONObject> dataList, String sheetName) {
         if (dataList == null || dataList.isEmpty()) {
-            throw new ServiceException("ai.error.form.notfound", "暂无表单信息");
+            throw new ServiceException("ai.error.form.notfound", "No form information available");
         }
 
         // Get all column names of the first row of data as order

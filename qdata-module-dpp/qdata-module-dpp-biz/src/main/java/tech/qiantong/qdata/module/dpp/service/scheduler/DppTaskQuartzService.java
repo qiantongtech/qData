@@ -13,8 +13,8 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import javax.annotation.Resource;
 
 /**
- * DolphinScheduler 调度器服务
- * 用于管理数据采集任务的调度和执行
+ * DolphinScheduler service.
+ * Manages scheduling and execution for data collection tasks.
  *
  * @author qdata
  * @date 2025-12-16
@@ -27,7 +27,7 @@ public class DppTaskQuartzService {
     private ISchedulerAdapter schedulerAdapter;
 
     /**
-     * 创建调度器
+     * Creates a scheduler.
      */
     public Long create(DppEtlTaskDO dppEtlTaskDO, String invokeTarget) {
         ScheduleCommand build = ScheduleCommand.builder().jobName(dppEtlTaskDO.getName())
@@ -39,14 +39,14 @@ public class DppTaskQuartzService {
         } catch (Exception e) {
             ScheduleRespDTO scheduleRespDTO = schedulerAdapter.selectScheduleById(build);
             if (scheduleRespDTO == null) {
-                throw new ServiceException("dpp.error.scheduler.create", "创建调度器失败！");
+                throw new ServiceException("dpp.error.scheduler.create", "Failed to create scheduler!");
             }
         }
         return schedule;
     }
 
     /**
-     * 修改调度器
+     * Updates a scheduler.
      */
     public void update(Long id,String cronExpression){
         try {
@@ -55,13 +55,13 @@ public class DppTaskQuartzService {
                             .jobName(scheduleRespDTO.getJobName()).jobGroup(scheduleRespDTO.getJobGroup()).invokeTarget(scheduleRespDTO.getInvokeTarget()).misfirePolicy(scheduleRespDTO.getMisfirePolicy())
                     .concurrent(scheduleRespDTO.getConcurrent()).executionType(scheduleRespDTO.getExecutionType()).status(scheduleRespDTO.getStatus()).cronExpression(cronExpression).build());
         } catch (Exception e) {
-            log.error("修改调度器失败！",e);
-            throw new ServiceException("dpp.error.scheduler.update", "修改调度器失败！");
+            log.error("Failed to update the scheduler!",e);
+            throw new ServiceException("dpp.error.scheduler.update", "Failed to update scheduler!");
         }
     }
 
     /**
-     * 下线
+     * Deactivates the scheduler.
      *
      * @param quartzId
      */
@@ -69,12 +69,12 @@ public class DppTaskQuartzService {
         try {
             schedulerAdapter.offline(ScheduleCommand.builder().id(quartzId).build());
         } catch (SchedulerException e) {
-            throw new ServiceException("dpp.error.scheduler.offline", "下线调度器失败！");
+            throw new ServiceException("dpp.error.scheduler.offline", "Failed to offline scheduler!");
         }
     }
 
     /**
-     * 上线
+     * Activates the scheduler.
      *
      * @param quartzId
      */
@@ -82,12 +82,12 @@ public class DppTaskQuartzService {
         try {
             schedulerAdapter.online(ScheduleCommand.builder().id(quartzId).build());
         } catch (SchedulerException e) {
-            throw new ServiceException("dpp.error.scheduler.online", "上线调度器失败！");
+            throw new ServiceException("dpp.error.scheduler.online", "Failed to online scheduler!");
         }
     }
 
     /**
-     * 生成任务编号
+     * Generates a task number.
      *
      * @param projectCode
      * @return

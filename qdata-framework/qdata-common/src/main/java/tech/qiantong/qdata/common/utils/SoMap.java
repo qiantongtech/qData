@@ -165,7 +165,8 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		if(value instanceof String) {
 			return SoMap.getSoMap().setJsonString((String)value);
 		}
-		throw new RuntimeException("值无法转化为SoMap: " + value);
+		throw new RuntimeException(MessageUtils.messageWithFallback(
+				"sys.error.somap.convert.fail", "Value cannot be converted to SoMap: {0}", value));
 	}
 
 	/** Get the collection (it must originally be a collection, otherwise a new collection will be created and returned) */
@@ -241,7 +242,8 @@ public class SoMap extends LinkedHashMap<String, Object> {
 				Object valueConvert = getValueByClass(value, field.getType());
 				field.set(obj, valueConvert);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new RuntimeException("属性取值出错：" + field.getName(), e);
+				throw new RuntimeException(MessageUtils.messageWithFallback(
+						"sys.error.somap.property.read.fail", "Failed to read property: {0}", field.getName()), e);
 			}
 		}
 		return obj;
@@ -532,7 +534,8 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	public SoMap checkNull(String ...keys) {
 		for (String key : keys) {
 			if(this.isNull(key)) {
-				throw new RuntimeException("参数" + key + "不能为空");
+				throw new RuntimeException(MessageUtils.messageWithFallback(
+						"sys.error.somap.param.empty", "Parameter {0} cannot be empty", key));
 			}
 		}
 		return this;
@@ -585,7 +588,8 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		// Encapsulation provided by Dashanren SpringMVC
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if(servletRequestAttributes == null) {
-			throw new RuntimeException("当前线程非JavaWeb环境");
+			throw new RuntimeException(MessageUtils.messageWithFallback(
+					"sys.error.web.context.unavailable", "The current thread is not in a Java Web environment"));
 		}
 		// Current request
 		HttpServletRequest request = servletRequestAttributes.getRequest();

@@ -22,17 +22,17 @@
         <el-form ref="daDiscoveryTaskRef" :model="form" label-width="90px" @submit.prevent :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="columnName"
-                        :rules="[{ required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' }]" :label-position="labelPosition">
-                        <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
+                    <el-form-item :label="td('dpp.integration.fieldName', 'Field Name')" prop="columnName"
+                        :rules="[{ required: true, message: td('dpp.integration.fieldNameRequired', 'Please enter field name'), trigger: 'blur' }]" :label-position="labelPosition">
+                        <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', 'Please enter field name')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.fieldType', '字段类型')" prop="columnType"
-                        :rules="[{ required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' }]" :label-position="labelPosition">
-                        <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
+                    <el-form-item :label="td('dpp.integration.fieldType', 'Field Type')" prop="columnType"
+                        :rules="[{ required: true, message: td('dpp.integration.fieldTypeRequired', 'Please select field type'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', 'Please select field type')">
                             <el-option v-for="dict in columntype" :key="dict.value" :label="dict.label"
                                 :value="dict.value"></el-option>
                         </el-select>
@@ -41,9 +41,9 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24" v-if="form.columnType == 'date'">
-                    <el-form-item :label="td('dpp.integration.dateFormat', '日期格式')" prop="format"
-                        :rules="[{ required: true, message: td('dpp.integration.dateFormatRequired', '请输入日期格式'), trigger: 'change' }]" :label-position="labelPosition">
-                        <el-input v-model="form.format" :placeholder="td('dpp.integration.dateFormatPlaceholder', '日期格式如yyyy/MM/dd')" />
+                    <el-form-item :label="td('dpp.integration.dateFormat', 'Date Format')" prop="format"
+                        :rules="[{ required: true, message: td('dpp.integration.dateFormatRequired', 'Please enter date format'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-input v-model="form.format" :placeholder="td('dpp.integration.dateFormatPlaceholder', 'Date format e.g. yyyy/MM/dd')" />
                     </el-form-item>
                 </el-col>
             </el-row>

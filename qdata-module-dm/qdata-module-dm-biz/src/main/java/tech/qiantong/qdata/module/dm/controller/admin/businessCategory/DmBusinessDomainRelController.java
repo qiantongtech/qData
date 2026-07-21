@@ -77,7 +77,7 @@ public class DmBusinessDomainRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DmBusinessDomainRelDO> list = (List<DmBusinessDomainRelDO>) dmBusinessDomainRelService.getDmBusinessDomainRelPage(exportReqVO).getRows();
         ExcelUtil<DmBusinessDomainRelRespVO> util = new ExcelUtil<>(DmBusinessDomainRelRespVO.class);
-        util.exportExcel(response, DmBusinessDomainRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DmBusinessDomainRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入业务分类数据域关联关系列表")

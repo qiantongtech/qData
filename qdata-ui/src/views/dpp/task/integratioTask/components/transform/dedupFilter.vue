@@ -31,7 +31,7 @@
         <span class="el-dialog__title">{{ currentNode?.data?.name }}</span>
         <el-tooltip
           effect="light"
-          :content="td('dpp.integration.dedupFilterTooltip', '根据指定字段判断数据是否重复，并保留第一条出现的记录')"
+          :content="td('dpp.integration.dedupFilterTooltip', 'Determines if data is duplicated based on specified fields, keeping the first occurrence (i.e., when duplicates are encountered, keeps the first one in the dataset), use with sort node')"
           placement="top"
         >
           <el-icon class="tip-icon">
@@ -51,26 +51,26 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
-              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+              { required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' },
             ]"
            :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
-              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
+              :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')"
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
-              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
               filterable
               disabled
             >
@@ -105,7 +105,7 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.column.fieldTerm', '字段') }}</span>
+        <span class="blue-text">{{ td('dpp.column.fieldTerm', 'Field Term') }}</span>
       </el-divider>
       <div class="justify-between mb15" v-if="!info">
         <el-row :gutter="15" class="btn-style">
@@ -124,7 +124,7 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
+        <el-table-column :label="td('common.display.index', 'Index')" width="80" align="left">
           <template #default="{ $index }">
             <div
               class="allowDrag"
@@ -142,11 +142,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
+        <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName">
           <template #default="scope">
             <el-select
               v-model="scope.row.columnName"
-              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               style="flex: 1"
             >
               <el-option
@@ -160,15 +160,15 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.integration.ignoreCase', '忽略大小写')"
+          :label="td('dpp.integration.ignoreCase', 'Ignore Case')"
           align="left"
           prop="ignoreCase"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
           <template #default="scope">
-            <el-select v-model="scope.row.ignoreCase" :placeholder="td('common.form.statusPlaceholder', '请选择')">
-              <el-option :label="td('dpp.integration.yes', '是')" :value="0" />
-              <el-option :label="td('dpp.integration.no', '否')" :value="1" />
+            <el-select v-model="scope.row.ignoreCase" :placeholder="td('common.form.statusPlaceholder', 'Please select status')">
+              <el-option :label="td('dpp.integration.yes', 'Yes')" :value="0" />
+              <el-option :label="td('dpp.integration.no', 'No')" :value="1" />
             </el-select>
           </template>
         </el-table-column>
@@ -201,7 +201,7 @@
           >{{ td('common.button.save') }}</el-button
         >
         <el-button type="warning" @click="handleFetchFields" v-if="!info"
-          >{{ td('dpp.integration.fetchFields', '获取字段') }}</el-button
+          >{{ td('dpp.integration.fetchFields', 'Fetch Fields') }}</el-button
         >
       </div>
     </template>
@@ -287,7 +287,7 @@ function setSort() {
 
 function handleAddField() {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
+    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
     return;
   }
   // Added field name
@@ -299,7 +299,7 @@ function handleAddField() {
   );
 
   if (!nextField) {
-    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
+    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "Add failed, no more fields to add"));
     return;
   }
 
@@ -344,7 +344,7 @@ function onResolveFields(payload) {
         tableFields.value
       );
       if (isEqual) {
-        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
+        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "Add failed, already at latest fields"));
       }
       console.log("Parent component: add all fields");
       tableFields.value = [];
@@ -499,7 +499,7 @@ const saveData = async () => {
     if (!valid) return;
     // Determine whether the table is empty
     if (!tableFields.value || tableFields.value.length === 0) {
-      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
+      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
       return;
     }
     if (!form.value.code) {

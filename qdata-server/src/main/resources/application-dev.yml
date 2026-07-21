@@ -45,8 +45,8 @@ spring:
   rabbitmq:
     host: 127.0.0.1
     port: 5672
-    username: 账号
-    password: 密码
+    username: username
+    password: password
     listener:
       simple:
         acknowledge-mode: manual
@@ -56,7 +56,7 @@ spring:
     neo4j:
       uri: bolt://127.0.0.1:7687
       username: neo4j
-      password: 密码
+      password: password
   datasource:
     druid:
       stat-view-servlet:
@@ -134,7 +134,7 @@ dm8:
   # Primary database username
   username: QDATA
   # Primary database password
-  password: 密码
+  password: password
 
 # Kingbase configuration
 kingbase8:

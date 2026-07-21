@@ -75,7 +75,7 @@ public class AttModelCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttModelCatDO> list = (List<AttModelCatDO>) attModelCatService.getAttModelCatPage(exportReqVO).getRows();
         ExcelUtil<AttModelCatRespVO> util = new ExcelUtil<>(AttModelCatRespVO.class);
-        util.exportExcel(response, AttModelCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttModelCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入逻辑模型类目管理列表")
@@ -120,7 +120,7 @@ public class AttModelCatController extends BaseController {
         return CommonResult.toAjax(attModelCatService.updateAttModelCat(attModelCat));
     }
 
-    //    @Operation(summary = "删除逻辑模型类目管理")
+    //    @Operation(summary = "Delete logical model category")
 //    @PreAuthorize("@ss.hasPermi('att:modelCat:remove')")
 //    @Log(title = "log.op.title.att.model.cat", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{IDs}")

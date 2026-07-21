@@ -22,7 +22,7 @@
         <template #header>
             <div class="justify">
                 <span class="el-dialog__title">{{ currentNode?.data?.name }}</span>
-                <el-tooltip effect="light" :content="td('dpp.integration.fieldBuilderTooltip', '用于通过拼接多个字段值生成新字段')" placement="top">
+                <el-tooltip effect="light" :content="td('dpp.integration.fieldBuilderTooltip', 'Used to generate new fields by concatenating multiple field values, supports prefix, suffix and delimiter settings, commonly used for constructing unique identifiers or business codes')" placement="top">
                     <el-icon class="tip-icon">
                         <InfoFilled />
                     </el-icon>
@@ -33,14 +33,14 @@
             :disabled="info" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name"
-                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]" :label-position="labelPosition">
-                        <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+                    <el-form-item :label="td('dpp.integration.nodeName', 'Node Name')" prop="name"
+                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
-                        <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
+                    <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
+                        <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')" filterable disabled>
                             <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label"
                                 :value="dict.value" />
                         </el-select>
@@ -49,48 +49,48 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.operationType', '操作类型')" prop="taskParams.fieldDerivationType" :rules="[
-                        { required: true, message: td('dpp.integration.operationTypeRequired', '请输入操作类型'), trigger: 'change' }
+                    <el-form-item :label="td('dpp.integration.operationType', 'Operation Type')" prop="taskParams.fieldDerivationType" :rules="[
+                        { required: true, message: td('dpp.integration.operationTypeRequired', 'Please enter operation type'), trigger: 'change' }
                     ]" :label-position="labelPosition">
-                        <el-select v-model="form.taskParams.fieldDerivationType" :placeholder="td('dpp.integration.operationTypePlaceholder', '请选择操作类型')">
+                        <el-select v-model="form.taskParams.fieldDerivationType" :placeholder="td('dpp.integration.operationTypePlaceholder', 'Please select operation type')">
                             <el-option v-for="item in deriveFieldTypes" :key="item.value" :label="item.label"
                                 :value="item.value" :disabled="item.value !== 'FIELD_DERIVE_CONCAT'" />
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12" v-if="form.taskParams.fieldDerivationType == 'FIELD_DERIVE_CONCAT'">
-                    <el-form-item :label="td('dpp.integration.newFieldName', '新增字段名称')" prop="taskParams.fieldDerivationName" :rules="[
-                        { required: true, message: td('dpp.integration.newFieldNameRequired', '请输入新增字段名称'), trigger: 'change' }]" :label-position="labelPosition">
+                    <el-form-item :label="td('dpp.integration.newFieldName', 'New Field Name')" prop="taskParams.fieldDerivationName" :rules="[
+                        { required: true, message: td('dpp.integration.newFieldNameRequired', 'Please enter new field name'), trigger: 'change' }]" :label-position="labelPosition">
                         <template #label>
                             <div class="justify-center">
-                                <span>{{ td('dpp.integration.newFieldName', '新增字段名称') }}</span>
-                                <el-tooltip effect="light" :content="td('dpp.integration.newFieldNameTooltip', '生成结果将写入该字段，作为新列追加到数据中')" placement="top">
+                                <span>{{ td('dpp.integration.newFieldName', 'New Field Name') }}</span>
+                                <el-tooltip effect="light" :content="td('dpp.integration.newFieldNameTooltip', 'Generated result will be written to this field, appended as a new column')" placement="top">
                                     <el-icon class="tip-icon">
                                         <InfoFilled />
                                     </el-icon>
                                 </el-tooltip>
                             </div>
                         </template>
-                        <el-input v-model="form.taskParams.fieldDerivationName" :placeholder="td('dpp.integration.newFieldNamePlaceholder', '请输入新增字段名称')" />
+                        <el-input v-model="form.taskParams.fieldDerivationName" :placeholder="td('dpp.integration.newFieldNamePlaceholder', 'Please enter new field name')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.prefix', '前缀')" prop="taskParams.fieldDerivationPrefix" :label-position="labelPosition">
-                        <el-input v-model="form.taskParams.fieldDerivationPrefix" :placeholder="td('dpp.integration.prefixPlaceholder', '请输入后缀')" />
+                    <el-form-item :label="td('dpp.integration.prefix', 'Prefix')" prop="taskParams.fieldDerivationPrefix" :label-position="labelPosition">
+                        <el-input v-model="form.taskParams.fieldDerivationPrefix" :placeholder="td('dpp.integration.prefixPlaceholder', 'Please enter prefix')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.suffix', '后缀')" prop="taskParams.fieldDerivationSuffix" :label-position="labelPosition">
-                        <el-input v-model="form.taskParams.fieldDerivationSuffix" :placeholder="td('dpp.integration.prefixPlaceholder', '请输入后缀')" />
+                    <el-form-item :label="td('dpp.integration.suffix', 'Suffix')" prop="taskParams.fieldDerivationSuffix" :label-position="labelPosition">
+                        <el-input v-model="form.taskParams.fieldDerivationSuffix" :placeholder="td('dpp.integration.prefixPlaceholder', 'Please enter prefix')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.delimiter', '连接符')" prop="taskParams.delimiter" :label-position="labelPosition">
-                        <el-input v-model="form.taskParams.delimiter" :placeholder="td('dpp.integration.delimiterPlaceholder', '请输入连接符')" />
+                    <el-form-item :label="td('dpp.integration.delimiter', 'Delimiter')" prop="taskParams.delimiter" :label-position="labelPosition">
+                        <el-input v-model="form.taskParams.delimiter" :placeholder="td('dpp.integration.delimiterPlaceholder', 'Please enter delimiter')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -103,11 +103,11 @@
             </el-row>
             <div class="mb10" v-if="tableFields.length > 0"
                 style="display: flex; align-items: flex-start; margin-left: 38px;">
-                <span style="font-weight: 500; white-space: nowrap; margin-right: 10px;">{{ td('dpp.integration.generationRule', '生成规则') }}</span>
+                <span style="font-weight: 500; white-space: nowrap; margin-right: 10px;">{{ td('dpp.integration.generationRule', 'Generation Rule') }}</span>
                 <div v-html="expressionPreviewHtml" style="flex: 1; white-space: pre-wrap;"></div>
             </div>
             <el-divider content-position="center">
-                <span class="blue-text">{{ td('dpp.integration.fieldValues', '字段值') }}</span>
+                <span class="blue-text">{{ td('dpp.integration.fieldValues', 'Field Values') }}</span>
             </el-divider>
             <div class="justify-between mb15">
                 <el-row :gutter="15" class="btn-style">
@@ -120,7 +120,7 @@
             </div>
             <el-table stripe height="310px" :data="tableFields" v-loading="loadingList" ref="dragTable"
                 row-key="columnName">
-                <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
+                <el-table-column :label="td('common.display.index', 'Index')" width="80" align="left">
                     <template #default="{ $index }">
                         <div class="allowDrag"
                             style="cursor: move; display: flex; justify-content: center; align-items: center;">
@@ -131,10 +131,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
+                <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName">
                     <template #default="scope">
 
-                        <el-select v-model="scope.row.columnName" :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')" style="flex: 1">
+                        <el-select v-model="scope.row.columnName" :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')" style="flex: 1">
                             <el-option v-for="item in inputFields" :key="item.value" :label="item.label"
                                 :value="item.columnName" :disabled="isOptionDisabled(item.columnName, scope.row)" />
                         </el-select>
@@ -223,13 +223,13 @@ const props = defineProps({
     graph: { type: Object, default: () => ({}) },
 });
 const deriveFieldTypes = [
-    { value: 'FIELD_DERIVE_CONCAT', label: td('dpp.integration.concat', '拼接') },
-    { value: 'FIELD_DERIVE_SUBSTRING', label: td('dpp.integration.substring', '截取') },
-    { value: 'FIELD_DERIVE_REPLACE', label: td('dpp.integration.replaceLabel', '替换') },
-    { value: 'FIELD_DERIVE_EXPRESSION', label: td('dpp.integration.expression', '表达式') },
-    { value: 'FIELD_DERIVE_HASH', label: td('dpp.integration.hash', '哈希') },
-    { value: 'FIELD_DERIVE_REGEX', label: td('dpp.integration.regexExtract', '正则提取') },
-    { value: 'FIELD_DERIVE_CONSTANT', label: td('dpp.integration.constantAssignment', '常量赋值') }
+    { value: 'FIELD_DERIVE_CONCAT', label: td('dpp.integration.concat', 'Concatenate') },
+    { value: 'FIELD_DERIVE_SUBSTRING', label: td('dpp.integration.substring', 'Substring') },
+    { value: 'FIELD_DERIVE_REPLACE', label: td('dpp.integration.replaceLabel', 'Replace') },
+    { value: 'FIELD_DERIVE_EXPRESSION', label: td('dpp.integration.expression', 'Expression') },
+    { value: 'FIELD_DERIVE_HASH', label: td('dpp.integration.hash', 'Hash') },
+    { value: 'FIELD_DERIVE_REGEX', label: td('dpp.integration.regexExtract', 'Regex Extract') },
+    { value: 'FIELD_DERIVE_CONSTANT', label: td('dpp.integration.constantAssignment', 'Constant Assignment') }
 ]
 let dragTable = ref(null);
 let sortableInstance = null;
@@ -262,7 +262,7 @@ function setSort() {
 
 function handleAddField() {
     if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-        proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
+        proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
         return;
     }
     // Added field name
@@ -274,7 +274,7 @@ function handleAddField() {
     );
 
     if (!nextField) {
-        proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
+        proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "Add failed, no more fields to add"));
         return;
     }
 
@@ -299,7 +299,7 @@ const handleFetchFields = () => {
         tableNames.length === inputNames.length &&
         tableNames.every((name, idx) => name === inputNames[idx])
     ) {
-        return proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
+        return proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "Add failed, already at latest fields"));
     }
     showConflictDialog.value = true;
 };
@@ -459,7 +459,7 @@ const saveData = async () => {
         if (!valid) return;
         // Determine whether the table is empty
         if (!tableFields.value || tableFields.value.length === 0) {
-            proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
+            proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
             return;
         }
         if (!form.value.code) {

@@ -168,7 +168,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         long min = diff % nd % nh / nm;
         // Calculate the difference in seconds //output the result
         // long sec = diff % nd % nh % nm / ns;
-        return day + "天" + hour + "小时" + min + "分钟";
+        return MessageUtils.messageWithFallback("common.time.distance",
+                "{0} days {1} hours {2} minutes", day, hour, min);
     }
 
     /**

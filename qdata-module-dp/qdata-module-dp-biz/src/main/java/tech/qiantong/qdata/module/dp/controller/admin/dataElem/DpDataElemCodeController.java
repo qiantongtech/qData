@@ -79,7 +79,7 @@ public class DpDataElemCodeController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpDataElemCodeDO> list = (List<DpDataElemCodeDO>) dpDataElemCodeService.getDpDataElemCodePage(exportReqVO).getRows();
         ExcelUtil<DpDataElemCodeRespVO> util = new ExcelUtil<>(DpDataElemCodeRespVO.class);
-        util.exportExcel(response, DpDataElemCodeConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpDataElemCodeConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据元代码列表")

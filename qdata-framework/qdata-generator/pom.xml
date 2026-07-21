@@ -30,7 +30,7 @@
     <artifactId>qdata-generator</artifactId>
 
     <description>
-        generator代码生成
+        Generator code generation
     </description>
 
     <dependencies>

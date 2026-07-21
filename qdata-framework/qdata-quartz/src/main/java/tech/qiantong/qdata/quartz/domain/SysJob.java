@@ -70,7 +70,7 @@ public class SysJob extends BaseEntity
     private String concurrent;
 
 
-    /** 任务状态（0正常 1暂停） */
+    /** Task status (0: active, 1: paused) */
     @Excel(name = "任务状态", readConverterExp = "0=正常,1=暂停")
     private String status;
 

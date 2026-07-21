@@ -20,10 +20,10 @@
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item :label="td('dpp.integration.trimSpaceRule', '去除空格规则')" prop="handleType">
+        <el-form-item :label="td('dpp.integration.trimSpaceRule', 'Trim Space Rule')" prop="handleType">
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">{{ td('dpp.integration.trimLeadingTrailing', '去除前后空格') }}</el-radio>
-            <el-radio :value="'2'">{{ td('dpp.integration.trimAll', '去除所有空格') }}</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.integration.trimLeadingTrailing', 'Trim Leading/Trailing Spaces') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.integration.trimAll', 'Trim All Spaces') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -49,9 +49,9 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const handleTypeText = computed(() =>
   form.handleType === "1"
-    ? td("dpp.integration.trimLeadingTrailing", "去除前后空格")
+    ? td("dpp.integration.trimLeadingTrailing", "Trim Leading/Trailing Spaces")
     : form.handleType === "2"
-    ? td("dpp.integration.trimAll", "去除所有空格")
+    ? td("dpp.integration.trimAll", "Trim All Spaces")
     : "-"
 );
 function validate() {

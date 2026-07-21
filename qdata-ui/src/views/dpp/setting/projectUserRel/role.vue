@@ -504,7 +504,7 @@ const data = reactive({
       },
       {
         pattern: /^[a-zA-Z0-9_:]+$/,
-        message: td("dpp.setting.projectUserRel.roleKeyInvalid", "权限字符仅支持字母、数字、下划线和冒号"),
+        message: td("dpp.setting.projectUserRel.roleKeyInvalid", "The permission key can contain only letters, numbers, underscores, and colons"),
         trigger: "blur",
       },
     ],
@@ -517,7 +517,7 @@ const data = reactive({
       {
         validator: (_rule, value, callback) => {
           if (!Number.isInteger(Number(value)) || Number(value) < 0) {
-            callback(new Error(td("dpp.setting.projectUserRel.roleSortInvalid", "显示顺序不合法，请输入非负整数")));
+            callback(new Error(td("dpp.setting.projectUserRel.roleSortInvalid", "Invalid display order; enter a non-negative integer")));
           } else {
             callback();
           }
@@ -574,7 +574,7 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.setting.projectUserRel.confirmDeleteRole",
-        '是否确认删除角色编号为"{id}"的数据项？'
+        'Are you sure to delete role with ID "{id}"?'
       ).replace("{id}", roleIds)
     )
     .then(function () {
@@ -609,25 +609,21 @@ function handleSelectionChange(selection) {
 function handleStatusChange(row) {
   let text =
     row.status === "0"
-      ? td("dpp.setting.projectUserRel.enable", "启用")
-      : td("dpp.setting.projectUserRel.disable", "停用");
+      ? td("common.texts.enable", "Enable")
+      : td("common.texts.disable", "Disable");
   proxy.$modal
     .confirm(
-      td("dpp.setting.projectUserRel.confirmStatusChange", "确认要") +
-        '"' +
-        text +
-        '"' +
-        row.roleName +
-        '"' +
-        td("dpp.setting.projectUserRel.role", "角色吗?")
+      td(
+        "dpp.setting.projectUserRel.confirmChangeRoleStatus",
+        'Are you sure to "{status}" role "{name}"?',
+        { status: text, name: row.roleName }
+      )
     )
     .then(function () {
       return changeRoleStatus(row.roleId, row.status);
     })
     .then(() => {
-      proxy.$modal.msgSuccess(
-        text + td("dpp.setting.projectUserRel.success", "成功")
-      );
+      proxy.$modal.msgSuccess(td("common.message.operationSuccess", "Operation successful"));
     })
     .catch(function () {
       row.status = row.status === "0" ? "1" : "0";
@@ -701,7 +697,7 @@ function handleAdd() {
   reset();
   getMenuTreeselect();
   open.value = true;
-  title.value = td("dpp.setting.projectUserRel.addRole", "新增角色");
+  title.value = td("dpp.setting.projectUserRel.addRole", "Add Role");
 }
 
 /** Modify role */
@@ -723,7 +719,7 @@ function handleUpdate(row) {
         });
       });
     });
-    title.value = td("dpp.setting.projectUserRel.editRole", "修改角色");
+    title.value = td("dpp.setting.projectUserRel.editRole", "Edit Role");
   });
 }
 
@@ -844,7 +840,7 @@ function handleDataScope(row) {
     });
     title.value = td(
       "dpp.setting.projectUserRel.assignDataScope",
-      "分配数据权限"
+      "Assign Data Permission"
     );
   });
 }

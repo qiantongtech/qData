@@ -79,7 +79,7 @@ public class DaAssetGisController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetGisDO> list = (List<DaAssetGisDO>) daAssetGisService.getDaAssetGisPage(exportReqVO).getRows();
         ExcelUtil<DaAssetGisRespVO> util = new ExcelUtil<>(DaAssetGisRespVO.class);
-        util.exportExcel(response, DaAssetGisConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetGisConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产-地理空间服务列表")

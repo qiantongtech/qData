@@ -84,7 +84,7 @@ public class DaAssetApiParamController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetApiParamDO> list = (List<DaAssetApiParamDO>) daAssetApiParamService.getDaAssetApiParamPage(exportReqVO).getRows();
         ExcelUtil<DaAssetApiParamRespVO> util = new ExcelUtil<>(DaAssetApiParamRespVO.class);
-        util.exportExcel(response, DaAssetApiParamConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetApiParamConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产-外部API-参数列表")

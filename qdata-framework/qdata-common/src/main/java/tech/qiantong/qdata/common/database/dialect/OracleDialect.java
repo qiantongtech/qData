@@ -29,6 +29,7 @@ import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -552,7 +553,9 @@ public class OracleDialect extends AbstractDbDialect {
         StringBuilder sql = new StringBuilder("");
 
         if (columnLength == null) {
-            throw new UnsupportedOperationException("属性类型：格式错误，数字类型长度未填充");
+            throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                    "sys.error.database.numeric.length.missing",
+                    "Invalid attribute type format: numeric type length is missing"));
         }
 
         // If columnLength is empty, maxLength is used as the default value
@@ -783,7 +786,7 @@ public class OracleDialect extends AbstractDbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (org.springframework.util.StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

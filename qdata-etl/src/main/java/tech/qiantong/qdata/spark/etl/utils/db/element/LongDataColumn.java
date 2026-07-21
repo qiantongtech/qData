@@ -149,7 +149,7 @@ public class LongDataColumn extends DataColumn {
 
     @Override
     public byte[] asBytes() {
-        throw DBException.asDataXException("Long类型不能转为Bytes .");
+        throw DBException.asDataXException("Long cannot be converted to Bytes.");
     }
 
 }

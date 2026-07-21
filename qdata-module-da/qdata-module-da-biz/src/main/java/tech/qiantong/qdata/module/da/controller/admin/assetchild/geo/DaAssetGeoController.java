@@ -77,7 +77,7 @@ public class DaAssetGeoController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaAssetGeoDO> list = (List<DaAssetGeoDO>) daAssetGeoService.getDaAssetGeoPage(exportReqVO).getRows();
         ExcelUtil<DaAssetGeoRespVO> util = new ExcelUtil<>(DaAssetGeoRespVO.class);
-        util.exportExcel(response, DaAssetGeoConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaAssetGeoConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产-矢量列表")

@@ -307,6 +307,21 @@ export default {
       editInspectionRule: 'Edit Inspection Rule',
       editEvaluationRule: 'Edit Evaluation Rule'
     },
+    dataQuery: {
+      queryResult: {
+        export: 'Export',
+        serialNumber: 'No.',
+        close: 'Close',
+        formTitle: 'Form Title',
+        notification: {
+          title: 'Notice',
+          noData: 'This table contains no data',
+          exportConfirm: 'Export {total} records in files of 5,000 records each, for a total of {files} files?',
+          confirm: 'Confirm',
+          cancel: 'Cancel'
+        }
+      }
+    },
     // SpotCheckResult component
     spotCheckResult: {
       title: 'View Spot Check Results',

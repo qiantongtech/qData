@@ -307,6 +307,21 @@ export default {
       editInspectionRule: '監査ルールの編集',
       editEvaluationRule: '評価ルールの編集'
     },
+    dataQuery: {
+      queryResult: {
+        export: 'エクスポート',
+        serialNumber: '番号',
+        close: '閉じる',
+        formTitle: 'フォームタイトル',
+        notification: {
+          title: '通知',
+          noData: 'このテーブルにはデータがありません',
+          exportConfirm: '合計 {total} 件を 5,000 件ずつ、合計 {files} ファイルとしてエクスポートしますか？',
+          confirm: '確認',
+          cancel: 'キャンセル'
+        }
+      }
+    },
     // 抜き取りチェック結果コンポーネント
     spotCheckResult: {
       title: '抜き取りチェック結果表示',

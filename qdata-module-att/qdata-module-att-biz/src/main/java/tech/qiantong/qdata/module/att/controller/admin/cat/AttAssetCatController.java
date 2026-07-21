@@ -75,7 +75,7 @@ public class AttAssetCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttAssetCatDO> list = (List<AttAssetCatDO>) attAssetCatService.getAttAssetCatPage(exportReqVO).getRows();
         ExcelUtil<AttAssetCatRespVO> util = new ExcelUtil<>(AttAssetCatRespVO.class);
-        util.exportExcel(response, AttAssetCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttAssetCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据资产类目管理列表")

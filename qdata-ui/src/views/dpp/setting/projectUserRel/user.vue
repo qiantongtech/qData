@@ -616,14 +616,14 @@ const data = reactive({
     userNameList: [
       {
         required: true,
-        message: td("dpp.setting.projectUserRel.userRequired", "请选择用户"),
+        message: td("dpp.setting.projectUserRel.userRequired", "Please select user"),
         trigger: "change",
       },
     ],
     roleIdList: [
       {
         required: true,
-        message: td("dpp.setting.projectUserRel.roleRequired", "请选择角色"),
+        message: td("dpp.setting.projectUserRel.roleRequired", "Please select user role"),
         trigger: "change",
       },
     ],
@@ -792,7 +792,7 @@ function handleAdd() {
   getRoleList();
   reset();
   open.value = true;
-  title.value = td("dpp.setting.projectUserRel.addMember", "新增项目成员");
+  title.value = td("dpp.setting.projectUserRel.addMember", "Add Project Member");
 }
 
 /** Modify button actions */
@@ -804,7 +804,7 @@ function handleUpdate(row) {
     form.value = response.data;
     console.log(form.value, "form");
     open.value = true;
-    title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
+    title.value = td("dpp.setting.projectUserRel.editMember", "Edit Project Member");
   });
 }
 
@@ -817,7 +817,7 @@ function handleDetail(row) {
     openDetail.value = true;
     title.value = td(
       "dpp.setting.projectUserRel.memberDetail",
-      "项目与用户关联关系详情"
+      "Project-User Relation Details"
     );
   });
 }
@@ -842,7 +842,7 @@ function submitForm() {
           proxy.$modal.msgWarning(
             td(
               "dpp.setting.projectUserRel.noUserSelected",
-              "未选择用户，请选择用户后重试"
+              "No user selected, please select and retry"
             )
           );
           return;
@@ -874,7 +874,7 @@ function handleDelete(row) {
       ? `本次将移除${selectedRows.length}名成员，请确认。`
       : td(
           "dpp.setting.projectUserRel.confirmDelete",
-          '是否确认移除编号为"{id}"的数据项？'
+          'Are you sure to remove item with ID "{id}"?'
         ).replace("{id}", selectedUserIds[0]);
   proxy.$modal
     .confirm(confirmText)

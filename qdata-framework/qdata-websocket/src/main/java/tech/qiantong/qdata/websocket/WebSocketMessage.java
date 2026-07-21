@@ -112,12 +112,12 @@ public class WebSocketMessage
      */
     public static boolean remove(String key)
     {
-        LOGGER.info("\n 正在移出用户消息 - {}", key);
+        LOGGER.info("\n Removing user message - {}", key);
         Session remove = MESSAGES.remove(key);
         if (remove != null)
         {
             boolean containsValue = MESSAGES.containsValue(remove);
-            LOGGER.info("\n 移出结果 - {}", containsValue ? "失败" : "成功");
+            LOGGER.info("\n Removal result - {}", containsValue ? "failed" : "succeeded");
             return containsValue;
         }
         else
@@ -166,12 +166,12 @@ public class WebSocketMessage
             }
             catch (IOException e)
             {
-                LOGGER.error("\n[发送消息异常]", e);
+                LOGGER.error("\n[Failed to send message]", e);
             }
         }
         else
         {
-            LOGGER.info("\n[你已离线]");
+            LOGGER.info("\n[You are offline]");
         }
     }
 

@@ -84,13 +84,13 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = attCleanRuleService.getCount(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.clean.disable", "存在清洗规则模型，不允许禁用");
+                throw new ServiceException("att.error.clean.disable", "Clean rule model exists, disable not allowed");
             }
             attCleanCatMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttCleanCatDO parent = attCleanCatMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }        // Update Cleaning Rule Category
         AttCleanCatDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanCatDO.class);
@@ -104,7 +104,7 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
 
         // Check if data exists
         if (attCleanRuleService.getCount(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.clean.delete", "存在清洗规则模型，不允许Delete ");
+            throw new ServiceException("att.error.clean.delete", "Cleaning rule models exist; deletion is not allowed.");
         }
 
         if (cat != null) {
@@ -158,7 +158,7 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
     @Override
     public String importAttCleanCat(List<AttCleanCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -177,16 +177,16 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
                             attCleanCatMapper.updateById(attCleanCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据Update 成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。", attCleanCatId, "清洗规则类目"));
+                                    "Data update successful, ID {0} {1} record.", attCleanCatId, MessageUtils.messageWithFallback("att.entity.cleansing.rule.category", "Cleansing rule category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据Update 失败，ID为 " + attCleanCatId + " 的清洗规则类目记录不存在。", attCleanCatId, "清洗规则类目"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attCleanCatId, MessageUtils.messageWithFallback("att.entity.cleansing.rule.category", "Cleansing rule category")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据Update 失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttCleanCatDO> queryWrapper = new QueryWrapper<>();
@@ -196,17 +196,17 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
                         attCleanCatMapper.insert(attCleanCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attCleanCatId + " 的清洗规则类目记录。", attCleanCatId, "清洗规则类目"));
+                                "Data insert successful, ID {0} {1} record.", attCleanCatId, MessageUtils.messageWithFallback("att.entity.cleansing.rule.category", "Cleansing rule category")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attCleanCatId + " 的清洗规则类目记录已存在。", attCleanCatId, "清洗规则类目"));
+                                "Data insert failed, ID {0} {1} record already exists.", attCleanCatId, MessageUtils.messageWithFallback("att.entity.cleansing.rule.category", "Cleansing rule category")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -215,12 +215,12 @@ public class AttCleanCatServiceImpl  extends ServiceImpl<AttCleanCatMapper,AttCl
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

@@ -165,7 +165,7 @@
 
     <select id="getEvaluateTrend7d" resultType="map">
         <choose>
-            <!-- MySQL 8+ 实现 -->
+            <!-- MySQL 8+ implementation -->
             <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
                 <![CDATA[
       WITH RECURSIVE d AS (
@@ -188,7 +188,7 @@
       ]]>
             </when>
 
-            <!-- DM8 / Oracle 实现 -->
+            <!-- DM8 / Oracle implementation -->
             <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
                 <![CDATA[
       SELECT

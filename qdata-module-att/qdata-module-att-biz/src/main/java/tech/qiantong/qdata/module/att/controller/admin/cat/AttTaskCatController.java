@@ -74,7 +74,7 @@ public class AttTaskCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttTaskCatDO> list = (List<AttTaskCatDO>) attTaskCatService.getAttTaskCatPage(exportReqVO).getRows();
         ExcelUtil<AttTaskCatRespVO> util = new ExcelUtil<>(AttTaskCatRespVO.class);
-        util.exportExcel(response, AttTaskCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttTaskCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成任务类目管理列表")

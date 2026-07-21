@@ -84,7 +84,7 @@
                 AND top_flag = #{topFlag}
             </if>
 
-            <!-- 生效时间在 alert_start_time 和 alert_end_time 之间 -->
+            <!-- The effective time is between alert_start_time and alert_end_time -->
             <if test="params.efftectTime != null and params.efftectTime != ''">
                 AND (
                 (
@@ -98,7 +98,7 @@
                 )
             </if>
             <choose>
-                <!-- 如果数据库是 kingBase -->
+                <!-- For Kingbase databases -->
                 <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
                     <if test="createBy != null and createBy != ''">
                         AND create_by LIKE '%' || #{createBy} || '%'
@@ -108,7 +108,7 @@
                     </if>
                 </when>
 
-                <!-- 如果是其他数据库（如 MySQL、 DM） -->
+                <!-- For other databases (such as MySQL and DM) -->
                 <otherwise>
                     <if test="createBy != null and createBy != ''">
                         AND create_by like concat('%', #{createBy}, '%')

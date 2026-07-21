@@ -30,7 +30,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/asset/detail/index.vue'),
                 name: 'dppDaAssetDetail',
-                meta: { title: '数据资产详情', activeMenu: '/dpp/asset', lang: 'public.dataAssetDetail' }
+                meta: { title: 'Data Asset Details', activeMenu: '/dpp/asset', lang: 'public.dataAssetDetail' }
             }
         ]
     },
@@ -43,7 +43,7 @@ export default [
                 path: '',
                 component: () => import('@/views/dpp/asset/addAsset/index.vue'),
                 name: 'dppDaAssetAdd',
-                meta: { title: '新增数据资产', activeMenu: '/da/asset', lang: 'public.addDataAsset' }
+                meta: { title: 'Add Data Asset', activeMenu: '/da/asset', lang: 'public.addDataAsset' }
             }
         ]
     },

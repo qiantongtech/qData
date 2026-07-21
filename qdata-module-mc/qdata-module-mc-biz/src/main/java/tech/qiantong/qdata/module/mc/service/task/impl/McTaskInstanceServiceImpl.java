@@ -150,7 +150,7 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
     @Override
     public String importMcTaskInstance(List<McTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("mc.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("mc.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -169,16 +169,16 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
                             mcTaskInstanceMapper.updateById(mcTaskInstanceDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("mc.import.update.success",
-                                    "数据更新成功，ID为 " + mcTaskInstanceId + " 的采集任务实例记录。", mcTaskInstanceId, "采集任务实例"));
+                                    "Data update successful, ID {0} {1} record.", mcTaskInstanceId, MessageUtils.messageWithFallback("mc.entity.task.instance", "Collection task instance")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.fail",
-                                    "数据更新失败，ID为 " + mcTaskInstanceId + " 的采集任务实例记录不存在。", mcTaskInstanceId, "采集任务实例"));
+                                    "Data update failed, ID {0} {1} record does not exist.", mcTaskInstanceId, MessageUtils.messageWithFallback("mc.entity.task.instance", "Collection task instance")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<McTaskInstanceDO> queryWrapper = new QueryWrapper<>();
@@ -188,17 +188,17 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
                         mcTaskInstanceMapper.insert(mcTaskInstanceDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("mc.import.insert.success",
-                                "数据插入成功，ID为 " + mcTaskInstanceId + " 的采集任务实例记录。", mcTaskInstanceId, "采集任务实例"));
+                                "Data insert successful, ID {0} {1} record.", mcTaskInstanceId, MessageUtils.messageWithFallback("mc.entity.task.instance", "Collection task instance")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.insert.fail",
-                                "数据插入失败，ID为 " + mcTaskInstanceId + " 的采集任务实例记录已存在。", mcTaskInstanceId, "采集任务实例"));
+                                "Data insert failed, ID {0} {1} record already exists.", mcTaskInstanceId, MessageUtils.messageWithFallback("mc.entity.task.instance", "Collection task instance")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("mc.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -207,12 +207,12 @@ public class McTaskInstanceServiceImpl extends ServiceImpl<McTaskInstanceMapper,
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("mc.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

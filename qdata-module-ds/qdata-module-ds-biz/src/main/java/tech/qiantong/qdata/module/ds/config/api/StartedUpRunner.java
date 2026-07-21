@@ -50,7 +50,7 @@ public class StartedUpRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (context.isActive()) {
-            // 项目启动时，初始化已发布的接口
+            // Initialize published APIs when the application starts.
             List<DsApiDO> list = dsApiService.lambdaQuery()
                     .eq(DsApiDO::getStatus, DataConstant.ApiState.WAIT.getKey())
                     .list();

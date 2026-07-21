@@ -75,7 +75,7 @@ public class AttApiCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttApiCatDO> list = (List<AttApiCatDO>) attApiCatService.getAttApiCatPage(exportReqVO).getRows();
         ExcelUtil<AttApiCatRespVO> util = new ExcelUtil<>(AttApiCatRespVO.class);
-        util.exportExcel(response, AttApiCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttApiCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据服务类目管理列表")

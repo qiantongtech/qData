@@ -86,7 +86,7 @@ public class DmBusinessCategoryController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DmBusinessCategoryDO> list = (List<DmBusinessCategoryDO>) dmBusinessCategoryService.getDmBusinessCategoryPage(exportReqVO).getRows();
         ExcelUtil<DmBusinessCategoryRespVO> util = new ExcelUtil<>(DmBusinessCategoryRespVO.class);
-        util.exportExcel(response, DmBusinessCategoryConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DmBusinessCategoryConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入业务分类列表")

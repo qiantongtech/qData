@@ -100,7 +100,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
         }
         //Determine whether he has chosen himself
         if (mcDomainDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("mc.error.parent.self", "切换上级不能选择自身作为上级类目");
+            throw new ServiceException("mc.error.parent.self", "Cannot select self as parent category");
         }
         // Update business domain management
         McDomainDO updateObj = BeanUtils.toBean(updateReqVO, McDomainDO.class);
@@ -109,7 +109,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             McDomainDO parent = mcDomainMapper.selectById(mcDomainDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("mc.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("mc.error.parent.disabled", "Please enable the parent category first");
             }
         }
         //Modify the judgment of superiors and subordinates
@@ -156,7 +156,7 @@ public class McDomainServiceImpl  extends ServiceImpl<McDomainMapper,McDomainDO>
 // throw new ServiceException("Referenced by metadata collection and cannot be deleted");
 //            }
             if (dbMapper.existsBySourceSystemName(one.getCode())) {
-                throw new ServiceException("mc.error.ref.db", "被库元数据引用，不可删除");
+                throw new ServiceException("mc.error.ref.db", "Referenced by database metadata, cannot be deleted");
             }
         }
         for (McDomainDO one : list) {

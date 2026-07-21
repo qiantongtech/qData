@@ -703,7 +703,7 @@ function handleStatusChange(id, row, e) {
     validFlag: row.validFlag,
   };
   proxy.$modal
-    .confirm(td('dg.dataCategory.confirmStatus', '确认要"{text}","{name}"数据分类吗？', { text: text, name: row.name }))
+    .confirm(td('dg.dataCategory.confirmStatus', 'Are you sure to "{text}" data category "{name}"?', { text: text, name: row.name }))
     .then(function () {
       updateDataCategory(dataForm).then(() => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -869,7 +869,7 @@ function handleDelete(row) {
   if (!_ids) return;
 
   proxy.$modal
-    .confirm(td('dg.dataCategory.confirmDeleteId', '是否确认删除编号为"{id}"的数据项？', { id: _ids }))
+    .confirm(td('dg.dataCategory.confirmDeleteId', 'Are you sure to delete item with ID "{id}"?', { id: _ids }))
     .then(function () {
       return delDataCategory(_ids);
     })

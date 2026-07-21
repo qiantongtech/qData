@@ -79,7 +79,7 @@ public class ProcessListener {
             key = {"ds.queue.processInstance"},
             value = @Queue(value = "ds.queue.processInstance", durable = "true", exclusive = "false", autoDelete = "false")))
     public void processInstanceUpdate(Map map, Channel channel, Message message) {
-        log.error("流程实例创建更新消息开始>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log.error("Starting process instance create-or-update>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Integer type = (Integer) map.get("type");
         ProcessInstance processInstance = JSON.parseObject(JSON.toJSONString(map.get("instance")), ProcessInstance.class);
         Boolean flag = false;
@@ -91,7 +91,7 @@ public class ProcessListener {
             }
         } catch (ServiceException serviceException) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            log.error("创建更新任务实例异常:{}", serviceException.getMessage());
+            log.error("Failed to create or update task instance: {}", serviceException.getMessage());
         } catch (Exception e) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             e.printStackTrace();
@@ -101,6 +101,6 @@ public class ProcessListener {
             // Manual acknowledgment
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
-        log.info(processInstance.getId() + "流程实例创建更新消息结束>>>>>>>>>>>>>>>>>>>>>>>>>>>" + flag);
+        log.info(processInstance.getId() + "Process instance create-or-update completed>>>>>>>>>>>>>>>>>>>>>>>>>>>" + flag);
     }
 }

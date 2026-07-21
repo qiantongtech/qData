@@ -23,7 +23,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * API服务调用日志 Request VO 对象 DS_API_LOG
+ * API service call log Request VO DS_API_LOG
  *
  * @author lhs
  * @date 2025-02-12

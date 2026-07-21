@@ -129,7 +129,7 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
     @Override
     public String importDaAssetApi(List<DaAssetApiRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -148,16 +148,16 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
                             daAssetApiMapper.updateById(daAssetApiDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                    "数据更新成功，ID为 " + daAssetApiId + " 的数据资产-外部API记录。", daAssetApiId, "数据资产-外部API"));
+                                    "Data update successful, ID {0} {1} record.", daAssetApiId, MessageUtils.messageWithFallback("da.entity.asset.external.api", "Data asset external API")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                    "数据更新失败，ID为 " + daAssetApiId + " 的数据资产-外部API记录不存在。", daAssetApiId, "数据资产-外部API"));
+                                    "Data update failed, ID {0} {1} record does not exist.", daAssetApiId, MessageUtils.messageWithFallback("da.entity.asset.external.api", "Data asset external API")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DaAssetApiDO> queryWrapper = new QueryWrapper<>();
@@ -167,17 +167,17 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
                         daAssetApiMapper.insert(daAssetApiDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                "数据插入成功，ID为 " + daAssetApiId + " 的数据资产-外部API记录。", daAssetApiId, "数据资产-外部API"));
+                                "Data insert successful, ID {0} {1} record.", daAssetApiId, MessageUtils.messageWithFallback("da.entity.asset.external.api", "Data asset external API")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                "数据插入失败，ID为 " + daAssetApiId + " 的数据资产-外部API记录已存在。", daAssetApiId, "数据资产-外部API"));
+                                "Data insert failed, ID {0} {1} record already exists.", daAssetApiId, MessageUtils.messageWithFallback("da.entity.asset.external.api", "Data asset external API")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -186,12 +186,12 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -226,18 +226,18 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
             } else if (StringUtils.equals(HttpUtils.POST, reqMethod)) {// POST
                 HttpUtils.sendPost(url, params, response, headerEntities);
             } else {// Unknown
-                throw new DataQueryException("db.error.api.type", "API类型错误");
+                throw new DataQueryException("db.error.api.type", "Wrong API type");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new DataQueryException("db.error.api.http", "Http调取失败");
+            throw new DataQueryException("db.error.api.http", "HTTP request failed");
         }
     }
 
     private void chackYapiConfig(DaAssetApiDO daAssetApiById) {
         // Check if null
         if (daAssetApiById == null) {
-            throw new DataQueryException("db.error.api.config.missing", "API调用，未查询到api配置");
+            throw new DataQueryException("db.error.api.config.missing", "API call failed, API configuration not found");
         }
     }
 
@@ -263,7 +263,7 @@ public class DaAssetApiServiceImpl  extends ServiceImpl<DaAssetApiMapper,DaAsset
                 headerEntity.setKey(MapUtils.getString(stringObjectMap,"name"));
                 String defaultValue = MapUtils.getString(stringObjectMap, "defaultValue");
                 if(defaultValue == null){
-                    throw new DataQueryException("db.error.api.header.null", "Header中不能为null");
+                    throw new DataQueryException("db.error.api.header.null", "Header cannot be null");
                 }
                 headerEntity.setValue(defaultValue);
                 headerEntityList.add(headerEntity);

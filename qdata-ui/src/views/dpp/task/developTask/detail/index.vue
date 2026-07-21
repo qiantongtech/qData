@@ -25,27 +25,27 @@
             style="width: 20px; margin-right: 5px; cursor: pointer;" />
         </el-tooltip>
 
-        {{ nodeData.name != "" ? nodeData.name : td('dpp.developTaskDetail.dataDevCategory', '数据开发任务') }}
+        {{ nodeData.name != "" ? nodeData.name : td('dpp.developTaskDetail.dataDevCategory', 'Data Development Task') }}
       </div>
       <div class="head-btns">
         <el-button type="primary" size="small" @click="handleExportData" v-if="!route.query.info">
-          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="">{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
+          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="">{{ td('dpp.developTaskDetail.taskSave', 'Task Save') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="routeTo('/dpp/task/developTask', '')">
           <img class="currImg" src="@/assets/images/dpp/etl/icon-title-three.svg" alt="">
-          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-three.svg" alt="">{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-three.svg" alt="">{{ td('dpp.developTaskDetail.taskCancel', 'Task Cancel') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-if="!route.query.info">
           <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="">
-          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskConfig', 'Task Config') }}
         </el-button>
         <el-button type="primary" plain size="small" @click="openTaskConfigDialog" v-else>
           <img class="currImg" src="@/assets/images/dpp/etl/icon-title-four.svg" alt="">
-          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-four.svg" alt="">{{ td('dpp.developTaskDetail.taskDetail', 'Task Details') }}
         </el-button>
         <el-button type="primary" plain v-if="formStatus == 1" size="small" @click="handleRun">
           <img class="currImg" src="@/assets/images/dpp/etl/icon-title-two.svg" alt="">
-          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-two.svg" alt="">{{ td('dpp.developTaskDetail.taskRun', '任务运行') }}
+          <img class="act" src="@/assets/images/dpp/etl/icon-title-active-two.svg" alt="">{{ td('dpp.developTaskDetail.taskRun', 'Task Run') }}
         </el-button>
       </div>
     </div>
@@ -65,7 +65,7 @@
           <div class="editor-main" ref="editorMain" :style="`height: calc(100% - ${consoleHeight}px);`">
             <Editor ref="editorRef" :model-value="form.sql" @update:model-value="changeTextarea"
               :style="{ borderBottom: activeValue.type ? 'none' : '' }" :readOnly="route.query.info" />
-            <div v-if="false" class="full-screen" :title="isFullscreen ? td('dpp.developTaskDetail.exitFullscreen', '退出全屏') : td('dpp.developTaskDetail.fullscreen', '全屏')" @click="fullScreenCallBack">
+            <div v-if="false" class="full-screen" :title="isFullscreen ? td('dpp.developTaskDetail.exitFullscreen', 'Exit Fullscreen') : td('dpp.developTaskDetail.fullscreen', 'Fullscreen')" @click="fullScreenCallBack">
               <i :class="isFullscreen ? 'iconfont icon-fullscreen-exit-line' : 'iconfont icon-a-quanpingxianxing'"
                 style="font-size: 20px"></i>
             </div>
@@ -98,7 +98,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <add :visible="taskConfigDialogVisible" :title="!route.query.info ? td('dpp.developTaskDetail.editTaskConfig', '修改任务配置') : td('dpp.developTaskDetail.taskDetail', '任务详情')"
+    <add :visible="taskConfigDialogVisible" :title="!route.query.info ? td('dpp.developTaskDetail.editTaskConfig', 'Edit Task Config') : td('dpp.developTaskDetail.taskDetail', 'Task Details')"
       @update:visible="taskConfigDialogVisible = $event" @save="handletaskConfig" :data="nodeData" :userList="userList"
       :deptOptions="deptOptions" :info="true" />
   </div>
@@ -245,7 +245,7 @@ function getDeptTree() {
       deptOptions.value = [
         {
           id: 0,
-          name: td('dpp.developTask.dataDevCategory', '数据开发类目'),
+          name: td('dpp.developTask.dataDevCategory', 'Data Development Category'),
           value: "",
           children: proxy.handleTree(taskCatRes.data, "id", "parentId"),
         },
@@ -265,18 +265,18 @@ if (route.query.id) {
 const handleRun = async () => {
   let id = route.query.id;
   if (!id) {
-    proxy.$modal.msgWarning(td('dpp.developTaskDetail.noTaskId', '无效的任务id，请刷新后重试'));
+    proxy.$modal.msgWarning(td('dpp.developTaskDetail.noTaskId', 'Invalid task ID, please refresh and retry'));
     return;
   }
   loading.value = true;
   try {
     const res = await startDppEtlTask(id);
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(td('common.message.msgOpSuccess', '操作成功'));
+      proxy.$modal.msgSuccess(td('common.message.msgOpSuccess', 'Operation successful'));
       // Open the console
       activeValue.value = iconList.value[0];
     } else {
-      proxy.$modal.msgWarning(res?.msg || td('dpp.developTask.executeFailed', '执行失败，请联系管理员'));
+      proxy.$modal.msgWarning(res?.msg || td('dpp.developTask.executeFailed', 'Execution failed, please contact administrator'));
     }
   } finally {
     loading.value = false;
@@ -346,7 +346,7 @@ const handleExportData = async () => {
   loading.value = true;
   try {
     if (!form.value.sql) {
-      return proxy.$modal.msgWarning(td('dpp.developTaskDetail.saveFailedInputSql', '保存失败，请输入sql语句'));
+      return proxy.$modal.msgWarning(td('dpp.developTaskDetail.saveFailedInputSql', 'Save failed, please enter SQL statement'));
     }
     if (!nodeData.value?.name) {
       taskConfigDialogVisible.value = true;
@@ -354,7 +354,7 @@ const handleExportData = async () => {
     }
     let valid = await configViewRef.value.configRef.validate();
     if (!valid) {
-      return proxy.$modal.msgWarning(td('dpp.developTaskDetail.saveFailedCheckAttr', '保存失败，请检查属性配置必填项'));
+      return proxy.$modal.msgWarning(td('dpp.developTaskDetail.saveFailedCheckAttr', 'Save failed, please check attribute config required fields'));
     }
     exportData2.value = dataJson();
     console.log("🚀 ~ handleExportData ~ exportData2.value:", exportData2.value);
@@ -371,7 +371,7 @@ const handleExportData = async () => {
     if (res.code == "200") {
       handleSuccess();
     } else {
-      proxy.$modal.msgWarning(td('dpp.integratioTask.operationFailed', '操作失败，请联系管理员'));
+      proxy.$modal.msgWarning(td('dpp.integratioTask.operationFailed', 'Operation failed, please contact administrator'));
     }
   } catch (error) {
     handleError(error);
@@ -383,14 +383,14 @@ const handleExportData = async () => {
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = form.value?.id ? td('common.message.msgOpSuccess', '操作成功') : td('common.message.msgOpSuccess', '操作成功');
+  const message = form.value?.id ? td('common.message.msgOpSuccess', 'Operation successful') : td('common.message.msgOpSuccess', 'Operation successful');
   router.push("/dpp/task/developTask");
   proxy.$modal.msgSuccess(message);
 };
 
 const handleError = (error) => {
   console.error("Operation failed:", error);
-  proxy.$modal.msgWarning(error.message || td('dpp.integratioTask.operationFailed', '操作失败，请联系管理员'));
+  proxy.$modal.msgWarning(error.message || td('dpp.integratioTask.operationFailed', 'Operation failed, please contact administrator'));
 };
 
 const openTaskConfigDialog = () => {
@@ -430,7 +430,7 @@ function routeTo(link, row) {
 // Used to control the currently selected tag
 const activeTab = ref("checkMessage");
 const tabs = ref([
-  { name: "checkMessage", label: td('dpp.developTaskDetail.checkMessage', '检查消息'), content: td('dpp.developTaskDetail.checkMessageContent', '检查消息内容') },
+  { name: "checkMessage", label: td('dpp.developTaskDetail.checkMessage', 'Check Message'), content: td('dpp.developTaskDetail.checkMessageContent', 'Check message content') },
   // { name: "log", label: "log", content: "log content" },
 ]);
 // Used to style the label area
@@ -456,10 +456,10 @@ const validateGraph = () => {
   let errors = [];
 
   if (!form.value.sql) {
-    errors.push(td('dpp.developTaskDetail.inputSqlPrompt', '请输入sql语句'));
+    errors.push(td('dpp.developTaskDetail.inputSqlPrompt', 'Please enter SQL statement'));
   }
   if (!form.value?.taskConfig?.name) {
-    errors.push(td('dpp.developTaskDetail.taskConfigNotFilled', '任务配置未填写'));
+    errors.push(td('dpp.developTaskDetail.taskConfigNotFilled', 'Task config not filled'));
   }
 
   if (errors.length > 0) {
@@ -480,9 +480,9 @@ const isValidClick = () => {
   let message = "";
   // Check graph validation
   if (!isValid && errorMessages.length != 0) {
-    message += td('dpp.developTaskDetail.checkFailed', '检查未通过:') + "<br>" + errorMessages.join("<br>"); // Replace \n with <br> for HTML line breaks
+    message += td('dpp.developTaskDetail.checkFailed', 'Check failed:') + "<br>" + errorMessages.join("<br>"); // Replace \n with <br> for HTML line breaks
   } else {
-    message += td('dpp.developTaskDetail.checkPassed', '检查通过');
+    message += td('dpp.developTaskDetail.checkPassed', 'Check passed');
   }
   tabs.value[0].content = message;
   console.log("🚀 ~ isValidClick ~ message:", message);
@@ -497,11 +497,11 @@ const saveData = async () => {
 onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
-      td('dpp.developTaskDetail.discardContent', '您已经编辑部分任务内容，是否放弃已编辑内容？'),
-      td('common.message.prompt', '提示'),
+      td('dpp.developTaskDetail.discardContent', 'You have edited some task content. Discard edited content?'),
+      td('common.message.prompt', 'Prompt'),
       {
-        confirmButtonText: td('common.button.save', '保存'),
-        cancelButtonText: td('dpp.developTaskDetail.discard', '放弃'),
+        confirmButtonText: td('common.button.save', 'Save'),
+        cancelButtonText: td('dpp.developTaskDetail.discard', 'Discard'),
         type: "warning",
         beforeClose: (action, instance, done) => {
           if (action === 'confirm') {
@@ -532,19 +532,19 @@ onBeforeRouteLeave((to, from, next) => {
 // left icon
 const iconList = ref([
   {
-    name: td('dpp.developTaskDetail.logConsole', '日志控制台'),
+    name: td('dpp.developTaskDetail.logConsole', 'Log Console'),
     type: "console",
     icon: "Tickets",
     data: {},
   },
   {
-    name: td('dpp.developTaskDetail.queryResult', '查询结果'),
+    name: td('dpp.developTaskDetail.queryResult', 'Query Result'),
     type: "result",
     icon: "Odometer",
     data: [],
   },
   {
-    name: td('dpp.developTaskDetail.executionHistory', '执行历史记录'),
+    name: td('dpp.developTaskDetail.executionHistory', 'Execution History'),
     type: "history",
     icon: "Timer",
     data: [],
@@ -566,7 +566,7 @@ const closeConsoleDialog = () => {
 // right icon
 const iconListR = ref([
   {
-    name: td('dpp.developTaskDetail.attrConfig', '属性配置'),
+    name: td('dpp.developTaskDetail.attrConfig', 'Attribute Config'),
     type: "attrConfig",
     icon: "Operation",
     data: {

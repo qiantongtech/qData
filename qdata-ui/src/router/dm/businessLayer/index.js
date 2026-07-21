@@ -31,7 +31,7 @@ export default [
                 component: () => import('@/views/dm/businessCategory/detail/index.vue'),
                 name: 'BusinessLayerDetail',
                 meta: {
-                    title: '业务分类详情',
+                    title: 'Business Category Details',
                     activeMenu: '/dm/businessCategory',
                     lang: 'public.businessCategoryDetail'
                 }

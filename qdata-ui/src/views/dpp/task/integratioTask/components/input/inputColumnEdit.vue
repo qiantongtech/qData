@@ -22,10 +22,10 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.benchmarkType', '基准类型')" prop="type" :rules="[
-            { required: true, message: td('dpp.integration.benchmarkTypeRequired', '请选择基准类型'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.benchmarkType', 'Benchmark Type')" prop="type" :rules="[
+            { required: true, message: td('dpp.integration.benchmarkTypeRequired', 'Please select benchmark type'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.type" :placeholder="td('dpp.integration.benchmarkTypePlaceholder', '请选择基准类型')">
+            <el-select v-model="form.type" :placeholder="td('dpp.integration.benchmarkTypePlaceholder', 'Please select benchmark type')">
               <el-option v-for="benchmark in benchmarkTypes" :key="benchmark.value" :label="benchmark.label"
                          :value="benchmark.value" />
             </el-select>
@@ -35,20 +35,20 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="incrementColumn" :rules="[
-            { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
+          <el-form-item :label="td('dpp.integration.fieldName', 'Field Name')" prop="incrementColumn" :rules="[
+            { required: true, message: td('dpp.integration.fieldNameRequired', 'Please enter field name'), trigger: 'blur' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.incrementColumn" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')">
+            <el-select v-model="form.incrementColumn" :placeholder="td('dpp.integration.fieldNamePlaceholder', 'Please enter field name')">
               <el-option v-for="item in ColumnByAssettab" :key="item.columnName" :label="item.columnName"
                          :value="item.columnName" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="form.type !== '2'">
-          <el-form-item :label="td('dpp.integration.operator', '运算符')" prop="operator" :rules="[
-            { required: true, message: td('dpp.integration.operatorRequired', '请选择运算符'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.operator', 'Operator')" prop="operator" :rules="[
+            { required: true, message: td('dpp.integration.operatorRequired', 'Please select operator'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.operator" :placeholder="td('dpp.integration.operatorPlaceholder', '请选择运算符')">
+            <el-select v-model="form.operator" :placeholder="td('dpp.integration.operatorPlaceholder', 'Please select operator')">
               <el-option v-for="operator in operators" :key="operator.value" :label="operator.label"
                          :value="operator.value" />
             </el-select>
@@ -58,34 +58,34 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.benchmarkValue', '基准值')" prop="data" :rules="dataRules" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.benchmarkValue', 'Benchmark Value')" prop="data" :rules="dataRules" :label-position="labelPosition">
             <template v-if="form.type === '1'">
               <el-date-picker clearable
                               v-model="form.data"
                               :type="pickerType"
                               :format="dateIncrementConfig_dateFormat2"
                               :value-format="dateIncrementConfig_dateFormat2"
-                              :placeholder="td('dpp.integration.selectFixedTime', '请选择固定时间')">
+                              :placeholder="td('dpp.integration.selectFixedTime', 'Please select fixed time')">
               </el-date-picker>
             </template>
             <template v-else-if="form.type === '3'">
-              <sql-editor :placeholder="td('dpp.integration.sqlStatement', '请输入sql')" ref="editorRef" :value="form.data" class="sql-editor" :height="'300px'"
+              <sql-editor :placeholder="td('dpp.integration.sqlStatement', 'SQL Statement')" ref="editorRef" :value="form.data" class="sql-editor" :height="'300px'"
                           @changeTextarea="changeTextarea($event)" />
             </template>
             <template v-else>
-              <el-input v-model="form.data" :placeholder="td('dpp.integration.autoCurrentTime', '自动获取当前时间，无需填写')" disabled />
+              <el-input v-model="form.data" :placeholder="td('dpp.integration.autoCurrentTime', 'Auto-get current time, no need to fill')" disabled />
             </template>
           </el-form-item>
         </el-col>
 
         <el-col :span="24" v-if="form.type === '2'">
-          <el-form-item :label="td('dpp.integration.cursorTime', '游标时间')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.cursorTime', 'Cursor Time')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]" :label-position="labelPosition">
             <el-date-picker clearable
                             v-model="form.cursorTime"
                             :type="pickerType"
                             :format="dateIncrementConfig_dateFormat2"
                             :value-format="dateIncrementConfig_dateFormat2"
-                            :placeholder="td('dpp.integration.cursorTimePlaceholder', '请选择游标时间')">
+                            :placeholder="td('dpp.integration.cursorTimePlaceholder', 'Please select cursor time')">
             </el-date-picker>
           </el-form-item>
         </el-col>
@@ -116,7 +116,7 @@ const props = defineProps({
   dateIncrementConfig_dateFormat: { type: String, default: 'YYYY-MM-DD' },
 });
 
-const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
+const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "Please enter name"));
 
 // day.js is not compatible with the date format of java and needs to be processed
 const dateIncrementConfig_dateFormat2 = computed(() => {
@@ -151,15 +151,15 @@ const operators = ref([
 
 // Base type
 const benchmarkTypes = ref([
-  { label: td("dpp.integration.fixedValue", "固定值"), value: "1" },
-  { label: td("dpp.integration.timeRange", "时间范围"), value: "2" },
-  { label: td("dpp.integration.sqlExpression", "SQL表达式"), value: "3" },
+  { label: td("dpp.integration.fixedValue", "Fixed Value"), value: "1" },
+  { label: td("dpp.integration.timeRange", "Time Range"), value: "2" },
+  { label: td("dpp.integration.sqlExpression", "SQL Expression"), value: "3" },
 ]);
 
 // Dynamic base value rules
 const dataRules = computed(() => {
   if (form.value.type === "1" || form.value.type === "3") {
-    return [{ required: true, message: td("dpp.integration.benchmarkValueRequired", "请输入基准值"), trigger: "change" }];
+    return [{ required: true, message: td("dpp.integration.benchmarkValueRequired", "Please enter benchmark value"), trigger: "change" }];
   }
   return [];
 });

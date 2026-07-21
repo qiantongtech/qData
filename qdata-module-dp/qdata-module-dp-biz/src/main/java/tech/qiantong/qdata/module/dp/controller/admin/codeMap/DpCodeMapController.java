@@ -76,7 +76,7 @@ public class DpCodeMapController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpCodeMapDO> list = (List<DpCodeMapDO>) dpCodeMapService.getDpCodeMapPage(exportReqVO).getRows();
         ExcelUtil<DpCodeMapRespVO> util = new ExcelUtil<>(DpCodeMapRespVO.class);
-        util.exportExcel(response, DpCodeMapConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpCodeMapConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据元代码映射列表")

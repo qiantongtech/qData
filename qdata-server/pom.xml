@@ -30,7 +30,7 @@
     <artifactId>qdata-server</artifactId>
 
     <description>
-        后台管理服务入口
+        Backend administration service entry point
     </description>
 
     <dependencies>

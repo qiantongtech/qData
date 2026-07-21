@@ -68,7 +68,7 @@ public class McColumnController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McColumnDO> list = (List<McColumnDO>) mcColumnService.getMcColumnPage(exportReqVO).getRows();
         ExcelUtil<McColumnRespVO> util = new ExcelUtil<>(McColumnRespVO.class);
-        util.exportExcel(response, McColumnConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McColumnConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取元数据字段信息详细信息")

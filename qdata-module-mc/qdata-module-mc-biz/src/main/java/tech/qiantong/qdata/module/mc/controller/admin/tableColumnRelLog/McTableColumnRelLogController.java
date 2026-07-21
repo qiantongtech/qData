@@ -56,7 +56,7 @@ public class McTableColumnRelLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTableColumnRelLogDO> list = (List<McTableColumnRelLogDO>) mcTableColumnRelLogService.getMcTableColumnRelLogPage(exportReqVO).getRows();
         ExcelUtil<McTableColumnRelLogRespVO> util = new ExcelUtil<>(McTableColumnRelLogRespVO.class);
-        util.exportExcel(response, McTableColumnRelLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTableColumnRelLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取元数据数据库与信息及字段信息关系-日志详细信息")

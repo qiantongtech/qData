@@ -44,7 +44,7 @@
       index="more"
       v-if="topMenus.length > visibleNumber"
     >
-      <template #title>{{td("router.dynamic.more", "更多菜单")}}</template>
+      <template #title>{{td("router.dynamic.more", "More Menus")}}</template>
       <template v-for="(item, index) in topMenus">
         <el-menu-item
           :index="item.path"

@@ -21,13 +21,14 @@ package tech.qiantong.qdata.module.mc.controller.admin.job;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.mc.service.task.IMcTaskService;
 
 import javax.annotation.Resource;
 
 /**
- * DPP 的 Quartz 调用入口。
- * Quartz 到点后只负责调用这里，真正的数据集成执行逻辑仍然交给 DPP 任务服务处理。
+ * Quartz entry point for DPP.
+ * Quartz invokes this endpoint when triggered, while the DPP task service performs the actual data integration.
  */
 @Component("mcTaskExecutorJob")
 public class McTaskExecutorJob {
@@ -36,19 +37,22 @@ public class McTaskExecutorJob {
 
     /**
      * Quartz
-     * 回调执行采集任务
+     * Executes a collection task through the callback.
      *
-     * @param id 任务ID
-     * @return 执行结果
+     * @param id task ID
+     * @return execution result
      */
     public void runExecuteTask(Long id) {
         try {
             mcTaskService.runDaDiscoveryTask(id);
-            CommonResult.success("任务id:" + id + "执行成功");
+            CommonResult.success(MessageUtils.messageWithFallback(
+                    "mc.job.task.execute.success", "Task {0} executed successfully", id));
         } catch (NumberFormatException e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务ID格式错误：" + id);
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "mc.job.task.id.invalid", "Invalid task ID format: {0}", id));
         } catch (Exception e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务执行失败：" + e.getMessage());
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "mc.job.task.execute.fail", "Task execution failed: {0}", e.getMessage()));
         }
     }
 }

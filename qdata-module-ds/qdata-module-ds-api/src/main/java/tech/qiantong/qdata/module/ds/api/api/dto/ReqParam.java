@@ -33,48 +33,48 @@ public class ReqParam implements Serializable {
     private String paramId;
 
     /**
-     * 参数名称
+     * Parameter name
      */
     @NotBlank(message = "参数名称不能为空")
     private String paramName;
 
     /**
-     * 是否为空
+     * Whether the value is empty
      */
     @NotNull(message = "是否为空不能为空")
     private String nullable;
 
     /**
-     * 描述
+     * Description
      */
     @NotBlank(message = "描述不能为空")
     private String paramComment;
 
     /**
-     * 操作符
+     * Operator
      */
     @NotNull(message = "操作符不能为空")
     private String whereType;
 
     /**
-     * 参数类型
+     * Parameter type
      */
     @NotBlank(message = "参数类型不能为空")
     private String paramType;
 
     /**
-     * 示例值
+     * Example value
      */
     private String exampleValue;
 
     /**
-     * 默认值
+     * Default value
      */
     private String defaultValue;
 
 
     /**
-     * 默认值
+     * Default value
      */
     private List<ReqParam> ReqParamlist;
 

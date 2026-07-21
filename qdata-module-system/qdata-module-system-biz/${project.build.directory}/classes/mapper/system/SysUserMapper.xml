@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(
 		SELECT
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
 				GROUP_CONCAT(r.ROLE_NAME) AS roleStr
 			</when>
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND u.status = #{status}
 		</if>
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				<if test="nickName != null and nickName != ''">
 					AND u.nick_name LIKE '%' || #{nickName} || '%'
@@ -116,11 +116,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					AND u.phonenumber LIKE '%' || #{phonenumber} || '%'
 				</if>
 				<if test="params.beginTime != null and params.beginTime != ''">
-					<!-- 开始时间检索 -->
+					<!-- Start time filter -->
 					AND u.create_time &gt;= #{params.beginTime}
 				</if>
 				<if test="params.endTime != null and params.endTime != ''">
-					<!-- 结束时间检索 -->
+					<!-- End time filter -->
 					AND u.create_time &lt;= #{params.endTime}
 				</if>
 				<if test="deptId != null and deptId != 0">
@@ -134,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases such as MySQL and DM -->
 			<otherwise>
 				<if test="userName != null and userName != ''">
 					AND u.user_name like concat('%', #{userName}, '%')
@@ -145,10 +145,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="phonenumber != null and phonenumber != ''">
 					AND u.phonenumber like concat('%', #{phonenumber}, '%')
 				</if>
-				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 					AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 				</if>
-				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 					AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 				</if>
 				<if test="deptId != null and deptId != 0">
@@ -156,7 +156,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</otherwise>
 		</choose>
-		<!-- 数据范围过滤 -->
+		<!-- Data scope filter -->
 		${params.dataScope}
 	</select>
 
@@ -166,7 +166,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from system_user u
 		left join system_dept d on u.dept_id = d.dept_id
 		<choose>
-			<!-- 如果数据库是 kingBase -->
+			<!-- For Kingbase databases -->
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
 				<if test="userName != null and userName != ''">
 					AND u.user_name LIKE '%' || #{userName} || '%'
@@ -175,11 +175,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					AND u.phonenumber LIKE '%' || #{phonenumber} || '%'
 				</if>
 				<if test="params.beginTime != null and params.beginTime != ''">
-					<!-- 开始时间检索 -->
+					<!-- Start time filter -->
 					AND u.create_time &gt;= #{params.beginTime}
 				</if>
 				<if test="params.endTime != null and params.endTime != ''">
-					<!-- 结束时间检索 -->
+					<!-- End time filter -->
 					AND u.create_time &lt;= #{params.endTime}
 				</if>
 				<if test="deptId != null and deptId != 0">
@@ -193,7 +193,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 			</when>
 
-			<!-- 如果是其他数据库（如 MySQL、 DM） -->
+			<!-- For other databases such as MySQL and DM -->
 			<otherwise>
 				<if test="userName != null and userName != ''">
 					AND u.user_name like concat('%', #{userName}, '%')
@@ -201,10 +201,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="phonenumber != null and phonenumber != ''">
 					AND u.phonenumber like concat('%', #{phonenumber}, '%')
 				</if>
-				<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 					AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 				</if>
-				<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 					AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 				</if>
 				<if test="deptId != null and deptId != 0">
@@ -212,7 +212,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</otherwise>
 		</choose>
-		<!-- 数据范围过滤 -->
+		<!-- Data scope filter -->
 		${params.dataScope}
 	</select>
 
@@ -229,7 +229,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="phonenumber != null and phonenumber != ''">
 			AND u.phonenumber like concat('%', #{phonenumber}, '%')
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data scope filter -->
 		${params.dataScope}
 	</select>
 
@@ -269,7 +269,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="phonenumber != null and phonenumber != ''">
 			AND u.phonenumber like concat('%', #{phonenumber}, '%')
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data scope filter -->
 		${params.dataScope}
 	</select>
 
@@ -319,16 +319,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="phonenumber != null and phonenumber != ''">
 			AND u.phonenumber like concat('%', #{phonenumber}, '%')
 		</if>
-		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- Start time filter -->
 			AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 		</if>
-		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+		<if test="params.endTime != null and params.endTime != ''"><!-- End time filter -->
 			AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 		</if>
 		<if test="deptId != null">
 			AND (u.dept_id = #{deptId})
 		</if>
-		<!-- 数据范围过滤 -->
+		<!-- Data scope filter -->
 		${params.dataScope}
 	</select>
 

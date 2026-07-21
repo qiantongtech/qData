@@ -22,6 +22,7 @@ import org.apache.commons.collections4.MapUtils;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -127,7 +128,8 @@ public class MD5Util {
      */
     public static String getNormalizedDbType(String dbType) {
         if (dbType == null || dbType.isEmpty()) {
-            throw new IllegalArgumentException("数据库类型不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "sys.error.database.type.empty", "Database type cannot be empty"));
         }
         if (DbType.MYSQL.getDb().equals(dbType)) {
             return "MYSQL";

@@ -42,6 +42,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.AesEncryptUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.ds.controller.admin.api.vo.DsApiPageReqVO;
@@ -60,7 +61,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * API服务Controller
+ * API service controller
  *
  * @author lhs
  * @date 2025-02-12
@@ -92,7 +93,7 @@ public class DsApiController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DsApiDO> list = (List<DsApiDO>) dsApiService.getDsApiPage(exportReqVO).getRows();
         ExcelUtil<DsApiRespVO> util = new ExcelUtil<>(DsApiRespVO.class);
-        util.exportExcel(response, DsApiConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DsApiConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入API服务列表")
@@ -133,17 +134,21 @@ public class DsApiController extends BaseController {
     @PostMapping(value = "/repeatFlag")
     public AjaxResult repeatFlag(@RequestBody JSONObject jsonObject) {
         if (StringUtils.isBlank(jsonObject.getString("name"))) {
-            return AjaxResult.error("请携带API名称");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.name.required", "API name is required"));
         }
         if (StringUtils.isBlank(jsonObject.getString("apiVersion"))) {
-            return AjaxResult.error("请携带API版本号");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.version.required", "API version is required"));
         }
         if (StringUtils.isBlank(jsonObject.getString("apiUrl"))) {
-            return AjaxResult.error("请携带API路径");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.path.required", "API path is required"));
         }
         DsApiDO dsApiDO = dsApiService.repeatFlag(jsonObject);
         if (dsApiDO != null) {
-            return AjaxResult.error("名称、版本号、路径以存在");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.duplicate", "An API with the same name, version, and path already exists"));
         }
         return AjaxResult.success(dsApiDO);
     }
@@ -158,7 +163,7 @@ public class DsApiController extends BaseController {
     }
 
     /**
-     * SQL解析
+     * Parses SQL.
      *
      * @param sqlParseDto
      * @return
@@ -184,7 +189,7 @@ public class DsApiController extends BaseController {
             try {
                 dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
             } catch (Exception e) {
-                logger.error("失败", e);
+                logger.error("Operation failed", e);
             }
         } else {
             if (dataApi.getExecuteConfig() != null) {
@@ -206,7 +211,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 添加
+     * Adds an API.
      *
      * @param dataApi
      * @return
@@ -230,7 +235,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 修改
+     * Updates an API.
      *
      * @param dataApi
      * @return
@@ -253,7 +258,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 发布接口
+     * Publishes an API.
      *
      * @param id
      * @return
@@ -267,7 +272,7 @@ public class DsApiController extends BaseController {
     }
 
     /**
-     * 注销接口
+     * Unpublishes an API.
      *
      * @param id
      * @return

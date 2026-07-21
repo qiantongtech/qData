@@ -297,6 +297,6 @@ public enum DbType {
                 return type;
             }
         }
-        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
     }
 }

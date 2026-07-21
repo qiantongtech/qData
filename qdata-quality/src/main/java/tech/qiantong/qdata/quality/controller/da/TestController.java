@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.enums.ExecuteType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.quality.dal.dataobject.asset.DaAssetDO;
 import tech.qiantong.qdata.quality.service.asset.IDaAssetService;
 import tech.qiantong.qdata.redis.service.IRedisService;
@@ -54,7 +55,8 @@ public class TestController {
     @PostMapping("/test2")
     public AjaxResult test2() {
         redisService.set("test", "1", 1200);
-        return AjaxResult.success("测试成功>>>>" + redisService.get("test"));
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "quality.test.success", "Test succeeded: {0}", redisService.get("test")));
     }
 
     @PostMapping("/test3")

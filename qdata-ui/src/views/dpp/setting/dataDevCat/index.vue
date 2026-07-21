@@ -760,7 +760,7 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = td("dpp.setting.dataDevCat.addDataDevCat", "新增数据开发类目");
+  title.value = td("dpp.setting.dataDevCat.addDataDevCat", "Add Data Development Category");
 }
 
 /** Modify button actions */
@@ -772,7 +772,7 @@ function handleUpdate(row) {
     open.value = true;
     title.value = td(
       "dpp.setting.dataDevCat.editDataDevCat",
-      "修改数据开发类目"
+      "Edit Data Development Category"
     );
   });
 }
@@ -786,7 +786,7 @@ function handleDetail(row) {
     openDetail.value = true;
     title.value = td(
       "dpp.setting.dataDevCat.dataDevCatDetail",
-      "数据开发类目管理详情"
+      "Data Development Category Details"
     );
   });
 }
@@ -855,7 +855,7 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.setting.dataDevCat.confirmDelete",
-        '是否确认删除数据开发类目管理编号为"{id}"的数据项？'
+        'Are you sure to delete data development category with ID "{id}"?'
       ).replace("{id}", _ids)
     )
     .then(function () {

@@ -21,10 +21,11 @@ package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 import org.springframework.web.bind.annotation.*;
 import tech.qiantong.qdata.common.core.domain.AjaxResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
  * <p>
- * 开放服务拦截下线、不存在、请求方式错误请求，返回错误信息
+ * Handles inactive, missing, or invalid-method open service requests and returns error information.
  * </p>
  * @author lhs
  */
@@ -35,13 +36,14 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 public class CommonServicesController {
 
     /**
-     * 拦截services开头的所有请求
+     * Intercepts all requests beginning with services.
      *
      * @return
      */
     @RequestMapping("services/**")
     public AjaxResult services() {
-        return AjaxResult.error("服务不存在、或者已下线、或者请求方式错误（GET、POST）");
+        return AjaxResult.error(MessageUtils.messageWithFallback("ds.error.service.unavailable",
+                "The service does not exist, is offline, or does not support the request method (GET or POST)"));
     }
 
 }

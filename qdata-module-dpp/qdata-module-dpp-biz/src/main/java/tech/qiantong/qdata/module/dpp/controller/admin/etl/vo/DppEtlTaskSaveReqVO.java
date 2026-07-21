@@ -105,7 +105,7 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    // 任务表里保存 Quartz Job id，后端后续可以按任务直接操作 Quartz 调度。
+    // Store the Quartz job ID on the task so the backend can operate its schedule directly.
     @Schema(description = "Quartz调度任务id", example = "")
     private Long quartzId;
 

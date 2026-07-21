@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiJwtUtil {
 
-    //TOKEN过期时间 默认7天
+    //Token expiration time: 7 days by default.
     public static final long TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;
 
-    //Refresh-Token过期时间 默认30天
+    //Refresh token expiration time: 30 days by default.
     public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30;
 
     public static final String TOKEN_KEY = "API_TOKEN";
@@ -49,7 +49,7 @@ public class ApiJwtUtil {
 
 
     /**
-     * 通过token获取username
+     * Gets the username from a token.
      *
      * @param token
      * @return

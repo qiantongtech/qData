@@ -56,7 +56,7 @@ public class McTaskSchedulerController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTaskSchedulerDO> list = (List<McTaskSchedulerDO>) mcTaskSchedulerService.getMcTaskSchedulerPage(exportReqVO).getRows();
         ExcelUtil<McTaskSchedulerRespVO> util = new ExcelUtil<>(McTaskSchedulerRespVO.class);
-        util.exportExcel(response, McTaskSchedulerConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTaskSchedulerConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成调度信息列表")

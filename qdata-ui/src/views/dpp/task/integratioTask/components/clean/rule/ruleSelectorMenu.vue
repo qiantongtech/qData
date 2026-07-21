@@ -22,7 +22,7 @@
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="td('dpp.cleanRule.inputRuleType', '请输入规则类型')"
+        :placeholder="td('dpp.cleanRule.inputRuleType', 'Please enter rule type')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
         :showFilter="false"
@@ -69,7 +69,7 @@
                     src="../../../../../../../assets/images/system/no_data/empty-nodata.png"
                     alt=""
                   />
-                  <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+                  <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
                 </div>
               </div>
             </template>
@@ -126,7 +126,7 @@ let attCleanRuleList = ref([]);
 function getDataTree() {
   listAttCleanCat().then((response) => {
     processedData.value = [];
-    const data = { id: "", name: td('dpp.cleanRule.cleanRuleTree', '清洗规则'), children: [] };
+    const data = { id: "", name: td('dpp.cleanRule.cleanRuleTree', 'Clean Rule'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     processedData.value.push(data);
   });
@@ -160,7 +160,7 @@ async function fetchRulesByDimension() {
 
 function cardClick(data) {
   if (data.validFlag == false) {
-    return ElMessage.info(td('dpp.cleanRule.developing', '开发中'));
+    return ElMessage.info(td('dpp.cleanRule.developing', 'Under Development'));
   }
   selectedCard.value = data;
   emit("card-click", data);

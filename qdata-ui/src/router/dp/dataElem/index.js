@@ -31,7 +31,7 @@ export default [
                 component: () => import('@/views/dp/dataElem/detail/dict'),
                 name: 'DataElemCodeDetail',
                 meta: {
-                    title: '数据元详情',
+                    title: 'Data Element Details',
                     activeMenu: '/dp/dataElem',
                     lang: 'public.dataElementDetail'
                 }
@@ -48,7 +48,7 @@ export default [
                 component: () => import('@/views/dp/dataElem/detail/column'),
                 name: 'DataElemDetail',
                 meta: {
-                    title: '数据元详情',
+                    title: 'Data Element Details',
                     activeMenu: '/dp/dataElem',
                     lang: 'public.dataElementDetail'
                 }

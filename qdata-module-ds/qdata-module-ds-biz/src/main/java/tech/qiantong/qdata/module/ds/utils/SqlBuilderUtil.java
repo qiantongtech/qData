@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用于动态构造sql语句
- * ${ segment... } 为一个条件代码块
+ * Builds SQL statements dynamically.
+ * ${ segment... } represents a conditional block.
  * <p>
  * String sql = "select * from user where 1=1
  * ${ and username = :username }
@@ -51,10 +51,10 @@ import java.util.Map;
  * <p>
  * SqlFilterResult result = SqlBuilderUtil.applyFilters(sql, filters);
  * <p>
- * result.getSql()结果
+ * Result of result.getSql().
  * select * from user where 1=1 and username=:username and age=:age
  * <p>
- * result.getAcceptedFilters()结果
+ * Result of result.getAcceptedFilters().
  * {username=yuwei}
  * {age=12}
  */
@@ -78,56 +78,56 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 空格
+     * Space character.
      */
     private final String SPACE = " ";
     /**
-     * 冒号占位符
+     * Colon placeholder.
      */
     private final String COLON = ":";
     /**
-     * 问号占位符
+     * Question-mark placeholder.
      */
     private final String MARK = "?";
     /**
-     * where关键字
+     * WHERE keyword.
      */
     private final String WHERE_SQL = "WHERE";
     /**
-     * AND连接符
+     * AND operator.
      */
     private final String WHERE_AND = "AND";
     /**
-     * where 1=1条件
+     * WHERE 1=1 condition.
      */
     private final String WHERE_INIT = WHERE_SQL + " 1 = 1";
     /**
-     * 左括号
+     * Left parenthesis.
      */
     private final String LEFT_BRACKET = "(";
     /**
-     * 右括号
+     * Right parenthesis.
      */
     private final String RIGHT_BRACKET = ")";
     /**
-     * 百分号%
+     * Percent sign.
      */
     private final String PERCENT_SIGN = "%";
     /**
-     * 单引号 '
+     * Single quote.
      */
     private final String SINGLE_QUOTE = "'";
     /**
-     * 条件代码块标记开始
+     * Conditional block start marker.
      */
     public final String MARK_KEY_START = "${";
     /**
-     * 条件代码块标记结束
+     * Conditional block end marker.
      */
     public final String MARK_KEY_END = "}";
 
     /**
-     * 拼接命名参数sql
+     * Builds named-parameter SQL.
      *
      * @param sql
      * @param params
@@ -144,7 +144,7 @@ public class SqlBuilderUtil {
         }
         sql.append(SPACE).append(WHERE_INIT);
 
-        //判断params是否为空----兼容查询条件为空情景
+        //Check whether params is empty to support queries without conditions.
         if (CollectionUtils.isEmpty(params)) {
             return sql.toString();
         }
@@ -153,7 +153,7 @@ public class SqlBuilderUtil {
             ReqParam reqParam = params.get(i);
             sql.append(SPACE).append(MARK_KEY_START).append(WHERE_AND).append(SPACE).append(reqParam.getParamName());
             if (StringUtils.equals(WhereType.LIKE.getType(), reqParam.getWhereType())) {
-                // LIKE '%' :username '%' ,:username 两边一定要有空格，如果没有空格，是查询不到数据的
+                // Spaces are required around :username in LIKE '%' :username '%'; without them the query returns no data.
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(SPACE)
                         .append(COLON).append(reqParam.getParamName())
@@ -167,7 +167,7 @@ public class SqlBuilderUtil {
                         .append(SPACE).append(COLON).append(reqParam.getParamName())
                         .append(SPACE).append(SINGLE_QUOTE).append(PERCENT_SIGN).append(SINGLE_QUOTE).append(MARK_KEY_END);
             } else if (StringUtils.equals(WhereType.NULL.getType(), reqParam.getWhereType()) || StringUtils.equals(WhereType.NOT_NULL.getType(), reqParam.getWhereType())) {
-                // is null或is not null不需要参数值
+                // IS NULL and IS NOT NULL do not require parameter values.
                 sql.append(SPACE).append(WhereType.getWhereType(reqParam.getWhereType()).getKey()).append(MARK_KEY_END);
             } else if (StringUtils.equals(WhereType.IN.getType(), reqParam.getWhereType())) {
                 // in (:ids)
@@ -184,7 +184,7 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 根据入参动态构造sql语句
+     * Builds SQL dynamically from the input parameters.
      *
      * @param sql
      * @param filters
@@ -199,31 +199,31 @@ public class SqlBuilderUtil {
         LinkedHashMap<String, Object> acceptedFilters = new LinkedHashMap<>();
         for (int i = 0, end = 0, start = sql.indexOf(MARK_KEY_START); ((start = sql.indexOf(MARK_KEY_START, end)) >= 0); i++) {
             end = sql.indexOf(MARK_KEY_END, start);
-            // 封装该条件代码块中的NamedParameterSql
+            // Builds NamedParameterSql for the conditional block.
             ParsedSql parsedSql = getSegmentParsedSql(sql, start, end);
             if (CollUtil.isEmpty(parsedSql.getParamNames())) {
                 throw new ServiceException("ds.error.sql.key.missing", "Not key found in segment=" + sql.substring(start, end + MARK_KEY_END.length()));
             }
-            // 判断输入参数filters中是否存在查询参数
+            // Check whether the input filters contain query parameters.
             if (isAcceptedKeys(filters, parsedSql.getParamNames())) {
-                // 动态构造可执行的sql语句，去掉条件代码块两边的${ }标记符
+                // Build executable SQL by removing the ${ } markers around the conditional block.
                 if (log.isDebugEnabled()) {
                     log.debug("The filter namedParameters=" + parsedSql.getParamNames() + " is accepted on segment=" + sql.substring(start, end + MARK_KEY_END.length()));
                 }
-                // 下面方法2选1可以获取条件代码块
+                // Either of the following methods can obtain the conditional block.
                 // select id, name from user where 1 = 1 and id = :id
 //                String segment = sql.substring(start + MARK_KEY_START.length(), end);
                 String segment = parsedSql.getOriginalSql();
-                // 转换命名参数:为?
+                // Convert named parameters to question-mark placeholders.
                 // select id, name from user where 1 = 1 and id = ?
 //                String segment = NamedParameterUtil.substituteNamedParams(parsedSql, filters);
-                // 获取传参中包含命名参数的数据
+                // Get named-parameter data from the input.
                 LinkedHashMap<String, Object> linkAcceptedFilters = NamedParameterUtil.buildValueArray(parsedSql, filters);
                 acceptedFilters.putAll(linkAcceptedFilters);
                 sql.replace(start, end + MARK_KEY_END.length(), segment);
                 end = start + segment.length();
             } else {
-                // 抛弃该条件代码块
+                // Discard the conditional block.
                 if (log.isDebugEnabled()) {
                     log.debug("The filter namedParameters=" + parsedSql.getParamNames() + " is removed from the query on segment=" + sql.substring(start, end + MARK_KEY_END.length()));
                 }
@@ -235,7 +235,7 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 验证入参，并过滤值为空的入参
+     * Validates input parameters and filters out empty values.
      */
     private boolean isAcceptedKeys(Map<String, Object> filters, List<String> keys) {
         for (int i = 0; i < keys.size(); i++) {
@@ -249,7 +249,7 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 封装该条件代码块中的NamedParameterSql
+     * Builds NamedParameterSql for the conditional block.
      */
     private ParsedSql getSegmentParsedSql(StringBuffer sql, int start, int end) {
         String segment = sql.substring(start + MARK_KEY_START.length(), end);
@@ -258,7 +258,7 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 获取参数值
+     * Gets the parameter value.
      *
      * @param filters
      * @param key
@@ -271,7 +271,7 @@ public class SqlBuilderUtil {
     }
 
     /**
-     * 验证参数值是否空
+     * Validates whether the parameter value is empty.
      *
      * @param value
      * @param isRemoveEmpty

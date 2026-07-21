@@ -41,53 +41,53 @@
 //import springfox.documentation.spring.web.plugins.Docket;
 //
 ///**
-// * Swagger2的接口配置
+// * Swagger 2 API configuration
 // *
 // * @author qdata
 // */
 //@Configuration
 //public class SwaggerConfig
 //{
-//    /** 系统基础配置 */
+//    /** System base configuration */
 //    @Autowired
 //    private AniviaConfig qdataConfig;
 //
-//    /** 是否开启swagger */
+//    /** Whether Swagger is enabled */
 //    @Value("${swagger.enabled}")
 //    private boolean enabled;
 //
-//    /** 设置请求的统一前缀 */
+//    /** Configures the common request prefix */
 //    @Value("${swagger.pathMapping}")
 //    private String pathMapping;
 //
 //    /**
-//     * 创建API
+//     * Creates the API documentation configuration.
 //     */
 //    @Bean
 //    public Docket createRestApi()
 //    {
 //        return new Docket(DocumentationType.OAS_30)
-//                // 是否启用Swagger
+//                // Whether Swagger is enabled
 //                .enable(enabled)
-//                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
+//                // Creates the basic API information displayed on the documentation page.
 //                .apiInfo(apiInfo())
-//                // 设置哪些接口暴露给Swagger展示
+//                // Configures which APIs are exposed in Swagger.
 //                .select()
-//                // 扫描所有有注解的api，用这种方式更灵活
+//                // Scans all annotated APIs for greater flexibility.
 //                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-//                // 扫描指定包中的swagger注解
+//                // Scans Swagger annotations in the specified package.
 //                // .apis(RequestHandlerSelectors.basePackage("tech.qiantong.project.tool.swagger"))
-//                // 扫描所有 .apis(RequestHandlerSelectors.any())
+//                // Scans all APIs with .apis(RequestHandlerSelectors.any()).
 //                .paths(PathSelectors.any())
 //                .build()
-//                /* 设置安全模式，swagger可以设置访问token */
+//                /* Configures the security scheme so Swagger can send an access token. */
 //                .securitySchemes(securitySchemes())
 //                .securityContexts(securityContexts())
 //                .pathMapping(pathMapping);
 //    }
 //
 //    /**
-//     * 安全模式，这里指定token通过Authorization头请求头传递
+//     * Security scheme that passes the token through the Authorization request header.
 //     */
 //    private List<SecurityScheme> securitySchemes()
 //    {
@@ -97,7 +97,7 @@
 //    }
 //
 //    /**
-//     * 安全上下文
+//     * Security context.
 //     */
 //    private List<SecurityContext> securityContexts()
 //    {
@@ -111,7 +111,7 @@
 //    }
 //
 //    /**
-//     * 默认的安全上引用
+//     * Default security reference.
 //     */
 //    private List<SecurityReference> defaultAuth()
 //    {
@@ -124,20 +124,20 @@
 //    }
 //
 //    /**
-//     * 添加摘要信息
+//     * Adds API metadata.
 //     */
 //    private ApiInfo apiInfo()
 //    {
-//        // 用ApiInfoBuilder进行定制
+//        // Customizes API information with ApiInfoBuilder.
 //        return new ApiInfoBuilder()
-//                // 设置标题
-//                .title("标题：qData开源版_接口文档")
-//                // 描述
-//                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
-//                // 作者信息
+//                // Sets the title.
+//                .title("qData Open Source Edition API Documentation")
+//                // Description
+//                .description("Manages personnel information for companies in the group, including the XXX and XXX modules...")
+//                // Author information
 //                .contact(new Contact(qdataConfig.getName(), null, null))
-//                // 版本
-//                .version("版本号:" + qdataConfig.getVersion())
+//                // Version
+//                .version("Version: " + qdataConfig.getVersion())
 //                .build();
 //    }
 //}

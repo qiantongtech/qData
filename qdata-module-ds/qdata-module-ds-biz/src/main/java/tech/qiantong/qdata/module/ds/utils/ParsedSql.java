@@ -23,20 +23,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 此类封装NamedParameterSql
+ * Encapsulates NamedParameterSql.
  */
 public class ParsedSql implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     private String originalSql;
-    //参数名
+    //Parameter name.
     private List<String> paramNames = new ArrayList<>();
-    //参数在sql中对应的位置
+    //Parameter positions in the SQL.
     private List<int[]> paramIndexs = new ArrayList<>();
-    //统计参数个数（不包含重复）
+    //Counts distinct parameters.
     private int namedParamCount;
-    //统计sql中？的个数
+    //Counts question-mark placeholders in the SQL.
     private int unnamedParamCount;
 
     private int totalParamCount;

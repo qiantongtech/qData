@@ -80,7 +80,7 @@ public class DpDocumentController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DpDocumentDO> list = (List<DpDocumentDO>) dpDocumentService.getDpDocumentPage(exportReqVO).getRows();
         ExcelUtil<DpDocumentRespVO> util = new ExcelUtil<>(DpDocumentRespVO.class);
-        util.exportExcel(response, DpDocumentConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DpDocumentConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入标准信息登记列表")
@@ -121,7 +121,7 @@ public class DpDocumentController extends BaseController {
         return CommonResult.toAjax(dpDocumentService.updateDpDocument(dpDocument));
     }
 //
-//    @Operation(summary = "删除标准信息登记")
+//    @Operation(summary = "Delete standard information record")
 //    @PreAuthorize("@ss.hasPermi('dp:document:document:remove')")
 //    @Log(title = "log.op.title.dp.document", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{IDs}")

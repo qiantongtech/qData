@@ -653,7 +653,7 @@ function submitForm(obj) {
           });
       })
       .catch((error) => {
-        console.error("新增失败:", error);
+        console.error("Failed to add:", error);
         submitLoading.value = false;
       });
   }

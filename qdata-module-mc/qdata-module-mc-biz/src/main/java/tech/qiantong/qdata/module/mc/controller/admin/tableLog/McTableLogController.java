@@ -54,7 +54,7 @@ public class McTableLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTableLogDO> list = (List<McTableLogDO>) mcTableLogService.getMcTableLogPage(exportReqVO).getRows();
         ExcelUtil<McTableLogRespVO> util = new ExcelUtil<>(McTableLogRespVO.class);
-        util.exportExcel(response, McTableLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTableLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取元数据信息 - 日志详细信息")

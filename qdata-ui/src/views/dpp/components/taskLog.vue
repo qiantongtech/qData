@@ -17,7 +17,7 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" :title="td('dpp.taskLog.taskExecutionLog', '任务执行日志')" :draggable="true" class="medium-dialog" @close="handleClose">
+    <el-dialog v-model="visible" :title="td('dpp.taskLog.taskExecutionLog', 'Task Execution Log')" :draggable="true" class="medium-dialog" @close="handleClose">
         <div class="graph-log-container" ref="containerRef" v-loading="loading">
             <!-- X6 picture above -->
             <div class="graph-container" ref="graphRef" :style="{ height: graphHeight + 'px' }"></div>
@@ -28,27 +28,27 @@
             <div class="log-container" :style="{ height: logHeight + 'px' }">
                 <div v-if="hasLogSummary" class="log-summary">
                     <div class="summary-item">
-                        <span>{{ td('dpp.taskLog.inputRecords', '输入') }}</span>
+                        <span>{{ td('dpp.taskLog.inputRecords', 'Input') }}</span>
                         <strong>{{ displayMetric(logSummary.inputRecords) }}</strong>
                     </div>
                     <div class="summary-item">
-                        <span>{{ td('dpp.taskLog.outputRecords', '输出') }}</span>
+                        <span>{{ td('dpp.taskLog.outputRecords', 'Output') }}</span>
                         <strong>{{ displayMetric(logSummary.outputRecords) }}</strong>
                     </div>
                     <div class="summary-item summary-node">
-                        <span>{{ td('dpp.taskLog.nodeNames', '节点') }}</span>
+                        <span>{{ td('dpp.taskLog.nodeNames', 'Node') }}</span>
                         <strong>{{ displayNodes(logSummary.nodeNames) }}</strong>
                     </div>
                     <div class="summary-item">
-                        <span>{{ td('dpp.taskLog.successCount', '成功') }}</span>
+                        <span>{{ td('dpp.taskLog.successCount', 'Succeeded') }}</span>
                         <strong>{{ displayMetric(logSummary.successCount) }}</strong>
                     </div>
                     <div class="summary-item">
-                        <span>{{ td('dpp.taskLog.failedCount', '失败') }}</span>
+                        <span>{{ td('dpp.taskLog.failedCount', 'Failed') }}</span>
                         <strong>{{ displayMetric(logSummary.failedCount) }}</strong>
                     </div>
                     <div class="summary-item">
-                        <span>{{ td('dpp.taskLog.stoppedCount', '停止') }}</span>
+                        <span>{{ td('dpp.taskLog.stoppedCount', 'Stopped') }}</span>
                         <strong>{{ displayMetric(logSummary.stoppedCount) }}</strong>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
         </div>
         <template #footer>
             <div style="text-align: right">
-                <el-button @click="handleClose">{{ td('common.button.close', '关闭') }}</el-button>
+                <el-button @click="handleClose">{{ td('common.button.close', 'Close') }}</el-button>
             </div>
         </template>
     </el-dialog>

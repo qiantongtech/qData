@@ -52,7 +52,7 @@ public abstract class AbstractDataSourceFactory implements DataSourceFactory {
     public DbQuery createDbQuery(DbQueryProperty dbQueryProperty, DataSource dataSource, DbType dbType) {
         DbDialect dbDialect = DialectFactory.getDialect(dbType);
         if (dbDialect == null) {
-            throw new DataQueryException("db.error.datasource.dev", "该数据库类型正在开发中");
+            throw new DataQueryException("db.error.datasource.dev", "This database type is under development");
         }
         AbstractDbQueryFactory dbQuery = new CacheDbQueryFactoryBean();
         dbQuery.setDbQueryProperty(dbQueryProperty);
@@ -78,7 +78,7 @@ public abstract class AbstractDataSourceFactory implements DataSourceFactory {
     protected String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));

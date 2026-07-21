@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 /**
- * API服务调用日志Service业务层处理
+ * API service call log service implementation
  *
  * @author lhs
  * @date 2025-02-12
@@ -68,15 +68,15 @@ public class DsApiLogServiceImpl  extends ServiceImpl<DsApiLogMapper,DsApiLogDO>
 
     @Override
     public int updateDsApiLog(DsApiLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Perform related validation.
 
-        // 更新API服务调用日志
+        // Updates an API service call log.
         DsApiLogDO updateObj = BeanUtils.toBean(updateReqVO, DsApiLogDO.class);
         return dsApiLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDsApiLog(Collection<Long> idList) {
-        // 批量删除API服务调用日志
+        // Deletes API service call logs in batches.
         return dsApiLogMapper.deleteBatchIds(idList);
     }
 
@@ -97,24 +97,24 @@ public class DsApiLogServiceImpl  extends ServiceImpl<DsApiLogMapper,DsApiLogDO>
                 .collect(Collectors.toMap(
                         DsApiLogDO::getId,
                         dsApiLogDO -> dsApiLogDO,
-                        // 保留已存在的值
+                        // Preserve the existing value.
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入API服务调用日志数据
+         * Imports API service call log data.
          *
-         * @param importExcelList API服务调用日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList API service call log data list
+         * @param isUpdateSupport whether existing records should be updated
+         * @param operName operator
+         * @return the result
          */
         @Override
         public String importDsApiLog(List<DsApiLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("ds.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("ds.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -133,16 +133,16 @@ public class DsApiLogServiceImpl  extends ServiceImpl<DsApiLogMapper,DsApiLogDO>
                                 dsApiLogMapper.updateById(dsApiLogDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("ds.import.update.success",
-                                        "数据更新成功，ID为 " + dsApiLogId + " 的API服务调用日志记录。", dsApiLogId, "API服务调用日志"));
+                                        "Data update successful, ID {0} {1} record.", dsApiLogId, MessageUtils.messageWithFallback("ds.entity.api.call.log", "API service call log")));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("ds.import.update.fail",
-                                        "数据更新失败，ID为 " + dsApiLogId + " 的API服务调用日志记录不存在。", dsApiLogId, "API服务调用日志"));
+                                        "Data update failed, ID {0} {1} record does not exist.", dsApiLogId, MessageUtils.messageWithFallback("ds.entity.api.call.log", "API service call log")));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("ds.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, record ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DsApiLogDO> queryWrapper = new QueryWrapper<>();
@@ -152,17 +152,17 @@ public class DsApiLogServiceImpl  extends ServiceImpl<DsApiLogMapper,DsApiLogDO>
                             dsApiLogMapper.insert(dsApiLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("ds.import.insert.success",
-                                    "数据插入成功，ID为 " + dsApiLogId + " 的API服务调用日志记录。", dsApiLogId, "API服务调用日志"));
+                                    "Data insert successful, ID {0} {1} record.", dsApiLogId, MessageUtils.messageWithFallback("ds.entity.api.call.log", "API service call log")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("ds.import.insert.fail",
-                                    "数据插入失败，ID为 " + dsApiLogId + " 的API服务调用日志记录已存在。", dsApiLogId, "API服务调用日志"));
+                                    "Data insert failed, ID {0} {1} record already exists.", dsApiLogId, MessageUtils.messageWithFallback("ds.entity.api.call.log", "API service call log")));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("ds.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -171,12 +171,12 @@ public class DsApiLogServiceImpl  extends ServiceImpl<DsApiLogMapper,DsApiLogDO>
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("ds.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                         failureNum, failureDetails));
                 throw new ServiceException("ds.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("ds.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data imported! Total: {0} records.", successNum));
             }
             return resultMsg.toString();
         }

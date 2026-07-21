@@ -504,7 +504,7 @@ public class TaskConverter {
     }
 
     public static List<DppEtlNodeSaveReqVO> convertToDppEtlNodeSaveReqVOList(List<TaskDefinition> taskDefinitionList, DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO) {
-        //取出入参数的信息
+        // Extract input parameter information.
         List<Map<String, Object>> list = JSONUtils.convertTaskDefinitionJson(dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
         return taskDefinitionList.stream()
                 .map(taskDefinition -> {
@@ -809,7 +809,7 @@ public class TaskConverter {
         reqVO.setTaskId(taskId);
         reqVO.setTaskCode(taskCode);
 
-        // 获取100年后的时间
+        // Get the time 100 years from now.
         long currentTime = System.currentTimeMillis();
         Date date = new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000);
 

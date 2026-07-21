@@ -166,7 +166,7 @@ public class McTaskConverter {
         }
 
         // If the list is empty, return null or other default values as appropriate
-        throw new ServiceException("mc.error.scheduler.create", "创建调度器，失败！");
+        throw new ServiceException("mc.error.scheduler.create", "Failed to create scheduler!");
     }
 
     /**

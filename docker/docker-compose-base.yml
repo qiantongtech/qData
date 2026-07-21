@@ -44,10 +44,10 @@ services:
       - 15672:15672
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     profiles: ["all", "local"]
     env_file: .env
     environment:
@@ -75,7 +75,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites/:/etc/nginx/http_vhost/:ro
 
-  #达梦主库
+  #Primary DM database
   dm8:
     image: ${QDATA_HUB}/dm8:mixed
     profiles: [ "all", "schema", "local", "qdata-dm8"  ]
@@ -98,10 +98,10 @@ services:
       - QDATA_PWD=${QDATA_PWD}
     healthcheck:
       test: [ "CMD-SHELL", "echo > /dev/tcp/127.0.0.1/5236" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet
 
@@ -142,9 +142,9 @@ services:
       - ./neo4j/conf:/var/lib/neo4j/conf
     healthcheck:
       test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "InC3tmU4bijT4vkl", "RETURN 1;" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet

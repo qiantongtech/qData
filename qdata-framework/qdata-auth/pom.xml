@@ -30,7 +30,7 @@
     <artifactId>qdata-auth</artifactId>
 
     <description>
-        auth模块
+        Authentication module
     </description>
 
     <dependencies>

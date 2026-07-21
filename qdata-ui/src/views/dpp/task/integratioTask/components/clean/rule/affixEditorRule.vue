@@ -22,18 +22,18 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.markValue', '标记值')"
+          :label="td('dpp.cleanRule.markValue', 'Mark Value')"
           prop="stringValue"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.inputMarkValue', '请输入标记值'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputMarkValue', 'Please enter mark value'), trigger: 'blur' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.stringValue"
-            :placeholder="td('dpp.cleanRule.inputValue', '请输入添加值')"
+            :placeholder="td('dpp.cleanRule.inputValue', 'Please enter value to add')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.stringValue || "-" }}</div>
@@ -41,19 +41,19 @@
       </el-col>
       <el-col :span="12" class="hasMsg">
         <el-form-item
-          :label="td('dpp.cleanRule.handleMethod', '处理方式')"
+          :label="td('dpp.cleanRule.handleMethod', 'Handling Method')"
           prop="handleType"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.selectHandleMethod', '请选择处理方式'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.selectHandleMethod', 'Please select handling method'), trigger: 'blur' }]
               : []
           "
         >
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">{{ td('dpp.cleanRule.addPrefix', '加前綴') }}</el-radio>
-            <el-radio :value="'2'">{{ td('dpp.cleanRule.addSuffix', '加后綴') }}</el-radio>
-            <el-radio :value="'3'">{{ td('dpp.cleanRule.removePrefix', '去除前缀') }}</el-radio>
-            <el-radio :value="'4'">{{ td('dpp.cleanRule.removeSuffix', '去除后缀') }}</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.cleanRule.addPrefix', 'Add Prefix') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.cleanRule.addSuffix', 'Add Suffix') }}</el-radio>
+            <el-radio :value="'3'">{{ td('dpp.cleanRule.removePrefix', 'Remove Prefix') }}</el-radio>
+            <el-radio :value="'4'">{{ td('dpp.cleanRule.removeSuffix', 'Remove Suffix') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -80,22 +80,22 @@ const form = reactive({ ...props.form });
 const boundaryExamples = computed(() => {
   switch (form.handleType) {
     case "3":
-      return [td('dpp.cleanRule.exampleAgeOver150', '示例: 如果年龄 > 150，则设置为 150。')];
+      return [td('dpp.cleanRule.exampleAgeOver150', 'Example: If age > 150, set to 150.')];
     case "2":
-      return [td('dpp.cleanRule.exampleIncomeUnder1000', '示例: 如果收入 < 1000，则设置为 1000。')];
+      return [td('dpp.cleanRule.exampleIncomeUnder1000', 'Example: If income < 1000, set to 1000.')];
     case "1":
       return [
-        td('dpp.cleanRule.exampleBoth', '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。'),
+        td('dpp.cleanRule.exampleBoth', 'Example 1: If age > 150, set to 150. If income < 1000, set to 1000.'),
       ];
     default:
       return [];
   }
 });
 const handleTypeText = computed(() => {
-  if (form.handleType === "1") return td('dpp.cleanRule.addPrefix', '加前綴');
-  if (form.handleType === "2") return td('dpp.cleanRule.addSuffix', '加后綴');
-  if (form.handleType === "3") return td('dpp.cleanRule.removePrefix', '去除前缀');
-  if (form.handleType === "4") return td('dpp.cleanRule.removeSuffix', '去除后缀');
+  if (form.handleType === "1") return td('dpp.cleanRule.addPrefix', 'Add Prefix');
+  if (form.handleType === "2") return td('dpp.cleanRule.addSuffix', 'Add Suffix');
+  if (form.handleType === "3") return td('dpp.cleanRule.removePrefix', 'Remove Prefix');
+  if (form.handleType === "4") return td('dpp.cleanRule.removeSuffix', 'Remove Suffix');
   return "-";
 });
 const loading = ref(false);

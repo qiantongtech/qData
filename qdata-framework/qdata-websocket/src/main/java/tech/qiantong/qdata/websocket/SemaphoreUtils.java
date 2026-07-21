@@ -51,7 +51,7 @@ public class SemaphoreUtils
         }
         catch (Exception e)
         {
-            LOGGER.error("获取信号量异常", e);
+            LOGGER.error("Failed to acquire semaphore", e);
         }
 
         return flag;
@@ -71,7 +71,7 @@ public class SemaphoreUtils
         }
         catch (Exception e)
         {
-            LOGGER.error("释放信号量异常", e);
+            LOGGER.error("Failed to release semaphore", e);
         }
     }
 }

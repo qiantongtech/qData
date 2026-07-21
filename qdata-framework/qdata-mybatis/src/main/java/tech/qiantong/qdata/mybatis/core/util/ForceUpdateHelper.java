@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.beans.Introspector;
 import java.lang.reflect.Field;
@@ -37,11 +38,12 @@ public class ForceUpdateHelper {
             idField.setAccessible(true);
             id = idField.get(entity);
         } catch (Exception e) {
-            throw new ServiceException("sys.error.pk.fail", "获取主键失败");
+            throw new ServiceException("sys.error.pk.fail", "Failed to get primary key");
         }
 
         if (id == null) {
-            throw new IllegalArgumentException("主键不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "sys.error.primary.key.empty", "Primary key cannot be empty"));
         }
 
         // Create UpdateWrapper

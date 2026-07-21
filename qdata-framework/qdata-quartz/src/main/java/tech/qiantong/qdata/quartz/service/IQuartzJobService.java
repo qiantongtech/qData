@@ -25,7 +25,7 @@ import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import java.util.List;
 
 /**
- * Quartz 业务调度任务服务层。
+ * Service layer for Quartz business schedules.
  *
  * @author qdata
  */

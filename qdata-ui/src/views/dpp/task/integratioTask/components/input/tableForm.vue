@@ -24,15 +24,15 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name"
-                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]" :label-position="labelPosition">
-                        <el-input v-if="!info" v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+                    <el-form-item :label="td('dpp.integration.nodeName', 'Node Name')" prop="name"
+                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-input v-if="!info" v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')" />
                         <div v-else class="form-readonly">{{ form.name }}</div>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
-                        <el-input v-if="!info" v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" disabled />
+                    <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
+                        <el-input v-if="!info" v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')" disabled />
                         <div v-else class="form-readonly">{{ form.taskParams.typeName }}</div>
                     </el-form-item>
                 </el-col>
@@ -47,7 +47,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.connectionMethod', '连接方式')" prop="clmt" :label-position="labelPosition">
+                    <el-form-item :label="td('dpp.integration.connectionMethod', 'Connection Method')" prop="clmt" :label-position="labelPosition">
                         <el-radio-group v-if="!info" @change="handleReleaseStateChange" v-model="form.taskParams.clmt">
                             <template v-for="dict in dpp_connection" :key="dict.value">
                                 <el-radio :value="dict.value">
@@ -61,8 +61,8 @@
                 </el-col>
                 <template v-if="form.taskParams.clmt == '1'">
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.assetTable', '资产表')" prop="taskParams.asset_id_cpoy" :rules="[
-                            { required: true, message: td('dpp.integration.assetTableRequired', '请选择资产表'), trigger: 'blur' }
+                        <el-form-item :label="td('dpp.integration.assetTable', 'Asset Table')" prop="taskParams.asset_id_cpoy" :rules="[
+                            { required: true, message: td('dpp.integration.assetTableRequired', 'Please select asset table'), trigger: 'blur' }
                         ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id_cpoy" filterable
                                 @change="handleAssetTableChange" :loading="dppLoading">
@@ -79,15 +79,15 @@
             <template v-if="form.taskParams.clmt == '0' || form.taskParams.clmt == '2'">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.sourceDbConnection', '源数据库连接')" prop="taskParams.readerDatasource.datasourceId" :rules="[
+                        <el-form-item :label="td('dpp.integration.sourceDbConnection', 'Source DB Connection')" prop="taskParams.readerDatasource.datasourceId" :rules="[
                             {
                                 required: true,
-                                message: td('dpp.integration.sourceDbConnectionRequired', '请选择源数据库连接'),
+                                message: td('dpp.integration.sourceDbConnectionRequired', 'Please select source DB connection'),
                                 trigger: 'change'
                             }
                         ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.readerDatasource.datasourceId"
-                                :placeholder="td('dpp.integration.sourceDbConnectionPlaceholder', '请选择源数据库连接')" @change="handleDatasourceChange" filterable>
+                                :placeholder="td('dpp.integration.sourceDbConnectionPlaceholder', 'Please select source DB connection')" @change="handleDatasourceChange" filterable>
                                 <el-option v-for="dict in createTypeList" :key="dict.id" :label="dict.datasourceName"
                                     :value="dict.id"></el-option>
                             </el-select>
@@ -96,9 +96,9 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.dbConnectionType', '数据连接类型')" prop="taskParams.readerDatasource.datasourceType" :label-position="labelPosition">
+                        <el-form-item :label="td('dpp.integration.dbConnectionType', 'Data Connection Type')" prop="taskParams.readerDatasource.datasourceType" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.readerDatasource.datasourceType"
-                                :placeholder="td('dpp.integration.dbConnectionTypePlaceholder', '请输入数据连接类型')" disabled />
+                                :placeholder="td('dpp.integration.dbConnectionTypePlaceholder', 'Please enter data connection type')" disabled />
                             <div class="form-readonly" v-else>{{ form.taskParams.readerDatasource.datasourceType || '-'
                                 }}</div>
                         </el-form-item>
@@ -106,15 +106,15 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')" prop="taskParams.readerDatasource.dbname" :label-position="labelPosition">
+                        <el-form-item :label="td('dpp.integration.dbConnectionInstance', 'Data Connection Instance')" prop="taskParams.readerDatasource.dbname" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.readerDatasource.dbname"
-                                :placeholder="td('dpp.integration.dbConnectionInstancePlaceholder', '请输入数据连接实例')" disabled />
+                                :placeholder="td('dpp.integration.dbConnectionInstancePlaceholder', 'Please enter data connection instance')" disabled />
                             <div class="form-readonly" v-else>{{ form.taskParams.readerDatasource.dbname || '-' }}</div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12" v-if="form.taskParams.clmt == '0'">
-                        <el-form-item :label="td('dpp.integration.selectTable', '选择表')" prop="taskParams.asset_id"
-                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', '请选择表'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-form-item :label="td('dpp.integration.selectTable', 'Select Table')" prop="taskParams.asset_id"
+                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', 'Please select table'), trigger: 'change' }]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id" filterable @change="handleChange"
                                 :loading="loadingTables">
                                 <el-option v-for="item in TablesByDataSource" :key="item.tableName"
@@ -127,15 +127,15 @@
                         <el-form-item :label-position="labelPosition">
                             <div style="text-align: right; width: 100%">
                                 <el-button size="small" type="primary" @click="sqlParseFunction"
-                                    class="sql-parse-btn">{{ td('dpp.integration.sqlParse', 'SQL解析') }}</el-button>
+                                    class="sql-parse-btn">{{ td('dpp.integration.sqlParse', 'SQL Parse') }}</el-button>
                             </div>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20" v-if="form.taskParams.clmt == '2'">
                     <el-col :span="24">
-                        <el-form-item :label="td('dpp.integration.sqlStatement', 'SQL语句')" prop="taskParams.querySql"
-                            :rules="[{ required: true, message: td('dpp.integration.sqlStatementRequired', '请输入SQL语句'), trigger: 'blur' }]" :label-position="labelPosition">
+                        <el-form-item :label="td('dpp.integration.sqlStatement', 'SQL Statement')" prop="taskParams.querySql"
+                            :rules="[{ required: true, message: td('dpp.integration.sqlStatementRequired', 'Please enter SQL statement'), trigger: 'blur' }]" :label-position="labelPosition">
                             <sql-editor ref="editorRef" :value="form.taskParams.querySql" class="sql-editor"
                                 :height="'140px'" @changeTextarea="changeTextarea($event)" />
                         </el-form-item>
@@ -144,37 +144,37 @@
             </template>
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.readMode', '读取模式')" prop="taskParams.readModeType" :rules="[
+                    <el-form-item :label="td('dpp.integration.readMode', 'Read Mode')" prop="taskParams.readModeType" :rules="[
                         {
                             required: true,
-                            message: td('dpp.integration.readModeRequired', '请选择读取模式'),
+                            message: td('dpp.integration.readModeRequired', 'Please select read mode'),
                             trigger: 'change'
                         }
                     ]" :label-position="labelPosition">
                         <el-radio-group v-if="!info" v-model="form.taskParams.readModeType"
                             @change="handlereadModeTypeChange">
-                            <el-radio value="1">{{ td('dpp.integration.fullVolume', '全量') }}</el-radio>
-                            <el-radio value="2">{{ td('dpp.integration.idIncrement', 'id增量') }}</el-radio>
-                            <el-radio value="3">{{ td('dpp.integration.timeRangeIncrement', '时间范围增') }}</el-radio>
+                            <el-radio value="1">{{ td('dpp.integration.fullVolume', 'Full Volume') }}</el-radio>
+                            <el-radio value="2">{{ td('dpp.integration.idIncrement', 'ID Increment') }}</el-radio>
+                            <el-radio value="3">{{ td('dpp.integration.timeRangeIncrement', 'Time Range Increment') }}</el-radio>
                         </el-radio-group>
-                        <div class="form-readonly" v-else>{{ form.taskParams.readModeType == 1 ? td('dpp.integration.fullVolume', '全量') :
+                        <div class="form-readonly" v-else>{{ form.taskParams.readModeType == 1 ? td('dpp.integration.fullVolume', 'Full Volume') :
                             form.taskParams.readModeType == 2 ?
-                                td('dpp.integration.idIncrement', 'id增量') : td('dpp.integration.timeRangeIncrement', '时间范围增') }}</div>
+                                td('dpp.integration.idIncrement', 'ID Increment') : td('dpp.integration.timeRangeIncrement', 'Time Range Increment') }}</div>
                     </el-form-item>
                 </el-col>
             </el-row>
             <template v-if="form.taskParams.readModeType == 2">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.idField', 'id字段')" prop="taskParams.idIncrementConfig.incrementColumn" :rules="[
+                        <el-form-item :label="td('dpp.integration.idField', 'ID Field')" prop="taskParams.idIncrementConfig.incrementColumn" :rules="[
                             {
                                 required: true,
-                                message: td('dpp.integration.idFieldRequired', '请选择id字段'),
+                                message: td('dpp.integration.idFieldRequired', 'Please select ID field'),
                                 trigger: 'blur'
                             }
                         ]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.idIncrementConfig.incrementColumn"
-                                collapse-tags collapse-tags-tooltip filterable :placeholder="td('dpp.integration.idFieldPlaceholder', '请选择id字段')">
+                                collapse-tags collapse-tags-tooltip filterable :placeholder="td('dpp.integration.idFieldPlaceholder', 'Please select ID field')">
                                 <el-option v-for="item in ColumnByAssettab" :key="item.columnName"
                                     :label="item.columnName" :value="item.columnName" />
                             </el-select>
@@ -184,12 +184,12 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.startValue', '开始值')" prop="taskParams.idIncrementConfig.incrementStart" :rules="[
-                            { required: true, message: td('dpp.integration.startValueRequired', '请输入开始值'), trigger: 'change' },
+                        <el-form-item :label="td('dpp.integration.startValue', 'Start Value')" prop="taskParams.idIncrementConfig.incrementStart" :rules="[
+                            { required: true, message: td('dpp.integration.startValueRequired', 'Please enter start value'), trigger: 'change' },
                             { validator: checkInteger, trigger: 'change' }
                         ]" :label-position="labelPosition">
                             <el-input v-if="!info" v-model="form.taskParams.idIncrementConfig.incrementStart"
-                                :placeholder="td('dpp.integration.startValuePlaceholder', '请输入开始值')" type="number">
+                                :placeholder="td('dpp.integration.startValuePlaceholder', 'Please enter start value')" type="number">
                             </el-input>
                             <div class="form-readonly" v-else>{{ form.taskParams.idIncrementConfig.incrementStart || '-'
                                 }}</div>
@@ -216,9 +216,9 @@
 <!--                        </el-form-item>-->
 <!--                    </el-col>-->
                     <el-col :span="12">
-                        <el-form-item :label="td('dpp.integration.timeFormat', '时间格式')" prop="taskParams.dateIncrementConfig.dateFormat" :label-position="labelPosition">
+                        <el-form-item :label="td('dpp.integration.timeFormat', 'Time Format')" prop="taskParams.dateIncrementConfig.dateFormat" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.dateFormat"
-                                :placeholder="td('dpp.integration.timeFormatPlaceholder', '请选择时间格式')">
+                                :placeholder="td('dpp.integration.timeFormatPlaceholder', 'Please select time format')">
                                 <el-option v-for="item in dateFormatOptions" :key="item.value" :label="item.label"
                                     :value="item.value" />
                             </el-select>
@@ -238,30 +238,30 @@
                 </div>
                 <el-table stripe height="310px" v-loading="loadingList"
                     :data="form.taskParams.dateIncrementConfig.column" style="margin-bottom: 10px;">
-                    <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="incrementColumn"
+                    <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="incrementColumn"
                         :show-overflow-tooltip="{ effect: 'light' }">
                         <template #default="scope">
                             {{ scope.row.incrementColumn || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.operator', '运算符')" align="left" prop="operator">
+                    <el-table-column :label="td('dpp.integration.operator', 'Operator')" align="left" prop="operator">
                         <template #default="scope">
                             {{ scope.row.operator || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.benchmarkType', '基准类型')" align="left" prop="type">
+                    <el-table-column :label="td('dpp.integration.benchmarkType', 'Benchmark Type')" align="left" prop="type">
                         <template #default="scope">
-                            <span v-if="scope.row.type === 1">{{ td('dpp.integration.fixedValue', '固定值') }}</span>
-                            <span v-else-if="scope.row.type === 3">{{ td('dpp.integration.sqlExpression', 'SQL表达式') }}</span>
-                            <span v-else>{{ td('dpp.integration.autoCurrentTime', '自动获取当前时间，无需填写') }}</span>
+                            <span v-if="scope.row.type === 1">{{ td('dpp.integration.fixedValue', 'Fixed Value') }}</span>
+                            <span v-else-if="scope.row.type === 3">{{ td('dpp.integration.sqlExpression', 'SQL Expression') }}</span>
+                            <span v-else>{{ td('dpp.integration.autoCurrentTime', 'Auto-get current time, no need to fill') }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.benchmarkValue', '基准值')" align="left" prop="data">
+                    <el-table-column :label="td('dpp.integration.benchmarkValue', 'Benchmark Value')" align="left" prop="data">
                         <template #default="scope">
                             {{ scope.row.data || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.cursorTime', '游标时间')" align="left" prop="data">
+                    <el-table-column :label="td('dpp.integration.cursorTime', 'Cursor Time')" align="left" prop="data">
                       <template #default="scope">
                         {{ scope.row.cursorTime || "-" }}
                       </template>
@@ -277,54 +277,54 @@
                 </el-table>
             </template>
 
-            <inputEditModel :visible="open" :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')" @update:visible="open = $event" @confirm="handletaskConfig"
+            <inputEditModel :visible="open" :title="td('dpp.integration.attributeFieldEdit', 'Attribute Field Edit')" @update:visible="open = $event" @confirm="handletaskConfig"
                 :data="row" :ColumnByAssettab="ColumnByAssettab"
                 :dateIncrementConfig_dateFormat="form.taskParams.dateIncrementConfig.dateFormat" />
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
+                    <el-form-item :label="td('dpp.integration.whereCondition', 'Where Condition')" prop="where" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.taskParams.where" type="textarea"
-                            :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')" />
+                            :placeholder="td('dpp.integration.whereConditionPlaceholder', 'e.g. id > 10 and id < 1000, do not end with semicolon')" />
                         <div class="form-readonly" v-else>{{ form.taskParams.where || '-' }}</div>
                     </el-form-item>
                 </el-col>
             </el-row>
             <template v-if="form.taskParams.readModeType == 1">
-                <div class="h2-title">{{ td('dpp.integration.attributeFields', '属性字段') }}</div>
+                <div class="h2-title">{{ td('dpp.integration.attributeFields', 'Attribute Fields') }}</div>
                 <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
-                    <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
+                    <el-table-column :label="td('common.display.index', 'Index')" type="index" width="80" align="left">
                         <template #default="scope">
                             <span>{{ scope.$index + 1 }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.column.englishName', '英文名称')" align="left" prop="columnName"
+                    <el-table-column :label="td('dpp.column.englishName', 'English Name')" align="left" prop="columnName"
                         :show-overflow-tooltip="{ effect: 'light' }">
                         <template #default="scope">
                             {{ scope.row.columnName || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.chineseName', '中文名称')" align="left" prop="columnComment"
+                    <el-table-column :label="td('dpp.integration.chineseName', 'Chinese Name')" align="left" prop="columnComment"
                         :show-overflow-tooltip="{ effect: 'light' }">
                         <template #default="scope">
                             {{ scope.row.columnComment || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType">
+                    <el-table-column :label="td('dpp.integration.fieldType', 'Field Type')" align="left" prop="columnType">
                         <template #default="scope">
                             {{ scope.row.columnType || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.isPrimaryKey', '是否主键')" align="left" prop="pkFlag" v-if="form?.taskParams.type == '1'">
+                    <el-table-column :label="td('dpp.integration.isPrimaryKey', 'Primary Key')" align="left" prop="pkFlag" v-if="form?.taskParams.type == '1'">
                         <template #default="scope">
                             <el-switch v-model="scope.row.pkFlag" :active-value="'1'" :inactive-value="'0'" disabled />
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.column.fieldLength', '字段长度')" align="left" prop="columnLength" v-if="form?.taskParams.type == '1'">
+                    <el-table-column :label="td('dpp.column.fieldLength', 'Field Length')" align="left" prop="columnLength" v-if="form?.taskParams.type == '1'">
                         <template #default="scope">
                             {{ scope.row.columnLength || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="td('dpp.integration.decimalPrecision', '小数经度')" align="left" prop="columnScale" v-if="form?.taskParams.type == '1'">
+                    <el-table-column :label="td('dpp.integration.decimalPrecision', 'Decimal Precision')" align="left" prop="columnScale" v-if="form?.taskParams.type == '1'">
                         <template #default="scope">
                             {{ scope.row.columnScale || '-' }}
                         </template>
@@ -417,16 +417,16 @@ const handlereadModeTypeChange = (val) => {
 
 const checkInteger = (rule, value, callback) => {
     if (value === '' || value === null || value === undefined) {
-        callback(new Error(td('dpp.integration.startValueRequired', '请输入开始值')))
+        callback(new Error(td('dpp.integration.startValueRequired', 'Please enter start value')))
         return
     }
     const numValue = Number(value)
     if (isNaN(numValue)) {
-        callback(new Error(td('dpp.integration.invalidNumber', '请输入有效的数字')))
+        callback(new Error(td('dpp.integration.invalidNumber', 'Please enter a valid number')))
         return
     }
     if (!Number.isInteger(numValue)) {
-        callback(new Error(td('dpp.integration.startValueMustBeInteger', '开始值必须为整数')))
+        callback(new Error(td('dpp.integration.startValueMustBeInteger', 'Start value must be an integer')))
         return
     }
 
@@ -574,7 +574,7 @@ const handleReleaseStateChange = (value) => {
     form.value.taskParams.readModeType = 1;
 };
 const handleDelete = (row) => {
-    ElMessageBox.confirm(td('dpp.integration.deleteConfirm', '确定要删除这条数据吗?'), td('common.message.prompt'), {
+    ElMessageBox.confirm(td('dpp.integration.deleteConfirm', 'Are you sure to delete this data?'), td('common.message.prompt'), {
         confirmButtonText: td('common.button.confirm'),
         cancelButtonText: td('common.button.cancel'),
         type: 'warning'
@@ -588,7 +588,7 @@ const handleDelete = (row) => {
             ElMessage.success(td('common.message.deleteSuccess'));
         })
         .catch(() => {
-            ElMessage.info(td('dpp.integration.cancelDelete', '取消删除'));
+            ElMessage.info(td('dpp.integration.cancelDelete', 'Cancel Delete'));
         });
 };
 const handleAssetTableChange = (value) => {
@@ -636,7 +636,7 @@ const saveData = async () => {
             form.value?.taskParams.type == '1' &&
             (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
         ) {
-            return proxy.$message.warning(td('dpp.integration.validateFailedSelectFields', '校验未通过，请选择属性字段'));
+            return proxy.$message.warning(td('dpp.integration.validateFailedSelectFields', 'Validation failed, please select attribute fields'));
         }
         const taskParams = form.value?.taskParams;
         const whereResult = validateWhereCondition(taskParams.where);

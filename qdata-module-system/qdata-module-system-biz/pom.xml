@@ -30,46 +30,46 @@
     <artifactId>qdata-module-system-biz</artifactId>
 
     <description>
-        system系统模块
+        System module
     </description>
 
     <dependencies>
-        <!-- 核心模块 config-->
+        <!-- Core module configuration-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系統模块 websocket-->
+        <!-- system module websocket-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-websocket</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 qdata-security -->
+        <!-- system module qdata-security -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-security</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 mybatis -->
+        <!-- system module mybatis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 redis -->
+        <!-- system module redis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 <!-- ======================================================================== -->
-        <!-- system-api模块 -->
+        <!-- system API module -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-module-system-api</artifactId>
@@ -83,25 +83,25 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- 定时任务-->
+        <!-- Scheduled tasks-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-quartz</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
+        <!-- Code generation-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-generator</artifactId>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
         </dependency>
 
-        <!-- 文件上传-->
+        <!-- File upload-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>
@@ -128,7 +128,7 @@
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>-->
 
-        <!-- 防止进入swagger页面报类型转换错误，排除3.0.0中的引用，手动增加1.6.2版本 -->
+        <!-- Avoid type conversion errors on the Swagger page by excluding the 3.0.0 dependency and adding version 1.6.2 explicitly -->
 <!--        <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>

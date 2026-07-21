@@ -38,6 +38,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
@@ -105,7 +106,7 @@ public class AttProjectUserRelController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttProjectUserRelDO> list = (List<AttProjectUserRelDO>) attProjectUserRelService.getAttProjectUserRelPage(exportReqVO).getRows();
         ExcelUtil<AttProjectUserRelRespVO> util = new ExcelUtil<>(AttProjectUserRelRespVO.class);
-        util.exportExcel(response, AttProjectUserRelConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttProjectUserRelConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入项目与用户关联关系列表")
@@ -202,7 +203,7 @@ public class AttProjectUserRelController extends BaseController {
     public void export(HttpServletResponse response, SysRole role) {
         List<SysRole> list = roleService.selectRoleList(role);
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-        util.exportExcel(response, list, "角色数据");
+        util.exportExcel(response, list, "Role Data");
     }
 
     /**
@@ -224,9 +225,11 @@ public class AttProjectUserRelController extends BaseController {
     public AjaxResult add(@Validated @RequestBody SysRole role) {
         role.setRoleName(role.getRoleName().trim());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("角色名称已存在，请修改");
+            return error(MessageUtils.messageWithFallback(
+                    "att.error.role.name.duplicate", "The role name already exists; choose another name"));
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("权限字符已存在，请修改");
+            return error(MessageUtils.messageWithFallback(
+                    "att.error.role.key.duplicate", "The permission key already exists; choose another key"));
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -244,9 +247,11 @@ public class AttProjectUserRelController extends BaseController {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role)) {
-            return error("角色名称已存在，请修改");
+            return error(MessageUtils.messageWithFallback(
+                    "att.error.role.name.duplicate", "The role name already exists; choose another name"));
         } else if (!roleService.checkRoleKeyUnique(role)) {
-            return error("权限字符已存在，请修改");
+            return error(MessageUtils.messageWithFallback(
+                    "att.error.role.key.duplicate", "The permission key already exists; choose another key"));
         }
         role.setUpdateBy(getUsername());
 
@@ -260,7 +265,8 @@ public class AttProjectUserRelController extends BaseController {
             }
             return success();
         }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+        return error(MessageUtils.messageWithFallback("att.error.role.update.fail",
+                "Failed to update role [{0}]; contact the administrator", role.getRoleName()));
     }
 
     /**
@@ -287,7 +293,8 @@ public class AttProjectUserRelController extends BaseController {
         if ("1".equals(role.getStatus())) {
             int count = roleService.countUserRoleByRoleId(role.getRoleId());
             if (count > 0) {
-                throw new ServiceException("该角色已分配给" + count + "名成员，不能直接停用");
+                throw new ServiceException("att.error.project.role.assigned",
+                        "The role is assigned to {0} members and cannot be disabled directly", count);
             }
         }
         role.setUpdateBy(getUsername());

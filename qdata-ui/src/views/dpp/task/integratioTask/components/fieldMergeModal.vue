@@ -34,12 +34,12 @@
         <!-- Select field (single choice) -->
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.selectField', '选择字段')"
+            :label="td('dpp.integration.selectField', 'Select Field')"
             prop="sourceField"
            :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceField"
-              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               filterable
               :disabled="row.columnName"
             >
@@ -57,12 +57,12 @@
         <!-- Merge fields (multiple selection) -->
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.mergeFields', '合并字段')"
+            :label="td('dpp.integration.mergeFields', 'Merge Fields')"
             prop="sourceFields"
            :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.sourceFields"
-              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段名称')"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               filterable
              collapse-tags multiple
             >
@@ -79,12 +79,12 @@
         <!-- delimiter -->
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.separator', '分隔符')"
+            :label="td('dpp.integration.separator', 'Separator')"
             prop="separator"
            :label-position="labelPosition">
             <el-input
               v-model="form.ruleConfig.fieldMerge.separator"
-              :placeholder="td('dpp.integration.separatorPlaceholder', '请输入分隔符（不能包含中文）')"
+              :placeholder="td('dpp.integration.separatorPlaceholder', 'Please enter separator (cannot contain Chinese)')"
             />
           </el-form-item>
         </el-col>
@@ -92,17 +92,17 @@
         <!-- Null value handling -->
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nullHandling', '空值处理')"
+            :label="td('dpp.integration.nullHandling', 'Null Handling')"
             prop="handleNull"
            :label-position="labelPosition">
             <el-select
               v-model="form.ruleConfig.fieldMerge.handleNull"
-              :placeholder="td('dpp.integration.nullHandlingPlaceholder', '请选择空值处理方式')"
+              :placeholder="td('dpp.integration.nullHandlingPlaceholder', 'Please select null handling method')"
               filterable
             >
-              <el-option :label="td('dpp.integration.keepAsNull', '保留为空')" value="keep" />
-              <el-option :label="td('dpp.integration.replaceWithDefault', '替换为默认值')" value="default" />
-              <el-option :label="td('dpp.integration.deleteRecord', '删除该条记录')" value="remove" />
+              <el-option :label="td('dpp.integration.keepAsNull', 'Keep as Null')" value="keep" />
+              <el-option :label="td('dpp.integration.replaceWithDefault', 'Replace with Default Value')" value="default" />
+              <el-option :label="td('dpp.integration.deleteRecord', 'Delete Record')" value="remove" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -110,12 +110,12 @@
         <!-- Default value (only shown when default is selected) -->
         <el-col :span="12" v-if="form.ruleConfig.fieldMerge.handleNull === 'default'">
           <el-form-item
-            :label="td('dpp.integration.defaultValueLabel', '默认值')"
+            :label="td('dpp.integration.defaultValueLabel', 'Default Value')"
             prop="defaultValue"
            :label-position="labelPosition">
             <el-input
               v-model="form.ruleConfig.fieldMerge.defaultValue"
-              :placeholder="td('dpp.integration.defaultValuePlaceholder', '请输入默认值')"
+              :placeholder="td('dpp.integration.defaultValuePlaceholder', 'Please enter default value')"
             />
           </el-form-item>
         </el-col>
@@ -123,12 +123,12 @@
         <!-- Whether to remove spaces -->
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.trimLeadingTrailingSpace', '是否去除首尾空格')"
+            :label="td('dpp.integration.trimLeadingTrailingSpace', 'Trim Leading/Trailing Spaces')"
             prop="trimSpace"
            :label-position="labelPosition">
             <el-radio-group v-model="form.ruleConfig.fieldMerge.trimSpace">
-              <el-radio :label="true">{{ td('dpp.integration.yes', '是') }}</el-radio>
-              <el-radio :label="false">{{ td('dpp.integration.no', '否') }}</el-radio>
+              <el-radio :label="true">{{ td('dpp.integration.yes', 'Yes') }}</el-radio>
+              <el-radio :label="false">{{ td('dpp.integration.no', 'No') }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -157,7 +157,7 @@ const props = defineProps({
   fieldFields: { type: Array, default: () => [] },
   id: { type: String, default: "" },
 });
-const dialogTitle = computed(() => props.title || td("dpp.integration.fieldMergeConfig", "字段合并规则配置"));
+const dialogTitle = computed(() => props.title || td("dpp.integration.fieldMergeConfig", "Field Merge Rule Config"));
 const usedFields = computed(() => {
   return props.fieldFields
     ?.map(f => f?.columnName)
@@ -194,22 +194,22 @@ const formRef = ref(null);
 
 // Form validation rules
 const formRules = {
-  sourceField: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
-  sourceFields: [{ required: true, message: td("dpp.integration.selectFieldRequired", "请选择字段"), trigger: "change" }],
+  sourceField: [{ required: true, message: td("dpp.integration.selectFieldRequired", "Please select field"), trigger: "change" }],
+  sourceFields: [{ required: true, message: td("dpp.integration.selectFieldRequired", "Please select field"), trigger: "change" }],
   separator: [
-    { required: true, message: td("dpp.integration.separatorRequired", "请输入分隔符"), trigger: "blur" },
+    { required: true, message: td("dpp.integration.separatorRequired", "Please enter separator"), trigger: "blur" },
     {
       pattern: /^[^\u4e00-\u9fa5]+$/,
-      message: td("dpp.integration.separatorNoChinese", "分隔符不能包含中文"),
+      message: td("dpp.integration.separatorNoChinese", "Separator cannot contain Chinese"),
       trigger: "blur",
     },
   ],
-  handleNull: [{ required: true, message: td("dpp.integration.nullHandlingRequired", "请选择空值处理方式"), trigger: "change" }],
+  handleNull: [{ required: true, message: td("dpp.integration.nullHandlingRequired", "Please select null handling method"), trigger: "change" }],
   defaultValue: [
     {
       validator: (rule, value, callback) => {
         if (form.value.ruleConfig.fieldMerge.handleNull === "default" && !value) {
-          callback(new Error(td("dpp.integration.defaultValueRequired", "请输入默认值")));
+          callback(new Error(td("dpp.integration.defaultValueRequired", "Please enter default value")));
         } else {
           callback();
         }
@@ -217,7 +217,7 @@ const formRules = {
       trigger: "blur",
     },
   ],
-  trimSpace: [{ required: true, message: td("dpp.integration.trimSpaceRequired", "请选择是否去除空格"), trigger: "change" }],
+  trimSpace: [{ required: true, message: td("dpp.integration.trimSpaceRequired", "Please select whether to trim spaces"), trigger: "change" }],
 };
 
 // Monitor the pop-up window display and initialize the data when it pops up

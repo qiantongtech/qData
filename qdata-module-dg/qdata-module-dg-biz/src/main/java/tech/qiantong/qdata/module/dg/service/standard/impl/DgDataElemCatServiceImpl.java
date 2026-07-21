@@ -55,7 +55,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         }
         // Check if it selected itself
         if (dgDataElemCatDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("dg.error.parent.self", "切换上级不能选择自身作为上级类目");
+            throw new ServiceException("dg.error.parent.self", "Cannot select self as parent category");
         }
         // Update data element category management
         DgDataElemCatDO updateObj = BeanUtils.toBean(updateReqVO, DgDataElemCatDO.class);
@@ -64,7 +64,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DgDataElemCatDO parent = dgDataElemCatMapper.selectById(dgDataElemCatDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("dg.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("dg.error.parent.disabled", "Please enable the parent category first");
             }
         }
 
@@ -107,7 +107,7 @@ public class DgDataElemCatServiceImpl extends ServiceImpl<DgDataElemCatMapper, D
         List<DgDataElemCatDO> list = baseMapper.selectBatchIds(idList);
         for (DgDataElemCatDO cat : list) {
             if (dataElemMapper.existsByCatCode(cat.getCode())) {
-                throw new ServiceException("dg.error.delete.ref.elem", "被标准数据元引用，不可删除");
+                throw new ServiceException("dg.error.delete.ref.elem", "Referenced by standard data element, cannot be deleted");
             }
         }
         for (DgDataElemCatDO cat : list) {

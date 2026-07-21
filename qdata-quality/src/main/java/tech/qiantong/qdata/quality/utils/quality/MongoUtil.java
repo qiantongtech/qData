@@ -29,18 +29,18 @@ public class MongoUtil {
         if (mongoTemplate != null) {
             try {
                 if (!mongoTemplate.collectionExists(collectionName)) {
-                    log.info("⚠️ Mongo 集合 '{}' 不存在，将自动创建（由 save 自动完成）", collectionName);
+                    log.info("⚠️ Mongo collection '{}' does not exist and will be created automatically by save", collectionName);
                 } else {
-                    log.debug("✅ Mongo 集合 '{}' 已存在", collectionName);
+                    log.debug("✅ Mongo collection '{}' already exists", collectionName);
                 }
 
 
                 mongoTemplate.save(doc, collectionName);
             } catch (Exception e) {
-                log.warn("Mongo 存储失败: {}", e.getMessage());
+                log.warn("Failed to persist data to MongoDB: {}", e.getMessage());
             }
         } else {
-            log.info("MongoTemplate 未启用，跳过写入");
+            log.info("MongoTemplate is disabled; skipping write");
         }
     }
 }

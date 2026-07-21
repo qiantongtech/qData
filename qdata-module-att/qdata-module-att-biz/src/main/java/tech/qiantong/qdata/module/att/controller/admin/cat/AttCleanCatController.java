@@ -80,7 +80,7 @@ public class AttCleanCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttCleanCatDO> list = (List<AttCleanCatDO>) attCleanCatService.getAttCleanCatPage(exportReqVO).getRows();
         ExcelUtil<AttCleanCatRespVO> util = new ExcelUtil<>(AttCleanCatRespVO.class);
-        util.exportExcel(response, AttCleanCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttCleanCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入清洗规则类目列表")

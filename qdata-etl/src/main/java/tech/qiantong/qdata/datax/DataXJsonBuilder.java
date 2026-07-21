@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DataX job.json 生成工具类。
+ * Utility for generating DataX job.json content.
  */
 public final class DataXJsonBuilder {
 
@@ -48,7 +48,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 构建 DataX reader 节点配置，负责源表、源字段和源数据源连接信息。
+     * Builds the DataX reader node configuration for the source table, columns, and data source connection.
      */
     private static Map<String, Object> buildReader(Map<String, Object> readerNodeJsonMap, Map<String, Object> writerNodeJsonMap) {
         Map<String, Object> readerDatasource = parseDatasource(readerNodeJsonMap, "readerDatasource");
@@ -60,7 +60,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 构建 DataX writer 节点配置，负责目标表、目标字段和目标数据源连接信息。
+     * Builds the DataX writer node configuration for the target table, columns, and data source connection.
      */
     private static Map<String, Object> buildWriter(Map<String, Object> writerNodeJsonMap) {
         Map<String, Object> writerDatasource = parseDatasource(writerNodeJsonMap, "writerDatasource");
@@ -72,7 +72,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 组装 reader/writer 通用参数，保留 DataX 两端一致的字段、SQL、账号和连接结构。
+     * Builds common reader/writer parameters while preserving the shared column, SQL, credential, and connection structure.
      */
     private static Map<String, Object> buildParameter(Map<String, Object> nodeJsonMap,
                                                       Map<String, Object> columnNodeJsonMap,
@@ -108,8 +108,8 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * where、preSql、postSql 为空时不写入，避免生成无意义的 DataX 参数。
-     * @param type 数据类型："string" 或 "list"
+     * Omits empty where, preSql, and postSql values to avoid meaningless DataX parameters.
+     * @param type value type: "string" or "list"
      */
     private static void putSqlParameter(Map<String, Object> parameter, Map<String, Object> nodeJsonMap, String key, String type) {
         Object object = nodeJsonMap.get(key);
@@ -129,14 +129,14 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 节点内的数据源以 JSON 字符串保存，这里统一转成 Map 供后续构建连接信息。
+     * Converts the node's JSON data source configuration to a map for subsequent connection construction.
      */
     private static Map<String, Object> parseDatasource(Map<String, Object> nodeJsonMap, String datasourceKey) {
         return JSONUtils.convertTaskDefinitionJsonMap(String.valueOf(nodeJsonMap.get(datasourceKey)));
     }
 
     /**
-     * 兼容明文和加密密码：解密失败时沿用原值。
+     * Supports plaintext and encrypted passwords, preserving the original value when decryption fails.
      */
     private static String decryptPassword(Map<String, Object> datasourceConfig) {
         String password = datasourceConfig.get("password").toString();
@@ -148,7 +148,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 构建 DataX connection 配置；reader 的 jdbcUrl 使用列表，writer 沿用原字符串结构。
+     * Builds the DataX connection configuration; reader uses a jdbcUrl list while writer preserves the original string structure.
      */
     private static List<Map<String, Object>> buildConnection(String tableName,
                                                              Map<String, Object> datasource,
@@ -170,7 +170,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 数据去重等处理节点配置会写入 processor.nodes。
+     * Writes processing node configuration, such as deduplication, to processor.nodes.
      */
     private static Map<String, Object> buildProcessor(Map<String, Object> definitionJsonMap) {
         Map<String, Object> processor = new HashMap<>();
@@ -179,7 +179,7 @@ public final class DataXJsonBuilder {
     }
 
     /**
-     * 根据数据源类型模板生成 JDBC URL，并替换前端保存的数据源连接参数。
+     * Generates a JDBC URL from the data source type template and substitutes the connection parameters saved by the frontend.
      */
     private static String buildJdbcUrl(Map<String, Object> datasource) {
         String datasourceType = String.valueOf(datasource.get("datasourceType"));

@@ -47,7 +47,7 @@ public class ShutdownManager
     {
         try
         {
-            logger.info("====关闭后台任务任务线程池====");
+            logger.info("==== Shutting down the background task thread pool ====");
             AsyncManager.me().shutdown();
         }
         catch (Exception e)

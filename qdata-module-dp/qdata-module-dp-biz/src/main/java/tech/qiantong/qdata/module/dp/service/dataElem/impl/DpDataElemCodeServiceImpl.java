@@ -117,7 +117,7 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
     @Override
     public String importDpDataElemCode(List<DpDataElemCodeRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -136,16 +136,16 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
                             dpDataElemCodeMapper.updateById(dpDataElemCodeDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dp.import.update.success",
-                                    "数据更新成功，ID为 " + dpDataElemCodeId + " 的数据元代码记录。", dpDataElemCodeId, "数据元代码"));
+                                    "Data update successful, ID {0} {1} record.", dpDataElemCodeId, MessageUtils.messageWithFallback("dp.entity.data.element.code", "Data element code")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.fail",
-                                    "数据更新失败，ID为 " + dpDataElemCodeId + " 的数据元代码记录不存在。", dpDataElemCodeId, "数据元代码"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dpDataElemCodeId, MessageUtils.messageWithFallback("dp.entity.data.element.code", "Data element code")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DpDataElemCodeDO> queryWrapper = new QueryWrapper<>();
@@ -155,17 +155,17 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
                         dpDataElemCodeMapper.insert(dpDataElemCodeDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dp.import.insert.success",
-                                "数据插入成功，ID为 " + dpDataElemCodeId + " 的数据元代码记录。", dpDataElemCodeId, "数据元代码"));
+                                "Data insert successful, ID {0} {1} record.", dpDataElemCodeId, MessageUtils.messageWithFallback("dp.entity.data.element.code", "Data element code")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.insert.fail",
-                                "数据插入失败，ID为 " + dpDataElemCodeId + " 的数据元代码记录已存在。", dpDataElemCodeId, "数据元代码"));
+                                "Data insert failed, ID {0} {1} record already exists.", dpDataElemCodeId, MessageUtils.messageWithFallback("dp.entity.data.element.code", "Data element code")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -174,12 +174,12 @@ public class DpDataElemCodeServiceImpl extends ServiceImpl<DpDataElemCodeMapper,
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

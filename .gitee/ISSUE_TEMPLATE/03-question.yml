@@ -76,13 +76,13 @@ body:
       render: shell
       placeholder: |
         ```yaml
-        # 配置文件片段
+        # Configuration file excerpt
         server:
           port: 8080
         ```
         
         ```text
-        # 报错日志片段
+        # Error log excerpt
         Error: address already in use...
         ```
     validations:

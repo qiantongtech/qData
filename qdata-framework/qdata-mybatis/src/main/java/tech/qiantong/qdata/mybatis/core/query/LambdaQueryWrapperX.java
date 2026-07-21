@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.util.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -151,7 +152,8 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
                 String columnName = camelToUnderline(column);
                 // Verify whether the field name is legal
                 if (!allowedColumns.contains(columnName)) {
-                    throw new IllegalArgumentException("非法的排序字段：" + column);
+                    throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                            "sys.error.sort.column.invalid", "Invalid sort column: {0}", column));
                 }
 
                 boolean ascending = true; // Default ascending order

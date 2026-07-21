@@ -130,7 +130,7 @@ public class DateDataColumn extends DataColumn {
         try {
             return ColumnCast.date2String(this);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("Date[%s]类型不能转为String .", this.toString()));
+            throw DBException.asDataXException(String.format("Date[%s] cannot be converted to String.", this.toString()));
         }
     }
 
@@ -150,27 +150,27 @@ public class DateDataColumn extends DataColumn {
 
     @Override
     public byte[] asBytes() {
-        throw DBException.asDataXException("Date类型不能转为Bytes .");
+        throw DBException.asDataXException("Date cannot be converted to Bytes.");
     }
 
     @Override
     public Boolean asBoolean() {
-        throw DBException.asDataXException("Date类型不能转为Boolean .");
+        throw DBException.asDataXException("Date cannot be converted to Boolean.");
     }
 
     @Override
     public Double asDouble() {
-        throw DBException.asDataXException("Date类型不能转为Double .");
+        throw DBException.asDataXException("Date cannot be converted to Double.");
     }
 
     @Override
     public BigInteger asBigInteger() {
-        throw DBException.asDataXException("Date类型不能转为BigInteger .");
+        throw DBException.asDataXException("Date cannot be converted to BigInteger.");
     }
 
     @Override
     public BigDecimal asBigDecimal() {
-        throw DBException.asDataXException("Date类型不能转为BigDecimal .");
+        throw DBException.asDataXException("Date cannot be converted to BigDecimal.");
     }
 
     public DateType getSubType() {

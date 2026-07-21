@@ -85,7 +85,7 @@ public class AttCleanRuleController extends BaseController {
         List<AttCleanRuleDO> list = (List<AttCleanRuleDO>) attCleanRuleService.getAttCleanRulePage(exportReqVO)
                 .getRows();
         ExcelUtil<AttCleanRuleRespVO> util = new ExcelUtil<>(AttCleanRuleRespVO.class);
-        util.exportExcel(response, AttCleanRuleConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttCleanRuleConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入清洗规则列表")

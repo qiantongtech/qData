@@ -22,7 +22,7 @@
         <template #header>
             <div class="justify">
                 <span class="el-dialog__title">{{ currentNode?.data?.name }}</span>
-                <el-tooltip effect="light" :content="td('dpp.integration.orderConfigTooltip', '用于配置字段的排序规则')" placement="top">
+                <el-tooltip effect="light" :content="td('dpp.integration.orderConfigTooltip', 'Used to configure field sorting rules, including field order, sort direction, case sensitivity options')" placement="top">
                     <el-icon class="tip-icon">
                         <InfoFilled />
                     </el-icon>
@@ -33,14 +33,14 @@
             :disabled="info" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name"
-                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' }]" :label-position="labelPosition">
-                        <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+                    <el-form-item :label="td('dpp.integration.nodeName', 'Node Name')" prop="name"
+                        :rules="[{ required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' }]" :label-position="labelPosition">
+                        <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
-                        <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
+                    <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
+                        <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')" filterable disabled>
                             <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label"
                                 :value="dict.value" />
                         </el-select>
@@ -56,7 +56,7 @@
                 </el-col>
             </el-row>
             <el-divider content-position="center">
-                <span class="blue-text">{{ td('dpp.column.fieldTerm', '字段') }}</span>
+                <span class="blue-text">{{ td('dpp.column.fieldTerm', 'Field Term') }}</span>
             </el-divider>
             <div class="justify-between mb15">
                 <el-row :gutter="15" class="btn-style">
@@ -69,11 +69,11 @@
             </div>
             <el-table stripe height="310px" :data="tableFields" v-loading="loadingList" ref="dragTable"
                 row-key="columnName">
-                <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
+                <el-table-column :label="td('common.display.index', 'Index')" width="80" align="left">
                     <template #header>
                         <div class="justify-center">
-                            <span>{{ td('common.display.index', '序号') }}</span>
-                            <el-tooltip effect="light" :content="td('dpp.integration.sequenceTooltip', '序号越小，字段排序优先级越高')" placement="top">
+                            <span>{{ td('common.display.index', 'Index') }}</span>
+                            <el-tooltip effect="light" :content="td('dpp.integration.sequenceTooltip', 'Smaller number means higher sort priority')" placement="top">
                                 <el-icon class="tip-icon">
                                     <InfoFilled />
                                 </el-icon>
@@ -91,20 +91,20 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
+                <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName">
                     <template #default="scope">
-                        <el-select v-model="scope.row.columnName" :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')" style="flex: 1">
+                        <el-select v-model="scope.row.columnName" :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')" style="flex: 1">
                             <el-option v-for="item in inputFields" :key="item.value" :label="item.label"
                                 :value="item.columnName" :disabled="isOptionDisabled(item.columnName, scope.row)" />
                         </el-select>
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="td('dpp.integration.sortOrder', '排序规则')" align="left" prop="order">
+                <el-table-column :label="td('dpp.integration.sortOrder', 'Sort Rule')" align="left" prop="order">
                     <template #default="scope">
-                        <el-select v-model="scope.row.order" :placeholder="td('common.form.statusPlaceholder', '请选择')">
-                            <el-option :label="td('dpp.integration.descending', '降序')" value="desc" />
-                            <el-option :label="td('dpp.integration.ascending', '升序')" value="asc" />
+                        <el-select v-model="scope.row.order" :placeholder="td('common.form.statusPlaceholder', 'Please select status')">
+                            <el-option :label="td('dpp.integration.descending', 'Descending')" value="desc" />
+                            <el-option :label="td('dpp.integration.ascending', 'Ascending')" value="asc" />
                         </el-select>
                     </template>
                 </el-table-column>
@@ -125,7 +125,7 @@
             <div style="text-align: right">
                 <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
                 <el-button type="primary" @click="saveData" v-if="!info">{{ td('common.button.save') }}</el-button>
-                <el-button type="warning" @click="handleFetchFields" v-if="!info">{{ td('dpp.integration.fetchFields', '获取字段') }}</el-button>
+                <el-button type="warning" @click="handleFetchFields" v-if="!info">{{ td('dpp.integration.fetchFields', 'Fetch Fields') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -191,7 +191,7 @@ function setSort() {
 
 function handleAddField() {
     if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-        proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
+        proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
         return;
     }
     // Added field name
@@ -203,7 +203,7 @@ function handleAddField() {
     );
 
     if (!nextField) {
-        proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
+        proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "Add failed, no more fields to add"));
         return;
     }
 
@@ -224,7 +224,7 @@ const handleFetchFields = () => {
         tableNames.length === inputNames.length &&
         tableNames.every((name, idx) => name === inputNames[idx])
     ) {
-        return proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
+        return proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "Add failed, already at latest fields"));
     }
     showConflictDialog.value = true;
 };
@@ -384,7 +384,7 @@ const saveData = async () => {
         if (!valid) return;
         // Determine whether the table is empty
         if (!tableFields.value || tableFields.value.length === 0) {
-            proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
+            proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
             return;
         }
         if (!form.value.code) {

@@ -239,12 +239,12 @@ const dialogAppendTo = ref(document.body);
 
 // Conversation time grouping labels
 const groupLabels = {
-  pinned: td('ai.chat.pinned', '置顶'),
-  today: td('ai.chat.today', '今天'),
-  oneDayAgo: td('ai.chat.oneDayAgo', '一天前'),
-  threeDaysAgo: td('ai.chat.threeDaysAgo', '三天前'),
-  sevenDaysAgo: td('ai.chat.sevenDaysAgo', '七天前'),
-  thirtyDaysAgo: td('ai.chat.thirtyDaysAgo', '三十天前'),
+  pinned: td('ai.chat.pinned', 'Pinned'),
+  today: td('ai.chat.today', 'Today'),
+  oneDayAgo: td('ai.chat.oneDayAgo', '1 day ago'),
+  threeDaysAgo: td('ai.chat.threeDaysAgo', '3 days ago'),
+  sevenDaysAgo: td('ai.chat.sevenDaysAgo', '7 days ago'),
+  thirtyDaysAgo: td('ai.chat.thirtyDaysAgo', '30 days ago'),
 };
 
 // Define component props

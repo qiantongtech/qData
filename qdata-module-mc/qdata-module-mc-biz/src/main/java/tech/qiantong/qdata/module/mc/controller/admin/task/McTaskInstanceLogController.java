@@ -54,7 +54,7 @@ public class McTaskInstanceLogController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTaskInstanceLogDO> list = (List<McTaskInstanceLogDO>) mcTaskInstanceLogService.getMcTaskInstanceLogPage(exportReqVO).getRows();
         ExcelUtil<McTaskInstanceLogRespVO> util = new ExcelUtil<>(McTaskInstanceLogRespVO.class);
-        util.exportExcel(response, McTaskInstanceLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTaskInstanceLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取采集任务实例-日志详细信息")

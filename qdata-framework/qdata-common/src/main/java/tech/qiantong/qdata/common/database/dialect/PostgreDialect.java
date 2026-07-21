@@ -26,6 +26,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -351,7 +352,8 @@ public class PostgreDialect extends AbstractDbDialect {
                     "ORDER BY nspname";
         }
 
-        throw new UnsupportedOperationException("PostgreSQL 仅支持 level=1~2");
+        throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                "sys.error.database.postgresql.level.unsupported", "PostgreSQL supports only level=1~2"));
     }
 
     @Override

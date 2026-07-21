@@ -80,10 +80,10 @@ public class DataDeduplicationTransition implements Transition {
         }
 
         // Debug log
-        System.out.println("数据去重后的字段结构：");
+        System.out.println("Field schema after deduplication: ");
         rowDataset.printSchema();
 
-        System.out.println("数据去重后的前10条数据：");
+        System.out.println("First 10 rows after deduplication:");
         rowDataset.show(10, false);
 
         return rowDataset;

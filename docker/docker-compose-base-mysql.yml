@@ -44,10 +44,10 @@ services:
       - 15672:15672
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     profiles: ["all", "local"]
     env_file: .env
     environment:
@@ -91,18 +91,18 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      #      #挂载数据库
+      #      # Mount database storage
       #      - ./database/mysql/data:/var/lib/mysql
-      #挂载配置文件
+      # Mount configuration file
       - ./database/mysql/conf.d:/etc/mysql/conf.d
-      # 如需初始化 SQL：
+      # To initialize the database with SQL:
       - ./database/mysql/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: [ "CMD","mysqladmin","ping","-h","127.0.0.1","-po5KjnPYxswsiURZHCPwd" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet
 
@@ -143,9 +143,9 @@ services:
       - ./neo4j/conf:/var/lib/neo4j/conf
     healthcheck:
       test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "InC3tmU4bijT4vkl", "RETURN 1;" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet

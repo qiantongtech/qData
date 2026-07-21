@@ -69,7 +69,7 @@
           >{{ td('common.button.update') }}</el-button
         >
         <el-button link type="primary" icon="Pointer" @click="openBindTerm(row)">
-          {{ td('dpp.column.bindTerm', '绑定术语') }}
+          {{ td('dpp.column.bindTerm', 'Bind Term') }}
         </el-button>
       </template>
     </qt-table>
@@ -91,19 +91,19 @@
     <el-form ref="daAssetRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.chineseName', '中文名称')" prop="columnComment" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.chineseName', 'Chinese Name')" prop="columnComment" :label-position="labelPosition">
             <el-input
               v-model="form.columnComment"
-              :placeholder="td('dpp.column.chineseName', '中文名称')"
+              :placeholder="td('dpp.column.chineseName', 'Chinese Name')"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.englishName', '英文名称')" prop="columnName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.englishName', 'English Name')" prop="columnName" :label-position="labelPosition">
             <el-input
               v-model="form.columnName"
-              :placeholder="td('dpp.column.englishName', '英文名称')"
+              :placeholder="td('dpp.column.englishName', 'English Name')"
               disabled
             />
           </el-form-item>
@@ -111,19 +111,19 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.fieldType', '字段类型')" prop="columnType" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.fieldType', 'Field Type')" prop="columnType" :label-position="labelPosition">
             <el-input
               v-model="form.columnType"
-              :placeholder="td('dpp.column.fieldType', '字段类型')"
+              :placeholder="td('dpp.column.fieldType', 'Field Type')"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.fieldLength', '字段长度')" prop="columnLength" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.fieldLength', 'Field Length')" prop="columnLength" :label-position="labelPosition">
             <el-input
               v-model="form.columnLength"
-              :placeholder="td('dpp.column.fieldLength', '字段长度')"
+              :placeholder="td('dpp.column.fieldLength', 'Field Length')"
               disabled
             />
           </el-form-item>
@@ -131,7 +131,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.decimalPlace', '小数位')" prop="columnScale" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.decimalPlace', 'Decimal Places')" prop="columnScale" :label-position="labelPosition">
             <el-input-number
               :step="1"
               step-strictly
@@ -140,13 +140,13 @@
               controls-position="right"
               :min="0"
               :max="100"
-              :placeholder="td('dpp.column.enterDecimalLength', '请输入小数长度')"
+              :placeholder="td('dpp.column.enterDecimalLength', 'Please enter decimal length')"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.nullable', '是否可空')" prop="nullableFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.nullable', 'Nullable')" prop="nullableFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.nullableFlag">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -174,7 +174,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.primaryKey', '是否主键')" prop="pkFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.primaryKey', 'Primary Key')" prop="pkFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pkFlag">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -188,13 +188,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.dataCategory', '数据分类')" prop="dataCategoryId" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.dataCategory', 'Data Category')" prop="dataCategoryId" :label-position="labelPosition">
             <el-select
               v-model="form.dataCategoryId"
               filterable
               disabled
               clearable
-              :placeholder="td('dpp.column.selectCategory', '请选择分类')"
+              :placeholder="td('dpp.column.selectCategory', 'Please select category')"
               @change="(val) => (form.dataCategoryId = val ?? null)"
             >
               <el-option
@@ -211,7 +211,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.relatedCodeTable', '关联代码表')" prop="dataElemCodeFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.relatedCodeTable', 'Related Code Table')" prop="dataElemCodeFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.dataElemCodeFlag">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -224,13 +224,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.selectCodeTable', '选择代码表')" prop="dataElemCodeId" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.selectCodeTable', 'Select Code Table')" prop="dataElemCodeId" :label-position="labelPosition">
             <el-select
               v-model="form.dataElemCodeId"
               :disabled="form.dataElemCodeFlag == '0'"
               clearable
               filterable
-              :placeholder="td('dpp.column.selectCodeTable', '选择代码表')"
+              :placeholder="td('dpp.column.selectCodeTable', 'Select Code Table')"
             >
               <el-option
                 v-for="item in codeTableList"
@@ -246,7 +246,7 @@
 
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.relatedDataElem', '关联数据元')" prop="relDataElmeFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.relatedDataElem', 'Related Data Element')" prop="relDataElmeFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.relDataElmeFlag">
               <el-radio
                 v-for="dict in dp_model_column_pk_flag"
@@ -259,14 +259,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.selectDataElem', '请选择数据元')" prop="elementId" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.selectDataElem', 'Please select data element')" prop="elementId" :label-position="labelPosition">
             <el-select
               v-model="form.elementId"
               multiple
               :disabled="form.relDataElmeFlag == '0'"
               clearable
               filterable
-              :placeholder="td('dpp.column.selectDataElem', '请选择数据元')"
+              :placeholder="td('dpp.column.selectDataElem', 'Please select data element')"
             >
               <el-option
                 v-for="item in elementList"
@@ -302,7 +302,7 @@
   </el-dialog>
 
   <el-dialog
-      :title="td('dpp.column.bindTermTitle', '绑定术语')"
+      :title="td('dpp.column.bindTermTitle', 'Bind Term')"
       v-model="termDialogVisible"
       width="600px"
       :append-to="$refs['app-container']"
@@ -312,12 +312,12 @@
     <el-form ref="termFormRef" :model="termForm" :label-position="labelPosition">
       <el-col :span="24">
         <el-form-item
-            :label="td('dpp.column.termLabel', '术语')"
+            :label="td('dpp.column.termLabel', 'Term')"
             prop="termIds"
             :rules="[
             {
               required: true,
-              message: td('dpp.column.selectTerm', '请选择术语'),
+              message: td('dpp.column.selectTerm', 'Please select term'),
               trigger: ['blur', 'change'],
             },
           ]"
@@ -325,7 +325,7 @@
          :label-position="labelPosition">
           <el-select
               v-model="termForm.termIds"
-              :placeholder="td('dpp.column.selectTerm', '请选择术语')"
+              :placeholder="td('dpp.column.selectTerm', 'Please select term')"
               filterable
               style="width: calc(100% - 117px)"
           >
@@ -343,10 +343,10 @@
               @click="openAddTerm"
               @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.column.addTerm', '新增术语') }}
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.column.addTerm', 'Add Term') }}
           </el-button>
           <span class="msg">
-          {{ td('dpp.column.bindTermDesc', '为当前数据字段指定统一的业务定义，显示字段的真实业务含义') }}
+          {{ td('dpp.column.bindTermDesc', 'Specify a unified business definition for the current data field, showing the field\'s true business meaning') }}
           </span>
         </el-form-item>
       </el-col>
@@ -385,14 +385,14 @@
      :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.column.businessTermCategory', '业务术语类目')" prop="catCode" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.businessTermCategory', 'Business Term Category')" prop="catCode" :label-position="labelPosition">
             <el-tree-select
                 filterable
                 v-model="termAddForm.catCode"
                 :data="termCatOptions"
                 :props="{ value: 'code', label: 'name', children: 'children' }"
                 value-key="ID"
-                :placeholder="td('dpp.column.selectBusinessTermCategory', '请选择业务术语类目')"
+                :placeholder="td('dpp.column.selectBusinessTermCategory', 'Please select business term category')"
                 check-strictly
             />
           </el-form-item>
@@ -400,33 +400,33 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.column.termName', '术语名称')" prop="name" :label-position="labelPosition">
-            <el-input v-model="termAddForm.name" :placeholder="td('dpp.column.enterTermName', '请输入术语名称')" />
+          <el-form-item :label="td('dpp.column.termName', 'Term Name')" prop="name" :label-position="labelPosition">
+            <el-input v-model="termAddForm.name" :placeholder="td('dpp.column.enterTermName', 'Please enter term name')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-              :label="td('dpp.column.nearSynonym', '近义词')"
+              :label="td('dpp.column.nearSynonym', 'Near Synonym')"
               prop="nearSynonyms"
               :tip="td('dpp.column.multipleCommaSep')"
            :label-position="labelPosition">
             <el-input
                 v-model="termAddForm.nearSynonyms"
-                :placeholder="td('dpp.column.enterNearSynonym', '请输入近义词')"
+                :placeholder="td('dpp.column.enterNearSynonym', 'Please enter near synonym')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item
-              :label="td('dpp.column.synonym', '同义词')"
+              :label="td('dpp.column.synonym', 'Synonym')"
               prop="synonyms"
               :tip="td('dpp.column.multipleCommaSep')"
            :label-position="labelPosition">
             <el-input
                 v-model="termAddForm.synonyms"
-                :placeholder="td('dpp.column.enterSynonym', '请输入同义词')"
+                :placeholder="td('dpp.column.enterSynonym', 'Please enter synonym')"
             />
           </el-form-item>
         </el-col>
@@ -435,7 +435,7 @@
               :label="td('common.texts.status')"
               prop="status"
               :tip="{
-              content: td('dpp.column.termStatusTip', '启用状态表示该标签可用于打标数据术语；禁用后无法再被使用，但已有标签仍保留。'),
+              content: td('dpp.column.termStatusTip', 'Enabled status means this tag can be used for data term tagging; disabled means it cannot be used, but existing tags are retained.'),
             }"
           >
             <el-radio-group v-model="termAddForm.status">
@@ -506,14 +506,14 @@
     <el-form ref="daAssetRef" :model="form" label-width="80px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.chineseName', '中文名称')" prop="columnComment" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.chineseName', 'Chinese Name')" prop="columnComment" :label-position="labelPosition">
             <div>
               {{ form.columnComment }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.englishName', '英文名称')" prop="columnName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.englishName', 'English Name')" prop="columnName" :label-position="labelPosition">
             <div>
               {{ form.columnName }}
             </div>
@@ -522,14 +522,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.fieldType', '字段类型')" prop="columnType" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.fieldType', 'Field Type')" prop="columnType" :label-position="labelPosition">
             <div>
               {{ form.columnType }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.decimalPlace', '小数位')" prop="columnScale" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.decimalPlace', 'Decimal Places')" prop="columnScale" :label-position="labelPosition">
             <div>
               {{ form.columnScale }}
             </div>
@@ -538,14 +538,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.nullable', '是否可空')" prop="nullableFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.nullable', 'Nullable')" prop="nullableFlag" :label-position="labelPosition">
             <div>
               {{ form.nullableFlag }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.primaryKey', '是否主键')" prop="pkFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.primaryKey', 'Primary Key')" prop="pkFlag" :label-position="labelPosition">
             <div>
               {{ form.pkFlag }}
             </div>
@@ -554,14 +554,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.sensitiveLevel', '敏感等级')" prop="sensitiveLevelName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.sensitiveLevel', 'Sensitivity Level')" prop="sensitiveLevelName" :label-position="labelPosition">
             <div>
               {{ form.sensitiveLevelName }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.relatedCodeTable', '关联代码表')" prop="dataElemCodeFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.relatedCodeTable', 'Related Code Table')" prop="dataElemCodeFlag" :label-position="labelPosition">
             <div>
               {{ form.dataElemCodeFlag }}
             </div>
@@ -570,7 +570,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.relatedDataElem', '关联数据元')" prop="relDataElmeFlag" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.relatedDataElem', 'Related Data Element')" prop="relDataElmeFlag" :label-position="labelPosition">
             <div>
               {{ form.relDataElmeFlag }}
             </div>
@@ -586,7 +586,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.fieldDescription', '字段描述')" prop="remark" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.fieldDescription', 'Field Description')" prop="remark" :label-position="labelPosition">
             <div>
               {{ form.remark }}
             </div>
@@ -648,7 +648,7 @@ const termOptions = ref([]);
 const currentColumnId = ref(null);
 const termSubmitting = ref(false);
 const termAddOpen = ref(false);
-const termAddTitle = ref(td('dpp.column.addDataAsset', '新增术语'));
+const termAddTitle = ref(td('dpp.column.addDataAsset', 'Add Data Asset'));
 const termAddRef = ref(null);
 const termCatOptions = ref([]);
 const termAddSubmitting = ref(false);
@@ -694,9 +694,9 @@ const data = reactive({
     // columnComment: [{ required: true, message: 'Please enter the Chinese name', trigger: 'blur' }],
     // columnName: [{ required: true, message: 'Please enter an English name', trigger: 'blur' }],
     dataElemCodeId: [
-      { required: false, message: td('dpp.column.selectCodeTable', '请选择代码表'), trigger: "blur" },
+      { required: false, message: td('dpp.column.selectCodeTable', 'Select Code Table'), trigger: "blur" },
     ],
-    elementId: [{ required: false, message: td('dpp.column.selectDataElem', '请选择数据元'), trigger: "blur" }],
+    elementId: [{ required: false, message: td('dpp.column.selectDataElem', 'Please select data element'), trigger: "blur" }],
     // pkFlag: [{ required: true, message: 'Please select whether it is a primary key', trigger: 'blur' }],
     // nullableFlag: [{ required: true, message: 'Please select whether it is required', trigger: 'blur' }],
     // dataElemCodeFlag: [{ required: true, message: 'Please select whether it is required', trigger: 'blur' }],
@@ -898,7 +898,7 @@ function getCodeTableList() {
 }
 
 function openBindTerm(row) {
-  proxy.$modal.msgWarning(td('common.message.msgOpFailed', '功能正在开发中'));
+  proxy.$modal.msgWarning(td('common.message.msgOpFailed', 'Operation failed'));
 
   // currentColumnId.value = row.id;
   // Promise.all([getDaAssetColumn(row.id), getTermList()]).then(([detailRes]) => {
@@ -936,7 +936,7 @@ function submitBindTerm() {
 
     // Single choice judgment
     if (!termForm.termIds) {
-      proxy?.$message?.warning(td('dpp.column.selectTerm', '请选择术语'));
+      proxy?.$message?.warning(td('dpp.column.selectTerm', 'Please select term'));
       return;
     }
 
@@ -990,7 +990,7 @@ function loadTermCatTree() {
     termCatOptions.value = proxy.handleTree(response.data, "id", "parentId");
     termCatOptions.value = [
       {
-        name: td('dpp.column.businessTermCategory', '业务术语类目'),
+        name: td('dpp.column.businessTermCategory', 'Business Term Category'),
         value: "",
         id: 0,
         children: termCatOptions.value,
@@ -1041,13 +1041,13 @@ const tableStore = reactive({
     },
 
     {
-      label: td('dpp.column.chineseName', '中文名称'),
+      label: td('dpp.column.chineseName', 'Chinese Name'),
       prop: "columnComment",
       width: 185,
       showOverflowTooltip: true,
     },
     {
-      label: td('dpp.column.englishName', '英文名称'),
+      label: td('dpp.column.englishName', 'English Name'),
       prop: "columnName",
       width: 180,
       showOverflowTooltip: true,
@@ -1060,50 +1060,50 @@ const tableStore = reactive({
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('dpp.column.fieldType', '字段类型'),
+      label: td('dpp.column.fieldType', 'Field Type'),
       prop: "columnType",
       width: 140,
       showOverflowTooltip: true,
     },
     {
-      label: td('dpp.column.fieldLength', '字段长度'),
+      label: td('dpp.column.fieldLength', 'Field Length'),
       prop: "columnLength",
       width: 80,
       showOverflowTooltip: true,
     },
     {
-      label: td('dpp.column.decimalPlace', '小数位'),
+      label: td('dpp.column.decimalPlace', 'Decimal Places'),
       prop: "columnScale",
       width: 80,
       showOverflowTooltip: true,
     },
     {
-      label: td('dpp.column.nullable', '是否可空'),
+      label: td('dpp.column.nullable', 'Nullable'),
       prop: "nullableFlag",
       width: 80,
       slot: "nullableFlag",
     },
     {
-      label: td('dpp.column.primaryKey', '是否主键'),
+      label: td('dpp.column.primaryKey', 'Primary Key'),
       prop: "pkFlag",
       width: 100,
       slot: "pkFlag",
     },
 
     {
-      label: td('dpp.column.dataCategory', '数据分类'),
+      label: td('dpp.column.dataCategory', 'Data Category'),
       prop: "dataCategoryName",
       width: 100,
     },
     {
-      label: td('dpp.column.fieldTerm', '字段术语'),
+      label: td('dpp.column.fieldTerm', 'Field Term'),
       align: "left",
       width: 200,
       showOverflowTooltip: { effect: "light" },
       slot: "elementName",
     },
     {
-      label: td('dpp.column.relatedCodeTable', '关联代码表'),
+      label: td('dpp.column.relatedCodeTable', 'Related Code Table'),
       prop: "dataElemCodeName",
       width: 200,
       showOverflowTooltip: { effect: "light" },
@@ -1111,7 +1111,7 @@ const tableStore = reactive({
       slot: "dataElemCodeName",
     },
     {
-      label: td('dpp.column.relatedDataElem', '关联数据元'),
+      label: td('dpp.column.relatedDataElem', 'Related Data Element'),
       prop: "relDataElmeName",
       width: 200,
       showOverflowTooltip: { effect: "light" },

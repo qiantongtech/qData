@@ -58,7 +58,7 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error(MessageUtils.messageEn("log.exception.access.denied"), requestURI, e.getMessage());
-        String message = MessageUtils.messageWithFallback("sys.error", "没有权限，请联系管理员授权");
+        String message = MessageUtils.messageWithFallback("sys.error", "Internal server error, please contact administrator");
         return AjaxResult.error(HttpStatus.FORBIDDEN, message);
     }
 
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler
         String variableName = e.getVariableName();
         log.error(MessageUtils.messageEn("log.exception.path.variable.missing"), requestURI, e);
         String message = StringUtils.isNotEmpty(variableName) ? MessageUtils.messageWithFallback("sys.error.path.missing", String.format(MessageUtils.message("log.exception.path.variable.missing"), variableName))
-                : MessageUtils.messageWithFallback("sys.error.path.missing", String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+                : MessageUtils.messageWithFallback("sys.error.path.missing", "Missing required path variable");
         return AjaxResult.error(message);
     }
 
@@ -117,9 +117,11 @@ public class GlobalExceptionHandler
             value = EscapeUtil.clean(value);
         }
         log.error(MessageUtils.message("log.exception.param.type.mismatch"), requestURI, e);
-        String tips = String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value);
+        String tips = MessageUtils.messageWithFallback("sys.error.param.type.detail",
+                "Request parameter type mismatch: parameter [{0}] requires type ''{1}'', but the input value is ''{2}''",
+                e.getName(), e.getRequiredType().getName(), value);
         String message = StringUtils.isNotEmpty(e.getName()) ? tips :
-                MessageUtils.messageWithFallback("sys.error.param.type", tips);
+                MessageUtils.messageWithFallback("sys.error.param.type", "Request parameter type mismatch");
         return AjaxResult.error(message);
     }
 
@@ -177,7 +179,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)
     {
-        String message = MessageUtils.messageWithFallback("biz.error.demo", "演示模式，不允许操作");
+        String message = MessageUtils.messageWithFallback("biz.error.demo", "Demo mode, operation not allowed");
         return AjaxResult.error(message);
     }
 }

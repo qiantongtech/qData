@@ -75,7 +75,7 @@ public class AttTagCatController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttTagCatDO> list = (List<AttTagCatDO>) attTagCatService.getAttTagCatPage(exportReqVO).getRows();
         ExcelUtil<AttTagCatRespVO> util = new ExcelUtil<>(AttTagCatRespVO.class);
-        util.exportExcel(response, AttTagCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttTagCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入标签类目管理列表")
@@ -120,7 +120,7 @@ public class AttTagCatController extends BaseController {
         return CommonResult.toAjax(attTagCatService.updateAttTagCat(attTagCat));
     }
 
-//    @Operation(summary = "删除标签类目管理")
+//    @Operation(summary = "Delete tag category")
 //    @PreAuthorize("@ss.hasPermi('att:tagCat:remove')")
 //    @Log(title = "log.op.title.att.tag.cat", businessType = BusinessType.DELETE)
 //    @DeleteMapping("/{ids}")

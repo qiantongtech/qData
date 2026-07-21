@@ -25,9 +25,9 @@ OTHER_PARAMS=${OTHER_PARAMS:-""}
 SYSDBA_PWD=${SYSDBA_PWD:-""}
 SYSAUDITOR_PWD=${SYSAUDITOR_PWD:-""}
 
-# ===== 新增：一次性执行标记 & 日志路径 =====
-FIRST_RUN_FLAG="/var/run/dm8_first_run.done"   # 首次执行标记
-INIT_LOG="/init.log"                            # 初始化日志文件
+# ===== One-time execution marker and log path =====
+FIRST_RUN_FLAG="/var/run/dm8_first_run.done"   # First-run marker
+INIT_LOG="/init.log"                            # Initialization log file
 
 function init_db() {
     if [ -z "$SYSDBA_PWD" ]; then
@@ -38,7 +38,7 @@ function init_db() {
         echo "SYSAUDITOR_PWD is empty, please set it in environment variables"
         exit 1
     fi
-    # 判断DB_PATH文件夹内是否存在文件
+    # Check whether the DB_PATH directory contains files
     if [ -d "$DB_PATH" ]; then
         if [ "$(ls -A $DB_PATH)" ]; then
             echo "DB_PATH is not empty, please check it"
@@ -66,7 +66,7 @@ function start_dmap() {
     echo "DmAPService started"
 }
 
-# 创建一个函数，用来修改文件的权限
+# Create a function to update file permissions
 function modify_db_permissions() {
     echo "Modifying $DB_PATH permissions..."
     chown -R dmdba $DB_PATH
@@ -74,7 +74,7 @@ function modify_db_permissions() {
 }
 
 function check_initialized() {
-    # 判断 $DB_PATH/$DB_NAME/dm.ini 是否存在
+    # Check whether $DB_PATH/$DB_NAME/dm.ini exists
     if [ -f "$DB_PATH/$DB_NAME/dm.ini" ]; then
         echo "Database already initialized"
         modify_db_permissions
@@ -84,12 +84,12 @@ function check_initialized() {
     fi
 }
 
-# ===== 新增：等待 TCP 就绪的小函数 =====
+# ===== Helper function that waits for TCP readiness =====
 wait_tcp_ready() {
   local waited=0
   local timeout=600
   echo "Waiting for dmserver TCP on 127.0.0.1:${PORT_NUM} ..."
-  # /dev/tcp 存在即可用；若镜像不支持，可改用 nc -z
+  # Use /dev/tcp when available; use nc -z if the image does not support it
   while ! (echo >"/dev/tcp/127.0.0.1/${PORT_NUM}") >/dev/null 2>&1; do
     sleep 2
     waited=$((waited+2))
@@ -102,50 +102,50 @@ wait_tcp_ready() {
   return 0
 }
 
-# ===== 新增：首次执行的后台任务（按你的两段 disql 顺序）=====
+# ===== First-run background task (execute the two disql stages in order)=====
 post_boot_first_run() {
-  # 已执行过则直接退出
+  # Exit immediately if this task has already run
   if [ -f "$FIRST_RUN_FLAG" ]; then
     return 0
   fi
 
-  # 等 TCP 就绪（服务启动完成）
+  # Wait for TCP readiness (service startup complete)
   if ! wait_tcp_ready; then
     echo "WARN: dmserver TCP not ready; skip first-run init."
     return 0
   fi
 
-  # 准备日志
+  # Prepare the log
   if [ ! -f "$INIT_LOG" ]; then
     echo "init database at $(date +'%Y-%m-%d %H:%M:%S')" > "$INIT_LOG"
   fi
 
   echo "Creating business user & grant ..." | tee -a "$INIT_LOG"
-  # 第一步：SYSDBA 执行建用户与授权
+  # Step 1: create the user and grant permissions as SYSDBA
   /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 create user "${QDATA_USER}" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "${QDATA_USER}";
 COMMIT;
 EOF
-  # 原始层
+  # Operational data store layer
   /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 create user "ods" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "ods";
 COMMIT;
 EOF
-  # 明细层
+  # Detail data layer
   /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 create user "dwd" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "dwd";
 COMMIT;
 EOF
-  # 主题层
+  # Subject data layer
   /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 create user "dws" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "dws";
 COMMIT;
 EOF
-  # 应用层
+  # Application data layer
   /home/dmdba/dmdb/bin/disql SYSDBA/${SYSDBA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 create user "ads" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "ads";
@@ -153,7 +153,7 @@ COMMIT;
 EOF
 
   echo "Importing initial data ..." | tee -a "$INIT_LOG"
-  # 第二步：业务用户导入数据（确保 /home/dmdba/initdata/init-qdata.sql 可读）
+  # Step 2: import data as the application user (ensure /home/dmdba/initdata/init-qdata.sql is readable)
   /home/dmdba/dmdb/bin/disql ${QDATA_USER}/${QDATA_PWD}@localhost:${PORT_NUM} <<EOF >> "$INIT_LOG" 2>&1
 set define off;
 set CHAR_CODE UTF8;
@@ -161,21 +161,21 @@ set CHAR_CODE UTF8;
 set define on;
 EOF
 
-  # 落标记：仅首次执行
+  # Write the marker so this runs only once
   touch "$FIRST_RUN_FLAG"
   echo "First-run initialization finished." | tee -a "$INIT_LOG"
 }
 
 cd $DMDB_INSTALL_PATH/bin
-# 检查DB是否初始化，如果没有初始化则执行初始化
+# Initialize the database if it has not been initialized
 check_initialized
 
-# 启动 DmAPServer
+# Start DmAPServer
 start_dmap
 
-# ===== 新增：后台启动首次执行任务（不阻塞主进程）=====
+# ===== Start the first-run task in the background without blocking the main process=====
 post_boot_first_run &
 
-# 启动数据库实例（前台）
+# Start the database instance in the foreground
 echo "Starting DmServer..."
 exec sudo -u dmdba /home/dmdba/dmdb/bin/dmserver path=$DB_PATH/$DB_NAME/dm.ini

@@ -55,6 +55,7 @@ export default {
     nextStep: 'Next',
     previousStep: 'Previous',
     query: 'Search',
+    search: 'Search',
     refresh: 'Refresh',
     reset: 'Reset',
     return: 'Back',

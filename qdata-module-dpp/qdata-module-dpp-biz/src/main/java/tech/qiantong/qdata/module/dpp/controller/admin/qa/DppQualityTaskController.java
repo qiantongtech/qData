@@ -36,6 +36,7 @@ import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
@@ -75,7 +76,7 @@ public class DppQualityTaskController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppQualityTaskDO> list = (List<DppQualityTaskDO>) dppQualityTaskService.getDppQualityTaskPage(exportReqVO).getRows();
         ExcelUtil<DppQualityTaskRespVO> util = new ExcelUtil<>(DppQualityTaskRespVO.class);
-        util.exportExcel(response, DppQualityTaskConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppQualityTaskConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量任务列表")
@@ -136,7 +137,8 @@ public class DppQualityTaskController extends BaseController {
     public AjaxResult updateDaDiscoveryTaskStatus(@RequestBody DppQualityTaskSaveReqVO daDiscoveryTask)
     {
         boolean result = dppQualityTaskService.updateDppQualityTaskStatus(daDiscoveryTask);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error(MessageUtils.messageWithFallback(
+                "dpp.error.task.notfound.expired", "The task does not exist or has expired"));
     }
 
     @Log(title = "log.op.title.dpp.task.trigger", businessType = BusinessType.UPDATE)
@@ -152,7 +154,8 @@ public class DppQualityTaskController extends BaseController {
     public AjaxResult updateDaDiscoveryTaskCronExpression(@RequestBody DppQualityTaskSaveReqVO daDiscoveryTask)
     {
         boolean result = dppQualityTaskService.updateDaDiscoveryTaskCronExpression(daDiscoveryTask);
-        return result ? success() : error("任务不存在或已过期！");
+        return result ? success() : error(MessageUtils.messageWithFallback(
+                "dpp.error.task.notfound.expired", "The task does not exist or has expired"));
     }
 
 }

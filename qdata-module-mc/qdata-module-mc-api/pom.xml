@@ -12,7 +12,7 @@
     <artifactId>qdata-module-mc-api</artifactId>
 
     <description>
-        qdata-module-mc-api系统模块
+        qdata-module-mc-api system module
     </description>
 
     <dependencies>

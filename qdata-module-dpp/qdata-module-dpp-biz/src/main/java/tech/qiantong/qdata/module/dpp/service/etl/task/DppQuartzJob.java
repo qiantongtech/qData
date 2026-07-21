@@ -21,11 +21,12 @@ package tech.qiantong.qdata.module.dpp.service.etl.task;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskService;
 
 /**
- * DPP 的 Quartz 调用入口。
- * Quartz 到点后只负责调用这里，真正的数据集成执行逻辑仍然交给 DPP 任务服务处理。
+ * Quartz entry point for DPP.
+ * Quartz invokes this class when triggered, while the DPP task service performs the actual execution.
  */
 @Component("dppQuartzJob")
 public class DppQuartzJob {
@@ -37,30 +38,36 @@ public class DppQuartzJob {
     }
 
     /**
-     * 数据集成
+     * Data integration.
      */
     public void dataIntegration(Long taskId) {
         try {
             dppEtlTaskService.startDppEtlTaskDataIntegration(taskId);
-            CommonResult.success("任务id:" + taskId + "执行成功");
+            CommonResult.success(MessageUtils.messageWithFallback(
+                    "dpp.job.task.execute.success", "Task {0} executed successfully", taskId));
         } catch (NumberFormatException e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务ID格式错误：" + taskId);
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "dpp.job.task.id.invalid", "Invalid task ID format: {0}", taskId));
         } catch (Exception e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务执行失败：" + e.getMessage());
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "dpp.job.task.execute.fail", "Task execution failed: {0}", e.getMessage()));
         }
     }
 
     /**
-     * 数据开发
+     * Data development.
      */
     public void dataDevelopment(Long id) {
         try {
             dppEtlTaskService.startDppEtlTaskDataDevelopment(id);
-            CommonResult.success("任务id:" + id + "执行成功");
+            CommonResult.success(MessageUtils.messageWithFallback(
+                    "dpp.job.task.execute.success", "Task {0} executed successfully", id));
         } catch (NumberFormatException e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务ID格式错误：" + id);
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "dpp.job.task.id.invalid", "Invalid task ID format: {0}", id));
         } catch (Exception e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务执行失败：" + e.getMessage());
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), MessageUtils.messageWithFallback(
+                    "dpp.job.task.execute.fail", "Task execution failed: {0}", e.getMessage()));
         }
     }
 }

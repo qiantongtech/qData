@@ -17,15 +17,15 @@
 -->
 
 <template>
-    <el-dialog v-model="visible" :draggable="true" :title="td('dpp.integration.fieldConflictTitle', '字段冲突处理')" :show-close="false" destroy-on-close
+    <el-dialog v-model="visible" :draggable="true" :title="td('dpp.integration.fieldConflictTitle', 'Field Conflict Handling')" :show-close="false" destroy-on-close
         class="MessageBox">
         <div style="padding: 10px 0;">
-            {{ td('dpp.integration.fieldConflictMsg', '已有 {existing} 个字段，检测到 {new} 个新字段，如何处理？', { existing: existingFields.length, new: Math.max(0, newFields.length - existingFields.length) }) }}
+            {{ td('dpp.integration.fieldConflictMsg', 'Already have {existing} fields, detected {new} new fields. How to handle?', { existing: existingFields.length, new: Math.max(0, newFields.length - existingFields.length) }) }}
         </div>
         <template #footer>
-            <el-button type="warning" @click="handleClick('addNewOnly')">{{ td('dpp.integration.addNewOnly', '增加新的') }}</el-button>
-            <el-button type="primary" @click="handleClick('addAll')">{{ td('dpp.integration.addAll', '增加所有') }}</el-button>
-            <el-button type="danger" @click="handleClick('clearAndAddAll')">{{ td('dpp.integration.clearAndAddAll', '清除并增加所有') }}</el-button>
+            <el-button type="warning" @click="handleClick('addNewOnly')">{{ td('dpp.integration.addNewOnly', 'Add New Only') }}</el-button>
+            <el-button type="primary" @click="handleClick('addAll')">{{ td('dpp.integration.addAll', 'Add All') }}</el-button>
+            <el-button type="danger" @click="handleClick('clearAndAddAll')">{{ td('dpp.integration.clearAndAddAll', 'Clear and Add All') }}</el-button>
             <el-button @click="onCancel">{{ td('common.button.cancel') }}</el-button>
         </template>
     </el-dialog>

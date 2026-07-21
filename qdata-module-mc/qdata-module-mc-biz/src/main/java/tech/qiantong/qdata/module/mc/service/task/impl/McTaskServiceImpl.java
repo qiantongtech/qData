@@ -186,7 +186,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         validateDuplicateTask(createReqVO, null);
 
         McTaskDO dictType = BeanUtils.toBean(createReqVO, McTaskDO.class);
-        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+        // Preserve the original DS behavior when legacy data or clients do not provide a scheduler.
         if (StringUtils.isEmpty(dictType.getScheduler())) {
             dictType.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
         }
@@ -198,7 +198,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         String taskCode;
         Long schedulerId;
-        // 创建 Quartz 调度器
+        // Create the Quartz scheduler.
         if (ScheduleConstants.QUARTZ.equals(dictType.getScheduler())) {
             schedulerId = mcTaskQuartzService.createSchedulerQuartz(dictType);
             taskCode = String.valueOf(schedulerId);
@@ -214,8 +214,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         //Store scheduling information
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
         schedulerSaveReqVO.setJobId(String.valueOf(schedulerId));
-        schedulerSaveReqVO.setTaskCode(taskCode);  // 设置任务编码到调度表
-        // 调度记录里保存隐藏执行引擎：Quartz 对应 DataX，DS 对应 Spark。
+        schedulerSaveReqVO.setTaskCode(taskCode);  // Store the task code in the scheduling record.
+        // Store the underlying execution engine in the scheduling record: Quartz uses DataX, while DS uses Spark.
         schedulerSaveReqVO.setTaskScheduler(dictType.getScheduler());
         schedulerSaveReqVO.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         mcTaskSchedulerService.createMcTaskScheduler(schedulerSaveReqVO);
@@ -238,7 +238,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         // 1. Update collection tasks
         McTaskDO updateObj = BeanUtils.toBean(updateReqVO, McTaskDO.class);
-        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+        // Preserve the original DS behavior when legacy data or clients do not provide a scheduler.
         if (StringUtils.isEmpty(updateObj.getScheduler())) {
             updateObj.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
         }
@@ -318,7 +318,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                                 Long.parseLong(scheduler.getJobId()) : null;
                         mcTaskDolphinSchedulerService.offlineTaskAndScheduler(scheduler.getTaskCode(), schedulerId);
                     } catch (Exception e) {
-                        log.warn("下线任务失败，taskId={}", id, e);
+                        log.warn("Failed to take task offline, taskId={}", id, e);
                     }
 
                     // Delete task
@@ -414,7 +414,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     @Override
     public String importMcTask(List<McTaskRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("mc.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("mc.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -433,16 +433,18 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                             mcTaskMapper.updateById(mcTaskDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageEnWithFallback("mc.import.update.success",
-                                    "数据更新成功，ID为 " + mcTaskId + " 的采集任务记录。", mcTaskId, "采集任务"));
+                                    "Data update successful, ID {0} {1} record.", mcTaskId,
+                                    MessageUtils.messageEnWithFallback("mc.entity.task", "Collection task")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageEnWithFallback("mc.import.update.fail",
-                                    "数据更新失败，ID为 " + mcTaskId + " 的采集任务记录不存在。", mcTaskId, "采集任务"));
+                                    "Data update failed, ID {0} {1} record does not exist.", mcTaskId,
+                                    MessageUtils.messageEnWithFallback("mc.entity.task", "Collection task")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageEnWithFallback("mc.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<McTaskDO> queryWrapper = new QueryWrapper<>();
@@ -452,17 +454,19 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                         mcTaskMapper.insert(mcTaskDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageEnWithFallback("mc.import.insert.success",
-                                "数据插入成功，ID为 " + mcTaskId + " 的采集任务记录。", mcTaskId, "采集任务"));
+                                "Data insert successful, ID {0} {1} record.", mcTaskId,
+                                MessageUtils.messageEnWithFallback("mc.entity.task", "Collection task")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageEnWithFallback("mc.import.insert.fail",
-                                "数据插入失败，ID为 " + mcTaskId + " 的采集任务记录已存在。", mcTaskId, "采集任务"));
+                                "Data insert failed, ID {0} {1} record already exists.", mcTaskId,
+                                MessageUtils.messageEnWithFallback("mc.entity.task", "Collection task")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageEnWithFallback("mc.import.error.detail",
-                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                        "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -471,12 +475,12 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageEnWithFallback("mc.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("mc.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageEnWithFallback("mc.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -659,7 +663,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
     private McTaskRespVO loadTask(Long taskId) {
         McTaskRespVO task = this.getMcTaskByIdNew(taskId);
         if (task == null) {
-            throw new DataQueryException("采集任务不存在，taskId=" + taskId);
+            throw new DataQueryException("mc.error.collection.task.notfound",
+                    "Collection task does not exist, taskId={0}", taskId);
         }
         return task;
     }
@@ -720,7 +725,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             mcTaskInstanceLogService.taskInstanceLogAppend(instanceId, taskId, msg);
         } catch (Exception e) {
             // ⚠️ Only local logs are allowed when logging fails, and will never be thrown again to avoid overwriting business exceptions.
-            log.error("任务实例日志写入失败 instanceId={}, msg={}", instanceId, msg, e);
+            log.error("Failed to write task instance log: instanceId={}, msg={}", instanceId, msg, e);
         }
     }
 
@@ -1285,11 +1290,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respComment = StringUtils.defaultString(respTable.getTableComment());
         if (!reqComment.equals(respComment)) {
             result = true;
-            updateMsg.append("表注释变更旧注释：")
+            updateMsg.append("Table comment changed; previous comment: ")
                     .append(respComment)
-                    .append("，新注释：")
+                    .append(", new comment: ")
                     .append(reqComment)
-                    .append("；\n");
+                    .append(";\n");
             type.add("1");
         }
 
@@ -1319,7 +1324,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                     result = true;
                     reqCol.setVersion(1);
                     reqCol.setUpdateType("1");
-                    reqCol.setUpdateMsg("新增字段");
+                    reqCol.setUpdateMsg("New column");
                     addColumnNames.add(reqCol.getColumnName());
                 }
 
@@ -1352,27 +1357,27 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         if (!addColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("新增：")
+            updateMsg.append("Added: ")
                     .append(addColumnNames.size())
-                    .append("个字段：")
+                    .append(" columns: ")
                     .append(String.join(",", addColumnNames))
-                    .append("；\n");
+                    .append(";\n");
         }
         if (!deleteColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("删除：")
+            updateMsg.append("Deleted: ")
                     .append(deleteColumnNames.size())
-                    .append("个字段：")
+                    .append(" columns: ")
                     .append(String.join(",", deleteColumnNames))
-                    .append("；\n");
+                    .append(";\n");
         }
         if (!updateColumnNames.isEmpty()) {
             type.add("2");
-            updateMsg.append("更新：")
+            updateMsg.append("Updated: ")
                     .append(updateColumnNames.size())
-                    .append("个字段：")
+                    .append(" columns: ")
                     .append(String.join(",", updateColumnNames))
-                    .append("；\n");
+                    .append(";\n");
         }
 
         reqTable.setUpdateMsg(updateMsg.toString());
@@ -1404,21 +1409,21 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 // Compare index fields and storage size
                 if (StringUtils.isNotBlank(tbIndex) && !tbIndex.equals(metadata.getIndexes())) {
                     result = true;
-                    updateMsg.append("表索引字段变更旧索引：")
+                    updateMsg.append("Table index fields changed; previous indexes: ")
                             .append(tbIndex)
-                            .append("，新索引字段：")
+                            .append(", new index fields: ")
                             .append(metadata.getIndexes())
-                            .append("；\n");
+                            .append(";\n");
                     type.add("3");
                 }
 
                 if (metadata.getTableSize() != null && storageSize != metadata.getTableSize().intValue()) {
                     result = true;
-                    updateMsg.append("表存储大小变更旧存储大小：")
+                    updateMsg.append("Table storage size changed; previous size: ")
                             .append(storageSize)
-                            .append("，新存储大小：")
+                            .append(", new size: ")
                             .append(metadata.getTableSize())
-                            .append("；\n");
+                            .append(";\n");
                     type.add("4");
                 }
             }
@@ -1439,11 +1444,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respComment = StringUtils.defaultString(resp.getColumnComment());
         if (!reqComment.equals(respComment)) {
             result = true;
-            updateMsg.append("字段注释变更旧注释：")
+            updateMsg.append("Column comment changed; previous comment: ")
                     .append(respComment)
-                    .append("，新注释：")
+                    .append(", new comment: ")
                     .append(reqComment)
-                    .append("；\n");
+                    .append(";\n");
             type.add("1");
         }
 
@@ -1452,40 +1457,41 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respType = StringUtils.defaultString(resp.getColumnType());
         if (!reqType.equals(respType)) {
             result = true;
-            updateMsg.append("字段类型变更旧类型：").append(respType).append("，新类型：").append(reqType).append("；\n");
+            updateMsg.append("Column type changed; previous type: ").append(respType)
+                    .append(", new type: ").append(reqType).append(";\n");
             type.add("2");
         }
 
         // Field length changes
         if (!Objects.equals(req.getColumnLength(), resp.getColumnLength())) {
             result = true;
-            updateMsg.append("字段长度变更旧长度：")
+            updateMsg.append("Column length changed; previous length: ")
                     .append(resp.getColumnLength())
-                    .append("，新长度：")
+                    .append(", new length: ")
                     .append(req.getColumnLength())
-                    .append("；\n");
+                    .append(";\n");
             type.add("3");
         }
 
         // Field precision changes
         if (!Objects.equals(req.getColumnPrecision(), resp.getColumnPrecision())) {
             result = true;
-            updateMsg.append("字段精度变更旧精度：")
+            updateMsg.append("Column precision changed; previous precision: ")
                     .append(resp.getColumnPrecision())
-                    .append("，新精度：")
+                    .append(", new precision: ")
                     .append(req.getColumnPrecision())
-                    .append("；\n");
+                    .append(";\n");
             type.add("4");
         }
 
         // Field decimal places change
         if (!Objects.equals(req.getColumnScale(), resp.getColumnScale())) {
             result = true;
-            updateMsg.append("字段小数位数变更旧小数位数：")
+            updateMsg.append("Column scale changed; previous scale: ")
                     .append(resp.getColumnScale())
-                    .append("，新小数位数：")
+                    .append(", new scale: ")
                     .append(req.getColumnScale())
-                    .append("；\n");
+                    .append(";\n");
             type.add("5");
         }
 
@@ -1494,11 +1500,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respDefault = StringUtils.defaultString(resp.getDefaultValue());
         if (!reqDefault.equals(respDefault)) {
             result = true;
-            updateMsg.append("字段默认值变更旧默认值：")
+            updateMsg.append("Column default changed; previous value: ")
                     .append(respDefault)
-                    .append("，新默认值：")
+                    .append(", new value: ")
                     .append(reqDefault)
-                    .append("；\n");
+                    .append(";\n");
             type.add("6");
         }
 
@@ -1507,11 +1513,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respPkFlag = StringUtils.defaultString(resp.getPkFlag());
         if (!reqPkFlag.equals(respPkFlag)) {
             result = true;
-            updateMsg.append("主键标识变更旧标识：")
+            updateMsg.append("Primary-key flag changed; previous flag: ")
                     .append(respPkFlag)
-                    .append("，新标识：")
+                    .append(", new flag: ")
                     .append(reqPkFlag)
-                    .append("；\n");
+                    .append(";\n");
             type.add("7");
         }
 
@@ -1520,11 +1526,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respFkFlag = StringUtils.defaultString(resp.getFkFlag());
         if (!reqFkFlag.equals(respFkFlag)) {
             result = true;
-            updateMsg.append("外键标识变更旧标识：")
+            updateMsg.append("Foreign-key flag changed; previous flag: ")
                     .append(respFkFlag)
-                    .append("，新标识：")
+                    .append(", new flag: ")
                     .append(reqFkFlag)
-                    .append("；\n");
+                    .append(";\n");
             type.add("8");
         }
 
@@ -1533,11 +1539,11 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String respNullableFlag = StringUtils.defaultString(resp.getNullableFlag());
         if (!reqNullableFlag.equals(respNullableFlag)) {
             result = true;
-            updateMsg.append("可空标识变更旧标识：")
+            updateMsg.append("Nullable flag changed; previous flag: ")
                     .append(respNullableFlag)
-                    .append("，新标识：")
+                    .append(", new flag: ")
                     .append(reqNullableFlag)
-                    .append("；\n");
+                    .append(";\n");
             type.add("9");
         }
 
@@ -1653,7 +1659,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         try {
             if (!rootQuery.valid()) {
                 safeLog(instanceId, taskId, MessageUtils.messageEn("mc.log.connection.failed"));
-                throw new DataQueryException("数据库连接失败");
+                throw new DataQueryException("mc.error.database.connection.fail", "Database connection failed");
             }
             dbNames = rootQuery.getDbNames(null);
         } finally {
@@ -2112,5 +2118,3 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         return dbNodes;
     }
 }
-
-

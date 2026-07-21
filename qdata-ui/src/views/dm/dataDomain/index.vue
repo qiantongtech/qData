@@ -34,7 +34,7 @@
           @click="handleAdd"
           v-hasPermi="['dm:dataDomain:add']"
         >
-          {{ td('common.button.add', '新增') }}
+          {{ td('common.button.add', 'Add') }}
         </el-button>
       </template>
 
@@ -47,7 +47,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dm:dataDomain:edit']"
           >
-            {{ td('common.button.update', '修改') }}
+            {{ td('common.button.update', 'Edit') }}
           </el-button>
           <el-button
             link
@@ -56,7 +56,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dm:dataDomain:remove']"
           >
-            {{ td('common.button.delete', '删除') }}
+            {{ td('common.button.delete', 'Delete') }}
           </el-button>
           <el-button
             link
@@ -65,7 +65,7 @@
             @click="handleDetail(row)"
             v-hasPermi="['dm:dataDomain:edit']"
           >
-            {{ td('common.button.details', '详情') }}
+            {{ td('common.button.details', 'Details') }}
           </el-button>
         </template>
       </qt-table>
@@ -91,17 +91,17 @@
         label-width="110px"
         @submit.prevent
        :label-position="labelPosition">
-        <el-form-item :label="td('dm.dataDomain.name', '数据域名称')" prop="name" :label-position="labelPosition">
-          <el-input v-model="form.name" :placeholder="td('dm.dataDomain.namePlaceholder', '请输入数据域名称')" />
+        <el-form-item :label="td('dm.dataDomain.name', 'Data Domain Name')" prop="name" :label-position="labelPosition">
+          <el-input v-model="form.name" :placeholder="td('dm.dataDomain.namePlaceholder', 'Please enter data domain name')" />
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
-          <el-input v-model="form.engName" :placeholder="td('dm.dataDomain.engNamePlaceholder', '请输入英文缩写')" />
+        <el-form-item :label="td('dm.dataDomain.engName', 'English Abbreviation')" prop="engName" :label-position="labelPosition">
+          <el-input v-model="form.engName" :placeholder="td('dm.dataDomain.engNamePlaceholder', 'Please enter English abbreviation')" />
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.ownerId', 'Responsible Person')" prop="ownerUserId" :label-position="labelPosition">
           <el-select
             v-model="form.ownerUserId"
             filterable
-            :placeholder="td('dm.dataDomain.ownerIdPlaceholder', '请选择负责人')"
+            :placeholder="td('dm.dataDomain.ownerIdPlaceholder', 'Please select responsible person')"
             @change="handleContactChange"
           >
             <el-option
@@ -112,28 +112,28 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.ownerPhone', 'Responsible Person Phone')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
           <el-input
             v-model="form.ownerUserPhoneNumber"
-            :placeholder="td('dm.dataDomain.ownerPhonePlaceholder', '请输入负责人电话')"
+            :placeholder="td('dm.dataDomain.ownerPhonePlaceholder', 'Please enter responsible person phone')"
             disabled
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
           <el-input
             v-model="form.description"
             type="textarea"
-            :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
+            :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
             :min-height="192"
             show-word-limit
             maxlength="500"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
           <el-input
             v-model="form.remark"
             type="textarea"
-            :placeholder="td('common.form.remarkPlaceholder', '请输入备注')"
+            :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
             :min-height="192"
             show-word-limit
             maxlength="500"
@@ -142,8 +142,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm', 'Confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -162,43 +162,43 @@
         </span>
       </template>
       <el-form ref="dataDomainDetailRef" :model="form" label-width="110px" :label-position="labelPosition">
-        <el-form-item :label="td('common.texts.number', '编号') + ':'" prop="id" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.number', 'No.') + ':'" prop="id" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.id }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.dataDomain', '数据域')" prop="name" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.dataDomain', 'Data Domain')" prop="name" :label-position="labelPosition">
           <div class="form-readonly">{{ form.name ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.engName', 'English Abbreviation')" prop="engName" :label-position="labelPosition">
           <div class="form-readonly">{{ form.engName ?? "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.ownerId', 'Responsible Person')" prop="ownerUserId" :label-position="labelPosition">
           <div class="form-readonly">{{ form.ownerUserName || "-" }}</div>
         </el-form-item>
-        <el-form-item :label="td('dm.dataDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
+        <el-form-item :label="td('dm.dataDomain.ownerPhone', 'Responsible Person Phone')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.ownerUserPhoneNumber || "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
+        <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
           <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdBy', '创建人')" prop="createBy" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.createdBy', 'Created By')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.createdTime', '创建时间')" prop="createTime" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.createdTime', 'Created Time')" prop="createTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -207,14 +207,14 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedBy', '更新人')" prop="createBy" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.updatedBy', 'Updated By')" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.updatedTime', '更新时间')" prop="updateTime" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.updatedTime', 'Updated Time')" prop="updateTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
               </div>
@@ -225,7 +225,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">{{ td('common.button.close', '关闭') }}</el-button>
+          <el-button @click="cancel">{{ td('common.button.close', 'Close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -251,30 +251,30 @@
         drag
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">{{ td('common.upload.dragOrClick', '将文件拖到此处，或点击上传') }}</div>
+        <div class="el-upload__text">{{ td('common.upload.dragOrClick', 'Drag file here, or click to upload') }}</div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
               <el-checkbox
                 v-model="upload.updateSupport"
-              />{{ td('dm.dataDomain.updateExistingData', '是否更新已经存在的数据域数据') }}
+              />{{ td('dm.dataDomain.updateExistingData', 'Update existing data domain data') }}
             </div>
-            <span>{{ td('common.upload.fileFormat', '仅允许导入xls、xlsx格式文件。') }}</span>
+            <span>{{ td('common.upload.fileFormat', 'Only xls, xlsx format files are allowed.') }}</span>
             <el-link
               type="primary"
               :underline="false"
               style="font-size: 12px; vertical-align: baseline"
               @click="importTemplate"
             >
-              {{ td('common.upload.downloadTemplate', '下载模板') }}
+              {{ td('common.upload.downloadTemplate', 'Download Template') }}
             </el-link>
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="upload.open = false">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm', '确定') }}</el-button>
+          <el-button @click="upload.open = false">{{ td('common.button.cancel', 'Cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm', 'Confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -332,9 +332,9 @@ const tableStore = reactive({
   },
   columns: [
     // { type: "selection", width: 55, align: "left" },
-    { label: td('common.texts.number', '编号'), prop: "id", width: 60, sortable: true },
+    { label: td('common.texts.number', 'No.'), prop: "id", width: 60, sortable: true },
     {
-      label: td('dm.dataDomain.name', '数据域名称'),
+      label: td('dm.dataDomain.name', 'Data Domain Name'),
       prop: "name",
       align: "left",
       showOverflowTooltip: {
@@ -342,7 +342,7 @@ const tableStore = reactive({
       },
     },
     {
-      label: td('common.texts.description', '描述'),
+      label: td('common.texts.description', 'Description'),
       prop: "description",
       align: "left",
       width: 240,
@@ -350,21 +350,21 @@ const tableStore = reactive({
         effect: "light",
       },
     },
-    { label: td('dm.dataDomain.engName', '英文缩写'), prop: "engName", align: "left" },
-    { label: td('dm.dataDomain.ownerId', '负责人'), prop: "ownerUserName", align: "left" },
+    { label: td('dm.dataDomain.engName', 'English Abbreviation'), prop: "engName", align: "left" },
+    { label: td('dm.dataDomain.ownerId', 'Responsible Person'), prop: "ownerUserName", align: "left" },
     {
-      label: td('dm.dataDomain.ownerPhone', '负责人电话'),
+      label: td('dm.dataDomain.ownerPhone', 'Responsible Person Phone'),
       prop: "ownerUserPhoneNumber",
       align: "left",
       width: 140,
     },
     {
-      label: td('common.texts.createdBy', '创建人'),
+      label: td('common.texts.createdBy', 'Created By'),
       prop: "createBy",
       showOverflowTooltip: true,
     },
     {
-      label: td('common.texts.createdTime', '创建时间'),
+      label: td('common.texts.createdTime', 'Created Time'),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -374,7 +374,7 @@ const tableStore = reactive({
     },
     // { label: t('common.texts.remark'), prop: "remark", align: "left" },
     {
-      label: td('common.texts.operation', '操作'),
+      label: td('common.texts.operation', 'Operation'),
       width: 240,
       slot: "action",
       fixed: "right",
@@ -387,24 +387,24 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: td('dm.dataDomain.name', '数据域名称'),
+      label: td('dm.dataDomain.name', 'Data Domain Name'),
       prop: "name",
-      component: { is: "input", placeholder: td('dm.dataDomain.namePlaceholder', '请输入数据域名称') },
+      component: { is: "input", placeholder: td('dm.dataDomain.namePlaceholder', 'Please enter data domain name') },
     },
     {
-      label: td('dm.dataDomain.engName', '英文缩写'),
+      label: td('dm.dataDomain.engName', 'English Abbreviation'),
       prop: "engName",
-      component: { is: "input", placeholder: td('dm.dataDomain.engNamePlaceholder', '请输入英文缩写') },
+      component: { is: "input", placeholder: td('dm.dataDomain.engNamePlaceholder', 'Please enter English abbreviation') },
     },
     {
-      label: td('dm.dataDomain.ownerId', '负责人'),
+      label: td('dm.dataDomain.ownerId', 'Responsible Person'),
       prop: "ownerUserId",
       component: {
         is: "tree-select",
         data: managerOptions,
         props: { value: "userId", label: "nickName", children: "children" },
         valueKey: "userId",
-        placeholder: td('dm.dataDomain.ownerIdPlaceholder', '请选择负责人'),
+        placeholder: td('dm.dataDomain.ownerIdPlaceholder', 'Please select responsible person'),
         checkStrictly: true,
       },
     },
@@ -430,13 +430,13 @@ const upload = reactive({
 const data = reactive({
   form: {},
   rules: {
-    name: [{ required: true, message: td('dm.dataDomain.nameRequired', '数据分域名称不能为空'), trigger: "blur" }],
+    name: [{ required: true, message: td('dm.dataDomain.nameRequired', 'Data domain name cannot be empty'), trigger: "blur" }],
     engName: [
-      { required: true, message: td('dm.dataDomain.engNameRequired', '英文缩写不能为空'), trigger: "blur" },
-      { pattern: /^[a-zA-Z]+$/, message: td('dm.dataDomain.englishOnly', '只能输入英文字符'), trigger: "blur" },
+      { required: true, message: td('dm.dataDomain.engNameRequired', 'English abbreviation cannot be empty'), trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: td('dm.dataDomain.englishOnly', 'Only English characters are allowed'), trigger: "blur" },
     ],
     ownerUserId: [
-      { required: true, message: td('dm.dataDomain.ownerRequired', '负责人不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.dataDomain.ownerRequired', 'Responsible person cannot be empty'), trigger: "blur" },
     ],
   },
 });
@@ -489,7 +489,7 @@ function handleAdd() {
   // Explicitly initialize the person in charge phone field
   form.value.ownerUserPhoneNumber = null;
   open.value = true;
-  title.value = td('dm.dataDomain.addTitle', '新增数据域');
+  title.value = td('dm.dataDomain.addTitle', 'Add Data Domain');
 }
 
 /** Modify button actions */
@@ -501,7 +501,7 @@ function handleUpdate(row) {
     form.value = response.data;
 
     open.value = true;
-    title.value = td('dm.dataDomain.editTitle', '修改数据域');
+    title.value = td('dm.dataDomain.editTitle', 'Edit Data Domain');
   });
 }
 
@@ -514,7 +514,7 @@ function handleDetail(row) {
     form.value = response.data;
 
     openDetail.value = true;
-    title.value = td('dm.dataDomain.detailTitle', '数据域详情');
+    title.value = td('dm.dataDomain.detailTitle', 'Data Domain Detail');
   });
 }
 
@@ -527,7 +527,7 @@ function submitForm() {
       if (form.value.id != null) {
         updateDataDomain(form.value)
           .then(() => {
-            proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
+            proxy.$modal.msgSuccess(td('common.message.editSuccess', 'Updated successfully'));
             open.value = false;
             tableRef.value.getList();
             submitLoading.value = false;
@@ -538,7 +538,7 @@ function submitForm() {
       } else {
         addDataDomain(form.value)
           .then(() => {
-            proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
+            proxy.$modal.msgSuccess(td('common.message.addSuccess', 'Added successfully'));
             open.value = false;
             tableRef.value.getList();
             submitLoading.value = false;
@@ -564,13 +564,13 @@ const handleContactChange = (selectedValue) => {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataDomain.confirmDelete', '是否确认删除数据域编号为"<id>"的数据项？').replace('<id>', _ids))
+    .confirm(td('dm.dataDomain.confirmDelete', 'Are you sure to delete data domain "<id>"?').replace('<id>', _ids))
     .then(function () {
       return delDataDomain(_ids);
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', 'Deleted successfully'));
     })
     .catch(() => {});
 }
@@ -604,7 +604,7 @@ const handleFileSuccess = (response, file) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    td('dm.dataDomain.importResult', '导入结果'),
+    td('dm.dataDomain.importResult', 'Import Result'),
     { dangerouslyUseHTMLString: true }
   );
   tableRef.value.getList();

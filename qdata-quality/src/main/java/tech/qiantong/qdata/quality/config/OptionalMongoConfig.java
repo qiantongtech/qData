@@ -55,7 +55,7 @@ public class OptionalMongoConfig {
     @Bean
     public CommandLineRunner checkMongoTemplate(@Autowired(required = false) MongoTemplate mongoTemplate) {
         return args -> {
-            System.out.println("✅ MongoTemplate 是否注入成功：" + (mongoTemplate != null));
+            System.out.println("✅ MongoTemplate injected: " + (mongoTemplate != null));
         };
     }
 }

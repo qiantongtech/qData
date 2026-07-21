@@ -34,6 +34,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectPageReqVO;
@@ -124,10 +125,13 @@ public class AttProjectController extends BaseController {
         attProject.setCreateTime(DateUtil.date());
         Long serviceAttProject = attProjectService.createAttProject(attProject);
         if (serviceAttProject == -1) {
-            return CommonResult.error(serviceAttProject.intValue(), "创建失败，请检查海豚调度器是否宕机或者是否存在该数据!");
+            return CommonResult.error(serviceAttProject.intValue(), MessageUtils.messageWithFallback(
+                    "att.error.project.scheduler.create.fail",
+                    "Failed to create project; check whether DolphinScheduler is unavailable or the project data already exists"));
         }
         if (serviceAttProject == -2) {
-            return CommonResult.error(serviceAttProject.intValue(), "创建失败!");
+            return CommonResult.error(serviceAttProject.intValue(), MessageUtils.messageWithFallback(
+                    "att.error.project.create.fail", "Failed to create project"));
         }
         return CommonResult.toAjax(serviceAttProject);
     }
@@ -142,7 +146,8 @@ public class AttProjectController extends BaseController {
         attProject.setUpdateTime(DateUtil.date());
         int i = attProjectService.updateAttProject(attProject);
         if (i == -1) {
-            return CommonResult.error(i, "修改失败！");
+            return CommonResult.error(i, MessageUtils.messageWithFallback(
+                    "att.error.project.update.fail", "Failed to update project"));
         }
         return CommonResult.toAjax(i);
     }
@@ -153,9 +158,11 @@ public class AttProjectController extends BaseController {
     public AjaxResult editProjectStatus(@PathVariable Long id, @PathVariable Long status) {
         Boolean isOk = attProjectService.editProjectStatus(id, status);
         if (!isOk) {
-            return AjaxResult.error("任务状态修改失败，请联系系统管理员");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "common.task.status.update.fail", "Failed to update task status; contact the administrator"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.update.success", "Update successful"));
     }
 
     @Operation(summary = "删除项目")
@@ -165,9 +172,13 @@ public class AttProjectController extends BaseController {
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         int project = attProjectService.removeAttProject(Arrays.asList(ids));
         if (project == -1) {
-            return CommonResult.error(500, "删除失败，项目有人员存在!");
+            return CommonResult.error(500, MessageUtils.messageWithFallback(
+                    "att.error.project.delete.members.exist",
+                    "Failed to delete project because project members still exist"));
         } else if (project == -2) {
-            return CommonResult.error(500, "删除失败，检查海豚调度器是否宕机!");
+            return CommonResult.error(500, MessageUtils.messageWithFallback(
+                    "att.error.project.delete.scheduler.fail",
+                    "Failed to delete project; check whether DolphinScheduler is unavailable"));
         }
         return CommonResult.toAjax(project);
     }

@@ -77,7 +77,7 @@ public class DmDataDomainController extends BaseController {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DmDataDomainDO> list = (List<DmDataDomainDO>) dmDataDomainService.getDmDataDomainPage(exportReqVO).getRows();
         ExcelUtil<DmDataDomainRespVO> util = new ExcelUtil<>(DmDataDomainRespVO.class);
-        util.exportExcel(response, DmDataDomainConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DmDataDomainConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据域管理列表")

@@ -172,7 +172,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
     @Override
     public String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -191,16 +191,16 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                             dppEvaluateLogMapper.updateById(dppEvaluateLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                    "数据更新成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。", dppEvaluateLogId, "评测规则结果"));
+                                    "Data update successful, ID {0} {1} record.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                    "数据更新失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录不存在。", dppEvaluateLogId, "评测规则结果"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DppEvaluateLogDO> queryWrapper = new QueryWrapper<>();
@@ -210,17 +210,17 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                         dppEvaluateLogMapper.insert(dppEvaluateLogDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                "数据插入成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。", dppEvaluateLogId, "评测规则结果"));
+                                "Data insert successful, ID {0} {1} record.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                "数据插入失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录已存在。", dppEvaluateLogId, "评测规则结果"));
+                                "Data insert failed, ID {0} {1} record already exists.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -229,12 +229,12 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -533,7 +533,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 
             // Send POST request (with JSON request body)
             HttpUtils.ResponseObject responseObject = HttpUtils.sendPost(fullUrl, paramMap, headers);
-            System.out.println("修改响应：" + responseObject);
+            System.out.println("Update response: " + responseObject);
 
             JSONObject result = JSONObject.parseObject(String.valueOf(responseObject.getBody()));
             return result.getBoolean("data"); // CommonResult.data is true/false

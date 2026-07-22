@@ -536,7 +536,7 @@
             <el-radio-group
                 v-if="title != td('dpp.integratioTask.taskDetail')"
                 class="scheduler-card-group"
-                v-model="form.scheduler"
+                :model-value="form.scheduler"
                 @change="handleSchedulerChange"
             >
               <el-radio
@@ -1158,12 +1158,38 @@ const handleNodeClick = (val) => {
  * DolphinScheduler
  * @returns {Promise<void>}
  */
-const handleSchedulerChange = async () => {
-  if (form.value.scheduler == "QUARTZ") {
-    form.value.taskType = "DATAX";
-  } else {
-    form.value.taskType = "SPARK";
+const handleSchedulerChange = async (value) => {
+  const engineSwitchMap = {
+    QUARTZ: {
+      taskType: "DATAX",
+      message: td(
+        "dpp.integratioTask.switchQuartzEngineConfirm",
+        "切换为 Quartz 调度器后，执行引擎将同步切换为 DataX，是否继续？"
+      ),
+    },
+    DOLPHINSCHEDULER: {
+      taskType: "SPARK",
+      message: td(
+        "dpp.integratioTask.switchDolphinSchedulerEngineConfirm",
+        "切换为 DolphinScheduler 调度器后，执行引擎将同步切换为 Spark，是否继续？"
+      ),
+    },
+  };
+  const switchConfig = engineSwitchMap[value];
+
+  if (switchConfig && form.value.taskType != switchConfig.taskType) {
+    try {
+      await proxy.$modal.confirm(switchConfig.message);
+      form.value.scheduler = value;
+      form.value.taskType = switchConfig.taskType;
+      syncActuatorByEngine();
+    } catch {
+      // 取消时保持原调度器和执行引擎，不更新选中状态。
+    }
+    return;
   }
+
+  form.value.scheduler = value;
   syncActuatorByEngine();
 };
 

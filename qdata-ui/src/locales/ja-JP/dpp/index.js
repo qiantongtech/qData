@@ -1055,6 +1055,8 @@ export default {
     sparkAdd: 'Sparkを追加',
     switchSparkSchedulerConfirm: 'Spark 実行エンジンに切り替えると、スケジューラも DolphinScheduler に切り替わります。続行しますか？',
     switchDataXSchedulerConfirm: 'DataX 実行エンジンに切り替えると、スケジューラも Quartz に切り替わります。続行しますか？',
+    switchQuartzEngineConfirm: 'Quartz スケジューラに切り替えると、実行エンジンも DataX に切り替わります。続行しますか？',
+    switchDolphinSchedulerEngineConfirm: 'DolphinScheduler スケジューラに切り替えると、実行エンジンも Spark に切り替わります。続行しますか？',
     quartzGuideDescription: "システムの組み込みコンポーネントによってタスクが実行されます",
     attributeDescription: "タスク実行時のフォールトトレランス戦略の設定。"
   },

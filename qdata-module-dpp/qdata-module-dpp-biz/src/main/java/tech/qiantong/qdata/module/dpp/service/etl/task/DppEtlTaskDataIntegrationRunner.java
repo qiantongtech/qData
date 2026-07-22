@@ -123,7 +123,7 @@ public class DppEtlTaskDataIntegrationRunner {
             String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            /*LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
+            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
@@ -140,7 +140,7 @@ public class DppEtlTaskDataIntegrationRunner {
                         "DataX task execution failed with exit code {0}", run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
-            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");*/
+            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
         } catch (Exception e) {
             // Mark the task as failed for any exception and write the reason to the local execution log.
             markLocalDataXTaskFail(instance, e);

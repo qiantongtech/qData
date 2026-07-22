@@ -74,12 +74,6 @@ public class DppEtlSchedulerSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
-    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
-
-    @Schema(description = "执行引擎", example = "SPARK")
-    private String taskActuator;
-
     @Schema(description = "Quartz调度任务id", example = "")
     private Long quartzId;
 

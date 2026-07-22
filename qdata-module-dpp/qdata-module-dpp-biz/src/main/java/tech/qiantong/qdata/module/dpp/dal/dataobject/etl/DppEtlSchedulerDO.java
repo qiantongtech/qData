@@ -77,13 +77,7 @@ public class DppEtlSchedulerDO extends BaseEntity {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Scheduling engine */
-    private String taskScheduler;
-
-    /** Execution engine */
-    private String taskActuator;
-
-    /** Quartz scheduled task ID */
+    /** Quartz id */
     private Long quartzId;
 
     /** Valid flag */

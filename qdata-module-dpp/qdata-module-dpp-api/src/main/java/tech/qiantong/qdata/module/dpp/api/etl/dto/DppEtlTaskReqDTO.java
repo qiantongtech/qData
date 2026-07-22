@@ -83,6 +83,12 @@ public class DppEtlTaskReqDTO {
     /** Quartz scheduled task ID passed with API calls to identify the Quartz job bound to the task. */
     private Long quartzId;
 
+    /** scheduler */
+    private String scheduler;
+
+    /** actuator */
+    private String actuator;
+
     /** Whether the record is active */
     private Boolean validFlag;
 

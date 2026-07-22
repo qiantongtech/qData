@@ -103,15 +103,6 @@ public class DppEtlTaskInstanceSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
-    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
-
-    @Schema(description = "执行引擎", example = "SPARK")
-    private String taskActuator;
-
-    @Schema(description = "Quartz调度任务id", example = "")
-    private Long quartzId;
-
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;

@@ -87,15 +87,6 @@ public class DppEtlTaskInstanceReqDTO {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Scheduling engine */
-    private String taskScheduler;
-
-    /** Execution engine */
-    private String taskActuator;
-
-    /** Quartz scheduled task ID */
-    private Long quartzId;
-
     /** Whether the record is active */
     private Boolean validFlag;
 

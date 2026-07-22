@@ -507,7 +507,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DsSchedulerRespDTO dsSchedulerRespDTO;
         // Update and activate the scheduler.
         DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO;
-        if (ScheduleConstants.QUARTZ.equals(dppEtlSchedulerById.getTaskScheduler())) {
+        if (ScheduleConstants.QUARTZ.equals(dppEtlTaskDO.getScheduler())) {
             Long quartzId;
             dppEtlSchedulerSaveReqVO = new DppEtlSchedulerSaveReqVO();
             if (dppEtlSchedulerById.getQuartzId() == null || dppEtlSchedulerById.getQuartzId() < 1) {
@@ -1362,7 +1362,6 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = BeanUtils.toBean(dppEtlNewNodeSaveReqVO, DppEtlTaskLogSaveReqVO.class);
         dppEtlTaskLogSaveReqVO.setId(null);
         dppEtlTaskLogSaveReqVO.setDsId(0L);
-        dppEtlTaskLogSaveReqVO.setQuartzId(quartzId);
         Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
         dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
 
@@ -2232,10 +2231,6 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlSchedulerSaveReqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         dppEtlSchedulerSaveReqVO.setFailureStrategy("1");
         dppEtlSchedulerSaveReqVO.setStatus("0");
-        // Store the scheduler and execution engine so activation and execution can route to Quartz or DS.
-        dppEtlSchedulerSaveReqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
-        dppEtlSchedulerSaveReqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
-        // No external schedule exists during the draft stage, so neither Quartz nor DS receives an external schedule ID.
         dppEtlSchedulerSaveReqVO.setDsId((long) -1);
         iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
 

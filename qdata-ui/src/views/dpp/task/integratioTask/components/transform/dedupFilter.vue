@@ -148,6 +148,7 @@
               v-model="scope.row.columnName"
               :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
               style="flex: 1"
+              @change="handleColumnChange($event, scope.row)"
             >
               <el-option
                 v-for="item in inputFields"
@@ -374,6 +375,15 @@ const isOptionDisabled = (optionValue, currentRow) => {
   return tableFields.value.some(
     (row) => row !== currentRow && row.columnName === optionValue
   );
+};
+
+const handleColumnChange = (columnName, currentRow) => {
+  const selectedField = inputFields.value.find(
+    (field) => field.columnName === columnName
+  );
+  if (!selectedField) return;
+
+  currentRow.columnType = selectedField.columnType;
 };
 
 const emit = defineEmits(["update", "confirm"]);

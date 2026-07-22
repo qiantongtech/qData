@@ -49,7 +49,7 @@ export const treeData = [
                 level: 2,
                 componentType: '2',
                 taskType: 'DATAX',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-wxl.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-excel.png'
             },
@@ -60,7 +60,7 @@ export const treeData = [
                 level: 2,
                 componentType: '4',
                 taskType: 'DATAX',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-scv.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-csv.png'
             },
@@ -80,7 +80,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'SPARK',
                 componentType: '31',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-zh.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-zh.png'
             },
@@ -91,7 +91,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'SORT_RECORD',
                 componentType: '34',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-pxjl.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-shell-one.png'
             },
@@ -102,7 +102,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'FIELD_DERIVATION',
                 componentType: '39',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-zdpf.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/img-shell-one.png'
             },
@@ -124,7 +124,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'ADD_CONSTANT',
                 componentType: '48',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-action-add.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/addConstants.vue',
             },
@@ -135,7 +135,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'SELECT_FIELDS',
                 componentType: '22',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-action-set.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/fieldSelectAndmodificat.vue',
             },
@@ -146,7 +146,7 @@ export const treeData = [
                 level: 2,
                 taskType: 'VALUE_MAP',
                 componentType: '47',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-map.svg', import.meta.url).href, // Dynamically obtain path
                 form: 'transform/valueMapping.vue',
             },
@@ -173,24 +173,21 @@ export const treeData = [
     }
 ];
 
+const DATAX_ENABLED_COMPONENT_TYPES = new Set(['1', '22', '31', '34', '39', '40', '47', '48', '91']);
+
 // Return known data
 export const getTreeData = (taskType) => {
-    var data = [...treeData];
-    data.map(item => {
-        if (item.children) {
-            item.children.map(child => {
-                if (!child.engine.includes(taskType)) {
-                    child.disabled = true;
-                } else {
-                    child.disabled = false;
-                }
-            })
-        }
-        if (!item.engine.includes(taskType)) {
-            item.disabled = true;
-        } else {
-            item.disabled = false;
-        }
-    })
-    return data;
+    return treeData.map(item => {
+        const children = item.children?.map(child => ({
+            ...child,
+            disabled: !child.engine.includes(taskType)
+                || (taskType === 'DATAX' && !DATAX_ENABLED_COMPONENT_TYPES.has(child.componentType)),
+        }));
+
+        return {
+            ...item,
+            children,
+            disabled: !item.engine.includes(taskType),
+        };
+    });
 }

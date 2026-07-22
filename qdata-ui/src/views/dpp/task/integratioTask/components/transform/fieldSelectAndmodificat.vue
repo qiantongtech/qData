@@ -131,6 +131,7 @@
               v-model="scope.row.columnName"
               :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               style="flex: 1"
+              @change="handleColumnChange($event, scope.row)"
             >
               <el-option
                 v-for="item in inputFields"
@@ -256,6 +257,7 @@
               v-model="scope.row.columnName"
               :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               style="flex: 1"
+              @change="handleColumnChange($event, scope.row)"
             >
               <el-option
                 v-for="item in inputFields"
@@ -507,6 +509,15 @@ const isOptionDisabled = (optionValue) => {
   const removeUsedNames = removeFields.value.map((item) => item.columnName);
   const usedNames = [...tableUsedNames, ...removeUsedNames];
   return usedNames.some((row) => row === optionValue);
+};
+
+const handleColumnChange = (columnName, currentRow) => {
+  const selectedField = inputFields.value.find(
+      (field) => field.columnName === columnName
+  );
+  if (!selectedField) return;
+
+  currentRow.columnType = selectedField.columnType;
 };
 
 const emit = defineEmits(["update", "confirm"]);

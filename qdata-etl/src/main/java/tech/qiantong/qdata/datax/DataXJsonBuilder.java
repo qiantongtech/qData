@@ -3,10 +3,14 @@ package tech.qiantong.qdata.datax;
 import org.apache.logging.log4j.util.Strings;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
+import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +24,9 @@ public final class DataXJsonBuilder {
 
     public static String buildJson(Map<String, Object> readerNodeJsonMap,
                                    Map<String, Object> writerNodeJsonMap,
-                                   Map<String, Object> definitionJsonMap) {
+                                   List<Map<String, Object>> definitionJsonMaps) {
         List<Map<String, Object>> nodeList = new ArrayList<>();
-        nodeList.add(buildContent(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMap));
+        nodeList.add(buildContent(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps));
         Map<String, Object> jobJsonMap = new HashMap<>();
         jobJsonMap.put("job", new HashMap<String, Object>() {{
             put("content", nodeList);
@@ -37,12 +41,12 @@ public final class DataXJsonBuilder {
 
     private static Map<String, Object> buildContent(Map<String, Object> readerNodeJsonMap,
                                                     Map<String, Object> writerNodeJsonMap,
-                                                    Map<String, Object> definitionJsonMap) {
+                                                    List<Map<String, Object>> definitionJsonMaps) {
         Map<String, Object> content = new HashMap<>();
-        content.put("reader", buildReader(readerNodeJsonMap,writerNodeJsonMap));
+        content.put("reader", buildReader(readerNodeJsonMap, writerNodeJsonMap));
         content.put("writer", buildWriter(writerNodeJsonMap));
-        if (!definitionJsonMap.isEmpty()) {
-            content.put("processor", buildProcessor(definitionJsonMap));
+        if (definitionJsonMaps != null && !definitionJsonMaps.isEmpty()) {
+            content.put("processor", buildProcessor(definitionJsonMaps));
         }
         return content;
     }
@@ -109,6 +113,7 @@ public final class DataXJsonBuilder {
 
     /**
      * Omits empty where, preSql, and postSql values to avoid meaningless DataX parameters.
+     *
      * @param type value type: "string" or "list"
      */
     private static void putSqlParameter(Map<String, Object> parameter, Map<String, Object> nodeJsonMap, String key, String type) {
@@ -172,10 +177,60 @@ public final class DataXJsonBuilder {
     /**
      * Writes processing node configuration, such as deduplication, to processor.nodes.
      */
-    private static Map<String, Object> buildProcessor(Map<String, Object> definitionJsonMap) {
+    private static Map<String, Object> buildProcessor(List<Map<String, Object>> definitionJsonMaps) {
+        List<Object> nodes = new ArrayList<>();
+        for (Map<String, Object> definitionJsonMap : definitionJsonMaps) {
+            if (definitionJsonMap == null || definitionJsonMap.isEmpty()) {
+                continue;
+            }
+            String componentType = definitionJsonMap.get("componentType").toString();
+            if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType) || TaskComponentTypeEnum.ADD_CONSTANT.getCode().equals(componentType) || TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType) || TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
+                nodes.add(new HashMap<Object, Object>() {{
+                    if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType)) {
+                        put("inputField", definitionJsonMap.get("inputField"));
+                        put("outputField", definitionJsonMap.get("outputField"));
+                        put("defaultValue", definitionJsonMap.get("defaultValue"));
+                    }
+                    if (TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType)) {
+                        put("removeFields", definitionJsonMap.get("removeFields"));
+                    }
+                    if (TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
+                        put("fieldDerivationPrefix", definitionJsonMap.get("fieldDerivationPrefix"));
+                        put("fieldDerivationSuffix", definitionJsonMap.get("fieldDerivationSuffix"));
+                        put("delimiter", definitionJsonMap.get("delimiter"));
+                        put("fieldDerivationType", definitionJsonMap.get("fieldDerivationType"));
+                        put("fieldDerivationName", definitionJsonMap.get("fieldDerivationName"));
+                    }
+                    put("componentType", definitionJsonMap.get("componentType"));
+                    put("tableFields", definitionJsonMap.get("tableFields"));
+                }});
+            } else {
+                Object tableFields = definitionJsonMap.get("tableFields");
+                if (tableFields instanceof Collection) {
+                    for (Object tableField : (Collection<?>) tableFields) {
+                        nodes.add(buildProcessorNode(tableField, definitionJsonMap.get("componentType")));
+                    }
+                } else if (tableFields != null) {
+                    nodes.add(buildProcessorNode(tableFields, definitionJsonMap.get("componentType")));
+                }
+            }
+        }
         Map<String, Object> processor = new HashMap<>();
-        processor.put("nodes", definitionJsonMap.get("tableFields"));
+        processor.put("nodes", nodes);
         return processor;
+    }
+
+    /**
+     * 为单个处理配置补充组件类型；旧调用未传组件类型时保持原结构。
+     */
+    @SuppressWarnings("unchecked")
+    private static Object buildProcessorNode(Object tableField, Object componentType) {
+        if (!(tableField instanceof Map) || componentType == null) {
+            return tableField;
+        }
+        Map<String, Object> processorNode = new LinkedHashMap<>((Map<String, Object>) tableField);
+        processorNode.put("componentType", componentType);
+        return processorNode;
     }
 
     /**

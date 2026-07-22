@@ -57,9 +57,6 @@ public class McTaskDO extends BaseEntity {
     /** Task status */
     private String status;
 
-    /** Scheduler */
-    private String scheduler;
-
     /** Whether the record is active */
     private Boolean validFlag;
 

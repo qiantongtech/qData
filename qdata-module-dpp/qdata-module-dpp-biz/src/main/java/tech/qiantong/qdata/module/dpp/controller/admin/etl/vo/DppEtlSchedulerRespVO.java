@@ -79,14 +79,6 @@ public class DppEtlSchedulerRespVO implements Serializable {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
-    @Excel(name = "调度引擎")
-    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
-
-    @Excel(name = "执行引擎")
-    @Schema(description = "执行引擎", example = "SPARK")
-    private String taskActuator;
-
     @Excel(name = "Quartz调度任务id")
     @Schema(description = "Quartz调度任务id", example = "")
     private Long quartzId;

@@ -90,9 +90,6 @@ public class DppEtlTaskLogDO extends BaseEntity {
     /** DolphinScheduler ID */
     private Long dsId;
 
-    /** Quartz job ID */
-    private Long quartzId;
-
     /** Whether the record is active */
     private Boolean validFlag;
 

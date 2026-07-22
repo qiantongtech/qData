@@ -78,6 +78,9 @@ import excelInputForm from "@/views/dpp/task/integratioTask/components/input/exc
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
 // src/views/dpp/task/integratioTask/components/transform/dedupFilter.vue
 import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
+import AddConstants from "@/views/dpp/task/integratioTask/components/transform/addConstants.vue";
+import FieldSelectAndmodificat from "@/views/dpp/task/integratioTask/components/transform/fieldSelectAndmodificat.vue";
+import ValueMapping from "@/views/dpp/task/integratioTask/components/transform/valueMapping.vue";
 // Transform component
 // Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";

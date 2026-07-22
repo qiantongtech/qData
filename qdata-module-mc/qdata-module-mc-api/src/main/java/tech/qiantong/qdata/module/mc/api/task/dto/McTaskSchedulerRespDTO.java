@@ -24,11 +24,8 @@ public class McTaskSchedulerRespDTO {
     /** scheduler id */
     private String jobId;
 
-    /** Scheduling engine */
-    private String taskScheduler;
-
-    /** Quartz scheduled task ID */
-    private Long quartzId;
+    /** scheduler */
+    private String scheduler;
 
     /** Start time */
     private Date startTime;

@@ -91,9 +91,6 @@ public class DppEtlTaskLogSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
-    @Schema(description = "quartz的Id", example = "")
-    private Long quartzId;
-
     @Schema(description = "备注", example = "")
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;

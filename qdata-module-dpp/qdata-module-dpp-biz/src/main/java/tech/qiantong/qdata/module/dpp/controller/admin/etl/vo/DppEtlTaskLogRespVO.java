@@ -97,6 +97,10 @@ public class DppEtlTaskLogRespVO implements Serializable {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
+    @Excel(name = "Quartz的id")
+    @Schema(description = "Quartz的id", example = "")
+    private Long quartzId;
+
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;

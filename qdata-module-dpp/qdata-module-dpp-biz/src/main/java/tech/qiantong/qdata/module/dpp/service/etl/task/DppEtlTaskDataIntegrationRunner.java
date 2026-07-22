@@ -18,13 +18,18 @@
 
 package tech.qiantong.qdata.module.dpp.service.etl.task;
 
+import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.enums.CommandType;
+import tech.qiantong.qdata.common.enums.Priority;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.enums.TaskExecutionStatus;
 import tech.qiantong.qdata.common.enums.WorkflowExecutionStatus;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
@@ -34,21 +39,23 @@ import tech.qiantong.qdata.datax.DataXExecutor;
 import tech.qiantong.qdata.datax.DataXJsonBuilder;
 import tech.qiantong.qdata.datax.DataXResult;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskNodeRelPageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskNodeRelRespVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceLogDO;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceLogService;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskInstanceService;
+import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlTaskNodeRelService;
 import tech.qiantong.qdata.module.dpp.utils.datax.FlinkxJson;
 import tech.qiantong.qdata.module.dpp.utils.log.LogUtils;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Local DataX task executor for data integration.
@@ -59,6 +66,7 @@ import java.util.concurrent.TimeUnit;
  * @author qdata
  */
 @Service
+@Slf4j
 public class DppEtlTaskDataIntegrationRunner {
     @Resource
     private IDppEtlNodeService iDppEtlNodeService;
@@ -68,6 +76,10 @@ public class DppEtlTaskDataIntegrationRunner {
     private IDppEtlTaskInstanceLogService iDppEtlTaskInstanceLogService;
     @Resource
     private DataXExecutor dataXExecutor;
+    @Resource
+    private IDppEtlTaskNodeRelService iDppEtlTaskNodeRelService;
+    @Resource
+    private IDppEtlNodeInstanceService dppEtlNodeInstanceService;
 
     /**
      * Starts a local DataX data integration task.
@@ -77,6 +89,7 @@ public class DppEtlTaskDataIntegrationRunner {
     @Transactional
     public void startDppEtlTaskDataIntegration(DppEtlTaskDO dppEtlTaskDO, DppEtlTaskInstanceDO instance, StringBuilder taskLog) {
         Date startTime = new Date();
+        List<Long> nodeInstanceIds = new ArrayList<>();
 
         try {
             // Load the saved node configuration containing DataX parameters such as data sources, tables, and columns.
@@ -86,10 +99,33 @@ public class DppEtlTaskDataIntegrationRunner {
                 throw new ServiceException("dpp.error.datax.nodes.missing",
                         "The local DataX task has no configured nodes; save the task first");
             }
+            // 为任务中的每个节点创建运行实例，后续随任务执行结果统一更新状态。
+            for (DppEtlNodeRespVO node : nodeList) {
+                nodeInstanceIds.add(createNodeInstance(dppEtlTaskDO, node, instance));
+            }
 
             // The input node provides reader parameters, and the output node provides writer parameters.
             DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
-            DppEtlNodeRespVO deduplication = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+            List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
+                add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
+                add(TaskComponentTypeEnum.SORT_RECORD.getCode());
+                add(TaskComponentTypeEnum.FIELD_DERIVATION.getCode());
+                add(TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+                add(TaskComponentTypeEnum.VALUE_MAP.getCode());
+                add(TaskComponentTypeEnum.ADD_CONSTANT.getCode());
+            }});
+            if (processorNodes.size() > 1) {
+                DppEtlTaskNodeRelPageReqVO reqVO = new DppEtlTaskNodeRelPageReqVO();
+                reqVO.setTaskId(dppEtlTaskDO.getId());
+                reqVO.setTaskCode(dppEtlTaskDO.getCode());
+                reqVO.setTaskVersion(dppEtlTaskDO.getVersion());
+
+                List<DppEtlTaskNodeRelRespVO> relations = iDppEtlTaskNodeRelService.getDppEtlTaskNodeRelRespVOList(reqVO);
+
+                // 需要将转换组件进行排序执行
+                processorNodes = topologicalSortProcessorNodes(processorNodes, relations);
+            }
             DppEtlNodeRespVO writerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_WRITER.getCode());
             // Local DataX execution requires a reader and writer; the deduplication node is optional.
             if (readerNode == null || writerNode == null) {
@@ -107,18 +143,18 @@ public class DppEtlTaskDataIntegrationRunner {
             if (ObjectUtils.isNotEmpty(writerNode)) {
                 writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             }
-            Map<String, Object> definitionJsonMap = Collections.emptyMap();
-            // Include the optional deduplication node in DataX JSON only when it is configured.
-            if (ObjectUtils.isNotEmpty(deduplication)) {
-                String deduplicationParameters = deduplication.getParameters();
-                definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(deduplicationParameters);
+            List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
+            for (DppEtlNodeRespVO processorNode : processorNodes) {
+                Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(processorNode.getParameters());
+                definitionJsonMap.put("componentType", processorNode.getComponentType());
+                definitionJsonMaps.add(definitionJsonMap);
             }
 
             // Generate DataX JSON.
-            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMap);
+            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********************************");
+            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
@@ -135,9 +171,11 @@ public class DppEtlTaskDataIntegrationRunner {
                         "DataX task execution failed with exit code {0}", run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
+            updateNodeInstances(nodeInstanceIds, TaskExecutionStatus.SUCCESS);
             LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
         } catch (Exception e) {
             // Mark the task as failed for any exception and write the reason to the local execution log.
+            updateNodeInstances(nodeInstanceIds, TaskExecutionStatus.FAILURE);
             markLocalDataXTaskFail(instance, e);
             LogUtils.appendLocalLogLine(taskLog, "DataX task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
         } finally {
@@ -146,6 +184,138 @@ public class DppEtlTaskDataIntegrationRunner {
             LogUtils.appendLocalLogLine(taskLog, "DataX task execution finished, duration: " + duration + " seconds");
             saveLocalDataXTaskInstanceLog(instance, dppEtlTaskDO, taskLog.toString());
         }
+    }
+
+    /**
+     * 创建本地 DataX 节点实例。
+     *
+     * @param task     数据集成任务详情
+     * @param node     当前节点配置
+     * @param instance 所属任务实例
+     * @return 生成的节点实例 ID
+     */
+    private Long createNodeInstance(DppEtlTaskDO task, DppEtlNodeRespVO node, DppEtlTaskInstanceDO instance) {
+        long id = IdUtils.generateArtificialId();
+        try {
+            JSONObject params = JSONObject.parseObject(node.getParameters());
+            dppEtlNodeInstanceService.createNodeInstance(TaskInstance.builder()
+                    .id(id)
+                    .name(node.getName())
+                    .taskCode(node.getCode())
+                    .taskDefinitionVersion(node.getVersion() == null ? 0 : node.getVersion().intValue())
+                    .taskType(String.valueOf(params.get("taskType")))
+                    .processInstanceId(instance.getId())
+                    .processInstanceName(instance.getName())
+                    .projectCode(task.getProjectCode())
+                    .taskInstancePriority(Priority.MEDIUM)
+                    .startTime(new Date())
+                    .state(TaskExecutionStatus.RUNNING_EXECUTION)
+                    .build());
+        } catch (Exception e) {
+            // 节点实例创建失败不阻断任务主流程，避免实例服务异常覆盖 DataX 的真实执行结果。
+            log.error("创建本地DataX节点实例异常，nodeCode={}", node.getCode(), e);
+        }
+        return id;
+    }
+
+    /**
+     * 批量更新本地 DataX 节点实例状态。
+     *
+     * @param nodeInstanceIds 节点实例 ID 列表
+     * @param status          目标执行状态
+     */
+    private void updateNodeInstances(Collection<Long> nodeInstanceIds, TaskExecutionStatus status) {
+        nodeInstanceIds.forEach(id -> updateNodeInstance(id, status));
+    }
+
+    /**
+     * 更新本地 DataX 节点实例状态。
+     *
+     * @param id     节点实例 ID
+     * @param status 目标执行状态
+     */
+    private void updateNodeInstance(Long id, TaskExecutionStatus status) {
+        Date date = new Date();
+        try {
+            dppEtlNodeInstanceService.updateNodeInstance(TaskInstance.builder()
+                    .id(id)
+                    .startTime(date)
+                    .endTime(date)
+                    .state(status)
+                    .build());
+        } catch (Exception e) {
+            // 状态更新失败只记录服务端日志，任务实例仍按 DataX 的实际结果回写。
+            log.error("更新本地DataX节点实例异常，nodeInstanceId={}, status={}", id, status, e);
+        }
+    }
+
+    /**
+     * 根据 preNodeCode -> postNodeCode 对处理节点进行拓扑排序。
+     *
+     * 关系集合已经包含完整任务图的节点编码，因此无需额外传入节点列表。
+     * 先对完整关系图排序，再从排序结果中提取处理节点，以保留中间节点形成的传递依赖。
+     */
+    private List<DppEtlNodeRespVO> topologicalSortProcessorNodes(
+            List<DppEtlNodeRespVO> processorNodes,
+            Collection<DppEtlTaskNodeRelRespVO> relations) {
+        Map<String, DppEtlNodeRespVO> processorNodeMap = new LinkedHashMap<>();
+        processorNodes.forEach(node -> processorNodeMap.putIfAbsent(node.getCode(), node));
+
+        // 邻接表使用 Set 对重复关系去重，LinkedHashMap 保持关系的原始顺序。
+        Map<String, Set<String>> nextNodeMap = new LinkedHashMap<>();
+        relations.stream()
+                .filter(relation -> !Boolean.FALSE.equals(relation.getValidFlag()))
+                .forEach(relation -> {
+                    String preNodeCode = relation.getPreNodeCode();
+                    String postNodeCode = relation.getPostNodeCode();
+                    nextNodeMap.computeIfAbsent(preNodeCode, code -> new LinkedHashSet<>()).add(postNodeCode);
+                    nextNodeMap.computeIfAbsent(postNodeCode, code -> new LinkedHashSet<>());
+                });
+
+        // 补充未配置关系的处理节点，保证它们仍出现在最终结果中。
+        processorNodeMap.keySet().forEach(
+                code -> nextNodeMap.computeIfAbsent(code, key -> new LinkedHashSet<>())
+        );
+
+        Map<String, Integer> indegreeMap = new LinkedHashMap<>();
+        nextNodeMap.keySet().forEach(code -> indegreeMap.put(code, 0));
+        nextNodeMap.values().forEach(postNodeCodes ->
+                postNodeCodes.forEach(code -> indegreeMap.merge(code, 1, Integer::sum))
+        );
+
+        Queue<String> zeroIndegreeQueue = new ArrayDeque<>();
+        indegreeMap.forEach((code, indegree) -> {
+            if (indegree == 0) {
+                zeroIndegreeQueue.offer(code);
+            }
+        });
+
+        List<String> sortedNodeCodes = new ArrayList<>();
+
+        while (!zeroIndegreeQueue.isEmpty()) {
+            String currentNodeCode = zeroIndegreeQueue.poll();
+            sortedNodeCodes.add(currentNodeCode);
+
+            for (String nextNodeCode : nextNodeMap.get(currentNodeCode)) {
+                int newIndegree = indegreeMap.get(nextNodeCode) - 1;
+                indegreeMap.put(nextNodeCode, newIndegree);
+
+                if (newIndegree == 0) {
+                    zeroIndegreeQueue.offer(nextNodeCode);
+                }
+            }
+        }
+
+        // 关系存在循环时无法得到完整拓扑序，保留处理节点原始顺序。
+        if (sortedNodeCodes.size() != nextNodeMap.size()) {
+            return processorNodes;
+        }
+
+        // listNodeByTaskId 可能因关系查询返回重复节点，按 code 去重后提取处理节点。
+        return sortedNodeCodes.stream()
+                .filter(processorNodeMap::containsKey)
+                .map(processorNodeMap::get)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -321,9 +491,6 @@ public class DppEtlTaskDataIntegrationRunner {
                 .commandType(String.valueOf(CommandType.START_PROCESS.getCode()))
                 .subTaskFlag("0")
                 .status(String.valueOf(WorkflowExecutionStatus.RUNNING_EXECUTION.getCode()))
-                .taskScheduler(task.getScheduler())
-                .taskActuator(task.getActuator())
-                .quartzId(task.getQuartzId())
                 .validFlag(Boolean.TRUE)
                 .delFlag(Boolean.FALSE)
                 .dsId(task.getDsId())

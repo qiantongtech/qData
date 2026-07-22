@@ -370,11 +370,11 @@ export default {
     '10': '恢复等待线程',
   },
   'dpp_etl_task_priority': {
-    'HIGH': 'HIGH',
-    'HIGHEST': 'HIGHEST',
-    'LOW': 'LOW',
-    'LOWEST': 'LOWEST',
-    'MEDIUM': 'MEDIUM',
+    'HIGH': '高',
+    'HIGHEST': '最高',
+    'LOW': '低',
+    'LOWEST': '最低',
+    'MEDIUM': '中等',
   },
   'dpp_etl_task_process_type': {
     '0': '批处理',

@@ -370,11 +370,11 @@ export default {
     '10': '待機スレッドの再開',
   },
   'dpp_etl_task_priority': {
-    'HIGH': 'HIGH',
-    'HIGHEST': 'HIGHEST',
-    'LOW': 'LOW',
-    'LOWEST': 'LOWEST',
-    'MEDIUM': 'MEDIUM',
+    'HIGH': '高',
+    'HIGHEST': '最高',
+    'LOW': '低い',
+    'LOWEST': '最低',
+    'MEDIUM': '中等',
   },
   'dpp_etl_task_process_type': {
     '0': 'バッチ処理',

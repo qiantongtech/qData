@@ -402,21 +402,22 @@ const api = {
 const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
-  dpp_etl_task_instance,
-  scheduler_type,
-  actuator_type
+  dpp_etl_task_instance
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
-  "dpp_etl_task_instance",
-    "scheduler_type",
-    "actuator_type"
+  "dpp_etl_task_instance"
 );
+
+const scheduler_type = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
 
 // Get scheduler enum values.
 const getSchedulerLabel = (value) => {
   // Convert scheduler enum values into user-friendly names in the list.
-  return scheduler_type.value.find((item) => item.value == value)?.label || value || "-";
+  return scheduler_type.find((item) => item.value == value)?.label || value || "-";
 };
 
 const route = useRoute();

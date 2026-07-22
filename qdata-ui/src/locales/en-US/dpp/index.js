@@ -1024,6 +1024,8 @@ export default {
     sparkAdd: 'Add Spark',
     switchSparkSchedulerConfirm: 'Switching to the Spark engine will also switch the scheduler to DolphinScheduler. Continue?',
     switchDataXSchedulerConfirm: 'Switching to the DataX engine will also switch the scheduler to Quartz. Continue?',
+    switchQuartzEngineConfirm: 'Switching to the Quartz scheduler will also switch the execution engine to DataX. Continue?',
+    switchDolphinSchedulerEngineConfirm: 'Switching to the DolphinScheduler scheduler will also switch the execution engine to Spark. Continue?',
     quartzGuideDescription: "The task is executed by the built-in components of the system",
     attributeDescription: "Configure the fault-tolerant strategies for task execution during runtime."
   },

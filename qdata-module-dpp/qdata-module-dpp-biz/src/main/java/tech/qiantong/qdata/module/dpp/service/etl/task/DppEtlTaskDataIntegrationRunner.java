@@ -123,7 +123,7 @@ public class DppEtlTaskDataIntegrationRunner {
             String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            /*LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
+            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
@@ -139,7 +139,7 @@ public class DppEtlTaskDataIntegrationRunner {
                 throw new ServiceException("DataX任务执行失败，exitCode=" + run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
-            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");*/
+            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
         } catch (Exception e) {
             // 任意异常都标记任务失败，并将失败原因写入本地执行日志。
             markLocalDataXTaskFail(instance, e);

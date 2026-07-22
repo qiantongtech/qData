@@ -6,7 +6,10 @@ ENV TZ=Asia/Shanghai \
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
  && echo $TZ > /etc/timezone \
- && mkdir -p $APP_HOME
+ && mkdir -p $APP_HOME \
+ && apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR $APP_HOME
 

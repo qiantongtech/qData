@@ -44,16 +44,13 @@ import tech.qiantong.qdata.module.dpp.utils.datax.FlinkxJson;
 import tech.qiantong.qdata.module.dpp.utils.log.LogUtils;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 数据集成 DataX 本地任务执行器。
  * <p>
- * 负责将数据集成任务中的输入、去重、输出节点参数组装为 DataX JSON，
+ * 负责将数据集成任务中的输入、处理、输出节点参数组装为 DataX JSON，
  * 并统一处理任务实例创建、延迟执行、失败重试、状态回写和执行日志保存。
  *
  * @author qdata
@@ -88,9 +85,17 @@ public class DppEtlTaskDataIntegrationRunner {
 
             // 输入节点负责 reader 参数，输出节点负责 writer 参数。
             DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
-            DppEtlNodeRespVO deduplication = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+            List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
+                add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
+                add(TaskComponentTypeEnum.SORT_RECORD.getCode());
+                add(TaskComponentTypeEnum.FIELD_DERIVATION.getCode());
+                add(TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+                add(TaskComponentTypeEnum.VALUE_MAP.getCode());
+                add(TaskComponentTypeEnum.ADD_CONSTANT.getCode());
+            }});
             DppEtlNodeRespVO writerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_WRITER.getCode());
-            // DataX 本地执行至少需要 reader 和 writer，去重节点为可选配置。
+            // DataX 本地执行至少需要 reader 和 writer，处理节点为可选配置。
             if (readerNode == null || writerNode == null) {
                 throw new ServiceException("本地DataX任务没有配置输入节点或输出节点，请先保存任务！");
             }
@@ -105,18 +110,20 @@ public class DppEtlTaskDataIntegrationRunner {
             if (ObjectUtils.isNotEmpty(writerNode)) {
                 writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             }
-            Map<String, Object> definitionJsonMap = Collections.emptyMap();
-            // 去重节点为可选节点，仅在配置存在时参与 DataX JSON 构建。
-            if (ObjectUtils.isNotEmpty(deduplication)) {
-                String deduplicationParameters = deduplication.getParameters();
-                definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(deduplicationParameters);
+            List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
+            // 处理节点为可选节点，存在多个时按节点顺序全部参与 DataX JSON 构建。
+            for (DppEtlNodeRespVO processorNode : processorNodes) {
+                Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(processorNode.getParameters());
+                // 处理参数本身不包含组件编码，补充 componentType 供 DataX 区分不同处理组件。
+                definitionJsonMap.put("componentType", processorNode.getComponentType());
+                definitionJsonMaps.add(definitionJsonMap);
             }
 
             // 生成 DataX JSON
-            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMap);
+            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********************************");
+            /*LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
@@ -132,7 +139,7 @@ public class DppEtlTaskDataIntegrationRunner {
                 throw new ServiceException("DataX任务执行失败，exitCode=" + run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
-            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
+            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");*/
         } catch (Exception e) {
             // 任意异常都标记任务失败，并将失败原因写入本地执行日志。
             markLocalDataXTaskFail(instance, e);

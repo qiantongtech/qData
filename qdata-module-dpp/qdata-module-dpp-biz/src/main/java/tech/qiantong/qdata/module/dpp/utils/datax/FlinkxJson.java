@@ -19,6 +19,7 @@
 package tech.qiantong.qdata.module.dpp.utils.datax;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
@@ -164,16 +165,34 @@ public class FlinkxJson {
      * 本地 DataX 一期只认数据库输入和数据库输出，所以这里只按组件类型查。
      */
     public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
+        List<DppEtlNodeRespVO> matchedNodes = findLocalDataXNode(nodeList, Collections.singletonList(componentType));
+        return CollectionUtils.isEmpty(matchedNodes) ? null : matchedNodes.get(0);
+    }
+
+    /**
+     * 从节点列表里找到任一指定组件类型的节点。
+     *
+     * @param nodeList       待查询的节点列表
+     * @param componentTypes 允许匹配的组件类型列表
+     * @return 按节点顺序返回所有匹配节点；没有匹配节点时返回空列表
+     */
+    public static List<DppEtlNodeRespVO> findLocalDataXNode(List<DppEtlNodeRespVO> nodeList,
+                                                            Collection<String> componentTypes) {
+        List<DppEtlNodeRespVO> matchedNodes = new ArrayList<>();
+        if (CollectionUtils.isEmpty(nodeList) || CollectionUtils.isEmpty(componentTypes)) {
+            return matchedNodes;
+        }
         for (DppEtlNodeRespVO node : nodeList) {
             // 节点为空时跳过，避免脏数据导致空指针。
             if (node == null) {
                 continue;
             }
-            // 组件类型匹配时，这个节点就是我们要找的 reader 或 writer。
-            if (StringUtils.equals(componentType, node.getComponentType())) {
-                return node;
+            // 匹配任一指定组件类型时，按节点列表原有顺序收集节点。
+            if (componentTypes.stream()
+                    .anyMatch(componentType -> StringUtils.equals(componentType, node.getComponentType()))) {
+                matchedNodes.add(node);
             }
         }
-        return null;
+        return matchedNodes;
     }
 }

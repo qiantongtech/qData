@@ -40,7 +40,7 @@ public class McTaskSchedulerSaveReqVO extends BaseEntity {
     private String taskCode;
 
     @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
+    private String scheduler;
 
     @Schema(description = "开始时间", example = "")
     private Date startTime;

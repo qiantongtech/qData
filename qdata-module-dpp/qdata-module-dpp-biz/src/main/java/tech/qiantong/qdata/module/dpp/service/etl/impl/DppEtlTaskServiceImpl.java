@@ -505,7 +505,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DsSchedulerRespDTO dsSchedulerRespDTO;
         // 更新调度器并上线
         DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO;
-        if (ScheduleConstants.QUARTZ.equals(dppEtlSchedulerById.getTaskScheduler())) {
+        if (ScheduleConstants.QUARTZ.equals(dppEtlTaskDO.getScheduler())) {
             Long quartzId;
             dppEtlSchedulerSaveReqVO = new DppEtlSchedulerSaveReqVO();
             if (dppEtlSchedulerById.getQuartzId() == null || dppEtlSchedulerById.getQuartzId() < 1) {
@@ -1354,7 +1354,6 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = BeanUtils.toBean(dppEtlNewNodeSaveReqVO, DppEtlTaskLogSaveReqVO.class);
         dppEtlTaskLogSaveReqVO.setId(null);
         dppEtlTaskLogSaveReqVO.setDsId(0L);
-        dppEtlTaskLogSaveReqVO.setQuartzId(quartzId);
         Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
         dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
 
@@ -2209,10 +2208,6 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlSchedulerSaveReqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         dppEtlSchedulerSaveReqVO.setFailureStrategy("1");
         dppEtlSchedulerSaveReqVO.setStatus("0");
-        // 调度表也要保存调度器和执行引擎，后面上线、执行才能按 Quartz 或 DS 分流。
-        dppEtlSchedulerSaveReqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
-        dppEtlSchedulerSaveReqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
-        // 草稿阶段还没有真正创建外部调度，Quartz 和 DS 都先不绑定外部调度 id。
         dppEtlSchedulerSaveReqVO.setDsId((long) -1);
         iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
 

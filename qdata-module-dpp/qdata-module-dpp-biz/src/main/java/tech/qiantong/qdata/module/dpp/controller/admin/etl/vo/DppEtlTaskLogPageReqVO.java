@@ -83,7 +83,8 @@ public class DppEtlTaskLogPageReqVO extends PageParam {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
-
+    @Schema(description = "quartz的id", example = "")
+    private Long quartzId;
 
 
 }

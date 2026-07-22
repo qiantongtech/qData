@@ -38,7 +38,7 @@ public class McTaskSchedulerDO extends BaseEntity {
     private String taskCode;
 
     /** 调度引擎 */
-    private String taskScheduler;
+    private String scheduler;
 
     /** 开始时间 */
     private Date startTime;

@@ -57,10 +57,7 @@ public class McTaskDO extends BaseEntity {
     /** Task status */
     private String status;
 
-    /** 调度器 */
-    private String scheduler;
-
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
     /** Delete flag */

@@ -75,12 +75,6 @@ public class McTaskInstanceSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "状态长度不能超过256个字符")
     private String status;
 
-    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
-
-    @Schema(description = "Quartz调度任务id", example = "")
-    private Long quartzId;
-
     @Schema(description = "备注", example = "")
     @Size(max = 3000, message = "备注长度不能超过3000个字符")
     private String remark;

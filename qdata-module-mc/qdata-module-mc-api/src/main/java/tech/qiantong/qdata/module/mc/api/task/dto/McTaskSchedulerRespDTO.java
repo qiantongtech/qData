@@ -25,10 +25,7 @@ public class McTaskSchedulerRespDTO {
     private String jobId;
 
     /** 调度引擎 */
-    private String taskScheduler;
-
-    /** Quartz调度任务id */
-    private Long quartzId;
+    private String scheduler;
 
     /** 开始时间 */
     private Date startTime;

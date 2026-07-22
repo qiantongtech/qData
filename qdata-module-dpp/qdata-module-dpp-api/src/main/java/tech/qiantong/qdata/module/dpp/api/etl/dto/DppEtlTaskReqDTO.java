@@ -83,6 +83,12 @@ public class DppEtlTaskReqDTO {
     /** Quartz调度任务id，接口调用时也把任务绑定的 Quartz Job id 传过去。 */
     private Long quartzId;
 
+    /** 调度器 */
+    private String scheduler;
+
+    /** 执行器 */
+    private String actuator;
+
     /** 是否有效 */
     private Boolean validFlag;
 

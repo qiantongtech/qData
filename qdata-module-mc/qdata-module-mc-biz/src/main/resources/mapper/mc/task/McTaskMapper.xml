@@ -16,8 +16,6 @@
         <result property="collectionMode"    column="COLLECTION_MODE"    />
         <result property="collectionScope"    column="COLLECTION_SCOPE"    />
         <result property="status"    column="STATUS"    />
-        <!-- 采集任务只展示调度器，执行引擎由后台按调度器自动推导。 -->
-        <result property="scheduler"    column="SCHEDULER"    />
 
         <!-- Add new field -->
         <result property="collectType" column="COLLECT_TYPE" />
@@ -37,7 +35,7 @@
 
     <sql id="selectMcTaskVo">
         select ID, SOURCE_SYSTEM_ID, SOURCE_SYSTEM_NAME, NAME, DATASOURCE_ID, DB_TYPE, LEADER, LEADER_PHONE,
-               COLLECTION_MODE, COLLECTION_SCOPE, STATUS, SCHEDULER,
+               COLLECTION_MODE, COLLECTION_SCOPE, STATUS,
                COLLECT_TYPE, BLACKLIST,
                VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME,
                UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK, DESCRIPTION
@@ -82,7 +80,6 @@
             <if test="collectionMode != null">COLLECTION_MODE,</if>
             <if test="collectionScope != null">COLLECTION_SCOPE,</if>
             <if test="status != null">STATUS,</if>
-            <if test="scheduler != null">SCHEDULER,</if>
 
             <if test="collectType != null">COLLECT_TYPE,</if>
             <if test="blacklist != null">BLACKLIST,</if>
@@ -110,7 +107,6 @@
             <if test="collectionMode != null">#{collectionMode},</if>
             <if test="collectionScope != null">#{collectionScope},</if>
             <if test="status != null">#{status},</if>
-            <if test="scheduler != null">#{scheduler},</if>
 
             <if test="collectType != null">#{collectType},</if>
             <if test="blacklist != null">#{blacklist},</if>
@@ -141,7 +137,6 @@
             <if test="collectionMode != null">COLLECTION_MODE = #{collectionMode},</if>
             <if test="collectionScope != null">COLLECTION_SCOPE = #{collectionScope},</if>
             <if test="status != null">STATUS = #{status},</if>
-            <if test="scheduler != null">SCHEDULER = #{scheduler},</if>
 
             <if test="collectType != null">COLLECT_TYPE = #{collectType},</if>
             <if test="blacklist != null">BLACKLIST = #{blacklist},</if>

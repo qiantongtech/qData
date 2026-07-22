@@ -186,10 +186,6 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         validateDuplicateTask(createReqVO, null);
 
         McTaskDO dictType = BeanUtils.toBean(createReqVO, McTaskDO.class);
-        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
-        if (StringUtils.isEmpty(dictType.getScheduler())) {
-            dictType.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
-        }
         if (StringUtils.isEmpty(dictType.getStatus())) {
             dictType.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         }
@@ -199,7 +195,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         String taskCode;
         Long schedulerId;
         // 创建 Quartz 调度器
-        if (ScheduleConstants.QUARTZ.equals(dictType.getScheduler())) {
+        if (ScheduleConstants.QUARTZ.equals(createReqVO.getScheduler())) {
             schedulerId = mcTaskQuartzService.createSchedulerQuartz(dictType);
             taskCode = String.valueOf(schedulerId);
         } else {
@@ -214,9 +210,9 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
         //Store scheduling information
         McTaskSchedulerSaveReqVO schedulerSaveReqVO = new McTaskSchedulerSaveReqVO(dictType);
         schedulerSaveReqVO.setJobId(String.valueOf(schedulerId));
-        schedulerSaveReqVO.setTaskCode(taskCode);  // 设置任务编码到调度表
-        // 调度记录里保存隐藏执行引擎：Quartz 对应 DataX，DS 对应 Spark。
-        schedulerSaveReqVO.setTaskScheduler(dictType.getScheduler());
+        schedulerSaveReqVO.setTaskCode(taskCode);
+        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+        schedulerSaveReqVO.setScheduler(StringUtils.isEmpty(createReqVO.getScheduler()) ? ScheduleConstants.DOLPHINSCHEDULER : createReqVO.getScheduler());
         schedulerSaveReqVO.setStatus(SchedulerStatusEnum.DISABLED.getValue());
         mcTaskSchedulerService.createMcTaskScheduler(schedulerSaveReqVO);
 
@@ -238,10 +234,6 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
         // 1. Update collection tasks
         McTaskDO updateObj = BeanUtils.toBean(updateReqVO, McTaskDO.class);
-        // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
-        if (StringUtils.isEmpty(updateObj.getScheduler())) {
-            updateObj.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
-        }
         int rows = mcTaskMapper.updateById(updateObj);
 
         // 2. Query scheduling information
@@ -261,7 +253,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
                 // Get task encoding (from schedule)
                 String taskCode = scheduler.getTaskCode();
 
-                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                if (ScheduleConstants.QUARTZ.equals(updateReqVO.getScheduler())) {
                     mcTaskQuartzService.updateScheduleQuartz(updateObj, scheduler, cronExpression);
                 } else if (StringUtils.isNotEmpty(taskCode)) {
                     // Update the DolphinScheduler scheduler
@@ -281,6 +273,8 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // 4. Store only when there are changes
             if (needUpdate) {
+                // 老数据或老前端没有传 scheduler 时，默认还是走原来的 DS 逻辑。
+                schedulerSaveReqVO.setScheduler(StringUtils.isEmpty(updateReqVO.getScheduler()) ? ScheduleConstants.DOLPHINSCHEDULER : updateReqVO.getScheduler());
                 mcTaskSchedulerService.updateMcTaskScheduler(schedulerSaveReqVO);
             }
 
@@ -308,7 +302,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // Offline tasks and schedulers first
             if (task != null && scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
-                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getScheduler())) {
                     Long jobId = Long.valueOf(scheduler.getJobId());
                     mcTaskQuartzService.offlineSchedulerOnlyQuartz(jobId);
                     mcTaskQuartzService.deleteSchedulerQuartz(jobId);
@@ -372,6 +366,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             bean.setCronExpression(scheduler.getCronExpression());
             bean.setSchedulerStatus(scheduler.getStatus());
             bean.setJobId(scheduler.getJobId());
+            bean.setScheduler(scheduler.getScheduler());
             bean.setTaskCode(scheduler.getTaskCode());  // Get taskCode from schedule
         }
 
@@ -548,7 +543,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // Offline scheduler (disable scheduled triggering)
             if (SchedulerStatusEnum.isDisabled(mcTask.getStatus())) {
-                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getScheduler())) {
                     mcTaskQuartzService.offlineSchedulerOnlyQuartz(schedulerId);
                 } else
                     mcTaskDolphinSchedulerService.offlineSchedulerOnly(schedulerId);
@@ -556,7 +551,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
 
             // Online scheduler (enable scheduled triggering)
             if (SchedulerStatusEnum.isEnabled(mcTask.getStatus())) {
-                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getScheduler())) {
                     mcTaskQuartzService.onlineSchedulerOnlyQuartz(schedulerId);
                 } else
                     mcTaskDolphinSchedulerService.onlineSchedulerOnly(schedulerId);
@@ -588,7 +583,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             // Get taskCode from scheduling information
             McTaskSchedulerDO scheduler = mcTaskSchedulerService.getMcTaskSchedulerBytaskId(mcTask.getId());
             if (scheduler != null && StringUtils.isNotEmpty(scheduler.getTaskCode())) {
-                if (ScheduleConstants.QUARTZ.equals(scheduler.getTaskScheduler())) {
+                if (ScheduleConstants.QUARTZ.equals(scheduler.getScheduler())) {
                     mcTaskQuartzService.startTaskQuartz(Long.valueOf(scheduler.getJobId()));
                 } else {
                     mcTaskDolphinSchedulerService.startTask(scheduler.getTaskCode());

@@ -38,11 +38,7 @@ public class McTaskSchedulerRespVO implements Serializable {
 
     @Excel(name = "调度引擎")
     @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
-    private String taskScheduler;
-
-    @Excel(name = "Quartz调度任务id")
-    @Schema(description = "Quartz调度任务id", example = "")
-    private Long quartzId;
+    private String scheduler;
 
     @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

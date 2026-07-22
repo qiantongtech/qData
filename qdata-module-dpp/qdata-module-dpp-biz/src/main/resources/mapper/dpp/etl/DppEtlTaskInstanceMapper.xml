@@ -40,6 +40,9 @@
         <result property="subTaskFlag" column="SUB_TASK_FLAG"/>
         <result property="status" column="STATUS"/>
         <result property="dsId" column="DS_ID"/>
+        <result property="scheduler" column="SCHEDULER"/>
+        <result property="actuator" column="ACTUATOR"/>
+        <result property="quartzId" column="QUARTZ_ID"/>
         <result property="validFlag" column="VALID_FLAG"/>
         <result property="delFlag" column="DEL_FLAG"/>
         <result property="createBy" column="CREATE_BY"/>
@@ -69,6 +72,9 @@
                SUB_TASK_FLAG,
                STATUS,
                DS_ID,
+               SCHEDULER,
+               ACTUATOR,
+               QUARTZ_ID,
                VALID_FLAG,
                DEL_FLAG,
                CREATE_BY,
@@ -100,6 +106,9 @@
             <if test="subTaskFlag != null  and subTaskFlag != ''">and SUB_TASK_FLAG = #{subTaskFlag}</if>
             <if test="status != null  and status != ''">and STATUS = #{status}</if>
             <if test="dsId != null ">and DS_ID = #{dsId}</if>
+            <if test="scheduler != null ">and SCHEDULER = #{scheduler}</if>
+            <if test="actuator != null ">and ACTUATOR = #{actuator}</if>
+            <if test="quartzId != null ">and QUARTZ_ID = #{quartzId}</if>
             <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
         </where>
     </select>
@@ -129,6 +138,9 @@
             <if test="subTaskFlag != null">SUB_TASK_FLAG,</if>
             <if test="status != null">STATUS,</if>
             <if test="dsId != null">DS_ID,</if>
+            <if test="scheduler != null ">SCHEDULER,</if>
+            <if test="actuator != null ">ACTUATOR,</if>
+            <if test="quartzId != null ">QUARTZ_ID,</if>
             <if test="validFlag != null">VALID_FLAG,</if>
             <if test="delFlag != null">DEL_FLAG,</if>
             <if test="createBy != null">CREATE_BY,</if>
@@ -157,6 +169,9 @@
             <if test="subTaskFlag != null">#{subTaskFlag},</if>
             <if test="status != null">#{status},</if>
             <if test="dsId != null">#{dsId},</if>
+            <if test="scheduler != null ">#{scheduler},</if>
+            <if test="actuator != null ">#{actuator},</if>
+            <if test="quartzId != null ">#{quartzId},</if>
             <if test="validFlag != null">#{validFlag},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -188,6 +203,9 @@
             <if test="subTaskFlag != null">SUB_TASK_FLAG = #{subTaskFlag},</if>
             <if test="status != null">STATUS = #{status},</if>
             <if test="dsId != null">DS_ID = #{dsId},</if>
+            <if test="scheduler != null ">SCHEDULER = #{scheduler},</if>
+            <if test="actuator != null ">ACTUATOR = #{actuator},</if>
+            <if test="quartzId != null ">QUARTZ_ID = #{quartzId},</if>
             <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
             <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
             <if test="createBy != null">CREATE_BY = #{createBy},</if>

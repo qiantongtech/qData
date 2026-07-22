@@ -179,41 +179,6 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
     private Long dsId;
 
     /**
-     * 调度引擎
-     */
-    private String taskScheduler;
-
-    /**
-     * 执行引擎
-     */
-    private String taskActuator;
-
-    /**
-     * Quartz调度任务id
-     */
-    private Long quartzId;
-
-    /**
-     * 执行器任务id
-     */
-    private String executorJobId;
-
-    /**
-     * 执行器配置文件路径
-     */
-    private String executorConfigPath;
-
-    /**
-     * 执行进程号
-     */
-    private Long pid;
-
-    /**
-     * 执行日志文件路径
-     */
-    private String logPath;
-
-    /**
      * Valid flag
      */
     private Boolean validFlag;

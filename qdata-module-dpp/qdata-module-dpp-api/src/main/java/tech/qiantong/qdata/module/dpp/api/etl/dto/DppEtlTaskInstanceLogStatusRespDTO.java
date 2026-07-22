@@ -54,34 +54,4 @@ public class DppEtlTaskInstanceLogStatusRespDTO {
      * Node Instance List
      */
     private List<DppEtlNodeInstanceRespDTO> nodeInstanceList;
-
-    /**
-     * DataX输入数据量
-     */
-    private Long inputRecords;
-
-    /**
-     * DataX输出数据量
-     */
-    private Long outputRecords;
-
-    /**
-     * DataX节点名称列表
-     */
-    private List<String> nodeNames;
-
-    /**
-     * DataX成功节点数量
-     */
-    private Integer successCount;
-
-    /**
-     * DataX失败节点数量
-     */
-    private Integer failedCount;
-
-    /**
-     * DataX停止节点数量
-     */
-    private Integer stoppedCount;
 }

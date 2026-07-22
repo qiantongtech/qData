@@ -820,9 +820,6 @@ public class TaskConverter {
         reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
-        reqVO.setTaskScheduler(dppEtlNewNodeSaveReqVO.getScheduler());
-        reqVO.setTaskActuator(dppEtlNewNodeSaveReqVO.getActuator());
-
         // Populate dsId, assuming dsId is the same as ID
         reqVO.setDsId((long) -1);
 

@@ -355,9 +355,6 @@
               </span>
                 </el-radio>
               </el-radio-group>
-              <p class="form-item-description">
-                {{ td("mc.task.structured.schedulerDescription", "选择负责按计划触发采集任务的调度器") }}
-              </p>
             </el-form-item>
 
         <el-form-item
@@ -1307,6 +1304,7 @@ getAllSourceSystems();
   color: #888;
   font-size: 12px;
   line-height: 1;
+  margin-bottom: 0;
 }
 .scheduler-section-title {
   display: flex;

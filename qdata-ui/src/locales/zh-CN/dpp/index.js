@@ -1091,6 +1091,8 @@ export default {
     sparkAdd: '新增SPARK',
     switchSparkSchedulerConfirm: '切换为 Spark 执行引擎后，调度器将同步切换为 DolphinScheduler，是否继续？',
     switchDataXSchedulerConfirm: '切换为 DataX 执行引擎后，调度器将同步切换为 Quartz，是否继续？',
+    switchQuartzEngineConfirm: '切换为 Quartz 调度器后，执行引擎将同步切换为 DataX，是否继续？',
+    switchDolphinSchedulerEngineConfirm: '切换为 DolphinScheduler 调度器后，执行引擎将同步切换为 Spark，是否继续？',
     schedulerDescription: "设置任务的调度周期及调度系统。",
     attributeDescription: "配置任务运行时的容错策略。"
   },

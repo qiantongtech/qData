@@ -24,15 +24,6 @@ public final class DataXJsonBuilder {
 
     public static String buildJson(Map<String, Object> readerNodeJsonMap,
                                    Map<String, Object> writerNodeJsonMap,
-                                   Map<String, Object> definitionJsonMap) {
-        List<Map<String, Object>> definitionJsonMaps = definitionJsonMap == null
-                ? Collections.emptyList()
-                : Collections.singletonList(definitionJsonMap);
-        return buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
-    }
-
-    public static String buildJson(Map<String, Object> readerNodeJsonMap,
-                                   Map<String, Object> writerNodeJsonMap,
                                    List<Map<String, Object>> definitionJsonMaps) {
         List<Map<String, Object>> nodeList = new ArrayList<>();
         nodeList.add(buildContent(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps));
@@ -193,7 +184,7 @@ public final class DataXJsonBuilder {
                 continue;
             }
             String componentType = definitionJsonMap.get("componentType").toString();
-            if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType) || TaskComponentTypeEnum.ADD_CONSTANT.getCode().equals(componentType) || TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType)) {
+            if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType) || TaskComponentTypeEnum.ADD_CONSTANT.getCode().equals(componentType) || TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType) || TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
                 nodes.add(new HashMap<Object, Object>() {{
                     if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType)) {
                         put("inputField", definitionJsonMap.get("inputField"));
@@ -202,6 +193,13 @@ public final class DataXJsonBuilder {
                     }
                     if (TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType)) {
                         put("removeFields", definitionJsonMap.get("removeFields"));
+                    }
+                    if (TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
+                        put("fieldDerivationPrefix", definitionJsonMap.get("fieldDerivationPrefix"));
+                        put("fieldDerivationSuffix", definitionJsonMap.get("fieldDerivationSuffix"));
+                        put("delimiter", definitionJsonMap.get("delimiter"));
+                        put("fieldDerivationType", definitionJsonMap.get("fieldDerivationType"));
+                        put("fieldDerivationName", definitionJsonMap.get("fieldDerivationName"));
                     }
                     put("componentType", definitionJsonMap.get("componentType"));
                     put("tableFields", definitionJsonMap.get("tableFields"));
@@ -218,7 +216,6 @@ public final class DataXJsonBuilder {
             }
         }
         Map<String, Object> processor = new HashMap<>();
-        Collections.reverse(nodes);
         processor.put("nodes", nodes);
         return processor;
     }

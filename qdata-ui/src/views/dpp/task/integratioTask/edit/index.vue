@@ -105,7 +105,10 @@
     <div class="flex-container">
       <!-- tree on left -->
       <div class="left-pane" v-if="!route.query.info">
-        <div class="left-tree">
+        <div
+          class="left-tree"
+          :class="{ 'show-disabled-nodes': taskType === 'DATAX' }"
+        >
           <el-tree
             :data="treeData"
             :empty-text="''"
@@ -120,6 +123,7 @@
             <template #default="{ node, data }">
               <div
                 class="custom-tree-node"
+                :class="{ 'is-disabled': data.disabled }"
                 @mousedown="startDrag($event, node, data)"
               >
                 <img
@@ -312,6 +316,9 @@ const getDatasourceIcon = (json) => {
     case "SPARK":
       return new URL("@/assets/images/common/dpp/icon-spark.svg", import.meta.url)
         .href;
+    case "DATAX":
+      return new URL("@/assets/images/common/img-datax.png", import.meta.url)
+          .href;
     default:
       return null;
   }
@@ -422,7 +429,9 @@ function getList() {
       draftJson: nodeData.value.draftJson,
     };
     renderGraph(graph, nodeData.value);
-    treeData.value = [...getTreeData(getTaskType(nodeData.value.draftJson))];
+    const currentTaskType = getTaskType(nodeData.value.draftJson);
+    taskType.value = currentTaskType;
+    treeData.value = [...getTreeData(currentTaskType)];
     loading.value = false;
   });
 }
@@ -689,6 +698,7 @@ const startDrag = (e, treeNode, data) => {
   if (treeNode.level === 2) {
     if (route.query?.info)
       return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeNotEditable', '不可编辑，当前页面只能查看'));
+    if (data.disabled) return;
     if (!data.componentType)
       return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeDeveloping', '正在开发中，敬请期待'));
     const node = createDataNode(graph, data);
@@ -1376,8 +1386,10 @@ const getAssetsFile = (url) => {
     scrollbar-width: none;
     -ms-overflow-style: none;
 
-    :deep .el-tree-node[aria-disabled="true"] {
-      display: none;
+    &:not(.show-disabled-nodes) {
+      :deep(.el-tree-node[aria-disabled="true"]) {
+        display: none;
+      }
     }
   }
 
@@ -1468,6 +1480,11 @@ const getAssetsFile = (url) => {
   align-items: center;
   width: 200px;
   user-select: none;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
 }
 
 .treelable {

@@ -166,45 +166,51 @@
         ref="formRef"
         label-width="110px"
        :label-position="labelPosition">
-        <el-form-item
-          :label="td('mc.task.structured.sourceSystem')"
-          prop="sourceSystemId"
-         :label-position="labelPosition">
-          <el-tree-select
-            filterable
-            v-model="dialog.form.sourceSystemId"
-            :data="store.sourceSystems"
-            :props="{ value: 'id', label: 'name', children: 'children' }"
-            value-key="id"
-            :placeholder="td('mc.task.structured.sourceSystemPlaceholder')"
-            check-strictly
-            @change="handleDomainChange"
-            default-expand-all
-          />
-        </el-form-item>
+            <el-form-item
+                :label="td('mc.task.structured.sourceSystem')"
+                prop="sourceSystemId"
+                :label-position="labelPosition">
+              <el-tree-select
+                  filterable
+                  v-model="dialog.form.sourceSystemId"
+                  :data="store.sourceSystems"
+                  :props="{ value: 'id', label: 'name', children: 'children' }"
+                  value-key="id"
+                  :placeholder="td('mc.task.structured.sourceSystemPlaceholder')"
+                  check-strictly
+                  @change="handleDomainChange"
+                  default-expand-all
+              />
+              <p class="form-item-description">
+                {{ td("mc.task.structured.sourceSystemDescription", "指定采集任务所属的源系统，便于归类管理") }}
+              </p>
+            </el-form-item>
 
-        <el-form-item :label="td('mc.task.structured.taskName')" prop="name" :label-position="labelPosition">
-          <el-input
-            v-model="dialog.form.name"
-            :placeholder="td('mc.task.structured.taskNamePlaceholder')"
-          />
-        </el-form-item>
+            <el-form-item :label="td('mc.task.structured.taskName')" prop="name" :label-position="labelPosition">
+              <el-input
+                  v-model="dialog.form.name"
+                  :placeholder="td('mc.task.structured.taskNamePlaceholder')"
+              />
+              <p class="form-item-description">
+                {{ td("mc.task.structured.taskNameDescription", "任务唯一标识，用于检索和区分采集任务") }}
+              </p>
+            </el-form-item>
 
         <el-form-item
-          :label="td('mc.task.structured.datasourceName')"
-          prop="datasourceId"
-         :label-position="labelPosition">
+            :label="td('mc.task.structured.datasourceName')"
+            prop="datasourceId"
+            :label-position="labelPosition">
           <el-select
-            v-model="dialog.form.datasourceId"
-            :placeholder="td('mc.task.structured.datasourceNamePlaceholder')"
-            @change="handleDatasourceChange"
+              v-model="dialog.form.datasourceId"
+              :placeholder="td('mc.task.structured.datasourceNamePlaceholder')"
+              @change="handleDatasourceChange"
           >
             <el-option
-              v-for="item in store.datasources"
-              :key="item.id"
-              :label="item.datasourceName"
-              :value="item.id"
-              :disabled="
+                v-for="item in store.datasources"
+                :key="item.id"
+                :label="item.datasourceName"
+                :value="item.id"
+                :disabled="
                 !['DM8', 'MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive'].includes(
                   item.datasourceType
                 )
@@ -212,50 +218,158 @@
             >
             </el-option>
           </el-select>
+          <p class="form-item-description">
+            {{ td("mc.task.structured.datasourceDescription", "选择待采集元数据的数据库连接") }}
+          </p>
         </el-form-item>
 
         <el-form-item :label="td('mc.task.structured.dbType')" prop="dbType" :label-position="labelPosition">
           <el-input
-            v-model="dialog.form.dbType"
-            disabled
-            :placeholder="td('mc.task.structured.dbTypePlaceholder')"
+              v-model="dialog.form.dbType"
+              disabled
+              :placeholder="td('mc.task.structured.dbTypePlaceholder')"
           />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.dbTypeDescription", "数据库类型，随所选数据源自动带出") }}
+          </p>
         </el-form-item>
-
         <el-form-item :label="td('mc.task.structured.ip')" prop="ip" :label-position="labelPosition">
           <el-input
-            v-model="dialog.form.ip"
-            disabled
-            :placeholder="td('mc.task.structured.ipPlaceholder')"
+              v-model="dialog.form.ip"
+              disabled
+              :placeholder="td('mc.task.structured.ipPlaceholder')"
           />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.ipDescription", "数据库服务器地址，随所选数据源自动带出") }}
+          </p>
         </el-form-item>
 
         <el-form-item :label="td('mc.task.structured.port')" prop="port" :label-position="labelPosition">
           <el-input
-            v-model="dialog.form.port"
-            disabled
-            :placeholder="td('mc.task.structured.portPlaceholder')"
+              v-model="dialog.form.port"
+              disabled
+              :placeholder="td('mc.task.structured.portPlaceholder')"
           />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.portDescription", "数据库服务端口，随所选数据源自动带出") }}
+          </p>
+        </el-form-item>
+        <el-form-item
+            :label="td('mc.task.structured.username')"
+            prop="username"
+            :label-position="labelPosition">
+          <el-input
+              v-model="dialog.form.username"
+              disabled
+              :placeholder="td('mc.task.structured.usernamePlaceholder')"
+          />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.usernameDescription", "数据库连接账号，随所选数据源自动带出") }}
+          </p>
+        </el-form-item>
+
+
+        <el-form-item :label="td('mc.task.structured.leader')" prop="leader" :label-position="labelPosition">
+          <el-tree-select
+              filterable
+              v-model="dialog.form.leader"
+              :data="store.userList"
+              :props="{
+              value: 'userId',
+              label: 'nickName',
+              children: 'children',
+            }"
+              value-key="userId"
+              :placeholder="td('mc.task.structured.leaderPlaceholder')"
+              check-strictly
+              @change="handleUserChange"
+          />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.leaderDescription", "任务维护负责人，用于异常跟进和责任追溯") }}
+          </p>
+        </el-form-item>
+        <el-form-item
+            :label="td('mc.task.structured.leaderPhone')"
+            prop="leaderPhone"
+            :label-position="labelPosition">
+          <el-input
+              v-model="dialog.form.leaderPhone"
+              disabled
+              :placeholder="td('mc.task.structured.leaderPhonePlaceholder')"
+          />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.leaderPhoneDescription", "负责人联系电话，随负责人自动带出") }}
+          </p>
         </el-form-item>
 
         <el-form-item
-          :label="td('mc.task.structured.username')"
-          prop="username"
-         :label-position="labelPosition">
-          <el-input
-            v-model="dialog.form.username"
-            disabled
-            :placeholder="td('mc.task.structured.usernamePlaceholder')"
-          />
+            :label="td('mc.task.structured.collectionMode')"
+            class="row-full"
+            prop="collectionMode"
+            v-if="false"
+            :label-position="labelPosition">
+          <el-radio-group v-model="dialog.form.collectionMode">
+            <el-radio
+                v-for="dict in toValue(dicts.mc_collect_mode)"
+                :key="dict.value"
+                :label="dict.value"
+            >
+              {{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+          <p class="form-item-description">
+            {{ td("mc.task.structured.collectionModeDescription", "定义任务采集元数据的方式") }}
+          </p>
         </el-form-item>
 
-        <qt-form-item
+        <el-form-item
+                :label="td('mc.task.structured.scheduler')"
+                prop="scheduler"
+                class="row-full"
+                :label-position="labelPosition">
+              <el-radio-group
+                  v-model="dialog.form.scheduler"
+                  class="scheduler-card-group"
+              >
+                <el-radio
+                    v-for="item in scheduler_type"
+                    :key="item.value"
+                    :value="item.value"
+                    class="option-card"
+                >
+                  <img
+                      class="option-card__icon scheduler-card__icon"
+                      :src="getSchedulerMeta(item.value).icon"
+                      :alt="item.label"
+                  />
+                  <span class="option-card__content">
+                <span class="option-card__heading">
+                  <span class="option-card__name">{{ item.label }}</span>
+                  <el-tag type="primary" :underline="false" class="task-cat-ellipsis" size="small">
+                    {{ getSchedulerMeta(item.value).tag || "-" }}
+                  </el-tag>
+                </span>
+                <span class="option-card__description">
+                  {{ getSchedulerMeta(item.value).description }}
+                </span>
+              </span>
+                </el-radio>
+              </el-radio-group>
+              <p class="form-item-description">
+                {{ td("mc.task.structured.schedulerDescription", "选择负责按计划触发采集任务的调度器") }}
+              </p>
+            </el-form-item>
+
+        <el-form-item
           :label="td('mc.task.structured.cronExpression')"
           prop="cronExpression"
           :rules="[
             {
               required: true,
-              message: td('mc.task.structured.cronRequired'),
+                message: td(
+                  'dpp.developTask.selectScheduleCycle',
+                  '请选择调度周期'
+                ),
               trigger: 'blur',
             },
           ]"
@@ -278,70 +392,8 @@
               </el-button>
             </template>
           </el-input>
-        </qt-form-item>
-
-        <el-form-item :label="td('mc.task.structured.leader')" prop="leader" :label-position="labelPosition">
-          <el-tree-select
-            filterable
-            v-model="dialog.form.leader"
-            :data="store.userList"
-            :props="{
-              value: 'userId',
-              label: 'nickName',
-              children: 'children',
-            }"
-            value-key="userId"
-            :placeholder="td('mc.task.structured.leaderPlaceholder')"
-            check-strictly
-            @change="handleUserChange"
-          />
-        </el-form-item>
-
-        <el-form-item
-          :label="td('mc.task.structured.leaderPhone')"
-          prop="leaderPhone"
-         :label-position="labelPosition">
-          <el-input
-            v-model="dialog.form.leaderPhone"
-            disabled
-            :placeholder="td('mc.task.structured.leaderPhonePlaceholder')"
-          />
-        </el-form-item>
-
-        <el-form-item
-          :label="td('mc.task.structured.collectionMode')"
-          class="row-full"
-          prop="collectionMode"
-          v-if="false"
-         :label-position="labelPosition">
-          <el-radio-group v-model="dialog.form.collectionMode">
-            <el-radio
-              v-for="dict in toValue(dicts.mc_collect_mode)"
-              :key="dict.value"
-              :label="dict.value"
-            >
-              {{ dict.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item
-            :label="td('mc.task.structured.scheduler')"
-            prop="scheduler"
-            class="row-full"
-            :label-position="labelPosition">
-          <el-radio-group v-model="dialog.form.scheduler">
-            <el-radio
-                v-for="item in toValue(dicts.scheduler_type)"
-                :key="item.value"
-                :label="item.value"
-            >
-              {{ item.label }}
-            </el-radio>
-          </el-radio-group>
-          <p style="
-  flex-basis: 100%;align-items: center;line-height: 1;font-size: 12px;color: #888; margin-top: 10px;">
-            {{ schedulerGuide.description }}
+          <p class="form-item-description">
+            {{ td("mc.task.structured.cronExpressionDescription", "定义任务自动采集的时间和执行频率") }}
           </p>
         </el-form-item>
 
@@ -381,6 +433,9 @@
                 style="--el-transfer-panel-width: 320px"
               />
             </el-form-item>
+            <p class="form-item-description">
+              {{ td("mc.task.structured.collectionScopeDescription", "设置采集全部数据库或仅采集指定数据库") }}
+            </p>
           </div>
         </el-form-item>
 
@@ -397,6 +452,9 @@
             show-word-limit
             :maxlength="500"
           />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.descriptionDescription", "记录任务目标、采集内容和业务用途") }}
+          </p>
         </el-form-item>
 
         <el-form-item
@@ -412,6 +470,9 @@
             show-word-limit
             :maxlength="500"
           />
+          <p class="form-item-description">
+            {{ td("mc.task.structured.remarkDescription", "补充记录其他需要说明的信息") }}
+          </p>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -461,8 +522,38 @@ import { listValidSourceSystem } from "@/api/att/sourceSystem/sourceSystem";
 import useDefaultLang from "@/composables/useDefaultLang";
 import { checkApi } from "@/api/ds/api/api.js";
 import { ElMessage } from "element-plus";
+import quartzIcon from "@/assets/images/common/img-quartz.png";
+import dolphinSchedulerIcon from "@/assets/images/common/img-ds.png";
 
 const { td } = useDefaultLang();
+
+const scheduler_type = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+
+const schedulerMeta = {
+  QUARTZ: {
+    icon: quartzIcon,
+    tag: td("dpp.integratioTask.lightweight", "轻量级"),
+    description: td(
+      "dpp.integratioTask.quartzCardDescription",
+      "轻量级调度，适用于简单定时任务。"
+    ),
+  },
+  DOLPHINSCHEDULER: {
+    icon: dolphinSchedulerIcon,
+    tag: td("dpp.integratioTask.enterprise", "企业级"),
+    description: td(
+      "dpp.integratioTask.dolphinSchedulerCardDescription",
+      "企业级调度，适用于复杂工作流编排。"
+    ),
+  },
+};
+
+const getSchedulerMeta = (value) =>
+  schedulerMeta[value] || schedulerMeta.QUARTZ;
+
 const rules = {
   sourceSystemId: [
     {
@@ -572,8 +663,7 @@ const runClickLoading = ref(false);
 const dicts = proxy.useDict(
   "datasource_type",
   "mc_collect_scope",
-  "mc_collect_mode",
-  "scheduler_type"
+  "mc_collect_mode"
 );
 
 const router = useRouter();
@@ -828,24 +918,6 @@ const dialog = reactive({
   },
 });
 
-const schedulerGuide = computed(() => {
-  if (dialog.form.scheduler === "DOLPHINSCHEDULER") {
-    return {
-      description: td(
-          "dpp.integratioTask.dolphinSchedulerGuideDescription",
-          "使用前请确保 DolphinScheduler 服务已启动。"
-      ),
-    };
-  }
-
-  return {
-    description: td(
-        "dpp.integratioTask.quartzGuideDescription",
-        "由系统内置组件执行任务。"
-    ),
-  };
-});
-
 // Scheduling cycle pop-up window
 const cronDialog = reactive({
   open: false,
@@ -1051,9 +1123,8 @@ function handleEditClick(row) {
 }
 
 function getSchedulerLabel(value) {
-  // 列表里把库里的枚举值翻译成人能看懂的名字。
   return (
-    toValue(dicts.scheduler_type).find((item) => item.value == value)?.label ||
+    scheduler_type.find((item) => item.value == value)?.label ||
     value ||
     "-"
   );
@@ -1229,4 +1300,168 @@ getAllSourceSystems();
 </script>
 
 <style lang="scss" scoped>
+.form-item-description {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #888;
+  font-size: 12px;
+  line-height: 1;
+}
+.scheduler-section-title {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.scheduler-card-group {
+  --option-card-width: max(210px, calc((100% - 34px) / 3));
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 17px;
+  width: 100%;
+}
+
+:deep(.engine-card-group .option-card.el-radio),
+:deep(.scheduler-card-group .option-card.el-radio) {
+  flex: 0 0 var(--option-card-width);
+  width: var(--option-card-width);
+  margin-right: 0;
+}
+
+:deep(.option-card.el-radio) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 13px 30px 13px 15px;
+  white-space: normal;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  height: 86px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  border: 1px solid #D6DAE1;
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--el-color-primary);
+  }
+
+  &.is-checked {
+    border-color: var(--el-color-primary);
+  }
+
+  &.is-disabled {
+    background: var(--el-fill-color-lighter);
+  }
+
+  .el-radio__input {
+    position: absolute;
+    top: 14px;
+    right: 12px;
+  }
+
+  .el-radio__label {
+    display: flex;
+    flex: 1;
+    align-self: stretch;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    padding-left: 0;
+    color: var(--el-text-color-primary);
+  }
+}
+
+.option-card__icon {
+  flex: 0 0 auto;
+  width: 36px;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.engine-card__icon {
+  width: 36px;
+}
+
+.option-card__content,
+.option-card__heading,
+.option-card__description {
+  display: block;
+}
+
+.option-card__content {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+}
+
+.option-card__heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 4px;
+  width: 100%;
+
+  .task-cat-ellipsis {
+    min-width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+.option-card__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 20px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--color-third-party-Langfuse);
+  line-height: 20px;
+  text-align: left;
+  font-style: normal;
+  margin-right: 8px;
+  max-width: calc(100% - 60px);
+}
+
+.option-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  width: 108%;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(0,0,0,0.65);
+  line-height: 18px;
+  text-align: left;
+  font-style: normal;
+}
+
+:deep(.option-card.el-radio.is-disabled) {
+  .option-card__icon,
+  .option-card__content {
+    opacity: 0.55;
+  }
+}
+
+.engine-config-grid {
+  margin-top: 2px;
+
+  :deep(.el-form-item) {
+    margin-bottom: 12px;
+  }
+}
+
 </style>

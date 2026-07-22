@@ -27,14 +27,6 @@ export function checkApi() {
 }
 
 // 查询API服务列表
-export function checkApi() {
-    return request({
-        url: '/ds/api/checkApi',
-        method: 'get'
-    });
-}
-
-// 查询API服务列表
 export function listDsApi(query) {
     return request({
         url: '/ds/api/list',

@@ -15,8 +15,7 @@ public class LogUtils {
             taskLog.append("\n");
         }
         // Example log format: [INFO] 2025-09-30 16:08:54.444 - message
-        taskLog.append("[INFO] ")
-                .append(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"))
+        taskLog.append(DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"))
                 .append(" - ")
                 .append(msg);
     }

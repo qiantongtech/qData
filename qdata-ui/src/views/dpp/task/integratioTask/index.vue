@@ -402,21 +402,22 @@ const api = {
 const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
-  dpp_etl_task_instance,
-  scheduler_type,
-  actuator_type
+  dpp_etl_task_instance
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
-  "dpp_etl_task_instance",
-    "scheduler_type",
-    "actuator_type"
+  "dpp_etl_task_instance"
 );
+
+const scheduler_type = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
 
 // 获取调度器枚举
 const getSchedulerLabel = (value) => {
   // 列表里把调度器枚举翻译成用户能看懂的名字。
-  return scheduler_type.value.find((item) => item.value == value)?.label || value || "-";
+  return scheduler_type.find((item) => item.value == value)?.label || value || "-";
 };
 
 const route = useRoute();

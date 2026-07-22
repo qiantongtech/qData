@@ -48,9 +48,21 @@
             />
           </template>
           <template #actions-data>
-            <el-button type="primary" plain @click="openTaskConfigDialog">
-              <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ td("common.button.add", "Add") }}
+            <el-button
+              type="primary"
+              plain
+              @click="openTaskConfigDialog('QUARTZ')"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i>
+              {{ td("dpp.integratioTask.dataxAdd", "新增DATAX") }}
+            </el-button>
+            <el-button
+              type="primary"
+              plain
+              @click="openTaskConfigDialog('DOLPHINSCHEDULER')"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i>
+              {{ td("dpp.integratioTask.sparkAdd", "新增SPARK") }}
             </el-button>
           </template>
 
@@ -150,12 +162,12 @@
                     :value="row.executionType"
                   />
                 </div>
-                <div class="flex-center mt5">
-                  <span class="mr5">{{
-                    td("dpp.integratioTask.schedulerEngine", "Scheduler")
+                <div class="flex-center mt5 scheduler-info-row">
+                  <span class="mr5 scheduler-info-label">{{
+                    td("dpp.integratioTask.scheduler", "Scheduler")
                   }}:</span>
                   <span
-                    class="text-ellipsis cron-text"
+                    class="text-ellipsis cron-text scheduler-info-value"
                     :title="`${getSchedulerLabel(row.scheduler)}`"
                   >
                     {{ getSchedulerLabel(row.scheduler) }}
@@ -338,6 +350,7 @@
       :info="route.query.info"
       :catCode="tableStore.params.catCode"
       :deptOptions="deptOptions"
+      :defaultScheduler="selectedScheduler"
     />
   </div>
 </template>
@@ -390,12 +403,14 @@ const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
   dpp_etl_task_instance,
-  scheduler_type
+  scheduler_type,
+  actuator_type
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
   "dpp_etl_task_instance",
-    "scheduler_type"
+    "scheduler_type",
+    "actuator_type"
 );
 
 // Get scheduler enum values.
@@ -586,9 +601,11 @@ function handleNodeClick(data) {
 }
 // Task configuration
 const taskConfigDialogVisible = ref(false);
+const selectedScheduler = ref("");
 let nodeData = ref({ taskConfig: {}, name: null });
 
-const openTaskConfigDialog = () => {
+const openTaskConfigDialog = (scheduler) => {
+  selectedScheduler.value = scheduler || scheduler_type.value[0]?.value;
   nodeData.value = { taskConfig: {}, name: null };
   taskConfigDialogVisible.value = true;
 };

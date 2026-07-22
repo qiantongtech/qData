@@ -173,24 +173,21 @@ export const treeData = [
     }
 ];
 
+const DATAX_ENABLED_COMPONENT_TYPES = new Set(['1', '22', '31', '34', '39', '40', '47', '48', '91']);
+
 // Return known data
 export const getTreeData = (taskType) => {
-    var data = [...treeData];
-    data.map(item => {
-        if (item.children) {
-            item.children.map(child => {
-                if (!child.engine.includes(taskType)) {
-                    child.disabled = true;
-                } else {
-                    child.disabled = false;
-                }
-            })
-        }
-        if (!item.engine.includes(taskType)) {
-            item.disabled = true;
-        } else {
-            item.disabled = false;
-        }
-    })
-    return data;
+    return treeData.map(item => {
+        const children = item.children?.map(child => ({
+            ...child,
+            disabled: !child.engine.includes(taskType)
+                || (taskType === 'DATAX' && !DATAX_ENABLED_COMPONENT_TYPES.has(child.componentType)),
+        }));
+
+        return {
+            ...item,
+            children,
+            disabled: !item.engine.includes(taskType),
+        };
+    });
 }

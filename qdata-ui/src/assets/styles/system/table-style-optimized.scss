@@ -67,6 +67,23 @@
     text-overflow: ellipsis;
 }
 
+// Scheduler label remains intact; its value uses the remaining column width.
+.scheduler-info-row {
+    width: 100%;
+    min-width: 0;
+}
+
+.scheduler-info-label {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.scheduler-info-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+}
+
 // Responsible person information
 .person-charge-ellipsis {
     display: inline-block;

@@ -150,7 +150,7 @@
                 </div>
                 <div class="flex-center mt5">
                   <span class="mr5">{{
-                      td("dpp.developTask.schedulerEngine", "Scheduler")
+                      td("dpp.integratioTask.scheduler", "Scheduler")
                     }}:</span>
                   <span
                       class="text-ellipsis cron-text"

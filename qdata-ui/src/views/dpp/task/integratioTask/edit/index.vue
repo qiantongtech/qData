@@ -226,7 +226,7 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import FieldPreviewDialog from "@/views/dpp/task/integratioTask/components/fieldPreview.vue";
 // input component
@@ -295,6 +295,7 @@ let id = route.query.id || 1;
 // "edit": edit, "input": only look at input fields, "output": only look at output fields
 // tooltip display content
 const taskType = ref("");
+provide("integratioTaskType", taskType);
 
 //Get execution engine
 const getTaskType = (json) => {

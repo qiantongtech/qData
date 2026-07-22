@@ -252,6 +252,12 @@ const isFieldValueToUpperRule = computed(() => {
     String(form.ruleName || "").includes("字段值转大写")
   );
 });
+const cleanFieldOptions = computed(() => {
+  if (!isFieldValueToUpperRule.value) return processedFields.value;
+  return processedFields.value.filter((item) =>
+    isTextColumnType(item.columnType)
+  );
+});
 const columnsDisplayText = computed(() => {
   if (isMultipleSelect.value) {
     const values = Array.isArray(form.columns) ? form.columns : [];

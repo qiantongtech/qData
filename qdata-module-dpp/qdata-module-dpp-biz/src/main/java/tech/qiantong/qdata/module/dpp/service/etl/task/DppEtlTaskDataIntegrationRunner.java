@@ -44,10 +44,7 @@ import tech.qiantong.qdata.module.dpp.utils.datax.FlinkxJson;
 import tech.qiantong.qdata.module.dpp.utils.log.LogUtils;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -89,7 +86,15 @@ public class DppEtlTaskDataIntegrationRunner {
 
             // The input node provides reader parameters, and the output node provides writer parameters.
             DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
-            DppEtlNodeRespVO deduplication = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+            List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
+                add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
+                add(TaskComponentTypeEnum.SORT_RECORD.getCode());
+                add(TaskComponentTypeEnum.FIELD_DERIVATION.getCode());
+                add(TaskComponentTypeEnum.DATA_DEDUPLICATION.getCode());
+                add(TaskComponentTypeEnum.VALUE_MAP.getCode());
+                add(TaskComponentTypeEnum.ADD_CONSTANT.getCode());
+            }});
             DppEtlNodeRespVO writerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_WRITER.getCode());
             // Local DataX execution requires a reader and writer; the deduplication node is optional.
             if (readerNode == null || writerNode == null) {
@@ -107,18 +112,18 @@ public class DppEtlTaskDataIntegrationRunner {
             if (ObjectUtils.isNotEmpty(writerNode)) {
                 writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             }
-            Map<String, Object> definitionJsonMap = Collections.emptyMap();
-            // Include the optional deduplication node in DataX JSON only when it is configured.
-            if (ObjectUtils.isNotEmpty(deduplication)) {
-                String deduplicationParameters = deduplication.getParameters();
-                definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(deduplicationParameters);
+            List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
+            for (DppEtlNodeRespVO processorNode : processorNodes) {
+                Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(processorNode.getParameters());
+                definitionJsonMap.put("componentType", processorNode.getComponentType());
+                definitionJsonMaps.add(definitionJsonMap);
             }
 
             // Generate DataX JSON.
-            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMap);
+            String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********************************");
+            /*LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
@@ -135,7 +140,7 @@ public class DppEtlTaskDataIntegrationRunner {
                         "DataX task execution failed with exit code {0}", run.getExitCode());
             }
             markLocalDataXTaskSuccess(instance);
-            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");
+            LogUtils.appendLocalLogLine(taskLog, "DataX task executed successfully");*/
         } catch (Exception e) {
             // Mark the task as failed for any exception and write the reason to the local execution log.
             markLocalDataXTaskFail(instance, e);

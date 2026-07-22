@@ -19,6 +19,7 @@
 package tech.qiantong.qdata.module.dpp.utils.datax;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
@@ -164,16 +165,33 @@ public class FlinkxJson {
      * The initial local DataX implementation supports only database input and output, so lookup uses component type only.
      */
     public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
+        List<DppEtlNodeRespVO> matchedNodes = findLocalDataXNode(nodeList, Collections.singletonList(componentType));
+        return CollectionUtils.isEmpty(matchedNodes) ? null : matchedNodes.get(0);
+    }
+
+    /**
+     * 从节点列表里找到任一指定组件类型的节点。
+     *
+     * @param nodeList       待查询的节点列表
+     * @param componentTypes 允许匹配的组件类型列表
+     * @return 按节点顺序返回所有匹配节点；没有匹配节点时返回空列表
+     */
+    public static List<DppEtlNodeRespVO> findLocalDataXNode(List<DppEtlNodeRespVO> nodeList,
+                                                            Collection<String> componentTypes) {
+        List<DppEtlNodeRespVO> matchedNodes = new ArrayList<>();
+        if (CollectionUtils.isEmpty(nodeList) || CollectionUtils.isEmpty(componentTypes)) {
+            return matchedNodes;
+        }
         for (DppEtlNodeRespVO node : nodeList) {
             // Skip null nodes to prevent invalid data from causing a null pointer exception.
             if (node == null) {
                 continue;
             }
-            // A matching component type identifies the required reader or writer node.
-            if (StringUtils.equals(componentType, node.getComponentType())) {
-                return node;
+            if (componentTypes.stream()
+                    .anyMatch(componentType -> StringUtils.equals(componentType, node.getComponentType()))) {
+                matchedNodes.add(node);
             }
         }
-        return null;
+        return matchedNodes;
     }
 }

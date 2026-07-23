@@ -1040,7 +1040,7 @@ export default {
     distributed: '分散型',
     notOnline: '未提供',
     enterprise: 'エンタープライズ',
-    dataXDescription: 'データベース間の一括データ移行と交換に適したオフラインデータ同期エンジンです。',
+    dataXDescription: '軽量なデータ同期エンジンで、単体での動作が可能であり、導入が簡単で、関連データの取得とインポートに適したシナリオに最適です。',
     sparkDescription: '大規模なオフライン処理と複雑な計算タスクに適した分散コンピューティングエンジンです。',
     flinkDescription: 'リアルタイム処理と低遅延処理に適した分散ストリーム処理エンジンです。',
     quartzCardDescription: 'シンプルな定時タスクに適した軽量スケジューリングです。',

@@ -1009,7 +1009,7 @@ export default {
     distributed: 'Distributed',
     notOnline: 'Not Available Yet',
     enterprise: 'Enterprise',
-    dataXDescription: 'Offline data synchronization engine for batch migration and exchange between databases.',
+    dataXDescription: 'Lightweight data synchronization engine, running on a single machine, with simple deployment, suitable for scenarios involving data acquisition and import.',
     sparkDescription: 'Distributed computing engine for large-scale offline processing and complex computing tasks.',
     flinkDescription: 'Distributed stream processing engine for real-time and low-latency scenarios.',
     quartzCardDescription: 'Lightweight scheduling for simple scheduled tasks.',

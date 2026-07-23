@@ -1046,7 +1046,7 @@ export default {
     distributed: '分布式',
     notOnline: '暂未上线',
     enterprise: '企业级',
-    dataXDescription: '离线数据同步引擎，适用于数据库间批量数据迁移与交换。',
+    dataXDescription: '轻量级数据同步引擎，单机运行，部署简单，适合关联数据获取与导入场景。',
     sparkDescription: '分布式计算引擎，适合大规模离线处理与复杂计算任务。',
     flinkDescription: '分布式流式计算引擎，适合实时处理与低延迟计算场景。',
     quartzCardDescription: '轻量级调度，适用于简单定时任务。',

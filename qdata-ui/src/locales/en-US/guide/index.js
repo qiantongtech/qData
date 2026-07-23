@@ -5,6 +5,8 @@ export default {
   index: {
     title: 'Important Notice: This system is a demo site. <u>All user data is cleared daily at 02:30 AM</u> to ensure system integrity and stable operation.',
     content: `To experience the full features, please download the open-source code and deploy it yourself. For <u>open-source brand licensing</u> or <u>commercial edition consultation</u>, click to view details: 👉  <a href="${QDATA_COMMUNITY_URL}/en/business/policy.html" target="_blank">Learn about licensing</a>`,
+    extensionLabel: 'News',
+    extensionContent: '<span class="guide-tip-announcement-brand">DataX is here</span> with the lightweight release of qData Open Source <span class="guide-tip-announcement-dict-tag">v1.6.0</span>! This version introduces DataX-powered data synchronization, <span class="guide-tip-announcement-keyword">streamlines the deployment architecture and runtime dependencies</span>, and <span class="guide-tip-announcement-keyword">reduces resource usage and maintenance costs</span> for simpler, faster data access, synchronization, and task management.',
     type: 'danger',
     version: '1.0'
   },

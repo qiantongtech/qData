@@ -5,6 +5,8 @@ export default {
   index: {
     title: '重要なお知らせ：本システムはデモサイトです。<u>毎日午前2:30に全ユーザーデータが削除</u>され、システムの健全性と安定運用を確保しています。',
     content: `完全な機能をご利用いただくには、オープンソースコードをダウンロードしてご自身でデプロイしてください。<u>オープンソース版ブランドライセンス</u>または<u>商用版のお問い合わせ</u>は、詳細ページをご覧ください： 👉  <a href="${QDATA_COMMUNITY_URL}/ja/business/policy.html" target="_blank">ライセンス詳細</a>`,
+    extensionLabel: 'お知らせ',
+    extensionContent: '<span class="guide-tip-announcement-brand">DataX登場</span>、qDataオープンソース版 <span class="guide-tip-announcement-dict-tag">v1.6.0</span> を軽量リリース！DataXによるデータ同期機能を新たに統合し、<span class="guide-tip-announcement-keyword">デプロイ構成と実行時の依存関係をさらに簡素化</span>しました。<span class="guide-tip-announcement-keyword">リソース消費と運用コストを抑え</span>、データ接続・同期・タスク管理をよりシンプルかつ効率的にします。',
     type: 'danger',
     version: '1.0'
   },

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quartz.service;
@@ -39,113 +25,113 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import java.util.List;
 
 /**
- * 定时任务调度信息信息 服务层
+ * Scheduled task scheduling information service layer
  *
  * @author qdata
  */
 public interface ISysJobService
 {
     /**
-     * 获取quartz调度器的计划任务
+     * Get the scheduled task of the quartz scheduler
      *
-     * @param job 调度信息
-     * @return 调度任务集合
+     * @param job scheduling information
+     * @return Scheduled task collection
      */
     public List<SysJob> selectJobList(SysJob job);
 
     /**
-     * 通过调度任务ID查询调度信息
+     * Query scheduling information by scheduling task ID
      *
-     * @param jobId 调度任务ID
-     * @return 调度任务对象信息
+     * @param jobId scheduling task ID
+     * @return Scheduling task object information
      */
     public SysJob selectJobById(Long jobId);
 
     /**
-     * 暂停任务
+     * Pause task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int pauseJob(SysJob job) throws SchedulerException;
 
     /**
-     * 恢复任务
+     * Recovery task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int resumeJob(SysJob job) throws SchedulerException;
 
     /**
-     * 删除任务后，所对应的trigger也将被删除
+     * After deleting a task, the corresponding trigger will also be deleted.
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int deleteJob(SysJob job) throws SchedulerException;
 
     /**
-     * 批量删除调度信息
+     * Delete scheduling information in batches
      *
-     * @param jobIds 需要删除的任务ID
-     * @return 结果
+     * @param jobIds The task ID to be deleted
+     * @return result
      */
     public void deleteJobByIds(Long[] jobIds) throws SchedulerException;
 
     /**
-     * 任务调度状态修改
+     * Task scheduling status modification
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int changeStatus(SysJob job) throws SchedulerException;
 
     /**
-     * 立即运行任务
+     * Run task now
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public boolean run(SysJob job) throws SchedulerException;
 
     /**
-     * 新增任务
+     * Add new task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int insertJob(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 新增任务带有校验验证
+     * Added new tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public Long insertJobReturnId(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 更新任务
+     * Update task
      *
-     * @param job 调度信息
-     * @return 结果
+     * @param job scheduling information
+     * @return result
      */
     public int updateJob(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 更新任务带有校验验证
+     * Update tasks with verification
      *
-     * @param job 调度信息
-     * @return 结果 返回任务主键ID
+     * @param job scheduling information
+     * @return result returns the task primary key ID
      */
     public Long updateJobReturnId(SysJob job) throws SchedulerException, TaskException;
 
     /**
-     * 校验cron表达式是否有效
+     * Verify whether cron expression is valid
      *
-     * @param cronExpression 表达式
-     * @return 结果
+     * @param cronExpression expression
+     * @return result
      */
     public boolean checkCronExpressionIsValid(String cronExpression);
 }

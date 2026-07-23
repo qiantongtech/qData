@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.ValueParserUtils;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
- * 增加常量
+ * Add constant
  */
 public class AddConstantTransition implements Transition {
 
@@ -37,18 +38,18 @@ public class AddConstantTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始增加常量节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.transition.constant.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", transition.toJSONString(PrettyFormat)));
         JSONObject parameter = transition.getJSONObject("parameter");
 
 
         JSONArray tableFields = parameter.getJSONArray("tableFields");
         if (tableFields == null || tableFields.isEmpty()) {
-            throw new IllegalArgumentException("常量字段列表不能为空且必须为非空数组！");
+            throw new IllegalArgumentException(MessageUtils.messageEn("etl.error.fields.empty"));
         }
 
-        // 获取已有列名集合，防止重复添加
+        // Get a collection of existing column names to prevent repeated additions
         Set<String> existingColumns = new HashSet<>();
         for (String col : dataset.columns()) {
             existingColumns.add(col);
@@ -57,13 +58,13 @@ public class AddConstantTransition implements Transition {
 
         for (int i = 0; i < tableFields.size(); i++) {
             JSONObject field = tableFields.getJSONObject(i);
-            // 字段名称
+            // Field name
             String name = field.getString("name");
-            // 字段类型
+            // Field type
             String type = field.getString("type");
-            // 默认值
+            // Default value
             String defaultValue = field.getString("defaultValue");
-            // 是否为空字符串
+            // Whether it is an empty string
             boolean emptyString = field.getBooleanValue("emptyString");
 
             LogUtils.writeLog(logParams, "name：" + name);
@@ -72,7 +73,7 @@ public class AddConstantTransition implements Transition {
             LogUtils.writeLog(logParams, "emptyString：" + emptyString);
 
 
-            // ❗️判断字段是否已存在，存在则跳过
+            // ❗️Determine whether the field already exists, skip it if it exists
             if (existingColumns.contains(name)) {
                 continue;
             }
@@ -105,7 +106,7 @@ public class AddConstantTransition implements Transition {
                         newCol = functions.lit(dateStr).cast(DataTypes.TimestampType);
                         break;
                     default:
-                        newCol = functions.lit(defaultValue); // 默认按字符串处理
+                        newCol = functions.lit(defaultValue); // Processed by string by default
                         break;
                 }
             }

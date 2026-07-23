@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.mapper;
@@ -37,73 +23,73 @@ import tech.qiantong.qdata.module.system.domain.SysConfig;
 import java.util.List;
 
 /**
- * 参数配置 数据层
+ * Parameter Configuration Data Layer
  *
  * @author qdata
  */
 public interface SysConfigMapper
 {
     /**
-     * 查询参数配置信息
+     * Query parameter configuration information
      *
-     * @param config 参数配置信息
-     * @return 参数配置信息
+     * @param config parameter configuration information
+     * @return parameter configuration information
      */
     public SysConfig selectConfig(SysConfig config);
 
     /**
-     * 通过ID查询配置
+     * Query configuration by ID
      *
-     * @param configId 参数ID
-     * @return 参数配置信息
+     * @param configId parameter ID
+     * @return parameter configuration information
      */
     public SysConfig selectConfigById(Long configId);
 
     /**
-     * 查询参数配置列表
+     * Query parameter configuration list
      *
-     * @param config 参数配置信息
-     * @return 参数配置集合
+     * @param config parameter configuration information
+     * @return parameter configuration collection
      */
     public List<SysConfig> selectConfigList(SysConfig config);
 
     /**
-     * 根据键名查询参数配置信息
+     * Query parameter configuration by key name
      *
-     * @param configKey 参数键名
-     * @return 参数配置信息
+     * @param configKey parameter key name
+     * @return parameter configuration information
      */
     public SysConfig checkConfigKeyUnique(String configKey);
 
     /**
-     * 新增参数配置
+     * Insert parameter configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config parameter configuration information
+     * @return result
      */
     public int insertConfig(SysConfig config);
 
     /**
-     * 修改参数配置
+     * Update parameter configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config parameter configuration information
+     * @return result
      */
     public int updateConfig(SysConfig config);
 
     /**
-     * 删除参数配置
+     * Delete parameter configuration
      *
-     * @param configId 参数ID
-     * @return 结果
+     * @param configId parameter ID
+     * @return result
      */
     public int deleteConfigById(Long configId);
 
     /**
-     * 批量删除参数信息
+     * Batch delete parameter information
      *
-     * @param configIds 需要删除的参数ID
-     * @return 结果
+     * @param configIds parameter IDs to delete
+     * @return result
      */
     public int deleteConfigByIds(Long[] configIds);
 }

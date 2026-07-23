@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ai.dal.dataobject.chat;
@@ -45,14 +31,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * ai聊天对话 DO 对象 AI_CHAT_CONVERSATION
+ * ai chat conversation DO object AI_CHAT_CONVERSATION
  *
  * @author FXB
  * @date 2026-04-01
  */
 @Data
 @TableName(value = "AI_CHAT_CONVERSATION")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("AI_CHAT_CONVERSATION_seq")
 @Builder
 @NoArgsConstructor
@@ -69,82 +55,82 @@ public class AiChatConversationDO extends BaseEntity {
     private Long id;
 
     /**
-     * 用户id
+     * User id
      */
     private Long userId;
 
     /**
-     * 对话标题
+     * Conversation title
      */
     private String title;
 
     /**
-     * 是否置顶;0：不置顶，1：置顶
+     * Whether the conversation is pinned; 0: not pinned, 1: pinned
      */
     private Boolean pinned;
 
     /**
-     * 置顶时间
+     * Pin time
      */
     private Date pinnedTime;
 
     /**
-     * 数据源id
+     * Data source id
      */
     private Long datasourceId;
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @Schema(description = "数据源类型", example = "")
     private String datasourceType;
 
     /**
-     * 事实表名称
+     * Fact table name
      */
     private String factTableName;
 
     /**
-     * 事实表注释/事实表描述
+     * Fact table annotation/fact table description
      */
     private String factTableComment;
 
     /**
-     * 维度表;格式 [{"tableName":"表名","tableComment":"表注释","columnName":"关联字段"}]
+     * Dimension table; format [{"tableName":"table name","tableComment":"table comment","columnName":"associated field"}]
      */
     private String dimensionTable;
 
     /**
-     * 关联信息,格式如下
+     * Related information, the format is as follows
      * [{
-     * "dimensionTable": "维度表名",
-     * "factColumnName": "事实表外键字段名",
-     * "dimensionColumnName": "维度表主键字段名",
-     * "matchReason": "匹配依据"
+     * "dimensionTable": "Dimension table name",
+     * "factColumnName": "Fact table foreign key field name",
+     * "dimensionColumnName": "Dimension table primary key field name",
+     * "matchReason": "matching basis"
      * }]
      */
     @Schema(description = "[{\"dimensionTable\": \"维度表名\",\"factColumnName\": \"事实表外键字段名\",\"dimensionColumnName\": \"维度表主键字段名\",\"matchReason\": \"匹配依据\"}")
     private String associations;
 
     /**
-     * 关联条件匹配状态;0：未匹配，1：已匹配
+     * Association condition matching status; 0: not matched, 1: matched
      */
     @Schema(description = "关联条件匹配状态;0：未匹配，1：已匹配", example = "")
     private Boolean joinConditionMatchFlag;
 
     /**
-     * 关联条件匹配类型;1：自动匹配 2:手动匹配
+     * Association condition matching type; 1: automatic matching 2: manual matching
      */
     @Schema(description = "关联条件匹配类型;1：自动匹配 2:手动匹配,字典：ai_chat_coversation_jcm_type", example = "")
     private String joinConditionMatchType;
 
     /**
-     * 是否有效;0：无效，1：有效
+     * Whether it is valid; 0: invalid, 1: valid
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志;1：已删除，0：未删除
+     * Deletion flag; 1: deleted, 0: not deleted
      */
     @TableLogic
     private Boolean delFlag;

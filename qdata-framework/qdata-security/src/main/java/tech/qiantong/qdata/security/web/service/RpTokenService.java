@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.security.web.service;
@@ -45,6 +31,7 @@ import tech.qiantong.qdata.common.constant.CacheConstants;
 import tech.qiantong.qdata.common.constant.Constants;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.core.redis.RedisCache;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.ServletUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.ip.AddressUtils;
@@ -57,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 门户token验证处理
+ * Portal token verification processing
  *
  * @author qdata
  */
@@ -66,15 +53,15 @@ public class RpTokenService
 {
     private static final Logger log = LoggerFactory.getLogger(RpTokenService.class);
 
-    // 令牌自定义标识
+    // Token custom identification
     @Value("${token.rpHeader}")
     private String header;
 
-    // 令牌秘钥
+    // Token key
     @Value("${token.secret}")
     private String secret;
 
-    // 令牌有效期（默认30分钟）
+    // Token validity period (default 30 minutes)
     @Value("${token.expireTime}")
     private int expireTime;
 
@@ -88,20 +75,20 @@ public class RpTokenService
     private RedisCache redisCache;
 
     /**
-     * 获取用户身份信息
+     * Get user identity information
      *
-     * @return 用户信息
+     * @return user information
      */
     public LoginUser getLoginUser(HttpServletRequest request)
     {
-        // 获取请求携带的令牌
+        // Get the token carried by the request
         String token = getToken(request);
         if (StringUtils.isNotEmpty(token))
         {
             try
             {
                 Claims claims = parseToken(token);
-                // 解析对应的权限以及用户信息
+                // Parse corresponding permissions and user information
                 String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
                 LoginUser user = redisCache.getCacheObject(userKey);
@@ -109,14 +96,14 @@ public class RpTokenService
             }
             catch (Exception e)
             {
-                log.error("获取用户信息异常'{}'", e.getMessage());
+                log.error(MessageUtils.messageEn("log.token.user.info.error"), e.getMessage());
             }
         }
         return null;
     }
 
     /**
-     * 设置用户身份信息
+     * Set user identity information
      */
     public void setLoginUser(LoginUser loginUser)
     {
@@ -127,7 +114,7 @@ public class RpTokenService
     }
 
     /**
-     * 删除用户身份信息
+     * Delete user identification information
      */
     public void delLoginUser(String token)
     {
@@ -139,10 +126,10 @@ public class RpTokenService
     }
 
     /**
-     * 创建令牌
+     * Create token
      *
-     * @param loginUser 用户信息
-     * @return 令牌
+     * @param loginUser user information
+     * @return token
      */
     public String createToken(LoginUser loginUser)
     {
@@ -157,10 +144,10 @@ public class RpTokenService
     }
 
     /**
-     * 验证令牌有效期，相差不足20分钟，自动刷新缓存
+     * Verify the token validity period, the difference is less than 20 minutes, automatically refresh the cache
      *
      * @param loginUser
-     * @return 令牌
+     * @return token
      */
     public void verifyToken(LoginUser loginUser)
     {
@@ -173,23 +160,23 @@ public class RpTokenService
     }
 
     /**
-     * 刷新令牌有效期
+     * Refresh token validity period
      *
-     * @param loginUser 登录信息
+     * @param loginUser login information
      */
     public void refreshToken(LoginUser loginUser)
     {
         loginUser.setLoginTime(System.currentTimeMillis());
         loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
-        // 根据uuid将loginUser缓存
+        // Cache loginUser based on uuid
         String userKey = getTokenKey(loginUser.getToken());
         redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     /**
-     * 设置用户代理信息
+     * Set user agent information
      *
-     * @param loginUser 登录信息
+     * @param loginUser login information
      */
     public void setUserAgent(LoginUser loginUser)
     {
@@ -202,10 +189,10 @@ public class RpTokenService
     }
 
     /**
-     * 从数据声明生成令牌
+     * Generate tokens from data claims
      *
-     * @param claims 数据声明
-     * @return 令牌
+     * @param claims data claim
+     * @return token
      */
     private String createToken(Map<String, Object> claims)
     {
@@ -216,10 +203,10 @@ public class RpTokenService
     }
 
     /**
-     * 从令牌中获取数据声明
+     * Get data claims from token
      *
-     * @param token 令牌
-     * @return 数据声明
+     * @param token token
+     * @return data declaration
      */
     private Claims parseToken(String token)
     {
@@ -230,10 +217,10 @@ public class RpTokenService
     }
 
     /**
-     * 从令牌中获取用户名
+     * Get username from token
      *
-     * @param token 令牌
-     * @return 用户名
+     * @param token token
+     * @return username
      */
     public String getUsernameFromToken(String token)
     {
@@ -242,7 +229,7 @@ public class RpTokenService
     }
 
     /**
-     * 获取请求token
+     * Get request token
      *
      * @param request
      * @return token

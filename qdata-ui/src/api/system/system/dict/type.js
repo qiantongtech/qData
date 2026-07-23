@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request.js'
 
-// 查询字典类型列表
+// Query dictionary type list
 export function listType(query) {
   return request({
     url: '/system/dict/type/list',
@@ -26,7 +27,7 @@ export function listType(query) {
   })
 }
 
-// 查询字典类型详细
+// Query dictionary type details
 export function getType(dictId) {
   return request({
     url: '/system/dict/type/' + dictId,
@@ -34,7 +35,7 @@ export function getType(dictId) {
   })
 }
 
-// 新增字典类型
+// Add new dictionary type
 export function addType(data) {
   return request({
     url: '/system/dict/type',
@@ -43,7 +44,7 @@ export function addType(data) {
   })
 }
 
-// 修改字典类型
+// Modify dictionary type
 export function updateType(data) {
   return request({
     url: '/system/dict/type',
@@ -52,7 +53,7 @@ export function updateType(data) {
   })
 }
 
-// 删除字典类型
+// Delete dictionary type
 export function delType(dictId) {
   return request({
     url: '/system/dict/type/' + dictId,
@@ -60,7 +61,7 @@ export function delType(dictId) {
   })
 }
 
-// 刷新字典缓存
+// Flush dictionary cache
 export function refreshCache() {
   return request({
     url: '/system/dict/type/refreshCache',
@@ -68,7 +69,7 @@ export function refreshCache() {
   })
 }
 
-// 获取字典选择框列表
+// Get dictionary select box list
 export function optionselect() {
   return request({
     url: '/system/dict/type/optionselect',

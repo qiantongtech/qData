@@ -21,7 +21,7 @@ import tech.qiantong.qdata.module.mc.api.service.column.McColumnApiService;
 import java.util.List;
 
 /**
- * 数据元Service业务层处理
+ * Data Element Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -53,19 +53,19 @@ public class DgDataElemServiceImpl extends ServiceImpl<DgDataElemMapper, DgDataE
 
     @Override
     public int updateDgDataElem(DgDataElemSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据元
+        // Update data element
         DgDataElemDO updateObj = BeanUtils.toBean(updateReqVO, DgDataElemDO.class);
         return mapper.updateById(updateObj);
     }
 
     @Override
     public int removeDgDataElem(List<Long> idList) {
-        // 批量删除数据元
+        // Batch delete data elements
         boolean exists = columnApiService.existsByDataElemIds(idList);
         if (exists) {
-            throw new ServiceException("dg.error.delete.ref.field", "被字段元数据引用，不可删除");
+            throw new ServiceException("dg.error.delete.ref.field", "Referenced by field metadata, cannot be deleted");
         }
         return mapper.deleteBatchIds(idList);
     }

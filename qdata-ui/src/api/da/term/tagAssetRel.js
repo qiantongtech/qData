@@ -2,7 +2,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询标签与术语关联关系列表
+// Query the list of associations between tags and terms
 export function listAttTagAssetRel(query) {
   return request({
     url: '/att/tagAssetRel/list',
@@ -11,7 +11,7 @@ export function listAttTagAssetRel(query) {
   })
 }
 
-// 查询标签与术语关联关系详细
+// Query the detailed relationship between tags and terms
 export function getAttTagAssetRel(ID) {
   return request({
     url: '/att/tagAssetRel/' + ID,
@@ -19,7 +19,7 @@ export function getAttTagAssetRel(ID) {
   })
 }
 
-// 新增标签与术语关联关系
+// Add new tags and term relationships
 export function addAttTagAssetRel(data) {
   return request({
     url: '/att/tagAssetRel',
@@ -28,7 +28,7 @@ export function addAttTagAssetRel(data) {
   })
 }
 
-// 修改标签与术语关联关系
+// Modify the relationship between labels and terms
 export function updateAttTagAssetRel(data) {
   return request({
     url: '/att/tagAssetRel',
@@ -37,7 +37,7 @@ export function updateAttTagAssetRel(data) {
   })
 }
 
-// 删除标签与术语关联关系
+// Delete the association between tags and terms
 export function delAttTagAssetRel(ID) {
   return request({
     url: '/att/tagAssetRel/' + ID,

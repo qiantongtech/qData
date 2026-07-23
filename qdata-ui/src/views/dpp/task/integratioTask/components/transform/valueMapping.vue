@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -35,26 +36,26 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
-              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+              { required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' },
             ]"
            :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
-              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
+              :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')"
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"
-                :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+                :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
                 filterable
                 disabled
               >
@@ -75,16 +76,16 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.inputField', '使用字段')"
+            :label="td('dpp.integration.inputField', 'Use Field')"
             prop="taskParams.inputField"
             :rules="[
-              { required: true, message: td('dpp.integration.inputFieldRequired', '请选择使用字段'), trigger: 'blur' },
+              { required: true, message: td('dpp.integration.inputFieldRequired', 'Please select use field'), trigger: 'blur' },
             ]"
            :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.inputField"
-                :placeholder="td('dpp.integration.inputFieldPlaceholder', '请选择字段名称')"
+                :placeholder="td('dpp.integration.inputFieldPlaceholder', 'Please select field name')"
                 filterable
               >
                 <el-option
@@ -102,16 +103,16 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.outputField', '目标字段')"
+            :label="td('dpp.integration.outputField', 'Target Field')"
             prop="taskParams.outputField"
             :rules="[
-              { required: true, message: td('dpp.integration.outputFieldRequired', '请输入目标字段'), trigger: 'change' },
+              { required: true, message: td('dpp.integration.outputFieldRequired', 'Please enter target field'), trigger: 'change' },
             ]"
            :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.taskParams.outputField"
-              :placeholder="td('dpp.integration.outputFieldPlaceholder', '请输入目标字段')"
+              :placeholder="td('dpp.integration.outputFieldPlaceholder', 'Please enter target field')"
             />
             <div v-else class="form-readonly">
               {{ form.taskParams.outputField }}
@@ -122,22 +123,22 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.unmatchedDefaultValue', '不匹配时的默认值')"
+            :label="td('dpp.integration.unmatchedDefaultValue', 'Default Value on No Match')"
             prop="taskParams.defaultValue"
             :rules="[
               {
                 required: false,
-                message: td('dpp.integration.unmatchedDefaultValuePlaceholder', '请输入不匹配时的默认值'),
+                message: td('dpp.integration.unmatchedDefaultValuePlaceholder', 'Please select default value on no match'),
                 trigger: 'change',
               },
             ]"
            :label-position="labelPosition">
             <template #label>
               <div class="justify-center">
-                <span>{{ td('dpp.integration.unmatchedDefaultValue', '不匹配时的默认值') }}</span>
+                <span>{{ td('dpp.integration.unmatchedDefaultValue', 'Default Value on No Match') }}</span>
                 <el-tooltip
                   effect="light"
-                  :content="td('dpp.integration.unmatchedDefaultValueTooltip', '若不填写时，则使用原值')"
+                  :content="td('dpp.integration.unmatchedDefaultValueTooltip', 'If not filled, original value is used')"
                   placement="top"
                 >
                   <el-icon class="tip-icon">
@@ -149,7 +150,7 @@
             <el-input
               v-if="!info"
               v-model="form.taskParams.defaultValue"
-              :placeholder="td('dpp.integration.unmatchedDefaultValuePlaceholder', '请选择不匹配时的默认值')"
+              :placeholder="td('dpp.integration.unmatchedDefaultValuePlaceholder', 'Please select default value on no match')"
             />
             <div v-else class="form-readonly">
               {{ form.taskParams.defaultValue || "-" }}
@@ -158,7 +159,7 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.integration.fieldValues', '字段值') }}</span>
+        <span class="blue-text">{{ td('dpp.integration.fieldValues', 'Field Values') }}</span>
       </el-divider>
       <div class="justify-between mb15" v-if="!info">
         <el-row :gutter="15" class="btn-style">
@@ -177,7 +178,7 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
+        <el-table-column :label="td('common.display.index', 'Index')" width="80" align="left">
           <template #default="{ $index }">
             <div
               class="allowDrag"
@@ -195,14 +196,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.sourceValue', '原值')" align="left" prop="source">
+        <el-table-column :label="td('dpp.integration.sourceValue', 'Source Value')" align="left" prop="source">
           <template #default="scope">
-            <el-input v-model="scope.row.source" :placeholder="td('dpp.integration.sourceValuePlaceholder', '请输入原值')" />
+            <el-input v-model="scope.row.source" :placeholder="td('dpp.integration.sourceValuePlaceholder', 'Please enter source value')" />
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.targetValue', '目标值')" align="left" prop="target">
+        <el-table-column :label="td('dpp.integration.targetValue', 'Target Value')" align="left" prop="target">
           <template #default="scope">
-            <el-input v-model="scope.row.target" :placeholder="td('dpp.integration.targetValuePlaceholder', '请输入目标值')" />
+            <el-input v-model="scope.row.target" :placeholder="td('dpp.integration.targetValuePlaceholder', 'Please enter target value')" />
           </template>
         </el-table-column>
         <el-table-column
@@ -291,7 +292,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -306,7 +307,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.columnName)
         );
       },
@@ -315,27 +316,27 @@ function setSort() {
 }
 
 function handleAddField() {
-  // 1. 校验已有行的目标值是否都有填写
+  // 1. Verify whether the target values of existing rows are filled in
   const incompleteRow = tableFields.value.find(
     (row) => !row.source || !row.target
   );
   if (incompleteRow) {
-    proxy.$message.warning(td("dpp.integration.addFailedFillFieldValues", "新增失败，请先填写字段值"));
+    proxy.$message.warning(td("dpp.integration.addFailedFillFieldValues", "Add failed, please fill field values first"));
     return;
   }
 
-  // 最后一行名称
+  // last line name
   let isRepeat = hasDuplicateObjects(tableFields.value, "source");
   if (isRepeat) {
-    proxy.$message.warning(td("dpp.integration.noRepeatSourceValues", "新增失败，请不要填写重复的原值"));
+    proxy.$message.warning(td("dpp.integration.noRepeatSourceValues", "Add failed, please do not use duplicate source values"));
     return;
   }
 
-  // 4. 新增字段对象（可以根据需要扩展属性）
+  // 4. Add a new field object (attributes can be extended as needed)
   tableFields.value.push({
     columnName: "",
-    source: "", // 也可以初始化为 nextField.columnName 或其他默认值
-    target: "", // 目标值默认空，需用户填写
+    source: "", // Can also be initialized to nextField.columnName or other default value
+    target: "", // The target value is empty by default and needs to be filled in by the user.
     order: "asc",
     caseSensitive: false,
     locale: true,
@@ -343,7 +344,7 @@ function handleAddField() {
     presorted: false,
   });
 
-  // 5. 重新初始化拖拽排序
+  // 5. Reinitialize drag sorting
   setSort();
 }
 
@@ -353,10 +354,10 @@ function onResolveFields(payload) {
   if (!payload) return;
   switch (payload.action) {
     case "addNewOnly":
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
       break;
     case "addAll":
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       break;
     case "clearAndAddAll":
       tableFields.value = deepCopy(originalTableFieldsBackup.value);
@@ -364,11 +365,11 @@ function onResolveFields(payload) {
         "🚀 ~ onResolveFields ~  tableFields.value:",
         tableFields.value
       );
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
       setSort();
       break;
     case "cancel":
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
   }
 }
@@ -415,32 +416,32 @@ const off = () => {
 
 const saveData = async () => {
   try {
-    // 表单校验
+    // form validation
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
-    // 校验 tableFields 不为空
+    // Verify tableFields is not empty
     if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
-      proxy.$message.warning(td("dpp.integration.atLeastOneFieldValue", "校验未通过，请至少一个字段值"));
+      proxy.$message.warning(td("dpp.integration.atLeastOneFieldValue", "At least one field value is required"));
       return;
     }
 
-    // 1. 校验已有行的目标值是否都有填写
+    // 1. Verify whether the target values of existing rows are filled in
     const incompleteRow = tableFields.value.find(
       (row) => !row.source || !row.target
     );
     if (incompleteRow) {
-      proxy.$message.warning(td("dpp.integration.validateFailedFillFieldValues", "校验未通过，请先填写字段值"));
+      proxy.$message.warning(td("dpp.integration.validateFailedFillFieldValues", "Validation failed, please fill field values first"));
       return;
     }
 
-    // 最后一行名称
+    // last line name
     let isRepeat = hasDuplicateObjects(tableFields.value, "source");
     if (isRepeat) {
-      proxy.$message.warning(td("dpp.integration.validateFailedNoRepeatSourceValues", "校验未通，请不要填写重复的原值"));
+      proxy.$message.warning(td("dpp.integration.validateFailedNoRepeatSourceValues", "Validation failed, please do not use duplicate source values"));
       return;
     }
 
-    // 没有 code 时生成唯一 code
+    // Generate unique code when there is no code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
@@ -455,7 +456,7 @@ const saveData = async () => {
     taskParams.tableFields = tableFields.value;
     taskParams.mainArgs = taskParams.mainArgs || {};
 
-    // 输出字段拼接目标字段
+    // Output field splicing target field
     taskParams.outputFields = [
       ...inputFields.value,
       {
@@ -466,7 +467,7 @@ const saveData = async () => {
 
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
@@ -496,7 +497,7 @@ watchEffect(() => {
   }
   form.value = deepCopy(props.currentNode?.data || {});
   nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  // 备份初始表字段，避免被篡改
+  // Back up initial table fields to avoid tampering
   originalTableFieldsBackup.value = deepCopy(
     props.currentNode?.data?.taskParams?.inputFields || []
   );

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.dialect;
@@ -50,7 +36,7 @@ import java.util.Properties;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -119,10 +105,10 @@ public class KafkaDialect extends AbstractDbDialect {
     @Override
     public Boolean validConnection(DataSource dataSource, DbQueryProperty dbQueryProperty) {
         Properties props = new Properties();
-        props.put("bootstrap.servers", dbQueryProperty.getHost() + ":" + dbQueryProperty.getPort()); // Kafka 集群地址
-        props.put("default.api.timeout.ms", 10000); // api请求超时时间
-        props.put("request.timeout.ms", 10000); // 设置请求超时时间为10秒
-        props.put("admin.request.timeout.ms", 10000); // 设置管理请求超时时间为10秒
+        props.put("bootstrap.servers", dbQueryProperty.getHost() + ":" + dbQueryProperty.getPort()); // Kafka cluster address
+        props.put("default.api.timeout.ms", 10000); // api request timeout
+        props.put("request.timeout.ms", 10000); // Set the request timeout to 10 seconds
+        props.put("admin.request.timeout.ms", 10000); // Set the management request timeout to 10 seconds
         if (dbQueryProperty.getConfig() != null && !dbQueryProperty.getConfig().isEmpty()) {
             dbQueryProperty.getConfig().forEach((k, v) -> props.put(k, v));
         }
@@ -130,18 +116,18 @@ public class KafkaDialect extends AbstractDbDialect {
         AdminClient admin = AdminClient.create(props);
         try {
             NewTopic newTopic = new NewTopic(topic, 1, (short) 1);
-            //创建主题
+            //Create topic
             admin.createTopics(Collections.singleton(newTopic)).all().get();
-            //删除主题
+            //Delete topic
             admin.deleteTopics(Collections.singleton(topic)).all().get();
             return true;
         } catch (Exception e) {
-            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
+            throw new DataQueryException("db.error.connection.retry", "Database connection failed, please try again later");
         } finally {
             try {
                 admin.close();
             } catch (Exception e) {
-                throw new DataQueryException("db.error.close.kafka", "关闭kafka连接出错");
+                throw new DataQueryException("db.error.close.kafka", "Failed to close Kafka connection");
             }
         }
     }

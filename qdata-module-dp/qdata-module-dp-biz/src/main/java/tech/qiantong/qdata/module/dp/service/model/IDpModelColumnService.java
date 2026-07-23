@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.service.model;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 逻辑模型属性信息Service接口
+ * Logical Model Column/Property Information Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -52,54 +38,54 @@ import java.util.Map;
 public interface IDpModelColumnService extends IService<DpModelColumnDO> {
 
     /**
-     * 获得逻辑模型属性信息分页列表
+     * Get Logical Model Column/Property Information Paginated List
      *
-     * @param pageReqVO 分页请求
-     * @return 逻辑模型属性信息分页列表
+     * @param pageReqVO Pagination Request
+     * @return Logical Model Column/Property Information Paginated List
      */
     PageResult<DpModelColumnDO> getDpModelColumnPage(DpModelColumnPageReqVO pageReqVO);
 
     /**
-     * 创建逻辑模型属性信息
+     * Create Logical Model Column/Property Information
      *
-     * @param createReqVO 逻辑模型属性信息信息
-     * @return 逻辑模型属性信息编号
+     * @param createReqVO Logical Model Column/Property Information
+     * @return Logical Model Column/Property Information ID
      */
     Long createDpModelColumn(DpModelColumnSaveReqVO createReqVO);
 
     /**
-     * 更新逻辑模型属性信息
+     * Update Logical Model Column/Property Information
      *
-     * @param updateReqVO 逻辑模型属性信息信息
+     * @param updateReqVO Logical Model Column/Property Information
      */
     int updateDpModelColumn(DpModelColumnSaveReqVO updateReqVO);
 
     /**
-     * 删除逻辑模型属性信息
+     * Delete Logical Model Column/Property Information
      *
-     * @param idList 逻辑模型属性信息编号
+     * @param idList Logical Model Column/Property Information ID
      */
     int removeDpModelColumn(Collection<Long> idList);
 
     /**
-     * 批量删除逻辑模型属性信息
+     * Batch Delete Logical Model Column/Property Information
      *
-     * @param modelIdList 逻辑模型编号
+     * @param modelIdList Logical Model ID
      */
     int removeDpModelColumnByModelId(Collection<Long> modelIdList);
 
     /**
-     * 获得逻辑模型属性信息详情
+     * Get Logical Model Column/Property Information Details
      *
-     * @param id 逻辑模型属性信息编号
-     * @return 逻辑模型属性信息
+     * @param id Logical Model Column/Property Information ID
+     * @return Logical Model Column/Property Information
      */
     DpModelColumnDO getDpModelColumnById(Long id);
 
     /**
-     * 获得全部逻辑模型属性信息列表
+     * Get All Logical Model Column/Property Information List
      *
-     * @return 逻辑模型属性信息列表
+     * @return Logical Model Column/Property Information List
      */
     List<DpModelColumnDO> getDpModelColumnList();
     List<DpModelColumnDO> getDpModelColumnList(DpModelColumnSaveReqVO createReqVO);
@@ -107,36 +93,36 @@ public interface IDpModelColumnService extends IService<DpModelColumnDO> {
     long countByDpModelColumn(DpModelColumnSaveReqVO createReqVO);
 
     /**
-     * 获得全部逻辑模型属性信息 Map
+     * Get All Logical Model Column/Property Information Map
      *
-     * @return 逻辑模型属性信息 Map
+     * @return Logical Model Column/Property Information Map
      */
     Map<Long, DpModelColumnDO> getDpModelColumnMap();
 
 
     /**
-     * 导入逻辑模型属性信息数据
+     * Import Logical Model Column/Property Information Data
      *
-     * @param importExcelList 逻辑模型属性信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Logical Model Column/Property Information Data List
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDpModelColumn(List<DpModelColumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 批量插入逻辑模型属性信息数据
+     * Batch Insert Logical Model Column/Property Information Data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical Model Column/Property Information Data List
+     * @return Result
      */
     Boolean createDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList);
 
     /**
-     * 批量修改和插入逻辑模型属性信息数据
+     * Batch Update and Insert Logical Model Column/Property Information Data
      *
-     * @param dpModelColumnList 逻辑模型属性信息数据列表
-     * @return 结果
+     * @param dpModelColumnList Logical Model Column/Property Information Data List
+     * @return Result
      */
     Boolean updateDpModelColumnList(List<DpModelColumnSaveReqVO> dpModelColumnList);
 }

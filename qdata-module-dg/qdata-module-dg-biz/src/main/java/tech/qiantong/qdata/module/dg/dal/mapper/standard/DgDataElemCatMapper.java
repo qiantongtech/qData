@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据元类目管理Mapper接口
+ * Standard Data Element Category Mapper Interface
  *
  * @author qdata
  * @date 2025-01-20

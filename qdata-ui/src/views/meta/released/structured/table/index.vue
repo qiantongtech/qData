@@ -241,7 +241,7 @@ const searchStore = reactive({
   ],
 });
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -258,9 +258,9 @@ function handleTreeDataLoaded({ treeData, flatData }) {
   store.treeDomains = treeData;
 }
 
-// 节点单击事件
+// Node click event
 function handleNodeClick(data) {
-  // 清除之前的筛选
+  // Clear previous filters
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
@@ -277,12 +277,12 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-// 搜索按钮操作
+// Search button action
 function handleQueryClick() {
   tableRef.value?.getList();
 }
 
-// 重置按钮操作
+// reset button action
 function handleResetQueryClick() {
   if (sourceSystemTreeRef.value?.resetTree) {
     sourceSystemTreeRef.value.resetTree();
@@ -294,7 +294,7 @@ function handleResetQueryClick() {
   tableRef.value?.resetQuery();
 }
 
-// 获取库元素列表
+// Get a list of library elements
 function getMetaDatabases() {
   store.metaDatabases.splice(0, store.metaDatabases.length);
   return listDb({ pageSize: 1000 }).then((res) => {
@@ -308,7 +308,7 @@ function getMetaDatabases() {
   });
 }
 
-// 详情
+// Details
 function handleDetailClick(row, tab) {
   router.push({
     path: BASE_URL + "/detail",

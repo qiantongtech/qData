@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询资产稽查调度列表
+// Query the asset audit schedule list
 export function listDaAssetAuditSchedule(query) {
   return request({
     url: '/da/daAssetAuditSchedule/list',
@@ -26,7 +27,7 @@ export function listDaAssetAuditSchedule(query) {
   })
 }
 
-// 查询资产稽查调度详细
+// Query asset audit schedule details
 export function getDaAssetAuditSchedule(id) {
   return request({
     url: '/da/daAssetAuditSchedule/' + id,
@@ -34,7 +35,7 @@ export function getDaAssetAuditSchedule(id) {
   })
 }
 
-// 新增资产稽查调度
+// Added asset audit schedule
 export function addDaAssetAuditSchedule(data) {
   return request({
     url: '/da/daAssetAuditSchedule',
@@ -43,7 +44,7 @@ export function addDaAssetAuditSchedule(data) {
   })
 }
 
-// 修改资产稽查调度
+// Modify asset audit schedule
 export function updateDaAssetAuditSchedule(data) {
   return request({
     url: '/da/daAssetAuditSchedule',
@@ -52,7 +53,7 @@ export function updateDaAssetAuditSchedule(data) {
   })
 }
 
-// 删除资产稽查调度
+// Delete asset audit schedule
 export function delDaAssetAuditSchedule(id) {
   return request({
     url: '/da/daAssetAuditSchedule/' + id,

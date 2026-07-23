@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,56 +27,56 @@
         </el-row>
     </div>
 
-    <!-- 表格部分 -->
+    <!-- table part -->
     <el-table stripe height="300px" v-loading="loading" :data="dpCodeMapList">
-        <el-table-column :label="td('dpp.integration.originalValue', '原始值')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue">
+        <el-table-column :label="td('dpp.integration.originalValue', 'Original Value')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue">
             <template #default="scope">
                 {{ scope.row.originalValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dictName', '字典名')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictName">
+        <el-table-column :label="td('dpp.integration.dictName', 'Dictionary Name')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictName">
             <template #default="scope">
                 {{ scope.row.dictName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dictValue', '字典值')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictValue">
+        <el-table-column :label="td('dpp.integration.dictValue', 'Dictionary Value')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="dictValue">
             <template #default="scope">
                 {{ scope.row.dictValue || '-' }}
             </template>
         </el-table-column>
         <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right">
             <template #default="scope">
-                <!-- 修改时传递行索引，用于后续的 local 编辑 -->
+                <!-- Pass the row index when modifying, for subsequent local editing -->
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, scope.$index)">{{ td('common.button.update') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleDelete(scope.$index)">{{ td('common.button.delete') }}</el-button>
             </template>
         </el-table-column>
         <template #empty>
             <div class="emptyBg">
-                <p>{{ td('common.message.noData', '暂无数据') }}</p>
+                <p>{{ td('common.message.noData', 'No data') }}</p>
             </div>
         </template>
     </el-table>
 
-    <!-- 新增/修改对话框 -->
+    <!-- Add/modify dialog box -->
     <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable destroy-on-close>
         <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.originalValue', '原始值')" prop="originalValue" :label-position="labelPosition">
-                        <el-input v-model="form.originalValue" :placeholder="td('dpp.integration.originalValuePlaceholder', '请输入原始值')" />
+                    <el-form-item :label="td('dpp.integration.originalValue', 'Original Value')" prop="originalValue" :label-position="labelPosition">
+                        <el-input v-model="form.originalValue" :placeholder="td('dpp.integration.originalValuePlaceholder', 'Please enter original value')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictName', '字典名')" prop="dictName" :label-position="labelPosition">
-                        <el-input v-model="form.dictName" :placeholder="td('dpp.integration.dictNamePlaceholder', '请输入字典名')" />
+                    <el-form-item :label="td('dpp.integration.dictName', 'Dictionary Name')" prop="dictName" :label-position="labelPosition">
+                        <el-input v-model="form.dictName" :placeholder="td('dpp.integration.dictNamePlaceholder', 'Please enter dictionary name')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dpp.integration.dictValue', '字典值')" prop="dictValue" :label-position="labelPosition">
-                        <el-input v-model="form.dictValue" :placeholder="td('dpp.integration.dictValuePlaceholder', '代码值')" />
+                    <el-form-item :label="td('dpp.integration.dictValue', 'Dictionary Value')" prop="dictValue" :label-position="labelPosition">
+                        <el-input v-model="form.dictValue" :placeholder="td('dpp.integration.dictValuePlaceholder', 'Code value')" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -108,17 +109,17 @@ const dpCodeMapList = ref(props.row || []);
 watch(
     () => props.row,
     (newValue) => {
-        dpCodeMapList.value = newValue || []; // 如果新值是 undefined 或 null，则赋为空数组
+        dpCodeMapList.value = newValue || []; // If the new value is undefined or null, assign an empty array
     },
     { deep: true }
 );
 
-// 其他状态变量
+// Other state variables
 const loading = ref(false);
 const total = ref(dpCodeMapList.value.length);
 const open = ref(false);
 const title = ref('');
-// 表单和验证规则
+// Forms and validation rules
 const data = reactive({
     oldOriginalValue: null,
     form: {
@@ -127,29 +128,29 @@ const data = reactive({
         dictValue: null,
     },
     rules: {
-        originalValue: [{ required: true, message: td('dpp.integration.originalValueRequired', '原始值不能为空'), trigger: 'change' }],
-        dictName: [{ required: true, message: td('dpp.integration.dictNameRequired', '代码名不能为空'), trigger: 'change' }],
-        dictValue: [{ required: true, message: td('dpp.integration.dictValueRequired', '字典值不能为空'), trigger: 'change' }]
+        originalValue: [{ required: true, message: td('dpp.integration.originalValueRequired', 'Original value is required'), trigger: 'change' }],
+        dictName: [{ required: true, message: td('dpp.integration.dictNameRequired', 'Code name is required'), trigger: 'change' }],
+        dictValue: [{ required: true, message: td('dpp.integration.dictValueRequired', 'Dictionary value is required'), trigger: 'change' }]
     }
 });
 
 const { oldOriginalValue, form, rules } = toRefs(data);
 const emit = defineEmits(["dpCodeMapList",]);
-/** 表单重置 */
+/** form reset */
 function reset() {
     form.value = { index: null, id: null, originalValue: null, dictName: null, dictValue: null };
     oldOriginalValue.value = null;
     // proxy.resetForm('dpCodeMapRef');
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
     reset();
     open.value = true;
     title.value = td('common.button.add');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row, index) {
     reset();
     form.value = { ...row, index };
@@ -158,9 +159,9 @@ function handleUpdate(row, index) {
     title.value = td('common.button.update');
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(index) {
-    proxy.$modal.confirm(td('dpp.integration.confirmDeleteData', '是否确认删除该数据项？'))
+    proxy.$modal.confirm(td('dpp.integration.confirmDeleteData', 'Are you sure to delete this data?'))
         .then(() => {
             dpCodeMapList.value.splice(index, 1);
             total.value = dpCodeMapList.value.length;
@@ -170,18 +171,18 @@ function handleDelete(index) {
         .catch(() => { });
 }
 
-/** 提交按钮：新增或修改 */
+/** Submit button: add or modify */
 function submitForm() {
     proxy.$refs['dpCodeMapRef'].validate((valid) => {
         if (valid) {
-            // 检查 originalValue 是否已经存在
+            // Check if originalValue already exists
             const isDuplicate = dpCodeMapList.value.some(item => item.originalValue === form.value.originalValue);
             if (!(oldOriginalValue.value !== null && oldOriginalValue.value === form.value.originalValue) && isDuplicate) {
-                proxy.$modal.msgWarning(td('dpp.integration.originalValueDuplicate', '原始值已存在，不能新增'));
-                return; // 阻止继续执行
+                proxy.$modal.msgWarning(td('dpp.integration.originalValueDuplicate', 'Original value already exists, cannot add'));
+                return; // Prevent execution from continuing
             }
 
-            // 如果是修改操作
+            // If it is a modification operation
             if (form.value.index !== null && form.value.index !== undefined) {
                 dpCodeMapList.value.splice(form.value.index, 1, { ...form.value });
                 proxy.$modal.msgSuccess(td('common.message.editSuccess'));

@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 清洗规则基础页面   -->
+  <!-- Cleaning rules basic page   -->
   <el-dialog
     v-model="dialogVisible"
     draggable
@@ -41,18 +42,18 @@
       :disabled="dialogStatus == 2"
     >
       <el-form ref="formRef" :model="form" label-width="130px" :label-position="labelPosition">
-        <div class="h2-title">{{ td('dpp.cleanRule.basicInfo', '基础信息') }}</div>
+        <div class="h2-title">{{ td('dpp.cleanRule.basicInfo', 'Basic Info') }}</div>
         <el-row>
           <el-col :span="8">
             <el-form-item
-              :label="td('dpp.cleanRule.cleanName', '清洗名称')"
+              :label="td('dpp.cleanRule.cleanName', 'Clean Name')"
               prop="name"
               :rules="
                 !falg
                   ? [
                       {
                         required: true,
-                        message: td('dpp.cleanRule.inputCleanName', '请输入清洗名称'),
+                        message: td('dpp.cleanRule.inputCleanName', 'Please enter clean name'),
                         trigger: 'blur',
                       },
                     ]
@@ -62,28 +63,28 @@
               <el-input
                 v-if="!falg"
                 v-model="form.name"
-                :placeholder="td('dpp.cleanRule.inputCleanName', '请输入清洗名称')"
+                :placeholder="td('dpp.cleanRule.inputCleanName', 'Please enter clean name')"
               />
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('dpp.cleanRule.cleanRuleCode', '清洗规则编号')" prop="ruleCode" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleCode', 'Clean Rule Code')" prop="ruleCode" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleCode"
-                :placeholder="td('dpp.cleanRule.inputCleanRuleCode', '请输入清洗规则编号')"
+                :placeholder="td('dpp.cleanRule.inputCleanRuleCode', 'Please enter clean rule code')"
                 disabled
               />
               <div v-else class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('dpp.cleanRule.cleanRuleName', '清洗规则名称')" prop="ruleName" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.cleanRuleName', 'Clean Rule Name')" prop="ruleName" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 v-model="form.ruleName"
-                :placeholder="td('dpp.cleanRule.inputCleanRuleName', '请输入清洗规则名称')"
+                :placeholder="td('dpp.cleanRule.inputCleanRuleName', 'Please enter clean rule name')"
                 disabled
               />
               <div v-else class="form-readonly">{{ form.ruleName || "-" }}</div>
@@ -94,22 +95,22 @@
           <el-col :span="8">
             <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status" :disabled="falg">
-                <el-radio :value="'1'">{{ td('dpp.cleanRule.online', '上线') }}</el-radio>
-                <el-radio :value="'0'">{{ td('dpp.cleanRule.offline', '下线') }}</el-radio>
+                <el-radio :value="'1'">{{ td('dpp.cleanRule.online', 'Online') }}</el-radio>
+                <el-radio :value="'0'">{{ td('dpp.cleanRule.offline', 'Offline') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.ruleDesc', '规则描述')" prop="ruleDesc" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.ruleDesc', 'Rule Description')" prop="ruleDesc" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 type="textarea"
                 maxlength="500"
                 show-word-limit
                 v-model="form.ruleDesc"
-                :placeholder="td('dpp.cleanRule.inputRuleDesc', '请输入规则描述')"
+                :placeholder="td('dpp.cleanRule.inputRuleDesc', 'Please enter rule description')"
               />
               <div v-else class="form-readonly textarea">
                 {{ form.ruleDesc ?? "-" }}
@@ -119,14 +120,14 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereConditionLabel', 'Where 条件')" prop="whereClause" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.whereConditionLabel', 'Where Condition')" prop="whereClause" :label-position="labelPosition">
               <el-input
                 v-if="!falg"
                 type="textarea"
                 maxlength="500"
                 show-word-limit
                 v-model="form.whereClause"
-                :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入 Where 条件')"
+                :placeholder="td('dpp.cleanRule.inputWhereCondition', 'Please enter where condition')"
               />
               <div v-else class="form-readonly textarea">
                 {{ form?.whereClause ?? "-" }}
@@ -134,19 +135,19 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 规则配置 -->
-        <div class="h2-title">{{ td('dpp.cleanRule.ruleConfig', '规则配置') }}</div>
+        <!-- Rule configuration -->
+        <div class="h2-title">{{ td('dpp.cleanRule.ruleConfig', 'Rule Config') }}</div>
         <el-row v-if="type != 3">
           <el-col :span="24">
             <el-form-item
-              :label="td('dpp.cleanRule.cleanField', '清洗字段')"
+              :label="td('dpp.cleanRule.cleanField', 'Clean Field')"
               prop="columns"
               :rules="
                 !falg
                   ? [
                       {
                         required: true,
-                        message: td('dpp.cleanRule.selectCleanField', '请选择清洗字段'),
+                        message: td('dpp.cleanRule.selectCleanField', 'Please select clean field'),
                         trigger: 'blur',
                       },
                     ]
@@ -157,7 +158,7 @@
                 <el-select
                   v-if="isMultipleSelect"
                   v-model="form.columns"
-                  :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
+                  :placeholder="td('dpp.cleanRule.selectCleanField', 'Please select clean field')"
                   multiple
                   clearable
                 >
@@ -166,12 +167,13 @@
                     :key="dict.columnName"
                     :label="dict.label"
                     :value="dict.columnName"
+                    :disabled="shouldDisableField(dict)"
                   />
                 </el-select>
                 <el-select
                   v-else
                   v-model="form.columns"
-                  :placeholder="td('dpp.cleanRule.selectCleanField', '请选择清洗字段')"
+                  :placeholder="td('dpp.cleanRule.selectCleanField', 'Please select clean field')"
                   clearable
                 >
                   <el-option
@@ -203,7 +205,7 @@
           >{{ td('common.button.confirm') }}</el-button
         >
         <el-button @click="handleBack" v-if="!mode">{{ td('common.button.return') }}</el-button>
-        <!-- <el-button type="warning" @click="handleSpotCheck">预览</el-button> -->
+        <!-- <el-button type="warning" @click="handleSpotCheck">Preview</el-button> -->
       </template>
       <el-button @click="closeDialog" v-else>{{ td('common.button.close') }}</el-button>
     </template>
@@ -214,6 +216,7 @@
 import useDefaultLang from "@/composables/useDefaultLang"
 import SideMenu from "./ruleSelectorMenu.vue";
 import { getRuleConfig, getRuleComponent } from "./registry.js";
+import { isNumericColumnType, isTextColumnType, validateWhereCondition } from "../../../utils/foolproof.js";
 
 import moment from "moment";
 
@@ -222,7 +225,7 @@ let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
-// 父组件传入评测对象列表
+// The parent component passes in the evaluation object list
 const props = defineProps({
   inputFields: {
     type: Array,
@@ -242,6 +245,18 @@ const processedFields = computed(() => {
       ? `${item.columnName} / ${item.columnComment}`
       : item.columnName,
   }));
+});
+const isFieldValueToUpperRule = computed(() => {
+  return (
+    form.ruleCode == "022" ||
+    String(form.ruleName || "").includes("字段值转大写")
+  );
+});
+const cleanFieldOptions = computed(() => {
+  if (!isFieldValueToUpperRule.value) return processedFields.value;
+  return processedFields.value.filter((item) =>
+    isTextColumnType(item.columnType)
+  );
 });
 const columnsDisplayText = computed(() => {
   if (isMultipleSelect.value) {
@@ -266,8 +281,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //Cleaning rule name:
+  ruleCode: "", //Cleaning rule number:
   status: "1",
   // warningLevel: "2",
   whereClause: "",
@@ -276,24 +291,24 @@ let form = reactive({
   ruleDesc: "",
   type: "",
   ruleConfig: {
-    //数值边界调整
+    //Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
+    // Remove spaces from string
+    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    // Regular expression replacement
+    pattern: "", //expression
     replacement: "", //replacement
     ruleValue: [],
     deduplicationStrategy: "1",
     dataRangeValue: moment().format("YYYY-MM-DD"),
-    // 数据添加值
-    stringValue: "", //添加值
-    // 超长字段截断
+    // Data added value
+    stringValue: "", //Add value
+    // Very long field truncation
     maxLength: "100",
     direction: "1",
-    // 日期格式
+    // date format
     targetFormat: "yyyy-MM-dd",
     inputFormats: [
       "yyyyMMdd",
@@ -308,15 +323,15 @@ let form = reactive({
 const isMultipleSelect = computed(() => {
   return form.ruleCode == "019" || form.ruleCode == "029";
 });
-// 新增的计算属性，用于判断字段是否应该被禁用
+// A new calculated property is used to determine whether a field should be disabled
 const shouldDisableField = computed(() => {
   return (dict) => {
-    // 对于规则 025（按组合字段去重），只允许 pkFlag 为 1 的字段
+    // For rule 025 (deduplication by combined fields), only fields with pkFlag 1 are allowed
     // if (form.ruleCode == "025") {
     //   return dict.pkFlag != 1;
     // }
 
-    // 对于规则 039（清理过期记录），只允许日期类型字段
+    // For rule 039 (Purge expired records), only date type fields are allowed
     if (
       form.ruleCode == "039" ||
       form.ruleCode == "007" ||
@@ -330,7 +345,18 @@ const shouldDisableField = computed(() => {
       return !isDateType;
     }
 
-    // 对于规则 007 日期格式
+    if (form.ruleCode == "001" || form.ruleCode == "008") {
+      return !isNumericColumnType(dict.columnType);
+    }
+
+    if (
+      ["009", "010", "011", "012"].includes(form.ruleCode) ||
+      isFieldValueToUpperRule.value
+    ) {
+      return !isTextColumnType(dict.columnType);
+    }
+
+    // For rule 007 date format
     // if (form.ruleCode == "007") {
     //   const isStringType =
     //     dict.columnType?.toUpperCase().includes("CHAR") ||
@@ -343,14 +369,32 @@ const shouldDisableField = computed(() => {
     return false;
   };
 });
+watch(
+  [() => form.ruleCode, () => form.ruleName, processedFields],
+  () => {
+    const selectableNames = new Set(
+      processedFields.value
+        .filter((item) => !shouldDisableField.value(item))
+        .map((item) => item.columnName)
+    );
+    if (isMultipleSelect.value) {
+      const values = Array.isArray(form.columns) ? form.columns : [];
+      form.columns = values.filter((item) => selectableNames.has(item));
+      return;
+    }
+    if (form.columns && !selectableNames.has(form.columns)) {
+      form.columns = "";
+    }
+  }
+);
 let title = ref();
 
-// 计算属性：当前规则配置
+// Computed property: current rule configuration
 const currentRuleConfig = computed(() => {
   return getRuleConfig(form.ruleCode);
 });
 
-// 计算属性：当前规则组件
+// Computed property: current rule component
 const currentRuleComponent = computed(() => {
   return getRuleComponent(form.ruleCode) || getRuleComponent("EMPTY");
 });
@@ -364,7 +408,12 @@ async function handleSave() {
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning(td("dpp.cleanRule.completeRequired", "请完善必填项"));
+    proxy.$message.warning(td("dpp.cleanRule.completeRequired", "Please complete required fields"));
+    return;
+  }
+  const whereResult = validateWhereCondition(form.whereClause);
+  if (!whereResult.valid) {
+    proxy.$message.warning(whereResult.message);
     return;
   }
   let res = { valid: true, data: {} };
@@ -398,7 +447,7 @@ function handleCardClick(data) {
   form.type = data?.type;
   form.parentName = data?.parentName;
   form.dimensionType = data?.qualityDim;
-  dialogTitle.value = `${td('dpp.cleanRule.addCleanRule', '新增清洗规则')}${data?.name ? "-" + data.name : ""}`;
+  dialogTitle.value = `${td('dpp.cleanRule.addCleanRule', 'Add Clean Rule')}${data?.name ? "-" + data.name : ""}`;
   dialogStatus.value = 1;
 }
 let mode = ref();
@@ -406,11 +455,11 @@ async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  dialogTitle.value = `${mode.value ? td('common.button.update') : td('common.button.add')}${td('dpp.cleanRule.cleanRulePrefix', '清洗规则')}${
+  dialogTitle.value = `${mode.value ? td('common.button.update') : td('common.button.add')}${td('dpp.cleanRule.cleanRulePrefix', 'Clean Rule')}${
     record?.ruleName ? `-${record.ruleName}` : ""
   }`;
   if (falg?.value) {
-    dialogTitle.value = `${td('dpp.cleanRule.cleanRulePrefix', '清洗规则')}${
+    dialogTitle.value = `${td('dpp.cleanRule.cleanRulePrefix', 'Clean Rule')}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   }
@@ -444,38 +493,38 @@ const initialForm = () => ({
   id: "",
   name: "",
   type: "",
-  ruleName: "", //清洗规则名称：
-  ruleCode: "", //清洗规则编号：
+  ruleName: "", //Cleaning rule name:
+  ruleCode: "", //Cleaning rule number:
   status: "1",
   whereClause: "",
   columns: isMultipleSelect.value ? [] : "",
   tableName: "",
   ruleDesc: "",
   ruleConfig: {
-    //数值边界调整
+    //Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
-    // 去除字符串空格
-    handleType: "1", //"1-去除前后空格，2-去除所有空格"
-    // 正则表达式替换
-    pattern: "", //表达式
+    // Remove spaces from string
+    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    // Regular expression replacement
+    pattern: "", //expression
     replacement: "", //replacement
 
     ruleValue: [],
     deduplicationStrategy: "1",
-    // 枚举值映射标准化
+    // Enumeration value mapping normalization
     stringValue: [],
-    dataRange: "1", // 0：固定时间范围，1：具体日期
-    dataRangeType: "1", // 0：天前
+    dataRange: "1", // 0: fixed time range, 1: specific date
+    dataRangeType: "1", // 0: days ago
     dataRangeValue: moment().format("YYYY-MM-DD"),
-    handleType: "1", // 0：过期处理方式，1：删除记录
-    handleColumns: "", // // 标记字段     选中过期处理方式才会有
-    handleValue: "", // 标记值       选中过期处理方式才会有
-    // 超长字段截断
+    handleType: "1", // 0: Expiration processing method, 1: Delete records
+    handleColumns: "", // // Mark field only exists if the expiration processing method is selected
+    handleValue: "", // The tag value is only available if the expiration processing method is selected.
+    // Very long field truncation
     maxLength: "0",
     direction: "1",
-    // 日期格式
+    // date format
     targetFormat: "",
     inputFormats: [
       "yyyyMMdd",
@@ -485,17 +534,17 @@ const initialForm = () => ({
       "yyyy-MM-dd HH:mm:ss",
       "timestamp",
     ],
-    // 字段值替换
-    mode: "1", // 1-白名单，2-黑名单
-    allowed: [], //清洗值
-    defaultValue: "", //默认值
-    ignoreCase: "1", // 1-大小写敏感，2-大小写不敏感
-    caseSensitive: "1", // 1-去除空格，2-不去除空格
-    ignoreNullValue: "1", // 1-忽略null，2-不忽略null
-    // 日期空值填充
-    fillType: "3", //1=当前日期, 2=昨天, 3=固定值
-    defaultValue: "", // 固定值 fillType=3 时使用
-    format: "", // 日期格式
+    // Field value replacement
+    mode: "1", // 1-whitelist, 2-blacklist
+    allowed: [], //cleaning value
+    defaultValue: "", //Default value
+    ignoreCase: "1", // 1-Case sensitive, 2-Case insensitive
+    caseSensitive: "1", // 1-Remove spaces, 2-Do not remove spaces
+    ignoreNullValue: "1", // 1-ignore null, 2-do not ignore null
+    // Date null filling
+    fillType: "3", //1=Current date, 2=Yesterday, 3=Fixed value
+    defaultValue: "", // Used when fixed value fillType=3
+    format: "", // date format
   },
 });
 
@@ -513,7 +562,7 @@ function closeDialog() {
 
 function handleBack() {
   dialogStatus.value = 0;
-  dialogTitle.value = td('dpp.cleanRule.addCleanRule', '新增清洗规则');
+  dialogTitle.value = td('dpp.cleanRule.addCleanRule', 'Add Clean Rule');
   resetForm();
 }
 defineExpose({ openDialog, closeDialog });

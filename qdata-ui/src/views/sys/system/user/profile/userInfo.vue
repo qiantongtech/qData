@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -59,7 +60,7 @@ const rules = ref({
   phonenumber: [{ required: true, message: td('sys.system.userInfo.phoneRequired'), trigger: "blur" }, { pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: td('sys.system.userInfo.phoneFormat'), trigger: "blur" }],
 });
 
-/** 提交按钮 */
+/** submit button */
 function submit() {
   proxy.$refs.userRef.validate(valid => {
     if (valid) {
@@ -72,12 +73,12 @@ function submit() {
   });
 };
 
-/** 关闭按钮 */
+/** close button */
 function close() {
   proxy.$tab.closePage();
 };
 
-// 回显当前登录用户信息
+// Return current logged in user information
 watch(() => props.user, user => {
   if (user) {
     form.value = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex };

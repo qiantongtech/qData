@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.qa;
@@ -42,7 +28,7 @@ import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjSa
 import tech.qiantong.qdata.module.dpp.controller.admin.qa.vo.DppQualityTaskObjPageReqVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 /**
- * 数据质量任务-稽查对象Service接口
+ * Data Quality Task Audit Object Service Interface
  *
  * @author Chaos
  * @date 2025-07-21
@@ -50,66 +36,66 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.qa.DppQualityTaskObjDO;
 public interface IDppQualityTaskObjService extends IService<DppQualityTaskObjDO> {
 
     /**
-     * 获得数据质量任务-稽查对象分页列表
+     * Get data quality task audit object pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量任务-稽查对象分页列表
+     * @param pageReqVO Pagination request
+     * @return Data quality task audit object pagination list
      */
     PageResult<DppQualityTaskObjDO> getDppQualityTaskObjPage(DppQualityTaskObjPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量任务-稽查对象
+     * Create data quality task audit object
      *
-     * @param createReqVO 数据质量任务-稽查对象信息
-     * @return 数据质量任务-稽查对象编号
+     * @param createReqVO Data quality task audit object info
+     * @return Data quality task audit object ID
      */
     Long createDppQualityTaskObj(DppQualityTaskObjSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量任务-稽查对象
+     * Update data quality task audit object
      *
-     * @param updateReqVO 数据质量任务-稽查对象信息
+     * @param updateReqVO Data quality task audit object info
      */
     int updateDppQualityTaskObj(DppQualityTaskObjSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量任务-稽查对象
+     * Delete data quality task audit object
      *
-     * @param idList 数据质量任务-稽查对象编号
+     * @param idList Data quality task audit object ID list
      */
     int removeDppQualityTaskObj(Collection<Long> idList);
 
     /**
-     * 获得数据质量任务-稽查对象详情
+     * Get data quality task audit object detail
      *
-     * @param id 数据质量任务-稽查对象编号
-     * @return 数据质量任务-稽查对象
+     * @param id Data quality task audit object ID
+     * @return Data quality task audit object
      */
     DppQualityTaskObjDO getDppQualityTaskObjById(Long id);
 
     /**
-     * 获得全部数据质量任务-稽查对象列表
+     * Get all data quality task audit object list
      *
-     * @return 数据质量任务-稽查对象列表
+     * @return Data quality task audit object list
      */
     List<DppQualityTaskObjDO> getDppQualityTaskObjList();
     List<DppQualityTaskObjDO> getDppQualityTaskObjList(DppQualityTaskObjPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据质量任务-稽查对象 Map
+     * Get all data quality task audit object Map
      *
-     * @return 数据质量任务-稽查对象 Map
+     * @return Data quality task audit object Map
      */
     Map<Long, DppQualityTaskObjDO> getDppQualityTaskObjMap();
 
 
     /**
-     * 导入数据质量任务-稽查对象数据
+     * Import data quality task audit object data
      *
-     * @param importExcelList 数据质量任务-稽查对象数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality task audit object data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppQualityTaskObj(List<DppQualityTaskObjRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

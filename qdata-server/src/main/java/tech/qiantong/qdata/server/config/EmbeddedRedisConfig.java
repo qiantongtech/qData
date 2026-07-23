@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.server.config;
@@ -45,8 +31,8 @@ import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 嵌入式 Redis实例配置，解决本地卡顿的问题
- * 仅供本地开发测试使用，注意！！！！
+ * Embedded Redis instance configuration to solve the problem of local lag
+ * For local development and testing only, please note!!!!
  * @author Ming
  */
 @Configuration
@@ -65,43 +51,43 @@ public class EmbeddedRedisConfig {
             if (isPortAvailable(redisPort)) {
                 redisServer = new RedisServer(redisPort);
 
-                // 打印开始信息
+                // Print start information
                 log.info("-------------------------------------------------");
-                log.info("| 注意: 仅供测试使用，生产环境误用！！！           |");
-                log.info("| 注意: 本地嵌入式 Redis Server 正在启动...         |");
+                log.info("| WARNING: For testing only. Do not use in production! |");
+                log.info("| WARNING: The local embedded Redis Server is starting... |");
                 log.info("-------------------------------------------------");
 
-                // 启动Redis服务器前的等待动画
+                // Waiting animation before starting the Redis server
                 String[] frames = new String[]{"-", "\\", "|", "/"};
                 for (int i = 0; i < 12; i++) {
                     for (String frame : frames) {
-                        System.out.print("\r" + frame + " 启动中... 仅供开发和测试使用，请勿用于生产环境！");
+                        System.out.print("\r" + frame + " Starting... For development and testing only. Do not use in production!");
                         System.out.flush();
                         TimeUnit.MILLISECONDS.sleep(50);
                     }
                 }
 
-                // 实际启动Redis服务器
+                // Actually start the Redis server
                 redisServer.start();
 
-                // 清除当前行并打印最终成功消息
-                System.out.print("\r✓ 本地嵌入式 Redis Server 已成功启动于端口: " + redisServer.ports());
+                // Clear the current line and print a final success message
+                System.out.print("\r✓ Local embedded Redis Server started successfully on port: " + redisServer.ports());
                 System.out.println();
                 log.info("-------------------------------------------------");
-                log.info("| 成功: 本地嵌入式 Redis Server 已经启动完成。      |");
-                log.info("| 端口: {} ", redisServer.ports());
+                log.info("| SUCCESS: Local embedded Redis Server has started. |");
+                log.info("| Port: {} ", redisServer.ports());
                 log.info("-------------------------------------------------");
             } else {
-                log.warn("Redis 服务器端口 {} 已在使用中。跳过 Redis 启动。", redisPort);
+                log.warn("Redis server port {} is already in use. Skipping Redis startup.", redisPort);
             }
         }
     }
 
     /**
-     * 检查指定端口是否可用
+     * Check whether the specified port is available
      *
-     * @param port 要检查的端口号
-     * @return 如果端口未被占用返回true，否则返回false
+     * @param port The port number to check
+     * @return Returns true if the port is not occupied, otherwise returns false
      */
     private boolean isPortAvailable(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {

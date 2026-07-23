@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.assetchild.gis.impl;
@@ -63,7 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据资产-地理空间服务Service业务层处理
+ * Data Asset - Geospatial Service business layer processing
  *
  * @author qdata
  * @date 2025-04-14
@@ -97,15 +83,15 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
 
     @Override
     public int updateDaAssetGis(DaAssetGisSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据资产-地理空间服务
+        // Update data asset - geospatial service
         DaAssetGisDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetGisDO.class);
         return daAssetGisMapper.updateById(updateObj);
     }
     @Override
     public int removeDaAssetGis(Collection<Long> idList) {
-        // 批量删除数据资产-地理空间服务
+        // Batch delete data asset - geospatial service
         return daAssetGisMapper.deleteBatchIds(idList);
     }
 
@@ -126,24 +112,24 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
                 .collect(Collectors.toMap(
                         DaAssetGisDO::getId,
                         daAssetGisDO -> daAssetGisDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据资产-地理空间服务数据
+         * Import data asset - geospatial service data
          *
-         * @param importExcelList 数据资产-地理空间服务数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data asset - geospatial service data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operator user
+         * @return Result
          */
         @Override
         public String importDaAssetGis(List<DaAssetGisRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("da.error.import.empty", "Import data cannot be empty!", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -162,16 +148,16 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
                                 daAssetGisMapper.updateById(daAssetGisDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                        "数据更新成功，ID为 " + daAssetGisId + " 的数据资产-地理空间服务记录。", daAssetGisId, "数据资产-地理空间服务"));
+                                        "Data updated successfully, data asset - geospatial service record with ID " + daAssetGisId + ".", daAssetGisId, "Data Asset - Geospatial Service"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                        "数据更新失败，ID为 " + daAssetGisId + " 的数据资产-地理空间服务记录不存在。", daAssetGisId, "数据资产-地理空间服务"));
+                                        "Data update failed, data asset - geospatial service record with ID " + daAssetGisId + " does not exist.", daAssetGisId, "Data Asset - Geospatial Service"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, ID of a record is missing."));
                         }
                     } else {
                         QueryWrapper<DaAssetGisDO> queryWrapper = new QueryWrapper<>();
@@ -181,17 +167,17 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
                             daAssetGisMapper.insert(daAssetGisDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                    "数据插入成功，ID为 " + daAssetGisId + " 的数据资产-地理空间服务记录。", daAssetGisId, "数据资产-地理空间服务"));
+                                    "Data inserted successfully, data asset - geospatial service record with ID " + daAssetGisId + ".", daAssetGisId, "Data Asset - Geospatial Service"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                    "数据插入失败，ID为 " + daAssetGisId + " 的数据资产-地理空间服务记录已存在。", daAssetGisId, "数据资产-地理空间服务"));
+                                    "Data insert failed, data asset - geospatial service record with ID " + daAssetGisId + " already exists.", daAssetGisId, "Data Asset - Geospatial Service"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -200,12 +186,12 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records had incorrect format, errors are as follows: <br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data has been imported successfully! A total of " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }
@@ -217,48 +203,48 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
 
     @Override
     public void executeServiceForwarding(HttpServletResponse response, Long gisId, Map<String, Object> queryParams) {
-        //很具id 获取三方api配置
+        // Get third-party API config by ID
         DaAssetGisDO daAssetGisDO = this.getDaAssetGisById(gisId);
 
-        //判断api信息，例如是否启用等
+        // Validate API info, e.g. whether it is enabled
         chackYapiConfig(daAssetGisDO);
 
-        //取出Url
+        // Extract URL
         String url = daAssetGisDO.getUrl();
 
-        //封装header
+        // Package headers
         List<HeaderEntity> headerEntities = packHeadersOrYApiField(queryParams);
-        //进行三方api的调取
+        // Invoke third-party API
         try {
-            //取出调取方式
+            // Extract request method
             String reqMethod = daAssetGisDO.getHttpMethod();
-            //取出入参数
+            // Extract input parameters
             Map<String, Object> params = ( Map<String, Object>) MapUtils.getMap(queryParams, "params", new HashMap<>());
             this.fillDefaultWmtsParams(params,reqMethod);
-            //get
-            if (StringUtils.equals(HttpUtils.GET, reqMethod)) {//封装get请求
+            // GET
+            if (StringUtils.equals(HttpUtils.GET, reqMethod)) {// Package GET request
                 HttpUtils.sendGet(HttpUtils.packGetRequestURL(url, params), response, headerEntities);
-            } else if (StringUtils.equals(HttpUtils.POST, reqMethod)) {//post
+            } else if (StringUtils.equals(HttpUtils.POST, reqMethod)) {// POST
                 HttpUtils.sendPost(url, params, response, headerEntities);
-            } else {//未知
-                throw new DataQueryException("db.error.api.type", "API类型错误");
+            } else {// Unknown
+                throw new DataQueryException("db.error.api.type", "API type error");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new DataQueryException("db.error.api.http", "Http调取失败");
+            throw new DataQueryException("db.error.api.http", "HTTP invocation failed");
         }
     }
 
     private void chackYapiConfig(DaAssetGisDO daAssetGisDO) {
-        //判断是否为null
+        // Check if null
         if (daAssetGisDO == null) {
-            throw new DataQueryException("db.error.api.config.missing", "API调用，未查询到api配置");
+            throw new DataQueryException("db.error.api.config.missing", "API call, API config not found");
         }
     }
 
     /**
-     * 显式判断缺失的 WMTS 参数并补全
-     * @param params 入参 Map，会被修改
+     * Explicitly check for missing WMTS parameters and fill defaults
+     * @param params Input parameter Map, will be modified
      */
     private void fillDefaultWmtsParams(Map<String, Object> params,String reqMethod ) {
         String service = MapUtils.getString(params, "service");
@@ -277,7 +263,7 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
         }
     }
     /**
-     * 封装Header
+     * Package Headers
      *
      * @param queryParams
      * @return
@@ -285,7 +271,7 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
     public static List<HeaderEntity> packHeadersOrYApiField(Map<String, Object> queryParams) {
         List<Map<String,Object>> fieldHerderList = (List<Map<String,Object>>)MapUtils.getObject(queryParams, "fieldHerderList", new ArrayList<>());
 
-        //封装 headers
+        // Package headers
         List<HeaderEntity> headerEntityList = new ArrayList<>();
         if(CollectionUtils.isEmpty(fieldHerderList)){
             return headerEntityList;
@@ -297,7 +283,7 @@ public class DaAssetGisServiceImpl  extends ServiceImpl<DaAssetGisMapper,DaAsset
                 headerEntity.setKey(MapUtils.getString(stringObjectMap,"name"));
                 String defaultValue = MapUtils.getString(stringObjectMap, "defaultValue");
                 if(defaultValue == null){
-                    throw new DataQueryException("db.error.api.header.null", "Header中不能为null");
+                    throw new DataQueryException("db.error.api.header.null", "Header value cannot be null");
                 }
                 headerEntity.setValue(defaultValue);
                 headerEntityList.add(headerEntity);

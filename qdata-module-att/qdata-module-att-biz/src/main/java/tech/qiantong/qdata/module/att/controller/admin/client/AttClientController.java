@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.controller.admin.client;
@@ -62,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 应用管理Controller
+ * App Management Controller
  *
  * @author qdata
  * @date 2025-02-18
@@ -85,18 +71,18 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "导出应用管理列表")
     @PreAuthorize("@ss.hasPermi('att:client:export')")
-    @Log(title = "应用管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttClientPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttClientDO> list = (List<AttClientDO>) attClientService.getAttClientPage(exportReqVO).getRows();
         ExcelUtil<AttClientRespVO> util = new ExcelUtil<>(AttClientRespVO.class);
-        util.exportExcel(response, AttClientConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttClientConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入应用管理列表")
     @PreAuthorize("@ss.hasPermi('att:client:import')")
-    @Log(title = "应用管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttClientRespVO> util = new ExcelUtil<>(AttClientRespVO.class);
@@ -116,7 +102,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "新增应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:add')")
-    @Log(title = "应用管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttClientSaveReqVO attClient) {
         return CommonResult.toAjax(attClientService.createAttClient(attClient));
@@ -124,7 +110,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "修改应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:edit')")
-    @Log(title = "应用管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttClientSaveReqVO attClient) {
         return CommonResult.toAjax(attClientService.updateAttClient(attClient));
@@ -132,7 +118,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "删除应用管理")
     @PreAuthorize("@ss.hasPermi('att:client:remove')")
-    @Log(title = "应用管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.client", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attClientService.removeAttClient(Arrays.asList(ids)));
@@ -140,7 +126,7 @@ public class AttClientController extends BaseController {
 
     @Operation(summary = "重置应用秘钥")
     @PreAuthorize("@ss.hasPermi('att:client:edit')")
-    @Log(title = "重置应用秘钥", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.client.reset.key", businessType = BusinessType.UPDATE)
     @PostMapping("/reset/secret")
     public CommonResult<String> resetSecret(Long id) {
         AttClientDO client = attClientService.getAttClientById(id);

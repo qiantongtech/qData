@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.mybatis.core.mapper;
@@ -57,10 +43,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 在 MyBatis Plus 的 BaseMapper 的基础上拓展，提供更多的能力
+ * Expand on the BaseMapper of MyBatis Plus to provide more capabilities
  *
- * 1. {@link BaseMapper} 为 MyBatis Plus 的基础接口，提供基础的 CRUD 能力
- * 2. {@link MPJBaseMapper} 为 MyBatis Plus Join 的基础接口，提供连表 Join 能力
+ * 1. {@link BaseMapper} is the basic interface of MyBatis Plus and provides basic CRUD capabilities.
+ * 2. {@link MPJBaseMapper} is the basic interface of MyBatis Plus Join, providing table join capabilities
  */
 public interface BaseMapperX<T> extends MPJBaseMapper<T> {
 
@@ -73,37 +59,37 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     default PageResult<T> selectPage(PageParam pageParam, Collection<SortingField> sortingFields, @Param("ew") Wrapper<T> queryWrapper) {
-        // 特殊：不分页，直接查询全部
+        // Special: No paging, query all directly
         if (PageParam.PAGE_SIZE_NONE.equals(pageParam.getPageSize())) {
             List<T> list = selectList(queryWrapper);
             return new PageResult<>(list, (long) list.size());
         }
 
-        // MyBatis Plus 查询
+        // MyBatis Plus query
         IPage<T> mpPage = MyBatisUtils.buildPage(pageParam, sortingFields);
         selectPage(mpPage, queryWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
     default <D> PageResult<D> selectJoinPage(PageParam pageParam, Class<D> clazz, MPJLambdaWrapper<T> lambdaWrapper) {
-        // 特殊：不分页，直接查询全部
+        // Special: No paging, query all directly
         if (PageParam.PAGE_SIZE_NONE.equals(pageParam.getPageSize())) {
             List<D> list = selectJoinList(clazz, lambdaWrapper);
             return new PageResult<>(list, (long) list.size());
         }
 
-        // MyBatis Plus Join 查询
+        // MyBatis Plus Join Query
         IPage<D> mpPage = MyBatisUtils.buildPage(pageParam);
         mpPage = selectJoinPage(mpPage, clazz, lambdaWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
     default <DTO> PageResult<DTO> selectJoinPage(PageParam pageParam, Class<DTO> resultTypeClass, MPJBaseJoin<T> joinQueryWrapper) {
         IPage<DTO> mpPage = MyBatisUtils.buildPage(pageParam);
         selectJoinPage(mpPage, resultTypeClass, joinQueryWrapper);
-        // 转换返回
+        // Conversion returns
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
     }
 
@@ -177,12 +163,12 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     /**
-     * 批量插入，适合大量数据插入
+     * Batch insertion, suitable for inserting large amounts of data
      *
-     * @param entities 实体们
+     * @param entities entities
      */
     default Boolean insertBatch(Collection<T> entities) {
-        // 特殊：SQL Server 批量插入后，获取 id 会报错，因此通过循环处理
+        // Special: After SQL Server batch inserts, an error will be reported when obtaining the id, so it is processed through a loop.
         if (Objects.equals(SqlConstants.DB_TYPE, DbType.SQL_SERVER)) {
             entities.forEach(this::insert);
             return CollUtil.isNotEmpty(entities);
@@ -191,13 +177,13 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
     }
 
     /**
-     * 批量插入，适合大量数据插入
+     * Batch insertion, suitable for inserting large amounts of data
      *
-     * @param entities 实体们
-     * @param size     插入数量 Db.saveBatch 默认为 1000
+     * @param entities entities
+     * @param size insert quantity Db.saveBatch default is 1000
      */
     default Boolean insertBatch(Collection<T> entities, int size) {
-        // 特殊：SQL Server 批量插入后，获取 id 会报错，因此通过循环处理
+        // Special: After SQL Server batch inserts, an error will be reported when obtaining the id, so it is processed through a loop.
         if (Objects.equals(SqlConstants.DB_TYPE, DbType.SQL_SERVER)) {
             entities.forEach(this::insert);
             return CollUtil.isNotEmpty(entities);

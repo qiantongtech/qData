@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.constants;
@@ -63,16 +49,16 @@ public class DbQueryProperty implements Serializable {
     private Integer port;
     private String dbName;
     private String sid;
-    //kafka配置或生成表sql时所需的配置
+    //Kafka configuration or configuration needed when generating table SQL
     private Map<String, Object> config;
 
     /**
-     * 配置
+     * Datasource configuration
      */
     private Map<String, Object> datasourceConfig;
 
     /**
-     * 不解密的构造方法
+     * Constructor without decryption
      *
      * @param dbType
      * @param host
@@ -108,11 +94,11 @@ public class DbQueryProperty implements Serializable {
     }
 
     /**
-     * 参数合法性校验
+     * Parameter validation
      */
     public void viald() {
         if (StringUtils.isBlank(dbType)) {
-            throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+            throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
         }
         DbType dbTypeEnum = DbType.getDbType(dbType);
         switch (dbTypeEnum) {
@@ -132,30 +118,30 @@ public class DbQueryProperty implements Serializable {
                         || StringUtils.isBlank(username)
                         || StringUtils.isBlank(password)
                         || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case REDIS:
                 if (StringUtils.isBlank(host)
                         || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case HIVE:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case HDFS:
             case KAFKA:
             case RABBITMQ:
                 if (StringUtils.isBlank(host) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case FTP:
                 if (StringUtils.isAnyBlank(host, username, password) || port == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case OSS_ALIYUN:
@@ -164,36 +150,36 @@ public class DbQueryProperty implements Serializable {
                         || datasourceConfig.get("keySecret") == null
                         || datasourceConfig.get("bucket") == null
                         || datasourceConfig.get("endpoint") == null) {
-                    throw new DataQueryException("db.error.params.incomplete", "参数不完整");
+                    throw new DataQueryException("db.error.params.incomplete", "Incomplete parameters");
                 }
                 break;
             case OTHER:
-                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
     }
 
     /**
-     * @param datasourceType   类型
+     * @param datasourceType   type
      * @param ip               ip
-     * @param port             端口
-     * @param datasourceConfig 配置信息（JSON字符串）
+     * @param port             port
+     * @param datasourceConfig configuration info (JSON string)
      */
     public DbQueryProperty(String datasourceType, String ip, Long port, String datasourceConfig) {
         if (org.apache.commons.lang.StringUtils.isEmpty(datasourceType)) {
-            throw new DataQueryException("db.error.datasource.type.empty", "数据库类型不能为空");
+            throw new DataQueryException("db.error.datasource.type.empty", "Database type cannot be empty");
         }
         if (StringUtils.isEmpty(datasourceConfig)) {
-            throw new DataQueryException("db.error.datasource.config.empty", "数据源配置不能为空");
+            throw new DataQueryException("db.error.datasource.config.empty", "Datasource configuration cannot be empty");
         }
         if (DbType.getDbType(datasourceType) == null) {
-            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
 
         JSONObject configJson;
         try {
             configJson = JSON.parseObject(datasourceConfig);
         } catch (Exception e) {
-            throw new DataQueryException("db.error.datasource.config.json", "数据源配置格式错误，应为合法的JSON");
+            throw new DataQueryException("db.error.datasource.config.json", "Invalid datasource configuration format, must be valid JSON");
         }
         this.datasourceConfig = configJson;
 
@@ -206,7 +192,7 @@ public class DbQueryProperty implements Serializable {
         this.username = configJson.getString("username");
 
         String passwordAes = configJson.getString("password");
-        //发布商业版，临时注释
+        //Commercial release, temporarily commented out
         if (StringUtils.isNotBlank(passwordAes)) {
             try {
                 this.password = AesEncryptUtil.desEncrypt(configJson.getString("password")).trim();
@@ -232,13 +218,13 @@ public class DbQueryProperty implements Serializable {
                 && !StringUtils.equals(DbType.RABBITMQ.getDb(), dbType)
                 && !StringUtils.equals(DbType.OSS_ALIYUN.getDb(), dbType)) {
             if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-                throw new DataQueryException("db.error.datasource.config.auth", "数据源配置中必须包含username、password");
+                throw new DataQueryException("db.error.datasource.config.auth", "Datasource configuration must include username and password");
             }
         }
     }
 
     /**
-     * 用于查询dbName下信息，部分数据库只支持切换链接后查询
+     * Used to query information under dbName; some databases only support querying after switching connections
      *
      * @param dbNameVO
      */
@@ -258,7 +244,7 @@ public class DbQueryProperty implements Serializable {
     public String trainToJdbcUrl() {
         DbType dbType = DbType.getDbType(this.getDbType());
         if (dbType == null) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         DbDialect dbDialect = DialectFactory.getDialect(dbType);
         return dbDialect.trainToJdbcUrl(this);
@@ -267,38 +253,38 @@ public class DbQueryProperty implements Serializable {
     @Deprecated
     public String trainToJdbcWriterName() {
         if (DbType.ORACLE.getDb().equals(this.getDbType())) {
-            return "oraclewriter"; // Oracle 类型返回 "oraclewriter"
+            return "oraclewriter"; // Oracle type returns "oraclewriter"
         } else if (DbType.MYSQL.getDb().equals(this.getDbType())) {
-            return "mysqlwriter"; // MySQL 类型返回 "mysqlwriter"
+            return "mysqlwriter"; // MySQL type returns "mysqlwriter"
         } else if (DbType.POSTGRE_SQL.getDb().equals(this.getDbType())) {
-            return "postgresqlwriter"; // PostgreSQL 类型返回 "postgresqlwriter"
+            return "postgresqlwriter"; // PostgreSQL type returns "postgresqlwriter"
         } else if (DbType.SQL_SERVER.getDb().equals(this.getDbType())) {
-            return "sqlserverwriter"; // SQLServer 类型返回 "sqlserverwriter"
+            return "sqlserverwriter"; // SQLServer type returns "sqlserverwriter"
         } else if (DbType.DM8.getDb().equals(this.getDbType())) {
-            return "rdbmswriter"; // 达梦8 类型返回 "rdbmswriter"
+            return "rdbmswriter"; // DM8 type returns "rdbmswriter"
         } else if (DbType.KINGBASE8.getDb().equals(this.getDbType())) {
-            return "kingbaseeswriter"; // 人大金仓 类型返回 "rdbmswriter"
+            return "kingbaseeswriter"; // KingbaseES type returns "kingbaseeswriter"
         } else {
-            return "defaultwriter"; // 默认返回 "defaultwriter"
+            return "defaultwriter"; // Default returns "defaultwriter"
         }
     }
 
     @Deprecated
     public String trainToJdbcReaderName() {
         if (DbType.ORACLE.getDb().equals(this.getDbType())) {
-            return "oraclereader"; // Oracle 类型返回 "oraclewriter"
+            return "oraclereader"; // Oracle type returns "oraclereader"
         } else if (DbType.MYSQL.getDb().equals(this.getDbType())) {
-            return "mysqlreader"; // MySQL 类型返回 "mysqlwriter"
+            return "mysqlreader"; // MySQL type returns "mysqlreader"
         } else if (DbType.POSTGRE_SQL.getDb().equals(this.getDbType())) {
-            return "postgresqlreader"; // PostgreSQL 类型返回 "postgresqlwriter"
+            return "postgresqlreader"; // PostgreSQL type returns "postgresqlreader"
         } else if (DbType.SQL_SERVER.getDb().equals(this.getDbType())) {
-            return "sqlserverreader"; // SQLServer 类型返回 "sqlserverwriter"
+            return "sqlserverreader"; // SQLServer type returns "sqlserverreader"
         } else if (DbType.DM8.getDb().equals(this.getDbType())) {
-            return "rdbmsreader"; // 达梦8 类型返回 "rdbmswriter"
+            return "rdbmsreader"; // DM8 type returns "rdbmsreader"
         } else if (DbType.KINGBASE8.getDb().equals(this.getDbType())) {
-            return "kingbaseesreader"; // 人大金仓 类型返回 "rdbmswriter"
+            return "kingbaseesreader"; // KingbaseES type returns "kingbaseesreader"
         } else {
-            return "defaultreader"; // 默认返回 "defaultwriter"
+            return "defaultreader"; // Default returns "defaultreader"
         }
     }
 
@@ -324,37 +310,37 @@ public class DbQueryProperty implements Serializable {
 
     @Deprecated
     public String trainToJdbcWriteMode(Object columns, String writeModeType, String dbType) {
-        // writeModeType: 1 全量写，2 增量写，3 增更写
+        // writeModeType: 1 full write, 2 incremental write, 3 update-or-insert write
         if ("1".equals(writeModeType) || "2".equals(writeModeType)) {
-            return "insert"; // 全量写 或 增量写 都是 insert
+            return "insert"; // Full write or incremental write both use insert
         } else if ("3".equals(writeModeType)) {
             List<String> columnList = (List<String>) columns;
             if (CollectionUtils.isNotEmpty(columnList) && DbType.DM8.getDb().equals(dbType)) {
-                // 如果columns不为空，则返回update并包含字段名
+                // If columns is not empty, return update with field names
                 return "update-dm (" + String.join(",", columnList) + ")";
             } else if (CollectionUtils.isNotEmpty(columnList)) {
-                // 如果columns不为空，则返回update并包含字段名
+                // If columns is not empty, return update with field names
                 return "update (" + String.join(",", columnList) + ")";
             } else {
-                // 如果columns为空，则返回默认的update
+                // If columns is empty, return default update
                 return "insert";
             }
         } else {
-            return "insert"; // 无效的 writeModeType
+            return "insert"; // Invalid writeModeType
         }
     }
 
     @Deprecated
     public String trainToJdbcTruncateTable(String tableName) {
-        // 获取数据库类型
+        // Get database type
         DbType dbTypeEnum = DbType.getDbType(dbType);
 
-        // 校验数据库类型是否存在
+        // Validate whether the database type exists
         if (dbTypeEnum == null) {
-            throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+            throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
 
-        // 根据数据库类型生成清空表语句
+        // Generate truncate table statement based on database type
         switch (dbTypeEnum) {
             case MYSQL:
             case MARIADB:
@@ -362,16 +348,16 @@ public class DbQueryProperty implements Serializable {
             case SQL_SERVER:
             case SQL_SERVER2008:
             case OTHER:
-                return "DELETE FROM " + tableName + ""; // 通用的清空表语句（MySQL, MariaDB, PostgreSQL, SQLServer, 等等）
+                return "DELETE FROM " + tableName + ""; // Generic truncate statement (MySQL, MariaDB, PostgreSQL, SQLServer, etc.)
             case ORACLE:
             case ORACLE_12C:
-                return "DELETE FROM " + tableName + ""; // Oracle 数据库的 TRUNCATE 语句（包括 CASCADE CONSTRAINTS）
+                return "DELETE FROM " + tableName + ""; // Oracle truncate statement (including CASCADE CONSTRAINTS)
             case DM8:
-                return "DELETE FROM " + tableName + ""; // 达梦8的清空表语句
+                return "DELETE FROM " + tableName + ""; // DM8 truncate statement
             case KINGBASE8:
-                return "DELETE FROM " + tableName + ""; // 人大金仓数据库的 TRUNCATE 语句，可能需要加上 RESTART IDENTITY（清空自增字段）
+                return "DELETE FROM " + tableName + ""; // KingbaseES truncate statement, may need RESTART IDENTITY (reset auto-increment fields)
             default:
-                throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+                throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
         }
     }
 

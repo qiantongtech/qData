@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ai.controller.admin.chat;
@@ -60,7 +46,7 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 import tech.qiantong.qdata.module.ai.service.chat.IAiChatConversationService;
 
 /**
- * ai聊天对话Controller
+ * ai chat conversation controller
  *
  * @author FXB
  * @date 2026-04-01
@@ -83,13 +69,13 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "导出ai聊天对话列表")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:export')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AiChatConversationPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AiChatConversationDO> list = (List<AiChatConversationDO>) aiChatConversationService.getAiChatConversationPage(exportReqVO).getRows();
         ExcelUtil<AiChatConversationRespVO> util = new ExcelUtil<>(AiChatConversationRespVO.class);
-        util.exportExcel(response, AiChatConversationConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AiChatConversationConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取ai聊天对话详细信息")
@@ -102,7 +88,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "新增ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:add')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AiChatConversationSaveReqVO aiChatConversation) {
         aiChatConversation.setCreatorId(getUserId());
@@ -113,7 +99,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "修改ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:edit')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AiChatConversationSaveReqVO aiChatConversation) {
         aiChatConversation.setUpdatorId(getUserId());
@@ -124,7 +110,7 @@ public class AiChatConversationController extends BaseController {
 
     @Operation(summary = "删除ai聊天对话")
     @PreAuthorize("@ss.hasPermi('ai:chatConversation:remove')")
-    @Log(title = "ai聊天对话", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ai.chat.conversation", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(aiChatConversationService.removeAiChatConversation(Arrays.asList(ids)));

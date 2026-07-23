@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.httpClient;
@@ -45,7 +31,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:调度器请求工具
+ * Purpose: Scheduler request tool
  * </p>
  *
  * @author: FXB
@@ -54,8 +40,8 @@ import java.util.Map;
 @Component
 public class DsRequestUtils {
 
-    private static String baseUrl;//ds请求接口前缀
-    private static String token;//ds令牌
+    private static String baseUrl;//ds request interface prefix
+    private static String token;//ds token
 
     @Value("${ds.token}")
     public void setToken(String token) {
@@ -68,17 +54,17 @@ public class DsRequestUtils {
     }
 
     /**
-     * 请求方法
+     * Request method
      *
-     * @param url         接口路径
-     * @param method      请求方法
-     * @param body        body参数
-     * @param params      url拼接的参数 map
-     * @param resultClass 结果class
+     * @param url interface path
+     * @param method request method
+     * @param body body parameter
+     * @param params url splicing parameter map
+     * @param resultClass result class
      * @return
      */
     public static <T> T request(String url, String method, Object body, Map<String, Object> params, Class<T> resultClass) {
-        //拼接url参数
+        //Splicing url parameters
         if (params != null && !params.isEmpty()) {
             String paramsStr = HttpUtil.toParams(params);
             if (url.indexOf("?") > -1) {
@@ -88,40 +74,40 @@ public class DsRequestUtils {
             }
         }
 
-        //封装请求对象
+        //Encapsulate request object
         HttpRequest request = HttpUtil.createRequest(Method.valueOf(method), baseUrl + url)
                 .header("token", token);
         if (body != null) {
             request.body(JSON.toJSONString(body));
         }
-        //获取结果
+        //Get results
         HttpResponse response = request.execute();
         return JSON.parseObject(response.body(), resultClass);
     }
 
     /**
-     * 请求方法(表单传参)
+     * Request method (form parameter passing)
      *
-     * @param url         接口路径
-     * @param method      请求方法
+     * @param url interface path
+     * @param method request method
      * @param params      map
-     * @param resultClass 结果class
+     * @param resultClass result class
      * @return
      */
     public static <T> T requestForm(String url, String method, Map<String, Object> params, Class<T> resultClass) {
-        //封装请求对象
+        //Encapsulate request object
         HttpRequest request = HttpUtil.createRequest(Method.valueOf(method), baseUrl + url)
                 .header("token", token);
         if (params != null) {
             request.form(params);
         }
-        //获取结果
+        //Get results
         HttpResponse response = request.execute();
         return JSON.parseObject(response.body(), resultClass);
     }
 
     /**
-     * 替换项目编码
+     * Replace project encoding
      *
      * @param url
      * @param projectCode
@@ -132,7 +118,7 @@ public class DsRequestUtils {
     }
 
     /**
-     * 替换项目编码及id
+     * Replace project code and id
      *
      * @param url
      * @param projectCode
@@ -144,7 +130,7 @@ public class DsRequestUtils {
     }
 
     /**
-     * 替换项目编码及code
+     * Replace project encoding and code
      *
      * @param url
      * @param projectCode

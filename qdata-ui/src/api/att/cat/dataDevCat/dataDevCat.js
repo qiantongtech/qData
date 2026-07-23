@@ -1,61 +1,99 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据开发类目管理列表
-export function listAttDataDevCat(query) {
+// Query the data development category management list
+const buildHeaders = (options = {}) => ({
+  hideErrorMessage: options.hideErrorMessage === true
+})
+
+export function listAttDataDevCat(query, options = {}) {
   return request({
     url: '/att/dataDevCat/list',
     method: 'get',
-    params: query
+    params: query,
+    headers: buildHeaders(options)
   })
 }
 
-// 查询数据开发类目管理详细
-export function getAttDataDevCat(id) {
+// Query data development category management details
+export function getAttDataDevCat(id, options = {}) {
   return request({
     url: '/att/dataDevCat/' + id,
-    method: 'get'
+    method: 'get',
+    headers: buildHeaders(options)
   })
 }
 
-// 新增数据开发类目管理
-export function addAttDataDevCat(data) {
+// Check whether data development tasks exist under the category
+export function hasDataDevelopmentTask(id, options = {}) {
+  return request({
+    url: '/att/dataDevCat/hasDataDevelopmentTask/' + id,
+    method: 'get',
+    headers: buildHeaders(options)
+  })
+}
+
+// Check whether the category name is already used under the same parent
+export function isDataDevCatNameUsed(query, options = {}) {
+  return request({
+    url: '/att/dataDevCat/nameUsed',
+    method: 'get',
+    params: query,
+    headers: buildHeaders(options)
+  })
+}
+
+// Query the number of data development tasks associated with the category
+export function getDataDevelopmentTaskCount(id, options = {}) {
+  return request({
+    url: '/att/dataDevCat/dataDevelopmentTaskCount/' + id,
+    method: 'get',
+    headers: buildHeaders(options)
+  })
+}
+
+// Added new data development category management
+export function addAttDataDevCat(data, options = {}) {
   return request({
     url: '/att/dataDevCat',
     method: 'post',
-    data: data
+    data: data,
+    headers: buildHeaders(options)
   })
 }
 
-// 修改数据开发类目管理
-export function updateAttDataDevCat(data) {
+// Modify data development category management
+export function updateAttDataDevCat(data, options = {}) {
   return request({
     url: '/att/dataDevCat',
     method: 'put',
-    data: data
+    data: data,
+    headers: buildHeaders(options)
   })
 }
 
-// 删除数据开发类目管理
-export function delAttDataDevCat(id) {
+// Delete data development category management
+export function delAttDataDevCat(id, options = {}) {
   return request({
     url: '/att/dataDevCat/' + id,
-    method: 'delete'
+    method: 'delete',
+    headers: buildHeaders(options)
   })
 }

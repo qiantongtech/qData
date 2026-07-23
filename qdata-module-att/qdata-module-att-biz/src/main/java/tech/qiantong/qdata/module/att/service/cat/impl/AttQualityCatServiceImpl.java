@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.cat.impl;
@@ -61,7 +47,7 @@ import tech.qiantong.qdata.module.dpp.api.service.qa.DppQualityTaskApiService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 数据质量类目Service业务层处理
+ * Data Quality Category Service business layer processing
  *
  * @author qdata
  * @date 2025-07-19
@@ -97,29 +83,29 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = taskApiService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.quality", "存在数据质量任务，不允许禁用");
+                throw new ServiceException("att.error.disable.quality", "Data quality task exists, disable not allowed");
             }
             attQualityCatMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttQualityCatDO parent = attQualityCatMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
-        // 更新数据质量类目
+        // Update Data Quality Category
         AttQualityCatDO updateObj = BeanUtils.toBean(updateReqVO, AttQualityCatDO.class);
         return attQualityCatMapper.updateById(updateObj);
     }
     @Override
     public int removeAttQualityCat(Collection<Long> idList) {
-        //判断是否存在数据
+        // Check if data exists
         List<AttQualityCatDO> attQualityCatDOS = attQualityCatMapper.selectBatchIds(idList);
         for (AttQualityCatDO cat : attQualityCatDOS) {
             if (taskApiService.getCountByCatCode(cat.getCode()) > 0) {
-                throw new ServiceException("att.error.delete.quality", "存在数据质量任务，不允许删除");
+                throw new ServiceException("att.error.delete.quality", "Data quality task exists, deletion not allowed");
             }
         }
-        // 批量删除数据质量类目
+        // Batch delete Data Quality Category
         return attQualityCatMapper.deleteBatchIds(idList);
     }
 
@@ -145,24 +131,24 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
                 .collect(Collectors.toMap(
                         AttQualityCatDO::getId,
                         attQualityCatDO -> attQualityCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据质量类目数据
+     * Import Data Quality Category data
      *
-     * @param importExcelList 数据质量类目数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     *  importExcelList Data Quality Category data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  Result
      */
     @Override
     public String importAttQualityCat(List<AttQualityCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -181,16 +167,16 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
                             attQualityCatMapper.updateById(attQualityCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attQualityCatId + " 的数据质量类目记录。", attQualityCatId, "数据质量类目"));
+                                    "Data update successful, ID {0} {1} record.", attQualityCatId, MessageUtils.messageWithFallback("att.entity.data.quality.category", "Data quality category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attQualityCatId + " 的数据质量类目记录不存在。", attQualityCatId, "数据质量类目"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attQualityCatId, MessageUtils.messageWithFallback("att.entity.data.quality.category", "Data quality category")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttQualityCatDO> queryWrapper = new QueryWrapper<>();
@@ -200,17 +186,17 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
                         attQualityCatMapper.insert(attQualityCatDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attQualityCatId + " 的数据质量类目记录。", attQualityCatId, "数据质量类目"));
+                                "Data insert successful, ID {0} {1} record.", attQualityCatId, MessageUtils.messageWithFallback("att.entity.data.quality.category", "Data quality category")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attQualityCatId + " 的数据质量类目记录已存在。", attQualityCatId, "数据质量类目"));
+                                "Data insert failed, ID {0} {1} record already exists.", attQualityCatId, MessageUtils.messageWithFallback("att.entity.data.quality.category", "Data quality category")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -219,12 +205,12 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -233,12 +219,12 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttQualityCatDO> query = new LambdaQueryWrapper<AttQualityCatDO>()
                 .eq(AttQualityCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttQualityCatDO::getCode, parentCode)
@@ -247,15 +233,15 @@ public class AttQualityCatServiceImpl  extends ServiceImpl<AttQualityCatMapper,A
         List<AttQualityCatDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttQualityCatDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;

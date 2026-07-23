@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询数据发现任务列表
+// Query data discovery task list
 export function listDaDiscoveryTask(query) {
     return request({
         url: '/da/discoveryTask/getDaDiscoveryTaskListPage',
@@ -26,7 +27,7 @@ export function listDaDiscoveryTask(query) {
     });
 }
 
-// 查询数据发现任务详细
+// Query data discovery task details
 export function getDaDiscoveryTask(id) {
     return request({
         url: '/da/discoveryTask/' + id,
@@ -34,7 +35,7 @@ export function getDaDiscoveryTask(id) {
     });
 }
 
-// 新增数据发现任务
+// Add new data discovery task
 export function addDaDiscoveryTask(data) {
     return request({
         url: '/da/discoveryTask',
@@ -43,7 +44,7 @@ export function addDaDiscoveryTask(data) {
     });
 }
 
-// 修改数据发现任务
+// Modify data discovery tasks
 export function updateDaDiscoveryTask(data) {
     return request({
         url: '/da/discoveryTask',
@@ -51,7 +52,7 @@ export function updateDaDiscoveryTask(data) {
         data: data
     });
 }
-// 修改数据发现任务
+// Modify data discovery tasks
 export function updateDaDiscoveryTaskStatus(data) {
     return request({
         url: '/da/discoveryTask/updateDaDiscoveryTaskStatus',
@@ -59,7 +60,7 @@ export function updateDaDiscoveryTaskStatus(data) {
         data: data
     });
 }
-// 修改数据发现任务
+// Modify data discovery tasks
 export function updateDaDiscoveryTaskCronExpression(data) {
     return request({
         url: '/da/discoveryTask/updateDaDiscoveryTaskCronExpression',
@@ -68,14 +69,14 @@ export function updateDaDiscoveryTaskCronExpression(data) {
     });
 }
 
-// 删除数据发现任务
+// Delete data discovery tasks
 export function delDaDiscoveryTask(id) {
     return request({
         url: '/da/discoveryTask/' + id,
         method: 'delete'
     });
 }
-// 查询调度日志列表
+// Query scheduling log list
 export function listJobLog(query) {
     return request({
         url: '/da/discoveryTask/jobLog/list',
@@ -84,7 +85,7 @@ export function listJobLog(query) {
     });
 }
 
-// 数据发现 执行一次
+// Data discovery Execute once
 export function startDppEtlTask(data) {
     return request({
         url: '/da/discoveryTask/startDaDiscoveryTask/' + data,

@@ -5,7 +5,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 敏感等级 Request VO 对象 DA_SENSITIVE_LEVEL
+ * Sensitive Level Request VO DA_SENSITIVE_LEVEL
  *
  * @author Chaos
  * @date 2025-01-21

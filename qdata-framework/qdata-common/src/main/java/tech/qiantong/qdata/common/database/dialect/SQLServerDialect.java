@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.dialect;
@@ -45,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * SQLServer 数据库方言
+ * SQLServer database dialect
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -59,7 +45,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -73,7 +59,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 "(CASE WHEN (SELECT ic.column_id FROM sys.indexes idx INNER JOIN sys.index_columns ic ON idx.object_id = ic.object_id AND idx.index_id = ic.index_id WHERE idx.is_primary_key = 1 AND columns.column_id = ic.column_id AND columns.object_id = ic.object_id)  IS NOT NULL THEN '1' ELSE '0' END) AS COLKEY " +
                 "from sys.tables tables " +
                 "JOIN sys.columns columns ON tables.object_id = columns.object_id " +
-                "LEFT JOIN sys.types types ON columns.system_type_id = types.system_type_id " +
+                "LEFT JOIN sys.types types ON columns.user_type_id = types.user_type_id AND columns.system_type_id = types.system_type_id " +
                 "LEFT JOIN syscomments e ON columns.default_object_id= e.id " +
                 "LEFT JOIN sys.extended_properties ep ON ep.major_id = columns.object_id AND ep.minor_id = columns.column_id AND ep.name = 'MS_Description' " +
                 "where tables.name = '" + tableName + "' " +
@@ -109,22 +95,22 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         List<String> primaryKeys = new ArrayList<>();
         {
             StringBuilder sql = new StringBuilder();
-            // 生成CREATE TABLE语句
+            // Generate CREATE TABLE statement
             sql.append("CREATE TABLE ").append(tableName).append(" (\n");
 
             for (DbColumn column : dbColumnList) {
                 String columnType = column.getDataType().toUpperCase();
                 sql.append("  ").append(column.getColName()).append(" ");
 
-                // 转换数据类型为SQL Server支持的类型
+                // Convert data types to types supported by SQL Server
                 switch (columnType) {
                     case "VARCHAR":
-                    case "VARCHAR2": // SQL Server不支持VARCHAR2，映射为VARCHAR
+                    case "VARCHAR2": // SQL Server does not support VARCHAR2, mapping to VARCHAR
                         sql.append("VARCHAR");
                         if (StringUtils.isNotEmpty(column.getDataLength())) {
                             sql.append("(").append(column.getDataLength()).append(")");
                         } else {
-                            sql.append("(MAX)"); // SQL Server中的VARCHAR默认支持最大长度
+                            sql.append("(MAX)"); // VARCHAR in SQL Server supports maximum length by default
                         }
                         break;
                     case "CHAR":
@@ -160,7 +146,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("FLOAT");
                         break;
                     case "DOUBLE":
-                        sql.append("FLOAT"); // SQL Server中没有DOUBLE，使用FLOAT
+                        sql.append("FLOAT"); // There is no DOUBLE in SQL Server, use FLOAT
                         break;
                     case "DATE":
                         sql.append("DATE");
@@ -172,16 +158,16 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                         sql.append("TIME");
                         break;
                     default:
-                        sql.append(columnType); // 默认处理未知类型
+                        sql.append(columnType); // Handle unknown types by default
                         break;
                 }
 
-                // 检查是否必填
+                // Check if required
                 if (!column.getNullable()) {
                     sql.append(" NOT NULL");
                 }
 
-                // 默认值处理
+                // Default value handling
                 if (StringUtils.isNotEmpty(column.getDataDefault())) {
                     if (columnType.equals("VARCHAR") || columnType.equals("CHAR") || columnType.equals("TEXT")) {
                         sql.append(" DEFAULT '").append(column.getDataDefault()).append("'");
@@ -190,7 +176,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                     }
                 }
 
-                // 加入字段到主键列表，如果是主键
+                // Add the field to the primary key list, if it is a primary key
                 if (column.getColKey()) {
                     primaryKeys.add(column.getColName());
                 }
@@ -198,17 +184,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
                 sql.append(",\n");
             }
 
-            // 移除最后的逗号和换行
+            // Remove final comma and newline
             sql.setLength(sql.length() - 2);
             sql.append("\n");
 
-            // 添加主键约束
+            // Add primary key constraints
             if (!primaryKeys.isEmpty()) {
                 sql.append(", PRIMARY KEY (");
                 for (String pk : primaryKeys) {
                     sql.append(pk).append(", ");
                 }
-                sql.setLength(sql.length() - 2); // 移除最后的逗号和空格
+                sql.setLength(sql.length() - 2); // Remove final comma and space
                 sql.append(")");
             }
 
@@ -217,7 +203,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
         }
 
 
-        // 添加表备注（SQL Server不直接支持表备注，但可以使用扩展属性等方式）
+        // Add table comments (SQL Server does not directly support table comments, but you can use extended attributes, etc.)
         if (StringUtils.isNotEmpty(tableComment)) {
             StringBuilder sql = new StringBuilder();
             sql.append("EXEC sys.sp_addextendedproperty @name = N'MS_Description', @value = N'")
@@ -226,7 +212,7 @@ public class SQLServerDialect extends SQLServer2008Dialect {
             sqlList.add(sql.toString());
         }
 
-        // 添加字段备注
+        // Add field notes
         for (DbColumn column : dbColumnList) {
             if (StringUtils.isNotEmpty(column.getColComment())) {
                 StringBuilder sql = new StringBuilder();
@@ -243,17 +229,17 @@ public class SQLServerDialect extends SQLServer2008Dialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -364,12 +350,12 @@ public class SQLServerDialect extends SQLServer2008Dialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (org.springframework.util.StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
         url = url.replace("${dbName}", property.getDbName());
-        //判断是否开启ssl
+        //Determine whether to enable ssl
         if (checkUseSSL(property)) {
             JSONObject sslConfig = (JSONObject) property.getDatasourceConfig().get("sslConfig");
             url = url.replace("encrypt=false", "encrypt=true")

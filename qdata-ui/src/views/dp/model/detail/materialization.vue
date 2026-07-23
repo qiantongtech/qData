@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!--  逻辑发布的弹窗  -->
+  <!--  Logic publishing pop-up window  -->
   <el-dialog
     v-model="localVisible"
     :title="effectiveTitle"
@@ -25,9 +26,9 @@
     destroy-on-close
   >
     <!-- <div class="centered-text">
-      您将对选择的{{
+      You will select {{
         ids?.length
-      }}个逻辑模型进行逻辑发布，请选择数据资产的数据连接
+      }} logical model for logical publishing, please select the data connection of the data asset
     </div> -->
     <el-form
       ref="dpModelRefs"
@@ -159,7 +160,7 @@ const props = defineProps({
 });
 const effectiveTitle = computed(() => props.title || td('dp.model.materialization.publishModel'));
 let createTypeList = ref();
-// 监听 `visible` 的变化
+// Listen for changes in `visible`
 watch(
   () => props.visible,
   (newVal) => {
@@ -174,13 +175,13 @@ const getDaDatasourceListList = async () => {
     const response = await getDatasourceData();
     createTypeList.value = getAvailableDatasource(response, "dpModel");
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
 
 const emit = defineEmits(["update:dialogFormVisible", "confirm"]);
 
-// 处理弹窗显示状态
+// Handle pop-up window display status
 const localVisible = computed({
   get() {
     return props.visible;
@@ -270,19 +271,19 @@ const confirmDialog = async () => {
       }
       loading.value = true;
       try {
-        // 创建发布表格
+        // Create release form
         const response = await createMaterializedTable({
           modelId: props.ids,
           ...form.value,
         });
         console.log(response);
 
-        // 提交数据
+        // Submit data
         emit("confirm", form.value);
 
-        // 关闭对话框
+        // Close dialog
         closeDialog();
-        // 提示成功
+        // Prompt success
         proxy.$modal.msgSuccess(response.msg);
       } catch (error) {
         console.error(error);

@@ -1,38 +1,26 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ds.controller.admin.api;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -40,6 +28,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +42,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.AesEncryptUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.ds.controller.admin.api.vo.DsApiPageReqVO;
@@ -71,7 +61,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * API服务Controller
+ * API service controller
  *
  * @author lhs
  * @date 2025-02-12
@@ -84,6 +74,9 @@ public class DsApiController extends BaseController {
     @Resource
     private IDsApiService dsApiService;
 
+    @Value("${ds.base_url:}")
+    private String dsBaseUrl;
+
     @Operation(summary = "查询API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:list')")
     @GetMapping("/list")
@@ -94,18 +87,18 @@ public class DsApiController extends BaseController {
 
     @Operation(summary = "导出API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:export')")
-    @Log(title = "API服务", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DsApiPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DsApiDO> list = (List<DsApiDO>) dsApiService.getDsApiPage(exportReqVO).getRows();
         ExcelUtil<DsApiRespVO> util = new ExcelUtil<>(DsApiRespVO.class);
-        util.exportExcel(response, DsApiConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DsApiConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入API服务列表")
     @PreAuthorize("@ss.hasPermi('ds:api:import')")
-    @Log(title = "API服务", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DsApiRespVO> util = new ExcelUtil<>(DsApiRespVO.class);
@@ -113,6 +106,19 @@ public class DsApiController extends BaseController {
         String operName = getUsername();
         String message = dsApiService.importDsApi(importExcelList, updateSupport, operName);
         return success(message);
+    }
+
+    @Operation(summary = "检查DolphinScheduler是否可访问")
+    @GetMapping("/checkApi")
+    public CommonResult<Boolean> check() {
+        if (StringUtils.isBlank(dsBaseUrl)) {
+            return CommonResult.success(false);
+        }
+        try (HttpResponse response = HttpRequest.get(dsBaseUrl+"/login/sso").timeout(2000).execute()) {
+            return CommonResult.success(response.getStatus() == 200);
+        } catch (Exception e) {
+            return CommonResult.success(false);
+        }
     }
 
     @Operation(summary = "获取API服务详细信息")
@@ -128,17 +134,21 @@ public class DsApiController extends BaseController {
     @PostMapping(value = "/repeatFlag")
     public AjaxResult repeatFlag(@RequestBody JSONObject jsonObject) {
         if (StringUtils.isBlank(jsonObject.getString("name"))) {
-            return AjaxResult.error("请携带API名称");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.name.required", "API name is required"));
         }
         if (StringUtils.isBlank(jsonObject.getString("apiVersion"))) {
-            return AjaxResult.error("请携带API版本号");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.version.required", "API version is required"));
         }
         if (StringUtils.isBlank(jsonObject.getString("apiUrl"))) {
-            return AjaxResult.error("请携带API路径");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.path.required", "API path is required"));
         }
         DsApiDO dsApiDO = dsApiService.repeatFlag(jsonObject);
         if (dsApiDO != null) {
-            return AjaxResult.error("名称、版本号、路径以存在");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "ds.error.api.duplicate", "An API with the same name, version, and path already exists"));
         }
         return AjaxResult.success(dsApiDO);
     }
@@ -146,14 +156,14 @@ public class DsApiController extends BaseController {
 
     @Operation(summary = "删除API服务")
     @PreAuthorize("@ss.hasPermi('ds:api:remove')")
-    @Log(title = "API服务", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.ds.api", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable(name = "id") Long[] id) {
         return CommonResult.toAjax(dsApiService.removeDsApi(Arrays.asList(id)));
     }
 
     /**
-     * SQL解析
+     * Parses SQL.
      *
      * @param sqlParseDto
      * @return
@@ -179,7 +189,7 @@ public class DsApiController extends BaseController {
             try {
                 dataApi.getExecuteConfig().setSqlText(AesEncryptUtil.desEncrypt(dataApi.getExecuteConfig().getSqlText()).trim());
             } catch (Exception e) {
-                logger.error("失败", e);
+                logger.error("Operation failed", e);
             }
         } else {
             if (dataApi.getExecuteConfig() != null) {
@@ -201,7 +211,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 添加
+     * Adds an API.
      *
      * @param dataApi
      * @return
@@ -225,7 +235,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 修改
+     * Updates an API.
      *
      * @param dataApi
      * @return
@@ -248,7 +258,7 @@ public class DsApiController extends BaseController {
 
 
     /**
-     * 发布接口
+     * Publishes an API.
      *
      * @param id
      * @return
@@ -262,7 +272,7 @@ public class DsApiController extends BaseController {
     }
 
     /**
-     * 注销接口
+     * Unpublishes an API.
      *
      * @param id
      * @return

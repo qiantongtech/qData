@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain.entity;
@@ -39,12 +25,14 @@ import tech.qiantong.qdata.common.annotation.Excel.ColumnType;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
- * 角色表 sys_role
+ * Role table sys_role
  *
  * @author qdata
  */
@@ -52,52 +40,52 @@ public class SysRole extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 角色ID */
+    /** Role ID */
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
 
-    /** 角色名称 */
+    /** Role name */
     @Excel(name = "角色名称")
     private String roleName;
 
-    /** 角色权限 */
+    /** Role permissions */
     @Excel(name = "角色权限")
     private String roleKey;
 
-    /** 角色排序 */
+    /** Role sorting */
     @Excel(name = "角色排序")
     private Integer roleSort;
 
-    /** 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限） */
+    /** Data scope (1: All data permissions; 2: Customized data permissions; 3: Data permissions for this department; 4: Data permissions for this department and below; 5: Only my data permissions) */
     @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限,5=仅本人数据权限")
     private String dataScope;
 
-    /** 菜单树选择项是否关联显示（ 0：父子不互相关联显示 1：父子互相关联显示） */
+    /** Whether the menu tree selection items are displayed in association (0: parent and child are not displayed in association with each other 1: parent and child are displayed in association with each other) */
     private boolean menuCheckStrictly;
 
-    /** 部门树选择项是否关联显示（0：父子不互相关联显示 1：父子互相关联显示 ） */
+    /** Whether the department tree selection items are displayed in association (0: parent and child are not displayed in association with each other 1: parent and child are displayed in association with each other) */
     private boolean deptCheckStrictly;
 
-    /** 角色状态（0正常 1停用） */
+    /** Character status (0 normal 1 disabled) */
     @Excel(name = "角色状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /** Delete flag (0 represents existence, 2 represents deletion) */
     private String delFlag;
 
-    /** 用户是否存在此角色标识 默认不存在 */
+    /** Whether this role ID exists for the user. It does not exist by default */
     private boolean flag = false;
 
-    /** 菜单组 */
+    /** Menu group */
     private Long[] menuIds;
 
-    /** 部门组（数据权限） */
+    /** Department group (data permissions) */
     private Long[] deptIds;
 
-    /** 角色菜单权限 */
+    /** Role menu permissions */
     private Set<String> permissions;
 
-    /** 旧id */
+    /** old id */
     private Long oldRoleId;
 
     public Long getOldRoleId() {
@@ -109,7 +97,7 @@ public class SysRole extends BaseEntity
     }
 
     /**
-     * 项目管理id
+     * Project management id
      */
     private Long projectId;
 
@@ -165,6 +153,7 @@ public class SysRole extends BaseEntity
 
     @NotBlank(message = "权限字符不能为空")
     @Size(min = 0, max = 100, message = "权限字符长度不能超过100个字符")
+    @Pattern(regexp = "^[a-zA-Z0-9_:]+$", message = "权限字符仅支持字母、数字、下划线和冒号")
     public String getRoleKey()
     {
         return roleKey;
@@ -176,6 +165,7 @@ public class SysRole extends BaseEntity
     }
 
     @NotNull(message = "显示顺序不能为空")
+    @Min(value = 0, message = "显示顺序不合法，请输入非负整数")
     public Integer getRoleSort()
     {
         return roleSort;

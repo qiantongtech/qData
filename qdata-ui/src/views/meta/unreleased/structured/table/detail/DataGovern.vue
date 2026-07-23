@@ -281,21 +281,21 @@ const tableStroe = reactive({
   },
 });
 
-// 获取安全等级
+// Get security level
 function getSensitiveLevel() {
   listDgSensitiveLevel({ pageSize: 1000 }).then((res) => {
     store.sensitiveLevels = res.data.rows;
   });
 }
 
-// // 获取标准数据元
+// // Get standard data elements
 // function getDataElem() {
 //   getDgDataElemList().then((res) => {
 //     store.dataElemList = res.data;
 //   });
 // }
 
-// 详情
+// Details
 function handleDetailClick(row) {
   router.push({
     path: BASE_URL + "/detail",
@@ -305,7 +305,7 @@ function handleDetailClick(row) {
   });
 }
 
-// 查看标准数据元
+// View standard data elements
 function handleDataElemClick(row) {
   router.push({
     path: "/dm/dataElem/column",
@@ -315,7 +315,7 @@ function handleDataElemClick(row) {
   });
 }
 
-// 查看安全等级
+// View security level
 function handleSensitiveLevelClick(row) {
   dialog.open = true;
   getDgSensitiveLevel(row.safetyLevelId).then((res) => {

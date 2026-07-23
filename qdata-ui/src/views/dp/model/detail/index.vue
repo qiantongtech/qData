@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -92,7 +93,7 @@ const isMaterializedDetail = computed(
   () => route.path === "/dm/model/materializedModel/detail"
 );
 let id = route.query.id || 1;
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
@@ -100,7 +101,7 @@ watch(
     activeName.value = "1";
     getDpModelDetailById();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   dpModelDetail: {},
@@ -125,7 +126,7 @@ const detailItems = computed(() => [
   },
 ]);
 const userList = ref();
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDpModelDetailById() {
   const _ID = id;
   if (_ID == -1) {

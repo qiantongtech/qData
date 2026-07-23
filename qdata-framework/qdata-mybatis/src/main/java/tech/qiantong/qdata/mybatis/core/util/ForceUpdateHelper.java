@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.core.domain.model.LoginUser;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.beans.Introspector;
 import java.lang.reflect.Field;
@@ -30,25 +31,26 @@ public class ForceUpdateHelper {
         Class<T> clazz = (Class<T>) entity.getClass();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(clazz);
 
-        // 获取主键值
+        // Get primary key value
         Object id = null;
         try {
             Field idField = clazz.getDeclaredField(tableInfo.getKeyProperty());
             idField.setAccessible(true);
             id = idField.get(entity);
         } catch (Exception e) {
-            throw new ServiceException("sys.error.pk.fail", "获取主键失败");
+            throw new ServiceException("sys.error.pk.fail", "Failed to get primary key");
         }
 
         if (id == null) {
-            throw new IllegalArgumentException("主键不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "sys.error.primary.key.empty", "Primary key cannot be empty"));
         }
 
-        // 创建 UpdateWrapper
+        // Create UpdateWrapper
         UpdateWrapper<T> wrapper = new UpdateWrapper<>();
         wrapper.eq(tableInfo.getKeyColumn(), id);
 
-        // 使用反射获取所有字段值
+        // Get all field values using reflection
         Field[] fields = clazz.getDeclaredFields();
         Set<String> exclude = excludedField == null ? Collections.emptySet() : excludedField.stream().map(ForceUpdateHelper::getPropertyName).collect(Collectors.toSet());
         for (Field field : fields) {
@@ -62,7 +64,7 @@ public class ForceUpdateHelper {
                 field.setAccessible(true);
                 Object value = field.get(entity);
 
-                // 获取字段对应的数据库列名
+                // Get the database column name corresponding to the field
                 TableField tableField = field.getAnnotation(TableField.class);
                 String columnName;
                 if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
@@ -72,7 +74,7 @@ public class ForceUpdateHelper {
                 }
                 wrapper.set(columnName, value);
             } catch (IllegalAccessException e) {
-                // 忽略无法访问的字段
+                // Ignore inaccessible fields
             }
         }
 
@@ -81,7 +83,7 @@ public class ForceUpdateHelper {
         try {
             loginUser = (LoginUser) SecurityUtils.getAuthentication().getPrincipal();
         } catch (Exception e) {
-//            logger.info("获取用户信息异常:{}", e);
+// logger.info("Exception in obtaining user information: {}", e);
         }
         if (loginUser != null) {
             wrapper.set("updater_id", loginUser.getUserId());
@@ -92,12 +94,12 @@ public class ForceUpdateHelper {
     }
 
     private static boolean excludeUpdate(Field field, TableInfo tableInfo) {
-        // 排除静态字段和 transient 字段
+        // Exclude static and transient fields
         if (Modifier.isStatic(field.getModifiers()) ||
                 Modifier.isTransient(field.getModifiers())) {
             return true;
         }
-        // 排除主键
+        // Exclude primary key
         if (field.getName().equals(tableInfo.getKeyProperty())) {
             return true;
         }
@@ -112,7 +114,7 @@ public class ForceUpdateHelper {
         LambdaMeta lambdaMeta = LambdaUtils.extract(getter);
         String methodName = lambdaMeta.getImplMethodName();
 
-        // 转换 getter 方法名为属性名
+        // Convert getter method name to property name
         return methodName.startsWith("get") ?
                 Introspector.decapitalize(methodName.substring(3)) :
                 Introspector.decapitalize(methodName.substring(2));

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.httpClient;
@@ -35,6 +21,7 @@ package tech.qiantong.qdata.common.httpClient;
 import cn.hutool.core.io.FileUtil;
 import lombok.Getter;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -48,18 +35,18 @@ import java.util.Date;
 public class HttpTaskLogger {
 
     /**
-     * 定义存储文件夹路径的变量
+     * Define variables to store folder paths
      */
     private String folderPath;
 
     /**
-     * 定义存储文件路径的变量
+     * Define variables to store file paths
      */
     @Getter
     private String filePath;
 
     /**
-     * 定义FileWriter对象，用于写入文件
+     * Define a FileWriter object for writing files
      */
     private FileWriter fileWriter;
 
@@ -68,25 +55,26 @@ public class HttpTaskLogger {
         this.filePath = filePath;
     }
 
-    // 构造函数，接受文件夹路径和文件名作为参数
+    // Constructor that accepts folder path and file name as parameters
     public HttpTaskLogger(String folderPath, String fileName) {
         if(StringUtils.isBlank(folderPath) || StringUtils.isBlank(fileName)){
-            throw  new RuntimeException("路径、文件名 都不能为空");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.log.path.filename.empty", "Path and file name cannot be empty"));
         }
-        // 初始化文件夹路径
+        // Initialize folder path
         this.folderPath = folderPath;
-        // 构建完整的文件路径
+        // Build full file path
         this.filePath = folderPath + File.separator + fileName;
-        // 创建文件夹
+        // Create folder
         createFolder();
-        // 创建文件
+        // Create file
         createFile();
-        // 打开文件写入器
+        // Open file writer
         openFileWriter();
     }
 
     /**
-     * 创建存储文件的文件夹
+     * Create a folder to store files
      */
     private void createFolder() {
         try {
@@ -94,42 +82,42 @@ public class HttpTaskLogger {
                 FileUtil.mkdir(folderPath);
             }
         } catch (Exception e) {
-            //打印异常堆栈，方便调试
+            //Print exception stack for easy debugging
             e.printStackTrace(); //
         }
     }
 
     /**
-     * 创建日志文件
+     * Create log file
      */
     private void createFile() {
         try {
-            // 使用Files类的createFile方法创建文件
+            // Create a file using the createFile method of the Files class
             Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8);
         } catch (IOException e) {
             if (!e.getMessage().contains("File already exists")) {
-                // 如果文件不存在，则打印异常堆栈
+                // If the file does not exist, print the exception stack
                 e.printStackTrace();
             }
-            // 如果文件已存在，不打印异常，避免日志污染
+            // If the file already exists, no exception will be printed to avoid log pollution.
         }
     }
 
     /**
-     * 打开文件写入器，用于后续的写操作
+     * Open the file writer for subsequent writing operations
      */
     private void openFileWriter() {
         try {
-            //实例化FileWriter，设置为追加模式
+            //Instantiate FileWriter and set it to append mode
             fileWriter = new FileWriter(filePath, true);
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }
 
     /**
-     * 将消息写入日志文件
+     * Write message to log file
      * @param message
      */
     public void log(String message) {
@@ -137,12 +125,12 @@ public class HttpTaskLogger {
 //            String string = new StringBuilder(DateUtils.getTime()).append(" INFO: ").append(message).append("\n").toString();
 //            System.out.println(DateUtils.getTime()+"==--------------");
 //            System.out.println(string);
-            // 写入消息并换行
+            // Write message and wrap
             fileWriter.write(messagePage(message) + "\n");
-            // 刷新缓冲区，确保消息立即写入文件
+            // Flush the buffer to ensure messages are written to the file immediately
             fileWriter.flush();
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }
@@ -157,16 +145,16 @@ public class HttpTaskLogger {
     }
 
     /**
-     * 关闭文件写入器，释放资源
+     * Close the file writer and release resources
      */
     public void close() {
         try {
             if (fileWriter != null) {
-                // 关闭FileWriter对象
+                // Close the FileWriter object
                 fileWriter.close();
             }
         } catch (IOException e) {
-            // 打印异常堆栈
+            // Print exception stack
             e.printStackTrace();
         }
     }

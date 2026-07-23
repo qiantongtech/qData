@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.task.McTaskSchedulerDO;
 import java.util.List;
 
 /**
- * 数据集成调度信息 Convert
+ * Data integration scheduling information Convert
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,29 +20,29 @@ public interface McTaskSchedulerConvert {
     McTaskSchedulerConvert INSTANCE = Mappers.getMapper(McTaskSchedulerConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcTaskSchedulerPageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcTaskSchedulerPageReqVO request parameters
      * @return McTaskSchedulerDO
      */
      McTaskSchedulerDO convertToDO(McTaskSchedulerPageReqVO mcTaskSchedulerPageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcTaskSchedulerSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcTaskSchedulerSaveReqVO save request parameters
      * @return McTaskSchedulerDO
      */
      McTaskSchedulerDO convertToDO(McTaskSchedulerSaveReqVO mcTaskSchedulerSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcTaskSchedulerDO 实体对象
+     * DO to RespVO
+     * @param mcTaskSchedulerDO entity object
      * @return McTaskSchedulerRespVO
      */
      McTaskSchedulerRespVO convertToRespVO(McTaskSchedulerDO mcTaskSchedulerDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcTaskSchedulerDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcTaskSchedulerDOList entity object list
      * @return List<McTaskSchedulerRespVO>
      */
      List<McTaskSchedulerRespVO> convertToRespVOList(List<McTaskSchedulerDO> mcTaskSchedulerDOList);

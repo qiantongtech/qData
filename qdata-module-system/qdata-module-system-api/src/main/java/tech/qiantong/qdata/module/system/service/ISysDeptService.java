@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service;
@@ -38,120 +24,120 @@ import tech.qiantong.qdata.common.core.domain.entity.SysDept;
 import java.util.List;
 
 /**
- * 部门管理 服务层
+ * Department management service layer
  *
  * @author qdata
  */
 public interface ISysDeptService
 {
     /**
-     * 查询部门管理数据
+     * Query department management data
      *
-     * @param dept 部门信息
-     * @return 部门信息集合
+     * @param dept department information
+     * @return department information collection
      */
     public List<SysDept> selectDeptList(SysDept dept);
 
     /**
-     * 查询部门树结构信息
+     * Query department tree structure information
      *
-     * @param dept 部门信息
-     * @return 部门树信息集合
+     * @param dept department information
+     * @return department tree information collection
      */
     public List<TreeSelect> selectDeptTreeList(SysDept dept);
 
     /**
-     * 构建前端所需要树结构
+     * Build tree structure required by frontend
      *
-     * @param depts 部门列表
-     * @return 树结构列表
+     * @param depts department list
+     * @return tree structure list
      */
     public List<SysDept> buildDeptTree(List<SysDept> depts);
 
     /**
-     * 构建前端所需要下拉树结构
+     * Build dropdown tree structure required by frontend
      *
-     * @param depts 部门列表
-     * @return 下拉树结构列表
+     * @param depts department list
+     * @return dropdown tree structure list
      */
     public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts);
 
     /**
-     * 根据角色ID查询部门树信息
+     * Query department tree information by role ID
      *
-     * @param roleId 角色ID
-     * @return 选中部门列表
+     * @param roleId role ID
+     * @return selected department list
      */
     public List<Long> selectDeptListByRoleId(Long roleId);
 
     /**
-     * 根据部门ID查询信息
+     * Query department information by ID
      *
-     * @param deptId 部门ID
-     * @return 部门信息
+     * @param deptId department ID
+     * @return department information
      */
     public SysDept selectDeptById(Long deptId);
 
     /**
-     * 根据ID查询所有子部门（正常状态）
+     * Query all child departments by ID (normal status)
      *
-     * @param deptId 部门ID
-     * @return 子部门数
+     * @param deptId department ID
+     * @return number of child departments
      */
     public int selectNormalChildrenDeptById(Long deptId);
 
     /**
-     * 是否存在部门子节点
+     * Check if department has child nodes
      *
-     * @param deptId 部门ID
-     * @return 结果
+     * @param deptId department ID
+     * @return result
      */
     public boolean hasChildByDeptId(Long deptId);
 
     /**
-     * 查询部门是否存在用户
+     * Check if department has users
      *
-     * @param deptId 部门ID
-     * @return 结果 true 存在 false 不存在
+     * @param deptId department ID
+     * @return result true exists, false does not exist
      */
     public boolean checkDeptExistUser(Long deptId);
 
     /**
-     * 校验部门名称是否唯一
+     * Check if department name is unique
      *
-     * @param dept 部门信息
-     * @return 结果
+     * @param dept department information
+     * @return result
      */
     public boolean checkDeptNameUnique(SysDept dept);
 
     /**
-     * 校验部门是否有数据权限
+     * Check if department has data scope permission
      *
-     * @param deptId 部门id
+     * @param deptId department ID
      */
     public void checkDeptDataScope(Long deptId);
 
     /**
-     * 新增保存部门信息
+     * Insert and save department information
      *
-     * @param dept 部门信息
-     * @return 结果
+     * @param dept department information
+     * @return result
      */
     public int insertDept(SysDept dept);
 
     /**
-     * 修改保存部门信息
+     * Update and save department information
      *
-     * @param dept 部门信息
-     * @return 结果
+     * @param dept department information
+     * @return result
      */
     public int updateDept(SysDept dept);
 
     /**
-     * 删除部门管理信息
+     * Delete department management information
      *
-     * @param deptId 部门ID
-     * @return 结果
+     * @param deptId department ID
+     * @return result
      */
     public int deleteDeptById(Long deptId);
 }

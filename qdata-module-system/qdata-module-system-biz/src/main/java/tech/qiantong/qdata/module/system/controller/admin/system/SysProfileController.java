@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -55,7 +41,7 @@ import tech.qiantong.qdata.security.web.service.TokenService;
 import javax.annotation.PostConstruct;
 
 /**
- * 个人信息 业务处理
+ * User Profile Business Handler
  *
  * @author qdata
  */
@@ -84,7 +70,7 @@ public class SysProfileController extends BaseController
     }
 
     /**
-     * 个人信息
+     * Get user profile
      */
     @GetMapping
     public AjaxResult profile()
@@ -98,9 +84,9 @@ public class SysProfileController extends BaseController
     }
 
     /**
-     * 修改用户
+     * Update user profile
      */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.profile", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult updateProfile(@RequestBody SysUser user)
     {
@@ -112,25 +98,25 @@ public class SysProfileController extends BaseController
         currentUser.setSex(user.getSex());
         if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(currentUser))
         {
-            return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码已存在");
+            return error("Failed to update user '" + loginUser.getUsername() + "', phone number already exists");
         }
         if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(currentUser))
         {
-            return error("修改用户'" + loginUser.getUsername() + "'失败，邮箱账号已存在");
+            return error("Failed to update user '" + loginUser.getUsername() + "', email account already exists");
         }
         if (userService.updateUserProfile(currentUser) > 0)
         {
-            // 更新缓存用户信息
+            // Update cached user info
             tokenService.setLoginUser(loginUser);
             return success();
         }
-        return error("修改个人信息异常，请联系管理员");
+        return error("Failed to update personal information, please contact the administrator");
     }
 
     /**
-     * 重置密码
+     * Reset password
      */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.profile", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword)
     {
@@ -139,27 +125,27 @@ public class SysProfileController extends BaseController
         String password = loginUser.getPassword();
         if (!SecurityUtils.matchesPassword(oldPassword, password))
         {
-            return error("修改密码失败，旧密码错误");
+            return error("Failed to update password, incorrect old password");
         }
         if (SecurityUtils.matchesPassword(newPassword, password))
         {
-            return error("新密码不能与旧密码相同");
+            return error("New password cannot be the same as the old password");
         }
         newPassword = SecurityUtils.encryptPassword(newPassword);
         if (userService.resetUserPwd(userName, newPassword) > 0)
         {
-            // 更新缓存用户密码
+            // Update cached user password
             loginUser.getUser().setPassword(newPassword);
             tokenService.setLoginUser(loginUser);
             return success();
         }
-        return error("修改密码异常，请联系管理员");
+        return error("Failed to update password, please contact the administrator");
     }
 
     /**
-     * 头像上传
+     * Upload avatar
      */
-    @Log(title = "用户头像", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.user.avatar", businessType = BusinessType.UPDATE)
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception
     {
@@ -172,12 +158,12 @@ public class SysProfileController extends BaseController
             {
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", avatar);
-                // 更新缓存用户头像
+                // Update cached user avatar
                 loginUser.getUser().setAvatar(avatar);
                 tokenService.setLoginUser(loginUser);
                 return ajax;
             }
         }
-        return error("上传图片异常，请联系管理员");
+        return error("Failed to upload image, please contact the administrator");
     }
 }

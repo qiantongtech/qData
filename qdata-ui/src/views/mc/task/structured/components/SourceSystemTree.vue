@@ -1,19 +1,21 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
+
 <template>
   <el-aside
     :style="{
@@ -49,20 +51,20 @@
         >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <!-- 1级节点 - 使用自定义 zoom 图标 -->
+              <!-- Level 1 nodes - use custom zoom icon -->
               <svg-icon
                 v-if="node.level === 1"
                 icon-class="zoom"
                 class="node-icon colorwxz"
               />
-              <!-- 2级节点 - 使用 type 对应的图标 -->
+              <!-- Level 2 nodes - use the icon corresponding to type -->
               <img
                 v-else-if="node.level == 2"
                 :src="getDatasourceIcon(data.datasourceType)"
                 class="node-icon"
               />
 
-              <!-- 3级及以后节点 - 使用叶子节点图标 -->
+              <!-- Level 3 and above nodes - use the leaf node icon -->
               <svg-icon v-else icon-class="zbzc" class="node-icon colorwxz" />
 
               <span class="treelabel"> {{ node.label }} </span>
@@ -78,7 +80,7 @@
     </div>
   </el-aside>
 
-  <!-- 拖拽栏 -->
+  <!-- drag bar -->
   <div class="resize-bar" @mousedown="startResize">
     <div class="resize-handle-sx">
       <span class="zjsx"></span>
@@ -134,7 +136,7 @@ const defaultProps = {
   label: "name",
 };
 
-// 拖拽逻辑
+// Drag and drop logic
 const isResizing = ref(false);
 let startX = 0;
 const startResize = (event) => {
@@ -156,13 +158,13 @@ const updateResize = (event) => {
   }
 };
 
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
   leftWidth.value = leftWidth.value === 0 ? 300 : 0;
   emit("update:leftWidth", leftWidth.value);
 };
 
-// 高度监听逻辑
+// High level of monitoring logic
 const getQtWrapHeight = () => {
   const element = document.querySelector(".qt-wrap");
   if (element) {
@@ -212,7 +214,7 @@ const getTreeData = () => {
       };
       treeData.value = formatData(res.data);
 
-      // 获取第1级节点的key用于默认展开
+      // Get the key of the first-level node for default expansion
       const getExpandedKeys = (list, level = 1) => {
         if (!Array.isArray(list)) return [];
         let keys = [];
@@ -228,7 +230,7 @@ const getTreeData = () => {
       };
       defaultExpandedKeys.value = getExpandedKeys(treeData.value);
 
-      // 扁平化数据用于查找
+      // Flatten data for lookups
       const flatten = (list) => {
         if (!Array.isArray(list)) return [];
         let result = [];

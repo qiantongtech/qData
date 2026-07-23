@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ds.handler;
@@ -61,9 +47,9 @@ public class RequestInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 请求之前执行
+     * Executes before the request.
      *
-     * @return 当返回对象时，直接将此对象返回到页面，返回null时，继续执行后续操作
+     * @return an object to return directly, or null to continue processing
      * @throws Exception
      */
     public void preHandle( HttpServletRequest request, HttpServletResponse response, DsApiDO api, Map<String, Object> params) {
@@ -71,81 +57,81 @@ public class RequestInterceptor implements HandlerInterceptor {
 //    public void preHandle(String username, HttpServletRequest request, HttpServletResponse response, DsApiDO api, Map<String, Object> params, DataApiApplyServiceFeign dataApiApplyService, SysUserServiceFeign sysUserService) {
         log.info("************ApiInterceptor preHandle executed**********");
         String uri = request.getRequestURI();
-        log.info("getRequestURI的值：" + uri);
+        log.info("getRequestURI value: " + uri);
         String ipAddr = IPUtil.getIpAddr(request);
-        log.info("ipAddr的值：" + ipAddr);
+        log.info("ipAddr value: " + ipAddr);
 
-        //判断是否是管理员 IS_ADMIN  鉴权判断
+        //Check whether the caller is an administrator for authorization.
 //        if (sysUserService.checkAdmin(username) == 1) {
 //            return;
 //        }
 //        R res = dataApiApplyService.getDataApiApplyByUsernameAndUrl(username, uri);
 //        if (!res.isSuccess()) {
-//            throw new ServiceException("服务异常，请联系管理员");
+//            throw new ServiceException("Service error. Please contact the administrator.");
 //        }
 //        DsApiLogDO dataApiApplyEntity = JSONObject.parseObject(JSONObject.toJSONString(res.getData()), DataApiApplyEntity.class);
-//        //判断申请是否为空或者当前登陆人不是api发布者并且未申请通过该服务
+//        //Check whether the application is empty or the current user is neither the API publisher nor an approved applicant.
 //        if(dataApiApplyEntity != null && StringUtils.equals("4",dataApiApplyEntity.getApplyStatus()) ){
-//            throw new ServiceException("权限已过期，请在后台管理页面申请该接口的权限！");
+//            throw new ServiceException("Permission has expired. Apply for API access in the administration console.");
 //        }
 //
 //        if (dataApiApplyEntity == null || (!StringUtils.equals(username, dataApiApplyEntity.getCreateBy()) && !StringUtils.equals("2", dataApiApplyEntity.getApplyStatus()))) {
-//            throw new ServiceException("无权限访问请在后台管理页面申请该接口的权限！");
+//            throw new ServiceException("Access denied. Apply for API access in the administration console.");
 //        }
 
-        // 黑名单校验
+        // Validate the blacklist.
         String deny = api.getDenyIp();
         if (StrUtil.isNotBlank(deny)) {
             List<String> denyList = Arrays.asList(deny.split(","));
             if (CollUtil.isNotEmpty(denyList)) {
                 for (String ip : denyList) {
                     if (ip.equals(ipAddr)) {
-                        throw new ServiceException("ds.error.ip.blacklist", ip + "已被加入IP黑名单");
+                        throw new ServiceException("ds.error.ip.blacklist", "IP has been added to blacklist");
                     }
                 }
             }
         }
         api.setResParamsList();
-        //移除鉴权的参数
+        //Remove authorization parameters.
         params.remove("client_token");
-        // 参数校验
+        // Validate parameters.
         if (MapUtil.isNotEmpty(params)) {
             api.getReqParamsList().forEach(param -> {
                 if (params.containsKey(param.getParamName())) {
-                    // 参数类型是否正确
+                    // Check whether the parameter type is correct.
                     ParamType.parse(ParamType.getParamType(param.getParamType()), params.get(param.getParamName()));
                 }
             });
         }
 
-        //添加请求
+        //Add the request.
 
-        // 限流校验
+        // Validate rate limiting.
 //        RateLimit rateLimit = api.getRateLimit();
 //        if (DataConstant.TrueOrFalse.TRUE.getKey().equals(rateLimit.getEnable())) {
 //            Integer times = rateLimit.getTimes();
 //            Integer seconds = rateLimit.getSeconds();
-//            // 请求次数
+//            // Request count.
 //            times = Optional.ofNullable(times).orElse(5);
-//            // 请求时间范围60秒
+//            // Request time window: 60 seconds.
 //            seconds = Optional.ofNullable(seconds).orElse(60);
-//            // 根据 USER + API 限流
+//            // Rate limit by user and API.
 //            String key = "user:" + username + ":api:" + dataApiApplyEntity.getResourceId();
-//            // 根据key获取已请求次数
+//            // Get the request count by key.
 //            Integer maxTimes = (Integer) redisTemplate.opsForValue().get(key);
 //            if (maxTimes == null) {
-//                // set时一定要加过期时间
+//                // Always set an expiration time when storing the value.
 //                redisTemplate.opsForValue().set(key, 1, seconds, TimeUnit.SECONDS);
 //            } else if (maxTimes < times) {
 //                redisTemplate.opsForValue().set(key, maxTimes + 1, seconds, TimeUnit.SECONDS);
 //            } else {
-//                throw new DataException("API调用过于频繁");
+//                throw new DataException("API calls are too frequent");
 //            }
 //        }
     }
 
     /**
-     * 执行完毕之后执行
+     * Executes after processing completes.
      *
      * @throws Exception
      */

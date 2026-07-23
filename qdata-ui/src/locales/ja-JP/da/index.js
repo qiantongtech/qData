@@ -307,6 +307,21 @@ export default {
       editInspectionRule: '監査ルールの編集',
       editEvaluationRule: '評価ルールの編集'
     },
+    dataQuery: {
+      queryResult: {
+        export: 'エクスポート',
+        serialNumber: '番号',
+        close: '閉じる',
+        formTitle: 'フォームタイトル',
+        notification: {
+          title: '通知',
+          noData: 'このテーブルにはデータがありません',
+          exportConfirm: '合計 {total} 件を 5,000 件ずつ、合計 {files} ファイルとしてエクスポートしますか？',
+          confirm: '確認',
+          cancel: 'キャンセル'
+        }
+      }
+    },
     // 抜き取りチェック結果コンポーネント
     spotCheckResult: {
       title: '抜き取りチェック結果表示',
@@ -486,7 +501,7 @@ export default {
     datasourceTypeRequired: 'データ接続タイプは必須です',
     configRequired: 'データソース設定（JSON文字列）は必須です',
     ipRequired: 'IPは必須です',
-    ipInvalid: 'IPに中国語を含めることはできません',
+    ipInvalid: 'IPアドレスの形式が正しくありません（例：192.168.1.1）',
     portRequired: 'ポート番号は必須です',
     portInvalid: 'ポート番号は1～9桁の数字である必要があります',
     accountRequired: 'アカウントは必須です',
@@ -504,6 +519,10 @@ export default {
     deleteSuccess: '削除に成功しました',
     confirmDelete: 'データソースID「{id}」のデータを削除しますか？',
     confirmStatusChange: 'データ接続「{name}」を{text}しますか？',
+    connectionValidationFailedConfirm: 'データソースの検証に失敗しました。追加を続行しますか？確認すると、このデータソースの有効状態は自動的に無効になります。',
+    enableFailedTitle: 'データ接続',
+    enableFailedMessage: 'データ接続の起動に失敗しました。データベース接続情報を確認してください。',
+    enablingWait: '有効化しています。しばらくお待ちください。',
     statusSuccess: '{text}に成功しました',
     importTitle: 'データソースのインポート',
     importResult: 'インポート結果',
@@ -536,6 +555,11 @@ export default {
     startCharPosPlaceholder: '開始文字位置を入力してください',
     endCharPos: '終了文字位置',
     endCharPosPlaceholder: '終了文字位置を入力してください',
+    startCharPosRequired: '開始文字位置は必須です',
+    startCharPosPattern: '開始文字位置は数字のみ入力できます',
+    endCharPosRequired: '終了文字位置は必須です',
+    endCharPosPattern: '終了文字位置は数字のみ入力できます',
+    endCharPosLessThanStart: '終了文字位置は開始文字位置より大きくする必要があります',
     onlineFlag: 'オンライン/オフラインフラグ',
     addTitle: '機密レベルの追加',
     editTitle: '機密レベルの編集',

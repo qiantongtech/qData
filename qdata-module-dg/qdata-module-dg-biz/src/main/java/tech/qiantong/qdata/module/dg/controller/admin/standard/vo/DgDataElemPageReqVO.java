@@ -5,12 +5,12 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 数据元 Request VO 对象 DG_DATA_ELEM
+ * Data Element Request VO Object DG_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
  */
-@Schema(description = "数据元 Request VO")
+@Schema(description = "Data Element Request VO")
 @Data
 public class DgDataElemPageReqVO extends PageParam {
 
@@ -18,31 +18,31 @@ public class DgDataElemPageReqVO extends PageParam {
     @Schema(description = "ID", example = "")
     private Long id;
 
-    @Schema(description = "名称", example = "")
+    @Schema(description = "Name", example = "")
     private String name;
 
-    @Schema(description = "英文名称", example = "")
+    @Schema(description = "English name", example = "")
     private String engName;
 
-    @Schema(description = "类目编码", example = "")
+    @Schema(description = "Category code", example = "")
     private String catCode;
 
-    @Schema(description = "类型", example = "")
+    @Schema(description = "Type", example = "")
     private String type;
 
-    @Schema(description = "责任人", example = "")
+    @Schema(description = "Person in charge", example = "")
     private String personCharge;
 
-    @Schema(description = "联系电话", example = "")
+    @Schema(description = "Contact number", example = "")
     private String contactNumber;
 
-    @Schema(description = "字段类型", example = "")
+    @Schema(description = "Column type", example = "")
     private String columnType;
 
-    @Schema(description = "状态", example = "")
+    @Schema(description = "Status", example = "")
     private String status;
 
-    @Schema(description = "描述", example = "")
+    @Schema(description = "Description", example = "")
     private String description;
 
     private Long documentId;

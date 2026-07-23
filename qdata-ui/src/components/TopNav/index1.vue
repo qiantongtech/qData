@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -24,7 +25,7 @@
             </el-menu-item>
         </template>
 
-        <!-- 顶部菜单超出数量折叠 -->
+        <!-- Top menu collapsed beyond quantity -->
         <el-sub-menu :style="{ '--theme': theme }" index="more" v-if="topMenus.length > visibleNumber">
             <template #title>{{ t('components.topNav.moreMenus') }}</template>
             <template v-for="(item, index) in topMenus">
@@ -47,11 +48,11 @@ import useSettingsStore from '@/store/system/settings';
 import usePermissionStore from '@/store/system/permission';
 const { t } = useI18n();
 
-// 顶部栏初始数
+// Top bar initial number
 const visibleNumber = ref(null);
-// 当前激活菜单的 index
+// The index of the currently active menu
 const currentIndex = ref('/system');
-// 隐藏侧边栏路由
+// Hide sidebar routing
 const hideList = ['/index', '/user/profile'];
 
 const appStore = useAppStore();
@@ -60,17 +61,17 @@ const permissionStore = usePermissionStore();
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(['getRouter']);
-// 主题颜色
+// theme color
 const theme = computed(() => settingsStore.theme);
-// 所有的路由信息
+// All routing information
 const routers = computed(() => permissionStore.topbarRouters);
 
-// 顶部显示菜单
+// Show menu at top
 const topMenus = computed(() => {
     let topMenus = [];
     routers.value.map((menu) => {
         if (menu.hidden !== true) {
-            // 兼容顶部栏一级菜单内部跳转
+            // Compatible with top bar first-level menu internal jump
             if (menu.path === '/') {
                 topMenus.push(menu.children[0]);
             } else {
@@ -81,7 +82,7 @@ const topMenus = computed(() => {
     return topMenus;
 });
 
-// 设置子路由
+// Set up subroutes
 const childrenMenus = computed(() => {
     let childrenMenus = [];
     routers.value.map((router) => {
@@ -103,14 +104,14 @@ const childrenMenus = computed(() => {
     return constantRoutes.concat(childrenMenus);
 });
 
-// 默认激活的菜单
+// Menu activated by default
 const activeMenu = computed(() => {
     const path = route.path;
     let activePath = path;
-    console.log(route, '菜单');
+    console.log(route, "Menu");
     emit('getRouter', path);
 
-    // 如果是根路径，选择第一个可见的菜单项
+    // If it is the root path, selects the first visible menu item
     if (path === '/index') {
         const firstMenu = topMenus.value[0];
         if (firstMenu) {
@@ -139,39 +140,39 @@ function setVisibleNumber() {
     visibleNumber.value = parseInt(width / 85);
 }
 
-// 处理顶部导航菜单的选择事件
+// Handle the selection event of the top navigation menu
 function handleSelect(key, keyPath) {
     window.open(key, '_blank', 'noreferrer');
     // console.log(currentIndex.value,"value");
 
-    //子组件调用父组件
+    //Child component calls parent component
     emit('getRouter', key);
 
-    // 设置当前选中的菜单索引
+    // Set the currently selected menu index
     currentIndex.value = key;
-    // 查找选中的路由配置
+    // Find selected routing configuration
     const route = routers.value.find((item) => item.path === key);
 
     if (isHttp(key)) {
-        // 如果是http(s)链接,在新窗口打开
+        // If it is an http(s) link, it will open in a new window
         window.open(key, '_blank');
     } else if (!route || !route.children) {
-        // 如果没有子路由,在当前窗口打开
+        // If there is no sub-route, open it in the current window
         const routeMenu = childrenMenus.value.find((item) => item.path === key);
         if (routeMenu && routeMenu.query) {
-            // 如果有query参数,解析后带上
+            // If there is a query parameter, bring it after parsing
             let query = JSON.parse(routeMenu.query);
             router.push({ path: key, query: query });
         } else {
-            // 没有query参数直接跳转
+            // Jump directly without query parameters
             router.push({ path: key });
         }
-        // 隐藏左侧菜单
+        // Hide left menu
         appStore.toggleSideBarHide(true);
     } else {
-        // 有子路由,显示左侧联动菜单
+        // If there are sub-routes, the linkage menu on the left will be displayed.
         activeRoutes(key);
-        // 显示左侧菜单
+        // Show left menu
         appStore.toggleSideBarHide(false);
     }
 }
@@ -241,7 +242,7 @@ onMounted(() => {
 }
 
 
-/* 背景色隐藏 */
+/* Background color hidden */
 .topmenu-container.el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
 .topmenu-container.el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
 .topmenu-container.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
@@ -250,7 +251,7 @@ onMounted(() => {
     background-color: var(--el-menu-hover-bg-color);
 }
 
-/* 图标右间距 */
+/* Icon right spacing */
 .topmenu-container .svg-icon {
     margin-right: 4px;
 }

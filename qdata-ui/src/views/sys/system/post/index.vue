@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -135,7 +136,7 @@
          />
       </div>
 
-      <!-- 添加或修改岗位对话框 -->
+      <!-- Add or modify job dialog box -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']"  draggable destroy-on-close>
          <el-form ref="postRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -175,7 +176,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -188,6 +189,7 @@ import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/sy
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const postList = ref([]);
@@ -218,7 +220,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询岗位列表 */
+/** Query job list */
 function getList() {
   loading.value = true;
   listPost(queryParams.value).then(response => {
@@ -228,13 +230,13 @@ function getList() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     postId: undefined,
@@ -247,33 +249,33 @@ function reset() {
   proxy.resetForm("postRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.postId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('sys.system.post.addTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const postId = row.postId || ids.value;
@@ -284,8 +286,10 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["postRef"].validate(valid => {
     if (valid) {
       if (form.value.postId != undefined) {
@@ -293,19 +297,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addPost(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const postIds = row.postId || ids.value;
   proxy.$modal.confirm(td('sys.system.post.confirmDelete', { id: postIds })).then(function() {
@@ -316,7 +328,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("system/post/export", {
     ...queryParams.value

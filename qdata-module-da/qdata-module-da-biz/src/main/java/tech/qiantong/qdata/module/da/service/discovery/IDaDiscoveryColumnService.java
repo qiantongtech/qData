@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.discovery;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现字段Service接口
+ * Data Discovery Column Service Interface
  *
  * @author qdata
  * @date 2025-02-11
@@ -52,74 +38,74 @@ import java.util.Map;
 public interface IDaDiscoveryColumnService extends IService<DaDiscoveryColumnDO> {
 
     /**
-     * 获得数据发现字段分页列表
+     * Get data discovery column page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据发现字段分页列表
+     * @param pageReqVO page request
+     * @return data discovery column page list
      */
     PageResult<DaDiscoveryColumnDO> getDaDiscoveryColumnPage(DaDiscoveryColumnPageReqVO pageReqVO);
 
     /**
-     * 获得全部数据发现字段列表
+     * Get all data discovery column list
      *
-     * @return 数据发现字段列表
+     * @return data discovery column list
      */
     List<DaDiscoveryColumnDO> getDaDiscoveryColumnList(DaDiscoveryColumnPageReqVO pageReqVO);
 
     /**
-     * 创建数据发现字段
+     * Create data discovery column
      *
-     * @param createReqVO 数据发现字段信息
-     * @return 数据发现字段编号
+     * @param createReqVO data discovery column info
+     * @return data discovery column ID
      */
     Long createDaDiscoveryColumn(DaDiscoveryColumnSaveReqVO createReqVO);
     Long createDaDiscoveryColumn(DaDiscoveryColumnDO createReqVO);
 
     /**
-     * 更新数据发现字段
+     * Update data discovery column
      *
-     * @param updateReqVO 数据发现字段信息
+     * @param updateReqVO data discovery column info
      */
     int updateDaDiscoveryColumn(DaDiscoveryColumnSaveReqVO updateReqVO);
     int updateDaDiscoveryColumn(DaDiscoveryColumnDO updateReqVO);
 
     /**
-     * 删除数据发现字段
+     * Delete data discovery column
      *
-     * @param idList 数据发现字段编号
+     * @param idList data discovery column ID list
      */
     int removeDaDiscoveryColumn(Collection<Long> idList);
 
     /**
-     * 获得数据发现字段详情
+     * Get data discovery column details
      *
-     * @param id 数据发现字段编号
-     * @return 数据发现字段
+     * @param id data discovery column ID
+     * @return data discovery column
      */
     DaDiscoveryColumnDO getDaDiscoveryColumnById(Long id);
 
     /**
-     * 获得全部数据发现字段列表
+     * Get all data discovery column list
      *
-     * @return 数据发现字段列表
+     * @return data discovery column list
      */
     List<DaDiscoveryColumnDO> getDaDiscoveryColumnList();
 
     /**
-     * 获得全部数据发现字段 Map
+     * Get all data discovery column Map
      *
-     * @return 数据发现字段 Map
+     * @return data discovery column Map
      */
     Map<Long, DaDiscoveryColumnDO> getDaDiscoveryColumnMap();
 
 
     /**
-     * 导入数据发现字段数据
+     * Import data discovery column data
      *
-     * @param importExcelList 数据发现字段数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data discovery column data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDiscoveryColumn(List<DaDiscoveryColumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

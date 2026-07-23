@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -58,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 角色信息
+ * Role Information
  *
  * @author qdata
  */
@@ -90,18 +76,18 @@ public class SysRoleController extends BaseController
         return getDataTable(list);
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:role:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysRole role)
     {
         List<SysRole> list = roleService.selectRoleList(role);
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-        util.exportExcel(response, list, "角色数据");
+        util.exportExcel(response, list, "Role Data");
     }
 
     /**
-     * 根据角色编号获取详细信息
+     * Get detailed information by role ID
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/{roleId}")
@@ -112,20 +98,20 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 新增角色
+     * Add new role
      */
     @PreAuthorize("@ss.hasPermi('system:role:add')")
-    @Log(title = "角色管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysRole role)
     {
         if (!roleService.checkRoleNameUnique(role))
         {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("Failed to add role '" + role.getRoleName() + "', role name already exists");
         }
         else if (!roleService.checkRoleKeyUnique(role))
         {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
+            return error("Failed to add role '" + role.getRoleName() + "', role permission already exists");
         }
         role.setCreateBy(getUsername());
         return toAjax(roleService.insertRole(role));
@@ -133,10 +119,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 修改保存角色
+     * Update and save role
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)
     {
@@ -144,17 +130,17 @@ public class SysRoleController extends BaseController
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role))
         {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+            return error("Failed to update role '" + role.getRoleName() + "', role name already exists");
         }
         else if (!roleService.checkRoleKeyUnique(role))
         {
-            return error("修改角色'" + role.getRoleName() + "'失败，权限字符已存在");
+            return error("Failed to update role '" + role.getRoleName() + "', permission character already exists");
         }
         role.setUpdateBy(getUsername());
 
         if (roleService.updateRole(role) > 0)
         {
-            // 更新缓存用户权限
+            // Update cached user permissions
             LoginUser loginUser = getLoginUser();
             if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
             {
@@ -164,14 +150,14 @@ public class SysRoleController extends BaseController
             }
             return success();
         }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+        return error("Failed to update role '" + role.getRoleName() + "', please contact administrator");
     }
 
     /**
-     * 修改保存数据权限
+     * Update data scope
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.UPDATE)
     @PutMapping("/dataScope")
     public AjaxResult dataScope(@RequestBody SysRole role)
     {
@@ -181,10 +167,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 状态修改
+     * Status update
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysRole role)
     {
@@ -195,10 +181,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 删除角色
+     * Delete role
      */
     @PreAuthorize("@ss.hasPermi('system:role:remove')")
-    @Log(title = "角色管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.DELETE)
     @DeleteMapping("/{roleIds}")
     public AjaxResult remove(@PathVariable Long[] roleIds)
     {
@@ -206,7 +192,7 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 获取角色选择框列表
+     * Get role selection list
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping("/optionselect")
@@ -216,7 +202,7 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 查询已分配用户角色列表
+     * Query allocated user role list
      */
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/authUser/allocatedList")
@@ -228,7 +214,7 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 查询未分配用户角色列表
+     * Query unallocated user role list
      */
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/authUser/unallocatedList")
@@ -240,10 +226,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 取消授权用户
+     * Cancel user authorization
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancel")
     public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
     {
@@ -251,10 +237,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 批量取消授权用户
+     * Batch cancel user authorization
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancelAll")
     public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
     {
@@ -262,10 +248,10 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 批量选择用户授权
+     * Batch select and authorize users
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
-    @Log(title = "角色管理", businessType = BusinessType.GRANT)
+    @Log(title = "log.op.title.system.role", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/selectAll")
     public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
     {
@@ -274,7 +260,7 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 获取对应角色部门树列表
+     * Get department tree list for role
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/deptTree/{roleId}")

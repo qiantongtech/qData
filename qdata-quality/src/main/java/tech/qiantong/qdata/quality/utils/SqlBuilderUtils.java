@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.utils;
@@ -42,12 +28,12 @@ import java.util.stream.Collectors;
 public class SqlBuilderUtils {
 
     /**
-     * 构建 AND 拼接的等值比较语句：如 t.col1 = t2.col1 AND t.col2 = t2.col2
+     * Construct an equality comparison statement of AND concatenation: such as t.col1 = t2.col1 AND t.col2 = t2.col2
      *
-     * @param columns     字段列表
-     * @param leftAlias   左表别名（如 t）
-     * @param rightAlias  右表别名（如 t2）
-     * @return 拼接后的 SQL 条件语句
+     * @param columns field list
+     * @param leftAlias left table alias (such as t)
+     * @param rightAlias Right table alias (such as t2)
+     * @return spliced SQL conditional statement
      */
     public static String buildAndEquals(List<String> columns, String leftAlias, String rightAlias) {
         if (columns == null || columns.isEmpty()) {
@@ -59,12 +45,12 @@ public class SqlBuilderUtils {
     }
 
     private SqlBuilderUtils() {
-        // 工具类不允许实例化
+        // Utility classes do not allow instantiation
         throw new UnsupportedOperationException("SqlBuilderUtils should not be instantiated");
     }
 
     /**
-     * 将操作符翻转，用于构造错误条件（如配置为 <=，错误就是 >）
+     * Flip the operator to construct error conditions (if configured as <=, the error is >)
      */
     public static String reverseOperator(String op) {
         switch (op) {
@@ -77,10 +63,10 @@ public class SqlBuilderUtils {
         }
     }
     /**
-     * 将对象转为 Boolean，支持 "1"/"0"、1/0、true/false 等常见形式
+     * Convert the object to Boolean, supporting common forms such as "1"/"0", 1/0, true/false
      *
-     * @param value 原始值
-     * @return Boolean.TRUE 表示是；Boolean.FALSE 表示否；null 表示无法识别
+     * @param value original value
+     * @return Boolean.TRUE means yes; Boolean.FALSE means no; null means unrecognized
      */
     public static Boolean parseBoolean(Object value) {
         if (value == null) {
@@ -125,17 +111,17 @@ public class SqlBuilderUtils {
     }
 
     public static String addSqlServerPagination(String sqlQuery, int limit, int offset) {
-        // 去掉末尾分号并裁剪空白
+        // Remove trailing semicolon and trim whitespace
         String trimmedQuery = sqlQuery.replace(";", "").trim();
 
         if (offset == 0) {
-            // 首页：直接用 TOP
+            // Home page: Use TOP directly
             return String.format(
                     "SELECT TOP (%d) * FROM (%s) AS t",
                     limit, trimmedQuery
             );
         } else {
-            // 通用：ROW_NUMBER 分页（不依赖 ORDER BY 的场景用 (SELECT 1) 占位）
+            // General: ROW_NUMBER paging (use (SELECT 1) placeholder for scenarios that do not rely on ORDER BY)
             return String.format(
                     "SELECT * FROM (\n" +
                             "  SELECT t.*, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS rn\n" +
@@ -161,7 +147,7 @@ public class SqlBuilderUtils {
                     .map(c -> {
                         String l = c.get("leftField");
                         String r = c.get("rightField");
-                        String op = c.get("operator"); // 例如 <= / < / >= / >
+                        String op = c.get("operator"); // For example <= / < / >= / >
                         return String.format("(%s IS NULL OR %s IS NULL OR %s %s %s)", l, r, l, op, r);
                     })
                     .collect(Collectors.joining(" AND "));
@@ -179,7 +165,7 @@ public class SqlBuilderUtils {
             sql.append(" AND (").append(whereClause).append(")");
         }
 
-        // SQL Server 分页：必须带 ORDER BY；无固定字段时用 ORDER BY (SELECT 1)
+        // SQL Server paging: ORDER BY is required; use ORDER BY (SELECT 1) when there is no fixed field
         sql.append(" ORDER BY (SELECT 1)")
                 .append(" OFFSET ").append(offset).append(" ROWS")
                 .append(" FETCH NEXT ").append(limit).append(" ROWS ONLY");

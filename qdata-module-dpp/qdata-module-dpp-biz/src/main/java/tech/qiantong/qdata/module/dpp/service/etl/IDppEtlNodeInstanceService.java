@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl;
@@ -45,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成节点实例Service接口
+ * Data Integration Node Instance Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -53,70 +39,70 @@ import java.util.Map;
 public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceDO> {
 
     /**
-     * 获得数据集成节点实例分页列表
+     * Get data integration node instance pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成节点实例分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration node instance pagination list
      */
     PageResult<DppEtlNodeInstanceDO> getDppEtlNodeInstancePage(DppEtlNodeInstancePageReqVO pageReqVO);
 
     /**
-     * 创建数据集成节点实例
+     * Create data integration node instance
      *
-     * @param createReqVO 数据集成节点实例信息
-     * @return 数据集成节点实例编号
+     * @param createReqVO Data integration node instance info
+     * @return Data integration node instance ID
      */
     Long createDppEtlNodeInstance(DppEtlNodeInstanceSaveReqVO createReqVO);
 
     /**
-     * 更新数据集成节点实例
+     * Update data integration node instance
      *
-     * @param updateReqVO 数据集成节点实例信息
+     * @param updateReqVO Data integration node instance info
      */
     int updateDppEtlNodeInstance(DppEtlNodeInstanceSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成节点实例
+     * Delete data integration node instance
      *
-     * @param idList 数据集成节点实例编号
+     * @param idList Data integration node instance ID list
      */
     int removeDppEtlNodeInstance(Collection<Long> idList);
 
     /**
-     * 获得数据集成节点实例详情
+     * Get data integration node instance detail
      *
-     * @param id 数据集成节点实例编号
-     * @return 数据集成节点实例
+     * @param id Data integration node instance ID
+     * @return Data integration node instance
      */
     DppEtlNodeInstanceDO getDppEtlNodeInstanceById(Long id);
 
     /**
-     * 获得全部数据集成节点实例列表
+     * Get all data integration node instance list
      *
-     * @return 数据集成节点实例列表
+     * @return Data integration node instance list
      */
     List<DppEtlNodeInstanceDO> getDppEtlNodeInstanceList();
 
     /**
-     * 获得全部数据集成节点实例 Map
+     * Get all data integration node instance Map
      *
-     * @return 数据集成节点实例 Map
+     * @return Data integration node instance Map
      */
     Map<Long, DppEtlNodeInstanceDO> getDppEtlNodeInstanceMap();
 
 
     /**
-     * 导入数据集成节点实例数据
+     * Import data integration node instance data
      *
-     * @param importExcelList 数据集成节点实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration node instance data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDppEtlNodeInstance(List<DppEtlNodeInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 创建任务节点实例
+     * Create task node instance
      *
      * @param taskInstance
      * @return
@@ -124,7 +110,7 @@ public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceD
     Boolean createNodeInstance(TaskInstance taskInstance);
 
     /**
-     * 更细任务节点实例
+     * Update task node instance
      *
      * @param taskInstance
      * @return
@@ -132,7 +118,7 @@ public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceD
     Boolean updateNodeInstance(TaskInstance taskInstance);
 
     /**
-     * 根据dsId获取数据
+     * Get data by dsId
      *
      * @param dsId
      * @return
@@ -140,7 +126,7 @@ public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceD
     DppEtlNodeInstanceDO getByDsId(Long dsId);
 
     /**
-     * 节点实例日志的处理
+     * Process node instance log
      *
      * @param taskInstanceId
      * @param processInstanceId

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志Service业务层处理
+ * Metadata database and information and field information relationship - log service business layer processing
  *
  * @author qdata
  * @date 2026-03-10
@@ -45,15 +45,15 @@ public class McTableColumnRelLogServiceImpl  extends ServiceImpl<McTableColumnRe
 
     @Override
     public int updateMcTableColumnRelLog(McTableColumnRelLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新元数据数据库与信息及字段信息关系-日志
+        // Update metadata database and information and field information relationships-log
         McTableColumnRelLogDO updateMcTableColumnRelLogDO = BeanUtils.toBean(updateReqVO, McTableColumnRelLogDO.class);
         return mcTableColumnRelLogMapper.updateById(updateMcTableColumnRelLogDO);
     }
     @Override
     public int removeMcTableColumnRelLog(Collection<Long> idList) {
-        // 批量删除元数据数据库与信息及字段信息关系-日志
+        // Batch deletion of metadata database and information and field information relationships-log
         return mcTableColumnRelLogMapper.deleteBatchIds(idList);
     }
 
@@ -74,7 +74,7 @@ public class McTableColumnRelLogServiceImpl  extends ServiceImpl<McTableColumnRe
                 .collect(Collectors.toMap(
                         McTableColumnRelLogDO::getId,
                         mcTableColumnRelLogDO -> mcTableColumnRelLogDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }

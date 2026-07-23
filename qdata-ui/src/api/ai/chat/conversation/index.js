@@ -1,25 +1,26 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from "@/utils/requestAi.js";
 
-// AI 聊天对话 API
+// AI Chat Conversation API
 export const ChatConversationApi = {
-  // 获得【我的】聊天对话
+  // Get [my] chat conversation
   getChatConversationMy: (id) => {
     return request({
       url: `/chat/conversation/` + id,
@@ -27,7 +28,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 新增【我的】聊天对话
+  // Add [my] chat conversation
   createChatConversationMy: (data) => {
     return request({
       url: `/chat/conversation`,
@@ -36,7 +37,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 更新【我的】聊天对话
+  // Update [my] chat conversation
   updateChatConversationMy: (data) => {
     return request({
       url: `/chat/conversation`,
@@ -45,7 +46,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 删除【我的】聊天对话
+  // Delete [my] chat conversation
   deleteChatConversationMy: (id) => {
     return request({
       url: `/chat/conversation/` + id,
@@ -53,7 +54,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 获得【我的】聊天对话列表
+  // Get [my] chat conversation list
   getChatConversationMyList: () => {
     return request({
       url: `/chat/conversation/myList`,
@@ -61,7 +62,7 @@ export const ChatConversationApi = {
     });
   },
 
-  // 设置关联关系
+  // Set up relationships
   setAssociations: (data) => {
     return request({
       url: `/chat/conversation/setAssociations`,

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.query;
@@ -81,7 +67,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
     private DbQueryProperty dbQueryProperty;
 
-    // JDBC 类型 → Flink SQL 类型（简化版，可按需扩展）
+    // JDBC type → Flink SQL type (simplified version, extensible on demand)
     private static final Map<String, String> TYPE_MAPPING = new HashMap<>();
 
     static {
@@ -97,8 +83,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         TYPE_MAPPING.put("SERIAL", "INT");
         TYPE_MAPPING.put("BIGSERIAL", "BIGINT");
         TYPE_MAPPING.put("SMALLSERIAL", "INT");
-        TYPE_MAPPING.put("NAME", "STRING");          // 系统表常用
-        TYPE_MAPPING.put("BYTEA", "BYTES");          // 兼容 PostgreSQL
+        TYPE_MAPPING.put("NAME", "STRING");          // Commonly used system tables
+        TYPE_MAPPING.put("BYTEA", "BYTES");          // Compatible with PostgreSQL
         TYPE_MAPPING.put("BIGINT", "BIGINT");
         TYPE_MAPPING.put("DECIMAL", "DECIMAL");
         TYPE_MAPPING.put("NUMERIC", "DECIMAL");
@@ -115,7 +101,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         TYPE_MAPPING.put("TIMESTAMP_WITH_TIMEZONE", "TIMESTAMP_LTZ");
 
 
-        /* ---------- 1. 标准 JDBC 类型（JSR-221） ---------- */
+        /* ---------- 1. Standard JDBC type (JSR-221) ---------- */
         TYPE_MAPPING.put("VARCHAR", "STRING");
         TYPE_MAPPING.put("LONGVARCHAR", "STRING");
         TYPE_MAPPING.put("CHAR", "STRING");
@@ -150,18 +136,18 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         TYPE_MAPPING.put("LONGVARBINARY", "BYTES");
         TYPE_MAPPING.put("BLOB", "BYTES");
 
-        /* ----------  MySQL 8 特有 ---------- */
+        /* ---------- MySQL 8 specific ---------- */
         TYPE_MAPPING.put("TEXT", "STRING");
         TYPE_MAPPING.put("LONGTEXT", "STRING");
         TYPE_MAPPING.put("MEDIUMTEXT", "STRING");
         TYPE_MAPPING.put("TINYTEXT", "STRING");
-        TYPE_MAPPING.put("JSON", "STRING");          // Flink 无 JSON，先用 STRING
+        TYPE_MAPPING.put("JSON", "STRING");          // Flink does not have JSON, use STRING first
         TYPE_MAPPING.put("YEAR", "INT");
         TYPE_MAPPING.put("DATETIME", "TIMESTAMP");
-        TYPE_MAPPING.put("TIMESTAMP", "TIMESTAMP");  // MySQL 的 TIMESTAMP 实质 TIMESTAMP_LTZ，但列名已覆盖
+        TYPE_MAPPING.put("TIMESTAMP", "TIMESTAMP");  // MySQL's TIMESTAMP is actually TIMESTAMP_LTZ, but column names are overwritten
 
 
-        /* ----------  Oracle 19c 特有 ---------- */
+        /* ---------- Oracle 19c specific ---------- */
         TYPE_MAPPING.put("VARCHAR2", "STRING");
         TYPE_MAPPING.put("NVARCHAR2", "STRING");
         TYPE_MAPPING.put("BINARY_FLOAT", "FLOAT");
@@ -171,15 +157,15 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         TYPE_MAPPING.put("RAW", "BYTES");
         TYPE_MAPPING.put("LONG RAW", "BYTES");
 
-        /* ---------- 达梦 DM8 ---------- */
+        /* ---------- Dameng DM8 ---------- */
         TYPE_MAPPING.put("TEXT", "STRING");
         TYPE_MAPPING.put("LONG", "STRING");
         TYPE_MAPPING.put("IMAGE", "BYTES");
-        TYPE_MAPPING.put("SIGNED", "BIGINT");        // DM 的整数类型别名
-        TYPE_MAPPING.put("BIGINT", "BIGINT");        // 再次确认
+        TYPE_MAPPING.put("SIGNED", "BIGINT");        // Integer type alias for DM
+        TYPE_MAPPING.put("BIGINT", "BIGINT");        // Confirm again
 
         /* ----------  PostgreSQL 15 ---------- */
-        TYPE_MAPPING.put("UUID", "STRING");          // Flink 无 UUID
+        TYPE_MAPPING.put("UUID", "STRING");          // Flink has no UUID
         TYPE_MAPPING.put("JSON", "STRING");
         TYPE_MAPPING.put("JSONB", "STRING");
         TYPE_MAPPING.put("SERIAL2", "SMALLINT");
@@ -193,8 +179,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         TYPE_MAPPING.put("DATETIMEOFFSET", "TIMESTAMP_LTZ");
         TYPE_MAPPING.put("SMALLDATETIME", "TIMESTAMP");
         TYPE_MAPPING.put("UNIQUEIDENTIFIER", "STRING"); // UUID
-        TYPE_MAPPING.put("SQL_VARIANT", "STRING");   // 万能类型，先转 STRING
-        TYPE_MAPPING.put("GEOGRAPHY", "STRING");     // 空间类型先转 STRING
+        TYPE_MAPPING.put("SQL_VARIANT", "STRING");   // Universal type, first convert to STRING
+        TYPE_MAPPING.put("GEOGRAPHY", "STRING");     // Convert space type to STRING first
         TYPE_MAPPING.put("GEOMETRY", "STRING");
     }
 
@@ -209,7 +195,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataQueryException("db.error.connection", "获取数据库连接出错");
+            throw new DataQueryException("db.error.connection", "Failed to get database connection");
         }
     }
 
@@ -229,10 +215,10 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             return;
         } else if (DbType.REDIS.getDb().equals(dbType.getDb())) {
             if (redisConnection != null) {
-                redisConnection.close();   // 关闭连接
+                redisConnection.close();   // Close connection
             }
             if (redisClient != null) {
-                redisClient.shutdown();    // 关闭客户端资源
+                redisClient.shutdown();    // Close client resources
             }
             return;
         }
@@ -242,7 +228,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         } else if (dataSource instanceof SimpleDataSource) {
             ((SimpleDataSource) dataSource).close();
         } else {
-            throw new DataQueryException("db.error.invalid.datasource", "不合法数据源类型");
+            throw new DataQueryException("db.error.invalid.datasource", "Invalid datasource type");
         }
     }
 
@@ -286,7 +272,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             List<String> pkList = new ArrayList<>();
 
             jdbcTemplate.query(pkColumnNames, rs -> {
-                String createTableSql = rs.getString(2); // 第2列为完整DDL
+                String createTableSql = rs.getString(2); // Column 2 is the complete DDL
                 Pattern pattern = Pattern.compile("(UNIQUE|PRIMARY) KEY\\s*\\(([^)]+)\\)", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(createTableSql);
                 if (matcher.find()) {
@@ -326,7 +312,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             List<String> pkList = new ArrayList<>();
 
             jdbcTemplate.query(pkColumnNames, rs -> {
-                String createTableSql = rs.getString(2); // 第2列为完整DDL
+                String createTableSql = rs.getString(2); // Column 2 is the complete DDL
                 Pattern pattern = Pattern.compile("(UNIQUE|PRIMARY) KEY\\s*\\(([^)]+)\\)", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(createTableSql);
                 if (matcher.find()) {
@@ -347,7 +333,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     public int generateCheckTableExistsSQL(DbQueryProperty dbQueryProperty, String tableName) {
         String sql = dbDialect.generateCheckTableExistsSQL(dbQueryProperty, tableName);
         System.out.println(sql);
-        //hive不支持
+        //hive does not support
         if (DbType.HIVE.getDb().equals(dbQueryProperty.getDbType())) {
             List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
             return CollectionUtils.isEmpty(result) ? 0 : result.size();
@@ -399,7 +385,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                 String comment = null;
                 for (Map<String, Object> row : rows) {
                     if ("comment".equalsIgnoreCase(String.valueOf(row.get("col_name")))) {
-                        comment = String.valueOf(row.get("data_type")); // Hive 会把注释放在这一列
+                        comment = String.valueOf(row.get("data_type")); // Hive will put the comments in this column
                         break;
                     }
                 }
@@ -430,7 +416,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             FileDialect fileDialect = (FileDialect) dbDialect;
             return fileDialect.getFiles(dbQueryProperty, path);
         }
-        throw new ServiceException("当前数据源不支持获取文件列表");
+        throw new ServiceException("sys.error.datasource.file.list.unsupported",
+                "The current data source does not support retrieving file lists");
     }
 
     @Override
@@ -489,14 +476,14 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                 String isAsc = MapUtils.getString(map, "isAsc", "desc");
 
                 if (tech.qiantong.qdata.common.utils.StringUtils.isNotBlank(orderByColumn)) {
-                    // 拼接表名 + 字段
+                    // Splice table name + field
                     orderBySql = orderBySql.append(orderByColumn).append(" ").append(isAsc);
                     if (i < orderByList.size() - 1) {
                         orderBySql.append(", ");
                     }
                 }
             }
-            // 最终拼好的 orderBySql
+            // The final orderBySql
             String finalOrderBy = orderBySql.toString();
             sql += finalOrderBy;
         }
@@ -505,7 +492,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     }
 
     /**
-     * 新增，暂时仅支持MONGODB
+     * Newly added, currently only supports MONGODB
      *
      * @param tableName
      * @param after
@@ -563,7 +550,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     }
 
     /**
-     * 查询结果列表带查询参数
+     * Query result list with query parameters
      *
      * @param sql
      * @param params
@@ -577,7 +564,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     }
 
     /**
-     * 查询详情结果带查询参数
+     * Query details results with query parameters
      *
      * @param sql
      * @param params
@@ -589,7 +576,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         MyRowMapper mapper = new MyRowMapper();
         return namedJdbcTemplate.query(sql, params, rs -> {
             if (rs.next()) {
-                // 只映射第一行，不再组装 List
+                // Only the first row is mapped, the List is no longer assembled
                 return mapper.mapRow(rs, 1);
             }
             return null;
@@ -623,7 +610,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     protected String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
@@ -638,7 +625,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
     @Override
     public Integer getDataStorageSize() {
-        // 获取数据库名或模式名
+        // Get the database name or schema name
         String dbNameSql = dbDialect.getDbName();
         NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         List<Map<String, Object>> dbNameResult = namedJdbcTemplate.query(dbNameSql, new MyRowMapper());
@@ -650,12 +637,12 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
         if (StringUtils.isEmpty(dbName)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         String dataStorageSizeSql = dbDialect.getDataStorageSize(dbName);
         List<Map<String, Object>> dataStorageSizeResult = namedJdbcTemplate.query(dataStorageSizeSql, new MyRowMapper());
 
-        // 获取存储量
+        // Get storage amount
         Integer dataStorageSize = 0;
         if (dataStorageSizeResult.size() > 0) {
             Map<String, Object> data = dataStorageSizeResult.get(0);
@@ -669,7 +656,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     @Override
     public Boolean copyTable(Connection conn, DbQueryProperty dbQueryProperty, String tableName, String newTableName) {
         try {
-            //判断是否是 Hive
+            //Determine whether it is Hive
             if (dbQueryProperty.getDbType().equals(DbType.HIVE.getDb())) {
                 String sql = "CREATE TABLE " + newTableName + " LIKE " + tableName;
                 this.execute(sql);
@@ -687,7 +674,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 //            this.dbDialect.get
             List<DbColumn> dbColumnList = this.getTableColumns(dbQueryProperty, tableName);
 
-            //获取表注释
+            //Get table comments
             List<DbTable> dbTableList = this.getTables(dbQueryProperty.getDbName());
             String finalTableName = tableName;
             List<DbTable> dbTable = dbTableList.stream().filter(e -> e.getTableName().equals(finalTableName)).collect(Collectors.toList());
@@ -711,7 +698,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
         try {
             List<DbColumn> dbColumnList = this.getTableColumns(dbQueryProperty, tableName);
 
-            //获取表注释
+            //Get table comments
             List<DbTable> dbTableList = this.getTables(dbQueryProperty.getDbName());
             if (addColumn != null && addColumn.size() > 0) {
                 for (JSONObject jsonObject : addColumn) {
@@ -727,7 +714,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                     dbColumnList.add(dbColumn);
                 }
             }
-            //将主键抽取到最上面
+            //Extract the primary key to the top
             List<DbColumn> keyColumns = dbColumnList.stream().filter(e -> e.getColKey()).collect(Collectors.toList());
             List<DbColumn> nonKeyColumns = dbColumnList.stream().filter(e -> !e.getColKey()).collect(Collectors.toList());
             dbColumnList.clear();
@@ -988,7 +975,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DataQueryException("db.error.sql.parse", "SQL解析失败");
+            throw new DataQueryException("db.error.sql.parse", "SQL parsing failed");
         } finally {
             if (stmt != null) {
                 try {
@@ -1023,7 +1010,8 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             fileDialect.uploadFile(dbQueryProperty, path, file);
             return;
         }
-        throw new ServiceException("当前数据源不支持上传文件");
+        throw new ServiceException("sys.error.datasource.file.upload.unsupported",
+                "The current data source does not support file uploads");
     }
 
     @Override
@@ -1043,7 +1031,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                 String jdbcType = meta.getColumnTypeName(i);
                 int scale = meta.getScale(i);
                 int precision = meta.getPrecision(i);
-                String flinkType = TYPE_MAPPING.getOrDefault(jdbcType.toUpperCase(), "STRING"); // 默认兜底
+                String flinkType = TYPE_MAPPING.getOrDefault(jdbcType.toUpperCase(), "STRING"); // Default to cover up
                 if (org.apache.commons.lang3.StringUtils.equals("NUMBER", jdbcType.toUpperCase()) && precision == 0) {
                     flinkType = "INT";
                 }
@@ -1058,7 +1046,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                     String colName = meta.getColumnName(i);
                     boolean isPrimaryKey = false;
                     while (rs.next()) {
-                        String keyColName = rs.getString("COLUMN_NAME"); // 主键列名
+                        String keyColName = rs.getString("COLUMN_NAME"); // Primary key column name
                         if (keyColName.equalsIgnoreCase(colName)) {
                             isPrimaryKey = true;
                             break;
@@ -1115,22 +1103,22 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     @Override
     public List<String> generateUpdateTableSQL(DbQueryProperty dbQueryProperty, String tableName, String tableComment, List<DbColumn> sourceDbColumnList) {
         List<String> sqlList = new ArrayList<>();
-        //生成获取表信息的sql
+        //Generate sql to obtain table information
         String getTableInfoSql = dbDialect.table(dbQueryProperty, tableName);
         List<DbTable> dbTableList = jdbcTemplate.query(getTableInfoSql, dbDialect.tableMapper());
         if (dbTableList == null || dbTableList.size() == 0) {
-            throw new ServiceException("表不存在");
+            throw new ServiceException("sys.error.table.notfound", "Table does not exist");
         }
-        //目标库表信息
+        //Target database table information
         DbTable targetDbTable = dbTableList.get(0);
-        //目标库表注释
+        // Target database table comments
         String targetTableComment = dbTableList.get(0).getTableComment();
-        //查询表注释是否有改动
+        //Check whether the comments of the query table have been changed
         if (!org.apache.commons.lang3.StringUtils.equals(tableComment, targetTableComment)) {
             sqlList.add(dbDialect.updateTableComment(dbQueryProperty, tableName, tableComment));
         }
 
-        //生成获取目标字段列表的SQL
+        //Generate SQL to get the target field list
         String getTableColumnsSql = dbDialect.columns(dbQueryProperty, tableName);
         List<DbColumn> targetDbColumnList = new ArrayList<>();
         if (dbDialect instanceof OracleDialect) {
@@ -1147,34 +1135,34 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             targetDbColumnList.addAll(queryColumns);
         }
 
-        // 比较源列和目标列的差异
+        // Compare the differences between source and target columns
         Map<String, Object> columnChanges = compareColumnLists(sourceDbColumnList, targetDbColumnList);
         List<DbColumn> columnsToDelete = (List<DbColumn>) columnChanges.get("columnsToDelete");
         List<DbColumn> columnsToModify = (List<DbColumn>) columnChanges.get("columnsToModify");
         List<DbColumn> columnsToAdd = (List<DbColumn>) columnChanges.get("columnsToAdd");
         Boolean updateColKey = (Boolean) columnChanges.get("updateColKey");
 
-        // 处理需要新增的列
+        // Process the columns that need to be added
         for (DbColumn column : columnsToAdd) {
             sqlList.addAll(sqlList.size(), dbDialect.addColumn(dbQueryProperty, tableName, column));
         }
 
-        // 处理需要修改的列
+        // Process the columns that need to be modified
         for (DbColumn column : columnsToModify) {
             sqlList.addAll(sqlList.size(), dbDialect.modifyColumn(dbQueryProperty, tableName, column));
         }
 
-        // 处理需要删除的列
+        // Process the columns that need to be deleted
         for (DbColumn column : columnsToDelete) {
             sqlList.add(dbDialect.dropColumn(dbQueryProperty, tableName, column.getColName()));
         }
 
-        //处理主键更新
+        //Handle primary key updates
         if (updateColKey) {
             List<DbColumn> colKeyDbColumnList = sourceDbColumnList.stream()
                     .filter(DbColumn::getColKey)
                     .collect(Collectors.toList());
-            //TODO 这个逻辑暂时不要——将需要删除的列中为主键的进行过滤
+            //TODO This logic is not needed for the time being - filter the columns that need to be deleted as the primary key
 //            List<DbColumn> deleteColKeyColumnList = columnsToDelete.stream()
 //                    .filter(DbColumn::getColKey)
 //                    .collect(Collectors.toList());
@@ -1188,23 +1176,23 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
 
 
     /**
-     * 比较源列列表和目标列列表，返回需要删除、修改和新增的列
+     * Compare the source column list and the target column list and return the columns that need to be deleted, modified or added
      *
-     * @param sourceDbColumnList 源列列表
-     * @param targetDbColumnList 目标列列表
-     * @return 包含三个键的Map：columnsToDelete（需删除）、columnsToModify（需修改）、columnsToAdd（需新增）
+     * @param sourceDbColumnList source column list
+     * @param targetDbColumnList target column list
+     * @return Map containing three keys: columnsToDelete (needs to be deleted), columnsToModify (needs to be modified), columnsToAdd (needs to be added)
      */
     private Map<String, Object> compareColumnLists(List<DbColumn> sourceDbColumnList, List<DbColumn> targetDbColumnList) {
-        //删除的字段
+        //Deleted fields
         List<DbColumn> columnsToDelete = new ArrayList<>();
-        //修改的字段
+        //Modified fields
         List<DbColumn> columnsToModify = new ArrayList<>();
-        //添加的字段
+        //Added fields
         List<DbColumn> columnsToAdd = new ArrayList<>();
-        //是否更改主键
+        //Whether to change the primary key
         Boolean updateColKey = false;
 
-        // 创建目标列的Map，以列名为key
+        // Create a Map of the target column, with the column name as the key
         Map<String, DbColumn> targetColumnMap = new HashMap<>();
         if (targetDbColumnList != null) {
             for (DbColumn targetColumn : targetDbColumnList) {
@@ -1212,7 +1200,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
 
-        // 创建源列的Map，以列名为key
+        // Create a Map of source columns, with the column name as key
         Map<String, DbColumn> sourceColumnMap = new HashMap<>();
         if (sourceDbColumnList != null) {
             for (DbColumn sourceColumn : sourceDbColumnList) {
@@ -1220,18 +1208,18 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
 
-        // 查找需要删除和修改的列
+        // Find the columns that need to be deleted and modified
         if (targetDbColumnList != null) {
             for (DbColumn targetColumn : targetDbColumnList) {
                 String colName = targetColumn.getColName();
                 if (!sourceColumnMap.containsKey(colName)) {
-                    // 源列中不存在该列，需要删除
+                    // This column does not exist in the source column and needs to be deleted
                     columnsToDelete.add(targetColumn);
                     if (targetColumn.getColKey()) {
                         updateColKey = true;
                     }
                 } else {
-                    // 列存在，检查是否有变化需要修改
+                    // The column exists, check if there are any changes that need to be modified
                     DbColumn sourceColumn = sourceColumnMap.get(colName);
                     if (isColumnModified(sourceColumn, targetColumn)) {
                         columnsToModify.add(sourceColumn);
@@ -1243,16 +1231,16 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             }
         }
 
-        // 查找需要新增的列
+        // Find the columns that need to be added
         if (sourceDbColumnList != null) {
             for (DbColumn sourceColumn : sourceDbColumnList) {
                 String colName = sourceColumn.getColName();
                 if (!targetColumnMap.containsKey(colName)) {
-                    //判断是否是主键
+                    //Determine whether it is a primary key
                     if (sourceColumn.getColKey()) {
                         updateColKey = true;
                     }
-                    // 目标列中不存在该列，需要新增
+                    // The column does not exist in the target column and needs to be added.
                     columnsToAdd.add(sourceColumn);
                 }
             }
@@ -1267,51 +1255,51 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     }
 
     /**
-     * 判断列是否发生了改变
+     * Determine whether the column has changed
      *
-     * @param sourceColumn 源列
-     * @param targetColumn 目标列
-     * @return true表示有改变，false表示无改变
+     * @param sourceColumn source column
+     * @param targetColumn target column
+     * @return true means there is a change, false means no change
      */
     private boolean isColumnModified(DbColumn sourceColumn, DbColumn targetColumn) {
-        //将源表字段类型进行转换
+        //Convert source table field types
         String sourceDataType = dbDialect.getColumnType(targetColumn);
 
         if (sourceColumn == null || targetColumn == null) {
             return true;
         }
 
-        // 比较数据类型
+        // Compare data types
         if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(sourceDataType, targetColumn.getDataType())) {
             return true;
         }
 
-        // 比较数据长度
+        // Compare data lengths
         if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataLength(), targetColumn.getDataLength())) {
             return true;
         }
 
-        // 比较数据精度
+        // Compare data accuracy
         if (targetColumn.getDataPrecision() != null && !org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataPrecision() == null ? sourceColumn.getDataLength() : sourceColumn.getDataPrecision(), targetColumn.getDataPrecision())) {
             return true;
         }
 
-        // 比较小数位
+        // Compare decimal places
         if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataScale(), targetColumn.getDataScale())) {
             return true;
         }
 
-        // 比较是否允许为空
+        // Compare whether null is allowed
         if (!java.util.Objects.equals(sourceColumn.getNullable(), targetColumn.getNullable())) {
             return true;
         }
 
-        // 比较默认值
+        // Compare to default
         if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getDataDefault(), targetColumn.getDataDefault())) {
             return true;
         }
 
-        // 比较注释
+        // Compare notes
         if (!org.apache.commons.lang3.StringUtils.equals(sourceColumn.getColComment(), targetColumn.getColComment())) {
             return true;
         }

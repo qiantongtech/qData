@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /*
@@ -220,7 +206,7 @@ public final class JSONUtils {
     }
 
     public static String convertParametersToJson(Map<String, String> taskParamMap) throws JsonProcessingException {
-        // 将 taskParamMap 转换为 JSON 字符串
+        // Convert taskParamMap to JSON string
         return objectMapper.writeValueAsString(taskParamMap);
     }
 
@@ -289,7 +275,7 @@ public final class JSONUtils {
      * @param classV classV
      * @param <K> K
      * @param <V> V
-     * @return to map
+     * @return converted map
      */
     public static <K, V> Map<K, V> toMap(String json, Class<K> classK, Class<V> classV) {
         if (Strings.isNullOrEmpty(json)) {
@@ -462,26 +448,26 @@ public final class JSONUtils {
     }
 
     /**
-     * 将对象转换为 JSON 字符串
-     * @param object 要转换的对象
-     * @return JSON 字符串
+     * Convert object to JSON string
+     * @param object The object to be converted
+     * @return JSON string
      */
     public static String toJson(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);  // 转为 JSON 字符串
+            return objectMapper.writeValueAsString(object);  // Convert to JSON string
         } catch (Exception e) {
             e.printStackTrace();
-            return null;  // 转换失败时返回 null
+            return null;  // Returns null if conversion fails
         }
     }
 
 
 
     /**
-     * 将字符串转换为 long 类型
+     * Convert string to type long
      *
-     * @param processDefinitionCode 要转换的字符串
-     * @return 转换后的 long 值，若转换失败返回 -1
+     * @param processDefinitionCode The string to convert
+     * @return the converted long value, if the conversion fails, -1 is returned
      */
     public static long convertToLong(String processDefinitionCode) {
         if (processDefinitionCode == null || processDefinitionCode.trim().isEmpty()) {
@@ -491,6 +477,26 @@ public final class JSONUtils {
             return Long.parseLong(processDefinitionCode.trim());
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    /**
+     * Formats a JSON string.
+     *
+     * @param json original JSON string
+     * @return the formatted JSON string
+     */
+    public static String formatJson(String json) {
+        try {
+            Object jsonObject = objectMapper.readValue(json, Object.class);
+
+            return objectMapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(jsonObject);
+        } catch (Exception e) {
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.json.format.fail",
+                    "Failed to format JSON; check whether the JSON content is valid"), e);
         }
     }
 }

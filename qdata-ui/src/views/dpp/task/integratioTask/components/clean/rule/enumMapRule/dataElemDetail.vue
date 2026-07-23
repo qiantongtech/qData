@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <el-dialog :title="td('dpp.cleanRule.detail', '详情')" v-model="visible" width="800px" draggable>
+  <el-dialog :title="td('dpp.cleanRule.detail', 'Details')" v-model="visible" width="800px" draggable>
     <el-table
       stripe
       height="65vh"
@@ -24,14 +25,14 @@
       :data="dpDataElemCodeList"
       :default-sort="defaultSort"
     >
-      <el-table-column :label="td('common.texts.number', '编号')" align="left" prop="id" width="80" />
-      <el-table-column :label="td('dpp.cleanRule.codeValue', '代码值')" align="left" prop="codeValue" width="160">
+      <el-table-column :label="td('common.texts.number', 'No.')" align="left" prop="id" width="80" />
+      <el-table-column :label="td('dpp.cleanRule.codeValue', 'Code Value')" align="left" prop="codeValue" width="160">
         <template #default="scope">
           {{ scope.row.codeValue || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.cleanRule.codeName', '代码名称')"
+        :label="td('dpp.cleanRule.codeName', 'Code Name')"
         align="left"
         prop="codeName"
         width="350"
@@ -40,13 +41,13 @@
           {{ scope.row.codeName || "-" }}
         </template>
       </el-table-column>
-      <el-table-column :label="td('common.texts.createdBy', '创建人')" align="left" prop="createBy" width="160">
+      <el-table-column :label="td('common.texts.createdBy', 'Created By')" align="left" prop="createBy" width="160">
         <template #default="scope">
           {{ scope.row.createBy || "-" }}
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.createdTime', '创建时间')"
+        :label="td('common.texts.createdTime', 'Created Time')"
         align="left"
         prop="createTime"
         width="220"
@@ -58,7 +59,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.remark', '备注')"
+        :label="td('common.texts.remark', 'Remark')"
         align="left"
         prop="remark"
         width="360"
@@ -74,7 +75,7 @@
             src="../../../../../../../../assets/images/system/no_data/empty-nodata.png"
             alt=""
           />
-          <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+          <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
         </div>
       </template>
     </el-table>
@@ -88,7 +89,7 @@
     />
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="handleClose">{{ td('common.button.close', '关闭') }}</el-button>
+        <el-button size="mini" @click="handleClose">{{ td('common.button.close', 'Close') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -129,7 +130,7 @@ let id = route.query.id;
 
 const { queryParams, form } = toRefs(data);
 
-/** 查询数据元代码列表 */
+/** Query the data element code list */
 function getList(id) {
   if (id == -1) {
     return;
@@ -143,14 +144,14 @@ function getList(id) {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,

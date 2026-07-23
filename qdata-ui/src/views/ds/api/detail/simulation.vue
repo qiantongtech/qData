@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -20,7 +21,7 @@
         :statusOptions="statusOptions" v-if="form1.apiServiceType != '3'" />
     <testapi ref="test" :isChange="false" :data="form1" :resTypeOptions="resTypeOptions"
         v-if="form1.apiServiceType == '3'" :whetherOptions="whetherOptions" :statusOptions="statusOptions" />
-    <!-- 添加或修改详情对话框 -->
+    <!-- Add or modify details dialog box -->
 
 </template>
 
@@ -66,7 +67,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询详情列表 */
+/** Query details list */
 function getList() {
     loading.value = true;
     let responseData = [
@@ -107,16 +108,16 @@ function getList() {
     loading.value = false;
 }
 
-/** 查询详情下拉树结构 */
+/** Query details drop-down tree structure */
 function getTreeselect() { }
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         id: null,
@@ -137,18 +138,18 @@ function reset() {
     proxy.resetForm('bidDetailsRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
     getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
     reset();
     getTreeselect();
@@ -161,7 +162,7 @@ function handleAdd(row) {
     title.value = td('ds.api.apiDetail.simulation.addContent');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
     refreshTable.value = false;
     isExpandAll.value = !isExpandAll.value;

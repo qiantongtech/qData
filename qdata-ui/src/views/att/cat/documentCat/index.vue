@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -115,7 +116,7 @@
               v-hasPermi="['att:documentCat:edit']">{{ td('common.button.update') }}</el-button>
             <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)"
               v-hasPermi="['att:documentCat:add']">{{ td('common.button.add') }}</el-button>
-            <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
+            <el-button link type="danger" icon="Delete" :disabled="scope.row.validFlag == true" @click="handleDelete(scope.row)"
               v-hasPermi="['att:documentCat:remove']">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
@@ -123,7 +124,7 @@
       <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
         @pagination="getList" />
     </div>
-    <!-- 添加或修改标签类目管理对话框 -->
+    <!-- Add or edit document category management dialog -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-form ref="AttTagCatRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
@@ -175,7 +176,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -190,6 +191,7 @@ import { listAttDocumentCat, getAttDocumentCat, delAttDocumentCat, addAttDocumen
 const { t } = useI18n();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const AttTagCatList = ref([]);
 const AttTagCatOptions = ref([]);
 const open = ref(false);
@@ -219,7 +221,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询数据文档管理列表 */
+/** Query document category management list */
 function getList() {
   loading.value = true;
   listAttDocumentCat(queryParams.value).then((response) => {
@@ -236,15 +238,15 @@ function getDataTree() {
     AttTagCatOptions.value.push(data);
   });
 }
-/** 查询数据文档管理下拉树结构1 */
+/** Query document category dropdown tree structure 1 */
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// Reset form
 function reset() {
   form.value = {
     id: null,
@@ -266,11 +268,11 @@ function reset() {
   proxy.resetForm('AttTagCatRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Toggle enable status value */
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
@@ -288,13 +290,13 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   proxy.resetForm('queryRef');
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -313,7 +315,7 @@ function handleAdd(row) {
   title.value = td('att.documentCat.title.add');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operation */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -322,15 +324,15 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Edit button operation */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listAttDocumentCat();
   AttTagCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter node computed property
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: remove items whose ID matches or whose ancestors contain the target ID
     return d.ID !== row.id && !d.parentId.toString().split(',').includes(row.id.toString());
   });
   const data = { id: 0, name: td('common.texts.topNode'), children: [] };
@@ -340,7 +342,7 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getAttDocumentCat(row.id).then((response) => {
-    //把createTime过滤掉
+    //# Filter out the CreateTime #
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
@@ -349,8 +351,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** Submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs['AttTagCatRef'].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -358,19 +362,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       } else {
         addAttDocumentCat(form.value).then((response) => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(error => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Remove button operation */
 function handleDelete(row) {
   proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete').replace('<ids>', row.id))
     .then(function () {

@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Create or update GitHub Release from tag annotation
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          TAG="${GITHUB_REF#refs/tags/}"
+
+          echo "Current tag: ${TAG}"
+          echo "GitHub ref: ${GITHUB_REF}"
+          echo "GitHub sha: ${GITHUB_SHA}"
+
+          git fetch --force --tags origin
+
+          echo "---- tag info ----"
+          git for-each-ref "refs/tags/${TAG}" \
+            --format='tag=%(refname:short) object=%(objectname) type=%(objecttype)'
+
+          TAG_TYPE="$(git for-each-ref "refs/tags/${TAG}" --format='%(objecttype)')"
+          RELEASE_BODY="$(git tag -l --format='%(contents)' "${TAG}" || true)"
+
+          if [ "${TAG_TYPE}" != "tag" ]; then
+            echo "::warning::${TAG} is not an annotated tag; release notes will fall back to the tag name."
+            RELEASE_BODY=""
+          fi
+
+          if [ -z "${RELEASE_BODY}" ]; then
+            echo "Release ${TAG}" > release_body.md
+          else
+            printf '%s\n' "${RELEASE_BODY}" > release_body.md
+          fi
+
+          RELEASE_TITLE="${TAG}"
+
+          echo "---- release title ----"
+          printf '%s\n' "${RELEASE_TITLE}"
+          echo "---- release body ----"
+          cat release_body.md
+
+          # Create or update the GitHub release using the synchronized annotated tag content as the body.
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release edit "${TAG}" \
+              --title "${RELEASE_TITLE}" \
+              --notes-file release_body.md
+          else
+            gh release create "${TAG}" \
+              --title "${RELEASE_TITLE}" \
+              --notes-file release_body.md
+          fi

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.discovery.impl;
@@ -50,7 +36,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * 数据发现节点实例-日志Service业务层处理
+ * Data Discovery Node Instance - Log Service business layer processing
  *
  * @author qdata
  * @date 2025-10-15
@@ -60,7 +46,7 @@ import java.util.Date;
 @Transactional(rollbackFor = Exception.class)
 public class DaDiscoveryLogBodyServiceImpl extends ServiceImpl<DaDiscoveryLogBodyMapper, DaDiscoveryLogBodyDO> implements IDaDiscoveryLogBodyService {
 
-    // 可放到常量类，这里内联
+    // Can be placed in a constants class, inlined here for now
     public static final String DISCOVERY_TASK_LOG_KEY_PREFIX = "DA_DISCOVERY:LOG:TASK:";
     public static final String FINALIZE_TOKEN = "FINALIZE_SESSION";
 
@@ -109,24 +95,24 @@ public class DaDiscoveryLogBodyServiceImpl extends ServiceImpl<DaDiscoveryLogBod
     }
 
     /**
-     * 发现任务日志写入（增量累积 + 会话结束一次性落库）
-     * 1) 先把增量日志落到 Redis；
-     * 2) 如果本次增量包含 FINALIZE_SESSION，则将累计全文写入 DA_DISCOVERY_LOG_BODY；
-     * 3) 为兼容前端会话结束后短时间内查询，将最终日志再缓存 5 分钟。
+     * Discovery task log writing (incremental accumulation + session-end batch write to DB)
+     * 1) First write the incremental log to Redis;
+     * 2) If the current chunk contains FINALIZE_SESSION, write the full accumulated text to DA_DISCOVERY_LOG_BODY;
+     * 3) For compatibility with frontend querying shortly after session ends, cache the final log for 5 minutes.
      *
-     * @param taskId  发现任务 ID（必填）
-     * @param logStr  本次追加的增量日志
+     * @param taskId  Discovery task ID (required)
+     * @param logStr  Incremental log chunk to append this time
      */
     @Override
     public void taskLogAppend(Long taskId, String logStr) {
-        // 1. 基本校验
+        // 1. Basic validation
         if (taskId == null || StringUtils.isBlank(logStr)) {
             return;
         }
 
         final String taskLogKey = DISCOVERY_TASK_LOG_KEY_PREFIX + taskId;
 
-        // 2. 读取 Redis 既有日志（没有则置空串）
+        // 2. Read existing Redis log (empty string if none)
         String taskLog = redisService.get(taskLogKey);
         if (taskLog == null) {
             taskLog = "";
@@ -134,13 +120,13 @@ public class DaDiscoveryLogBodyServiceImpl extends ServiceImpl<DaDiscoveryLogBod
         String time = DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
         logStr = time + " - " + logStr+ "\n";
 
-        // 3. 追加本次增量（若没有换行，以换行收尾）
+        // 3. Append this chunk (add trailing newline if missing)
         taskLog += logStr + (logStr.matches(".*\\r?\\n.*") ? "" : "\n");
         redisService.set(taskLogKey, taskLog);
 
-        // 4. 如检测到会话结束标记，则一次性入库，并做 5 分钟缓存
+        // 4. If session end marker detected, write to DB and cache for 5 minutes
         if (StringUtils.contains(logStr, FINALIZE_TOKEN)) {
-            // 入库：复合主键 (taskId, tm)；tm 取当前时间
+            // Write to DB: composite primary key (taskId, tm); tm takes current time
             DaDiscoveryLogBodyDO entity = DaDiscoveryLogBodyDO.builder()
                     .taskId(taskId)
                     .tm(new Date())
@@ -149,10 +135,10 @@ public class DaDiscoveryLogBodyServiceImpl extends ServiceImpl<DaDiscoveryLogBod
                     .delFlag(Boolean.FALSE)
                     .build();
 
-            // 复用你之前实现的复合主键保存/更新语义
+            // Reuse the previously implemented composite key save-or-update semantics
             this.saveOrUpdateByPk(entity);
 
-            // 重置并短期缓存，便于前端“会话结束后”仍可查询
+            // Reset and short-term cache, so frontend can still query after session ends
             redisService.delete(taskLogKey);
             redisService.set(taskLogKey, taskLog, 60 * 5);
         }

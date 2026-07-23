@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 表输出 -->
+  <!-- table output -->
   <el-dialog
     v-model="visibleDialog"
     :draggable="true"
@@ -37,14 +38,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.nodeNameRequired',
-                  '请输入节点名称'
+                  'Please enter node name'
                 ),
                 trigger: 'change',
               },
@@ -54,7 +55,7 @@
               v-if="!info"
               v-model="form.name"
               :placeholder="
-                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+                td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')
               "
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
@@ -62,13 +63,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.type', '类型')"
+            :label="td('dpp.integration.type', 'Type')"
             prop="typeName"
            :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
-              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
               filterable
               disabled
             >
@@ -106,14 +107,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.targetDbConnection', '目标数据连接')"
+            :label="td('dpp.integration.targetDbConnection', 'Target Data Connection')"
             prop="taskParams.writerDatasource.datasourceId"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.targetDbConnectionRequired',
-                  '请选择目标数据连接'
+                  'Please select target data connection'
                 ),
                 trigger: 'change',
               },
@@ -125,7 +126,7 @@
               :placeholder="
                 td(
                   'dpp.integration.targetDbConnectionPlaceholder',
-                  '请选择目标数据连接'
+                  'Please select target data connection'
                 )
               "
               @change="handleDatasourceChange"
@@ -150,7 +151,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
+            :label="td('dpp.integration.dbConnectionType', 'Data Connection Type')"
             prop="taskParams.writerDatasource.datasourceType"
            :label-position="labelPosition">
             <el-input
@@ -159,7 +160,7 @@
               :placeholder="
                 td(
                   'dpp.integration.dbConnectionTypePlaceholder',
-                  '请输入数据连接类型'
+                  'Please enter data connection type'
                 )
               "
               disabled
@@ -173,7 +174,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.dbConnectionInstance', '数据连接实例')"
+            :label="td('dpp.integration.dbConnectionInstance', 'Data Connection Instance')"
             prop="taskParams.writerDatasource.dbname"
            :label-position="labelPosition">
             <el-input
@@ -182,7 +183,7 @@
               :placeholder="
                 td(
                   'dpp.integration.dbConnectionInstancePlaceholder',
-                  '请输入数据连接实例'
+                  'Please enter data connection instance'
                 )
               "
               disabled
@@ -194,12 +195,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.selectTable', '选择表')"
+            :label="td('dpp.integration.selectTable', 'Select Table')"
             prop="taskParams.target_asset_id"
             :rules="[
               {
                 required: true,
-                message: td('dpp.integration.selectTableRequired', '请选择表'),
+                message: td('dpp.integration.selectTableRequired', 'Please select table'),
                 trigger: 'change',
               },
             ]"
@@ -208,7 +209,7 @@
               v-if="!info"
               v-model="form.taskParams.target_asset_id"
               :placeholder="
-                td('dpp.integration.selectTablePlaceholder', '请选择表')
+                td('dpp.integration.selectTablePlaceholder', 'Please select table')
               "
               @change="handleChange"
               filterable
@@ -231,7 +232,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            :label="td('dpp.integration.whereCondition', 'where条件')"
+            :label="td('dpp.integration.whereCondition', 'Where Condition')"
             prop="where"
            :label-position="labelPosition">
             <el-input
@@ -241,7 +242,7 @@
               :placeholder="
                 td(
                   'dpp.integration.whereConditionPlaceholder',
-                  '请输入where条件'
+                  'e.g. id > 10 and id < 1000, do not end with semicolon'
                 )
               "
             />
@@ -253,7 +254,7 @@
       </el-row>
 
       <div class="h2-title">
-        {{ td("dpp.integration.fieldMapping", "字段映射") }}
+        {{ td("dpp.integration.fieldMapping", "Field Mapping") }}
       </div>
 
       <div style="margin-top: -20px">
@@ -266,28 +267,28 @@
         />
       </div>
       <div class="h2-title">
-        {{ td("dpp.integration.outputConfig", "输出配置") }}
+        {{ td("dpp.integration.outputConfig", "Output Config") }}
       </div>
 
       <el-row :gutter="20">
         <el-col :span="24" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.preSql', '前置SQL')"
+            :label="td('dpp.integration.preSql', 'Pre-SQL')"
             prop="preSql"
            :label-position="labelPosition">
             <el-input
               v-if="!info"
-              v-model="form.preSql"
+              v-model="form.taskParams.preSql"
               type="textarea"
               :placeholder="
-                td('dpp.integration.preSqlPlaceholder', '请输入前置SQL')
+                td('dpp.integration.preSqlPlaceholder', 'Please enter pre-SQL')
               "
             />
-            <div v-else class="form-readonly">{{ form.preSql || "-" }}</div>
+            <div v-else class="form-readonly">{{ form.taskParams.preSql || "-" }}</div>
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.preSqlHint", "数据写入之前执行的SQL")
+                td("dpp.integration.preSqlHint", "SQL executed before data write")
               }}</span
             >
           </el-form-item>
@@ -296,14 +297,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.writeMode', '写入模式')"
+            :label="td('dpp.integration.writeMode', 'Write Mode')"
             prop="taskParams.writeModeType"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.writeModeRequired',
-                  '请选择写入模式'
+                  'Please select write mode'
                 ),
                 trigger: 'change',
               },
@@ -314,29 +315,29 @@
               v-model="form.taskParams.writeModeType"
             >
               <el-radio :value="2">{{
-                td("dpp.integration.append", "追加")
+                td("dpp.integration.append", "Append")
               }}</el-radio>
               <el-radio :value="1">{{
-                td("dpp.integration.fullVolume", "全量")
+                td("dpp.integration.fullVolume", "Full Volume")
               }}</el-radio>
               <el-radio :value="3">{{
-                td("dpp.integration.incrementalUpdate", "增量更新")
+                td("dpp.integration.incrementalUpdate", "Incremental Update")
               }}</el-radio>
             </el-radio-group>
             <div v-else class="form-readonly">
               {{
                 form.taskParams.writeModeType == 1
-                  ? td("dpp.integration.fullVolume", "全量")
+                  ? td("dpp.integration.fullVolume", "Full Volume")
                   : form.taskParams.writeModeType == 2
-                  ? td("dpp.integration.append", "追加")
-                  : td("dpp.integration.incrementalUpdate", "增量更新")
+                  ? td("dpp.integration.append", "Append")
+                  : td("dpp.integration.incrementalUpdate", "Incremental Update")
               }}
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.singleWriteData', '单次写入数据')"
+            :label="td('dpp.integration.singleWriteData', 'Single Write Count')"
             prop="taskParams.description"
            :label-position="labelPosition">
             <el-input
@@ -345,27 +346,27 @@
               :placeholder="
                 td(
                   'dpp.integration.singleWriteDataPlaceholder',
-                  '请输入单次写入数据条数'
+                  'Please enter single write count'
                 )
               "
               type="number"
             >
               <template #append>{{
-                td("dpp.integration.recordsUnit", "条")
+                td("dpp.integration.recordsUnit", "records")
               }}</template>
             </el-input>
             <div v-else class="form-readonly">
               {{
                 form.taskParams.description
                   ? form.taskParams.description +
-                    td("dpp.integration.recordsUnit", "条")
+                    td("dpp.integration.recordsUnit", "records")
                   : "-"
               }}
             </div>
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.singleWriteDataHint", "不输入默认值1000条")
+                td("dpp.integration.singleWriteDataHint", "Default 1000 records if not specified")
               }}</span
             >
           </el-form-item>
@@ -380,14 +381,14 @@
       >
         <el-col :span="24">
           <el-form-item
-            :label="td('dpp.integration.updatePrimaryKey', '更新主键字段')"
+            :label="td('dpp.integration.updatePrimaryKey', 'Update Primary Key Field')"
             prop="taskParams.selectedColumns"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.updatePrimaryKeyRequired',
-                  '请选择更新主键字段'
+                  'Please select update primary key field'
                 ),
                 trigger: 'change',
               },
@@ -415,7 +416,7 @@
       <el-row :gutter="20">
         <el-col :span="24" class="hasMsg">
           <el-form-item
-            :label="td('dpp.integration.postSql', '后置SQL')"
+            :label="td('dpp.integration.postSql', 'Post-SQL')"
             prop="taskParams.postSql"
            :label-position="labelPosition">
             <el-input
@@ -423,7 +424,7 @@
               v-model="form.taskParams.postSql"
               type="textarea"
               :placeholder="
-                td('dpp.integration.postSqlPlaceholder', '请输入后置SQL')
+                td('dpp.integration.postSqlPlaceholder', 'Please enter post-SQL')
               "
             />
             <div v-else class="form-readonly">
@@ -432,7 +433,7 @@
             <span class="msg"
               ><el-icon> <InfoFilled /> </el-icon
               >{{
-                td("dpp.integration.postSqlHint", "数据同步完成后执行的SQL")
+                td("dpp.integration.postSqlHint", "SQL executed after data sync completes")
               }}</span
             >
           </el-form-item>
@@ -484,7 +485,7 @@ const visibleDialog = computed({
   },
 });
 
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let opens = ref(false);
@@ -512,11 +513,11 @@ const submitForm = (value) => {
   });
 };
 
-const childComponent = ref(null); // 表字段
-const tableFields = ref([]); // 来源表格
-const createTypeList = ref([]); // 数据源列表
+const childComponent = ref(null); // table fields
+const tableFields = ref([]); // Source form
+const createTypeList = ref([]); // Data source list
 
-// 获取数据源列表
+// Get a list of data sources
 const getDatasourceList = async () => {
   try {
     loading.value = true;
@@ -533,7 +534,7 @@ const getDatasourceList = async () => {
   }
 };
 
-// 获取表列表
+// Get table list
 const getTablesByDatasourceId = async (id) => {
   TablesByDataSource.value = await fetchData(
     getTablesByDataSourceId,
@@ -542,7 +543,7 @@ const getTablesByDatasourceId = async (id) => {
   );
 };
 
-// 获取列数据
+// Get column data
 const getColumnByAssetIdList = async (id) => {
   ColumnByAssettab.value = await fetchData(
     getColumnByAssetId,
@@ -554,12 +555,12 @@ const getColumnByAssetIdList = async (id) => {
   );
 };
 
-// 获取列数据
+// Get column data
 const getColumns = () => {
   return childComponent.value?.getColumns();
 };
 
-// 通用的获取数据的函数
+// General functions for obtaining data
 const fetchData = async (requestFn, params, loadingState) => {
   try {
     loadingState.value = true;
@@ -570,7 +571,7 @@ const fetchData = async (requestFn, params, loadingState) => {
   }
 };
 
-// 处理数据源变化
+// Handle data source changes
 const resetAndFetchTables = async (selectedDatasource) => {
   TablesByDataSource.value = [];
   ColumnByAssettab.value = [];
@@ -590,7 +591,7 @@ const resetAndFetchTables = async (selectedDatasource) => {
   await getTablesByDatasourceId(id);
 };
 
-// 处理数据源变化
+// Handle data source changes
 const handleDatasourceChange = (value) => {
   const selectedDatasource = createTypeList.value.find(
     (item) => item.id == value
@@ -600,7 +601,7 @@ const handleDatasourceChange = (value) => {
   }
 };
 
-// 处理表变化
+// Handle table changes
 const setTableName = (selectedDatasource) => {
   form.value.taskParams.target_table_name = selectedDatasource.tableName;
 };
@@ -618,18 +619,18 @@ const handleChange = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
     const valid = await dpModelRefs.value?.validate();
     if (!valid) return;
 
-    // 没有 code 时生成唯一 code
+    // Generate unique code when there is no code
     if (!form.value.code) {
       loading.value = true;
       try {
@@ -669,40 +670,40 @@ const saveData = async () => {
     form.value.taskParams = { ...form.value.taskParams, ...taskParams };
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
 
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
 
-// 处理数据源和列操作的共用函数
+// Common functions that handle data source and column operations
 const handleDatasource = (datasource, assetId) => {
   if (datasource?.datasourceId) {
     getTablesByDatasourceId(datasource.datasourceId);
-    // 如果需要处理 assetId，可以在此调用
+    // If you need to process assetId, you can call it here
     // getColumnByAssetIdList(assetId);
   } else {
-    console.warn("无效的数据源信息", datasource);
+    console.warn("Invalid data source information", datasource);
   }
 };
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (!props.visible) {
     off();

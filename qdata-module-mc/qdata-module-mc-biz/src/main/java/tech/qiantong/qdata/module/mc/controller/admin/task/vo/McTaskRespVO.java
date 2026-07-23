@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 采集任务 Response VO 对象 MC_TASK
+ * Collection task Response VO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -68,6 +68,10 @@ public class McTaskRespVO implements Serializable {
     @Schema(description = "任务状态", example = "")
     private String status;
 
+    @Excel(name = "调度器")
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
     @Excel(name = "是否有效")
     @Schema(description = "是否有效", example = "")
     private Boolean validFlag;
@@ -111,13 +115,13 @@ public class McTaskRespVO implements Serializable {
     private String description;
 
     /**
-     * 采集任务类型：1-采集，2-DDL
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * 采集黑名单
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
@@ -125,73 +129,73 @@ public class McTaskRespVO implements Serializable {
 
 
     /**
-     * DolphinScheduler任务编码（从调度表获取）
+     * DolphinScheduler task encoding (obtained from schedule)
      */
     @TableField(exist = false)
     private String taskCode;
 
     /**
-     * cron表达式
+     * cron expression
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * 调度状态
+     * Scheduling status
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * 调度状态
+     * Scheduling status
      */
     @TableField(exist = false)
     private String jobId;
 
     /**
-     * 采集范围
+     * Collection range
      */
     @TableField(exist = false)
     private List<McTaskScopeDO> scopeSaveReqVOS;
 
     /**
-     * 数据源信息
+     * Data source information
      */
     @TableField(exist = false)
     private DaDatasourceRespDTO datasourceDO;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;
 
 
     /**
-     * 联系人名称
+     * Contact name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * 最近执行时间
+     * Last execution time
      */
     @TableField(exist = false)
     private String lastExecuteTime;
 
     /**
-     * 创建人电话
+     * Creator phone number
      */
     private String createPhoneNumber;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     private Long responsibleDept;
 }

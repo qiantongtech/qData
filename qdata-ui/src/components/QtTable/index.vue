@@ -1,24 +1,25 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <!--
-    qt-table 组件
-    说明：基于element-plus的表格封装，集成了分页、排序、字典、图标、链接等功能
-    注意：不要私自修改本组件中的代码 有问题先联系wy
+    qt-table component
+    Description: An Element Plus table wrapper with pagination, sorting, dictionaries, icons, links, and other features.
+    Note: Do not modify this component without authorization. Contact wy first if there are any issues.
 -->
 <template>
   <div class="qt-table" v-loading="store.loading">
@@ -57,7 +58,7 @@
               </div>
             </template>
             <template #default="scope">
-              <!-- 空数据处理 -->
+              <!-- Empty data processing -->
               <template
                   v-if="
                   column.prop &&
@@ -67,14 +68,14 @@
                 {{ getFormatValue(scope.row[column.prop]) }}
               </template>
 
-              <!-- 字典 -->
+              <!-- dictionary -->
               <dict-tag
                   :options="getDictOptions(column.dict)"
                   v-if="column.dict"
                   :value="scope.row[column.prop]"
               />
 
-              <!-- 标签 -->
+              <!-- label -->
               <el-tag
                   v-if="column.tag && scope.row[column.prop]"
                   v-bind="typeof column.tag === 'object' ? column.tag : {}"
@@ -87,7 +88,7 @@
                 {{ scope.row[column.prop] }}
               </el-tag>
 
-              <!-- 链接 -->
+              <!-- link -->
               <el-link
                   v-bind="column.link"
                   :underline="column.link?.underline || 'never'"
@@ -98,14 +99,14 @@
                 {{ scope.row[column.prop] }}
               </el-link>
 
-              <!-- 图标 -->
+              <!-- icon -->
               <svg-icon
                   v-bind="column.svg"
                   v-if="column.svg"
                   :icon-class="scope.row[column.prop]"
               />
 
-              <!-- 统一处理时间 -->
+              <!-- Uniform processing time -->
               <template v-if="column.date">
                 {{
                   parseTime(
@@ -115,7 +116,7 @@
                 }}
               </template>
 
-              <!-- 多字段展示 -->
+              <!-- Multi-field display -->
               <div
                   v-if="column.list"
                   :class="['flex-column', column.listClass || 'fz14']"
@@ -132,7 +133,7 @@
                   </span>
                 </template>
               </div>
-              <!-- 信息列 (图标 + 标题 + 标签 / 描述) -->
+              <!-- Information column (icon + title + label / description) -->
               <div v-if="column.info" class="qt-table-info">
                 <div class="qt-table-info__main">
                   <img
@@ -202,7 +203,7 @@
                 </div>
               </div>
 
-              <!-- 自定义slot -->
+              <!-- Custom slot -->
               <slot
                   v-if="scope.$index > -1 && column.slot"
                   :name="column.slot"
@@ -254,32 +255,32 @@ defineOptions({
 
 /**
  * props
- * @param {columns} 表格项
- * @param {Function} 获取表格数据的方法 参数:params 需返回一个Promise
- * @param {Object} config.table 表格配置 具体请查看el-table
- * @param {Object} config.pagination 分页配置 具体请查看 el-pagination
- * @param {Bollean} config.pagination.notAutoScroll 关闭分页后指定的功能
- * @param {Bollean} config.initResquest 是否初始化请求
- * @param {Boolean} config.notPagination 不使用分页
- * @param {Boolean} config.notPaginationParams 不使用默认的分页参数
- * @param {Boolean} config.autoPagination 前端分页
- * @param {Object|Boolean} config.sort 后端排序所需的key 如果为true则使用默认值
- * @param {Object|Boolean} config.sort.prop 排序字段的key 默认为：orderByColumn
- * @param {Object|Boolean} config.sort.order 排序方式的key 默认为：isAsc
- * @param {Array} column.dict 字典数据
- * @param {Object} column.svg svg图标数据
- * @param {String} column.svg.color 图标颜色
- * @param {String} column.svg.className 图标类名
- * @param {Object} column.link 跳转参数 具体参数整合了el-link+router.push
- * @param {Object} column.slot 自定义插槽
- * @param {Object} column.date 时间参数 会自动格式化时间 也支持自定义格式化
- * @param {events} 事件回调
- * @param {Function} events.onLinkClick 点击link时触发
- * @param {Function} events.onPageSizeChange 分页-每页条数
- * @param {Function} events.onPageCurrentChange 分页-当前页
- * @param {Function} events.onSortChange 排序时触发
- * @param {Function} events.formatParams 请求前最后处理params必须有返回值
- * @param {Function} events.formatData 处理data必须有返回值
+ * @param {columns} table items
+ * @param {Function} Method to obtain table data Parameters: params Need to return a Promise
+ * @param {Object} config.table table configuration, please see el-table for details
+ * @param {Object} config.pagination paging configuration. Please see el-pagination for details.
+ * @param {Bollean} config.pagination.notAutoScroll The function specified after turning off paging
+ * @param {Bollean} config.initResquest whether to initialize the request
+ * @param {Boolean} config.notPagination does not use paging
+ * @param {Boolean} config.notPaginationParams does not use the default pagination parameters
+ * @param {Boolean} config.autoPagination front-end paging
+ * @param {Object|Boolean} config.sort The key required for backend sorting. If true, use the default value.
+ * @param {Object|Boolean} config.sort.prop The key of the sort field defaults to: orderByColumn
+ * @param {Object|Boolean} config.sort.order The key of the sorting method defaults to: isAsc
+ * @param {Array} column.dict dictionary data
+ * @param {Object} column.svg svg icon data
+ * @param {String} column.svg.color icon color
+ * @param {String} column.svg.className icon class name
+ * @param {Object} column.link jump parameter The specific parameters integrate el-link+router.push
+ * @param {Object} column.slot Custom slot
+ * @param {Object} column.date time parameter will automatically format the time and also supports custom formatting
+ * @param {events} event callback
+ * @param {Function} events.onLinkClick triggered when link is clicked
+ * @param {Function} events.onPageSizeChange Pagination - number of items per page
+ * @param {Function} events.onPageCurrentChange Pagination - current page
+ * @param {Function} events.onSortChange triggered when sorting
+ * @param {Function} events.formatParams The last params processed before the request must have a return value
+ * @param {Function} events.formatData processing data must have a return value
  */
 const props = defineProps({
   config: {
@@ -338,7 +339,7 @@ const store = reactive({
 });
 
 const config = computed(() => {
-  // 留作后续收集合并默认配置项处理...
+  // Reserved for subsequent collection and merging of default configuration items...
   return props.config || {};
 });
 
@@ -347,7 +348,7 @@ const defaultTableSort = computed(() => {
   return table?.defaultSort || store.defaultSort;
 });
 
-// 表格数据
+// tabular data
 const tableData = computed(() => {
   const { notPagination, autoPagination } = config.value;
   if (notPagination) return store.data;
@@ -358,7 +359,7 @@ const tableData = computed(() => {
   return store.data;
 });
 
-// 获取数据
+// Get data
 function getList() {
   store.loading = true;
   const { formatParams, formatData } = props.events;
@@ -385,13 +386,13 @@ function getList() {
       });
 }
 
-// 重置数据
+// Reset data
 function resetQuery() {
   setupDefaultPageParams();
   getList();
 }
 
-// 分页change-页数
+// Pagination change-number of pages
 function handleSizeChange(pageSize) {
   const { onPageSizeChange } = props.events;
   const { pageNum } = store.params;
@@ -405,7 +406,7 @@ function handleSizeChange(pageSize) {
   scrollTo(0, 800);
 }
 
-// 分页change-当前页
+// Pagination change-current page
 function handleCurrentChange() {
   const { onPageCurrentChange } = props.events;
   const { pagination } = config.value;
@@ -415,7 +416,7 @@ function handleCurrentChange() {
   scrollTo(0, 800);
 }
 
-// 排序change
+// Sort change
 function handleSortChange({ column, order, prop }) {
   const { onSortChange } = props.events;
   const index = column.getColumnIndex();
@@ -428,13 +429,13 @@ function handleSortChange({ column, order, prop }) {
   getList();
 }
 
-// 过滤Column数据
+// Filter Column data
 function getElColumnData(column) {
   const { hide, dict, link, ...otherData } = column;
   return otherData;
 }
 
-// link点击事件
+// link click event
 function handleLinkClick(column, row) {
   const { onLinkClick } = props.events;
   const { type, path, name, external, ...other } = column.link;
@@ -450,7 +451,7 @@ function handleLinkClick(column, row) {
   });
 }
 
-// 获取字典数据
+// Get dictionary data
 function getDictOptions(key) {
   if (store.dict[key]) return store.dict[key];
   const value = proxy.useDict(key)[key];
@@ -458,7 +459,7 @@ function getDictOptions(key) {
   return value;
 }
 
-// 重新加载
+// reload
 function reload() {
   store.showTable = false;
   nextTick(() => {
@@ -466,7 +467,7 @@ function reload() {
   });
 }
 
-// 设置分页参数
+// Set paging parameters
 function setupDefaultPageParams() {
   const { notPagination, pagination } = config.value;
   if (pagination?.params) {
@@ -490,10 +491,10 @@ function setupDefaultPageParams() {
   }
 }
 
-// 初始化排序参数
+// Initialize sorting parameters
 setupDefaultPageParams();
 
-// 初始化排序参数
+// Initialize sorting parameters
 if (config.value.sort) {
   let sort = config.value.sort;
   if (typeof sort == "boolean") {

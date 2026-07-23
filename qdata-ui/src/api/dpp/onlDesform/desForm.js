@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from "@/utils/request";
 
-// 查询在线单设计器列表
+// Query the list of online single designers
 export function listdesform(query) {
   return request({
     url: "/dpp/desForm/list",
@@ -26,7 +27,7 @@ export function listdesform(query) {
   });
 }
 
-// 查询在线单设计器详细
+// Query online single designer details
 export function getdesform(id) {
   return request({
     url: "/dpp/desForm/" + id,
@@ -34,7 +35,7 @@ export function getdesform(id) {
   });
 }
 
-// 新增在线单设计器
+// Added online single designer
 export function add(data) {
   return request({
     url: "/dpp/desForm",
@@ -43,7 +44,7 @@ export function add(data) {
   });
 }
 
-// 修改在线单设计器
+// Modify online single designer
 export function edit(data) {
   return request({
     url: "/dpp/desForm",
@@ -52,14 +53,14 @@ export function edit(data) {
   });
 }
 
-// 删除在线单设计器
+// Delete online single designer
 export function deldesform(id) {
   return request({
     url: "/dpp/desForm/deleted?id=" + id,
     method: "delete",
   });
 }
-// 表单编码是否重复校验
+// Whether the form code is repeated and verified
 export function duplicateCheck(query) {
   return request({
     url: "/dpp/desForm/duplicateCheck",
@@ -67,7 +68,7 @@ export function duplicateCheck(query) {
     params: query,
   });
 }
-// 通过表单编码查询
+// Query via form encoding
 export function getByDesformCode(desformCode) {
   return request({
     url: "/dpp/desForm/" + desformCode,

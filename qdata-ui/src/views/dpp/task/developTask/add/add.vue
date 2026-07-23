@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -30,26 +31,26 @@
       :model="form"
       label-width="120px"
       @submit.prevent
-      :disabled="title == td('dpp.developTask.taskDetail', '任务详情')"
+      :disabled="title == td('dpp.developTask.taskDetail', 'Task Details')"
      :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.developTask.taskName', '任务名称')"
+            :label="td('dpp.developTask.taskName', 'Task Name')"
             prop="name"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', '任务详情'),
-                message: td('dpp.developTask.inputTaskName', '请输入任务名称'),
+                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
+                message: td('dpp.developTask.inputTaskName', 'Please enter task name'),
                 trigger: 'blur',
               },
             ]"
            :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
               v-model="form.name"
               :placeholder="
-                td('dpp.developTask.inputTaskName', '请输入任务名称')
+                td('dpp.developTask.inputTaskName', 'Please enter task name')
               "
             />
             <div class="form-readonly" v-else>{{ form.name }}</div>
@@ -57,14 +58,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.developTask.dataDevCategory', '数据开发类目')"
+            :label="td('dpp.developTask.dataDevCategory', 'Data Development Category')"
             prop="catCode"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
                 message: td(
                   'dpp.developTask.selectTaskCategory',
-                  '请选择数据开发类目'
+                  'Please select data development category'
                 ),
                 trigger: 'change',
               },
@@ -77,76 +78,9 @@
               :props="{ value: 'code', label: 'name', children: 'children' }"
               value-key="id"
               :placeholder="
-                td('dpp.developTask.selectTaskCategory', '请选择数据开发类目')
+                td('dpp.developTask.selectTaskCategory', 'Please select data development category')
               "
               check-strictly
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.developTask.scheduleCycle', '调度周期')"
-            prop="crontab"
-            :rules="[
-              {
-                required: title != td('dpp.developTask.taskDetail', '任务详情'),
-                message: td(
-                  'dpp.developTask.selectScheduleCycle',
-                  '请选择调度周期'
-                ),
-                trigger: 'change',
-              },
-            ]"
-           :label-position="labelPosition">
-            <el-input
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-              v-model="form.crontab"
-              :placeholder="
-                td('dpp.developTask.selectScheduleCycle', '请选择调度周期')
-              "
-              readonly
-            >
-              <template #append>
-                <el-button
-                  type="primary"
-                  @click="handleShowCron"
-                  style="background-color: #2666fb; color: #fff"
-                >
-                  {{ td("dpp.developTask.configure", "配置") }}
-                  <i class="el-icon-time el-icon--right"></i>
-                </el-button>
-              </template>
-            </el-input>
-            <div class="form-readonly" v-else>{{ form.crontab }}</div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.developTask.executionEngine', '执行引擎')"
-            prop="typaCode"
-            :rules="[
-              {
-                required: title != td('dpp.developTask.taskDetail', '任务详情'),
-                message: td(
-                  'dpp.developTask.selectExecutionEngine',
-                  '请选择执行引擎'
-                ),
-                trigger: 'change',
-              },
-            ]"
-           :label-position="labelPosition">
-            <el-tree-select
-              filterable
-              :disabled="info"
-              v-model="form.typaCode"
-              :data="treeData"
-              :props="{ value: 'value', label: 'label', children: 'children' }"
-              value-key="label"
-              check-strictly
-              @change="getDaDatasource(true)"
             />
           </el-form-item>
         </el-col>
@@ -159,7 +93,7 @@
             prop="personCharge"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
                 message: td('dpp.developTask.selectResponsiblePerson'),
                 trigger: 'change',
               },
@@ -176,7 +110,7 @@
               }"
               value-key="ID"
               :placeholder="
-                td('dpp.developTask.selectResponsiblePerson', '请选择责任人')
+                td('dpp.developTask.selectResponsiblePersonInfo', 'Please select responsible person')
               "
               check-strictly
               @change="handleContactChange"
@@ -185,33 +119,92 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.developTask.contactNumber', '联系电话')"
-            prop="contactNumber"
-           :label-position="labelPosition">
+              :label="td('dpp.developTask.contactNumber', 'Contact Phone')"
+              prop="contactNumber"
+              :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-              v-model="form.contactNumber"
-              :placeholder="
-                td('dpp.developTask.inputContactNumber', '请输入联系电话')
+                v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
+                v-model="form.contactNumber"
+                :placeholder="
+                td('dpp.developTask.inputContactNumberInfo', 'Please enter contact phone')
               "
-              disabled
+                disabled
             />
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
           </el-form-item>
         </el-col>
       </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item
+              :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
+              prop="typaCode"
+              :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td(
+                  'dpp.developTask.selectExecutionEngine',
+                  '请选择执行引擎'
+                ),
+                trigger: 'change',
+              },
+            ]"
+              :label-position="labelPosition">
+            <el-tree-select
+                filterable
+                :disabled="info"
+                v-model="form.typaCode"
+                :data="treeData"
+                :props="{ value: 'value', label: 'label', children: 'children' }"
+                value-key="label"
+                check-strictly
+                @change="getDaDatasource(true)"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+              :label="td('dpp.developTask.taskStatus', '任务状态')"
+              prop="releaseState"
+              :label-position="labelPosition"><el-radio-group
+              style="width: 100%"
+              v-model="form.releaseState"
+              class="el-form-input-width"
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+          >
+            <el-radio
+                v-for="dict in dpp_etl_task_status"
+                :key="dict.value"
+                :value="dict.value"
+                :disabled="dict.value == 1"
+            >
+              {{ dict.label }}
+            </el-radio>
+          </el-radio-group>
+            <div class="form-readonly" v-else>
+              {{
+                dpp_etl_task_status.find(
+                    (item) => item.value == form.releaseState
+                )?.label || "-"
+              }}
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-            :label="td('dpp.developTask.description', '描述')"
-            prop="description"
-           :label-position="labelPosition">
+              :label="td('dpp.developTask.description', 'Description')"
+              prop="description"
+              :label-position="labelPosition">
             <el-input
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-              v-model="form.description"
-              type="textarea"
-              :placeholder="
-                td('dpp.developTask.inputDescription', '请输入描述')
+                v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
+                v-model="form.description"
+                type="textarea"
+                :placeholder="
+                td('dpp.developTask.inputDescription', 'Please enter description')
               "
             />
             <div class="form-readonly" v-else>
@@ -220,45 +213,111 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item
-            :label="td('dpp.developTask.taskStatus', '任务状态')"
-            prop="releaseState"
-             :label-position="labelPosition"><el-radio-group
-              style="width: 100%"
-              v-model="form.releaseState"
-              class="el-form-input-width"
-              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              :label="td('dpp.integratioTask.schedulerSystem', '调度系统')"
+              prop="scheduler"
+              :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                message: td('dpp.developTask.selectScheduler', '请选择调度器'),
+                trigger: 'change',
+              },
+            ]"
+              :label-position="labelPosition"
+          >
+            <el-radio-group
+                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+                v-model="form.scheduler"
+                class="scheduler-card-group"
+                @change="handleSchedulerChange"
             >
               <el-radio
-                v-for="dict in dpp_etl_task_status"
-                :key="dict.value"
-                :value="dict.value"
-                :disabled="dict.value == 1"
+                  v-for="(item, index) in scheduler_type"
+                  :key="index"
+                  :value="item.value"
+                  class="option-card"
               >
-                {{ dict.label }}
+                <img
+                    class="option-card__icon scheduler-card__icon"
+                    :src="getSchedulerMeta(item.value).icon"
+                    :alt="item.label"
+                />
+                <span class="option-card__content">
+                  <span class="option-card__heading">
+                    <span class="option-card__name">{{ item.label }}</span>
+                    <el-tag type="primary" :underline="false" class="task-cat-ellipsis" size="small">
+                      {{ getSchedulerMeta(item.value).tag || "-" }}
+                    </el-tag>
+                  </span>
+                  <span class="option-card__description">
+                    {{ getSchedulerMeta(item.value).description }}
+                  </span>
+                </span>
               </el-radio>
             </el-radio-group>
             <div class="form-readonly" v-else>
-              {{
-                dpp_etl_task_status.find(
-                  (item) => item.value == form.releaseState
-                )?.label || "-"
-              }}
+              {{ getOptionLabel(form.scheduler) }}
             </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item
+              class="schedule-cycle-form-item"
+              :label="td('dpp.developTask.scheduleCycle', '调度周期')"
+              prop="crontab"
+              :rules="[
+              {
+                required: title != td('dpp.developTask.taskDetail', '任务详情'),
+                validator: validateCrontab,
+                trigger: 'blur',
+              },
+            ]"
+              :label-position="labelPosition">
+            <el-input
+                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+                v-model="form.crontab"
+                :placeholder="
+                td('dpp.developTask.selectScheduleCycle', '请选择调度周期')
+              "
+                readonly
+            >
+              <template #append>
+                <el-button
+                    type="primary"
+                    @click="handleShowCron"
+                    style="background-color: #2666fb; color: #fff"
+                >
+                  {{ td("dpp.developTask.configure", "配置") }}
+                  <i class="el-icon-time el-icon--right"></i>
+                </el-button>
+              </template>
+            </el-input>
+            <div class="form-readonly" v-else>{{ form.crontab }}</div>
+            <p
+                v-if="showCrontabDescription"
+                class="form-item-description schedule-cycle-description"
+            >
+              {{ td("dpp.developTask.scheduleCycleDescription", "定义任务自动触发的时间和频率") }}
+            </p>
           </el-form-item>
         </el-col>
       </el-row>
       <!-- <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.developTask.remark', '备注')" prop="remark" :label-position="labelPosition">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', '请输入备注')" />
+          <el-form-item :label="td('dpp.developTask.remark', 'Remarks')" prop="remark" :label-position="labelPosition">
+            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', 'Please enter remarks')" />
           </el-form-item>
         </el-col>
       </el-row> -->
       <div class="h2" @click="templateShow = !templateShow">
-        {{ td("dpp.developTask.useTemplate", "> 使用模板") }}
+        {{ td("dpp.developTask.useTemplate", "> Use Template") }}
       </div>
       <template v-if="templateAct.id || templateShow">
         <div class="h2-template" v-loading="tempLoading">
@@ -305,28 +364,28 @@
       <div style="text-align: right">
         <template v-if="info">
           <el-button @click="closeDialog">{{
-            td("common.button.close", "关闭")
+            td("common.button.close", "Close")
           }}</el-button>
           <el-button
             type="primary"
             @click="saveClose"
             v-if="!route.query.info"
-            >{{ td("common.button.save", "保存") }}</el-button
+            >{{ td("common.button.save", "Save") }}</el-button
           >
         </template>
         <template v-else>
           <el-button @click="saveClose">{{
-            td("dpp.developTask.saveOnly", "仅保存")
+            td("dpp.developTask.saveOnly", "Save Only")
           }}</el-button>
           <el-button type="primary" @click="saveData">{{
-            td("dpp.developTask.saveAndConfigure", "保存并配置流程")
+            td("dpp.developTask.saveAndConfigure", "Save and Configure Flow")
           }}</el-button>
         </template>
       </div>
     </template>
   </el-dialog>
   <el-dialog
-    :title="td('dpp.developTask.cronGenerator', 'Cron表达式生成器')"
+    :title="td('dpp.developTask.cronGenerator', 'Cron Expression Generator')"
     v-model="openCron"
     class="dialog"
     :append-to="$refs['app-container']"
@@ -356,6 +415,8 @@ const { td } = useDefaultLang();
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import CodeShow from "@/components/SqlEditor/editorShow/index.vue";
 import Crontab from "@/components/Crontab/index.vue";
+import quartzIcon from "@/assets/images/common/img-quartz.png";
+import dolphinSchedulerIcon from "@/assets/images/common/img-ds.png";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -365,6 +426,35 @@ const { dpp_etl_task_status } = proxy.useDict("dpp_etl_task_status");
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { treeData } from "@/views/dpp/task/developTask/data";
+import {checkApi} from "@/api/ds/api/api.js";
+
+const scheduler_type = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+
+const schedulerMeta = {
+  QUARTZ: {
+    icon: quartzIcon,
+    tag: td("dpp.integratioTask.lightweight", "轻量级"),
+    description: td(
+      "dpp.integratioTask.quartzCardDescription",
+      "轻量级调度，适用于简单定时任务。"
+    ),
+  },
+  DOLPHINSCHEDULER: {
+    icon: dolphinSchedulerIcon,
+    tag: td("dpp.integratioTask.enterprise", "企业级"),
+    description: td(
+      "dpp.integratioTask.dolphinSchedulerCardDescription",
+      "企业级调度，适用于复杂工作流编排。"
+    ),
+  },
+};
+
+const getSchedulerMeta = (value) =>
+  schedulerMeta[value] || schedulerMeta.QUARTZ;
+
 const props = defineProps({
   visible: { type: Boolean, default: true },
   title: { type: String, default: "表单标题" },
@@ -375,24 +465,47 @@ const props = defineProps({
 });
 const effectiveTitle = computed(() => props.title || td('dpp.developTask.formTitle'));
 
-const emit = defineEmits(["update:visible", "confirm"]);
+const showCrontabDescription = ref(true);
+const validateCrontab = (_rule, value, callback) => {
+  const isRequired =
+    props.title != td("dpp.developTask.taskDetail", "任务详情");
+  showCrontabDescription.value = !isRequired || Boolean(value);
+  if (isRequired && !value) {
+    callback(
+      new Error(
+        td("dpp.developTask.selectScheduleCycle", "请选择调度周期")
+      )
+    );
+    return;
+  }
+  callback();
+};
+
+const emit = defineEmits(["update:visible", "confirm", "save"]);
+
+const getOptionLabel = (value) => {
+  return scheduler_type.find((item) => item.value == value)?.label || value || "-";
+};
 
 const form = ref({
-  // 表单数据
+  // form data
   name: "",
   catCode: "",
   personCharge: "",
   contactNumber: "",
   crontab: "",
+  scheduler: "QUARTZ",
+  actuator: "JDBC",
   releaseState: "0",
   description: "",
-  // json值
+  // json value
   typaCode: "DM",
-  // 固定值
-  executionType: "PARALLEL", // 初始化为空或默认值
+  // fixed value
+  executionType: "PARALLEL", // Initialized to empty or default value
   status: "0",
   datasources: { datasourceId: "" },
 });
+
 const total = ref(0);
 const queryParams = ref({
   pageNum: 1,
@@ -437,10 +550,10 @@ const handleTemplate = (item) => {
 let loading = ref(false);
 let createTypeList = ref([]);
 
-/** 查询数据开发任务列表 */
+/** Query data development task list */
 function getDaDatasource(flag) {
   templateAct.value.typaCode = form.value.typaCode;
-  // 刷新模板列表
+  // Refresh template list
   getList();
   loading.value = true;
   listDaDatasourceNoKafkaByProjectCode({
@@ -461,29 +574,33 @@ watch(
   (newVal) => {
     if (newVal) {
       form.value = { ...form.value, ...props.data };
-      // 模版
+      form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
+      form.value.actuator = form.value.actuator || "SPARK";
+      enforceQuartzJDBC();
+      // Template
       templateAct.value = form.value.draftJson
         ? JSON.parse(form.value.draftJson)
         : { ...templateAct.value };
-      // 获取模版列表
+      // Get template list
       queryParams.value = templateAct.value.queryParams || queryParams.value;
-      // 执行引擎
+      // execution engine
       form.value.typaCode = templateAct.value.typaCode;
       getDaDatasource();
       getList();
       form.value.personCharge = Number(form.value.personCharge) || "";
-      // 任务状态
+      // Task status
       if (form.value.status != null && form.value.status != undefined) {
         form.value.releaseState =
           form.value.status == "-1" ? "0" : form.value.status;
       }
     } else {
       proxy.resetForm("daDiscoveryTaskRef");
+      showCrontabDescription.value = true;
     }
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -493,17 +610,40 @@ const visibleDialog = computed({
   },
 });
 
+/**
+ * DolphinScheduler
+ * @returns {Promise<void>}
+ */
+const handleSchedulerChange = async () => {
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.actuator = "JDBC";
+  } else {
+    form.value.actuator = "SPARK";
+  }
+};
+
+const enforceQuartzJDBC = () => {
+  if (form.value.scheduler == "QUARTZ") {
+    form.value.actuator = "JDBC";
+  }
+};
+
 let daDiscoveryTaskRef = ref();
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
 const saveClose = async () => {
   try {
+    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+      return;
+    }
     const valid = await daDiscoveryTaskRef.value.validate();
     if (valid) {
+      enforceQuartzJDBC();
       if (!form.value.code) {
         const response = await getNodeUniqueKey({
+          scheduler: form.value.scheduler,
           projectCode: userStore.projectCode || "133545087166112",
           projectId: userStore.projectId,
         });
@@ -517,17 +657,21 @@ const saveClose = async () => {
       emit("save", formData);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   } catch (error) {
-    console.error("保存数据时出错:", error);
+    console.error("Error while saving data:", error);
   }
 };
-// 保存数据的方法
+// How to save data
 const saveData = async () => {
   try {
+    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+      return;
+    }
     const valid = await daDiscoveryTaskRef.value.validate();
     if (valid) {
+      enforceQuartzJDBC();
       if (!form.value.code) {
         const response = await getNodeUniqueKey({
           projectCode: userStore.projectCode || "133545087166112",
@@ -543,23 +687,36 @@ const saveData = async () => {
       emit("confirm", formData);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   } catch (error) {
-    console.error("保存数据时出错:", error);
+    console.error("Error while saving data:", error);
   }
 };
 
+/**
+ * check dolphinscheduler api
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const checkDSUpStart = async () => {
+  const resp = await checkApi();
+  if (!resp.data) {
+    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "Please start the DolphinScheduler scheduler！"));
+  }
+  return resp.data;
+}
+
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 function handleShowCron() {
   expression.value = form.value.crontab;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   form.value.crontab = value;
+  daDiscoveryTaskRef.value?.validateField("crontab");
 }
 
 const handleContactChange = (selectedValue) => {
@@ -569,11 +726,37 @@ const handleContactChange = (selectedValue) => {
   console.log("🚀 ~ handleContactChange ~ selectedUser:", selectedUser);
   form.value.contactNumber = selectedUser?.phonenumber || "";
 };
-// 定义表单验证规则额
+// Define form validation rules
 </script>
 <style scoped lang="less">
 .blue-text {
   color: #2666fb;
+}
+
+.form-item-description {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.schedule-cycle-form-item :deep(.el-form-item__content) {
+  padding-bottom: 18px;
+}
+
+.schedule-cycle-description,
+.schedule-cycle-form-item :deep(.el-form-item__error) {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: 18px;
+  padding-top: 0;
+  line-height: 18px;
 }
 
 :deep(.el-select) {
@@ -585,6 +768,142 @@ const handleContactChange = (selectedValue) => {
     .el-select__suffix {
       display: none;
     }
+  }
+}
+
+.scheduler-section-title {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.scheduler-card-group {
+  --option-card-width: max(210px, calc((100% - 34px) / 3));
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 17px;
+  width: 100%;
+}
+
+:deep(.scheduler-card-group .option-card.el-radio) {
+  flex: 0 0 var(--option-card-width);
+  width: var(--option-card-width);
+  margin-right: 0;
+}
+
+:deep(.option-card.el-radio) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 13px 30px 13px 15px;
+  white-space: normal;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  height: 86px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  border: 1px solid #D6DAE1;
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--el-color-primary);
+  }
+
+  &.is-checked {
+    border-color: var(--el-color-primary);
+  }
+
+  &.is-disabled {
+    background: var(--el-fill-color-lighter);
+  }
+
+  .el-radio__input {
+    position: absolute;
+    top: 14px;
+    right: 12px;
+  }
+
+  .el-radio__label {
+    display: flex;
+    flex: 1;
+    align-self: stretch;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    padding-left: 0;
+    color: var(--el-text-color-primary);
+  }
+}
+
+.option-card__icon {
+  flex: 0 0 auto;
+  width: 36px;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.option-card__content,
+.option-card__heading,
+.option-card__description {
+  display: block;
+}
+
+.option-card__content {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+}
+
+.option-card__heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 4px;
+  width: 100%;
+
+  .task-cat-ellipsis {
+    min-width: 60px;
+  }
+}
+
+.option-card__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 20px;
+  margin-right: 8px;
+  color: var(--color-third-party-Langfuse);
+  font-family: PingFangSC, PingFang SC;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  max-width: calc(100% - 60px);
+}
+
+.option-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  width: 108%;
+  color: rgba(0, 0, 0, 0.65);
+  font-family: PingFangSC, PingFang SC;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+:deep(.option-card.el-radio.is-disabled) {
+  .option-card__icon,
+  .option-card__content {
+    opacity: 0.55;
   }
 }
 

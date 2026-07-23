@@ -1,21 +1,22 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 消息列表为空时，展示 prompt 列表 -->
+<!-- Display the prompt list when the message list is empty -->
 <template>
   <div class="chat-empty">
     <!-- title -->
@@ -151,7 +152,7 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 
 const value = computed({
   get: () => props.modelValue,
@@ -201,10 +202,10 @@ const selectedModelIcon = computed(() =>
 );
 
 onMounted(() => {
-  // getModelList(); // 不再在内部获取模型列表，而是通过 props 传入
+  // getModelList(); // No longer obtain the model list internally, but pass it in through props
 });
 
-/** 选中 prompt 点击 */
+/** Select prompt and click */
 const handlerPromptClick = async () => {
   if (!props.datasourceId || !props.factTableName) {
     message.msgWarning(td('ai.chat.configureDataScopeFirst'));
@@ -262,7 +263,7 @@ const addNewLine = async (event) => {
       font-style: nor mal;
       text-transform: none;
     }
-    // 底部
+    // bottom
     .footer-container {
       display: flex;
       flex-direction: column;

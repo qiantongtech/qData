@@ -1,22 +1,23 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /**
- * 存放一些节点操作的公共方法
+ * Store public methods for some node operations
  */
 import { DataUri, Shape } from "@antv/x6";
 import { History } from "@antv/x6-plugin-history";
@@ -28,11 +29,12 @@ import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { getNodeUniqueKey } from "@/api/dpp/task/etlTask";
 import { ElMessage } from "element-plus";
+import { td } from "@/utils/i18n";
 import { DagreLayout } from '@antv/layout';
 import { register } from '@antv/x6-vue-shape';
 import NodeView from "@/views/dpp/components/nodeView";
 /**
- * 插件使用
+ * Plug-in usage
  */
 export const usePlugins = (graph) => {
   graph
@@ -51,7 +53,7 @@ export const usePlugins = (graph) => {
     .use(new Export());
 };
 /**
- * 画布缩放比例
+ * Canvas scaling
  * @param {*} graph
  * @returns
  */
@@ -61,7 +63,7 @@ export const getCanvasScale = (graph) => {
   return result;
 };
 /**
- * 自定义html节点
+ * Custom html node
  */
 export const useHtmlNode = (node) => {
   Shape.HTML.register({
@@ -74,33 +76,33 @@ export const useHtmlNode = (node) => {
       htmlContainer.setAttribute("class", "cu_html_container");
       const htmlTop = document.createElement("img");
       htmlTop.setAttribute("class", "cu_html_top");
-      // 确定 icon 来源
+      // Determine icon source
       let iconSrc = taskParams.icon || icon || cell.getData().icons;
-      // 检查 icon 是否是 base64，如果是则直接使用
+      // Check whether the icon is base64, if so, use it directly
       if (iconSrc && iconSrc.startsWith("data:image")) {
         htmlTop.setAttribute("src", iconSrc);
       } else if (iconSrc) {
         DataUri.imageToDataUri(iconSrc, function (nu, url) {
           htmlTop.src = url;
-          // **将 base64 存回 taskParams.icon**
+          // **Save base64 back to taskParams.icon**
           const newData = {
             ...cell.getData(),
-            taskParams: { ...taskParams, icon: url }, // 更新 taskParams.icon
+            taskParams: { ...taskParams, icon: url }, // Update taskParams.icon
           };
           cell.setData(newData);
         });
       }
-      // 右侧的文本区域
+      // right text area
       const htmlText = document.createElement("div");
       htmlText.setAttribute("class", "cu_html_text");
-      // 标题
+      // Title
       const htmlTitle = document.createElement("div");
       htmlTitle.setAttribute("class", "cu_html_title");
       htmlTitle.innerText = nodeName;
 
-      // 组合文字内容
+      // Combined text content
       htmlText.appendChild(htmlTitle);
-      // 组合整个节点
+      // Combine entire nodes
       htmlContainer.appendChild(htmlTop);
       htmlContainer.appendChild(htmlText);
 
@@ -108,10 +110,10 @@ export const useHtmlNode = (node) => {
     },
   });
 };
-// 自定义vue节点
+// Custom vue node
 export const useVueNode = (graph) => {
   register({
-    shape: "vue-node", // 自定义节点类型
+    shape: "vue-node", // Custom node type
     component: NodeView,
     width: 36,
     height: 40,
@@ -121,7 +123,7 @@ export const useVueNode = (graph) => {
   })
 }
 /**
- * 显示节点上的连接桩
+ * Show connection stubs on nodes
  * @param {*} ports
  * @param {*} show
  */
@@ -133,25 +135,25 @@ export const showPorts = (ports, show) => {
 export const renderGraphs = async (graph, savedData, styletype = 1) => {
   console.log("🚀 ~ renderGraphs ~ styletype:", styletype)
   if (!graph) {
-    console.warn("renderGraph: graph 不存在");
+    console.warn("renderGraph: graph not found");
     return;
   }
 
   if (!savedData) {
-    console.warn("renderGraph: savedData 不存在");
+    console.warn("renderGraph: savedData not found");
     graph.clearCells();
     return;
   }
 
-  // 不清空 graph，避免重复渲染
+  // Do not clear the graph to avoid repeated rendering
   // graph.clearCells();
 
   const taskList = Array.isArray(savedData.taskDefinitionList) ? savedData.taskDefinitionList : [];
   const relations = Array.isArray(savedData.taskRelationJson) ? savedData.taskRelationJson : [];
 
-  // 准备节点和边
+  // Prepare nodes and edges
   const layoutNodes = taskList.map((task) => ({
-    id: String(task.code), // 强制转成字符串
+    id: String(task.code), // Force conversion to string
     width: 36,
     height: 40,
     data: task,
@@ -170,7 +172,7 @@ export const renderGraphs = async (graph, savedData, styletype = 1) => {
       target: String(rel.postNodeCode),
     }));
 
-  // Dagre 布局
+  // Dagre layout
   const dagreLayout = new DagreLayout({
     type: 'dagre',
     rankdir: 'LR',
@@ -183,7 +185,7 @@ export const renderGraphs = async (graph, savedData, styletype = 1) => {
     edges: layoutEdges,
   });
 
-  // 添加节点（去重）
+  // Add nodes (remove duplicates)
   layoutNodes.forEach((n) => {
     if (!graph.getCellById(n.id)) {
       graph.addNode({
@@ -209,9 +211,9 @@ export const renderGraphs = async (graph, savedData, styletype = 1) => {
     }
   });
 
-  // 添加边（去重）
+  // Add edges (remove duplication)
   layoutEdges.forEach((e) => {
-    const edgeId = `${e.source}-${e.target}`; // 用 source-target 做唯一 id
+    const edgeId = `${e.source}-${e.target}`; // Use source-target as unique id
     if (!graph.getCellById(edgeId)) {
       const sourceNode = graph.getCellById(e.source);
       const targetNode = graph.getCellById(e.target);
@@ -233,7 +235,7 @@ export const renderGraphs = async (graph, savedData, styletype = 1) => {
   });
 };
 
-// 更新节点状态
+// Update node status
 export const updateGraphNodes = (graph, nodeInstanceList) => {
   if (!graph || !Array.isArray(nodeInstanceList)) return;
   const codeNodeMap = {};
@@ -251,45 +253,45 @@ export const updateGraphNodes = (graph, nodeInstanceList) => {
   });
 };
 /**
- * 画布清空
+ * Canvas clear
  */
 export const handleRmNodes = (graph) => {
   graph.clearCells();
 };
 
-//输出组件字段处理
+//Output component field processing
 export const handleType2TaskParams = (fromColumns, toColumns) => {
-  // 目标列和源列数组
+  // target column and source column array
   const target_columns = [];
   const columns = [];
 
-  // 获取最短的数组长度，避免索引越界
+  // Get the shortest array length to avoid index out of bounds
   const minLength = Math.min(fromColumns.length, toColumns.length);
 
-  // 遍历 fromColumns 和 toColumns
+  // Traverse fromColumns and toColumns
   for (let i = 0; i < minLength; i++) {
     const fromCol = fromColumns[i];
     const toCol = toColumns[i];
 
-    // 仅当两者都被选中时，加入对应列
+    // Only if both are selected, add the corresponding column
     if (fromCol.isChecked && toCol.isChecked) {
-      target_columns.push(toCol.columnName); // 加入目标列
-      columns.push(fromCol.columnName); // 加入源列
+      target_columns.push(toCol.columnName); // Add target column
+      columns.push(fromCol.columnName); // Add source column
     }
   }
 
-  // 返回结果对象
+  // Return result object
   return {
     target_columns,
     columns,
   };
 };
 
-// 主函数：根据不同的type来处理任务参数
+// Main function: Process task parameters according to different types
 export const transNodeData = async (graph) => {
   const allNodes = JSON.parse(JSON.stringify(graph.getNodes()));
   const allEdges = JSON.parse(JSON.stringify(graph.getEdges()));
-  // 处理节点数据
+  // Process node data
   const tailNodes = allEdges.reduce((acc, edge) => {
     acc[edge.target.cell] = true;
     return acc;
@@ -308,15 +310,15 @@ export const transNodeData = async (graph) => {
       if (b.data?.taskParams?.type == 2) return -1;
       return 0;
     });
-  // 处理节点
-  // 构建 tasksMap
+  // processing node
+  // Build tasksMap
   for (const item of sortedNodes) {
     if (item.shape === "cu-data-node") {
       const code = item.id;
       tasksMap[code] = item.data;
     }
   }
-  // 处理节点
+  // processing node
   for (const item of sortedNodes) {
     if (item.shape === "cu-data-node") {
       const code = item.id;
@@ -329,13 +331,13 @@ export const transNodeData = async (graph) => {
     }
   }
 
-  // 处理任务关系
+  // Handle task relationships
   const taskRelationJson = [];
 
-  // 处理所有节点
+  // Process all nodes
   allNodes.forEach((node) => {
     if (isHeadNode(node.id)) {
-      // 从 tasksMap 获取节点对应的任务
+      // Get the tasks corresponding to the node from tasksMap
       const task = tasksMap[node.id];
       taskRelationJson.push({
         name: "",
@@ -348,7 +350,7 @@ export const transNodeData = async (graph) => {
       });
     }
   });
-  // 处理所有边
+  // Process all edges
   allEdges.forEach((item) => {
     if (item.shape === "edge") {
       const sourceId = item.source.cell;
@@ -377,21 +379,21 @@ function getAllConnectedEdges(graph, node) {
   const queue = [];
   const edges = [];
   let currentNode;
-  // 将起始节点加入队列并标记为已访问
+  // Queue the starting node and mark it as visited
   queue.push(node);
   visited.add(node);
 
   while (queue.length > 0) {
     currentNode = queue.shift();
-    // 获取当前节点的所有直接相连的边并加入结果数组中
+    // Get all directly connected edges of the current node and add them to the result array
     const connectedEdges = graph.getConnectedEdges(currentNode);
     connectedEdges.forEach((edge) => {
       if (!edges.includes(edge)) {
-        // 避免重复添加相同的边
+        // Avoid adding the same edge repeatedly
         edges.push(edge);
       }
     });
-    // 将当前节点的所有相邻节点加入队列（如果它们未被访问过）
+    // Queue all neighboring nodes of the current node if they have not been visited yet
     const adjacentNodes = graph.getNeighbors(currentNode);
     adjacentNodes.forEach((adjacentNode) => {
       if (!visited.has(adjacentNode)) {
@@ -403,8 +405,8 @@ function getAllConnectedEdges(graph, node) {
   return edges;
 }
 export const validateGraph = (graph, flag) => {
-  const nodes = graph.getNodes(); // 获取所有节点
-  const edges = graph.getEdges(); // 获取所有边
+  const nodes = graph.getNodes(); // Get all nodes
+  const edges = graph.getEdges(); // Get all edges
   let valid = true;
   let errorMessages = [];
 
@@ -421,7 +423,7 @@ export const validateGraph = (graph, flag) => {
     errorMessages.push(message);
   };
 
-  // 表输出组件校验（type == 2）
+  // Table output component validation (type == 2)
   const validateType2TaskParams = (taskParams, node) => {
     if (!taskParams.tableFields || taskParams.tableFields.length === 0) {
       valid = false;
@@ -435,9 +437,7 @@ export const validateGraph = (graph, flag) => {
     }
   };
 
-
-
-  // 所有节点循环校验
+  // All nodes cycle check
   nodes.forEach((node) => {
     const { data } = node;
     const taskParams = data?.taskParams;
@@ -463,11 +463,11 @@ export const validateGraph = (graph, flag) => {
       addErrorMessage(`${data.name} ${td('dpp.utils.nodeInfoIncomplete')}`);
       return;
     }
-    // 特定类型组件额外校验
+    // Additional verification for specific types of components
     if (taskParams.type == "2") {
       validateType2TaskParams(taskParams, node);
     }
-    // 标记输入/输出组件
+    // Mark input/output components
     if (taskParams.type == "1") inputNodeExists = data;
     if (taskParams.type == "2") outputNodeExists = data;
   });
@@ -482,7 +482,6 @@ export const validateGraph = (graph, flag) => {
     addErrorMessage(td('dpp.utils.missingOutput'));
   }
 
-
   if (errorMessages.length > 0 && !flag) {
     ElMessage.warning(errorMessages[0]);
   }
@@ -491,16 +490,16 @@ export const validateGraph = (graph, flag) => {
 };
 
 /**
- * 使用 graph.fromJSON 还原transNodeData处理过的数据流程图画布
+ * Use graph.fromJSON to restore the data flow graph canvas processed by transNodeData
  */
 export const renderGraph = (graph, savedData, width) => {
   if (!graph) {
-    console.warn("renderGraph: graph 不存在");
+    console.warn("renderGraph: graph not found");
     return;
   }
 
   if (!savedData) {
-    console.warn("renderGraph: savedData 不存在");
+    console.warn("renderGraph: savedData not found");
     graph.clearCells();
     return;
   }
@@ -511,12 +510,12 @@ export const renderGraph = (graph, savedData, width) => {
   const taskList = Array.isArray(savedData.taskDefinitionList) ? savedData.taskDefinitionList : [];
   const relations = Array.isArray(savedData.taskRelationJson) ? savedData.taskRelationJson : [];
 
-  // 添加节点
+  // Add node
   locations.forEach((location) => {
     const nodeData = taskList.find((item) => item.code == location.taskCode);
     if (nodeData) {
       graph.addNode({
-        id: String(location.taskCode), // 确保 ID 为字符串
+        id: String(location.taskCode), // Make sure the ID is a string
         shape: "cu-data-node",
         x: location.x,
         y: location.y,
@@ -534,7 +533,7 @@ export const renderGraph = (graph, savedData, width) => {
     }
   });
 
-  // 添加边，添加前先检查节点是否存在
+  // Add an edge and check whether the node exists before adding.
   relations.forEach((relation) => {
     const preId = String(relation?.preNodeCode);
     const postId = String(relation?.postNodeCode);
@@ -572,32 +571,33 @@ export const renderGraph = (graph, savedData, width) => {
     });
   });
 };
-// 获取code
-export const fetchNodeUniqueKey = async () => {
+// Get code
+export const fetchNodeUniqueKey = async ({scheduler}) => {
   try {
     const response = await getNodeUniqueKey({
+      scheduler: scheduler,
       projectCode: userStore.projectCode || "133545087166112",
       projectId: userStore.projectId,
     });
     if (response.code == "200") {
       return response.data;
     }
-    return null; // 如果没有数据，返回 null
+    return null; // If there is no data, return null
   } catch (error) {
-    return null; // 发生错误时返回 null
+    return null; // Returns null on error
   }
 };
-// 获取上级节点 封装成下拉框
+// Get the superior node and encapsulate it into a drop-down box
 export const createNodeSelect = (graph, currentNodeId) => {
   return graph
     .getNodes()
-    .filter((node) => node.id !== currentNodeId && node?.data?.taskParams?.type !== 2) // 过滤掉当前节点和 taskParams.type 为 2 的节点
+    .filter((node) => node.id !== currentNodeId && node?.data?.taskParams?.type !== 2) // Filter out the current node and nodes with taskParams.type 2
     .map((node) => ({
       label: node.data.name || td('dpp.utils.unknownNode'),
       value: node.id,
     }));
 };
-// 当前节点的所有下级节点
+// All subordinate nodes of the current node
 export const getAllChildNodes = (node, graph) => {
   const outgoingEdges = graph.getOutgoingEdges(node);
   const childNodes = [];
@@ -613,14 +613,14 @@ export const getAllChildNodes = (node, graph) => {
   }
   return childNodes;
 };
-// 找到当前节点的父节点
+// Find the parent node of the current node
 export function getParentNode(currentNode, graph) {
   if (!currentNode || !graph) return null;
 
   const incomingEdges = graph.getIncomingEdges(currentNode) || [];
   if (incomingEdges.length === 0) return null;
 
-  const parentEdge = incomingEdges[0]; // 默认只取第一个入边
+  const parentEdge = incomingEdges[0]; // By default, only the first incoming edge is taken
   const parentNode = parentEdge?.getSourceCell?.();
 
   return parentNode?.isNode?.() ? parentNode : null;
@@ -633,10 +633,10 @@ export const createDataNode = (graph, data) => {
     label: data?.label || data.name,
     data: {
       id: "",
-      code: "", // 组件的 code
+      code: "", // component code
       taskType: data.taskType,
-      name: data?.label || data.name, // 名字
-      version: "0", // 版本号
+      name: data?.label || data.name, // name
+      version: "0", // version number
       icon: data?.icon || data?.icons || "",
       componentType: data?.componentType || "",
       outputFields: [],
@@ -651,10 +651,10 @@ export const createDataNode = (graph, data) => {
           returnDataLine: ["$.data.rows"],
           pageFlag: 0,
           page: {
-            pageNoKey: "pageNo", //分页参数key，需在参数中用${pageNo}进行占位，pageNo为当前参数的值
-            maxPage: 10, //最大页数
+            pageNoKey: "pageNo", //The paging parameter key needs to be filled with ${pageNo} in the parameter. pageNo is the value of the current parameter.
+            maxPage: 10, //Maximum number of pages
           },
-          interval: 0, //间隔时间 单位毫秒(默认0)
+          interval: 0, //Interval time in milliseconds (default 0)
           description: "",
           apiHeaders: [{
             "name": "Accept",
@@ -709,109 +709,109 @@ export const createDataNode = (graph, data) => {
           nullIf: null,
         }),
         ...(data.componentType == 49 && {
-          input: "", //输入字段
-          output: "", //输出字段
-          unKnown: "", //缺省值
+          input: "", //input field
+          output: "", //output fields
+          unKnown: "", //Default value
         }),
         ...(data.componentType == 39 && {
-          fieldDerivationType: "FIELD_DERIVE_CONCAT", //操作类型
-          fieldDerivationName: "", //新的字段名
-          fieldDerivationPrefix: "", //前缀
-          fieldDerivationSuffix: "", //前缀
+          fieldDerivationType: "FIELD_DERIVE_CONCAT", //Operation type
+          fieldDerivationName: "", //new field name
+          fieldDerivationPrefix: "", //prefix
+          fieldDerivationSuffix: "", //prefix
         }),
         ...(data.componentType == 47 && {
-          selectedSourceField: "", //字段名称
-          targetFieldName: "", //目标字段
-          defaultValueWhenUnmatched: "", //不匹配时的默认值
+          selectedSourceField: "", //Field name
+          targetFieldName: "", //target field
+          defaultValueWhenUnmatched: "", //Default value if no match
         }),
         ...(data.componentType == 35 && {
           splitField: "",
-          address: "", // 需要拆分的字段
-          splitType: "delimiter", // "delimiter"->分隔符 或 "regex"->正则表达式
-          delimiter: "", // splitType为"delimiter"时必填
-          regex: "", // splitType为"regex"时必填
-          enclosure: "", // 可选，
+          address: "", // Fields that need to be split
+          splitType: "delimiter", // "delimiter"->delimiter or "regex"->regular expression
+          delimiter: "", // Required when splitType is "delimiter"
+          regex: "", // Required when splitType is "regex"
+          enclosure: "", // Optional,
         }),
         ...(data.type == 1 && {
           querySql: "",
           csvFile: "",
-          topic: "", //主題
-          clmt: "0", //连接状态
-          logicOperator: "and", //表輸入逻辑连接符
-          datasource_id: "", // 源表数据源id 输出
-          asset_id: "", // 源表资产id 输入
-          table_name: "", // 源表名 输入
-          columns: "", // 源表同步字段列表 输入
+          topic: "", //Topic
+          clmt: "0", //connection status
+          logicOperator: "and", //Table input logical connector
+          datasource_id: "", // Source table data source id output
+          asset_id: "", // Source table asset id input
+          table_name: "", // Source table name input
+          columns: "", // Source table synchronization field list input
           readerDatasource: {
             datasourceId: "",
             datasourceType: "",
             dbname: "",
           },
-          readModeType: "1", // 读取方式：1:全量 2:id增量 3:时间范围增量 默认全量
+          readModeType: "1", // Reading method: 1: Full amount 2: ID increment 3: Time range increment Default is full amount
           idIncrementConfig: {
-            //id增量
-            incrementColumn: "", // 增量字段
-            incrementStart: "", // 开始值
+            //id increment
+            incrementColumn: "", // Increment field
+            incrementStart: "", // start value
           },
           dateIncrementConfig: {
-            //时间范围增量
-            logic: "and", // 逻辑运算符：1: and 2: or 默认and
-            dateFormat: "yyyy-MM-dd", // 时间格式：yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss（手动输入）
+            //time range increment
+            logic: "and", // Logical operators: 1: and 2: or default and
+            dateFormat: "yyyy-MM-dd", // Time format: yyyy-MM-dd or yyyy-MM-dd HH:mm:ss (manual input)
             column: [],
           },
           ...(data.componentType == 34 && {
-            sortFields: [], //排序字段
+            sortFields: [], //sort field
           }),
 
           ...(data.componentType == 6 && {
-            path: "", //文件路径
-            fileType: "csv", // 文件类型 "csv"、"text"
-            fieldDelimiter: ",", // 分隔符 默认
-            encoding: "UTF-8", //编码
-            compression: "", //压缩方式,当fileType（文件类型）为csv下的文件压缩方式，目前仅支持 gzip、bzip2、lzo、snappy
-            hadoopConfig: "", //配置
-            haveKerberos: false, //kerberos认证
-            kerberosKeytabFilePath: "", //是否有Kerberos认证，默认false,true，则配置项kerberosKeytabFilePath，kerberosPrincipal为必填
-            kerberosPrincipal: "", //"Kerberos认证Principal名，如xxxx/hadoopclient@xxx.xxx",
+            path: "", //file path
+            fileType: "csv", // File type "csv", "text"
+            fieldDelimiter: ",", // separator default
+            encoding: "UTF-8", //encoding
+            compression: "", //Compression method, when fileType (file type) is the file compression method under csv, currently only supports gzip, bzip2, lzo, snappy
+            hadoopConfig: "", //Configuration
+            haveKerberos: false, //kerberos authentication
+            kerberosKeytabFilePath: "", //Whether there is Kerberos authentication, the default is false, true, the configuration items kerberosKeytabFilePath and kerberosPrincipal are required
+            kerberosPrincipal: "", //"Kerberos authentication principal name, such as xxxx/hadoopclient@xxx.xxx",
           }),
         }),
-        parentId: "", //上級节点的id
-        config: "", //配置参数
-        typeName: data?.label || data.name, //组件类型
+        parentId: "", //The id of the superior node
+        config: "", //Configuration parameters
+        typeName: data?.label || data.name, //Component type
         icon: data?.icon || data?.icons || "",
         taskType: data.taskType,
-        type: data.type, // 组件类型 1:输入组件 2:输出组件
-        batchSize: "1024", // 一次性写入量
-        tableFields: [], // 表输出 源表字段
+        type: data.type, // Component type 1: Input component 2: Output component
+        batchSize: "1024", // One-time write volume
+        tableFields: [], // Table output source table fields
         where: "", // where
         datasourceId: "",
         ...(data.type == 2 && {
-          target_datasource_id: "", // 目标数据源id 输出
-          target_asset_id: "", // 目标资产id 输出
-          target_table_name: "", // 目标表名 输出
-          target_columns: "", // 目标表同步字段列表 输出
+          target_datasource_id: "", // Target data source id output
+          target_asset_id: "", // Target asset id output
+          target_table_name: "", // Target table name output
+          target_columns: "", // Target table synchronization field list output
           writerDatasource: {
             datasourceId: "",
             datasourceType: "",
             dbname: "",
           },
-          toColumnsList: [], // 表输入 表字段
-          postSql: "", // 后置 SQL
-          selectedColumns: [], // 更新主键
+          toColumnsList: [], // table input table fields
+          postSql: "", // Post-SQL
+          selectedColumns: [], // Update primary key
           selectedColumn: "",
-          writeModeType: 2, //写入模式
-          preSql: "", //前置 SQL
+          writeModeType: 2, //write mode
+          preSql: "", //Pre-SQL
           ...(data.componentType == 93 && {
-            path: "", //文件路径
-            fileName: "", //文件名称
-            fileType: "csv", // 文件类型 "csv"、"text"
-            fieldDelimiter: ",", // 分隔符 默认
-            encoding: "UTF-8", //编码
-            compression: "", //压缩方式,当fileType（文件类型）为csv下的文件压缩方式，目前仅支持 gzip、bzip2、lzo、snappy
-            hadoopConfig: "", //配置
-            haveKerberos: false, //kerberos认证
-            kerberosKeytabFilePath: "", //是否有Kerberos认证，默认false,true，则配置项kerberosKeytabFilePath，kerberosPrincipal为必填
-            kerberosPrincipal: "", //"Kerberos认证Principal名，如xxxx/hadoopclient@xxx.xxx",
+            path: "", //file path
+            fileName: "", //File name
+            fileType: "csv", // File type "csv", "text"
+            fieldDelimiter: ",", // separator default
+            encoding: "UTF-8", //encoding
+            compression: "", //Compression method, when fileType (file type) is the file compression method under csv, currently only supports gzip, bzip2, lzo, snappy
+            hadoopConfig: "", //Configuration
+            haveKerberos: false, //kerberos authentication
+            kerberosKeytabFilePath: "", //Whether there is Kerberos authentication, the default is false, true, the configuration items kerberosKeytabFilePath and kerberosPrincipal are required
+            kerberosPrincipal: "", //"Kerberos authentication principal name, such as xxxx/hadoopclient@xxx.xxx",
             writerDatasource: {
               datasourceId: "",
               datasourceType: "",
@@ -825,18 +825,18 @@ export const createDataNode = (graph, data) => {
       },
     },
     ports: {
-      ...cuPort, // 其他连接桩配置
+      ...cuPort, // Other connecting pile configurations
       items: [
         { group: "top", id: "port-top" },
         { group: "bottom", id: "port-bottom" },
       ],
     },
     options: {
-      maxConnections: Infinity, // 最大连接数
+      maxConnections: Infinity, // Maximum number of connections
     },
   });
 };
-// 根据 componentType 返回默认 taskParams
+// Return default taskParams based on componentType
 export const getDefaultTaskParams = (data) => {
   console.log("🚀 ~ getDefaultTaskParams ~ data:", data.componentType);
   console.log("🚀 ~ getDefaultTaskParams ~ data.taskParams?.type:", data.taskParams?.type);
@@ -858,10 +858,10 @@ export const getDefaultTaskParams = (data) => {
       returnDataLine: ["$.data.rows"],
       pageFlag: 0,
       page: {
-        pageNoKey: "pageNo", //分页参数key，需在参数中用${pageNo}进行占位，pageNo为当前参数的值
-        maxPage: 10, //最大页数
+        pageNoKey: "pageNo", //The paging parameter key needs to be filled with ${pageNo} in the parameter. pageNo is the value of the current parameter.
+        maxPage: 10, //Maximum number of pages
       },
-      interval: 0, //间隔时间 单位毫秒(默认0)
+      interval: 0, //Interval time in milliseconds (default 0)
       description: "",
       apiHeaders: [], //header
       inParams: {
@@ -935,17 +935,17 @@ export const getDefaultTaskParams = (data) => {
   if (data.componentType == 49) {
     return {
       ...base,
-      input: "", //输入字段
-      output: "", //输出字段
-      unKnown: "", //缺省值
+      input: "", //input field
+      output: "", //output fields
+      unKnown: "", //Default value
     };
   }
   if (data.componentType == 47) {
     return {
       ...base,
-      selectedSourceField: "", //字段名称
-      targetFieldName: "", //目标字段
-      defaultValueWhenUnmatched: "", //不匹配时的默认值
+      selectedSourceField: "", //Field name
+      targetFieldName: "", //target field
+      defaultValueWhenUnmatched: "", //Default value if no match
     };
   }
 
@@ -963,9 +963,9 @@ export const getDefaultTaskParams = (data) => {
   if (data.componentType == 35) {
     return {
       ...base,
-      selectedSourceField: "", //字段名称
-      targetFieldName: "", //目标字段
-      defaultValueWhenUnmatched: "", //不匹配时的默认值
+      selectedSourceField: "", //Field name
+      targetFieldName: "", //target field
+      defaultValueWhenUnmatched: "", //Default value if no match
     };
   }
   if (data.componentType == 34) {
@@ -986,7 +986,7 @@ export const getDefaultTaskParams = (data) => {
       ...base,
       querySql: "",
       csvFile: "",
-      inputFields: "", // 会被 base.inputFields 覆盖为 []
+      inputFields: "", // Will be overwritten by base.inputFields to []
       topic: "",
       clmt: "0",
       logicOperator: "and",
@@ -1024,7 +1024,7 @@ export const getDefaultTaskParams = (data) => {
     return baseParams;
   }
 
-  // Writer 部分如需启用，取消注释即可
+  // If you need to enable the Writer part, just uncomment it.
   // if (data.taskParams?.type === 2) {
   //   const commonWriterDatasource = {
   //     datasourceId: "",
@@ -1072,7 +1072,7 @@ export const getDefaultTaskParams = (data) => {
     };
   }
 
-  // 默认
+  // Default
   return base;
 };
 
@@ -1082,15 +1082,15 @@ export function createMenuDom({
   x,
   y,
   menuItems = [],
-  container, // 直接传 DOM 节点，不是 id
+  container, // Directly pass the DOM node, not the id
   onHide,
 }) {
   if (!container) {
-    console.warn("必须传入容器 DOM 元素 container");
+    console.warn("A container DOM element must be provided");
     return;
   }
 
-  // 清理已有菜单
+  // Clean up existing menus
   if (divMenuContainer) {
     if (container.contains(divMenuContainer)) {
       container.removeChild(divMenuContainer);
@@ -1099,7 +1099,7 @@ export function createMenuDom({
     document.body.removeEventListener("click", onBodyClick);
   }
 
-  // 创建菜单容器
+  // Create menu container
   divMenuContainer = document.createElement("div");
   divMenuContainer.className = "div-menu-container";
   Object.assign(divMenuContainer.style, {
@@ -1115,7 +1115,7 @@ export function createMenuDom({
     userSelect: "none",
   });
 
-  // 添加菜单项
+  // Add menu item
   menuItems.forEach(({ label, action }) => {
     const item = document.createElement("div");
     item.className = "div-menu-item";
@@ -1138,7 +1138,7 @@ export function createMenuDom({
 
   container.appendChild(divMenuContainer);
 
-  // 调整位置，避免菜单超出容器边界
+  // Adjust the position to prevent the menu from exceeding the boundaries of the container
   const menuRect = divMenuContainer.getBoundingClientRect();
   const contRect = container.getBoundingClientRect();
   const THRESHOLD = 500;
@@ -1181,13 +1181,13 @@ export function createMenuDom({
     hide: hideMenu,
   };
 }
-// 判断数组是否一样
+// Determine whether arrays are the same
 export function areFieldNamesEqual(fieldsA = [], fieldsB = []) {
   const namesB = new Set(fieldsB.map((f) => f.columnName));
   return fieldsA.every((f) => namesB.has(f.columnName));
 }
 /**
- * 校验节点名称
+ * Check node name
  */
 export function shouldAbortByName(graph, nodeData) {
   const newName = nodeData?.name?.trim();
@@ -1214,37 +1214,37 @@ export const exportGraphAsPNG = (
   } = {}
 ) => {
   if (!graph) {
-    console.warn("exportGraphAsPNG: graph 实例不存在");
+    console.warn("exportGraphAsPNG: graph instance not found");
     return;
   }
 
   const defaultStylesheet = `
 .cu_html_container {
-  display: flex; 
-  flex-direction: row; 
-  align-items: center; 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: flex-start;
   background: white;
-  border: 1px solid #ddd; 
-  border-radius: 2px; 
+  border: 1px solid #ddd;
+  border-radius: 2px;
   padding: 8px;
-  height: 33px !important; 
+  height: 33px !important;
   box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   overflow: hidden;
 }
 
 .cu_html_top {
-  width: 30px; 
+  width: 30px;
   height: 30px;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .cu_html_text {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1; 
-  white-space: nowrap; 
+  flex: 1;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -1282,8 +1282,8 @@ export const exportGraphAsPNG = (
     stylesheet: stylesheet || defaultStylesheet
   });
 };
-// 表输入的规则
-// 表输入的规则
+// Table input rules
+// Table input rules
 export function renameRuleToRuleConfig(data) {
   return data
     .filter(col => Array.isArray(col.cleanRuleList) && col.cleanRuleList.length > 0)
@@ -1291,9 +1291,9 @@ export function renameRuleToRuleConfig(data) {
       return col.cleanRuleList.map(rule => {
         let parsedRule = {};
         try {
-          parsedRule = JSON.parse(rule.rule); // 原来的 rule 解析成对象
+          parsedRule = JSON.parse(rule.rule); // The original rule is parsed into an object
         } catch (e) {
-          console.warn(`rule JSON 解析失败: ${rule.rule}`, e);
+          console.warn(`Failed to parse rule JSON: ${rule.rule}`, e);
         }
         const ruleConfig = {
           ...parsedRule,

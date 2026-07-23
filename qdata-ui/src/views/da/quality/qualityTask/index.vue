@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -173,7 +174,7 @@
                   </template>
                   <div style="width: 100px" class="butgdlist">
                     <el-button link type="primary" icon="VideoPlay" style="padding-left: 14px"
-                      @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
+                      :loading="executeOnceLoading" @click="handleExecuteOnce(scope.row)" v-hasPermi="['da:qualityTask:once']"
                       :disabled="scope.row.status == 1">{{ td('da.qualityTask.executeOnce') }}</el-button>
                     <el-button link type="primary" icon="Stopwatch" @click="handleDataView(scope.row)"
                       v-hasPermi="['da:qualityTask:edit']">{{ td('da.qualityTask.executionLog') }}</el-button>
@@ -241,6 +242,7 @@ import {
 } from "@/api/da/quality/qualityTask";;
 
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 const { da_discovery_task_status, dpp_etl_task_execution_type, datasource_type, dpp_etl_task_process_type } =
   proxy.useDict(
     "da_discovery_task_status",
@@ -256,7 +258,7 @@ const typaOptions = treeData.map((item) => {
   }
 })
 
-/** 排序触发事件 */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
   queryParams.value.orderByColumn = column?.columnKey || prop;
   queryParams.value.isAsc = column.order;
@@ -275,20 +277,20 @@ const getStatus = (status) => {
     return '0'
   }
 }
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
 let userList = ref([]);
 let taskForm = ref({});
 const handleAdd = () => {
   taskConfigDialogVisible.value = true;
 }
-// 保存并关闭
+// Save and close
 const handleSave = (form) => {
   const parms = {
     ...form,
 
     projectCode: userStore.projectCode,
-    type: "3",//数据开发新增标识
+    type: "3",// Data dev add identifier
   }
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
@@ -298,8 +300,8 @@ const handleSave = (form) => {
   })
 }
 const deptOptions = ref([]);
-const leftWidth = ref(300); // 初始左侧宽度
-/** 下拉树结构 */
+const leftWidth = ref(300); // Initial left width
+/** Dropdown tree structure */
 function getDeptTree() {
   listAttQualityCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
@@ -326,14 +328,14 @@ let openCron = ref(false);
 const DppQualityTaskEvaluateList = ref([]);
 let row = ref();
 let expression = ref("");
-/** 运行实例按钮操作 */
+/** Run instance button operation */
 function handleJobLog(data) {
   row.value = "";
   row.value = data || "";
   openCron.value = true;
   expression.value = data.cycle || "";
 }
-/** 改变启用状态值 */
+/** Toggle enable status value */
 function handleStatusChange(row, e) {
   const text = row?.status == "1" ? td('da.qualityTask.offline') : td('da.qualityTask.online');
   proxy.$modal
@@ -358,7 +360,7 @@ function handleStatusChange(row, e) {
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 function crontabFill(value) {
   row.value.crontab = value;
   updateDaDiscoveryTaskCronExpression({
@@ -371,11 +373,12 @@ function crontabFill(value) {
   });
 }
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(td('da.qualityTask.invalidTaskId'));
     return;
   }
-  loading.value = true;
+  executeOnceLoading.value = true;
   try {
     const res = await startDppQualityTask(row.id);
 
@@ -385,16 +388,16 @@ const handleExecuteOnce = async (row) => {
       proxy.$modal.msgWarning(res?.msg || td('da.qualityTask.executeFailed'));
     }
   } finally {
-    loading.value = false;
+    executeOnceLoading.value = false;
   }
 };
 let DataView = ref(false);
-/** 运行实例接口 */
+/** Run instance API */
 function handleDataView(row) {
   form.value = row;
   DataView.value = true;
 }
-// 列显隐信息
+// Column visibility information
 const columns = ref([
   { key: 1, label: td('da.qualityTask.columnVisibility.id'), visible: true },
   { key: 2, label: td('da.qualityTask.columnVisibility.taskName'), visible: true },
@@ -459,13 +462,13 @@ function getList() {
 }
 
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -475,7 +478,7 @@ function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal

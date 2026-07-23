@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,10 +22,10 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.benchmarkType', '基准类型')" prop="type" :rules="[
-            { required: true, message: td('dpp.integration.benchmarkTypeRequired', '请选择基准类型'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.benchmarkType', 'Benchmark Type')" prop="type" :rules="[
+            { required: true, message: td('dpp.integration.benchmarkTypeRequired', 'Please select benchmark type'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.type" :placeholder="td('dpp.integration.benchmarkTypePlaceholder', '请选择基准类型')">
+            <el-select v-model="form.type" :placeholder="td('dpp.integration.benchmarkTypePlaceholder', 'Please select benchmark type')">
               <el-option v-for="benchmark in benchmarkTypes" :key="benchmark.value" :label="benchmark.label"
                          :value="benchmark.value" />
             </el-select>
@@ -34,20 +35,20 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="incrementColumn" :rules="[
-            { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
+          <el-form-item :label="td('dpp.integration.fieldName', 'Field Name')" prop="incrementColumn" :rules="[
+            { required: true, message: td('dpp.integration.fieldNameRequired', 'Please enter field name'), trigger: 'blur' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.incrementColumn" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')">
+            <el-select v-model="form.incrementColumn" :placeholder="td('dpp.integration.fieldNamePlaceholder', 'Please enter field name')">
               <el-option v-for="item in ColumnByAssettab" :key="item.columnName" :label="item.columnName"
                          :value="item.columnName" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="form.type !== '2'">
-          <el-form-item :label="td('dpp.integration.operator', '运算符')" prop="operator" :rules="[
-            { required: true, message: td('dpp.integration.operatorRequired', '请选择运算符'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.operator', 'Operator')" prop="operator" :rules="[
+            { required: true, message: td('dpp.integration.operatorRequired', 'Please select operator'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.operator" :placeholder="td('dpp.integration.operatorPlaceholder', '请选择运算符')">
+            <el-select v-model="form.operator" :placeholder="td('dpp.integration.operatorPlaceholder', 'Please select operator')">
               <el-option v-for="operator in operators" :key="operator.value" :label="operator.label"
                          :value="operator.value" />
             </el-select>
@@ -57,34 +58,34 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('dpp.integration.benchmarkValue', '基准值')" prop="data" :rules="dataRules" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.benchmarkValue', 'Benchmark Value')" prop="data" :rules="dataRules" :label-position="labelPosition">
             <template v-if="form.type === '1'">
               <el-date-picker clearable
                               v-model="form.data"
                               :type="pickerType"
                               :format="dateIncrementConfig_dateFormat2"
                               :value-format="dateIncrementConfig_dateFormat2"
-                              :placeholder="td('dpp.integration.selectFixedTime', '请选择固定时间')">
+                              :placeholder="td('dpp.integration.selectFixedTime', 'Please select fixed time')">
               </el-date-picker>
             </template>
             <template v-else-if="form.type === '3'">
-              <sql-editor :placeholder="td('dpp.integration.sqlStatement', '请输入sql')" ref="editorRef" :value="form.data" class="sql-editor" :height="'300px'"
+              <sql-editor :placeholder="td('dpp.integration.sqlStatement', 'SQL Statement')" ref="editorRef" :value="form.data" class="sql-editor" :height="'300px'"
                           @changeTextarea="changeTextarea($event)" />
             </template>
             <template v-else>
-              <el-input v-model="form.data" :placeholder="td('dpp.integration.autoCurrentTime', '自动获取当前时间，无需填写')" disabled />
+              <el-input v-model="form.data" :placeholder="td('dpp.integration.autoCurrentTime', 'Auto-get current time, no need to fill')" disabled />
             </template>
           </el-form-item>
         </el-col>
 
         <el-col :span="24" v-if="form.type === '2'">
-          <el-form-item :label="td('dpp.integration.cursorTime', '游标时间')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.cursorTime', 'Cursor Time')" prop="cursorTime" :rules="[{ required: true, message: '请选择游标时间', trigger: 'change' }]" :label-position="labelPosition">
             <el-date-picker clearable
                             v-model="form.cursorTime"
                             :type="pickerType"
                             :format="dateIncrementConfig_dateFormat2"
                             :value-format="dateIncrementConfig_dateFormat2"
-                            :placeholder="td('dpp.integration.cursorTimePlaceholder', '请选择游标时间')">
+                            :placeholder="td('dpp.integration.cursorTimePlaceholder', 'Please select cursor time')">
             </el-date-picker>
           </el-form-item>
         </el-col>
@@ -115,9 +116,9 @@ const props = defineProps({
   dateIncrementConfig_dateFormat: { type: String, default: 'YYYY-MM-DD' },
 });
 
-const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
+const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "Please enter name"));
 
-// day.js与java的日期格式不兼容，需要处理
+// day.js is not compatible with the date format of java and needs to be processed
 const dateIncrementConfig_dateFormat2 = computed(() => {
   return props.dateIncrementConfig_dateFormat
       .replace(/yyyy/g, 'YYYY')
@@ -140,7 +141,7 @@ const form = ref({
 let daDiscoveryTaskRef = ref();
 let editorRef = ref("");
 
-// 运算符
+// operator
 const operators = ref([
   { label: ">", value: ">" },
   { label: ">=", value: ">=" },
@@ -148,22 +149,22 @@ const operators = ref([
   { label: "<=", value: "<=" },
 ]);
 
-// 基准类型
+// Base type
 const benchmarkTypes = ref([
-  { label: td("dpp.integration.fixedValue", "固定值"), value: "1" },
-  { label: td("dpp.integration.timeRange", "时间范围"), value: "2" },
-  { label: td("dpp.integration.sqlExpression", "SQL表达式"), value: "3" },
+  { label: td("dpp.integration.fixedValue", "Fixed Value"), value: "1" },
+  { label: td("dpp.integration.timeRange", "Time Range"), value: "2" },
+  { label: td("dpp.integration.sqlExpression", "SQL Expression"), value: "3" },
 ]);
 
-// 动态基准值规则
+// Dynamic base value rules
 const dataRules = computed(() => {
   if (form.value.type === "1" || form.value.type === "3") {
-    return [{ required: true, message: td("dpp.integration.benchmarkValueRequired", "请输入基准值"), trigger: "change" }];
+    return [{ required: true, message: td("dpp.integration.benchmarkValueRequired", "Please enter benchmark value"), trigger: "change" }];
   }
   return [];
 });
 
-// 监听 visible 弹窗打开时初始化表单
+// Initialize the form when listening to the visible pop-up window.
 watch(
     () => props.visible,
     (newVal) => {
@@ -175,7 +176,7 @@ watch(
     }
 );
 
-// 默认选择字段名称
+// Field name selected by default
 watch(
     () => props.ColumnByAssettab,
     (newVal) => {
@@ -186,17 +187,17 @@ watch(
     { immediate: true, deep: true }
 );
 
-// 监听类型变化重置 data
+// Monitoring type changes reset data
 watch(() => form.value.type, (newType) => {
   form.value.data = "";
 });
 
-// SQL 编辑器 change 回调
+// SQL editor change callback
 function changeTextarea(val) {
   form.value.data = val;
 }
 
-// 显示/隐藏 dialog
+// Show/hide dialog
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -206,19 +207,19 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭弹窗
+// Close pop-up window
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// 保存逻辑
+// save logic
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
       emit("confirm", form.value);
       emit("update:visible", false);
     } else {
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };

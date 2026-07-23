@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quartz.mapper;
@@ -37,64 +23,64 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 import java.util.List;
 
 /**
- * 调度任务信息 数据层
+ * Scheduling task information data layer
  *
  * @author qdata
  */
 public interface SysJobMapper
 {
     /**
-     * 查询调度任务日志集合
+     * Query the scheduling task log collection
      *
-     * @param job 调度信息
-     * @return 操作日志集合
+     * @param job scheduling information
+     * @return operation log collection
      */
     public List<SysJob> selectJobList(SysJob job);
 
     /**
-     * 查询所有调度任务
+     * Query all scheduled tasks
      *
-     * @return 调度任务列表
+     * @return Scheduled task list
      */
     public List<SysJob> selectJobAll();
 
     /**
-     * 通过调度ID查询调度任务信息
+     * Query scheduling task information by scheduling ID
      *
-     * @param jobId 调度ID
-     * @return 角色对象信息
+     * @param jobId scheduling ID
+     * @return role object information
      */
     public SysJob selectJobById(Long jobId);
 
     /**
-     * 通过调度ID删除调度任务信息
+     * Delete scheduled task information by scheduling ID
      *
-     * @param jobId 调度ID
-     * @return 结果
+     * @param jobId scheduling ID
+     * @return result
      */
     public int deleteJobById(Long jobId);
 
     /**
-     * 批量删除调度任务信息
+     * Delete scheduled task information in batches
      *
-     * @param ids 需要删除的数据ID
-     * @return 结果
+     * @param ids data ID to be deleted
+     * @return result
      */
     public int deleteJobByIds(Long[] ids);
 
     /**
-     * 修改调度任务信息
+     * Modify scheduled task information
      *
-     * @param job 调度任务信息
-     * @return 结果
+     * @param job scheduling task information
+     * @return result
      */
     public int updateJob(SysJob job);
 
     /**
-     * 新增调度任务信息
+     * Add scheduling task information
      *
-     * @param job 调度任务信息
-     * @return 结果
+     * @param job scheduling task information
+     * @return result
      */
     public int insertJob(SysJob job);
 }

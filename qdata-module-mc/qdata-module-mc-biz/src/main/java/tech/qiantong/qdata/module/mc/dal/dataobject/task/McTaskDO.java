@@ -6,14 +6,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 采集任务 DO 对象 MC_TASK
+ * Collection task DO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_seq")
 @Builder
 @NoArgsConstructor
@@ -27,104 +27,104 @@ public class McTaskDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 来源系统ID */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** 任务名称 */
+    /** Task name */
     private String name;
 
-    /** 数据连接id */
+    /** Data connection id */
     private Long datasourceId;
 
-    /** 数据库类型 */
+    /** Database type */
     private String dbType;
 
-    /** 责任人 */
+    /** Responsible person */
     private Long leader;
 
-    /** 责任人电话 */
+    /** Responsible person’s phone number */
     private String leaderPhone;
 
-    /** 采集模式 */
+    /** Collection mode */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Collection range */
     private String collectionScope;
 
-    /** 任务状态 */
+    /** Task status */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 采集任务类型：1-采集，2-DDL
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * 采集黑名单
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;
 
 
     /**
-     * cron表达式
+     * cron expression
      */
     @TableField(exist = false)
     private String cronExpression;
 
     /**
-     * 调度状态
+     * Scheduling status
      */
     @TableField(exist = false)
     private String schedulerStatus;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;
 
     /**
-     * 联系人名称
+     * Contact name
      */
     @TableField(exist = false)
     private String personChargeName;
 
     /**
-     * 最近执行时间
+     * Last execution time
      */
     @TableField(exist = false)
     private String lastExecuteTime;
 
     /**
-     * 联系人手机号
+     * Contact phone number
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     private Long responsibleDept;
 }

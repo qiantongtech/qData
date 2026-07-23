@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 元数据信息Service业务层处理
+ * Metadata information Service business layer processing
  *
  * @author qdata
  * @date 2026-02-11
@@ -95,7 +95,7 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
     @Override
     public Long createMcTable(McTableSaveReqVO createReqVO) {
         McTableDO mcTableDO = BeanUtils.toBean(createReqVO, McTableDO.class);
-        // 获取数据库元数据信息，包括数据库类型
+        // Get database metadata information, including database type
         mcTableDO = reMcTableDO(mcTableDO);
         mcTableMapper.insert(mcTableDO);
         return mcTableDO.getId();
@@ -104,21 +104,21 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
 
     @Override
     public int updateMcTable(McTableSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新元数据信息
+        // Update metadata information
         McTableDO updateMcTableDO = BeanUtils.toBean(updateReqVO, McTableDO.class);
-        // 获取数据库元数据信息，包括数据库类型
+        // Get database metadata information, including database type
         updateMcTableDO = reMcTableDO(updateMcTableDO);
         return mcTableMapper.updateById(updateMcTableDO);
     }
     private McTableDO reMcTableDO(McTableDO mcTableDO) {
         McDbDO mcDbDO = mcDbMapper.findById(mcTableDO.getDbId());
 //        if (mcDbDO != null) {
-//            // 使用数据库方言获取表的行数、索引、分区字段等信息
+// // Use the database dialect to obtain the number of rows, indexes, partition fields and other information of the table
 //            DatabaseDialect dialect = DatabaseDialectFactory.getDialect(mcDbDO);
 //            if (dialect != null) {
-//                // 批量获取表元数据信息
+// // Get table metadata information in batches
 //                DatabaseDialect.TableMetadata metadata = dialect.getTableMetadata(mcDbDO, mcTableDO.getTableName());
 //                mcTableDO.setRowCount(metadata.getRowCount());
 //                mcTableDO.setTbIndex(metadata.getIndexes());
@@ -139,18 +139,18 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return sdf.parse(dateStr);
         } catch (ParseException e) {
-            // 处理日期解析异常，例如返回 null 或记录日志
-            log.error("日期解析异常：{}", e.getMessage());
+            // Handle date parsing exceptions, such as returning null or logging
+            log.error("Date parsing failed: {}", e.getMessage());
             return null;
         }
     }
     @Override
     public int removeMcTable(Collection<Long> idList) {
-        // 批量删除元数据信息
+        // Delete metadata information in batches
         //return mcTableMapper.deleteBatchIds(idList);
-        // 批量删除表元数据信息
+        // Delete table metadata information in batches
         //if (columnMapper.existsByTableIds(idList)) {
-        //    throw new ServiceException("被字段元数据引用，不可删除");
+        // throw new ServiceException("Referenced by field metadata and cannot be deleted");
         //}
         return mcTableMapper.delete(Wrappers.lambdaQuery(McTableDO.class)
                 .in(McTableDO::getId, idList)
@@ -171,12 +171,12 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
             respVO.setSourceSystemName(mdDbRespVO.getSourceSystemName());
             respVO.setSourceSystemId(mdDbRespVO.getSourceSystemId());
 
-/*            // 获取数据库元数据信息，包括数据库类型
+/* // Get database metadata information, including database type
             McDbDO mcDbDO = mcDbMapper.findById(tableDO.getDbId());
             if (mcDbDO != null) {
                 McTableDO mcTableDO = reMcTableDO(tableDO);
                 if (tableDO != null) {
-                    // 批量获取表元数据信息
+                    // Obtain table metadata information in batches
                     respVO.setRowCount(mcTableDO.getRowCount());
                     respVO.setTbIndex(mcTableDO.getTbIndex());
                     respVO.setPartitionKey(mcTableDO.getPartitionKey());
@@ -220,7 +220,7 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
                 .collect(Collectors.toMap(
                         McTableDO::getId,
                         mcTableDO -> mcTableDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
@@ -264,7 +264,7 @@ public class McTableServiceImpl extends ServiceImpl<McTableMapper,McTableDO> imp
                 cannotDeleteCount++;
                 continue;
             }
-            // 检查是否有字段引用 检查是否被数据资产使用（通过tableId）
+            // Check if there is a field reference Check if it is used by data assets (via tableId)
             //boolean hasColumn = columnMapper.existsByTableId(one.getId());
             //boolean usedByAsset = daAssetApiOutService.existsByTableId(one.getId());
             //if (false) {

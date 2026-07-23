@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -25,8 +26,8 @@
         nameKey: 'name',
         statusKey: 'validFlag',
         statusOptions: [
-          { label: td('dm.businessCategory.enableText', '启用'), value: 'true', color: '#13ce66' },
-          { label: td('dm.businessCategory.disableText', '禁用'), value: 'false', color: '#ff4949' },
+          { label: td('dm.businessCategory.enableText', 'Enable'), value: 'true', color: '#13ce66' },
+          { label: td('dm.businessCategory.disableText', 'Disable'), value: 'false', color: '#ff4949' },
         ],
       }"
       :items="detailItems"
@@ -34,10 +35,10 @@
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="td('dm.businessCategory.relatedDataDomain', '关联数据域')" name="1">
+        <el-tab-pane :label="td('dm.businessCategory.relatedDataDomain', 'Related Data Domain')" name="1">
           <asset :businessLayerDetail="businessLayerDetail"></asset>
         </el-tab-pane>
-        <el-tab-pane :label="td('dm.businessCategory.detailInfo', '详细信息')" name="2">
+        <el-tab-pane :label="td('dm.businessCategory.detailInfo', 'Detail Information')" name="2">
           <info :businessLayerDetail="businessLayerDetail"></info>
         </el-tab-pane>
       </el-tabs>
@@ -73,20 +74,20 @@ const data = reactive({
 const { businessLayerDetail } = toRefs(data);
 
 const detailItems = computed(() => [
-  { label: td('dm.businessCategory.upperCategory', '上级业务分类'), key: "parentName" },
-  { label: td('dm.businessCategory.englishAbbr', '英文简写'), key: "engName" },
-  { label: td('dm.businessCategory.ownerId', '负责人'), key: "ownerName" },
+  { label: td('dm.businessCategory.upperCategory', 'Parent Business Category'), key: "parentName" },
+  { label: td('dm.businessCategory.englishAbbr', 'English Abbreviation'), key: "engName" },
+  { label: td('dm.businessCategory.ownerId', 'Responsible Person'), key: "ownerName" },
   {
-    label: td('common.texts.description', '描述'),
+    label: td('common.texts.description', 'Description'),
     key: "description",
     span: 24,
     ellipsisClass: "ellipsis-2",
     className: "mt2 mb2",
   },
-  { label: td('common.texts.createdBy', '创建人'), key: "createBy" },
-  { label: td('common.texts.createdTime', '创建时间'), key: "createTime" },
-  { label: td('common.texts.updatedTime', '更新时间'), key: "updateTime" },
-  { label: td('common.texts.remark', '备注'), key: "remark", span: 24 },
+  { label: td('common.texts.createdBy', 'Created By'), key: "createBy" },
+  { label: td('common.texts.createdTime', 'Created Time'), key: "createTime" },
+  { label: td('common.texts.updatedTime', 'Updated Time'), key: "updateTime" },
+  { label: td('common.texts.remark', 'Remark'), key: "remark", span: 24 },
 ]);
 
 function getDetail(id) {

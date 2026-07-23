@@ -6,7 +6,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 枚举值校验
+// Enumeration value verification
 @Component("ENUM_VALIDATION")
 public class EnumValidationGenerator implements QualitySqlGenerator {
     @Override

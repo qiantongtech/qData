@@ -1,12 +1,12 @@
-// DPP 模块语言包
+// DPP module language pack
 export default {
   datasource: {
-    // 页面标题
+    // Page title
     title: '数据源管理',
-    // 搜索表单标签
+    // Search form tags
     datasourceName: '数据连接名称',
     datasourceType: '数据连接类型',
-    // 按钮文本
+    // button text
     add: '新增',
     query: '查询',
     reset: '重置',
@@ -21,7 +21,7 @@ export default {
     confirm: '确定',
     import: '导入',
     export: '导出',
-    // 表格列
+    // Table columns
     number: '编号',
     description: '描述',
     createBy: '创建人',
@@ -29,13 +29,13 @@ export default {
     status: '状态',
     remark: '备注',
     operation: '操作',
-    // 弹窗标题
+    // Pop-up window title
     addDatasource: '新增数据源',
     editDatasource: '修改数据源',
     datasourceDetail: '数据源详情',
     projectSelect: '项目选择',
     datasourceImport: '数据源导入',
-    // 表单标签
+    // form tag
     ip: 'IP',
     port: '端口号',
     username: '账号',
@@ -52,7 +52,7 @@ export default {
     projectNameList: '所属项目',
     manager: '负责人',
     managerPhone: '联系方式',
-    // placeholder 文本
+    // placeholder text
     inputDatasourceName: '请输入数据连接名称',
     selectDatasourceType: '请选择数据连接类型',
     inputIp: '请输入IP',
@@ -71,12 +71,12 @@ export default {
     inputProjectName: '请输入项目名称',
     selectManager: '请选择',
     selectProject: '请选择项目',
-    // 验证消息
+    // Verification message
     datasourceNameRequired: '数据连接名称不能为空',
     datasourceTypeRequired: '数据连接类型不能为空',
     datasourceConfigRequired: '数据源配置(json字符串)不能为空',
     ipRequired: 'IP不能为空',
-    ipNoChinese: 'IP不能包含中文',
+    ipNoChinese: 'IP地址格式不正确，例如192.168.1.1',
     portRequired: '端口号不能为空',
     portPattern: '端口号必须为1-9位数字',
     usernameRequired: '账号不能为空',
@@ -89,18 +89,19 @@ export default {
     sidRequired: '模式不能为空',
     descriptionRequired: '描述不能为空',
     jsonFormatError: '不是一个正确的JSON格式',
-    // 确认消息
+    // Confirm message
     confirmDelete: '是否确认删除数据源编号为"{ids}"的数据项？',
-    // 成功消息
+    connectionValidationFailedConfirm: '数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用',
+    // success message
     addSuccess: '新增成功',
     editSuccess: '修改成功',
     deleteSuccess: '删除成功',
     testSuccess: '测试成功',
     importResult: '导入结果',
-    // 配置示例
+    // Configuration example
     kafkaConfigExample: '例如: {"security.protocol":"SASL_PLAINTEXT"}',
     hdfsConfigExample: '例如: {"kerberosKeytabFilePath":"/path/to/keytab/file"}',
-    // 操作提示
+    // Operation tips
     noPermission: '暂无权限'
   },
   setting: {
@@ -125,7 +126,13 @@ export default {
       editDataDevCat: '修改数据开发类目',
       dataDevCatDetail: '数据开发类目详情',
       nameRequired: '数据开发类目名称不能为空',
+      nameUsed: '名称已被使用',
+      nameValidationFailed: '名称校验失败',
       parentRequired: '上级类目不能为空',
+      enableParentFirst: '请先启用父节点“{name}”，再启用当前节点。',
+      confirmDisableParent: '停用父类目将同步影响子类目，请确认',
+      developmentTaskExistsCannotDisable: '存在数据开发任务，不允许禁用',
+      confirmRenameWithTaskCount: '该类目已被 {count} 个数据开发任务使用，修改名称后任务归属显示将同步变化。',
       confirmChangeStatus: '确认要"{status}""{name}"数据开发类目吗？',
       confirmDelete: '是否确认删除数据开发类目管理编号为"{id}"的数据项？',
       dataDevCatImport: '数据开发类目管理导入'
@@ -149,9 +156,15 @@ export default {
       editTaskCat: '修改数据集成类目',
       taskCatDetail: '数据集成类目详情',
       nameRequired: '数据集成类目名称不能为空',
+      nameUsed: '当前上级类目下已存在同名类目，请修改',
+      nameValidationFailed: '名称校验失败',
       parentRequired: '上级类目不能为空',
       updateExistData: '是否更新已经存在的数据集成类目管理数据',
       downloadTemplate: '下载模板',
+      enableParentFirst: '请先启用父节点“{name}”，再启用当前节点。',
+      confirmDisableParent: '停用父类目将同步影响子类目，请确认',
+      integrationTaskExistsCannotDisable: '存在数据集成任务，不允许禁用',
+      confirmRenameWithTaskCount: '该类目已被 {count} 个数据集成任务使用，修改名称后任务归属显示将同步变化。',
       confirmChangeStatus: '确认要"{status}""{name}"数据集成类目吗？',
       confirmDelete: '是否确认删除数据集成类目管理编号为"{id}"的数据项？',
       taskCatImport: '数据集成类目管理导入'
@@ -159,7 +172,7 @@ export default {
     projectUserRel: {
       projectMember: '项目成员',
       projectRole: '项目角色',
-      // 用户相关
+      // User related
       userName: '用户姓名',
       phoneNumber: '手机号码',
       inputUserName: '请输入用户姓名',
@@ -185,7 +198,7 @@ export default {
       userManagement: '用户管理',
       updateExistData: '是否更新已经存在的项目成员数据',
       downloadTemplate: '下载模板',
-      // 角色相关
+      // Role related
       roleName: '角色名称',
       inputRoleName: '请输入角色名称',
       roleKey: '权限字符',
@@ -200,7 +213,9 @@ export default {
       roleNameRequired: '角色名称不能为空',
       roleKeyRequired: '权限字符不能为空',
       roleSortRequired: '角色顺序不能为空',
-      // 数据权限范围
+      roleKeyInvalid: '权限字符仅支持字母、数字、下划线和冒号',
+      roleSortInvalid: '显示顺序不合法，请输入非负整数',
+      // Data permission scope
       allDataScope: '全部数据权限',
       customDataScope: '自定数据权限',
       deptDataScope: '本部门数据权限',
@@ -217,10 +232,11 @@ export default {
       editRole: '修改角色',
       assignDataScope: '分配数据权限',
       confirmDeleteRole: '是否确认删除角色编号为"{id}"的数据项？',
+      roleInUseCannotDelete: '角色“{name}”已被成员使用，不能删除。',
       confirmChangeRoleStatus: '确认要"{status}""{name}"角色吗？'
     }
   },
-  // 资产详情
+  // Asset details
   asset: {
     dataType: '数据类型',
     dataTag: '数据标签',
@@ -710,6 +726,12 @@ export default {
   },
   taskLog: {
     taskExecutionLog: '任务执行日志',
+    inputRecords: '输入',
+    outputRecords: '输出',
+    nodeNames: '节点',
+    successCount: '成功',
+    failedCount: '失败',
+    stoppedCount: '停止',
   },
   instance: {
     taskInstanceName: '任务实例名称',
@@ -743,6 +765,7 @@ export default {
       viewLog: '查看日志',
       downloadLog: '下载日志',
       dataDevCategory: '数据开发类目',
+      inputCategoryName: '请输入数据开发类目名称',
       inputNodeInstanceName: '请输入节点实例名称',
       selectExecutionStatus: '请选择执行状态',
       executionTime: '执行时间',
@@ -769,14 +792,14 @@ export default {
       dataIntegrationCategory: '数据集成类目',
       executionTime: '执行时间',
       resetConfirm: '点击重置将清除所有未保存的更改，您确定要继续吗？',
-      // 日志相关
+      // Log related
       viewLog: '查看日志',
       close: '关 闭',
       addLogTitle: '新增数据集成任务-日志',
       editLogTitle: '修改数据集成任务-日志',
       logDetailTitle: '数据集成任务-日志详情',
       confirmDeleteLog: '是否确认删除数据集成任务-日志编号为"{id}"的数据项？',
-      // 流程节点相关
+      // Process node related
       onlyOneOutput: '只能有一个输出组件！',
       onlyOneInput: '只能有一个输入组件！',
     },
@@ -789,10 +812,14 @@ export default {
     taskStatus: '任务状态',
     scheduleStatus: '调度状态',
     scheduleCycle: '调度周期',
+    dispatchInformation: '调度信息',
     recentExecution: '最近执行',
     notExecuted: '未执行',
     configureTask: '配置任务',
     schedulePeriod: '调度周期',
+    scheduler: '调度器',
+    selectScheduler: '请选择调度器',
+    schedulerEngine: '调度器',
     stopTask: '停止任务',
     runInstance: '运行实例',
     executeOnce: '执行一次',
@@ -828,6 +855,8 @@ export default {
     selectResponsiblePerson: '请选择责任人',
     contactNumber: '联系电话',
     inputContactNumber: '请输入联系电话',
+    inputContactNumberInfo: '责任人联系电话，随责任人自动带出',
+    selectResponsiblePersonInfo: '任务维护责任人，用于异常跟进和追溯',
     description: '描述',
     inputDescription: '请输入描述',
     useTemplate: '> 使用模板',
@@ -839,8 +868,10 @@ export default {
     dm8: 'DM8',
     oracle: 'Oracle',
     mysql: 'MySQL',
+    executionEngineDescription: '指定开发任务使用的数据库类型',
+    scheduleCycleDescription: '定义任务自动触发的时间和频率',
     kingbase: 'Kingbase',
-    // 日志相关
+    // Log related
     addLogTitle: '新增数据集成任务-日志',
     editLogTitle: '修改数据集成任务-日志',
     logDetailTitle: '数据集成任务-日志详情',
@@ -851,6 +882,7 @@ export default {
     taskCancel: '任务取消',
     taskConfig: '任务配置',
     taskDetail: '任务详情',
+    dataDevCategory: '数据开发任务',
     taskRun: '任务运行',
     noTaskId: '无效的任务id，请刷新后重试',
     saveFailedInputSql: '保存失败，请输入sql语句',
@@ -877,15 +909,21 @@ export default {
     taskCategory: '任务类目',
     selectTaskCategory: '请选择任务类目',
     taskDetail: '任务详情',
+    scheduler: '调度器',
+    selectScheduler: '调度器不能为空',
+    schedulerEngine: '调度器',
     executionStrategy: '执行策略',
     selectExecutionStrategy: '请选择执行策略',
     scheduleCycle: '调度周期',
     selectScheduleCycle: '请选择调度周期',
+    dispatchInformation: '调度信息',
     configure: '配置',
     responsiblePerson: '责任人',
     selectResponsiblePerson: '请选择责任人',
+    selectResponsiblePersonInfo: '任务维护责任人，用于异常跟进和追溯',
     contactNumber: '联系电话',
     inputContactNumber: '请输入联系电话',
+    inputContactNumberInfo: '责任人联系电话，随责任人自动带出',
     taskStatus: '任务状态',
     taskPriority: '任务优先级',
     selectTaskPriority: '请选择任务优先级',
@@ -900,6 +938,21 @@ export default {
     delayExecutionTime: '延迟执行时间',
     inputDelayTime: '请输入延迟执行时间',
     executionEngine: '执行引擎',
+    dataXJvmXms: 'JVM初始内存',
+    inputDataXJvmXms: '请输入JVM初始内存',
+    dataXJvmXmsDescription: 'DataX 进程启动时申请的 JVM 堆内存',
+    dataXJvmXmx: 'JVM最大内存',
+    inputDataXJvmXmx: '请输入JVM最大内存',
+    dataXJvmXmxDescription: 'DataX 进程可使用的 JVM 最大堆内存',
+    dataXChannel: 'Channel并发数',
+    dataXChannelDescription: 'Reader 与 Writer 同时运行的数据传输通道数',
+    dataXByteSpeed: '字节限速',
+    dataXByteSpeedDescription: '每秒最大传输字节数，0 表示不限速',
+    dataXRecordSpeed: '记录限速',
+    dataXRecordSpeedDescription: '每秒最大传输记录数，0 表示不限速',
+    dataXErrorLimit: '脏数据上限',
+    dataXErrorLimitDescription: '允许的最大脏数据条数，超过后任务失败',
+    dataXMemoryFormatError: '请输入正整数，单位为 MB',
     driverCores: 'Driver核心数',
     inputDriverCores: '请输入Driver核心数',
     driverMemory: 'Driver内存数',
@@ -916,7 +969,7 @@ export default {
     saveAndConfigFlow: '保存并配置流程',
     cronGenerator: 'Cron表达式生成器',
     basicInfo: '基本信息',
-    attributeInfo: '属性信息',
+    attributeInfo: '运行策略',
     integrationTask: '集成任务',
     taskCheck: '任务检查',
     deleteNode: '删除节点',
@@ -995,6 +1048,47 @@ export default {
     executeFailed: '执行失败，请联系管理员',
     confirmClone: '确定要克隆任务【{name}】吗？',
     confirmDelete: '是否确认删除数据集成任务编号为"{ids}"的数据项？',
+    unsupportedEngineSwitch: '暂不支持切换！',
+    upDs: '请启动DolphinScheduler调度器！',
+    viewDeployDocs: "查看部署文档",
+    dolphinSchedulerGuideDescription: '使用前请确保 DolphinScheduler 服务已启动',
+    schedulerSystem: '调度系统',
+    scheduler: '调度器',
+    selectScheduler: '请选择调度系统',
+    schedulerSetting: '调度设置',
+    executionEngineSetting: '执行设置',
+    quartzGuideDescription: "由系统内置组件执行任务",
+    executionEngineDescription: "选择任务运行的引擎，不同引擎适用于不同的计算场景与技术栈。",
+    driverCoresDescription: 'Spark Driver 使用的 CPU 核心数',
+    driverMemoryDescription: 'Spark Driver 可使用的内存大小',
+    executorCountDescription: 'Spark Executor 的进程数量',
+    executorMemoryDescription: '单个 Spark Executor 的内存大小',
+    executorCoresDescription: '单个 Executor 使用的 CPU 核心数',
+    yarnQueueDescription: 'Spark 作业提交使用的 Yarn 资源队列',
+    scheduleCycleDescription: '定义任务自动触发的时间和频率',
+    workerGroupDescription: '指定承载任务的 Worker 节点分组',
+    taskPriorityDescription: '用于资源竞争时确定任务调度顺序，优先级越高越优先执行',
+    failRetryTimesDescription: '定义任务失败后的最大自动重试次数',
+    failRetryIntervalDescription: '定义相邻两次失败重试的间隔分钟数',
+    delayExecutionTimeDescription: '定义调度触发后的延迟执行分钟数',
+    executionStrategyDescription: '定义任务节点的执行组织方式',
+    lightweight: '轻量级',
+    distributed: '分布式',
+    notOnline: '暂未上线',
+    enterprise: '企业级',
+    dataXDescription: '轻量级数据同步引擎，单机运行，部署简单，适合关联数据获取与导入场景。',
+    sparkDescription: '分布式计算引擎，适合大规模离线处理与复杂计算任务。',
+    flinkDescription: '分布式流式计算引擎，适合实时处理与低延迟计算场景。',
+    quartzCardDescription: '轻量级调度，适用于简单定时任务。',
+    dolphinSchedulerCardDescription: '企业级调度，适用于复杂工作流编排。',
+    dataxAdd: '新增DATAX任务',
+    sparkAdd: '新增SPARK任务',
+    switchSparkSchedulerConfirm: '当前版本 Spark 仅适配 DolphinScheduler 调度器，切换后调度器将同步调整为 DolphinScheduler，是否继续？',
+    switchDataXSchedulerConfirm: '当前版本 DataX 仅适配 Quartz 调度器，切换后调度器将同步调整为 Quartz，是否继续？',
+    switchQuartzEngineConfirm: '当前版本 Quartz 仅适配 DataX 执行引擎，切换后执行引擎将同步调整为 DataX，是否继续？',
+    switchDolphinSchedulerEngineConfirm: '当前版本 DolphinScheduler 仅适配 Spark 执行引擎，切换后执行引擎将同步调整为 Spark，是否继续？',
+    schedulerDescription: "设置任务的调度周期及调度系统。",
+    attributeDescription: "配置任务运行时的容错策略。"
   },
   metadataSelect: {
     selectMetadata: '选择元数据',
@@ -1024,6 +1118,7 @@ export default {
     failRetryInterval: '失败重试间隔',
     delayExecutionTime: '延迟执行时间',
     executionEngine: '执行引擎',
+    scheduler: '调度器',
     driverCores: 'Driver核心数',
     driverMemory: 'Driver内存数',
     executorCount: 'Executor数量',
@@ -1329,6 +1424,10 @@ export default {
     addSuffix: '加后綴',
     removePrefix: '去除前缀',
     removeSuffix: '去除后缀',
+    addPrefixExample: '加前缀示例：原值123，标记值{mark} → {mark}123',
+    addSuffixExample: '加后缀示例：原值123，标记值{mark} → 123{mark}',
+    removePrefixExample: '去除前缀示例：原值{mark}123，标记值{mark} → 123',
+    removeSuffixExample: '去除后缀示例：原值123{mark}，标记值{mark} → 123',
     exampleAgeOver150: '示例: 如果年龄 > 150，则设置为 150。',
     exampleIncomeUnder1000: '示例: 如果收入 < 1000，则设置为 1000。',
     exampleBoth: '示例1: 如果年龄 > 150，则设置为 150。如果收入 < 1000，则设置为 1000。',

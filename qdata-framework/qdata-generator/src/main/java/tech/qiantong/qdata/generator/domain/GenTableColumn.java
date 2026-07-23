@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.generator.domain;
@@ -38,7 +24,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 代码生成业务字段表 gen_table_column
+ * Code generation business field table gen_table_column
  *
  * @author qdata
  */
@@ -46,59 +32,59 @@ public class GenTableColumn extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 编号 */
+    /** number */
     private Long columnId;
 
-    /** 归属表编号 */
+    /** Attribution table number */
     private Long tableId;
 
-    /** 列名称 */
+    /** Column name */
     private String columnName;
 
-    /** 列描述 */
+    /** Column description */
     private String columnComment;
 
-    /** 列类型 */
+    /** Column type */
     private String columnType;
 
-    /** JAVA类型 */
+    /** JAVA type */
     private String javaType;
 
-    /** JAVA字段名 */
+    /** JAVA field name */
     @NotBlank(message = "Java属性不能为空")
     private String javaField;
 
-    /** 是否主键（1是） */
+    /** Whether it is the primary key (1 is) */
     private String isPk;
 
-    /** 是否自增（1是） */
+    /** Whether to increment automatically (1 is) */
     private String isIncrement;
 
-    /** 是否必填（1是） */
+    /** Is it required (1 is) */
     private String isRequired;
 
-    /** 是否为插入字段（1是） */
+    /** Whether it is an inserted field (1 is) */
     private String isInsert;
 
-    /** 是否编辑字段（1是） */
+    /** Whether to edit the field (1 is) */
     private String isEdit;
 
-    /** 是否列表字段（1是） */
+    /** Whether it is a list field (1 is) */
     private String isList;
 
-    /** 是否查询字段（1是） */
+    /** Whether to query the field (1 is) */
     private String isQuery;
 
-    /** 查询方式（EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围） */
+    /** Query method (EQ is equal to, NE is not equal to, GT is greater than, LT is less than, LIKE is fuzzy, BETWEEN range) */
     private String queryType;
 
-    /** 显示类型（input文本框、textarea文本域、select下拉框、checkbox复选框、radio单选框、datetime日期控件、image图片上传控件、upload文件上传控件、editor富文本控件） */
+    /** Display type (input text box, textarea text field, select drop-down box, checkbox check box, radio radio button, datetime date control, image picture upload control, upload file upload control, editor rich text control) */
     private String htmlType;
 
-    /** 字典类型 */
+    /** Dictionary type */
     private String dictType;
 
-    /** 排序 */
+    /** Sort */
     private Integer sort;
 
     public void setColumnId(Long columnId)
@@ -382,7 +368,7 @@ public class GenTableColumn extends BaseEntity
 
     public static boolean isUsableColumn(String javaField)
     {
-        // isSuperColumn()中的名单用于避免生成多余Domain属性，若某些属性在生成页面时需要用到不能忽略，则放在此处白名单
+        // The list in isSuperColumn() is used to avoid generating redundant Domain attributes. If some attributes are needed when generating pages and cannot be ignored, they are placed in the whitelist here.
         return StringUtils.equalsAnyIgnoreCase(javaField, "parentId", "orderNum", "remark");
     }
 

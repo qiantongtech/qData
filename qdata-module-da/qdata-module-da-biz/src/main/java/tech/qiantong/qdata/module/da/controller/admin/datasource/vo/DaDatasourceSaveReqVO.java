@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.controller.admin.datasource.vo;
@@ -37,11 +23,14 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.da.dal.dataobject.datasource.DaDatasourceProjectRelDO;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Range;
+
 /**
- * 数据源 创建/修改 Request VO DA_DATASOURCE
+ * Datasource Create/Update Request VO DA_DATASOURCE
  *
  * @author lhs
  * @date 2025-01-21
@@ -75,9 +64,14 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
 
     @Schema(description = "IP", example = "")
     @Size(max = 256, message = "IP长度不能超过256个字符")
+    @Pattern(
+            regexp = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$",
+            message = "IP/域名格式不正确，请检查"
+    )
     private String ip;
 
     @Schema(description = "端口号", example = "")
+    @Range(min = 1, max = 65535, message = "端口号需为 1-65535 的数字")
     private Long port;
 
     @Schema(description = "数据库表数", example = "")
@@ -97,5 +91,10 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "备注长度不能超过256个字符")
     private String remark;
 
+    @Schema(description = "是否有效", example = "false")
+    private Boolean validFlag;
+
+    @Schema(description = "连接验证失败后是否确认继续新增", example = "false")
+    private Boolean skipConnectionValidation;
 
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 采集任务Service业务层处理
+ * Collection task Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -37,7 +37,7 @@ public class McTaskServiceTemporary {
 //    @Lazy
 //    private IRedisService redisService;
 //
-//    //外部api
+// //external api
 //    @Resource
 //    @Lazy
 //    private IMcDbService mcDbApiService;
@@ -60,7 +60,7 @@ public class McTaskServiceTemporary {
 //
 //        String redisKey = buildRunLockKey(taskId);
 //        if (!acquireRunLock(redisKey)) {
-//            throw new RuntimeException("历史任务未执行完毕，请稍后重试");
+// throw new RuntimeException("Historical tasks have not been completed, please try again later");
 //        }
 //        McTaskRespVO task = loadTask(taskId);
 //        try {
@@ -100,14 +100,14 @@ public class McTaskServiceTemporary {
 //    }
 //
 //    private String buildRunLockKey(Long taskId) {
-//        // 统一前缀，避免与其它模块 key 冲突
+// // Unify the prefix to avoid key conflicts with other modules
 //        return "mc:taskTemporary:run:" + taskId;
 //    }
 //
 //    private McTaskRespVO loadTask(Long taskId) {
 //        McTaskRespVO task = this.getMcTaskByIdNew(taskId);
 //        if (task == null) {
-//            throw new DataQueryException("采集任务不存在，taskId=" + taskId);
+// throw new DataQueryException("The collection task does not exist, taskId=" + taskId);
 //        }
 //        return task;
 //    }
@@ -129,7 +129,7 @@ public class McTaskServiceTemporary {
 //    private McDatasourceDO prepareDatasource(McTaskRespVO task) {
 //        Long datasourceId = task.getDatasourceId();
 //        if (datasourceId == null) {
-//            throw new DataQueryException("数据源ID为空");
+// throw new DataQueryException("Data source ID is empty");
 //        }
 //
 //        McDatasourceDO datasource;
@@ -140,13 +140,13 @@ public class McTaskServiceTemporary {
 //        }
 //
 //        if (datasource == null) {
-//            throw new DataQueryException("数据源详情信息查询失败");
+// throw new DataQueryException("Data source details query failed");
 //        }
 //        return datasource;
 //    }
 //
 //    /**
-//     * 主流程
+// * Main process
 //     *
 //     * @param task
 //     */
@@ -154,13 +154,13 @@ public class McTaskServiceTemporary {
 //        McDatasourceDO datasource = prepareDatasource(task);
 //        Long taskId = task.getId();
 //
-//        // 1. 根据采集范围，获取“库级”范围
+// // 1. According to the collection range, obtain the "library level" range
 //        List<McTaskScopeDO> databaseScopes;
 //        if ("2".equalsIgnoreCase(task.getCollectionScope())) {
-//            // 全量：实时从数据源加载数据库
+// // Full volume: Load the database from the data source in real time
 //            databaseScopes = loadDatabaseScopesFromDatasource(task, datasource);
 //        } else {
-//            // 增量：直接使用任务配置的采集范围
+// // Increment: directly use the collection range configured by the task
 //            databaseScopes = loadDatabaseScopesFromTask(task);
 //        }
 //
@@ -168,7 +168,7 @@ public class McTaskServiceTemporary {
 //            return null;
 //        }
 //
-//        // 2. 库级比对（是否新增 / 变更 / 删除）
+// // 2. Library-level comparison (whether to add/change/delete)
 //        List<McDbSaveReqVO> dbReqDTOList = compareAndRecordDatabaseScope(task, databaseScopes, datasource);
 //
 //        List<McDbSaveReqVO> mcDbByTaskId = mcDbApiService.getMcDbByTaskId(taskId, "1");
@@ -182,7 +182,7 @@ public class McTaskServiceTemporary {
 //        Long successCount = 0L;
 //
 //        int dbIndex = 1;
-//        // 3. 循环每个库
+// // 3. Loop through each library
 //        for (McDbSaveReqVO dbScope : dbReqDTOList) {
 //
 //            McDbSaveReqVO matchedDb = findMatchedDb(dbScope, datasource, mcDbByTaskId);
@@ -208,7 +208,7 @@ public class McTaskServiceTemporary {
 //                closeDbQuerySafely(dbQuery, task, dbScope);
 //            }
 //        }
-//        //目前不做删除
+// //No deletion currently
 ////        List<McDbRespDTO> dbsOnlyInResp = findDbsOnlyInResp(databaseScopes, datasource, mcDbByTaskId);
 ////        if (CollectionUtils.isNotEmpty(dbsOnlyInResp)) {
 ////
@@ -294,7 +294,7 @@ public class McTaskServiceTemporary {
 //                datasource.getDatasourceConfig()
 //        );
 //
-//        // PG / Kingbase 切库 + schema
+// // PG / Kingbase Cheku + schema
 //        if (DbType.KINGBASE8.getDb().equals(property.getDbType())
 //                || DbType.POSTGRE_SQL.getDb().equals(property.getDbType())) {
 //            property.setDbName(dbScope.getDbName());
@@ -303,7 +303,7 @@ public class McTaskServiceTemporary {
 //
 //        DbQuery dbQuery = dataSourceFactory.createDbQuery(property);
 //        if (!dbQuery.valid()) {
-//            throw new DataQueryException("数据库连接失败");
+// throw new DataQueryException("Database connection failed");
 //        }
 //
 //        property.setDbName(dbScope.getDbName());
@@ -317,7 +317,7 @@ public class McTaskServiceTemporary {
 //                                                     McDatasourceDO datasource) {
 //
 //        Long taskId = task.getId();
-//        // 1. 表列表（不再建连接）
+// // 1. Table list (no more connections)
 //        List<DbTable> tables = loadTablesByDatabase(dbQuery, task, dbScope);
 //        if (CollectionUtils.isEmpty(tables)) {
 //            return null;
@@ -325,7 +325,7 @@ public class McTaskServiceTemporary {
 //        int size = tables.size();
 //        List<McTableRespDTO> tableRespDTOList = getMcTableById(task, dbScope);
 //
-//        // 2. 表级比对
+// // 2. Table-level comparison
 //        List<McTableReqDTO> mcTables = compareAndRecordTables(task, dbScope, tables);
 //
 //        List<DbColumn> columns =
@@ -336,7 +336,7 @@ public class McTaskServiceTemporary {
 //                        .collect(Collectors.groupingBy(DbColumn::getTableName));
 //
 //        List<McColumnReqDTO> mcColumnReqDTOList = new ArrayList<>();
-//        // 3. 表循环
+// // 3. Table loop
 //        for (McTableReqDTO table : mcTables) {
 //            List<DbColumn> dbColumns = tableColumnMap.get(table.getTableName());
 //            if (CollectionUtils.isEmpty(dbColumns)) {
@@ -364,7 +364,7 @@ public class McTaskServiceTemporary {
 //            mcColumnApiService.createMcColumnList(mcColumnReqDTOList);
 //        }
 //
-//        //目前不做删除
+// //No deletion currently
 ////        List<McTableRespDTO> tablesOnlyInResp = findTablesOnlyInResp(mcTables, tableRespDTOList);
 ////        if (CollectionUtils.isNotEmpty(tablesOnlyInResp)) {
 ////
@@ -444,21 +444,21 @@ public class McTaskServiceTemporary {
 //                                   List<McColumnReqDTO> reqColumns,
 //                                   List<McColumnRespDTO> respColumns) {
 //
-//        // 1️⃣ 表注释不一致 → 更新
+// // 1️⃣ Table comments are inconsistent → Update
 //        String reqComment = StringUtils.defaultString(reqTable.getTableComment());
 //        String respComment = StringUtils.defaultString(respTable.getTableComment());
 //        if (!reqComment.equals(respComment)) {
 //            return true;
 //        }
 //
-//        // 2️⃣ 字段数量不一致 → 更新
+// // 2️⃣ The number of fields is inconsistent → Update
 //        int reqSize = reqColumns == null ? 0 : reqColumns.size();
 //        int respSize = respColumns == null ? 0 : respColumns.size();
 //        if (reqSize != respSize) {
 //            return true;
 //        }
 //
-//        // 3️⃣ 构建 respColumns 的 Map（columnName 唯一）
+// // 3️⃣ Build a Map of respColumns (columnName is unique)
 //        Map<String, McColumnRespDTO> respColumnMap = new HashMap<>();
 //        if (respColumns != null) {
 //            for (McColumnRespDTO respCol : respColumns) {
@@ -466,32 +466,32 @@ public class McTaskServiceTemporary {
 //            }
 //        }
 //
-//        // 4️⃣ 循环 reqColumns，逐字段判断
+// // 4️⃣ Loop reqColumns and judge field by field
 //        if (reqColumns != null) {
 //            for (McColumnReqDTO reqCol : reqColumns) {
 //
 //                McColumnRespDTO respCol =
 //                        respColumnMap.get(reqCol.getColumnName());
 //
-//                // 字段不存在 → 更新
+// // Field does not exist → update
 //                if (respCol == null) {
 //                    return true;
 //                }
 //
-//                // 字段属性不一致 → 更新
+// // Field attributes are inconsistent → Update
 //                if (isColumnUpdated(reqCol, respCol)) {
 //                    return true;
 //                }
 //            }
 //        }
 //
-//        // 全部一致
+// // All consistent
 //        return false;
 //    }
 //
 //    private boolean isColumnUpdated(McColumnReqDTO req, McColumnRespDTO resp) {
 //
-//        // String 类型：null == ""
+// // String type: null == ""
 //        if (!StringUtils.defaultString(req.getColumnComment())
 //                .equals(StringUtils.defaultString(resp.getColumnComment()))) {
 //            return true;
@@ -502,7 +502,7 @@ public class McTaskServiceTemporary {
 //            return true;
 //        }
 //
-//        // 数值类型：直接 Objects.equals
+// // Numeric type: direct Objects.equals
 //        if (!Objects.equals(req.getColumnLength(), resp.getColumnLength())) {
 //            return true;
 //        }
@@ -515,7 +515,7 @@ public class McTaskServiceTemporary {
 //            return true;
 //        }
 //
-//        // String 类型：null == ""
+// // String type: null == ""
 //        if (!StringUtils.defaultString(req.getDefaultValue())
 //                .equals(StringUtils.defaultString(resp.getDefaultValue()))) {
 //            return true;
@@ -635,7 +635,7 @@ public class McTaskServiceTemporary {
 //
 //    private List<McTaskScopeDO> loadDatabaseScopesFromDatasource(McTaskRespVO task,
 //                                                                 McDatasourceDO datasource) {
-//        // 1. 构建 DbQueryProperty
+// // 1. Build DbQueryProperty
 //        DbQueryProperty baseProperty = new DbQueryProperty(
 //                datasource.getDatasourceType(),
 //                datasource.getIp(),
@@ -643,12 +643,12 @@ public class McTaskServiceTemporary {
 //                datasource.getDatasourceConfig()
 //        );
 //
-//        // 2. 获取数据库列表（含层级）
+// // 2. Get the database list (including level)
 //        List<DbName> dbNames;
 //        DbQuery rootQuery = dataSourceFactory.createDbQuery(baseProperty);
 //        try {
 //            if (!rootQuery.valid()) {
-//                throw new DataQueryException("数据库连接失败");
+// throw new DataQueryException("Database connection failed");
 //            }
 //            dbNames = rootQuery.getDbNames(null);
 //        } finally {
@@ -660,7 +660,7 @@ public class McTaskServiceTemporary {
 //            return scopeList;
 //        }
 //
-//        // 3. 单层结构：直接映射 dbName
+// // 3. Single-layer structure: direct mapping dbName
 //        if (dbNames.get(0).getLevel() == 1 && dbNames.get(0).getTotalLevels() == 1) {
 //            for (DbName dbName : dbNames) {
 //                McTaskScopeDO scope = new McTaskScopeDO();
@@ -670,7 +670,7 @@ public class McTaskServiceTemporary {
 //            return scopeList;
 //        }
 //
-//        // 4. 多层结构：加载下级并映射 db + schema
+// // 4. Multi-layer structure: load subordinates and map db + schema
 //        for (DbName dbName : dbNames) {
 //
 //            DbQueryProperty childProperty = baseProperty;
@@ -719,18 +719,18 @@ public class McTaskServiceTemporary {
 //                                                           McDatasourceDO datasource) {
 //        List<McDbSaveReqVO> dbReqDTOList = new ArrayList<>();
 //
-//        //TODO 逻辑待完善
+// //TODO logic needs to be improved
 //        for (McTaskScopeDO databaseScope : databaseScopes) {
 //
 //            McDbSaveReqVO createReqVO = new McDbSaveReqVO();
-//            //采集标识
+// //Collect identification
 //            createReqVO.setTaskId(task.getId());
 //
-//            // ====== 业务域 ======
+// // ====== Business domain ======
 //            createReqVO.setDomainId(task.getDomainId());
 //            createReqVO.setDomainCode(task.getDomainCode());
 //
-//            // ====== 数据源基础信息 ======
+// // ====== Basic information of data source ======
 //            createReqVO.setDatasourceId(datasource.getId());
 //            createReqVO.setDbType(datasource.getDatasourceType());
 //            createReqVO.setIp(datasource.getIp());
@@ -739,18 +739,18 @@ public class McTaskServiceTemporary {
 //                    : null);
 //            createReqVO.setDatasourceConfig(datasource.getDatasourceConfig());
 //
-//            // ====== 库 / 模式 ======
+// // ====== Library / Pattern ======
 //            createReqVO.setDbName(databaseScope.getDbName());
 //            createReqVO.setSchemaName(databaseScope.getSchemaName());
 //
-//            // ====== 描述 ======
+// // ====== Description ======
 //            createReqVO.setDescription(databaseScope.getDescription());
 //
 //            createReqVO.setCreateBy("System Collection Task");
 //            createReqVO.setCreatorId(1L);
 //
-//            // ====== 状态与标志位（后端可统一兜底，这里显式给） ======
-//            createReqVO.setStatus("0");      // 未发布
+// // ====== Status and flag bits (the backend can provide the details in a unified manner, and they are given explicitly here) ======
+// createReqVO.setStatus("0"); // Not released
 //            createReqVO.setAuditStatus("2");
 //            createReqVO.setVersion(1);
 //            createReqVO.setAuditTime(new Date());
@@ -769,25 +769,25 @@ public class McTaskServiceTemporary {
 //
 //            McTableReqDTO mcTableReqDTO = new McTableReqDTO();
 //
-//            // ====== 关联关系 ======
+// // ====== Association ======
 //            mcTableReqDTO.setDataType("1");
 //            mcTableReqDTO.setTaskId(task.getId());
 //            mcTableReqDTO.setDbId(dbScope.getId());
 //            mcTableReqDTO.setDatasourceId(task.getDatasourceId());
 //
-//            // ====== 表基础信息 ======
+// // ====== Table basic information ======
 //            mcTableReqDTO.setTableName(table.getTableName());
 //            mcTableReqDTO.setTableComment(StringUtils.isEmpty(table.getTableComment()) ? "" : table.getTableComment());
 //
-//            // ====== 库 / 模式 ======
+// // ====== Library / Pattern ======
 //            mcTableReqDTO.setDbName(dbScope.getDbName());
 //            mcTableReqDTO.setSchemaName(dbScope.getSchemaName());
 //
 //            mcTableReqDTO.setCreateBy("System Collection Task");
 //            mcTableReqDTO.setCreatorId(1L);
 //
-//            // ====== 状态与标志位 ======
-//            mcTableReqDTO.setStatus("0");     // 未发布
+// // ====== Status and flags ======
+// mcTableReqDTO.setStatus("0"); // Not released
 //            mcTableReqDTO.setVersion(1);
 //            mcTableReqDTO.setMasterFlag("1");
 //            mcTableReqDTO.setTempFlag("0");
@@ -796,10 +796,10 @@ public class McTaskServiceTemporary {
 //            mcTableReqDTO.setValidFlag(true);
 //            mcTableReqDTO.setDelFlag(false);
 //
-//            // ====== 描述 ======
+// // ====== Description ======
 //            mcTableReqDTO.setDescription(table.getTableComment());
 //
-//            // ====== 调用元数据服务 ======
+// // ====== Call metadata service ======
 ////            Long mcTableId = mcTableApiService.createMcTable(mcTableReqDTO);
 ////
 ////            mcTableReqDTO.setId(mcTableId);
@@ -819,26 +819,26 @@ public class McTaskServiceTemporary {
 //
 //            McColumnReqDTO createReqVO = new McColumnReqDTO();
 //
-//            // ====== 关联信息 ======
+// // ====== Related information ======
 //            createReqVO.setTaskId(task.getId());
 //            createReqVO.setDbId(dbScope.getId());
 //            createReqVO.setTableId(table.getId());
 //            createReqVO.setDatasourceId(task.getDatasourceId());
 //
-//            // ====== 字段基础信息 ======
+// // ====== Field basic information ======
 //            createReqVO.setColumnName(column.getColName());
 //            createReqVO.setColumnComment(StringUtils.isEmpty(column.getColName()) ? "" : column.getColName());
 //            createReqVO.setColumnType(column.getDataType());
 //
-//            // ====== 长度 / 精度 ======
+// // ====== Length / Precision ======
 //            createReqVO.setColumnLength(parseInt(column.getDataLength()));
 //            createReqVO.setColumnPrecision(parseInt(column.getDataPrecision()));
 //            createReqVO.setColumnScale(parseInt(column.getDataScale()));
 //
-//            // ====== 默认值 ======
+// // ====== Default value ======
 //            createReqVO.setDefaultValue(column.getDataDefault());
 //
-//            // ====== 主键 / 可空 ======
+// // ====== Primary key / nullable ======
 //            createReqVO.setPkFlag(Boolean.TRUE.equals(column.getColKey()) ? "1" : "0");
 //            createReqVO.setNullableFlag(Boolean.FALSE.equals(column.getNullable()) ? "1" : "0");
 //            createReqVO.setFkFlag("0");
@@ -846,8 +846,8 @@ public class McTaskServiceTemporary {
 //            createReqVO.setCreateBy("System Collection Task");
 //            createReqVO.setCreatorId(1L);
 //
-//            // ====== 状态与标志位 ======
-//            createReqVO.setStatus("0");     // 未发布
+// // ====== Status and flags ======
+// createReqVO.setStatus("0"); // Not released
 //            createReqVO.setValidFlag(true);
 //            createReqVO.setDelFlag(false);
 //            createReqVO.setVersion(1);
@@ -855,20 +855,20 @@ public class McTaskServiceTemporary {
 //            createReqVO.setAuditStatus("2");
 //            createReqVO.setAuditTime(new Date());
 //
-//            // ====== 描述 ======
+// // ====== Description ======
 //            createReqVO.setDescription(column.getColComment());
 //
 //
 //            columnReqDTOS.add(createReqVO);
-//            // ====== 调用字段元数据服务 ======
+// // ====== Call field metadata service ======
 //
-//            // 如需回写 columnId，可在 DbColumn 中扩展字段
+// // If you need to write back columnId, you can extend the field in DbColumn
 //        }
 //        return columnReqDTOS;
 //    }
 //
 //    /**
-//     * 安全的 String -> Integer 转换
+// * Safe String -> Integer conversion
 //     */
 //    private Integer parseInt(String val) {
 //        if (val == null || val.trim().isEmpty()) {

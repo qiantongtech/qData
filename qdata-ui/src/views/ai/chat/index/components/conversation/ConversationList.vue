@@ -1,24 +1,25 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
-<!--  qData 智能问数对话  -->
+<!-- qData intelligent data Q&A conversation -->
 <template>
   <el-aside width="260px" class="conversation-container h-100%">
-    <!-- 左顶部：对话 -->
+    <!-- Top left: Conversation -->
     <div class="h-100%">
       <el-button
         class="w-1/1 btn-new-conversation"
@@ -29,7 +30,7 @@
         <span class="btn-text">{{ td('ai.chat.newConversation') }}</span>
       </el-button>
 
-      <!-- 左顶部：搜索对话 -->
+      <!-- Top left: Search conversations -->
       <el-input
         v-model="searchName"
         size="large"
@@ -42,17 +43,17 @@
         </template>
       </el-input>
 
-      <!-- 左中间：对话列表 -->
+      <!-- Middle left: Conversation list -->
       <div
         class="conversation-list"
         v-loading="loading && conversationList.length === 0"
       >
-        <!-- 情况一：加载中且没有任何数据时才显示空状态 -->
+        <!-- Situation 1: The empty status is displayed only when loading and there is no data. -->
         <el-empty
           v-if="!loading && conversationList.length === 0"
           :description="td('common.noHistory')"
         />
-        <!-- 情况二：按照 group 分组，展示聊天会话 list 列表 -->
+        <!-- Scenario 2: Group by group and display the chat session list -->
         <div
           v-for="conversationKey in Object.keys(conversationMap)"
           :key="conversationKey"
@@ -159,7 +160,7 @@
             </div>
           </div>
         </div>
-        <!-- 底部占位  -->
+        <!-- Bottom placeholder  -->
         <div class="h-160px w-100%"></div>
       </div>
     </div>
@@ -219,34 +220,34 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 const userStore = useUserStore();
 
-// 定义属性
-const searchName = ref(""); // 对话搜索
-const activeConversationId = ref(null); // 选中的对话，默认为 null
-const hoverConversationId = ref(null); // 悬浮上去的对话
-const conversationList = ref([]); // 对话列表
-const conversationMap = ref({}); // 对话分组 (置顶、今天、三天前、一星期前、一个月前)
-const loading = ref(false); // 加载中
-const loadingTime = ref(); // 加载中定时器
+// Define properties
+const searchName = ref(""); // Conversation search
+const activeConversationId = ref(null); // The selected conversation, defaults to null
+const hoverConversationId = ref(null); // floating conversation
+const conversationList = ref([]); // Conversation list
+const conversationMap = ref({}); // Conversation grouping (top, today, three days ago, one week ago, one month ago)
+const loading = ref(false); // Loading
+const loadingTime = ref(); // Loading timer
 const renameDialogVisible = ref(false);
 const renameConversationId = ref("");
 const renameTitle = ref("");
 const renameLoading = ref(false);
 const dialogAppendTo = ref(document.body);
 
-// 对话时间分组标签
+// Conversation time grouping labels
 const groupLabels = {
-  pinned: td('ai.chat.pinned', '置顶'),
-  today: td('ai.chat.today', '今天'),
-  oneDayAgo: td('ai.chat.oneDayAgo', '一天前'),
-  threeDaysAgo: td('ai.chat.threeDaysAgo', '三天前'),
-  sevenDaysAgo: td('ai.chat.sevenDaysAgo', '七天前'),
-  thirtyDaysAgo: td('ai.chat.thirtyDaysAgo', '三十天前'),
+  pinned: td('ai.chat.pinned', 'Pinned'),
+  today: td('ai.chat.today', 'Today'),
+  oneDayAgo: td('ai.chat.oneDayAgo', '1 day ago'),
+  threeDaysAgo: td('ai.chat.threeDaysAgo', '3 days ago'),
+  sevenDaysAgo: td('ai.chat.sevenDaysAgo', '7 days ago'),
+  thirtyDaysAgo: td('ai.chat.thirtyDaysAgo', '30 days ago'),
 };
 
-// 定义组件 props
+// Define component props
 const props = defineProps({
   activeId: {
     type: [String, Number, null],
@@ -274,7 +275,7 @@ const props = defineProps({
   },
 });
 
-// 定义钩子
+// Define hook
 const emits = defineEmits([
   "onConversationCreate",
   "onConversationClick",
@@ -282,15 +283,15 @@ const emits = defineEmits([
   "onConversationDelete",
 ]);
 
-/** 搜索对话 */
+/** Search conversations */
 const searchConversation = async () => {
-  // 恢复数据
+  // Recover data
   if (!searchName.value.trim().length) {
     conversationMap.value = await getConversationGroupByCreateTime(
       conversationList.value
     );
   } else {
-    // 过滤
+    // filter
     const filterValues = conversationList.value.filter((item) => {
       return item.title.includes(searchName.value.trim());
     });
@@ -300,17 +301,17 @@ const searchConversation = async () => {
   }
 };
 
-/** 点击对话 */
+/** Click to talk */
 const handleConversationClick = async (id) => {
   if (!id) {
     return;
   }
-  // 过滤出选中的对话
+  // Filter selected conversations
   let filterConversation = conversationList.value.filter((item) => {
     return item.id === id;
   });
 
-  // 如果在列表中没找到（可能是新创建的还没刷出来），则直接查详情
+  // If it is not found in the list (it may be that the newly created one has not been refreshed yet), then directly check the details.
   if (filterConversation.length === 0) {
     const res = await ChatConversationApi.getChatConversationMy(id);
     if (res.data) {
@@ -318,59 +319,59 @@ const handleConversationClick = async (id) => {
     }
   }
 
-  // 回调 onConversationClick
+  // callback onConversationClick
   // noinspection JSVoidFunctionReturnValueUsed
   emits("onConversationClick", filterConversation[0]);
-  // 切换对话
+  // Switch conversation
   activeConversationId.value = id;
 };
 
-/** 获取对话列表 */
+/** Get conversation list */
 const getChatConversationList = async () => {
   try {
-    // 1. 如果没有数据，开启加载中状态
+    // 1. If there is no data, turn on the loading state
     if (conversationList.value.length === 0) {
       loadingTime.value = setTimeout(() => {
         loading.value = true;
       }, 50);
     }
 
-    // 2.1 获取 对话数据
+    // 2.1 Obtain conversation data
     let myData = await ChatConversationApi.getChatConversationMyList();
     const newData = myData.data || [];
 
-    // 2.2 排序
+    // 2.2 Sorting
     newData.sort((a, b) => {
-      // 将时间字符串转换为时间戳进行比较
+      // Convert time string to timestamp for comparison
       const timeA = new Date(a.createTime).getTime();
       const timeB = new Date(b.createTime).getTime();
-      return timeB - timeA; // 降序排列（最新的在前）
+      return timeB - timeA; // Sort in descending order (newest first)
     });
 
-    // 3. 对话根据时间分组 (先计算好再赋值，避免视图频繁更新导致的闪烁)
+    // 3. Group conversations according to time (calculate first and then assign values to avoid flickering caused by frequent view updates)
     const newMap = await getConversationGroupByCreateTime(newData);
 
-    // 4. 更新响应式数据 (集中更新)
+    // 4. Update responsive data (centralized update)
     conversationList.value = newData;
     conversationMap.value = newMap;
 
-    // 5. 没有任何对话情况处理
+    // 5. No dialogue situations are handled
     if (newData.length === 0) {
       activeConversationId.value = null;
     }
   } finally {
-    // 清理定时器
+    // Cleanup timer
     if (loadingTime.value) {
       clearTimeout(loadingTime.value);
     }
-    // 加载完成
+    // Loading completed
     loading.value = false;
   }
 };
 
-/** 按照 creteTime 创建时间，进行分组 */
+/** Group according to creteTime creation time */
 const getConversationGroupByCreateTime = async (list) => {
-  // 排序、指定、时间分组(今天、一天前、三天前、七天前、30天前)
+  // Sorting, specifying, time grouping (today, one day ago, three days ago, seven days ago, 30 days ago)
   // noinspection NonAsciiCharacters
   const groupMap = {
     pinned: [],
@@ -380,22 +381,22 @@ const getConversationGroupByCreateTime = async (list) => {
     sevenDaysAgo: [],
     thirtyDaysAgo: [],
   };
-  // 当前时间的时间戳
+  // timestamp of current time
   const now = Date.now();
-  // 定义时间间隔常量（单位：毫秒）
+  // Define time interval constant (unit: milliseconds)
   const oneDay = 24 * 60 * 60 * 1000;
   const threeDays = 3 * oneDay;
   const sevenDays = 7 * oneDay;
   const thirtyDays = 30 * oneDay;
   for (const conversation of list) {
-    // 置顶
+    // pin to top
     if (conversation.pinned) {
       groupMap.pinned.push(conversation);
       continue;
     }
-    // 计算时间差（单位：毫秒）
+    // Calculate time difference (unit: milliseconds)
     const diff = now - Date.parse(conversation.createTime);
-    // 根据时间间隔判断
+    // Determine based on time interval
     if (diff < oneDay) {
       groupMap.today.push(conversation);
     } else if (diff < threeDays) {
@@ -411,14 +412,14 @@ const getConversationGroupByCreateTime = async (list) => {
   return groupMap;
 };
 
-/** 新建对话 (UI 触发) */
+/** New conversation (UI triggered) */
 const handleNewButtonClick = () => {
   emits("onConversationClear");
 };
 
-/** 新建对话 */
+/** New conversation */
 const createConversation = async (data) => {
-  // 1. 新建对话
+  // 1. Create a new conversation
   const result = await ChatConversationApi.createChatConversationMy({
     userId: userStore.id,
     datasourceId: data?.datasourceId,
@@ -428,16 +429,16 @@ const createConversation = async (data) => {
     modelId: data?.modelId,
   });
   const { id: conversationId, code } = result.data;
-  // 2. 获取对话内容
+  // 2. Get the conversation content
   await getChatConversationList();
-  // 3. 选中对话
+  // 3. Select the conversation
   await handleConversationClick(conversationId);
-  // 4. 回调
+  // 4. Callback
   emits("onConversationCreate", { ...result.data, id: conversationId, code });
   return result.data;
 };
 
-/** 修改对话的标题 */
+/** Change the title of the conversation */
 const updateConversationTitle = (conversation) => {
   if (!conversation?.id) {
     return;
@@ -489,32 +490,32 @@ const handleRenameDialogClosed = () => {
   renameTitle.value = "";
 };
 
-/** 删除聊天对话 */
+/** Delete chat conversation */
 const deleteChatConversation = async (conversation) => {
   if (!conversation?.id) {
     return;
   }
   try {
-    // 删除的二次确认
+    // Secondary confirmation of deletion
     await message.confirm(td('ai.chat.confirmDeleteConversation', { title: conversation.title }));
-    // 发起删除
+    // Initiate deletion
     await ChatConversationApi.deleteChatConversationMy(conversation.id);
     message.msgSuccess(td('ai.chat.conversationDeleted'));
-    // 刷新列表
+    // Refresh list
     await getChatConversationList();
-    // 回调
+    // callback
     emits("onConversationDelete", conversation);
   } catch {
     return;
   }
 };
 
-/** 对话置顶 */
+/** Conversation pinned */
 const handleTop = async (conversation) => {
   if (!conversation?.id) {
     return;
   }
-  // 更新对话置顶
+  // Update conversation on top
   conversation.pinned = !conversation.pinned;
   conversation.pinnedTime = moment().format("YYYY-MM-DD HH:mm:ss");
   await ChatConversationApi.updateChatConversationMy({
@@ -522,13 +523,13 @@ const handleTop = async (conversation) => {
     pinned: conversation.pinned,
     pinnedTime: conversation.pinnedTime,
   });
-  // 刷新对话
+  // Refresh conversation
   await getChatConversationList();
 };
 
-// ============ 角色仓库 ============
+// ============ Character Warehouse ============
 
-/** 监听选中的对话 */
+/** Listen to selected conversations */
 const {
   activeId,
   datasourceId,
@@ -540,16 +541,16 @@ watch(activeId, async (newValue) => {
   activeConversationId.value = newValue;
 });
 
-// 定义 public 方法
+// Define public methods
 defineExpose({ createConversation, getChatConversationList });
 
-/** 初始化 */
+/** initialization */
 onMounted(async () => {
   dialogAppendTo.value =
     document.querySelector(".app-container") || document.body;
-  // 获取 对话列表
+  // Get conversation list
   await getChatConversationList();
-  // 默认选中
+  // Selected by default
   if (props.activeId) {
     activeConversationId.value = props.activeId;
   }
@@ -672,7 +673,7 @@ onMounted(async () => {
         justify-items: center;
       }
 
-      // 对话编辑、删除
+      // Conversation editing and deletion
       .button-wrapper {
         right: 2px;
         display: flex;
@@ -686,7 +687,7 @@ onMounted(async () => {
     }
   }
 
-  // 角色仓库、清空未设置对话
+  // Character warehouse, clear unset dialogues
   .tool-box {
     position: absolute;
     bottom: 0;

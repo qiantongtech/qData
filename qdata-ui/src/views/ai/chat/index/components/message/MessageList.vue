@@ -1,23 +1,24 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <div ref="messageContainer" class="h-100% overflow-y-auto relative">
-    <!-- 10001：关联关系无法自动识别提示 -->
+    <!-- 10001: The association relationship cannot be automatically recognized. -->
     <div
       class="chat-list"
       v-if="toNumber(conversation.code) === 10001"
@@ -43,7 +44,7 @@
     </div>
     <template v-for="(item, index) in list" :key="index">
       <div class="chat-list" v-if="!isErrorMessage(item)">
-        <!-- 靠左 message：system、assistant 类型 -->
+        <!-- Left message: system, assistant type -->
         <div
           class="left-message message-item"
           v-if="toNumber(item.type) === 2 || toNumber(item.type) === 0"
@@ -102,7 +103,7 @@
             </div>
           </div>
         </div>
-        <!-- 靠右 message：user 类型 -->
+        <!-- Right message: user type -->
         <div
           class="right-message message-item"
           v-if="toNumber(item.type) === 1"
@@ -167,7 +168,7 @@
       >
     </div>
   </div>
-  <!-- 回到底部 -->
+  <!-- back to bottom -->
   <div v-if="isScrolling" class="to-bottom" @click="handleGoBottom">
     <el-button icon="ArrowDownBold" circle />
   </div>
@@ -184,13 +185,13 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 const userStore = useUserStore();
-const { copy } = useClipboard(); // 初始化 copy 到粘贴板
+const { copy } = useClipboard(); // Initialize copy to pasteboard
 
-// 判断“消息列表”滚动的位置(用于判断是否需要滚动到消息最下方)
+// Determine the scrolling position of the "Message List" (used to determine whether it is necessary to scroll to the bottom of the message)
 const messageContainer = ref(null);
-const isScrolling = ref(false); //用于判断用户是否在滚动
+const isScrolling = ref(false); //Used to determine if the user is scrolling
 const markdownViewRef = ref(null);
 
 const userAvatar = computed(() => userStore.avatar || userAvatarDefaultImg);
@@ -198,7 +199,7 @@ const roleAvatar = computed(
   () => props.conversation.roleAvatar ?? roleAvatarDefaultImg
 );
 
-// 定义 props
+// Define props
 const props = defineProps({
   conversation: {
     type: Object,
@@ -214,9 +215,9 @@ const props = defineProps({
   },
 });
 
-const { list } = toRefs(props); // 消息列表
+const { list } = toRefs(props); // Message list
 
-// 判断当前消息是否是最后一条用户消息
+// Determine whether the current message is the last user message
 const isLastUserMessage = (currentIndex) => {
   for (let i = list.value.length - 1; i >= 0; i--) {
     if (toNumber(list.value[i].type) === 1) {
@@ -231,13 +232,13 @@ const emits = defineEmits([
   "onRefresh",
   "onEdit",
   "onPrompt",
-]); // 定义 emits
+]); // Definition emits
 
-// ============ 处理对话滚动 ==============
+// ============ Handling dialogue scrolling ==============
 
-/** 滚动到底部 */
+/** scroll to bottom */
 const scrollToBottom = async (isIgnore) => {
-  // 注意要使用 nextTick 以免获取不到 dom
+  // Be careful to use nextTick to avoid not getting the dom
   await nextTick();
   if (isIgnore || !isScrolling.value) {
     messageContainer.value.scrollTop =
@@ -251,29 +252,29 @@ function handleScroll() {
   const scrollHeight = scrollContainer.scrollHeight;
   const offsetHeight = scrollContainer.offsetHeight;
   if (scrollTop + offsetHeight < scrollHeight - 100) {
-    // 用户开始滚动并在最底部之上，取消保持在最底部的效果
+    // The user starts scrolling and is above the bottom, canceling the effect of staying at the bottom
     isScrolling.value = true;
   } else {
-    // 用户停止滚动并滚动到最底部，开启保持到最底部的效果
+    // The user stops scrolling and scrolls to the bottom, turning on the hold-to-bottom effect
     isScrolling.value = false;
   }
 }
 
-/** 回到底部 */
+/** back to bottom */
 const handleGoBottom = () => {
   const scrollContainer = messageContainer.value;
   scrollContainer.scrollTop = scrollContainer.scrollHeight;
 };
 
-/** 回到顶部 */
+/** back to top */
 const handlerGoTop = () => {
   const scrollContainer = messageContainer.value;
   scrollContainer.scrollTop = 0;
 };
 
-defineExpose({ scrollToBottom, handlerGoTop, handleGoBottom }); // 提供方法给 parent 调用
+defineExpose({ scrollToBottom, handlerGoTop, handleGoBottom }); // Provide methods for parent to call
 
-// ============ 处理消息操作 ==============
+// ============ Processing message operations ==============
 
 function isStringRobust(value) {
   if (value == null) return false;
@@ -290,7 +291,7 @@ function toNumber(v) {
 function isReportCard(item) {
   const rt = item?.replyType;
   const num = toNumber(rt);
-  // replyType 为 1 或 2 时都显示卡片样式
+  // When replyType is 1 or 2, the card style is displayed.
   return num === 1 || num === 2 || item?.content === "loading";
 }
 
@@ -310,7 +311,7 @@ function safeJsonParse(str, defVal = {}) {
 
 function getDisplayContent(item) {
   let content = item?.content || "";
-  // 递归解析，直到不再是包含 msg 的 JSON 字符串
+  // Parse recursively until it is no longer a JSON string containing msg
   while (true) {
     const raw = safeJsonParse(content, null);
     if (raw && typeof raw === "object" && raw.msg) {
@@ -334,7 +335,7 @@ function toReportCard(item) {
   const rt = toNumber(item?.replyType);
   const isNewMessage = !item.id || item.id <= 0;
 
-  // 如果是错误消息，直接返回错误摘要并停止加载
+  // If it is an error message, return the error summary directly and stop loading.
   if (item.isError) {
     return {
       header: td('ai.chat.insight'),
@@ -347,10 +348,10 @@ function toReportCard(item) {
     };
   }
 
-  // 处理正在加载的状态
+  // Handle loading status
   if ((content === "loading" || content === "") && isNewMessage) {
     const tabs = [];
-    // 如果是智能图表，预设页签
+    // If it is a smart chart, the default tab
     if (rt === 2) {
       tabs.push({ key: "viz", label: td('ai.chat.visualization') });
       tabs.push({ key: "detail", label: td('ai.chat.detailData') });
@@ -365,7 +366,7 @@ function toReportCard(item) {
 
   let raw = safeJsonParse(content, null);
 
-  // 如果解析失败且 content 不为空，说明可能正在流式传输纯文本，或者返回的就是纯文本
+  // If parsing fails and content is not empty, plain text may be streaming, or plain text may be returned
   if (!raw && content) {
     raw = { msg: content };
   }
@@ -374,7 +375,7 @@ function toReportCard(item) {
   const summary = raw?.msg || (toNumber(raw?.code) === 500 ? td('ai.chat.dialogError') : "");
   console.log("🚀 ~ toReportCard ~ raw:", raw);
 
-  // 如果返回 code 为 500，则停止加载并显示错误信息
+  // If the return code is 500, stop loading and display an error message
   if (toNumber(raw?.code) === 500) {
     return {
       header,
@@ -387,8 +388,8 @@ function toReportCard(item) {
     };
   }
 
-  // 如果是智能问答 (rt === 1)，且没有 chatData、detailData、sql 等结构化数据，则直接返回 summary
-  // 这样在流式输出过程中，MessageList 会实时渲染文字
+  // If it is an intelligent question and answer (rt === 1) and there is no structured data such as chatData, detailData, sql, etc., summary will be returned directly.
+  // In this way, during the streaming output process, MessageList will render text in real time.
   const hasStructuralData =
     (raw?.chatData?.xAxisData?.length > 0 &&
       (raw?.chatData?.yAxisData?.length > 0 ||
@@ -396,10 +397,10 @@ function toReportCard(item) {
     raw?.detailData?.list?.length > 0 ||
     raw?.sql;
 
-  // 如果是智能图表 (rt === 2) 或者是带结构化数据的智能问答，则构建 Tabs
+  // If it is a smart chart (rt === 2) or a smart question and answer with structured data, build Tabs
   const tabs = [];
   if (rt === 2 || hasStructuralData) {
-    // 如果是图表且还没有结构化数据，显式标记加载中
+    // If it is a chart and there is no structured data yet, explicitly mark loading
     if (rt === 2 && !hasStructuralData && isNewMessage) {
       tabs.push({ key: "viz", label: td('ai.chat.visualization') });
       tabs.push({ key: "detail", label: td('ai.chat.detailData') });
@@ -416,7 +417,7 @@ function toReportCard(item) {
     let xAxisData = raw?.chatData?.xAxisData || [];
     let yAxisData = raw?.chatData?.yAxisData || [];
     let yAxisDataArr = raw?.chatData?.yAxisDataArr || [];
-    const dataType = toNumber(raw?.dataType); // 1:柱状图 2:折线图 3:饼状图
+    const dataType = toNumber(raw?.dataType); // 1: Bar chart 2: Line chart 3: Pie chart
 
     const rows = Array.isArray(raw?.detailData?.list)
       ? raw.detailData.list
@@ -445,28 +446,28 @@ function toReportCard(item) {
       });
     }
 
-    // 检查 chatData 是否有效（如果全是 null 则视为无效）
+    // Check whether chatData is valid (if it is all null, it is considered invalid)
     const isChatDataValid = (data) =>
       Array.isArray(data) && data.length > 0 && data.some((v) => v !== null);
 
-    // 如果 chatData 无效但有明细数据，尝试从明细数据中提取图表数据
+    // If chatData is invalid but has detail data, try to extract chart data from the detail data
     if (!isChatDataValid(xAxisData) && rows.length > 0) {
       const keys = Object.keys(rows[0]);
-      // 通常第一列是 ID/代码，第二列是名称（适合做 X 轴），最后一列通常是数值（适合做 Y 轴）
+      // Usually the first column is the ID/code, the second column is the name (suitable for the X-axis), and the last column is usually the value (suitable for the Y-axis)
       if (keys.length >= 2) {
         xAxisData = rows.map((row) => row[keys[1]] || row[keys[0]]);
         yAxisData = rows.map((row) => row[keys[keys.length - 1]]);
-        yAxisDataArr = []; // 重置多维数据
+        yAxisDataArr = []; // Reset multidimensional data
       }
     }
 
-    // 可视化页签
+    // Visual tab
     const hasChartData =
       isChatDataValid(xAxisData) &&
       (isChatDataValid(yAxisData) ||
         (yAxisDataArr.length > 0 && yAxisDataArr.some(isChatDataValid)));
 
-    // 如果是智能图表 (rt === 2) 或者是带结构化数据的智能问答，则构建 Tabs
+    // If it is a smart chart (rt === 2) or a smart question and answer with structured data, build Tabs
     if (rt === 2 || hasChartData) {
       let chartType = "bar";
       if (dataType === 2) chartType = "line";
@@ -500,7 +501,7 @@ function toReportCard(item) {
       });
     }
 
-    // 详情页签
+    // Details tab
     if (rt === 2 || rows.length > 0) {
       tabs.push({
         key: "detail",
@@ -512,7 +513,7 @@ function toReportCard(item) {
       });
     }
 
-    // SQL 页签
+    // SQL tab
     if (raw?.sql) {
       tabs.push({
         key: "sql",
@@ -531,7 +532,7 @@ function toReportCard(item) {
   };
 }
 
-/** 复制 */
+/** Copy */
 const copyContent = (index) => {
   if (isStringRobust(index)) {
     copy(index).then(() => {
@@ -541,7 +542,7 @@ const copyContent = (index) => {
   }
   const item = list.value[index];
   if (isReportCard(item)) {
-    // 智能问答、图表等卡片形式，直接从 content 提取 msg 进行复制
+    // Intelligent Q&A, charts and other card formats, directly extract msg from content and copy it
     const contentToCopy = getDisplayContent(item);
     if (contentToCopy) {
       copy(contentToCopy).then(() => {
@@ -565,35 +566,35 @@ const copyContent = (index) => {
   }
 };
 
-/** 删除 */
+/** Delete */
 const onDelete = async (id) => {
-  // 确认
+  // Confirm
   proxy.$modal.confirm(td('ai.chat.confirmDeleteMessage')).then(async () => {
-    // 删除 message
+    // delete message
     await ChatMessageApi.deleteChatMessage(id);
     message.msgSuccess(td('common.message.deleteSuccess'));
-    // 回调
+    // callback
     emits("onDeleteSuccess");
   });
 
 };
 
-/** 刷新 */
+/** Refresh */
 const onRefresh = (message) => {
   emits("onRefresh", message);
 };
 
-/** 编辑 */
+/** Edit */
 const onEdit = (message) => {
   emits("onEdit", message);
 };
 
-/** 尝试问问 */
+/** try asking */
 const handlerSuggested = (item) => {
   emits("onPrompt", item);
 };
 
-/** 初始化 */
+/** initialization */
 onMounted(() => {
   messageContainer.value.addEventListener("scroll", handleScroll);
 });
@@ -615,7 +616,7 @@ onMounted(() => {
   position: relative;
 }
 
-// 中间
+// middle
 .chat-list {
   display: flex;
   flex-direction: column;
@@ -716,7 +717,7 @@ onMounted(() => {
     margin: 11px;
   }
 
-  // 复制、删除按钮
+  // Copy and delete buttons
   .btn-cus {
     display: flex;
     background-color: transparent;
@@ -745,7 +746,7 @@ onMounted(() => {
   padding: 10px;
 }
 
-// 回到底部
+// back to bottom
 .to-bottom {
   position: absolute;
   z-index: 1000;

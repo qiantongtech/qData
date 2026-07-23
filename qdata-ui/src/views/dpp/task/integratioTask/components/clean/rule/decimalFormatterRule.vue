@@ -1,35 +1,47 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 小数位统一 -->
+  <!-- Uniform decimal places -->
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12" class="hasMsg">
         <el-form-item
-          :label="td('dpp.cleanRule.decimalPlaces', '小数位数')"
+          :label="td('dpp.cleanRule.decimalPlaces', 'Decimal Places')"
           prop="stringValue"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数'),
+                    message: td('dpp.cleanRule.inputDecimalPlaces', 'Please enter decimal places'),
                     trigger: 'change',
+                  },
+                  {
+                    validator: (_rule, value, callback) => {
+                      const number = Number(value);
+                      if (!Number.isInteger(number) || number < 0 || number > 18) {
+                        callback(new Error('小数位数必须为 0-18 的整数'));
+                      } else {
+                        callback();
+                      }
+                    },
+                    trigger: 'blur',
                   },
                 ]
               : []
@@ -38,16 +50,17 @@
           <el-input
             v-if="!falg"
             v-model="form.stringValue"
-            :placeholder="td('dpp.cleanRule.inputDecimalPlaces', '请输入小数位数')"
+            :placeholder="td('dpp.cleanRule.inputDecimalPlaces', 'Please enter decimal places')"
             type="number"
             min="0"
+            max="18"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.stringValue ?? "-" }}</div>
           <span class=”msg”
             ><el-icon>
               <InfoFilled /> </el-icon
-            >{{ td('dpp.cleanRule.decimalHint', '如”2”表示保留两位小数') }}</span
+            >{{ td('dpp.cleanRule.decimalHint', 'e.g. "2" means keep two decimal places') }}</span
           >
         </el-form-item>
       </el-col>

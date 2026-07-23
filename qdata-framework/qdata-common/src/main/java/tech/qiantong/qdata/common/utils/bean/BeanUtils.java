@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.bean;
@@ -39,26 +25,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Bean 工具类
+ * Bean utility class
  *
  * @author qdata
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils
 {
-    /** Bean方法名中属性名开始的下标 */
+    /** The subscript starting from the attribute name in the Bean method name */
     private static final int BEAN_METHOD_PROP_INDEX = 3;
 
-    /** * 匹配getter方法的正则表达式 */
+    /** * Regular expression matching getter method */
     private static final Pattern GET_PATTERN = Pattern.compile("get(\\p{javaUpperCase}\\w*)");
 
-    /** * 匹配setter方法的正则表达式 */
+    /** * Regular expression matching setter method */
     private static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
 
     /**
-     * Bean属性复制工具方法。
+     * Bean property copy utility method.
      *
-     * @param dest 目标对象
-     * @param src 源对象
+     * @param dest target object
+     * @param src source object
      */
     public static void copyBeanProp(Object dest, Object src)
     {
@@ -73,20 +59,20 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
     }
 
     /**
-     * 获取对象的setter方法。
+     * Get the setter method of the object.
      *
-     * @param obj 对象
-     * @return 对象的setter方法列表
+     * @param obj object
+     * @return list of setter methods of the object
      */
     public static List<Method> getSetterMethods(Object obj)
     {
-        // setter方法列表
+        // setter method list
         List<Method> setterMethods = new ArrayList<Method>();
 
-        // 获取所有方法
+        // Get all methods
         Method[] methods = obj.getClass().getMethods();
 
-        // 查找setter方法
+        // Find setter method
 
         for (Method method : methods)
         {
@@ -96,24 +82,24 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
                 setterMethods.add(method);
             }
         }
-        // 返回setter方法列表
+        // Returns setter method list
         return setterMethods;
     }
 
     /**
-     * 获取对象的getter方法。
+     * Get the getter method of the object.
      *
-     * @param obj 对象
-     * @return 对象的getter方法列表
+     * @param obj object
+     * @return list of getter methods of the object
      */
 
     public static List<Method> getGetterMethods(Object obj)
     {
-        // getter方法列表
+        // getter method list
         List<Method> getterMethods = new ArrayList<Method>();
-        // 获取所有方法
+        // Get all methods
         Method[] methods = obj.getClass().getMethods();
-        // 查找getter方法
+        // Find getter method
         for (Method method : methods)
         {
             Matcher m = GET_PATTERN.matcher(method.getName());
@@ -122,17 +108,17 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
                 getterMethods.add(method);
             }
         }
-        // 返回getter方法列表
+        // Returns a list of getter methods
         return getterMethods;
     }
 
     /**
-     * 检查Bean方法名中的属性名是否相等。<br>
-     * 如getName()和setName()属性名一样，getName()和setAge()属性名不一样。
+     * Check whether the property names in the Bean method names are equal. <br>
+     * For example, the attribute names of getName() and setName() are the same, but the attribute names of getName() and setAge() are different.
      *
-     * @param m1 方法名1
-     * @param m2 方法名2
-     * @return 属性名一样返回true，否则返回false
+     * @param m1 method name 1
+     * @param m2 method name 2
+     * @return Returns true for the same property name, otherwise returns false
      */
 
     public static boolean isMethodPropEquals(String m1, String m2)

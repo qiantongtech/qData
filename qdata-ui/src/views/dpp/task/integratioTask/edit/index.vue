@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,7 +27,7 @@
             style="width: 20px; margin-right: 5px; cursor: pointer"
           />
         </el-tooltip>
-        {{ nodeData.name !== null ? nodeData.name : td('dpp.integratioTask.integrationTask', '集成任务') }}
+        {{ nodeData.name !== null ? nodeData.name : td('dpp.integratioTask.integrationTask', 'Integration Task') }}
       </div>
 
       <div class="head-btns">
@@ -37,7 +38,7 @@
           @click="handleExportData(false)"
           v-if="!route.query.info"
         >
-          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="" />{{ td('dpp.developTaskDetail.taskSave', '任务保存') }}
+          <img src="@/assets/images/dpp/etl/icon-title-active-one.svg" alt="" />{{ td('dpp.developTaskDetail.taskSave', 'Task Save') }}
         </el-button>
         <el-button
           type="primary"
@@ -51,7 +52,7 @@
             class="act"
             src="@/assets/images/dpp/etl/icon-title-active-three.svg"
             alt=""
-          />{{ td('dpp.developTaskDetail.taskCancel', '任务取消') }}
+          />{{ td('dpp.developTaskDetail.taskCancel', 'Task Cancel') }}
         </el-button>
         <el-button
           type="primary"
@@ -66,7 +67,7 @@
             class="act"
             src="@/assets/images/dpp/etl/icon-title-active-four.svg"
             alt=""
-          />{{ td('dpp.developTaskDetail.taskConfig', '任务配置') }}
+          />{{ td('dpp.developTaskDetail.taskConfig', 'Task Config') }}
         </el-button>
         <el-button
           type="primary"
@@ -81,7 +82,7 @@
             class="act"
             src="@/assets/images/dpp/etl/icon-title-active-four.svg"
             alt=""
-          />{{ td('dpp.developTaskDetail.taskDetail', '任务详情') }}
+          />{{ td('dpp.developTaskDetail.taskDetail', 'Task Details') }}
         </el-button>
         <el-button
           type="primary"
@@ -96,15 +97,18 @@
             class="act"
             src="@/assets/images/dpp/etl/icon-title-active-two.svg"
             alt=""
-          />{{ td('dpp.integratioTask.taskCheck', '任务检查') }}
+          />{{ td('dpp.integratioTask.taskCheck', 'Task Check') }}
         </el-button>
-        <!-- <el-button type="primary" size="small" @click="selectTab('log')">执行一下</el-button> -->
+        <!-- <el-button type="primary" size="small" @click="selectTab('log')">Execute it</el-button> -->
       </div>
     </div>
     <div class="flex-container">
-      <!-- 左侧树 -->
+      <!-- tree on left -->
       <div class="left-pane" v-if="!route.query.info">
-        <div class="left-tree">
+        <div
+          class="left-tree"
+          :class="{ 'show-disabled-nodes': taskType === 'DATAX' }"
+        >
           <el-tree
             :data="treeData"
             :empty-text="''"
@@ -119,6 +123,7 @@
             <template #default="{ node, data }">
               <div
                 class="custom-tree-node"
+                :class="{ 'is-disabled': data.disabled }"
                 @mousedown="startDrag($event, node, data)"
               >
                 <img
@@ -151,7 +156,7 @@
           </el-tree>
         </div>
       </div>
-      <!-- 右侧主内容 -->
+      <!-- Main content on the right -->
       <div class="right-pane" v-loading="loading">
         <div
           id="graphContainer"
@@ -205,7 +210,7 @@
     />
     <add
       :visible="taskConfigDialogVisible"
-      :title="!route.query.info ? td('dpp.developTaskDetail.editTaskConfig', '修改任务配置') : td('dpp.developTaskDetail.taskDetail', '任务详情')"
+      :title="!route.query.info ? td('dpp.developTaskDetail.editTaskConfig', 'Edit Task Config') : td('dpp.developTaskDetail.taskDetail', 'Task Details')"
       @update:visible="taskConfigDialogVisible = $event"
       @save="handletaskConfig"
       :data="nodeData"
@@ -221,27 +226,27 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { baseConfig, cuPort, typeList, toolbar } from "@/utils/graph";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import FieldPreviewDialog from "@/views/dpp/task/integratioTask/components/fieldPreview.vue";
-// 输入组件
+// input component
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
 
-// 转换组件
+// Transform component
 import DedupFilter from "@/views/dpp/task/integratioTask/components/transform/dedupFilter.vue";
 import AddConstants from "@/views/dpp/task/integratioTask/components/transform/addConstants.vue";
 import FieldSelectAndmodificat from "@/views/dpp/task/integratioTask/components/transform/fieldSelectAndmodificat.vue";
 import ValueMapping from "@/views/dpp/task/integratioTask/components/transform/valueMapping.vue";
 
-// 清洗组件
+// Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
-// 排序组件
+// sorting component
 import OrderConfig from "@/views/dpp/task/integratioTask/components/transform/orderConfig.vue";
-// 字段派生期
+// Field derivation period
 import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/fieldBuilder.vue";
-// 输出表组件
+// Output table component
 import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
 
 import add from "../add//add.vue";
@@ -287,11 +292,12 @@ const { proxy } = getCurrentInstance();
 const route = useRoute();
 const router = useRouter();
 let id = route.query.id || 1;
-// "edit"：编辑，"input"：只看输入字段，"output"：只看输出字段
-// tooltip 显示内容
+// "edit": edit, "input": only look at input fields, "output": only look at output fields
+// tooltip display content
 const taskType = ref("");
+provide("integratioTaskType", taskType);
 
-//获取执行引擎
+//Get execution engine
 const getTaskType = (json) => {
   if (!json) {
     return "SPARK";
@@ -300,7 +306,7 @@ const getTaskType = (json) => {
   return type;
 };
 
-// 图标
+// icon
 const getDatasourceIcon = (json) => {
   let type = json && JSON.parse(json).taskType;
   taskType.value = type;
@@ -311,11 +317,14 @@ const getDatasourceIcon = (json) => {
     case "SPARK":
       return new URL("@/assets/images/common/dpp/icon-spark.svg", import.meta.url)
         .href;
+    case "DATAX":
+      return new URL("@/assets/images/common/img-datax.png", import.meta.url)
+          .href;
     default:
       return null;
   }
 };
-// 监听 id 变化
+// Monitor id changes
 watch(
   () => route.query.id,
   (newId) => {
@@ -325,20 +334,20 @@ watch(
     }
   }
 );
-// 跳转判断
+// Jump judgment
 let hasUnsavedChanges = ref(false);
 let nodeData = ref({ taskConfig: {}, name: null });
-// 全局的Graph
+// Global Graph
 let graph = null;
-// 全局的dnd
+// global dnd
 let dnd = null;
-// 抽屉
+// drawer
 const drawer = ref(false);
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
-// 存储当前组件的信息
+// Store information about the current component
 const currentNode = ref({});
-// 当前组件的上级组件的信息
+// Information about the parent component of the current component
 const sourceNode = ref({});
 const currentFormComponent = computed(() => {
   if (!drawer.value || !currentNode.value) return null;
@@ -405,11 +414,11 @@ const currentFormComponent = computed(() => {
       return null;
   }
 });
-//左侧组件数据
+//Left component data
 const treeData = ref([]);
-// 撤销按钮
+// Undo button
 const undoDisabled = ref(null);
-// 导出的数据
+// Exported data
 const exportData2 = ref("");
 let loading = ref(false);
 function getList() {
@@ -421,7 +430,9 @@ function getList() {
       draftJson: nodeData.value.draftJson,
     };
     renderGraph(graph, nodeData.value);
-    treeData.value = [...getTreeData(getTaskType(nodeData.value.draftJson))];
+    const currentTaskType = getTaskType(nodeData.value.draftJson);
+    taskType.value = currentTaskType;
+    treeData.value = [...getTreeData(currentTaskType)];
     loading.value = false;
   });
 }
@@ -437,7 +448,7 @@ function getDeptTree() {
     var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目'),
+        name: td('dpp.integratioTask.dataIntegrationCategory', 'Data Integration Category'),
         value: "",
         id: 0,
         children: children,
@@ -451,10 +462,10 @@ function getDeptTree() {
 if (route.query.id) {
   getList();
 }
-// 保存 没有code
+// Save without code
 const closeDialog = () => {
   if (!currentNode.value.data.code) {
-    graph.removeNode(currentNode.value.id); // 根据组件 ID 删除组件
+    graph.removeNode(currentNode.value.id); // Remove component based on component ID
   }
   drawer.value = false;
 };
@@ -465,7 +476,7 @@ watch(
     getDeptTree();
   }
 );
-// 弹窗保存
+// Pop-up window to save
 const handleFormSubmit = async (nodeData = {}) => {
   if (!currentNode?.value?.id) return;
   const node = graph.getCellById(currentNode.value.id);
@@ -475,11 +486,11 @@ const handleFormSubmit = async (nodeData = {}) => {
   const parent = getParentNode(currentNode.value, graph);
   const childNodes = getAllChildNodes(node, graph) || [];
 
-  // 判断节点名称是否重复
+  // Determine whether the node name is repeated
   if (shouldAbortByName(graph, nodeData)) {
     drawer.value = true;
     proxy.$message.warning(
-      td('dpp.integratioTask.nodeNameExists', '节点名称') + `”${currentNode.value.data.name}”` + td('dpp.integratioTask.nodeNameExistsSuffix', '已存在，请修改后再保存')
+      td('dpp.integratioTask.nodeNameExists', 'Node name') + `”${currentNode.value.data.name}”` + td('dpp.integratioTask.nodeNameExistsSuffix', 'already exists, please modify and save')
     );
     return;
   }
@@ -502,7 +513,7 @@ const handleFormSubmit = async (nodeData = {}) => {
     }));
     outputFields = inputFields;
   } else if (type == 2) {
-    // type 2：有输入和独立输出
+    // type 2: with input and independent output
     if (parent?.data?.taskParams?.outputFields) {
       inputFields = parent.data.taskParams.outputFields || [];
       outputFields = (taskParams.outputFields || []).map((field) => ({
@@ -511,14 +522,14 @@ const handleFormSubmit = async (nodeData = {}) => {
       }));
     }
   } else {
-    // 其他类型，通用处理
+    // Other types, general processing
     if (parent?.data?.taskParams?.outputFields) {
       inputFields = parent.data.taskParams.outputFields || [];
       outputFields = taskParams.outputFields || [];
     }
   }
 
-  // 如果节点名称修改了，替换 inputFields/outputFields 中的 source
+  // If the node name is modified, replace source in inputFields/outputFields
   if (nameChanged) {
     const replaceSourceName = (fields) =>
       fields.map((f) => ({
@@ -533,7 +544,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   const oldOutputs = oldData.taskParams?.outputFields || [];
   const outputsChanged = !areFieldNamesEqual(outputFields, oldOutputs);
 
-  // 合并更新当前节点数据
+  // Merge and update current node data
   const newData = {
     ...oldData,
     ...nodeData,
@@ -550,7 +561,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   if (needConfirm && type == 1) {
     try {
       await ElMessageBox.confirm(
-        td('dpp.integratioTask.clearChildNodesWarning', '修改字段将会同时清空所有子节点的字段配置，是否确认继续？'),
+        td('dpp.integratioTask.clearChildNodesWarning', 'Modifying fields will clear all child node field configs. Continue?'),
         { type: "warning", distinguishCancelAndClose: true }
       );
     } catch (e) {
@@ -563,7 +574,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   const newInputFields = outputFields;
 
   if (outputsChanged) {
-    // 只有输出字段实际变化，才清空子节点
+    // Only when the output field actually changes will the child nodes be cleared.
     childNodes.forEach((n) => {
       if (!n?.data?.taskParams || typeof n.setProp !== "function") return;
       const defaultParams = getDefaultTaskParams(n.data);
@@ -577,7 +588,7 @@ const handleFormSubmit = async (nodeData = {}) => {
       });
     });
   } else if (nameChanged) {
-    // 仅名称变化，更新 inputFields 的 source，但不清空子节点 tableFields
+    // Only the name changes, the source of inputFields is updated, but the child node tableFields is not cleared.
     childNodes.forEach((n) => {
       if (!n?.getProp || !n.getProp) return;
       const childData = n.getProp("data") || {};
@@ -601,7 +612,7 @@ const handleFormSubmit = async (nodeData = {}) => {
   drawer.value = false;
 };
 
-// 运行实例保存
+// Run instance save
 const handletaskConfig = (form) => {
   delete form.draftJson;
   console.log("🚀 ~ handletaskConfig ~ form:", form);
@@ -610,25 +621,25 @@ const handletaskConfig = (form) => {
     draftJson: JSON.stringify(form),
   };
 };
-// 大保存
+// Great save
 const handleExportData = async (localSave) => {
   loading.value = true;
   try {
-    // 检查
+    // Check
     if (!localSave) {
       const { isValid } = validateGraph(graph);
       if (!isValid) {
         return;
       }
     }
-    // 检查是否有任务配置
+    // Check if there is a task configuration
     if (!hasTaskConfig(nodeData.value)) {
       taskConfigDialogVisible.value = true;
       return;
     }
-    // 转换节点数据
+    // Convert node data
     exportData2.value = await transNodeData(graph);
-    // 将任务相关的配置整合到 exportData2 中
+    // Integrate task-related configuration into exportData2
     exportData2.value = {
       ...exportData2.value,
       taskRelationJson: JSON.stringify(exportData2.value.taskRelationJson),
@@ -637,9 +648,9 @@ const handleExportData = async (localSave) => {
       projectId: userStore.projectId,
       ...nodeData.value?.taskConfig,
     };
-    // 判断是更新还是创建
+    // Determine whether to update or create
     const res =
-      localSave || nodeData.value?.dsId > 0
+      localSave || (nodeData.value?.dsId > 0 || nodeData.value?.quartzId > 0)
         ? await updateProcessDefinitions(
             {
               ...exportData2.value,
@@ -651,45 +662,46 @@ const handleExportData = async (localSave) => {
             ...exportData2.value,
             id: nodeData.value.id,
           });
-    // 成功后处理
+    // Processing after success
     if (res.code == "200") {
       handleSuccess();
     } else {
-      proxy.$modal.msgWarning(td('dpp.integratioTask.operationFailed', '操作失败，请联系管理员'));
+      proxy.$modal.msgWarning(td('dpp.integratioTask.operationFailed', 'Operation failed, please contact administrator'));
     }
   } finally {
     loading.value = false;
   }
 };
-// 判断是否有任务配置
+// Determine whether there is a task configuration
 const hasTaskConfig = (nodeData) => {
   return nodeData?.taskConfig && Object.keys(nodeData.taskConfig).length > 0;
 };
-// 页面跳转
+// Page jump
 const handleSuccess = () => {
   taskConfigDialogVisible.value = false;
   hasUnsavedChanges.value = false;
-  const message = td('common.message.msgOpSuccess', '操作成功');
+  const message = td('common.message.msgOpSuccess', 'Operation successful');
   router.push("/dpp/task/integratioTask");
   proxy.$modal.msgSuccess(message);
 };
 
-// 任务配置弹窗
+// Task configuration pop-up window
 const openTaskConfigDialog = () => {
   taskConfigDialogVisible.value = true;
 };
 useHtmlNode();
 const startDrag = (e, treeNode, data) => {
-  // 获取图形中的所有节点
+  // Get all nodes in the graph
   const nodes = graph.getCells().filter((cell) => {
     return cell.isNode();
   });
 
   if (treeNode.level === 2) {
     if (route.query?.info)
-      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeNotEditable', '不可编辑，当前页面只能查看'));
+      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeNotEditable', 'Not editable, current page is view only'));
+    if (data.disabled) return;
     if (!data.componentType)
-      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeDeveloping', '正在开发中，敬请期待'));
+      return proxy.$modal.msgWarning(td('dpp.integratioTask.nodeDeveloping', 'Under development, stay tuned'));
     const node = createDataNode(graph, data);
     dnd.start(node, e);
   }
@@ -699,11 +711,11 @@ const openDialog = (node, data, title) => {
   fieldPreviewDialog.value.show(node, data, title);
 };
 /**
- * 组件右键删除
+ * Right click on component to delete
  * @param {*}
  */
 let selectedEdge = ref();
-// 定义方法来清空当前选中边的颜色
+// Define a method to clear the color of the currently selected edge
 function clearSelectedEdge() {
   if (selectedEdge.value) {
     selectedEdge.value.prop("attrs/line/stroke", "#2666FB");
@@ -727,13 +739,13 @@ function initializeGraph() {
     container: proxy.$refs.graphContainer,
     width: "100%",
     height: "60%",
-    grid: false, //网格
+    grid: false, //grid
     background: { color: "#ff0000" },
-    autoResize: true, //画布自适应
-    panning: true, //画布拖动
+    autoResize: true, //Canvas adaptive
+    panning: true, //Canvas drag
     interactive: true,
     ...baseConfig,
-    //画布缩放
+    //Canvas zoom
     mousewheel: {
       enabled: true,
       zoomAtMousePosition: true,
@@ -742,7 +754,7 @@ function initializeGraph() {
     },
     selecting: {
       enabled: true,
-      className: "my-selecting", // 自定义选中样式类名
+      className: "my-selecting", // Customize selected style class name
     },
   });
 
@@ -762,16 +774,16 @@ function initializeGraph() {
   );
   graph.use(new Export());
 
-  // 插件
+  // plug-in
   bindShortcuts(graph);
   usePlugins(graph);
 
   undoDisabled.value = graph.canUndo();
 }
 
-// 绑定事件
+// Binding events
 function bindGraphEvents() {
-  // 监听边的点击事件
+  // Listen for side click events
   graph.on("edge:click", handleEdgeClick);
 
   graph.on("blank:click", clearSelectedEdge);
@@ -780,13 +792,13 @@ function bindGraphEvents() {
 
   graph.on("node:mouseenter", () => togglePortsVisibility(true));
 
-  // 节点鼠标离开事件
+  // Node mouse leave event
   graph.on("node:mouseleave", () => togglePortsVisibility(false));
   if (!route.query.info) {
     graph.on("node:contextmenu", handleNodeContextMenu);
   }
 
-  // 连接边事件
+  // Connect edge events
   graph.on("edge:connected", handleEdgeConnected);
 
   graph.on("edge:contextmenu", handleEdgeContextMenu);
@@ -796,13 +808,13 @@ function bindGraphEvents() {
     graph.getPlugin("keyboard")?.disable();
   }
   if (!route.query.info) {
-    // 移除 panning 插件或解绑拖动事件
-    graph.off("blank:mousedown"); // 解绑空白区域拖动事件
+    // Remove the panning plug-in or unbind the drag event
+    graph.off("blank:mousedown"); // Unbind the drag event of the blank area
     graph.off("blank:mousemove");
     graph.off("blank:mouseup");
   }
 }
-// 处理边的点击事件
+// Handling edge click events
 function handleEdgeClick({ cell }) {
   const currentColor = cell.prop("attrs/line/stroke");
   clearSelectedEdge();
@@ -813,10 +825,10 @@ function handleEdgeClick({ cell }) {
   selectedEdge.value = cell;
 }
 
-// / 处理节点添加事件
+// / Handle node addition event
 async function handleNodeAdded({ node }) {
   if (!node.data.code) {
-    node.data.code = await fetchNodeUniqueKey();
+    node.data.code = await fetchNodeUniqueKey({ scheduler: nodeData.value.taskConfig.scheduler});
   }
 
   if (!loading.value) {
@@ -845,39 +857,39 @@ async function handleNodeAdded({ node }) {
   }
 }
 
-// 处理已有节点的情况
+// Handle the situation of existing nodes
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
-    proxy.$message.warning(td('dpp.integratioTask.onlyOneOutputComponent', '只能有一个输出组件！'));
+    proxy.$message.warning(td('dpp.integratioTask.onlyOneOutputComponent', 'Only one output component allowed!'));
   } else if (node.data.taskParams.type == "1") {
-    proxy.$message.warning(td('dpp.integratioTask.onlyOneInputComponent', '只能有一个输入组件！'));
+    proxy.$message.warning(td('dpp.integratioTask.onlyOneInputComponent', 'Only one input component allowed!'));
   }
   graph.removeNode(node.id);
 }
-// 处理非输入节点
+// Handle non-input nodes
 function handleNonInputNode(node) {
   const edges = graph.getEdges();
   edges.forEach((edge) => {
     if (edge.getTargetNode() == node) {
-      sourceNode.value = edge.getSourceNode(); // 获取上级组件的数据
-      // drawer.value = true; // 控制抽屉显示
+      sourceNode.value = edge.getSourceNode(); // Get data from superior components
+      // drawer.value = true; //Control drawer display
     }
   });
-  // drawer.value = true; // 控制抽屉显示
+  // drawer.value = true; //Control drawer display
 }
 
-// 切换端口的显示状态
+// Switch the display status of a port
 function togglePortsVisibility(visible) {
   const container = document.getElementById("graphContainer");
   const ports = container.querySelectorAll(".x6-port-body");
   showPorts(ports, visible);
 }
 /**
- * 统一处理删除节点或连接线的逻辑
+ * Unify the logic of deleting nodes or connecting lines
  */
 function handleDeleteCells(graph, cells, menuController) {
   if (!cells || cells.length === 0) {
-    ElMessageBox.warning(td('dpp.integratioTask.deleteNothingSelected', '操作失败，没有选中要删除的节点或连线'));
+    ElMessageBox.warning(td('dpp.integratioTask.deleteNothingSelected', 'Operation failed, no node or line selected for deletion'));
     return;
   }
 
@@ -885,7 +897,7 @@ function handleDeleteCells(graph, cells, menuController) {
   const isEdge = target.isEdge?.();
   const isNode = target.isNode?.();
 
-  let message = td('dpp.integratioTask.deleteLineWarning', '删除该连线将同时清空其所有子节点的字段配置，是否确认继续？');
+  let message = td('dpp.integratioTask.deleteLineWarning', 'Deleting this line will clear all child node field configs. Continue?');
 
   let sourceNode = null;
 
@@ -896,21 +908,21 @@ function handleDeleteCells(graph, cells, menuController) {
     const hasChildNodes = childNodes.length > 0;
 
     message = hasChildNodes
-      ? td('dpp.integratioTask.deleteNodeWarning', '删除该节点将同时清空其所有子节点的字段配置，是否确认继续？')
-      : td('dpp.integratioTask.confirmDeleteNode', '是否确认删除该节点？');
+      ? td('dpp.integratioTask.deleteNodeWarning', 'Deleting this node will clear all child node field configs. Continue?')
+      : td('dpp.integratioTask.confirmDeleteNode', 'Are you sure to delete this node?');
   }
 
   if (isEdge) {
     sourceNode = target.getSourceCell?.();
   }
 
-  ElMessageBox.confirm(message, td('dpp.integratioTask.confirmDelete', '确认删除'), {
-    confirmButtonText: td('dpp.integratioTask.confirm', '确认'),
-    cancelButtonText: td('common.button.cancel', '取消'),
+  ElMessageBox.confirm(message, td('dpp.integratioTask.confirmDelete', 'Are you sure to delete data integration task with ID "{ids}"?'), {
+    confirmButtonText: td('dpp.integratioTask.confirm', 'Confirm'),
+    cancelButtonText: td('common.button.cancel', 'Cancel'),
     type: "warning",
   })
     .then(() => {
-      // 重置子节点配置（无论节点还是边）
+      // Reset child node configuration (no matter node or edge)
       if (sourceNode) {
         const childNodes = getAllChildNodes(sourceNode, graph);
         childNodes.forEach((n) => {
@@ -924,7 +936,7 @@ function handleDeleteCells(graph, cells, menuController) {
         });
       }
 
-      // 执行删除操作
+      // Perform delete operation
       cells.forEach((cell) => {
         if (cell.isNode?.()) {
           graph.removeNode(cell);
@@ -940,7 +952,7 @@ function handleDeleteCells(graph, cells, menuController) {
     });
 }
 
-// 处理节点右键菜单事件
+// Handling node right-click menu events
 function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   e.preventDefault();
 
@@ -951,14 +963,14 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
 
   const menuItems = [
     {
-      label: td('dpp.integratioTask.deleteNode', '删除节点'),
+      label: td('dpp.integratioTask.deleteNode', 'Delete Node'),
       action: () => {
-        // 这里传入单个节点或边的数组，menuController 传进去供关闭菜单用
+        // Here, an array of a single node or edge is passed in, and the menuController is passed in for closing the menu.
         handleDeleteCells(graph, [type === 0 ? node : edge], menuController);
       },
     },
     {
-      label: td('dpp.integratioTask.editNode', '编辑节点'),
+      label: td('dpp.integratioTask.editNode', 'Edit Node'),
       action: () => {
         handleNodeDblClick({ node }, "edit");
         menuController?.hide();
@@ -968,13 +980,13 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
 
   if (node.data.taskParams.type != 1) {
     menuItems.push({
-      label: td('dpp.integratioTask.showInputFields', '显示输入字段'),
+      label: td('dpp.integratioTask.showInputFields', 'Show Input Fields'),
       action: () => {
         const input = node.data.taskParams.inputFields;
         if (!Array.isArray(input) || input.length == 0) {
-          ElMessage.warning(td('dpp.integratioTask.cannotFindInputFields', '无法找到输入字段'));
+          ElMessage.warning(td('dpp.integratioTask.cannotFindInputFields', 'Cannot find input fields'));
         } else {
-          openDialog(input, node, td('dpp.integratioTask.inputFields', '输入字段'));
+          openDialog(input, node, td('dpp.integratioTask.inputFields', 'Input Fields'));
         }
         menuController?.hide();
       },
@@ -982,13 +994,13 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   }
 
   menuItems.push({
-    label: td('dpp.integratioTask.showOutputFields', '显示输出字段'),
+    label: td('dpp.integratioTask.showOutputFields', 'Show Output Fields'),
     action: () => {
       const output = node.data.taskParams.outputFields;
       if (!Array.isArray(output) || output.length === 0) {
-        ElMessage.warning(td('dpp.integratioTask.cannotFindOutputFields', '无法找到输出字段'));
+        ElMessage.warning(td('dpp.integratioTask.cannotFindOutputFields', 'Cannot find output fields'));
       } else {
-        openDialog(output, node, td('dpp.integratioTask.outputFields', '输出字段'));
+        openDialog(output, node, td('dpp.integratioTask.outputFields', 'Output Fields'));
       }
       menuController?.hide();
     },
@@ -1002,45 +1014,45 @@ function handleNodeContextMenu({ e, node, edge, type = 0 }) {
   });
 }
 
-// 处理连接边事件
+// Handle connection edge events
 function handleEdgeConnected({ edge }) {
   if (!loading.value) {
     hasUnsavedChanges.value = true;
     const source = edge.getSourceCell();
     const target = edge.getTargetCell();
-    // 检查源节点和目标节点是否相同
+    // Check if the source node and target node are the same
     if (source === target) {
-      graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorSelf', '连接错误，节点不能连接到自己'));
+      graph.removeEdge(edge); // remove edge
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorSelf', 'Connection error, node cannot connect to itself'));
       return;
     }
 
-    // 获取源节点和目标节点的 taskParams.type
+    // Get the taskParams.type of the source node and target node
     const sourceType = source.data?.taskParams?.type;
     const targetType = target.data?.taskParams?.type;
 
-    // 类型 1 不能作为目标节点
+    // Type 1 cannot be used as a target node
     if (targetType == 1) {
-      graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorInput', '连接错误，输入组件不能被连接'));
+      graph.removeEdge(edge); // remove edge
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorInput', 'Connection error, input component cannot be connected'));
       return;
     }
 
-    // 类型 2 不能作为输入节点（源节点）
+    // Type 2 cannot be used as an input node (source node)
     if (sourceType == 2) {
-      graph.removeEdge(edge); // 移除边
-      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutput', '连接错误，输出组件不能连接到其他组件'));
+      graph.removeEdge(edge); // remove edge
+      proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutput', 'Connection error, output component cannot connect to other components'));
       return;
     }
 
-    // 类型 2 节点只能作为输出节点连接一次
+    // Type 2 nodes can only be connected once as output nodes
     if (targetType == 2) {
       const targetEdges = graph
         .getEdges()
         .filter((e) => e.getTargetCell() === target);
       if (targetEdges.length > 1) {
-        graph.removeEdge(edge); // 移除边
-        proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutputOnce', '连接错误，目标节点只能作为输出连接一次'));
+        graph.removeEdge(edge); // remove edge
+        proxy.$modal.msgWarning(td('dpp.integratioTask.connectionErrorOutputOnce', 'Connection error, target node can only be output connected once'));
         return;
       }
     }
@@ -1048,11 +1060,11 @@ function handleEdgeConnected({ edge }) {
     updateTargetNodeData(source, target, edge);
   }
 }
-// 更新目标节点的数据
+// Update the data of the target node
 function updateTargetNodeData(source, target, edge) {
   const childNodes = getAllChildNodes(source, graph);
 
-  // 更新子节点的数据
+  // Update the data of child nodes
   childNodes.forEach((childNode) => {
     if (childNode.data?.taskParams) {
       childNode.data.taskParams.inputFields =
@@ -1072,22 +1084,22 @@ function updateTargetNodeData(source, target, edge) {
 
   if (needBindCleanRule) {
     ElMessageBox.confirm(
-      td('dpp.integratioTask.addCleanRulePrompt', '是否要给转换组件添加输入组件绑定的清洗规则？'),
-      td('common.message.prompt', '提示'),
+      td('dpp.integratioTask.addCleanRulePrompt', 'Add clean rules bound to input component for transform component?'),
+      td('common.message.prompt', 'Prompt'),
       {
-        confirmButtonText: td('dpp.integratioTask.yes', '是'),
-        cancelButtonText: td('dpp.integratioTask.no', '否'),
+        confirmButtonText: td('dpp.integratioTask.yes', 'Yes'),
+        cancelButtonText: td('dpp.integratioTask.no', 'No'),
         type: "warning",
       }
     )
       .then(() => {
-        // 调用方法生成规则配置
+        // Call method to generate rule configuration
         const result = renameRuleToRuleConfig(
           target.data.taskParams.inputFields
         );
         console.log("🚀 ~ updateTargetNodeData ~ result:", result);
-        proxy.$message.success(td('dpp.integratioTask.cleanRuleAdded', '添加清洗规则') + ` ${result?.length || 0} ` + td('dpp.integratioTask.cleanRuleAddedSuffix', '条'));
-        // 给目标节点赋值
+        proxy.$message.success(td('dpp.integratioTask.cleanRuleAdded', 'Added {count} clean rules') + ` ${result?.length || 0} ` + td('dpp.integratioTask.cleanRuleAddedSuffix', 'items'));
+        // Assign a value to the target node
         if (target.data?.taskParams) {
           target.data.taskParams.tableFields = result;
           target.data = { ...target.data };
@@ -1097,14 +1109,14 @@ function updateTargetNodeData(source, target, edge) {
   }
 }
 
-// 处理边右键菜单事件
+// Handling side right-click menu events
 function handleEdgeContextMenu(event) {
   const edge = event.edge;
   const { x, y } = event;
   let menuController = null;
   const menuItems = [
     {
-      label: td('dpp.integratioTask.deleteLine', '删除连接线'),
+      label: td('dpp.integratioTask.deleteLine', 'Delete Connection Line'),
       action: () => {
         handleDeleteCells(graph, [edge], menuController);
       },
@@ -1126,12 +1138,12 @@ function handleNodeDblClick({ node }, type = "edit") {
   currentNode.value = node;
   drawer.value = true;
 }
-// 重置操作逻辑
+// Reset operation logic
 const handleCancel = () => {
   proxy.$modal
-    .confirm(td('dpp.integratioTask.resetWarning', '点击重置将清除所有未保存的更改，您确定要继续吗？'))
+    .confirm(td('dpp.integratioTask.resetWarning', 'Clicking reset will clear all unsaved changes. Continue?'))
     .then(() => {
-      // 刷新当前页签
+      // Refresh the current tab
       proxy.$tab.refreshPage(route);
     });
 };
@@ -1172,7 +1184,7 @@ const toolbarClick = (item) => {
     }
   }
 };
-// 初始化函数
+// initialization function
 onMounted(async () => {
   if (userStore.projectId) {
     getDeptTree();
@@ -1183,17 +1195,17 @@ onMounted(async () => {
     getList();
   }
 });
-// 离开页面时提示
+// Prompt when leaving the page
 onBeforeRouteLeave((to, from, next) => {
-  // 检查是否有未保存的更改
+  // Check for unsaved changes
   if (hasUnsavedChanges.value) {
     ElMessageBox.confirm(
-      td('dpp.integratioTask.discardWarning', '您已经编辑部分任务内容，是否放弃已编辑内容？'), // 提示信息
-      td('common.message.prompt', '提示'), // 标题
+      td('dpp.integratioTask.discardWarning', 'You have edited some task content. Discard edited content?'), // Prompt message
+      td('common.message.prompt', 'Prompt'), // Title
       {
-        confirmButtonText: td('common.button.save', '保存'), // 确认按钮文本
-        cancelButtonText: td('dpp.integratioTask.discard', '放弃'), // 取消按钮文本
-        type: "warning", // 弹窗类型
+        confirmButtonText: td('common.button.save', 'Save'), // Confirm button text
+        cancelButtonText: td('dpp.integratioTask.discard', 'Discard'), // Cancel button text
+        type: "warning", // Popup type
       }
     )
       .then(() => {
@@ -1231,13 +1243,13 @@ function routeTo(link, row) {
     }
   }
 }
-// 用于控制当前选中的标签
+// Used to control the currently selected tag
 const activeTab = ref("checkMessage");
 const tabs = ref([
-  { name: "checkMessage", label: td('dpp.integratioTask.checkMessage', '检查消息'), content: td('dpp.integratioTask.checkMessageContent', '检查消息内容') },
-  // { name: "log", label: "日志", content: "日志内容" },
+  { name: "checkMessage", label: td('dpp.integratioTask.checkMessage', 'Check Message'), content: td('dpp.integratioTask.checkMessageContent', 'Check message content') },
+  // { name: "log", label: "log", content: "log content" },
 ]);
-// 用于设置标签区域的样式
+// Used to style the label area
 const tabAreaStyle = ref({
   position: "absolute",
   height: "300px",
@@ -1247,10 +1259,10 @@ const tabAreaStyle = ref({
   "background-color": "rgb(255, 255, 255)",
   "margin-left": "15px",
 });
-// 任务检查
+// task check
 const minimizeAction = () => {
   tabAreaStyle.value.bottom = "-9999px";
-}; // 切换到任务检查标签
+}; // Switch to task inspection tab
 const selectTab = (tabName) => {
   activeTab.value = tabName;
   if (activeTab.value == "checkMessage") {
@@ -1262,21 +1274,21 @@ const isValidClick = (tab) => {
   const { isValid, errorMessages } = validateGraph(graph, true);
   let message = "";
   if (!isValid && errorMessages.length != 0) {
-    message += td('dpp.integratioTask.checkFailed', '检查未通过:') + "<br>" + errorMessages.join("<br>");
+    message += td('dpp.integratioTask.checkFailed', 'Check failed:') + "<br>" + errorMessages.join("<br>");
   } else {
-    message += td('dpp.integratioTask.checkPassed', '检查通过');
+    message += td('dpp.integratioTask.checkPassed', 'Check passed');
   }
   if (
     !nodeData.value?.taskConfig ||
     Object.keys(nodeData.value.taskConfig).length === 0
   ) {
-    message += "<br>" + td('dpp.integratioTask.taskConfigNotFilled', '任务配置未填写');
+    message += "<br>" + td('dpp.integratioTask.taskConfigNotFilled', 'Task config not filled');
   }
 
   tabs.value[0].content = message;
 };
 const getAssetsFile = (url) => {
-  return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
+  return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
 };
 </script>
 
@@ -1375,8 +1387,10 @@ const getAssetsFile = (url) => {
     scrollbar-width: none;
     -ms-overflow-style: none;
 
-    :deep .el-tree-node[aria-disabled="true"] {
-      display: none;
+    &:not(.show-disabled-nodes) {
+      :deep(.el-tree-node[aria-disabled="true"]) {
+        display: none;
+      }
     }
   }
 
@@ -1467,6 +1481,11 @@ const getAssetsFile = (url) => {
   align-items: center;
   width: 200px;
   user-select: none;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
 }
 
 .treelable {

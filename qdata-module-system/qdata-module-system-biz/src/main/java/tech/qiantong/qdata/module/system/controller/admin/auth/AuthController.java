@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.auth;
@@ -82,23 +68,23 @@ public class AuthController {
     @Value("${oauth2.redis-prefix}")
     private String redisPrefix;
 
-    // redis二级文件夹命名
+    // redis secondary folder naming
     public static final String accessTokenPrefix = "accessToken";
     public static final String refreshTokenPrefix = "refreshToken";
 
-    // 相关参数配置
+    // related parameter configuration
     @Value("${oauth2.clientId}")
-    private String clientId;            // 应用id
+    private String clientId;            // application ID
     @Value("${oauth2.clientSecret}")
-    private String clientSecret;		// 应用秘钥
+    private String clientSecret;        // application secret
     @Value("${oauth2.serverUrl}")
-    private String serverUrl;	        // 服务端接口
+    private String serverUrl;           // server endpoint
 
-    // 根据Code码进行登录，获取 Access-Token 和 openid
+    // login via authorization code to obtain Access-Token and openid
     @RequestMapping("/codeLogin")
     @Transactional
     public AjaxResult codeLogin(String code) {
-        // 调用Server端接口，获取 Access-Token 以及其他信息
+        // call server endpoint to obtain Access-Token and related info
         String str = OkHttps.sync(serverUrl + "/oauth2/token")
                 .addBodyPara("grant_type", "authorization_code")
                 .addBodyPara("code", code)
@@ -108,36 +94,36 @@ public class AuthController {
                 .getBody()
                 .toString();
         SoMap so = SoMap.getSoMap().setJsonString(str);
-        System.out.println("返回结果: " + so);
+        System.out.println("response: " + so);
 
-        // code不等于200  代表请求失败
+        // code != 200 means request failed
         if(so.getInt("code") != 200) {
             return AjaxResult.error(so.getString("msg"));
         }
 
-        // 根据openid获取其对应的userId
+        // get userId by openid
         SoMap data = so.getMap("data");
 
         // idHubId
         Long idHubId = data.getLong("idHubId");
-        // Access-Token值
+        // Access-Token value
         String accessToken = data.getString("access_token");
-        // Refresh-Token值
+        // Refresh-Token value
         String refreshToken = data.getString("refresh_token");
-        // Access-Token剩余有效期，单位秒
+        // Access-Token remaining validity in seconds
         long expiresIn = data.getLong("expires_in");
-        // Refresh-Token剩余有效期，单位秒
+        // Refresh-Token remaining validity in seconds
         long refreshExpiresIn = data.getLong("refresh_expires_in");
 
         SysUser user = this.getUserByIdHubId(idHubId);
 
         if (user == null) {
-            // 通过openid获取userInfo
+            // get userInfo via openid
             SoMap userinfo = this.getUserinfo(accessToken);
             if (userinfo != null) {
-                // 统一身份认证账户手机号
+                // unified identity authentication phone number
                 String phone = userinfo.getString("phone");
-                // 通过手机号查找用户
+                // find user by phone number
                 SysUser userByPhone = userService.findUserByNameOrPhone(phone);
 
                 if (userByPhone != null) {
@@ -150,31 +136,31 @@ public class AuthController {
                     userAuthProductService.save(productDO);
                     user = userByPhone;
                 } else {
-                    return AjaxResult.error("系统中不存在此用户，请联系管理员！");
+                    return AjaxResult.error("system.user.notfound");
                 }
             } else {
-                return AjaxResult.error("获取统一身份认证平台用户身份信息失败！");
+                return AjaxResult.error("system.error.auth.fetchUserInfo");
             }
         }
 
-        // 存入redis
+        // store in redis
         redisService.set(redisPrefix + ":" + accessTokenPrefix + ":" + user.getUserId().toString(), accessToken, expiresIn);
         redisService.set(redisPrefix + ":" + refreshTokenPrefix + ":" + user.getUserId().toString(), refreshToken, refreshExpiresIn);
 
-        // 创建登录用户(直接免密)
+        // create login user (password-free)
         LoginUser loginUser = createLoginUser(user);
 
-        // 获取到免密token
+        // obtain password-free token
         String token = tokenService.createToken(loginUser);
 
-        log.info("用户：{}，通过统一身份认证平台登录成功！", user.getUserName());
+        log.info("User: {} logged in via unified identity authentication platform successfully!", user.getUserName());
         return AjaxResult.success(token);
     }
 
 
-    // 刷新 Access-Token
+    // refresh Access-Token
     public String refresh(String refreshToken) {
-            // 调用Server端接口，通过 Refresh-Token 刷新出一个新的 Access-Token
+            // call server endpoint to refresh a new Access-Token via Refresh-Token
             String str = OkHttps.sync(serverUrl + "/oauth2/refresh")
                 .addBodyPara("grant_type", "refresh_token")
                 .addBodyPara("client_id", clientId)
@@ -184,30 +170,30 @@ public class AuthController {
                 .getBody()
                 .toString();
         SoMap so = SoMap.getSoMap().setJsonString(str);
-        System.out.println("返回结果: " + so);
+        System.out.println("response: " + so);
 
-        // code不等于200  代表请求失败
+        // code != 200 means request failed
         if(so.getInt("code") != 200) {
             return null;
         }
 
-        // 返回相关参数 (data=新的Access-Token )
+        // return related parameters (data=new Access-Token)
         SoMap data = so.getMap("data");
 
         // openid
         String openid = data.getString("openid");
-        // Access-Token值
+        // Access-Token value
         String accessToken = data.getString("access_token");
-        // Refresh-Token值
+        // Refresh-Token value
         String refToken = data.getString("refresh_token");
-        // Access-Token剩余有效期，单位秒
+        // Access-Token remaining validity in seconds
         long expiresIn = data.getLong("expires_in");
-        // Refresh-Token剩余有效期，单位秒
+        // Refresh-Token remaining validity in seconds
         long refreshExpiresIn = data.getLong("refresh_expires_in");
 
         Long userId = Convert.toLong(SaOAuth2Util.getLoginIdByAccessToken(accessToken));
 
-        // 存入redis
+        // store in redis
         redisService.set(redisPrefix + ":" + accessTokenPrefix + ":" + userId.toString(), accessToken, expiresIn);
         redisService.set(redisPrefix + ":" + refreshTokenPrefix + ":" + userId.toString(), refreshToken, refreshExpiresIn);
 
@@ -220,12 +206,12 @@ public class AuthController {
     }
 
     /**
-     * 根据 ddHubId获取 user
-     * @param idHubId 统一身份认证 id
-     * @return
+     * Get user by idHubId
+     * @param idHubId unified identity authentication ID
+     * @return user
      */
     private SysUser getUserByIdHubId(Long idHubId) {
-        // 认证平台关联关系
+        // Auth platform association
         RelUserAuthProductDO authInfo = userAuthProductService.lambdaQuery()
                 .eq(RelUserAuthProductDO::getUserId, idHubId)
                 .eq(RelUserAuthProductDO::getAuthProductType, AuthProductEnums.ANIVIA.code)
@@ -238,32 +224,32 @@ public class AuthController {
     }
 
     /**
-     * 根据 Access-Token 置换相关的资源: 获取账号昵称、头像、性别等信息
+     * Exchange Access-Token for resources: get account nickname, avatar, gender, etc.
      * @param accessToken
      * @return
      */
     @RequestMapping("/getUserinfo")
     public SoMap getUserinfo(String accessToken) {
-        // 调用Server端接口，查询开放的资源
+        // call server endpoint to query open resources
         String str = OkHttps.sync(serverUrl + "/oauth2/userinfo")
                 .addBodyPara("access_token", accessToken)
                 .post()
                 .getBody()
                 .toString();
         SoMap so = SoMap.getSoMap().setJsonString(str);
-        System.out.println("返回结果: " + so);
+        System.out.println("response: " + so);
 
-        // code不等于200  代表请求失败
+        // code != 200 means request failed
         if(so.getInt("code") != 200) {
-            throw new ServiceException("system.error.account.fetch", "获取用户账号信息失败！");
+            throw new ServiceException("system.error.account.fetch");
         }
 
-        // 返回相关参数 (data=获取到的资源 )
+        // return related parameters (data=obtained resources)
         return so.getMap("data");
     }
 
     /**
-     * 退出登录
+     * Logout
      * @param userId
      * @return
      */
@@ -276,14 +262,14 @@ public class AuthController {
             accessToken = this.refresh(refreshToken);
         }
 
-        // 调用Server端接口，查询开放的资源
+        // call server endpoint to query open resources
         String str = OkHttps.sync(serverUrl + "/oauth2/logout")
                 .addBodyPara("access_token", accessToken)
                 .post()
                 .getBody()
                 .toString();
         SoMap so = SoMap.getSoMap().setJsonString(str);
-        System.out.println("返回结果: " + so);
+        System.out.println("response: " + so);
 
         return AjaxResult.success(so);
     }

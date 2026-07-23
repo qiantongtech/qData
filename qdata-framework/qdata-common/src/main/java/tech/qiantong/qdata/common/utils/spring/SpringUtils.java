@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.spring;
@@ -43,14 +29,14 @@ import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * spring工具类 方便在非spring管理环境中获取bean
+ * Spring utility class for convenient bean retrieval in non-Spring-managed environments
  *
  * @author qdata
  */
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware
 {
-    /** Spring应用上下文环境 */
+    /** Spring application context */
     private static ConfigurableListableBeanFactory beanFactory;
 
     private static ApplicationContext applicationContext;
@@ -68,10 +54,10 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取对象
+     * Get bean by name
      *
      * @param name
-     * @return Object 一个以所给名字注册的bean的实例
+     * @return Object an instance of the bean registered with the given name
      * @throws org.springframework.beans.BeansException
      *
      */
@@ -82,7 +68,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取类型为requiredType的对象
+     * Get bean of the given requiredType
      *
      * @param clz
      * @return
@@ -96,7 +82,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 如果BeanFactory包含一个与所给名称匹配的bean定义，则返回true
+     * Check if the BeanFactory contains a bean definition matching the given name
      *
      * @param name
      * @return boolean
@@ -107,7 +93,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 判断以给定名字注册的bean定义是一个singleton还是一个prototype。 如果与给定名字相应的bean定义没有被找到，将会抛出一个异常（NoSuchBeanDefinitionException）
+     * Determine whether the bean definition registered under the given name is a singleton or a prototype. Throws NoSuchBeanDefinitionException if no bean definition is found for the given name.
      *
      * @param name
      * @return boolean
@@ -121,7 +107,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
 
     /**
      * @param name
-     * @return Class 注册对象的类型
+     * @return Class the type of the registered object
      * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
      *
      */
@@ -131,7 +117,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 如果给定的bean名字在bean定义中有别名，则返回这些别名
+     * If the given bean name has aliases in the bean definition, return those aliases
      *
      * @param name
      * @return
@@ -144,7 +130,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取aop代理对象
+     * Get AOP proxy object
      *
      * @param invoker
      * @return
@@ -156,9 +142,9 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取当前的环境配置，无配置返回null
+     * Get the current active environment profiles, returns null if none configured
      *
-     * @return 当前的环境配置
+     * @return current active profiles
      */
     public static String[] getActiveProfiles()
     {
@@ -166,9 +152,9 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取当前的环境配置，当有多个环境配置时，只获取第一个
+     * Get the current active profile, returns only the first when multiple profiles are configured
      *
-     * @return 当前的环境配置
+     * @return current active profile
      */
     public static String getActiveProfile()
     {
@@ -177,10 +163,10 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取配置文件中的值
+     * Get a property value from the configuration
      *
-     * @param key 配置文件的key
-     * @return 当前的配置文件的值
+     * @param key the property key
+     * @return the current configuration value
      *
      */
     public static String getRequiredProperty(String key)

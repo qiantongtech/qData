@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl;
@@ -43,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据集成任务节点关系Service接口
+ * Data Integration Task Node Relation Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -51,68 +37,68 @@ import java.util.Map;
 public interface IDppEtlTaskNodeRelService extends IService<DppEtlTaskNodeRelDO> {
 
     /**
-     * 获得数据集成任务节点关系分页列表
+     * Get data integration task node relation pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成任务节点关系分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration task node relation pagination list
      */
     PageResult<DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelPage(DppEtlTaskNodeRelPageReqVO pageReqVO);
     List<DppEtlTaskNodeRelRespVO> getDppEtlTaskNodeRelRespVOList(DppEtlTaskNodeRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据集成任务节点关系
+     * Create data integration task node relation
      *
-     * @param createReqVO 数据集成任务节点关系信息
-     * @return 数据集成任务节点关系编号
+     * @param createReqVO Data integration task node relation info
+     * @return Data integration task node relation ID
      */
     Long createDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO createReqVO);
 
     void createDppEtlTaskNodeRelBatch(List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS);
 
     /**
-     * 更新数据集成任务节点关系
+     * Update data integration task node relation
      *
-     * @param updateReqVO 数据集成任务节点关系信息
+     * @param updateReqVO Data integration task node relation info
      */
     int updateDppEtlTaskNodeRel(DppEtlTaskNodeRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成任务节点关系
+     * Delete data integration task node relation
      *
-     * @param idList 数据集成任务节点关系编号
+     * @param idList Data integration task node relation ID list
      */
     int removeDppEtlTaskNodeRel(Collection<Long> idList);
 
     /**
-     * 获得数据集成任务节点关系详情
+     * Get data integration task node relation detail
      *
-     * @param id 数据集成任务节点关系编号
-     * @return 数据集成任务节点关系
+     * @param id Data integration task node relation ID
+     * @return Data integration task node relation
      */
     DppEtlTaskNodeRelDO getDppEtlTaskNodeRelById(Long id);
 
     /**
-     * 获得全部数据集成任务节点关系列表
+     * Get all data integration task node relation list
      *
-     * @return 数据集成任务节点关系列表
+     * @return Data integration task node relation list
      */
     List<DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelList();
 
     /**
-     * 获得全部数据集成任务节点关系 Map
+     * Get all data integration task node relation Map
      *
-     * @return 数据集成任务节点关系 Map
+     * @return Data integration task node relation Map
      */
     Map<Long, DppEtlTaskNodeRelDO> getDppEtlTaskNodeRelMap();
 
 
     /**
-     * 导入数据集成任务节点关系数据
+     * Import data integration task node relation data
      *
-     * @param importExcelList 数据集成任务节点关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data integration task node relation data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEtlTaskNodeRel(List<DppEtlTaskNodeRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

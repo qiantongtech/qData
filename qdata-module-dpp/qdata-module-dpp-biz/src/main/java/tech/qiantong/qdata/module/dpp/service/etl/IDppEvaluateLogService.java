@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl;
@@ -47,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 /**
- * 评测规则结果Service接口
+ * Evaluation Rule Result Service Interface
  *
  * @author qdata
  * @date 2025-07-21
@@ -55,54 +41,54 @@ import java.util.Map;
 public interface IDppEvaluateLogService extends IService<DppEvaluateLogDO> {
 
     /**
-     * 获得评测规则结果分页列表
+     * Get evaluation rule result pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 评测规则结果分页列表
+     * @param pageReqVO Pagination request
+     * @return Evaluation rule result pagination list
      */
     PageResult<DppEvaluateLogDO> getDppEvaluateLogPage(DppEvaluateLogPageReqVO pageReqVO);
 
     /**
-     * 创建评测规则结果
+     * Create evaluation rule result
      *
-     * @param createReqVO 评测规则结果信息
-     * @return 评测规则结果编号
+     * @param createReqVO Evaluation rule result info
+     * @return Evaluation rule result ID
      */
     Long createDppEvaluateLog(DppEvaluateLogSaveReqVO createReqVO);
 
     /**
-     * 更新评测规则结果
+     * Update evaluation rule result
      *
-     * @param updateReqVO 评测规则结果信息
+     * @param updateReqVO Evaluation rule result info
      */
     int updateDppEvaluateLog(DppEvaluateLogSaveReqVO updateReqVO);
 
     /**
-     * 删除评测规则结果
+     * Delete evaluation rule result
      *
-     * @param idList 评测规则结果编号
+     * @param idList Evaluation rule result ID list
      */
     int removeDppEvaluateLog(Collection<Long> idList);
 
     /**
-     * 获得评测规则结果详情
+     * Get evaluation rule result detail
      *
-     * @param id 评测规则结果编号
-     * @return 评测规则结果
+     * @param id Evaluation rule result ID
+     * @return Evaluation rule result
      */
     DppEvaluateLogDO getDppEvaluateLogById(Long id);
 
     /**
-     * 获得全部评测规则结果列表
+     * Get all evaluation rule result list
      *
-     * @return 评测规则结果列表
+     * @return Evaluation rule result list
      */
     List<DppEvaluateLogDO> getDppEvaluateLogList();
 
     /**
-     * 获得全部评测规则结果 Map
+     * Get all evaluation rule result Map
      *
-     * @return 评测规则结果 Map
+     * @return Evaluation rule result Map
      */
     Map<Long, DppEvaluateLogDO> getDppEvaluateLogMap();
 
@@ -110,12 +96,12 @@ public interface IDppEvaluateLogService extends IService<DppEvaluateLogDO> {
 
 
     /**
-     * 导入评测规则结果数据
+     * Import evaluation rule result data
      *
-     * @param importExcelList 评测规则结果数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Evaluation rule result data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -37,24 +38,24 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item
-              :label="td('dpp.cleanRule.nodeName', '节点名称')"
+              :label="td('dpp.cleanRule.nodeName', 'Node Name')"
               prop="name"
               :rules="[
                 {
                   required: true,
-                  message: td('dpp.cleanRule.inputNodeName', '请输入节点名称'),
+                  message: td('dpp.cleanRule.inputNodeName', 'Please enter node name'),
                   trigger: 'change',
                 },
               ]"
              :label-position="labelPosition">
-              <el-input v-model="form.name" :placeholder="td('dpp.cleanRule.inputNodeName', '请输入节点名称')" />
+              <el-input v-model="form.name" :placeholder="td('dpp.cleanRule.inputNodeName', 'Please enter node name')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.type', 'Type')" prop="typeName" :label-position="labelPosition">
               <el-select
                 v-model="form.taskParams.typeName"
-                :placeholder="td('dpp.cleanRule.inputType', '请输入类型')"
+                :placeholder="td('dpp.cleanRule.inputType', 'Please enter type')"
                 filterable
                 disabled
               >
@@ -70,26 +71,26 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="500"
                 show-word-limit
-                :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
+                :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'Where Condition')" prop="where" :label-position="labelPosition">
               <el-input
                 v-model="form.taskParams.where"
                 type="textarea"
                 maxlength="500"
                 show-word-limit
-                :placeholder="td('dpp.cleanRule.inputWhereCondition', '请输入where条件')"
+                :placeholder="td('dpp.cleanRule.inputWhereCondition', 'Please enter where condition')"
               />
             </el-form-item>
           </el-col>
@@ -98,14 +99,14 @@
       <template v-else>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.nodeName', '节点名称') + ':'" prop="id" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.nodeName', 'Node Name') + ':'" prop="id" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.name }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dpp.cleanRule.type', '类型')" prop="typeName" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.type', 'Type')" prop="typeName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.taskParams.typeName }}
               </div>
@@ -114,7 +115,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.description ?? "-" }}
               </div>
@@ -124,7 +125,7 @@
 
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
+            <el-form-item :label="td('dpp.cleanRule.whereCondition', 'Where Condition')" prop="where" :label-position="labelPosition">
               <div class="form-readonly textarea">
                 {{ form.where ?? "-" }}
               </div>
@@ -132,7 +133,7 @@
           </el-col>
         </el-row>
       </template>
-      <div class="h2-title">{{ td('dpp.cleanRule.ruleSetting', '规则设置') }}</div>
+      <div class="h2-title">{{ td('dpp.cleanRule.ruleSetting', 'Rule Setting') }}</div>
 
       <div class="justify-between mb15" style="margin-top: 10px" v-if="!info">
         <el-row :gutter="15" class="btn-style">
@@ -141,7 +142,7 @@
               type="primary"
               icon="Plus"
               @click="openRuleSelector(undefined)"
-              >{{ td('dpp.cleanRule.addRule', '新增规则') }}</el-button
+              >{{ td('dpp.cleanRule.addRule', 'Add Rule') }}</el-button
             >
           </el-col>
         </el-row>
@@ -154,13 +155,13 @@
         ref="dragTable"
         row-key="name"
       >
-        <el-table-column :label="td('dpp.cleanRule.index', '序号')" width="80" align="left">
+        <el-table-column :label="td('dpp.cleanRule.index', 'No.')" width="80" align="left">
           <template #header>
             <div class="justify-center">
-              <span>{{ td('dpp.cleanRule.index', '序号') }}</span>
+              <span>{{ td('dpp.cleanRule.index', 'No.') }}</span>
               <el-tooltip
                 effect="light"
-                :content="td('dpp.cleanRule.cleanRuleOrderTip', '清洗规则按照下面配置的列表顺序，依次执行')"
+                :content="td('dpp.cleanRule.cleanRuleOrderTip', 'Clean rules are executed in the order configured below')"
                 placement="top"
               >
                 <el-icon class="tip-icon">
@@ -187,7 +188,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.cleanRule.cleanName', '清洗名称')"
+          :label="td('dpp.cleanRule.cleanName', 'Clean Name')"
           align="left"
           prop="name"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -198,7 +199,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.cleanRule.cleanField', '清洗字段')"
+          :label="td('dpp.cleanRule.cleanField', 'Clean Field')"
           align="left"
           prop="columns"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -213,7 +214,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.cleanRule.cleanRule', '清洗规则')"
+          :label="td('dpp.cleanRule.cleanRule', 'Clean Rule')"
           align="left"
           prop="ruleName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -224,7 +225,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.cleanRule.ruleDescription', '规则描述')"
+          :label="td('dpp.cleanRule.ruleDescription', 'Rule Description')"
           align="left"
           prop="ruleDescription"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -234,7 +235,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.cleanRule.dimension', '维度')"
+          :label="td('dpp.cleanRule.dimension', 'Dimension')"
           align="left"
           prop="parentName"
           :show-overflow-tooltip="{ effect: 'light' }"
@@ -244,13 +245,13 @@
             {{ scope.row.parentName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('common.texts.status', '状态')" align="left" prop="status">
+        <el-table-column :label="td('common.texts.status', 'Status')" align="left" prop="status">
           <template #default="scope">
-            {{ scope.row.status == "1" ? td('dpp.cleanRule.online', '上线') : td('dpp.cleanRule.offline', '下线') }}
+            {{ scope.row.status == "1" ? td('dpp.cleanRule.online', 'Online') : td('dpp.cleanRule.offline', 'Offline') }}
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('common.texts.operation', '操作')"
+          :label="td('common.texts.operation', 'Operation')"
           align="center"
           class-name="small-padding fixed-width"
           fixed="right"
@@ -259,20 +260,20 @@
         >
           <template #default="scope">
             <!-- <el-button link type="primary" icon="view"
-              @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
+              @click="openRuleDialog(scope.row, scope.$index + 1, true)">View</el-button> -->
             <el-button
               link
               type="primary"
               icon="Edit"
               @click="openRuleDialog(scope.row, scope.$index + 1)"
-              >{{ td('common.button.update', '修改') }}</el-button
+              >{{ td('common.button.update', 'Edit') }}</el-button
             >
             <el-button
               link
               type="danger"
               icon="Delete"
               @click="handleRuleDelete(scope.$index + 1)"
-              >{{ td('common.button.delete', '删除') }}</el-button
+              >{{ td('common.button.delete', 'Delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -280,12 +281,12 @@
     </el-form>
     <template #footer>
       <div style="text-align: right">
-        <el-button @click="closeDialog">{{ td('common.button.close', '关闭') }}</el-button>
+        <el-button @click="closeDialog">{{ td('common.button.close', 'Close') }}</el-button>
         <el-button type="primary" @click="saveData" v-if="!info"
-          >{{ td('common.button.save', '保存') }}</el-button
+          >{{ td('common.button.save', 'Save') }}</el-button
         >
         <el-tooltip
-          :content="td('dpp.cleanRule.getCleanRuleTip', '会自动获取资产关联的数据元中的清洗规则')"
+          :content="td('dpp.cleanRule.getCleanRuleTip', 'Clean rules associated with asset data elements will be auto-retrieved')"
           placement="top"
           v-if="!info"
         >
@@ -293,7 +294,7 @@
             <el-icon style="margin-right: 4px">
               <Refresh />
             </el-icon>
-            {{ td('dpp.cleanRule.getCleanRule', '获取清洗规则') }}
+            {{ td('dpp.cleanRule.getCleanRule', 'Get Clean Rules') }}
           </el-button>
         </el-tooltip>
       </div>
@@ -319,6 +320,7 @@ import {
   renameRuleToRuleConfig,
 } from "@/views/dpp/utils/opBase.js";
 import RuleSelectorDialog from "./rule/ruleBase.vue";
+import { validateWhereCondition } from "../../utils/foolproof.js";
 
 const { td } = useDefaultLang();
 const userStore = useUserStore();
@@ -346,7 +348,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -361,7 +363,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.name)
         );
       },
@@ -393,7 +395,7 @@ const renameRuleToRule = () => {
   };
 
   result.forEach((newItem) => {
-    // 找到是否存在相同 ruleName 且 columns 一样的旧数据
+    // Find whether there is old data with the same ruleName and the same columns
     const existingIndex = tableFields.value.findIndex(
       (oldItem) =>
         norm(oldItem.ruleName) === norm(newItem.ruleName) &&
@@ -401,17 +403,17 @@ const renameRuleToRule = () => {
     );
 
     if (existingIndex > -1) {
-      // 覆盖
+      // Cover
       tableFields.value[existingIndex] = newItem;
       coverCount++;
     } else {
-      // 追加
+      // Append
       tableFields.value.push(newItem);
       addCount++;
     }
   });
 
-  proxy.$message.success(td('dpp.cleanRule.coverAndAdd', `覆盖 ${coverCount} 条，追加 ${addCount} 条`, { coverCount, addCount }));
+  proxy.$message.success(td('dpp.cleanRule.coverAndAdd', 'Overwrite {coverCount}, append {addCount}', { coverCount, addCount }));
 };
 
 function RuleSelectorconfirm(obj, mode) {
@@ -427,7 +429,7 @@ function RuleSelectorconfirm(obj, mode) {
   });
 
   if (isDuplicate) {
-    proxy.$message.warning(td('dpp.cleanRule.cleanNameDuplicate', '清洗名称不能重复！'));
+    proxy.$message.warning(td('dpp.cleanRule.cleanNameDuplicate', 'Clean name must be unique!'));
     return;
   }
 
@@ -445,7 +447,7 @@ function handleRuleDelete(index) {
   tableFields.value.splice(Number(index) - 1, 1);
   setSort();
 }
-// 输入字段
+// input field
 let inputFields = ref([]);
 const emit = defineEmits(["update", "confirm"]);
 const visibleDialog = computed({
@@ -457,7 +459,7 @@ const visibleDialog = computed({
   },
 });
 let tableFields = ref([]);
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let opens = ref(false);
@@ -486,56 +488,64 @@ const submitForm = (value) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
 
-    // 如果没有 code，就调用接口获取唯一的 code
+    if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
+      return proxy.$message.warning('当前转换组件未配置任何清洗规则，请添加规则。');
+    }
+    const whereResult = validateWhereCondition(form.value?.taskParams?.where);
+    if (!whereResult.valid) {
+      return proxy.$message.warning(whereResult.message);
+    }
+
+    // If there is no code, call the interface to get the unique code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
         projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false; // 结束加载状态
-      form.value.code = response.data; // 设置唯一的 code
+      loading.value = false; // end loading state
+      form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
-    taskParams.tableFields = tableFields.value;
-    taskParams.outputFields = inputFields.value;
+    taskParams.tableFields = deepCopy(tableFields.value);
+    taskParams.outputFields = deepCopy(inputFields.value);
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
 let nodeOptions = ref([]);
 
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (!props.visible) {
     off();
@@ -543,8 +553,8 @@ watchEffect(() => {
   }
   form.value = deepCopy(props.currentNode?.data || {});
   nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  inputFields.value = props.currentNode?.data?.taskParams?.inputFields;
-  tableFields.value = props.currentNode?.data?.taskParams?.tableFields;
+  inputFields.value = deepCopy(props.currentNode?.data?.taskParams?.inputFields || []);
+  tableFields.value = deepCopy(props.currentNode?.data?.taskParams?.tableFields || []);
   setSort();
 });
 </script>

@@ -8,21 +8,21 @@ INIT_SQL=/home/dmdba/initdata/init-qdata.sql
 FIRST_RUN_FLAG=/var/run/qdata_init.done
 PORT=${PORT_NUM:-5236}
 
-# ---------- 检查是否已经初始化 ----------
+# ---------- Check whether initialization has completed ----------
 check_is_init() {
   if [ -d "${DM_DATA_DIR}" ]; then
     DATABASE_ALREADY_EXISTS=true
   fi
 }
 
-# ---------- 初始化数据库 ----------
+# ---------- Initialize the database ----------
 db_init() {
   echo "[dm8] init db ..."
   mkdir -p "${DM_DATA_DIR}"
   chown -R dmdba "${DM_DATA_DIR}"
   cd "${DM_PATH}/bin"
 
-  # 初始化参数，参考你原来的需求
+  # Initialization parameters based on the original requirements
   INIT_ARGS="PATH=/home/dmdba/data DB_NAME=DAMENG PORT_NUM=${PORT} PAGE_SIZE=16 CHARSET=1 LENGTH_IN_CHAR=1 CASE_SENSITIVE=${CASE_SENSITIVE:-0}"
 
   if [ -n "${SYSDBA_PWD}" ]; then
@@ -37,15 +37,15 @@ db_init() {
   echo "[dm8] db init done."
 }
 
-# ---------- 等待 dmserver TCP 端口可用（参考老版本逻辑） ----------
+# ---------- Wait for the dmserver TCP port using the legacy logic ----------
 wait_dm_ready() {
   echo "[dm8] wait dmserver tcp on 127.0.0.1:${PORT} ..."
 
   i=0
-  max=6000   # 最多等 6000 秒
+  max=6000   # Wait for up to 6000 seconds
 
   while [ $i -lt $max ]; do
-    # 使用 /dev/tcp 检测端口是否可连
+    # Use /dev/tcp to check port connectivity
     if (echo >"/dev/tcp/127.0.0.1/${PORT}") >/dev/null 2>&1; then
       echo "[dm8] dmserver tcp ready."
       return 0
@@ -58,15 +58,15 @@ wait_dm_ready() {
   return 1
 }
 
-# ---------- 首次启动时导入 init-qdata.sql ----------
+# ---------- Import init-qdata.sql on the first startup ----------
 run_init_sql_once() {
-  # 已经执行过了就直接跳过
+  # Skip when the import has already run
   if [ -f "${FIRST_RUN_FLAG}" ]; then
     echo "[dm8] qdata init already done, skip."
     return 0
   fi
 
-  # 没有 SQL 文件就不导入，避免每次都尝试
+  # Skip the import when the SQL file is absent
   if [ ! -f "${INIT_SQL}" ]; then
     echo "[dm8] ${INIT_SQL} not found, skip qdata init."
     mkdir -p "$(dirname "${FIRST_RUN_FLAG}")"
@@ -74,7 +74,7 @@ run_init_sql_once() {
     return 0
   fi
 
-  # 必要环境变量没配也跳过
+  # Skip when required environment variables are missing
   if [ -z "${QDATA_USER}" ] || [ -z "${QDATA_PWD}" ] || [ -z "${SYSDBA_PWD}" ]; then
     echo "[dm8] QDATA_USER / QDATA_PWD / SYSDBA_PWD not set, skip qdata init."
     mkdir -p "$(dirname "${FIRST_RUN_FLAG}")"
@@ -82,22 +82,22 @@ run_init_sql_once() {
     return 0
   fi
 
-  # 仅用 TCP 端口检测等待服务就绪
+  # Wait for service readiness using only the TCP port check
   wait_dm_ready
 
   echo "[dm8] start create business user and import init-qdata.sql ..."
 
-  # 为了防止“用户已存在”等导致整个容器退出，这里临时关掉 set -e
+  # Temporarily disable set -e so errors such as an existing user do not stop the container
   set +e
 
-  # 1) SYSDBA 创建业务用户并授权
+  # 1) Create the application user and grant permissions as SYSDBA
   gosu dmdba "${DM_PATH}/bin/disql" "SYSDBA/${SYSDBA_PWD}@127.0.0.1:${PORT}" <<EOF
 create user "${QDATA_USER}" identified by "${QDATA_PWD}" hash with SHA512 salt;
 grant "PUBLIC","SOI","DBA" to "${QDATA_USER}";
 commit;
 EOF
 
-  # 2) 业务用户执行初始化脚本
+  # 2) Run the initialization script as the application user
   gosu dmdba "${DM_PATH}/bin/disql" "${QDATA_USER}/${QDATA_PWD}@127.0.0.1:${PORT}" <<EOF
 set define off;
 set CHAR_CODE UTF8;
@@ -105,7 +105,7 @@ set CHAR_CODE UTF8;
 set define on;
 EOF
 
-  # 恢复 set -e
+  # Restore set -e
   set -e
 
   mkdir -p "$(dirname "${FIRST_RUN_FLAG}")"
@@ -113,7 +113,7 @@ EOF
   echo "[dm8] qdata init finished."
 }
 
-# ---------- 主流程 ----------
+# ---------- Main flow ----------
 
 check_is_init
 if [ -z "${DATABASE_ALREADY_EXISTS}" ]; then
@@ -122,7 +122,7 @@ else
   echo "[dm8] db already exists, skip dminit."
 fi
 
-# 安装服务（修复你原脚本里的那一处 `DmAPService}` 的 bug）
+# Install the service (including the DmAPService brace fix from the original script)
 if [ ! -f "${DM_PATH}/bin/DmAPService" ]; then
   "${DM_PATH}/script/root/dm_service_installer.sh" -s "${DM_PATH}/bin/DmAPService"
 fi
@@ -131,12 +131,12 @@ if [ ! -f "${DM_PATH}/bin/DmServiceDMSERVER" ]; then
   "${DM_PATH}/script/root/dm_service_installer.sh" -t dmserver -p "DMSERVER" -dm_ini "${DM_DATA_DIR}/dm.ini"
 fi
 
-# 启动服务
+# Start the service
 gosu dmdba "${DM_PATH}/bin/DmAPService" start
 gosu dmdba "${DM_PATH}/bin/DmServiceDMSERVER" start
 
-# 首次导入任务放到后台，不阻塞主进程
+# Run the first import task in the background without blocking the main process
 run_init_sql_once &
 
-# 保持容器前台进程：沿用原脚本 tail 日志
+# Keep the container in the foreground by tailing the log as in the original script
 exec gosu dmdba tail -f /home/dmdba/dmdbms/log/DmServiceDMSERVER.log

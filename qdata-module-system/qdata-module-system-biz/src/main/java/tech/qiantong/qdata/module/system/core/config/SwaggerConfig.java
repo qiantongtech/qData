@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 //package tech.qiantong.module.system.core.config;
@@ -55,53 +41,53 @@
 //import springfox.documentation.spring.web.plugins.Docket;
 //
 ///**
-// * Swagger2的接口配置
+// * Swagger 2 API configuration
 // *
 // * @author qdata
 // */
 //@Configuration
 //public class SwaggerConfig
 //{
-//    /** 系统基础配置 */
+//    /** System base configuration */
 //    @Autowired
 //    private AniviaConfig qdataConfig;
 //
-//    /** 是否开启swagger */
+//    /** Whether Swagger is enabled */
 //    @Value("${swagger.enabled}")
 //    private boolean enabled;
 //
-//    /** 设置请求的统一前缀 */
+//    /** Configures the common request prefix */
 //    @Value("${swagger.pathMapping}")
 //    private String pathMapping;
 //
 //    /**
-//     * 创建API
+//     * Creates the API documentation configuration.
 //     */
 //    @Bean
 //    public Docket createRestApi()
 //    {
 //        return new Docket(DocumentationType.OAS_30)
-//                // 是否启用Swagger
+//                // Whether Swagger is enabled
 //                .enable(enabled)
-//                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
+//                // Creates the basic API information displayed on the documentation page.
 //                .apiInfo(apiInfo())
-//                // 设置哪些接口暴露给Swagger展示
+//                // Configures which APIs are exposed in Swagger.
 //                .select()
-//                // 扫描所有有注解的api，用这种方式更灵活
+//                // Scans all annotated APIs for greater flexibility.
 //                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-//                // 扫描指定包中的swagger注解
+//                // Scans Swagger annotations in the specified package.
 //                // .apis(RequestHandlerSelectors.basePackage("tech.qiantong.project.tool.swagger"))
-//                // 扫描所有 .apis(RequestHandlerSelectors.any())
+//                // Scans all APIs with .apis(RequestHandlerSelectors.any()).
 //                .paths(PathSelectors.any())
 //                .build()
-//                /* 设置安全模式，swagger可以设置访问token */
+//                /* Configures the security scheme so Swagger can send an access token. */
 //                .securitySchemes(securitySchemes())
 //                .securityContexts(securityContexts())
 //                .pathMapping(pathMapping);
 //    }
 //
 //    /**
-//     * 安全模式，这里指定token通过Authorization头请求头传递
+//     * Security scheme that passes the token through the Authorization request header.
 //     */
 //    private List<SecurityScheme> securitySchemes()
 //    {
@@ -111,7 +97,7 @@
 //    }
 //
 //    /**
-//     * 安全上下文
+//     * Security context.
 //     */
 //    private List<SecurityContext> securityContexts()
 //    {
@@ -125,7 +111,7 @@
 //    }
 //
 //    /**
-//     * 默认的安全上引用
+//     * Default security reference.
 //     */
 //    private List<SecurityReference> defaultAuth()
 //    {
@@ -138,20 +124,20 @@
 //    }
 //
 //    /**
-//     * 添加摘要信息
+//     * Adds API metadata.
 //     */
 //    private ApiInfo apiInfo()
 //    {
-//        // 用ApiInfoBuilder进行定制
+//        // Customizes API information with ApiInfoBuilder.
 //        return new ApiInfoBuilder()
-//                // 设置标题
-//                .title("标题：qData开源版_接口文档")
-//                // 描述
-//                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
-//                // 作者信息
+//                // Sets the title.
+//                .title("qData Open Source Edition API Documentation")
+//                // Description
+//                .description("Manages personnel information for companies in the group, including the XXX and XXX modules...")
+//                // Author information
 //                .contact(new Contact(qdataConfig.getName(), null, null))
-//                // 版本
-//                .version("版本号:" + qdataConfig.getVersion())
+//                // Version
+//                .version("Version: " + qdataConfig.getVersion())
 //                .build();
 //    }
 //}

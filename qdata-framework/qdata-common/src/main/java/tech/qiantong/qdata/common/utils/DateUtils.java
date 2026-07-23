@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -42,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * 时间工具类
+ * Time tools
  *
  * @author qdata
  */
@@ -70,16 +56,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
 
     /**
-     * 获取当前Date型日期
+     * Get the current Date type date
      *
-     * @return Date() 当前日期
+     * @return Date() current date
      */
     public static Date getNowDate() {
         return new Date();
     }
 
     /**
-     * 获取当前日期, 默认格式为yyyy-MM-dd
+     * Get the current date, the default format is yyyy-MM-dd
      *
      * @return String
      */
@@ -116,7 +102,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 日期路径 即年/月/日 如2018/08/08
+     * Date path is year/month/day such as 2018/08/08
      */
     public static final String datePath() {
         Date now = new Date();
@@ -124,7 +110,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 日期路径 即年/月/日 如20180808
+     * Date path is year/month/day such as 20180808
      */
     public static final String dateTime() {
         Date now = new Date();
@@ -132,7 +118,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 日期型字符串转化为日期 格式
+     * Convert date string to date format
      */
     public static Date parseDate(Object str) {
         if (str == null) {
@@ -146,7 +132,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取服务器启动时间
+     * Get server startup time
      */
     public static Date getServerStartDate() {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
@@ -154,39 +140,40 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 计算相差天数
+     * Calculate the difference in days
      */
     public static int differentDaysByMillisecond(Date date1, Date date2) {
         return Math.abs((int) ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)));
     }
 
     /**
-     * 计算时间差
+     * Calculate time difference
      *
-     * @param endDate   最后时间
-     * @param startTime 开始时间
-     * @return 时间差（天/小时/分钟）
+     * @param endDate last time
+     * @param startTime start time
+     * @return time difference (days/hours/minutes)
      */
     public static String timeDistance(Date endDate, Date startTime) {
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
         // long ns = 1000;
-        // 获得两个时间的毫秒时间差异
+        // Get the time difference in milliseconds between two times
         long diff = endDate.getTime() - startTime.getTime();
-        // 计算差多少天
+        // Calculate the difference in days
         long day = diff / nd;
-        // 计算差多少小时
+        // Calculate the difference in hours
         long hour = diff % nd / nh;
-        // 计算差多少分钟
+        // Calculate the difference in minutes
         long min = diff % nd % nh / nm;
-        // 计算差多少秒//输出结果
+        // Calculate the difference in seconds //output the result
         // long sec = diff % nd % nh % nm / ns;
-        return day + "天" + hour + "小时" + min + "分钟";
+        return MessageUtils.messageWithFallback("common.time.distance",
+                "{0} days {1} hours {2} minutes", day, hour, min);
     }
 
     /**
-     * 增加 LocalDateTime ==> Date
+     * Add LocalDateTime ==> Date
      */
     public static Date toDate(LocalDateTime temporalAccessor) {
         ZonedDateTime zdt = temporalAccessor.atZone(ZoneId.systemDefault());
@@ -194,7 +181,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 增加 LocalDate ==> Date
+     * Add LocalDate ==> Date
      */
     public static Date toDate(LocalDate temporalAccessor) {
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
@@ -208,7 +195,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static Date getExecutionDate() {
         LocalDateTime now = LocalDateTime.now();
-        return java.sql.Timestamp.valueOf(now); // 将LocalDateTime转为Date
+        return java.sql.Timestamp.valueOf(now); // Convert LocalDateTime to Date
     }
 
     /**

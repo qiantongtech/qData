@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.generator.controller;
@@ -48,6 +34,7 @@ import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.core.text.Convert;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.utils.SecurityUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.sql.SqlUtil;
 import tech.qiantong.qdata.generator.domain.GenTable;
 import tech.qiantong.qdata.generator.domain.GenTableColumn;
@@ -62,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 代码生成 操作处理
+ * Code generation operation processing
  *
  * @author qdata
  */
@@ -77,7 +64,7 @@ public class GenController extends BaseController
     private IGenTableColumnService genTableColumnService;
 
     /**
-     * 查询代码生成列表
+     * Query code generation list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/list")
@@ -89,7 +76,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 修改代码生成业务
+     * Modify code generation business
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:query')")
     @GetMapping(value = "/{tableId}")
@@ -111,7 +98,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 查询数据库列表
+     * Query database list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping("/db/list")
@@ -123,7 +110,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 查询数据表字段列表
+     * Query data table field list
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:list')")
     @GetMapping(value = "/column/{tableId}")
@@ -137,25 +124,25 @@ public class GenController extends BaseController
     }
 
     /**
-     * 导入表结构（保存）
+     * Import table structure (save)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:import')")
-    @Log(title = "代码生成", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.gen.import", businessType = BusinessType.IMPORT)
     @PostMapping("/importTable")
     public AjaxResult importTableSave(String tables)
     {
         String[] tableNames = Convert.toStrArray(tables);
-        // 查询表信息
+        // Query table information
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
         genTableService.importGenTable(tableList, SecurityUtils.getUsername());
         return success();
     }
 
     /**
-     * 创建表结构（保存）
+     * Create table structure (save)
      */
     @PreAuthorize("@ss.hasRole('admin')")
-    @Log(title = "创建表", businessType = BusinessType.OTHER)
+    @Log(title = "log.op.title.gen.create.table", businessType = BusinessType.OTHER)
     @PostMapping("/createTable")
     public AjaxResult createTableSave(String sql)
     {
@@ -184,15 +171,16 @@ public class GenController extends BaseController
         catch (Exception e)
         {
             logger.error(e.getMessage(), e);
-            return AjaxResult.error("创建表结构异常");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "sys.error.generator.table.create.fail", "Failed to create table structure"));
         }
     }
 
     /**
-     * 修改保存代码生成业务
+     * Modify and save code generation business
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
-    @Log(title = "代码生成", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult editSave(@Validated @RequestBody GenTable genTable)
     {
@@ -202,10 +190,10 @@ public class GenController extends BaseController
     }
 
     /**
-     * 删除代码生成
+     * Remove code generation
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:remove')")
-    @Log(title = "代码生成", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.DELETE)
     @DeleteMapping("/{tableIds}")
     public AjaxResult remove(@PathVariable Long[] tableIds)
     {
@@ -214,7 +202,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 预览代码
+     * Preview code
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:preview')")
     @GetMapping("/preview/{tableId}")
@@ -225,10 +213,10 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成代码（下载方式）
+     * Generate code (download method)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
     @GetMapping("/download/{tableName}")
     public void download(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException
     {
@@ -237,10 +225,10 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成代码（自定义路径）
+     * Generate code (custom path)
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
     @GetMapping("/genCode/{tableName}")
     public AjaxResult genCode(@PathVariable("tableName") String tableName)
     {
@@ -249,10 +237,10 @@ public class GenController extends BaseController
     }
 
     /**
-     * 同步数据库
+     * Sync database
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
-    @Log(title = "代码生成", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.UPDATE)
     @GetMapping("/synchDb/{tableName}")
     public AjaxResult synchDb(@PathVariable("tableName") String tableName)
     {
@@ -261,10 +249,10 @@ public class GenController extends BaseController
     }
 
     /**
-     * 批量生成代码
+     * Generate code in batches
      */
     @PreAuthorize("@ss.hasPermi('tool:gen:code')")
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
+    @Log(title = "log.op.title.gen.code", businessType = BusinessType.GENCODE)
     @GetMapping("/batchGenCode")
     public void batchGenCode(HttpServletResponse response, String tables) throws IOException
     {
@@ -274,7 +262,7 @@ public class GenController extends BaseController
     }
 
     /**
-     * 生成zip文件
+     * Generate zip file
      */
     private void genCode(HttpServletResponse response, byte[] data) throws IOException
     {

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -35,26 +36,26 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
 const props = defineProps({
-  /* 是否显示检索条件 */
+  /* Whether to display search conditions */
   showSearch: {
     type: Boolean,
     default: true,
   },
-  /* 显隐列信息 */
+  /* Show and hide column information */
   columns: {
     type: Array,
   },
-  /* 是否显示检索图标 */
+  /* Whether to display the search icon */
   search: {
     type: Boolean,
     default: true,
   },
-  /* 显隐列类型（transfer穿梭框、checkbox复选框） */
+  /* Show and hide column types (transfer shuttle box, checkbox checkbox) */
   showColumnsType: {
     type: String,
     default: "checkbox",
   },
-  /* 右外边距 */
+  /* right margin */
   gutter: {
     type: Number,
     default: 10,
@@ -63,11 +64,11 @@ const props = defineProps({
 
 const emits = defineEmits(['update:showSearch', 'queryTable']);
 
-// 显隐数据
+// Explicit data
 const value = ref([]);
-// 弹出层标题
+// Popup layer title
 const title = ref(t('components.rightToolbar.showHide'));
-// 是否显示弹出层
+// Whether to display popup layer
 const open = ref(false);
 
 const style = computed(() => {
@@ -78,17 +79,17 @@ const style = computed(() => {
   return ret;
 });
 
-// 搜索
+// Search
 function toggleSearch() {
   emits("update:showSearch", !props.showSearch);
 }
 
-// 刷新
+// Refresh
 function refresh() {
   emits("queryTable");
 }
 
-// 右侧列表元素变化
+// Changes in list elements on the right
 function dataChange(data) {
   for (let item in props.columns) {
     const key = props.columns[item].key;
@@ -96,13 +97,13 @@ function dataChange(data) {
   }
 }
 
-// 打开显隐列dialog
+// Open the visible column dialog
 function showColumn() {
   open.value = true;
 }
 
 if (props.showColumnsType == 'transfer') {
-  // 显隐列初始默认隐藏列
+  // Show and hide columns. The columns are initially hidden by default.
   for (let item in props.columns) {
     if (props.columns[item].visible === false) {
       value.value.push(parseInt(item));
@@ -110,7 +111,7 @@ if (props.showColumnsType == 'transfer') {
   }
 }
 
-// 勾选
+// Check
 function checkboxChange(event, label) {
   props.columns.filter(item => item.label == label)[0].visible = event;
 }

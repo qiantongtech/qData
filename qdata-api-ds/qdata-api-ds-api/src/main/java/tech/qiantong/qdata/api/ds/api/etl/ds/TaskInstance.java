@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /*
@@ -62,7 +48,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 任务实例
+ * Task instance
  */
 @Builder
 @NoArgsConstructor
@@ -76,91 +62,91 @@ public class TaskInstance implements Serializable {
     private Long id;
 
     /**
-     * 任务实例名称
+     * Task instance name
      */
     private String name;
 
     /**
-     * 任务类型
+     * Task type
      */
     private String taskType;
 
     /**
-     * 流程实例id
+     * Process instance id
      */
     private Long processInstanceId;
 
     /**
-     * 流程实例名称
+     * Process instance name
      */
     private String processInstanceName;
 
     /**
-     * 项目编码
+     * Project code
      */
     private String projectCode;
 
     /**
-     * 任务编码
+     * Task code
      */
     private String taskCode;
 
     /**
-     * 任务版本号
+     * Task definition version
      */
     private int taskDefinitionVersion;
 
     /**
-     * 状态
+     * State
      */
     private TaskExecutionStatus state;
 
 
     /**
-     * 提交时间
+     * Submit time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date submitTime;
 
     /**
-     * 任务开始时间
+     * Task start time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
-     * 任务结束时间
+     * Task end time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
-     * 执行路径
+     * Execute path
      */
     private String executePath;
 
     /**
-     * 日志路径
+     * Log path
      */
     private String logPath;
 
     /**
-     * 重试次数
+     * Retry times
      */
     private int retryTimes;
 
     /**
-     * 流程实例
+     * Process instance
      */
     private ProcessInstance processInstance;
 
     /**
-     * 流程定义
+     * Process definition
      */
     private ProcessDefinition processDefine;
 
     /**
-     * 任务定义
+     * Task definition
      */
     private TaskDefinition taskDefine;
 
@@ -170,28 +156,28 @@ public class TaskInstance implements Serializable {
     private Flag flag;
 
     /**
-     * 优先级
+     * Priority
      */
     private Priority taskInstancePriority;
 
 
     /**
-     * 延迟执行时间（分钟）
+     * Delay time (minutes)
      */
     private int delayTime;
 
     /**
-     * 任务参数
+     * Task parameters
      */
     private String taskParams;
 
     /**
-     * CPU配额
+     * CPU quota
      */
     private Integer cpuQuota;
 
     /**
-     * 最大内存
+     * Maximum memory
      */
     private Integer memoryMax;
 }

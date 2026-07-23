@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据元类目管理 Response VO 对象 DG_DATA_ELEM_CAT
+ * Data Element Category Management Response VO Object DG_DATA_ELEM_CAT
  *
  * @author qdata
  * @date 2025-01-20
  */
-@Schema(description = "数据元类目管理 Response VO")
+@Schema(description = "Data Element Category Response VO")
 @Data
 public class DgDataElemCatRespVO implements Serializable {
 

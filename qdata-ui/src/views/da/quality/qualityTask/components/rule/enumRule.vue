@@ -1,21 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
+
 <template>
-  <!-- 枚举值校验 -->
+  <!-- Enum value validation -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-row :gutter="20">
       <el-col :span="8">
@@ -49,7 +51,7 @@
       </el-col>
     </el-row>
 
-    <!-- 👇 当选择了“关联代码表”为“是”时展示 -->
+    <!-- Show when “Associate code table” is “Yes” -->
     <el-row v-if="form.useCodeTable == '1'" :gutter="20">
       <el-col :span="8">
         <el-form-item
@@ -200,7 +202,7 @@ function handleDelete(row, index) {
   form.codeList.splice(Number(index) - 1, 1);
 }
 function opencodeDialog() {
-  // 新增一行空数据
+  // Add a new empty row
   form.codeList.push({
     codeValue: "",
     codeName: "",

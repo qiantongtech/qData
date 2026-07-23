@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request.js'
 
-// 查询角色列表
+// Query role list
 export function listRole(query) {
   return request({
     url: '/system/role/list',
@@ -26,7 +27,7 @@ export function listRole(query) {
   })
 }
 
-// 查询角色详细
+// Query role details
 export function getRole(roleId) {
   return request({
     url: '/system/role/' + roleId,
@@ -34,7 +35,7 @@ export function getRole(roleId) {
   })
 }
 
-// 新增角色
+// Add new role
 export function addRole(data) {
   return request({
     url: '/system/role',
@@ -43,7 +44,7 @@ export function addRole(data) {
   })
 }
 
-// 修改角色
+// Modify role
 export function updateRole(data) {
   return request({
     url: '/system/role',
@@ -52,7 +53,7 @@ export function updateRole(data) {
   })
 }
 
-// 角色数据权限
+// Role data permissions
 export function dataScope(data) {
   return request({
     url: '/system/role/dataScope',
@@ -61,7 +62,7 @@ export function dataScope(data) {
   })
 }
 
-// 角色状态修改
+// Character status modification
 export function changeRoleStatus(roleId, status) {
   const data = {
     roleId,
@@ -74,7 +75,7 @@ export function changeRoleStatus(roleId, status) {
   })
 }
 
-// 删除角色
+// Delete role
 export function delRole(roleId) {
   return request({
     url: '/system/role/' + roleId,
@@ -82,7 +83,7 @@ export function delRole(roleId) {
   })
 }
 
-// 查询角色已授权用户列表
+// Query the list of users authorized by the role
 export function allocatedUserList(query) {
   return request({
     url: '/system/role/authUser/allocatedList',
@@ -91,7 +92,7 @@ export function allocatedUserList(query) {
   })
 }
 
-// 查询角色未授权用户列表
+// Query the list of users whose role is not authorized
 export function unallocatedUserList(query) {
   return request({
     url: '/system/role/authUser/unallocatedList',
@@ -100,7 +101,7 @@ export function unallocatedUserList(query) {
   })
 }
 
-// 取消用户授权角色
+// Cancel user authorization role
 export function authUserCancel(data) {
   return request({
     url: '/system/role/authUser/cancel',
@@ -109,7 +110,7 @@ export function authUserCancel(data) {
   })
 }
 
-// 批量取消用户授权角色
+// Cancel user authorization roles in batches
 export function authUserCancelAll(data) {
   return request({
     url: '/system/role/authUser/cancelAll',
@@ -118,7 +119,7 @@ export function authUserCancelAll(data) {
   })
 }
 
-// 授权用户选择
+// Authorized user selection
 export function authUserSelectAll(data) {
   return request({
     url: '/system/role/authUser/selectAll',
@@ -127,7 +128,7 @@ export function authUserSelectAll(data) {
   })
 }
 
-// 根据角色ID查询部门树结构
+// Query department tree structure based on role ID
 export function deptTreeSelect(roleId) {
   return request({
     url: '/system/role/deptTree/' + roleId,

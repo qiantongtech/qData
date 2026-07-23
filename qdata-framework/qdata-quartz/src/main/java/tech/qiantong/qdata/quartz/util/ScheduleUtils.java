@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quartz.util;
@@ -39,10 +25,12 @@ import tech.qiantong.qdata.common.exception.job.TaskException;
 import tech.qiantong.qdata.common.exception.job.TaskException.Code;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
+import tech.qiantong.qdata.quartz.domain.QuartzJob;
 import tech.qiantong.qdata.quartz.domain.SysJob;
+import tech.qiantong.qdata.quartz.enums.ScheduleExecutionTypeEnum;
 
 /**
- * 定时任务工具类
+ * Scheduled task tools
  *
  * @author qdata
  *
@@ -50,78 +38,110 @@ import tech.qiantong.qdata.quartz.domain.SysJob;
 public class ScheduleUtils
 {
     /**
-     * 得到quartz任务类
+     * Get quartz task class
      *
-     * @param sysJob 执行计划
-     * @return 具体执行任务类
+     * @param sysJob execution plan
+     * @return specific execution task class
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
-        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
-        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
+        String executionTypeValue = sysJob instanceof QuartzJob
+                ? ((QuartzJob) sysJob).getExecutionType() : null;
+        ScheduleExecutionTypeEnum executionType = ScheduleExecutionTypeEnum.resolve(
+                executionTypeValue, sysJob.getConcurrent());
+        return executionType.shouldUseDisallowConcurrentJob()
+                ? QuartzDisallowConcurrentExecution.class
+                : QuartzJobExecution.class;
     }
 
     /**
-     * 构建任务触发对象
+     * Build task trigger object
      */
     public static TriggerKey getTriggerKey(Long jobId, String jobGroup)
     {
-        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+        return getTriggerKey(jobId, jobGroup, "");
     }
 
     /**
-     * 构建任务键对象
+     * Builds a task trigger.
+     */
+    public static TriggerKey getTriggerKey(Long jobId, String jobGroup, String namespace)
+    {
+        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + namespace + jobId, jobGroup);
+    }
+
+    /**
+     * Build task key object
      */
     public static JobKey getJobKey(Long jobId, String jobGroup)
     {
-        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+        return getJobKey(jobId, jobGroup, "");
     }
 
     /**
-     * 创建定时任务
+     * Builds a namespaced task key to prevent auto-increment IDs from different task tables from colliding.
+     */
+    public static JobKey getJobKey(Long jobId, String jobGroup, String namespace)
+    {
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + namespace + jobId, jobGroup);
+    }
+
+    /**
+     * Create a scheduled task
      */
     public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, TaskException
     {
+        createScheduleJob(scheduler, job, "");
+    }
+
+    /**
+     * Creates a namespaced scheduled task.
+     */
+    public static void createScheduleJob(Scheduler scheduler, SysJob job, String namespace)
+            throws SchedulerException, TaskException
+    {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
-        // 构建job信息
+        // Build job information
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass)
+                .withIdentity(getJobKey(jobId, jobGroup, namespace)).build();
 
-        // 表达式调度构建器
+        // Expression dispatch builder
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
         cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
-        // 按新的cronExpression表达式构建一个新的trigger
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
+        // Build a new trigger based on the new cronExpression expression
+        CronTrigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(getTriggerKey(jobId, jobGroup, namespace))
                 .withSchedule(cronScheduleBuilder).build();
 
-        // 放入参数，运行时的方法可以获取
+        // Put in the parameters and the runtime method can get them
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
-        // 判断是否存在
-        if (scheduler.checkExists(getJobKey(jobId, jobGroup)))
+        // Determine whether it exists
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup, namespace)))
         {
-            // 防止创建时存在数据问题 先移除，然后在执行创建操作
-            scheduler.deleteJob(getJobKey(jobId, jobGroup));
+            // To prevent data problems during creation, remove first and then perform the creation operation
+            scheduler.deleteJob(getJobKey(jobId, jobGroup, namespace));
         }
 
-        // 判断任务是否过期
+        // Determine whether the task is expired
         if (StringUtils.isNotNull(CronUtils.getNextExecution(job.getCronExpression())))
         {
-            // 执行调度任务
+            // Execute scheduled tasks
             scheduler.scheduleJob(jobDetail, trigger);
         }
 
-        // 暂停任务
+        // Pause task
         if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
         {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup, namespace));
         }
     }
 
     /**
-     * 设置定时任务策略
+     * Set scheduled task strategy
      */
     public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
             throws TaskException
@@ -143,10 +163,10 @@ public class ScheduleUtils
     }
 
     /**
-     * 检查包名是否为白名单配置
+     * Check whether the package name is configured in the whitelist
      *
-     * @param invokeTarget 目标字符串
-     * @return 结果
+     * @param invokeTarget target string
+     * @return result
      */
     public static boolean whiteList(String invokeTarget)
     {

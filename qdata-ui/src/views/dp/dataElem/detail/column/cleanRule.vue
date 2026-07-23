@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -64,12 +65,12 @@
                 {{ scope.row.status == '1' ? td('dp.dataElem.detail.online') : td('dp.dataElem.detail.offline') }}
             </template>
         </el-table-column>
-        <!-- <el-table-column label="规则级别" prop="level" align="left" width="100">
+        <!-- <el-table-column label="Rule level" prop="level" align="left" width="100">
             <template #default="scope">
                 {{ formatValue(scope.row.level, att_rule_level) || '-' }}
             </template>
         </el-table-column> -->
-        <!-- <el-table-column label="规则类型" prop="type" align="left" width="100">
+        <!-- <el-table-column label="Rule type" prop="type" align="left" width="100">
             <template #default="scope">
                 {{ formatValue(scope.row.type, att_rule_clean_type) || '-' }}
             </template>
@@ -94,7 +95,7 @@
         <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
             <template #default="scope">
                 <!-- <el-button link type="primary" icon="view"
-                    @click="openRuleDialog(scope.row, scope.$index + 1, true)">查看</el-button> -->
+                    @click="openRuleDialog(scope.row, scope.$index + 1, true)">View</el-button> -->
                 <el-button link type="primary" icon="Edit"
                     @click="openRuleDialog(scope.row, scope.$index + 1)">{{ td('common.button.update') }}</el-button>
                 <el-button link type="danger" icon="Delete" @click="handleRuleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
@@ -153,7 +154,7 @@ const data = reactive({
 });
 const { queryParams, form, } = toRefs(data);
 queryParams.value.dataElemId = props.dataElemId;
-/** 删除按钮操作 */
+/** Delete button action */
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
@@ -186,7 +187,7 @@ function RuleSelectorconfirm(obj, mode) {
     loading.value = false;
     ruleSelectorDialog.value.closeDialog();
 }
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         name: null,
@@ -200,7 +201,7 @@ const openRuleDialog = (row, index, falg) => {
 
     ruleSelectorDialog.value.openDialog({ ...row, ruleDesc: row.ruleDescription, dimensionType: row.parentName, ruleConfig: row.rule, }, index, falg);
 };
-/** 查询数据元列表 */
+/** Query data element list */
 function getList() {
     loading.value = true;
     listDpDataElemRuleRel(queryParams.value).then((response) => {
@@ -255,7 +256,7 @@ getList();
     }
 }
 
-// 设置只有叶子节点有多选框
+// Set only leaf nodes to have multiple selection boxes
 :deep(.el-tree-node) {
     .is-leaf+.el-checkbox .el-checkbox__inner {
         display: inline-block !important;

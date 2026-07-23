@@ -1,23 +1,24 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <div class="data-scope-config app-container" ref="app-container">
-    <!-- 1. 当前数据范围展示 (Summary Bar) -->
+    <!-- 1. Current data range display (Summary Bar) -->
     <div class="summary-bar">
       <div class="summary-left-col">
         <div class="title-info">
@@ -26,7 +27,7 @@
         </div>
       </div>
       <div class="summary-middle-col">
-        <!-- 维表数量展示 -->
+        <!-- Dimension table quantity display -->
         <el-tooltip
           v-if="dimensionTableNames?.length"
           effect="light"
@@ -75,14 +76,14 @@
           </el-form-item>
         </el-form>
 
-        <!-- 外部按钮插槽 (清空/上下滚动等) -->
+        <!-- External button slot (clear/scroll up/down, etc.) -->
         <div class="extra-slot">
           <slot name="extra"></slot>
         </div>
       </div>
     </div>
 
-    <!-- 2. 配置面板 (3-step selection) -->
+    <!-- 2. Configuration panel (3-step selection) -->
     <el-collapse-transition>
       <div class="config-panel" v-show="showConfig">
         <el-form
@@ -90,7 +91,7 @@
           :disabled="disabled"
           label-width="auto"
         >
-          <!-- Step 1: 数据源 -->
+          <!-- Step 1: Data source -->
           <el-form-item :label="td('ai.chat.dataSource')" required>
             <DatasourceList
               v-model="internalDatasourceId"
@@ -103,7 +104,7 @@
             />
           </el-form-item>
 
-          <!-- Step 2: 事实表 -->
+          <!-- Step 2: Fact table -->
           <el-form-item :label="td('ai.chat.factTable')" required>
             <el-select
               v-model="internalFactTableName"
@@ -131,7 +132,7 @@
             </el-select>
           </el-form-item>
 
-          <!-- Step 3: 关联维表 -->
+          <!-- Step 3: Related dimension table -->
           <el-form-item :label="td('ai.chat.dimensionTable')" required>
             <el-select
               v-model="internalDimensionTableNames"
@@ -192,7 +193,7 @@
       </div>
     </el-collapse-transition>
 
-    <!-- 3. 设置关联关系弹窗 -->
+    <!-- 3. Set up the association pop-up window -->
     <el-dialog
       v-model="associationVisible"
       :title="td('ai.chat.setAssociationTitle')"
@@ -314,7 +315,7 @@ const props = defineProps({
   },
   joinConditionMatchFlag: {
     type: [Boolean, Number, Object],
-    default: true, // true or 1: 不需要匹配，false or 0: 需要匹配
+    default: true, // true or 1: no matching required, false or 0: matching required
   },
   conversationId: {
     type: [String, Number],
@@ -337,14 +338,14 @@ const emit = defineEmits([
 ]);
 
 const handleOpenAssociationConfirm = (conversationId) => {
-  // 如果是事件对象，则忽略它，优先使用传入的 conversationId，然后是 props 里的 conversationId
+  // If it is an event object, ignore it and use the incoming conversationId first, then the conversationId in props
   const id =
     conversationId && typeof conversationId !== "object"
       ? conversationId
       : props.conversationId || currentConversationId.value;
 
   if (!id) {
-    console.warn("未提供有效的会话 ID，无法打开确认框");
+    console.warn("No valid conversation ID was provided; unable to open the confirmation dialog");
     return;
   }
   ElMessageBox.confirm(
@@ -357,11 +358,11 @@ const handleOpenAssociationConfirm = (conversationId) => {
     }
   )
     .then(() => {
-      // 直接触发弹窗显示逻辑
+      // Directly trigger pop-up window display logic
       openAssociationDialog(id);
     })
     .catch(() => {
-      // 用户取消，不执行任何操作
+      // User cancels without performing any action
     });
 };
 // props.initialShowConfig
@@ -406,7 +407,7 @@ const mergedTableCommentMap = computed(() => ({
   ...localTableCommentMap.value,
 }));
 
-// 同步外部 props 到内部 state
+// Synchronize external props to internal state
 watch(
   () => props.datasourceId,
   (val) => (internalDatasourceId.value = val),
@@ -416,7 +417,7 @@ watch(
   () => props.factTableName,
   (val) => {
     internalFactTableName.value = val;
-    // 如果有值，且不在 options 里，手动加一个以供渲染
+    // If there is a value and it is not in options, manually add one for rendering.
     if (val && !factTableOptions.value.some((o) => o.tableName === val)) {
       factTableOptions.value.push({
         tableName: val,
@@ -435,7 +436,7 @@ watch(
   () => props.dimensionTableNames,
   (val) => {
     internalDimensionTableNames.value = [...(val || [])];
-    // 如果有值，且不在 options 里，手动加一个以供渲染
+    // If there is a value and it is not in options, manually add one for rendering.
     (val || []).forEach((name) => {
       if (!dimensionTableOptions.value.some((o) => o.tableName === name)) {
         dimensionTableOptions.value.push({
@@ -451,7 +452,7 @@ watch(
 watch(
   () => props.tableCommentMap,
   () => {
-    // 当外部注释映射变化时，强制触发维表和事实表选项的渲染补齐
+    // Force rendering completion of dimension table and fact table options to be triggered when external annotation mapping changes
     if (
       internalFactTableName.value &&
       !factTableOptions.value.some(
@@ -513,7 +514,7 @@ const remoteSearchFactTables = async (query) => {
       tableName: query,
     });
     const newOptions = res?.data || [];
-    // 确保当前选中的值始终在选项中
+    // Make sure the currently selected value is always in the options
     if (
       internalFactTableName.value &&
       !newOptions.some((o) => o.tableName === internalFactTableName.value)
@@ -532,8 +533,8 @@ const remoteSearchFactTables = async (query) => {
 
 const handleFactTableSelectVisible = (visible) => {
   if (visible) {
-    // 如果已经有数据了，且不是强制刷新，可以考虑不调
-    // 但为了确保数据是最新的，通常还是会调一次，这里加上 loading 判断防止重复
+    // If there is already data and it is not forced to be refreshed, you can consider not adjusting it.
+    // But in order to ensure that the data is up to date, it is usually adjusted once. Here, a loading judgment is added to prevent duplication.
     if (!factTableLoading.value) {
       remoteSearchFactTables("");
     }
@@ -561,7 +562,7 @@ const remoteSearchDimensionTables = async (query) => {
       tableName: query,
     });
     const newOptions = res?.data || [];
-    // 确保当前选中的值始终在选项中
+    // Make sure the currently selected value is always in the options
     internalDimensionTableNames.value.forEach((name) => {
       if (!newOptions.some((o) => o.tableName === name)) {
         newOptions.unshift({
@@ -606,7 +607,7 @@ const handleConfirm = () => {
   });
 };
 
-// --- 设置关联关系弹窗相关逻辑 ---
+// ---Set the related logic of the association pop-up window ---
 const associationVisible = ref(false);
 const savingAssociations = ref(false);
 const factTableColumns = ref([]);
@@ -649,7 +650,7 @@ const associationTableStore = ref({
     },
   ],
   func: async () => {
-    // 1. 获取事实表字段
+    // 1. Get fact table fields
     const factRes = await getColumnByAssetId({
       id: internalDatasourceId.value,
       tableName: internalFactTableName.value,
@@ -660,7 +661,7 @@ const associationTableStore = ref({
       selectedDimensionColumn: "",
     }));
 
-    // 2. 获取所有维表字段
+    // 2. Get all dimension table fields
     const dimensionPromises = internalDimensionTableNames.value.map(
       (tableName) =>
         getColumnByAssetId({
@@ -682,7 +683,7 @@ const associationTableStore = ref({
 });
 
 const openAssociationDialog = async (conversationId) => {
-  // 如果是事件对象，则忽略它，优先使用传入的 conversationId，然后是 props 里的 conversationId，最后是 currentConversationId
+  // If it is an event object, ignore it and use the incoming conversationId first, then the conversationId in props, and finally the currentConversationId
   const id =
     conversationId && typeof conversationId !== "object"
       ? conversationId
@@ -702,13 +703,13 @@ const handleCloseAssociationDialog = () => {
   currentConversationId.value = null;
 };
 const onRowDimensionTableChange = (row) => {
-  // 切换维度表时，重置当前行的字段选择
+  // When switching dimension tables, reset field selections for the current row
   row.selectedDimensionColumn = "";
 };
 const handleSaveAssociations = async () => {
   if (!currentConversationId.value) return;
 
-  // 校验逻辑：选了维度表必须选字段
+  // Verification logic: If you select a dimension table, you must select a field
   const invalidRow = factTableColumns.value.find(
     (row) => row.selectedDimensionTable && !row.selectedDimensionColumn
   );
@@ -719,7 +720,7 @@ const handleSaveAssociations = async () => {
     return;
   }
 
-  // 组合数据：只组合并发送维度表和字段均已选择的数据
+  // Combine data: Only combine and send data with dimension tables and fields selected
   const associations = factTableColumns.value
     .filter((row) => row.selectedDimensionTable && row.selectedDimensionColumn)
     .map((row) => ({
@@ -741,10 +742,10 @@ const handleSaveAssociations = async () => {
     });
     ElMessage.success(td('ai.chat.setAssociationSuccess'));
     associationVisible.value = false;
-    // 触发确认，重新开始问答（或者由父组件处理）
+    // Trigger confirmation and restart Q&A (or handled by parent component)
     emit("confirm-associations");
   } catch (error) {
-    console.error("设置关联关系失败:", error);
+    console.error("Failed to configure association:", error);
   } finally {
     savingAssociations.value = false;
   }

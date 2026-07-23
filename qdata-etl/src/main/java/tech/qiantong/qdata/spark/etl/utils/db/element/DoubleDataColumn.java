@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl.utils.db.element;
@@ -55,7 +41,7 @@ public class DoubleDataColumn extends DataColumn {
     }
 
     /**
-     * Double无法表示准确的小数数据，我们不推荐使用该方法保存Double数据，建议使用String作为构造入参
+     * Double cannot represent accurate decimal data. We do not recommend using this method to save Double data. It is recommended to use String as the constructor input parameter.
      */
     public DoubleDataColumn(final Double data) {
         this(data == null ? (String) null
@@ -63,7 +49,7 @@ public class DoubleDataColumn extends DataColumn {
     }
 
     /**
-     * Float无法表示准确的小数数据，我们不推荐使用该方法保存Float数据，建议使用String作为构造入参
+     * Float cannot represent accurate decimal data. We do not recommend using this method to save Float data. It is recommended to use String as the construction input parameter.
      */
     public DoubleDataColumn(final Float data) {
         this(data == null ? (String) null
@@ -95,7 +81,7 @@ public class DoubleDataColumn extends DataColumn {
         try {
             return new BigDecimal((String) this.getRawData());
         } catch (NumberFormatException e) {
-            throw DBException.asDataXException(String.format("String[%s] 无法转换为Double类型 .",
+            throw DBException.asDataXException(String.format("String[%s] cannot be converted to Double.",
                     (String) this.getRawData()));
         }
     }
@@ -151,22 +137,22 @@ public class DoubleDataColumn extends DataColumn {
 
     @Override
     public Boolean asBoolean() {
-        throw DBException.asDataXException("Double类型无法转为Bool .");
+        throw DBException.asDataXException("Double cannot be converted to Bool.");
     }
 
     @Override
     public Date asDate() {
-        throw DBException.asDataXException("Double类型无法转为Date类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Date.");
     }
 
     @Override
     public Date asDate(String dateFormat) {
-        throw DBException.asDataXException("Double类型无法转为Date类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Date.");
     }
 
     @Override
     public byte[] asBytes() {
-        throw DBException.asDataXException("Double类型无法转为Bytes类型 .");
+        throw DBException.asDataXException("Double cannot be converted to Bytes.");
     }
 
     private void validate(final String data) {
@@ -182,7 +168,7 @@ public class DoubleDataColumn extends DataColumn {
         try {
             new BigDecimal(data);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("String[%s]无法转为Double类型 .", data));
+            throw DBException.asDataXException(String.format("String[%s] cannot be converted to Double.", data));
         }
     }
 

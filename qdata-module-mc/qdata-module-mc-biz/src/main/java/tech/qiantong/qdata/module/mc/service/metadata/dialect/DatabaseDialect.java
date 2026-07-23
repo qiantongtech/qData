@@ -3,58 +3,58 @@ package tech.qiantong.qdata.module.mc.service.metadata.dialect;
 import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McDbDO;
 
 /**
- * 数据库方言接口
- * 用于根据不同数据库类型实现不同的元数据查询逻辑
+ * Database dialect interface
+ * Used to implement different metadata query logic according to different database types
  */
 public interface DatabaseDialect {
 
     /**
-     * 获取数据库存储引擎
+     * Get database storage engine
      */
     String getStorageEngine(McDbDO mcDbDO);
 
     /**
-     * 获取表的行数
+     * Get the number of rows in the table
      */
     Long getTableRowCount(McDbDO mcDbDO, String tableName);
 
     /**
-     * 获取表的索引信息
+     * Get the index information of the table
      */
     String getTableIndexes(McDbDO mcDbDO, String tableName);
 
     /**
-     * 获取表的分区字段信息
+     * Get table partition field information
      */
     String getTablePartitionFields(McDbDO mcDbDO, String tableName);
 
     /**
-     * 获取字段的自增信息
+     * Get the auto-increment information of a field
      */
     boolean isColumnAutoIncrement(McDbDO mcDbDO, String tableName, String columnName);
 
     /**
-     * 获取字段是否为分区字段
+     * Get whether the field is a partition field
      */
     boolean isPartitionField(McDbDO mcDbDO, String tableName, String columnName);
 
     /**
-     * 获取数据库元数据信息
+     * Get database metadata information
      */
     DbMetadata getDbMetadata(McDbDO mcDbDO);
 
     /**
-     * 批量获取表的元数据信息
+     * Get table metadata information in batches
      */
     TableMetadata getTableMetadata(McDbDO mcDbDO, String tableName);
 
     /**
-     * 批量获取字段的元数据信息
+     * Get field metadata information in batches
      */
     ColumnMetadata getColumnMetadata(McDbDO mcDbDO, String tableName, String columnName);
 
     /**
-     * 数据库元数据信息类
+     * Database metadata information class
      */
     class DbMetadata {
         private Integer storageSize;
@@ -70,18 +70,18 @@ public interface DatabaseDialect {
 
 
     /**
-     * 表元数据信息类
+     * Table metadata information class
      */
     class TableMetadata {
         private Long rowCount;
         private String indexes;
         private String partitionFields;
-        private Integer tableSize; // 表存储大小（MB）
-        private String storageEngine; // 存储引擎
-        private String tableComment; // 表注释
-        private String primaryKey; // 主键字段
-        private String createTime; // 创建时间
-        private String updateTime; // 修改时间
+        private Integer tableSize; // Table storage size (MB)
+        private String storageEngine; // Storage engine
+        private String tableComment; // Table annotation
+        private String primaryKey; // Primary key field
+        private String createTime; // Creation time
+        private String updateTime; // Modification time
 
         public Long getRowCount() {
             return rowCount;
@@ -156,12 +156,12 @@ public interface DatabaseDialect {
     }
 
     /**
-     * 字段元数据信息类
+     * Field metadata information class
      */
     class ColumnMetadata {
         private boolean autoIncrement;
         private boolean partitionField;
-        private boolean unique; // 是否唯一
+        private boolean unique; // Is it unique?
 
         public boolean isAutoIncrement() {
             return autoIncrement;

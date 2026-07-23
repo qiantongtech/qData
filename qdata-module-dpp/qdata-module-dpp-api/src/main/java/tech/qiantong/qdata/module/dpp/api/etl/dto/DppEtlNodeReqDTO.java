@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.api.etl.dto;
@@ -35,7 +21,7 @@ package tech.qiantong.qdata.module.dpp.api.etl.dto;
 import lombok.Data;
 
 /**
- * 数据集成节点 DTO 对象 DPP_ETL_NODE
+ * Data Integration Node DTO - DPP_ETL_NODE
  *
  * @author qdata
  * @date 2025-02-13
@@ -48,58 +34,58 @@ public class DppEtlNodeReqDTO {
     /** ID */
     private Long id;
 
-    /** 节点类型 */
+    /** Node Type */
     private String type;
 
-    /** 节点名称 */
+    /** Node Name */
     private String name;
 
-    /** 节点编码 */
+    /** Node Code */
     private String code;
 
-    /** 节点版本 */
+    /** Node Version */
     private Long version;
 
-    /** 项目id */
+    /** Project ID */
     private Long projectId;
 
-    /** 项目编码 */
+    /** Project Code */
     private String projectCode;
 
-    /** 节点参数 */
+    /** Node Parameters */
     private String parameters;
 
-    /** 任务优先级 */
+    /** Task Priority */
     private String priority;
 
-    /** 失败重试次数 */
+    /** Fail Retry Times */
     private Long failRetryTimes;
 
-    /** 失败重试间隔（分钟） */
+    /** Fail Retry Interval (Minutes) */
     private Long failRetryInterval;
 
-    /** 超时时间 */
+    /** Timeout */
     private Long timeout;
 
-    /** 延迟执行时间（分钟） */
+    /** Delay Execution Time (Minutes) */
     private Long delayTime;
 
-    /** CPU配额 */
+    /** CPU Quota */
     private Long cpuQuota;
 
-    /** 最大内存 */
+    /** Max Memory */
     private Long memoryMax;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** DolphinScheduler的id */
+    /** DolphinScheduler ID */
     private Long dsId;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

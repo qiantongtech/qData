@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-    <!-- 数据预览的修改记录弹窗 -->
+    <!-- Modification record pop-up window for data preview -->
     <el-dialog v-model="visible" class="dialog" width="1200px" draggable destroy-on-close>
         <template #header="{ close, titleId, titleClass }">
             <span role="heading" aria-level="2" class="el-dialog__title">
@@ -144,7 +145,7 @@ const queryParams = reactive({
     // updateWhere: {},
 });
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange({ column, prop, order }) {
     queryParams.orderByColumn = column?.columnKey || prop;
     queryParams.isAsc = column.order;
@@ -203,11 +204,11 @@ watch(
     () => props.columns,
     (arr) => {
         if (arr && arr.length > 0) {
-            // 必填字段
+            // Required fields
             const requiredFields = arr.filter(item => item.columnNullable == true);
-            // 所有非唯一键字段
+            // All non-unique key fields
             columnsTwo.value = arr.filter(item => item.columnKey == false);
-            // 所有唯一键字段
+            // All unique key fields
             uniqueKeys.value = arr.filter(item => item.columnKey != false);
         }
     },
@@ -216,10 +217,10 @@ watch(
 
 function getList() {
     loading.value = true;
-    // 唯一键字段数组拼成字符串
+    // Unique key field array assembled into string
     const commentKeyList = uniqueKeys.value.map(item => item.en).join(',');
     const tableCommentList = [];
-    // 组装 map-json 结构对象
+    // Assemble the map-json structure object
     const fieldNamesObj = {
         tableCommentList,
         commentKeyList,

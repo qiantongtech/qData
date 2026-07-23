@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 正则表达式替换   -->
+  <!-- Regular expression replacement   -->
   <el-form
     ref="formRef"
     :model="form"
@@ -27,14 +28,14 @@
     <el-row>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.regex', '正则表达式')"
+          :label="td('dpp.cleanRule.regex', 'Regular Expression')"
           prop="regex"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.inputRegex', '请输入正则表达式'),
+                    message: td('dpp.cleanRule.inputRegex', 'Please enter regular expression'),
                     trigger: 'blur',
                   },
                 ]
@@ -44,7 +45,7 @@
           <el-input
             v-if="!falg"
             v-model="form.regex"
-            :placeholder="td('dpp.cleanRule.inputRegex', '请输入正则表达式')"
+            :placeholder="td('dpp.cleanRule.inputRegex', 'Please enter regular expression')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.regex || "-" }}</div>
@@ -52,18 +53,18 @@
       </el-col>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.replaceWith', '替换为')"
+          :label="td('dpp.cleanRule.replaceWith', 'Replace With')"
           prop="replacement"
           :rules="
             !falg
-              ? [{ required: true, message: td('dpp.cleanRule.inputReplacement', '请输入替换内容'), trigger: 'blur' }]
+              ? [{ required: true, message: td('dpp.cleanRule.inputReplacement', 'Please enter replacement content'), trigger: 'blur' }]
               : []
           "
         >
           <el-input
             v-if="!falg"
             v-model="form.replacement"
-            :placeholder="td('dpp.cleanRule.inputReplacement', '请输入替换内容')"
+            :placeholder="td('dpp.cleanRule.inputReplacement', 'Please enter replacement content')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.replacement || "-" }}</div>
@@ -88,15 +89,20 @@ const emit = defineEmits(["update:form"]);
 
 const formRef = ref(null);
 const form = reactive({ ...props.form });
-// 表单校验规则
+// Form validation rules
 const rules = {
   regex: [
     {
       validator: (rule, value, callback) => {
-        if (form.pattern && !value) {
-          callback(new Error(td('dpp.cleanRule.inputRegex', '请输入正则表达式')));
+        if (!value) {
+          callback(new Error(td('dpp.cleanRule.inputRegex', 'Please enter regular expression')));
         } else {
-          callback();
+          try {
+            new RegExp(value);
+            callback();
+          } catch {
+            callback(new Error('正则表达式格式不正确'));
+          }
         }
       },
       trigger: "blur",
@@ -107,12 +113,12 @@ const rules = {
       type: "array",
       required: true,
       min: 1,
-      message: td('dpp.cleanRule.selectAllowedChars', '请选择允许的字符类型'),
+      message: td('dpp.cleanRule.selectAllowedChars', 'Please select allowed character types'),
       trigger: "change",
     },
   ],
   ignoreNullValue: [
-    { required: true, message: td('dpp.cleanRule.selectIgnoreNull', '请选择忽略空值'), trigger: "change" },
+    { required: true, message: td('dpp.cleanRule.selectIgnoreNull', 'Please select ignore null value'), trigger: "change" },
   ],
 };
 const exposedFields = ["regex", "replacement"];

@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /*
@@ -167,10 +168,10 @@ const CodeEdit = (props: CodeEditFormProps) => {
           };
         });
 
-        // 获取当前光标行的文本
+        // Get the text of the current cursor line
         const lineText = model.getLineContent(position.lineNumber) ?? '';
         context.triggerKind = monacoIns.languages.CompletionTriggerKind.TriggerCharacter;
-        // 设置以当前光标行的文本为触发字符
+        // Set the text of the current cursor line as the trigger character
         context.triggerCharacter = lineText;
         return suggestions;
       },
@@ -228,26 +229,26 @@ const CodeEdit = (props: CodeEditFormProps) => {
     editor.focus();
   };
 
-  // todo: 标记错误信息
+  // todo: mark error message
 
   const finalEditorOptions = {
     ...MonacoEditorOptions, // set default options
-    tabCompletion: 'on', // tab 补全
-    cursorSmoothCaretAnimation: false, // 光标动画
-    screenReaderAnnounceInlineSuggestion: true, // 屏幕阅读器提示
-    formatOnPaste: true, // 粘贴时格式化
-    mouseWheelZoom: true, // 鼠标滚轮缩放
-    autoClosingBrackets: 'always', // 自动闭合括号
-    autoClosingOvertype: 'always', // 用于在右引号或括号上键入的选项
-    autoClosingQuotes: 'always', // 自动闭合引号
-    showUnused: true, // 显示未使用的代码
-    unfoldOnClickAfterEndOfLine: true, // 控制在折叠线之后单击空内容是否会展开该线
-    showFoldingControls: 'always', // 代码折叠控件 'always' | 'mouseover' | 'never'
-    automaticLayout: true, // 自动布局
-    readOnly, // 是否只读
-    glyphMargin: true, // 字形边缘
-    formatOnType: true, // 代码格式化
-    // columnSelection: true, // 列选择
+    tabCompletion: 'on', // tab completion
+    cursorSmoothCaretAnimation: false, // Cursor animation
+    screenReaderAnnounceInlineSuggestion: true, // Screen reader tips
+    formatOnPaste: true, // Format when pasting
+    mouseWheelZoom: true, // Mouse wheel zoom
+    autoClosingBrackets: 'always', // Automatic closing brackets
+    autoClosingOvertype: 'always', // Options for typing around closing quotes or brackets
+    autoClosingQuotes: 'always', // Automatic closing quotes
+    showUnused: true, // Show unused code
+    unfoldOnClickAfterEndOfLine: true, // Controls whether clicking empty content after a collapsed line expands the line
+    showFoldingControls: 'always', // Code folding control 'always' | 'mouseover' | 'never'
+    automaticLayout: true, // autolayout
+    readOnly, // Is it read-only?
+    glyphMargin: true, // glyph edge
+    formatOnType: true, // Code formatting
+    // columnSelection: true, // column selection
     wrappingIndent:
       language === 'yaml' || language === 'yml' || language === 'json' ? 'indent' : 'none',
     inlineSuggest: {
@@ -326,7 +327,7 @@ const CodeEdit = (props: CodeEditFormProps) => {
           className={'editor-develop'}
           onMount={editorDidMountChange}
           onChange={onChange}
-          //zh-CN: 因为在 handleInitEditorAndLanguageOnBeforeMount 中已经注册了自定义语言，所以这里的作用仅仅是用来切换主题 不需要重新加载自定义语言的 token 样式 , 所以这里入参需要为空, 否则每次任意的 props 改变时(包括高度等),会出现编辑器闪烁的问题
+          //zh-CN: Because the custom language has been registered in handleInitEditorAndLanguageOnBeforeMount, the function here is only to switch themes. There is no need to reload the token style of the custom language, so the parameters here need to be empty, otherwise the editor will flicker every time any props are changed (including height, etc.)
           //en-US: because the custom language has been registered in handleInitEditorAndLanguageOnBeforeMount, so the only purpose here is to switch the theme, and there is no need to reload the token style of the custom language, so the incoming parameters here need to be empty, otherwise any props change (including height, etc.) will cause the editor to flash
           theme={theme === 'realDark' ? 'vs-dark' : theme}
         />

@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 元数据字段信息Service业务层处理
+ * Metadata field information Service business layer processing
  *
  * @author qdata
  * @date 2026-02-11
@@ -65,7 +65,7 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         List<McColumnDO> columnDO = BeanUtils.toBean(createReqVO, McColumnDO.class);
         if (null != columnDO && columnDO.size() > 0) {
             for (McColumnDO mcColumnDO : columnDO) {
-                // 获取数据库元数据信息，包括数据库类型
+                // Get database metadata information, including database type
                 mcColumnDO = reMcColumnDO(mcColumnDO);
             }
         }
@@ -83,19 +83,19 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         }
 
 //        if (mcDbDO != null) {
-//            // 使用数据库方言获取字段的自增和分区字段信息
+// // Use the database dialect to obtain the auto-increment and partition field information of the field
 //            DatabaseDialect dialect = DatabaseDialectFactory.getDialect(mcDbDO);
 //            if (dialect != null) {
-//                // 批量获取字段元数据信息
+// // Get field metadata information in batches
 //                DatabaseDialect.ColumnMetadata metadata = dialect.getColumnMetadata(mcDbDO, respVO.getTableRespVO()
 //                        .getTableName(), mcColumnDO.getColumnName());
-//                // 设置字段自增信息
+// //Set field auto-increment information
 //                mcColumnDO.setAutoIncrementFlag(metadata.isAutoIncrement() ? "1" : "0");
 //
-//                // 设置字段是否为分区字段
+// // Set whether the field is a partition field
 //                DatabaseDialect.TableMetadata metadataTb = dialect.getTableMetadata(mcDbDO, respVO.getTableRespVO()
 //                        .getTableName());
-//                // 获取表的分区字段判断是否包含
+// // Get the partition field of the table to determine whether it is included
 //                Boolean partitionFields = false;
 //                if (metadataTb.getPartitionFields() != null) {
 //                    partitionFields = metadataTb.getPartitionFields()
@@ -111,16 +111,16 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
 
     @Override
     public int updateMcColumn(McColumnSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新元数据字段信息
+        // Update metadata field information
         McColumnDO updateMcColumnDO = BeanUtils.toBean(updateReqVO, McColumnDO.class);
         return mcColumnMapper.updateById(updateMcColumnDO);
     }
 
     @Override
     public int removeMcColumn(Collection<Long> idList) {
-        // 批量删除元数据字段信息
+        // Delete metadata field information in batches
         // return mcColumnMapper.deleteBatchIds(idList);
         return mcColumnMapper.delete(Wrappers.lambdaQuery(McColumnDO.class)
                 .in(McColumnDO::getId, idList)
@@ -155,12 +155,12 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
             respVO.setSourceSystemName(mdDbRespVO.getSourceSystemName());
             respVO.setSourceSystemId(mdDbRespVO.getSourceSystemId());
 
-/*            // 获取数据库元数据信息，包括数据库类型
+/* // Get database metadata information, including database type
             McColumnDTO mcColumnDO = reMcColumnDO(columnDO);
             if (mcColumnDO != null) {
-                    // 设置字段自增信息
+                    // Set field auto-increment information
                     respVO.setAutoIncrementFlag(mcColumnDO.getAutoIncrementFlag());
-                    // 设置字段是否为分区字段
+                    // Set whether the field is a partition field
                     respVO.setPartitionFlag(mcColumnDO.getPartitionFlag());
             }*/
         }
@@ -193,7 +193,7 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
                 .collect(Collectors.toMap(
                         McColumnDO::getId,
                         mcColumnDO -> mcColumnDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
@@ -203,10 +203,10 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         MPJLambdaWrapper<McColumnDO> wrapper = new MPJLambdaWrapper<>();
 
         wrapper.selectAll(McColumnDO.class)
-                // ===== 固定条件 =====
+                // ===== Fixed conditions =====
                 .eq(McColumnDO::getDelFlag, "0")
 
-                // ===== 等值条件（if）=====
+                // ===== Equivalence condition (if) =====
                 .eq(mdColumn.getId() != null, McColumnDO::getId, mdColumn.getId())
                 .eq(mdColumn.getTaskId() != null, McColumnDO::getTaskId, mdColumn.getTaskId())
                 .eq(mdColumn.getDbId() != null, McColumnDO::getDbId, mdColumn.getDbId())
@@ -224,7 +224,7 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
                 .eq(StringUtils.isNotBlank(mdColumn.getAuditStatus()), McColumnDO::getAuditStatus, mdColumn.getAuditStatus())
                 .eq(StringUtils.isNotBlank(mdColumn.getStatus()), McColumnDO::getStatus, mdColumn.getStatus())
 
-                // ===== like 条件 =====
+                // ===== like condition =====
                 .like(StringUtils.isNotBlank(mdColumn.getColumnName()), McColumnDO::getColumnName, mdColumn.getColumnName())
                 .like(StringUtils.isNotBlank(mdColumn.getColumnComment()), McColumnDO::getColumnComment, mdColumn.getColumnComment())
                 .like(StringUtils.isNotBlank(mdColumn.getBusinessDefinition()), McColumnDO::getBusinessDefinition, mdColumn.getBusinessDefinition())
@@ -232,13 +232,13 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
                 .like(StringUtils.isNotBlank(mdColumn.getDefaultValue()), McColumnDO::getDefaultValue, mdColumn.getDefaultValue())
                 .like(StringUtils.isNotBlank(mdColumn.getDescription()), McColumnDO::getDescription, mdColumn.getDescription())
 
-                // ===== 数值条件 =====
+                // ===== Numerical conditions =====
                 .eq(mdColumn.getColumnLength() != null, McColumnDO::getColumnLength, mdColumn.getColumnLength())
                 .eq(mdColumn.getColumnPrecision() != null, McColumnDO::getColumnPrecision, mdColumn.getColumnPrecision())
                 .eq(mdColumn.getColumnScale() != null, McColumnDO::getColumnScale, mdColumn.getColumnScale())
                 .eq(mdColumn.getDataQuality() != null, McColumnDO::getDataQuality, mdColumn.getDataQuality())
 
-                // ===== 时间 =====
+                // ===== Time =====
                 .orderByStr(org.apache.commons.lang3.StringUtils.isNotBlank(mdColumn.getOrderByColumn()), org.apache.commons.lang3.StringUtils.equals("asc", mdColumn.getIsAsc()), org.apache.commons.lang3.StringUtils.isNotBlank(mdColumn.getOrderByColumn()) ? Arrays.asList(mdColumn.getOrderByColumn()
                                                                                                                                                                                                                                                                                 .split(",")) : null);
 
@@ -252,12 +252,12 @@ public class McColumnServiceImpl extends ServiceImpl<McColumnMapper, McColumnDO>
         List<McColumnDO> columnDOs = BeanUtils.toBean(createReqVO, McColumnDO.class);
         Set<String> columnNames = columnDOs.stream().map(McColumnDO::getColumnName).collect(Collectors.toSet());
         if (columnNames.size() != columnDOs.size()) {
-            throw new ServiceException("mc.error.column.duplicate", "字段名重复");
+            throw new ServiceException("mc.error.column.duplicate", "Duplicate column name");
         }
         List<McColumnDO> exists = mcColumnMapper.findByTableIdAndColumnNameIn(tableId, columnNames);
         if (!exists.isEmpty()) {
             String ex = exists.stream().map(McColumnDO::getColumnName).collect(Collectors.joining(","));
-            throw new ServiceException("mc.error.column.duplicate.ex", "与同表的其他字段名重复, [" + ex + "]", ex);
+            throw new ServiceException("mc.error.column.duplicate.ex", "Duplicate column name with other columns in the same table", ex);
         }
         mcColumnMapper.insertBatch(columnDOs);
         return createReqVO.size();

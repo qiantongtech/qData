@@ -1,24 +1,25 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /* Layout */
 import Layout from '@/layout/index.vue';
 
-// 系统模块公共路由
+// System module public routing
 export default [
     {
         path: '/redirect',
@@ -65,7 +66,7 @@ export default [
                 path: '/index',
                 component: () => import('@/views/sys/index.vue'),
                 name: 'Index',
-                meta: { title: '首页', icon: 'dashboard', affix: true, lang: 'public.home' }
+                meta: { title: 'Home', icon: 'dashboard', affix: true, lang: 'public.home' }
             }
         ]
     },
@@ -78,7 +79,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/developing/index.vue'),
                 name: 'Developing',
-                meta: { title: '功能开发中', lang: 'public.featureDeveloping' }
+                meta: { title: 'Feature Under Development', lang: 'public.featureDeveloping' }
             }
         ]
     },
@@ -91,7 +92,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/message/index.vue'),
                 name: 'Message',
-                meta: { title: '我的消息', icon: 'message', lang: 'public.myMessages' },
+                meta: { title: 'My Messages', icon: 'message', lang: 'public.myMessages' },
                 hidden: true
             }
         ]
@@ -106,7 +107,7 @@ export default [
                 path: 'profile',
                 component: () => import('@/views/sys/system/user/profile/index.vue'),
                 name: 'Profile',
-                meta: { title: '个人中心', icon: 'user', lang: 'public.personalCenter' }
+                meta: { title: 'Personal Center', icon: 'user', lang: 'public.personalCenter' }
             }
         ]
     },
@@ -120,7 +121,7 @@ export default [
                 path: 'user',
                 component: () => import('@/views/sys/system/user/index.vue'),
                 name: 'User',
-                meta: { title: '用户管理', icon: 'user', lang: 'public.userManagement' }
+                meta: { title: 'User Management', icon: 'user', lang: 'public.userManagement' }
             }
         ]
     },
@@ -134,7 +135,7 @@ export default [
                 path: '',
                 component: () => import('@/views/sys/system/notice/detail.vue'),
                 name: 'noticeDetail',
-                meta: { title: '公告详情', activeMenu: '/system/notice', lang: 'public.noticeDetail' }
+                meta: { title: 'Notice Details', activeMenu: '/system/notice', lang: 'public.noticeDetail' }
             }
         ]
     },

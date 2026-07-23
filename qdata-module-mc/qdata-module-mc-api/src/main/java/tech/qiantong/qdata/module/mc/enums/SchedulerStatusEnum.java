@@ -1,65 +1,19 @@
 /*
- * Copyright (c) 2026 Jiangsu Qiantong Technology Co., Ltd.
- *  *
- * Software Name: qData Data Middle Platform (Commercial Edition)
- * Software Copyright Registration No. 16069171
- *  *
- * [RIGHTS AND LICENSE STATEMENT]
- * This file contains non-public commercial source code of which Jiangsu Qiantong
- * Technology Co., Ltd. lawfully possesses complete intellectual property rights.
- *  *
- * Access and use are limited to entities or individuals who have signed a valid
- * commercial license agreement, within the scope stipulated in the agreement.
- * The "accessibility" of this source code is premised on lawful authorization
- * and does not constitute any form of transfer of intellectual property rights
- * or implied licensing.
- *  *
- * [PROHIBITIONS]
- * Unless explicitly agreed in the license agreement, the following acts in any
- * form are strictly prohibited:
- * 1. Copying, disseminating, disclosing, selling, renting, or redistributing
- * this source code;
- * 2. Providing the software's functionality to third parties via SaaS, PaaS,
- * cloud hosting, or other means;
- * 3. Using this software or its derivative versions to develop products that
- * compete with the Right Holder;
- * 4. Providing or displaying this source code or related technical information
- * to unauthorized third parties;
- * 5. Tampering with, circumventing, or destroying copyright notices, license
- * verifications, or other technical protection measures.
- *  *
- * [LEGAL LIABILITY]
- * Any unauthorized use constitutes an infringement of trade secrets and
- * intellectual property rights.
- *  *
- * The Right Holder will strictly pursue liability for breach of contract and
- * infringement in accordance with the commercial agreement and laws such as
- * the "Copyright Law of the People's Republic of China" and the "Anti-Unfair
- * Competition Law".
- *  *
- * ============================================================================
- *  *
- * Copyright (c) 2026 江苏千桐科技有限公司
- *  *
- * 软件名称：qData 数据中台（商业版） | 软著登字第16069171号
- *  *
- * 【权利与授权声明】
- * 本文件属于江苏千桐科技有限公司依法享有完全知识产权的非公开商业源代码。
- * 仅限已签署有效商业授权合同的单位或个人在约定范围内查阅和使用。
- * 源代码的"可访问性"均以合法授权为前提，不构成任何形式的知识产权转让或默示授权。
- *  *
- * 【禁止事项】
- * 除授权合同明确约定外，严禁任何形式的：
- * 1. 复制、传播、披露、出售、出租或再分发本源代码；
- * 2. 通过 SaaS、PaaS、云托管等方式向第三方提供本软件功能；
- * 3. 将本软件或其衍生版本用于开发与权利人构成竞争的产品；
- * 4. 向未授权第三方提供或展示本源代码或相关技术信息；
- * 5. 篡改、规避或破坏版权标识、授权校验及其他技术保护措施。
- *  *
- * 【法律责任】
- * 任何未经授权的利用行为，均构成对商业秘密及知识产权的侵害。
- * 权利人将依据商业合同及《中华人民共和国著作权法》《反不正当竞争法》
- * 等法律法规，严厉追究违约与侵权责任。
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.mc.enums;
@@ -68,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 调度器状态枚举
+ * Scheduler status enum
  *
  * @author qdata
  * @date 2026-05-11
@@ -78,30 +32,30 @@ import lombok.Getter;
 public enum SchedulerStatusEnum {
 
     /**
-     * 禁用/下线状态
+     * Disabled/offline status
      */
     DISABLED("0", "禁用"),
 
     /**
-     * 启用/上线状态
+     * Enabled/online status
      */
     ENABLED("1", "启用");
 
     /**
-     * 状态值
+     * Status value
      */
     private final String value;
 
     /**
-     * 状态名称
+     * Status name
      */
     private final String name;
 
     /**
-     * 根据状态值获取枚举
+     * Get enum based on status value
      *
-     * @param value 状态值
-     * @return 枚举对象
+     * @param value status value
+     * @return enumeration object
      */
     public static SchedulerStatusEnum getByValue(String value) {
         if (value == null) {
@@ -116,20 +70,20 @@ public enum SchedulerStatusEnum {
     }
 
     /**
-     * 判断是否为禁用状态
+     * Determine whether it is disabled
      *
-     * @param value 状态值
-     * @return 是否为禁用
+     * @param value status value
+     * @return whether it is disabled
      */
     public static boolean isDisabled(String value) {
         return DISABLED.getValue().equals(value);
     }
 
     /**
-     * 判断是否为启用状态
+     * Determine whether it is enabled
      *
-     * @param value 状态值
-     * @return 是否为启用
+     * @param value status value
+     * @return whether it is enabled
      */
     public static boolean isEnabled(String value) {
         return ENABLED.getValue().equals(value);

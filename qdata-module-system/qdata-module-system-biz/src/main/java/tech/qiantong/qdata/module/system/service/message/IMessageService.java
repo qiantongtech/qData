@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.message;
@@ -47,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 消息Service接口
+ * Message Service interface
  *
  * @author qdata
  * @date 2024-10-31
@@ -62,7 +48,7 @@ public interface IMessageService extends IService<MessageDO> {
 
         if (startTime != null || endTime != null) {
             if (startTime != null) {
-                // >= 当日 00:00:00
+                // >= current day 00:00:00
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(startTime);
                 cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -72,7 +58,7 @@ public interface IMessageService extends IService<MessageDO> {
                 qw.ge("create_time", cal.getTime());
             }
             if (endTime != null) {
-                // <= 当日 23:59:59.999
+                // <= current day 23:59:59.999
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(endTime);
                 cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -88,41 +74,41 @@ public interface IMessageService extends IService<MessageDO> {
     }
 
     /**
-     * 通过模版向某一个用户发送消息
-     * @param templateId 模版id
-     * @param messageSaveReqVO 消息创建
-     * @param entity 实体对象
-     * @return 是否发送成功
+     * Send a message to a specific user via template
+     * @param templateId template id
+     * @param messageSaveReqVO message creation request
+     * @param entity entity object
+     * @return whether send succeeded
      */
     public Boolean send(Long templateId, MessageSaveReqVO messageSaveReqVO, Object entity);
 
     /**
-     * 查询消息数量
-     * @param message 查询条件
-     * @return 数量
+     * Query message count
+     * @param message query criteria
+     * @return count
      */
     public Long getNum(MessagePageReqVO message);
 
     /**
-     * 设置已读
-     * @param id 消息id
-     * @return 是否成功
+     * Mark as read
+     * @param id message id
+     * @return whether succeeded
      */
     public Boolean read(Long id);
 
     /**
-     * 全部已读
-     * @param receiverId 接收人id
-     * @param category 消息类型
-     * @param module 消息模块
-     * @return 是否成功
+     * Mark all as read
+     * @param receiverId receiver id
+     * @param category message type
+     * @param module message module
+     * @return whether succeeded
      */
     public Boolean readAll(Long receiverId, Integer category, Integer module);
 
     /**
-     * 更新接收人未读消息
+     * Update receiver's unread message count
      *
-     * @param receiverId 接收人id
+     * @param receiverId receiver id
      */
     public void getReceiverWDNum(Long receiverId);
 

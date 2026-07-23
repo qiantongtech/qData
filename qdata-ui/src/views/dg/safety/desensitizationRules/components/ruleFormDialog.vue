@@ -47,7 +47,7 @@
         />
       </el-form-item>
 
-      <!-- 👇 应用场景：改为复选框组 -->
+      <!-- 👇 Application scenario: changed to checkbox group -->
       <qt-form-item
           :label="td('dg.desensitizationRules.applicationScene')"
           prop="applicationScene"
@@ -108,7 +108,7 @@
               v-for="(it, idx) in form.intervalList"
               :key="idx"
           >
-            <div class="range-label">{{ td('dg.desensitizationRules.intervalLabel', '区间 {i}：', { i: idx + 1 }) }}</div>
+            <div class="range-label">{{ td('dg.desensitizationRules.intervalLabel', 'Interval {i}:', { i: idx + 1 }) }}</div>
             <el-input-number
                 v-model="it.startNum"
                 :min="1"
@@ -218,7 +218,7 @@ const rules = {
   dataCategoryId: [
     { required: true, message: td('dg.sensitiveList.dataCategoryRequired'), trigger: "change" },
   ],
-  // 应用场景复选框校验（必须选一个）
+  // Application scenario check box verification (must select one)
   applicationScene: [
     { required: true, message: td('dg.desensitizationRules.applicationSceneRequired'), trigger: "blur" },
     { type: "array", message: td('dg.desensitizationRules.applicationSceneFormatError'), trigger: "change" },
@@ -259,7 +259,7 @@ const defaultForm = {
   id: null,
   name: null,
   dataCategoryId: null,
-  // 复选框绑定数组
+  // Checkbox binding array
   applicationScene: [],
   maskType: "2",
   replaceRule: null,
@@ -405,7 +405,7 @@ function submit() {
 
     const payload = {
       ...form.value,
-      // 提交时转逗号分隔字符串
+      // Convert comma separated string when submitting
       applicationScene: form.value.applicationScene.join(","),
       intervalList: form.value.intervalList.map((it, idx) => {
         const { id, ...rest } = it;

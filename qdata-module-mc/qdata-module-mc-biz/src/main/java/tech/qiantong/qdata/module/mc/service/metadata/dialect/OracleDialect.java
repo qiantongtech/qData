@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.Map;
 
 /**
- * Oracle数据库方言实现
+ * Oracle database dialect implementation
  */
 @Slf4j
 public class OracleDialect implements DatabaseDialect {
@@ -29,10 +29,10 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getStorageEngine(McDbDO mcDbDO) {
         try {
-            // Oracle数据库使用表空间，这里返回Oracle Database
+            // Oracle database uses table space, return Oracle Database here
             return "Oracle Database";
         } catch (Exception e) {
-            log.error("获取Oracle存储引擎失败", e);
+            log.error("Failed to get the Oracle storage engine", e);
             return null;
         }
     }
@@ -40,18 +40,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public Long getTableRowCount(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return 0L;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COUNT(*) FROM " + tableName;
@@ -61,7 +61,7 @@ public class OracleDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取Oracle表行数失败", e);
+            log.error("Failed to get the Oracle table row count", e);
         }
         return 0L;
     }
@@ -69,18 +69,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getTableIndexes(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return "";
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT INDEX_NAME FROM USER_INDEXES WHERE TABLE_NAME = '" + tableName.toUpperCase() + "' AND INDEX_NAME != 'PK_'";
@@ -96,7 +96,7 @@ public class OracleDialect implements DatabaseDialect {
                 return indexes.toString();
             }
         } catch (Exception e) {
-            log.error("获取Oracle表索引信息失败", e);
+            log.error("Failed to get Oracle table index information", e);
         }
         return "";
     }
@@ -104,18 +104,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public String getTablePartitionFields(McDbDO mcDbDO, String tableName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return "";
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COLUMN_NAME FROM USER_PART_KEY_COLUMNS WHERE NAME = '" + tableName.toUpperCase() + "'";
@@ -131,7 +131,7 @@ public class OracleDialect implements DatabaseDialect {
                 return partitionFields.toString();
             }
         } catch (Exception e) {
-            log.error("获取Oracle表分区字段信息失败", e);
+            log.error("Failed to get Oracle table partition-column information", e);
         }
         return "";
     }
@@ -139,18 +139,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public boolean isColumnAutoIncrement(McDbDO mcDbDO, String tableName, String columnName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return false;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT IDENTITY_COLUMN FROM USER_TAB_COLUMNS WHERE TABLE_NAME = '" + tableName.toUpperCase() + "' AND COLUMN_NAME = '" + columnName.toUpperCase() + "'";
@@ -161,7 +161,7 @@ public class OracleDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取Oracle字段自增信息失败", e);
+            log.error("Failed to get Oracle column auto-increment information", e);
         }
         return false;
     }
@@ -169,18 +169,18 @@ public class OracleDialect implements DatabaseDialect {
     @Override
     public boolean isPartitionField(McDbDO mcDbDO, String tableName, String columnName) {
         try {
-            // 解析datasourceConfig获取连接信息
+            // Parse datasourceConfig to obtain connection information
             Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
             if (configMap == null) {
                 return false;
             }
 
-            // 构建连接字符串
+            // Build connection string
             String url = "jdbc:oracle:thin:@" + mcDbDO.getIp() + ":" + mcDbDO.getPort() + ":" + configMap.get("dbname");
             String username = (String) configMap.get("username");
             String password = (String) configMap.get("password");
 
-            // 连接数据库并执行查询
+            // Connect to the database and execute queries
             try (Connection conn = DriverManager.getConnection(url, username, password);
                  Statement stmt = conn.createStatement()) {
                 String sql = "SELECT COLUMN_NAME FROM USER_PART_KEY_COLUMNS WHERE NAME = '" + tableName.toUpperCase() + "' AND COLUMN_NAME = '" + columnName.toUpperCase() + "'";
@@ -188,7 +188,7 @@ public class OracleDialect implements DatabaseDialect {
                 return rs.next();
             }
         } catch (Exception e) {
-            log.error("判断Oracle字段是否为分区字段失败", e);
+            log.error("Failed to determine whether the Oracle column is a partition column", e);
         }
         return false;
     }
@@ -199,7 +199,7 @@ public class OracleDialect implements DatabaseDialect {
     }
 
     /**
-     * 解析datasourceConfig获取连接信息
+     * Parse datasourceConfig to obtain connection information
      */
     private Map<String, Object> parseDatasourceConfig(String datasourceConfig) {
         if (StringUtils.isBlank(datasourceConfig)) {
@@ -209,7 +209,7 @@ public class OracleDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.utils.qualityDB.dialect;
@@ -70,9 +56,9 @@ public class Oracle12cQuality implements ComponentItem {
 
 
     /**
-     * Oracle 12c：生成“客户输入数据”的字符串校验 SQL
-     * 只用于客户输入数据，点击检测
-     * 返回 0 / 1
+     * Oracle 12c: Generate string validation SQL for "Customer Input Data"
+     * Only used for customer input data, click detection
+     * Return 0 / 1
      */
     @Override
     public String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue) {
@@ -82,13 +68,13 @@ public class Oracle12cQuality implements ComponentItem {
                 rule.getConfig().get("ignoreNullValue")
         );
 
-        // 输入值（转义单引号）
+        // Input value (escaped single quotes)
         String valueExpr = "'" + inputValue.replace("'", "''") + "'";
 
-        // 正则校验
+        // Regular check
         String condition = String.format("REGEXP_LIKE(%s, '%s')", valueExpr, regex);
 
-        // 是否忽略 NULL / 空字符串
+        // Whether to ignore NULL / empty string
         if (ignoreNull) {
             condition = String.format(
                     "%s IS NOT NULL AND %s <> '' AND %s",
@@ -96,7 +82,7 @@ public class Oracle12cQuality implements ComponentItem {
             );
         }
 
-        // 返回 0 / 1
+        // Return 0 / 1
         return String.format(
                 "SELECT CASE WHEN %s THEN 1 ELSE 0 END AS valid_flag FROM dual",
                 condition
@@ -105,10 +91,10 @@ public class Oracle12cQuality implements ComponentItem {
 
 
     /**
-     * 生成字符串类型校验的错误数据SQL
-     * 规则编码：CHARACTER_VALIDATION
+     * Generating error data SQL for string type verification
+     * Rule code: CHARACTER_VALIDATION
      *
-     * 输出：错误明细
+     * Output: error details
      */
     @Override
     public String generateCharacterValidationErrorSql(QualityRuleEntity rule) {
@@ -131,15 +117,15 @@ public class Oracle12cQuality implements ComponentItem {
 
 
     /**
-     * 生成字符串类型校验的正常数据查询SQL（支持分页）
-     * 规则编码：CHARACTER_VALIDATION
+     * Generate normal data query SQL for string type verification (supports paging)
+     * Rule code: CHARACTER_VALIDATION
      *
-     * 用于查询符合正则的数据明细
+     * Used to query data details that comply with regular rules
      *
-     * @param rule  质量规则实体，包含表名、字段名、正则
-     * @param limit 最大行数
-     * @param offset 偏移量（从第几行开始）
-     * @return SQL字符串
+     * @param rule quality rule entity, including table name, field name, regular expression
+     * @param limit maximum number of rows
+     * @param offset offset (from which line to start)
+     * @return SQL string
      */
     @Override
     public String generateCharacterValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {
@@ -230,10 +216,10 @@ public class Oracle12cQuality implements ComponentItem {
 
 
     /**
-     * 数值精度校验 - 错误统计 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - error statistics SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      *
-     * 检查小数点后超过指定精度的数量，统计错误总数 + 全部记录数。
+     * Check the number after the decimal point that exceeds the specified precision, and count the total number of errors + the number of all records.
      */
     @Override
     public String generateDecimalPrecisionValidationSql(QualityRuleEntity rule) {
@@ -263,10 +249,10 @@ public class Oracle12cQuality implements ComponentItem {
     }
 
     /**
-     * 数值精度校验 - 错误明细 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - error details SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      *
-     * 返回所有小数位数超出指定精度的记录。
+     * Returns all records with more decimal places than the specified precision.
      */
     @Override
     public String generateDecimalPrecisionValidationErrorSql(QualityRuleEntity rule) {
@@ -294,10 +280,10 @@ public class Oracle12cQuality implements ComponentItem {
     }
 
     /**
-     * 数值精度校验 - 正常数据分页 SQL
-     * 规则编码：DECIMAL_PRECISION_VALIDATION
+     * Numeric precision check - normal data paging SQL
+     * Rule code: DECIMAL_PRECISION_VALIDATION
      *
-     * 返回所有符合小数精度要求的记录（不超过指定小数位数）。
+     * Returns all records that meet the decimal precision requirement (no more than the specified number of decimal places).
      */
     @Override
     public String generateDecimalPrecisionValidationValidDataSql(QualityRuleEntity rule, int limit, int offset) {

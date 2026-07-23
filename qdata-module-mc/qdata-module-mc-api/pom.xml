@@ -12,11 +12,11 @@
     <artifactId>qdata-module-mc-api</artifactId>
 
     <description>
-        qdata-module-mc-api系统模块
+        qdata-module-mc-api system module
     </description>
 
     <dependencies>
-        <!-- 通用工具-->
+        <!-- Common utilities-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>

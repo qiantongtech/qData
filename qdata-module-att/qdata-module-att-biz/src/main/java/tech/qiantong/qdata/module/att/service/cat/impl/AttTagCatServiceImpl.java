@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.cat.impl;
@@ -61,7 +47,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 标签类目管理Service业务层处理
+ * Tag Category Management Service business layer processing
  *
  * @author qdata
  * @date 2025-07-11
@@ -95,38 +81,38 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
         if (catDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        // Check if the category itself is selected
         if (catDO.getId().equals(updateReqVO.getParentId())){
-            throw new ServiceException("att.error.parent.self", "切换上级不能选择自身作为上级类目");
+            throw new ServiceException("att.error.parent.self", "Cannot select self as parent category");
         }
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             Long countData = attTagService.getCountByCatCode(catDO.getCode());
             if (countData > 0) {
-                throw new ServiceException("att.error.disable.tag", "存在标签，不允许禁用");
+                throw new ServiceException("att.error.disable.tag", "Tag exists, disable not allowed");
             }
             attTagCatMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             AttTagCatDO parent = attTagCatMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("att.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("att.error.parent.disabled", "Please enable the parent category first");
             }
         }
 
-        //修改上下级判断
+        // Check if parent-child hierarchy changed
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId()) ) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
             flag = true;
         }
 
-        // 更新标签类目管理
+        // Update Tag Category Management
         AttTagCatDO updateObj = BeanUtils.toBean(updateReqVO, AttTagCatDO.class);
         int i = attTagCatMapper.updateById(updateObj);
 
         attTagService.updateCatCode(catDO.getCode(),updateObj.getCode());
-        //判断上下级是否发生了改变
+        // Check if parent-child hierarchy has changed
         if (flag) {
-            //更改所有下级
+            // Update all child categories
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
 
@@ -155,12 +141,12 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Three scenarios:
+         * 1. No data in database - call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements - YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements - YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find same category and determine the previous maximum code value
         LambdaQueryWrapper<AttTagCatDO> query = new LambdaQueryWrapper<AttTagCatDO>()
                 .eq(AttTagCatDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), AttTagCatDO::getCode, parentCode)
@@ -169,15 +155,15 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
         List<AttTagCatDO> list = attTagCatMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Case 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Case 2
                 AttTagCatDO parent = attTagCatMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Case 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
@@ -187,9 +173,9 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
     public Integer removeAttTagCat(Long id) {
         int count = 0;
         AttTagCatDO cat = attTagCatMapper.selectById(id);
-        //判断是否存在数据
+        // Check if data exists
         if (attTagService.getCountByCatCode(cat.getCode()) > 0) {
-            throw new ServiceException("att.error.delete.tag", "存在标签，不允许删除");
+            throw new ServiceException("att.error.delete.tag", "Tag exists, deletion not allowed");
         }
         if (cat != null) {
             count += attTagCatMapper.delete(Wrappers.lambdaQuery(AttTagCatDO.class)
@@ -200,7 +186,7 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
 
 //    @Override
 //    public int removeAttTagCat(Collection<Long> idList) {
-//        // 批量删除标签类目管理
+//        // Batch delete Tag Category Management
 //        return attTagCatMapper.deleteBatchIds(idList);
 //    }
 
@@ -221,24 +207,24 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
                 .collect(Collectors.toMap(
                         AttTagCatDO::getId,
                         attTagCatDO -> attTagCatDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入标签类目管理数据
+         * Import Tag Category Management data
          *
-         * @param importExcelList 标签类目管理数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Tag Category Management data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         * @param operName Operator
+         * @return Import result
          */
         @Override
         public String importAttTagCat(List<AttTagCatRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -257,16 +243,16 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
                                 attTagCatMapper.updateById(attTagCatDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attTagCatId + " 的标签类目管理记录。", attTagCatId, "标签类目管理"));
+                                        "Data update successful, ID {0} {1} record.", attTagCatId, MessageUtils.messageWithFallback("att.entity.tag.category", "Tag category")));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attTagCatId + " 的标签类目管理记录不存在。", attTagCatId, "标签类目管理"));
+                                        "Data update failed, ID {0} {1} record does not exist.", attTagCatId, MessageUtils.messageWithFallback("att.entity.tag.category", "Tag category")));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, record ID does not exist."));
                         }
                     } else {
                         QueryWrapper<AttTagCatDO> queryWrapper = new QueryWrapper<>();
@@ -276,17 +262,17 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
                             attTagCatMapper.insert(attTagCatDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                    "数据插入成功，ID为 " + attTagCatId + " 的标签类目管理记录。", attTagCatId, "标签类目管理"));
+                                    "Data insert successful, ID {0} {1} record.", attTagCatId, MessageUtils.messageWithFallback("att.entity.tag.category", "Tag category")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                    "数据插入失败，ID为 " + attTagCatId + " 的标签类目管理记录已存在。", attTagCatId, "标签类目管理"));
+                                    "Data insert failed, ID {0} {1} record already exists.", attTagCatId, MessageUtils.messageWithFallback("att.entity.tag.category", "Tag category")));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -295,12 +281,12 @@ public class AttTagCatServiceImpl extends ServiceImpl<AttTagCatMapper,AttTagCatD
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                         failureNum, failureDetails));
                 throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data imported successfully! Total: {0} records.", successNum));
             }
             return resultMsg.toString();
         }

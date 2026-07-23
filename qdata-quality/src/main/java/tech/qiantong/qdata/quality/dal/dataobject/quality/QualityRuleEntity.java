@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.dal.dataobject.quality;
@@ -45,21 +31,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// QualityRuleEntity 示例定义（用于策略类）
+// QualityRuleEntity example definition (for policy classes)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class QualityRuleEntity {
 
-    //表名称
-    //字段名
-    /** 稽查规则编号 */
+    //Table name
+    //Field name
+    /** Audit rule number */
     private String ruleCode;
-    /** 稽查规则名称 */
+    /** Audit rule name */
     private String ruleName;
-    /** 质量维度*/
+    /** Quality Dimension*/
     private String dimensionType;
-    /** 规则描述 */
+    /** Rule description */
     private String ruleDescription;
     private Long evaluateId;
 
@@ -93,31 +79,31 @@ public class QualityRuleEntity {
      *   "allowPartialNull": true
      * }
      *
-         *      * 是否忽略空值
-         *      * true 表示忽略；false 表示不忽略
+         * * Whether to ignore null values
+         * * true means ignore; false means not ignore
         private Boolean ignoreNullValue;
          *
-          *      * 是否忽略大小写
-          *      * true 表示忽略；false 表示不忽略
+          * * Whether to ignore case
+          * * true means ignore; false means not ignore
         private Boolean ignoreCase;
          *
-          *      * 字段填写策略：
-          *      * 1 表示字段必须全部填写（部分为空为异常）
-          *      * 2 表示字段要么全部为空，要么全部填写（部分填写为异常）
+          * *Field filling strategy:
+          * * 1 means that all fields must be filled in (partially empty is an exception)
+          * * 2 means that the fields are either all empty or all filled in (partially filled in is an exception)
         private Integer fillStrategy;
          *
-          *      * 是否包含最大最小值
-          *      * true 表示包含（>=、<=）；false 表示不包含（>、<）
+          * * Whether to include the maximum and minimum values
+          * * true means including (>=, <=); false means not including (>, <)
         private Boolean includeRangeBound;
 
-        是否忽略整数值，* true 表示忽略；false 表示不忽略
+        Whether to ignore integer values, * true means ignore; false means not ignore
         private Boolean skipInteger;
      *
      *
      */
     private Map<String, Object> config;
 
-    // 可选：组合唯一性支持多个列
+    // Optional: Combined uniqueness supports multiple columns
     private List<String> ruleColumns;
     private List<String> showErrorColumns;
 
@@ -126,7 +112,7 @@ public class QualityRuleEntity {
     public QualityRuleEntity(Map<String, Object> stringObjectMap){
 
         // TODO
-        //表字段需要兼容
+        //Table fields need to be compatible
 
     }
 
@@ -134,7 +120,7 @@ public class QualityRuleEntity {
         this.tableName = queryReqDTO.getTableName();
         this.config = queryReqDTO.getConfig();
         this.whereClause = queryReqDTO.getWhereClause();
-        this.ruleColumn = queryReqDTO.getEvaColumn(); // 若是单字段规则，取 evaColumn
+        this.ruleColumn = queryReqDTO.getEvaColumn(); // If it is a single field rule, take evaColumn
 
         ruleColumns = new ArrayList<>();
         if (queryReqDTO.getEvaColumn() != null && !queryReqDTO.getEvaColumn().trim().isEmpty()) {
@@ -160,7 +146,7 @@ public class QualityRuleEntity {
         this.ruleType = dppQualityTaskEvaluateDO.getRuleType();
         this.tableName = dppQualityTaskEvaluateDO.getTableName();
         this.whereClause = dppQualityTaskEvaluateDO.getWhereClause();
-        this.ruleColumn = dppQualityTaskEvaluateDO.getEvaColumn(); // 若是单字段规则，取 evaColumn
+        this.ruleColumn = dppQualityTaskEvaluateDO.getEvaColumn(); // If it is a single field rule, take evaColumn
 
         Map<String, Object> map = JSONUtils.convertTaskDefinitionJsonMap(dppQualityTaskEvaluateDO.getRule());
 

@@ -21,7 +21,7 @@ export function useTimeGreeting() {
         return config
       }
     }
-    return GREETING_CONFIG[GREETING_CONFIG.length - 1] // 默认
+    return GREETING_CONFIG[GREETING_CONFIG.length - 1] // Default
   })
 
   return {

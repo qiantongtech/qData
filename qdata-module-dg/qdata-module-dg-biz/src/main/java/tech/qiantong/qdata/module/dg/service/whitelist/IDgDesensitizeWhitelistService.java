@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.service.whitelist;
@@ -42,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.whitelist.vo.DgDesensitize
 import tech.qiantong.qdata.module.dg.controller.admin.whitelist.vo.DgDesensitizeWhitelistPageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeWhitelistDO;
 /**
- * 脱敏白名单Service接口
+ * Desensitize Whitelist Service Interface
  *
  * @author qdata
  * @date 2026-04-09
@@ -50,68 +36,68 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeWhite
 public interface IDgDesensitizeWhitelistService extends IService<DgDesensitizeWhitelistDO> {
 
     /**
-     * 获得脱敏白名单分页列表
+     * Get desensitize whitelist paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 脱敏白名单分页列表
+     * @param pageReqVO Pagination request
+     * @return Desensitize whitelist paginated list
      */
     PageResult<DgDesensitizeWhitelistDO> getDgDesensitizeWhitelistPage(DgDesensitizeWhitelistPageReqVO pageReqVO);
 
     /**
-     * 创建脱敏白名单
+     * Create desensitize whitelist
      *
-     * @param createReqVO 脱敏白名单信息
-     * @return 脱敏白名单编号
+     * @param createReqVO Desensitize whitelist information
+     * @return Desensitize whitelist ID
      */
     Long createDgDesensitizeWhitelist(DgDesensitizeWhitelistSaveReqVO createReqVO);
 
     /**
-     * 更新脱敏白名单
+     * Update desensitize whitelist
      *
-     * @param updateReqVO 脱敏白名单信息
+     * @param updateReqVO Desensitize whitelist information
      */
     int updateDgDesensitizeWhitelist(DgDesensitizeWhitelistSaveReqVO updateReqVO);
 
     /**
-     * 删除脱敏白名单
+     * Delete desensitize whitelist
      *
-     * @param idList 脱敏白名单编号
+     * @param idList Desensitize whitelist IDs
      */
     int removeDgDesensitizeWhitelist(Collection<Long> idList);
 
     /**
-     * 获得脱敏白名单详情
+     * Get desensitize whitelist details
      *
-     * @param id 脱敏白名单编号
-     * @return 脱敏白名单
+     * @param id Desensitize whitelist ID
+     * @return Desensitize whitelist
      */
     DgDesensitizeWhitelistDO getDgDesensitizeWhitelistById(Long id);
 
     /**
-     * 获得全部脱敏白名单列表
+     * Get all desensitize whitelist list
      *
-     * @return 脱敏白名单列表
+     * @return Desensitize whitelist list
      */
     List<DgDesensitizeWhitelistDO> getDgDesensitizeWhitelistList();
 
     /**
-     * 获得全部脱敏白名单 Map
+     * Get all desensitize whitelist Map
      *
-     * @return 脱敏白名单 Map
+     * @return Desensitize whitelist Map
      */
     Map<Long, DgDesensitizeWhitelistDO> getDgDesensitizeWhitelistMap();
 
 
     /**
-     * 导入脱敏白名单数据
+     * Import desensitize whitelist data
      *
-     * @param importExcelList 脱敏白名单数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Desensitize whitelist data list
+     * @param isUpdateSupport Whether to update support, if already exists, update the data
+     * @param operName        Operator user
+     * @return Result
      */
     String importDgDesensitizeWhitelist(List<DgDesensitizeWhitelistRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
-    //根据分类ID查询脱敏白名单
+    // Query desensitize whitelist by category ID
     DgDesensitizeWhitelistDO getDgDesensitizeWhitelistByCategoryId(Long categoryId);
 }

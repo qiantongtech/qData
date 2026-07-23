@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.mybatis.core.query;
@@ -42,11 +28,11 @@ import tech.qiantong.qdata.mybatis.core.enums.SqlConstants;
 import java.util.Collection;
 
 /**
- * 拓展 MyBatis Plus QueryWrapper 类，主要增加如下功能：
+ * Expand the MyBatis Plus QueryWrapper class, mainly adding the following functions:
  *
- * 1. 拼接条件的方法，增加 xxxIfPresent 方法，用于判断值不存在的时候，不要拼接到条件中。
+ * 1. For the method of splicing conditions, add the xxxIfPresent method. When it is used to judge that the value does not exist, do not splice it into the condition.
  *
- * @param <T> 数据类型
+ * @param <T> data type
  */
 public class QueryWrapperX<T> extends QueryWrapper<T> {
 
@@ -139,7 +125,7 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
         return this;
     }
 
-    // ========== 重写父类方法，方便链式调用 ==========
+    // ========== Rewrite the parent class method to facilitate chain calls ==========
 
     @Override
     public QueryWrapperX<T> eq(boolean condition, String column, Object val) {
@@ -172,14 +158,14 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
     }
 
     /**
-     * 设置只返回最后一条
+     * Set to return only the last item
      *
-     * TODO 芋艿：不是完美解，需要在思考下。如果使用多数据源，并且数据源是多种类型时，可能会存在问题：实现之返回一条的语法不同
+     * TODO Taro: It’s not a perfect solution, it needs to be thought about. If you use multiple data sources and the data sources are of multiple types, there may be problems: the syntax for returning one item in the implementation is different.
      *
      * @return this
      */
     public QueryWrapperX<T> limitN(int n) {
-        Assert.notNull(SqlConstants.DB_TYPE, "获取不到数据库的类型");
+        Assert.notNull(SqlConstants.DB_TYPE, "Unable to determine the database type");
         switch (SqlConstants.DB_TYPE) {
             case ORACLE:
             case ORACLE_12C:
@@ -187,7 +173,7 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
                 break;
             case SQL_SERVER:
             case SQL_SERVER2005:
-                super.select("TOP " + n + " *"); // 由于 SQL Server 是通过 SELECT TOP 1 实现限制一条，所以只好使用 * 查询剩余字段
+                super.select("TOP " + n + " *"); // Since SQL Server limits one field through SELECT TOP 1, we have to use * to query the remaining fields.
                 break;
             default:
                 super.last("LIMIT " + n);

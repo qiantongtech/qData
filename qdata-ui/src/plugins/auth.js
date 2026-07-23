@@ -1,18 +1,19 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import useUserStore from '@/store/system/user'
@@ -42,33 +43,33 @@ function authRole(role) {
 }
 
 export default {
-  // 验证用户是否具备某权限
+  // Verify whether the user has certain permissions
   hasPermi(permission) {
     return authPermission(permission);
   },
-  // 验证用户是否含有指定权限，只需包含其中一个
+  // Verify whether the user has the specified permissions, only need to include one of them
   hasPermiOr(permissions) {
     return permissions.some(item => {
       return authPermission(item)
     })
   },
-  // 验证用户是否含有指定权限，必须全部拥有
+  // Verify whether the user has the specified permissions, which must all be owned
   hasPermiAnd(permissions) {
     return permissions.every(item => {
       return authPermission(item)
     })
   },
-  // 验证用户是否具备某角色
+  // Verify whether the user has a certain role
   hasRole(role) {
     return authRole(role);
   },
-  // 验证用户是否含有指定角色，只需包含其中一个
+  // Verify whether the user has the specified role, only one of them needs to be included
   hasRoleOr(roles) {
     return roles.some(item => {
       return authRole(item)
     })
   },
-  // 验证用户是否含有指定角色，必须全部拥有
+  // Verify whether the user has the specified role, which must all be owned
   hasRoleAnd(roles) {
     return roles.every(item => {
       return authRole(item)

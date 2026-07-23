@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询标准信息登记列表
+// Query standard information registration list
 export function listDpDocument(query) {
     return request({
         url: '/dp/document/list',
@@ -26,7 +27,7 @@ export function listDpDocument(query) {
     })
 }
 
-// 查询标准信息登记详细
+// Query standard information registration details
 export function getDpDocument(ID) {
     return request({
         url: '/dp/document/' + ID,
@@ -34,7 +35,7 @@ export function getDpDocument(ID) {
     })
 }
 
-// 新增标准信息登记
+// Add new standard information registration
 export function addDpDocument(data) {
     return request({
         url: '/dp/document',
@@ -43,7 +44,7 @@ export function addDpDocument(data) {
     })
 }
 
-// 修改标准信息登记
+// Modify standard information registration
 export function updateDpDocument(data) {
     return request({
         url: '/dp/document',
@@ -52,7 +53,7 @@ export function updateDpDocument(data) {
     })
 }
 
-// 删除标准信息登记
+// Delete standard information registration
 export function delDpDocument(ID) {
     return request({
         url: '/dp/document/' + ID,

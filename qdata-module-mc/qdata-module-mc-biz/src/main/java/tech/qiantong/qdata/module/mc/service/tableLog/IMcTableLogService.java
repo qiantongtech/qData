@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 元数据信息 - 日志Service接口
+ * Metadata information - Log Service interface
  *
  * @author qdata
  * @date 2026-03-10
@@ -20,61 +20,61 @@ import java.util.Map;
 public interface IMcTableLogService extends IService<McTableLogDO> {
 
     /**
-     * 获得元数据信息 - 日志分页列表
+     * Get metadata information - log paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 元数据信息 - 日志分页列表
+     * @param pageReqVO paging request
+     * @return metadata information - log paging list
      */
     PageResult<McTableLogDO> getMcTableLogPage(McTableLogPageReqVO pageReqVO);
 
     /**
-     * 创建元数据信息 - 日志
+     * Create metadata information - log
      *
-     * @param createReqVO 元数据信息 - 日志信息
-     * @return 元数据信息 - 日志编号
+     * @param createReqVO metadata information - log information
+     * @return metadata information - log number
      */
     Long createMcTableLog(McTableLogSaveReqVO createReqVO);
 
     /**
-     * 更新元数据信息 - 日志
+     * Update metadata information - log
      *
-     * @param updateReqVO 元数据信息 - 日志信息
+     * @param updateReqVO metadata information - log information
      */
     int updateMcTableLog(McTableLogSaveReqVO updateReqVO);
 
     /**
-     * 删除元数据信息 - 日志
+     * Delete metadata information - Log
      *
-     * @param idList 元数据信息 - 日志编号
+     * @param idList metadata information - log number
      */
     int removeMcTableLog(Collection<Long> idList);
 
     /**
-     * 获得元数据信息 - 日志详情
+     * Get metadata information - log details
      *
-     * @param id 元数据信息 - 日志编号
-     * @return 元数据信息 - 日志
+     * @param id metadata information - log number
+     * @return metadata information - log
      */
     McTableLogDO getMcTableLogById(Long id);
 
     /**
-     * 获得全部元数据信息 - 日志列表
+     * Get all metadata information - log list
      *
-     * @return 元数据信息 - 日志列表
+     * @return metadata information - log list
      */
     List<McTableLogDO> getMcTableLogList();
 
     /**
-     * 获得全部元数据信息 - 日志 Map
+     * Get all metadata information - Log Map
      *
-     * @return 元数据信息 - 日志 Map
+     * @return metadata information - log map
      */
     Map<Long, McTableLogDO> getMcTableLogMap();
 
     /**
-     * 根据元数据表信息添加元数据版本变更日志
-     * @param table 元数据表信息
-     * @return 元数据版本变更日志id
+     * Add metadata version change log based on metadata table information
+     * @param table metadata table information
+     * @return metadata version change log id
      */
     Long createMcTableLog(McTableSaveReqVO table);
 }

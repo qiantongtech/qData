@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.reflect;
@@ -44,7 +30,7 @@ import java.lang.reflect.*;
 import java.util.Date;
 
 /**
- * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
+ * Reflection tool class. Provides tool functions such as calling getter/setter methods, accessing private variables, calling private methods, obtaining generic type Class, and AOPed real classes.
  *
  * @author qdata
  */
@@ -60,8 +46,8 @@ public class ReflectUtils
     private static Logger logger = LoggerFactory.getLogger(ReflectUtils.class);
 
     /**
-     * 调用Getter方法.
-     * 支持多级，如：对象名.对象名.方法
+     * Call the Getter method.
+     * Supports multiple levels, such as: object name. object name. method
      */
     @SuppressWarnings("unchecked")
     public static <E> E invokeGetter(Object obj, String propertyName)
@@ -76,8 +62,8 @@ public class ReflectUtils
     }
 
     /**
-     * 调用Setter方法, 仅匹配方法名。
-     * 支持多级，如：对象名.对象名.方法
+     * Call the Setter method, matching only the method name.
+     * Supports multiple levels, such as: object name. object name. method
      */
     public static <E> void invokeSetter(Object obj, String propertyName, E value)
     {
@@ -99,7 +85,7 @@ public class ReflectUtils
     }
 
     /**
-     * 直接读取对象属性值, 无视private/protected修饰符, 不经过getter函数.
+     * Read the object attribute value directly, ignore the private/protected modifier, and do not go through the getter function.
      */
     @SuppressWarnings("unchecked")
     public static <E> E getFieldValue(final Object obj, final String fieldName)
@@ -107,7 +93,7 @@ public class ReflectUtils
         Field field = getAccessibleField(obj, fieldName);
         if (field == null)
         {
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            logger.debug("No field [" + fieldName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         E result = null;
@@ -117,21 +103,21 @@ public class ReflectUtils
         }
         catch (IllegalAccessException e)
         {
-            logger.error("不可能抛出的异常{}", e.getMessage());
+            logger.error("Unexpected exception: {}", e.getMessage());
         }
         return result;
     }
 
     /**
-     * 直接设置对象属性值, 无视private/protected修饰符, 不经过setter函数.
+     * Set the object property value directly, ignore the private/protected modifier, and do not go through the setter function.
      */
     public static <E> void setFieldValue(final Object obj, final String fieldName, final E value)
     {
         Field field = getAccessibleField(obj, fieldName);
         if (field == null)
         {
-            // throw new IllegalArgumentException("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            // throw new IllegalArgumentException("In [" + obj.getClass() + "], the field [" + fieldName + "] was not found");
+            logger.debug("No field [" + fieldName + "] was found in [" + obj.getClass() + "] ");
             return;
         }
         try
@@ -140,14 +126,14 @@ public class ReflectUtils
         }
         catch (IllegalAccessException e)
         {
-            logger.error("不可能抛出的异常: {}", e.getMessage());
+            logger.error("Unexpected exception: {}", e.getMessage());
         }
     }
 
     /**
-     * 直接调用对象方法, 无视private/protected修饰符.
-     * 用于一次性调用的情况，否则应使用getAccessibleMethod()函数获得Method后反复调用.
-     * 同时匹配方法名+参数类型，
+     * Call object methods directly, ignoring private/protected modifiers.
+     * It is used for one-time calls. Otherwise, you should use the getAccessibleMethod() function to obtain the Method and call it repeatedly.
+     * Match method name + parameter type at the same time,
      */
     @SuppressWarnings("unchecked")
     public static <E> E invokeMethod(final Object obj, final String methodName, final Class<?>[] parameterTypes,
@@ -160,7 +146,7 @@ public class ReflectUtils
         Method method = getAccessibleMethod(obj, methodName, parameterTypes);
         if (method == null)
         {
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
+            logger.debug("No method [" + methodName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         try
@@ -175,9 +161,9 @@ public class ReflectUtils
     }
 
     /**
-     * 直接调用对象方法, 无视private/protected修饰符，
-     * 用于一次性调用的情况，否则应使用getAccessibleMethodByName()函数获得Method后反复调用.
-     * 只匹配函数名，如果有多个同名函数调用第一个。
+     * Call the object method directly, ignoring the private/protected modifier.
+     * Used for one-time calls, otherwise the getAccessibleMethodByName() function should be used to obtain the Method and then called repeatedly.
+     * Matches only function names, if there are multiple functions with the same name call the first one.
      */
     @SuppressWarnings("unchecked")
     public static <E> E invokeMethodByName(final Object obj, final String methodName, final Object[] args)
@@ -185,13 +171,13 @@ public class ReflectUtils
         Method method = getAccessibleMethodByName(obj, methodName, args.length);
         if (method == null)
         {
-            // 如果为空不报错，直接返回空。
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
+            // If it is empty, no error will be reported and empty will be returned directly.
+            logger.debug("No method [" + methodName + "] was found in [" + obj.getClass() + "] ");
             return null;
         }
         try
         {
-            // 类型转换（将参数数据类型转换为目标方法参数类型）
+            // Type conversion (convert parameter data type to target method parameter type)
             Class<?>[] cs = method.getParameterTypes();
             for (int i = 0; i < cs.length; i++)
             {
@@ -248,12 +234,12 @@ public class ReflectUtils
     }
 
     /**
-     * 循环向上转型, 获取对象的DeclaredField, 并强制设置为可访问.
-     * 如向上转型到Object仍无法找到, 返回null.
+     * Loop upward transformation, obtain the DeclaredField of the object, and force it to be accessible.
+     * If the upcast to Object still cannot be found, return null.
      */
     public static Field getAccessibleField(final Object obj, final String fieldName)
     {
-        // 为空不报错。直接返回 null
+        // No error will be reported if empty. Return null directly
         if (obj == null)
         {
             return null;
@@ -276,15 +262,15 @@ public class ReflectUtils
     }
 
     /**
-     * 循环向上转型, 获取对象的DeclaredMethod,并强制设置为可访问.
-     * 如向上转型到Object仍无法找到, 返回null.
-     * 匹配函数名+参数类型。
-     * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object... args)
+     * Loop upward transformation, obtain the DeclaredMethod of the object, and force it to be accessible.
+     * If the upcast to Object still cannot be found, return null.
+     * Match function name + parameter type.
+     * Used when a method needs to be called multiple times. Use this function to get the Method first, and then call Method.invoke(Object obj, Object... args)
      */
     public static Method getAccessibleMethod(final Object obj, final String methodName,
             final Class<?>... parameterTypes)
     {
-        // 为空不报错。直接返回 null
+        // No error will be reported if empty. Return null directly
         if (obj == null)
         {
             return null;
@@ -307,14 +293,14 @@ public class ReflectUtils
     }
 
     /**
-     * 循环向上转型, 获取对象的DeclaredMethod,并强制设置为可访问.
-     * 如向上转型到Object仍无法找到, 返回null.
-     * 只匹配函数名。
-     * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object... args)
+     * Loop upward transformation, obtain the DeclaredMethod of the object, and force it to be accessible.
+     * If the upcast to Object still cannot be found, return null.
+     * Matches only function names.
+     * Used when a method needs to be called multiple times. Use this function to get the Method first, and then call Method.invoke(Object obj, Object... args)
      */
     public static Method getAccessibleMethodByName(final Object obj, final String methodName, int argsNum)
     {
-        // 为空不报错。直接返回 null
+        // No error will be reported if empty. Return null directly
         if (obj == null)
         {
             return null;
@@ -336,7 +322,7 @@ public class ReflectUtils
     }
 
     /**
-     * 改变private/protected的方法为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
+     * Change private/protected methods to public, and try not to call the actual changed statements to avoid JDK SecurityManager complaints.
      */
     public static void makeAccessible(Method method)
     {
@@ -348,7 +334,7 @@ public class ReflectUtils
     }
 
     /**
-     * 改变private/protected的成员变量为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
+     * Change private/protected member variables to public, and try not to call the actual changed statements to avoid JDK SecurityManager complaints.
      */
     public static void makeAccessible(Field field)
     {
@@ -360,8 +346,8 @@ public class ReflectUtils
     }
 
     /**
-     * 通过反射, 获得Class定义中声明的泛型参数的类型, 注意泛型必须定义在父类处
-     * 如无法找到, 返回Object.class.
+     * Through reflection, obtain the type of the generic parameter declared in the Class definition. Note that the generic must be defined at the parent class.
+     * If it cannot be found, Object.class is returned.
      */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getClassGenricType(final Class clazz)
@@ -370,8 +356,8 @@ public class ReflectUtils
     }
 
     /**
-     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
-     * 如无法找到, 返回Object.class.
+     * Through reflection, obtain the type of the generic parameter of the parent class declared in the Class definition.
+     * If it cannot be found, Object.class is returned.
      */
     public static Class getClassGenricType(final Class clazz, final int index)
     {
@@ -420,7 +406,7 @@ public class ReflectUtils
     }
 
     /**
-     * 将反射时的checked exception转换为unchecked exception.
+     * Convert checked exception during reflection into unchecked exception.
      */
     public static RuntimeException convertReflectionExceptionToUnchecked(String msg, Exception e)
     {

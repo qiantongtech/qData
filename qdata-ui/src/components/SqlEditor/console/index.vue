@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -55,7 +56,7 @@
       </template>
       <template v-if="currItem.type == 'result'">
         <div class="result-view">
-          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">{{ td('components.sqlEditorConsole.fetchLatestData', '获取最新数据') }}</el-button>
+          <el-button class="result-icon" type="primary" @click="handleSearch" icon="Search">{{ td('components.sqlEditorConsole.fetchLatestData', 'Fetch Latest Data') }}</el-button>
           <el-empty :description="td('common.noData')" />
         </div>
       </template>
@@ -72,22 +73,22 @@ import CodeShow from "@/components/SqlEditor/editorShow/index.vue";
 import { getRunTaskInstance, getLogByTaskInstanceId } from "@/api/dpp/task/index.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
-// #region curr弹框拖拽
-const currHeight = ref(345); // 初始左侧宽度
-const isCurrResizing = ref(false); // 判断是否正在拖拽
-let startY = 0; // 鼠标按下时的初始位置
+// #region currDrag and drop the pop-up box
+const currHeight = ref(345); // Initial left width
+const isCurrResizing = ref(false); // Determine whether dragging is in progress
+let startY = 0; // Initial position when mouse is pressed
 const resizeCurrDialog = (event) => {
   isCurrResizing.value = true;
   startY = event.clientY;
-  // 使用 requestAnimationFrame 减少重绘频率
+  // Use requestAnimationFrame to reduce redraw frequency
   document.addEventListener("mousemove", updateCurrResize);
   document.addEventListener("mouseup", stopCurrResize);
 };
 const updateCurrResize = (event) => {
   if (isCurrResizing.value) {
-    const delta = startY - event.clientY; // 计算鼠标移动距离
-    currHeight.value += delta; // 修改左侧宽度
-    startY = event.clientY; // 更新起始位置
+    const delta = startY - event.clientY; // Calculate mouse movement distance
+    currHeight.value += delta; // Modify left width
+    startY = event.clientY; // Update starting position
     if (currHeight.value > 720) {
       currHeight.value = 720;
       return;
@@ -95,7 +96,7 @@ const updateCurrResize = (event) => {
       currHeight.value = 150;
       return;
     }
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
@@ -117,7 +118,7 @@ const props = defineProps({
 });
 const emits = defineEmits(["close"]);
 const closeCurrDialog = () => {
-  // 清除轮询日志
+  // Clear polling log
   clearTimeout(timer.value);
   timer.value = null;
   emits("close");
@@ -125,23 +126,23 @@ const closeCurrDialog = () => {
 const currItem = computed(() => {
   return props.currValue;
 });
-// 控制台
-// #region console弹框拖拽
-const consoleWidth = ref(1300); // 初始左侧宽度
-const isCurrResizingC = ref(false); // 判断是否正在拖拽
-let startXC = 0; // 鼠标按下时的初始位置
+// console
+// #region console pop-up drag and drop
+const consoleWidth = ref(1300); // Initial left width
+const isCurrResizingC = ref(false); // Determine whether dragging is in progress
+let startXC = 0; // Initial position when mouse is pressed
 const resizeCurrDialogC = (event) => {
   isCurrResizingC.value = true;
   startXC = event.clientX;
-  // 使用 requestAnimationFrame 减少重绘频率
+  // Use requestAnimationFrame to reduce redraw frequency
   document.addEventListener("mousemove", updateCurrResizeC);
   document.addEventListener("mouseup", stopCurrResizeC);
 };
 const updateCurrResizeC = (event) => {
   if (isCurrResizingC.value) {
-    const delta = startXC - event.clientX; // 计算鼠标移动距离
-    consoleWidth.value += delta; // 修改左侧宽度
-    startXC = event.clientX; // 更新起始位置
+    const delta = startXC - event.clientX; // Calculate mouse movement distance
+    consoleWidth.value += delta; // Modify left width
+    startXC = event.clientX; // Update starting position
     if (consoleWidth.value > 1500) {
       consoleWidth.value = 1500;
       return;
@@ -149,7 +150,7 @@ const updateCurrResizeC = (event) => {
       consoleWidth.value = 100;
       return;
     }
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
@@ -170,22 +171,22 @@ const treeData = computed(() => ([
   {
     label: "FlinkSubmit",
     value: "1",
-    unit: td('common.time.second', '秒'),
+    unit: td('common.time.second', 'second'),
     children: [
       {
-        label: td('components.sqlEditorConsole.checkJob', '检查作业'),
+        label: td('components.sqlEditorConsole.checkJob', 'Check Job'),
         value: "9",
-        unit: td('common.time.millisecond', '毫秒'),
+        unit: td('common.time.millisecond', 'millisecond'),
       },
       {
-        label: td('components.sqlEditorConsole.executeJob', '执行作业'),
+        label: td('components.sqlEditorConsole.executeJob', 'Execute Job'),
         value: "1",
-        unit: td('common.time.second', '秒'),
+        unit: td('common.time.second', 'second'),
         children: [
           {
-            label: td('components.sqlEditorConsole.buildConfig', '构建配置信息'),
+            label: td('components.sqlEditorConsole.buildConfig', 'Build Configuration'),
             value: "31",
-            unit: td('common.time.millisecond', '毫秒'),
+            unit: td('common.time.millisecond', 'millisecond'),
           },
         ],
       },
@@ -227,12 +228,12 @@ const getCode = () => {
 };
 
 onMounted(() => {
-  // 控制台初始化加载日志
+  // Console initialization loading log
   if (currItem.value.type == "console") {
     getInstanceId(currItem.value.data.id);
   }
 });
-// 结果
+// Result
 const handleSearch = () => { };
 defineExpose({ currHeight, getInstanceId });
 </script>
@@ -331,7 +332,7 @@ defineExpose({ currHeight, getInstanceId });
           background-color: #fcfcfc;
         }
 
-        //组织树 背景颜色 及右边线颜色
+        //Organization tree background color and right line color
         .console-tree.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
           background: rgba(51, 103, 252, 0.06) !important;
           border: none;

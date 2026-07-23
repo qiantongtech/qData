@@ -1,55 +1,56 @@
-# Copyright © 2025 Qiantong Technology Co., Ltd.
-# qData Data Middle Platform (Open Source Edition)
+# Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
 #
-# License:
-# Released under the Apache License, Version 2.0.
-# You may use, modify, and distribute this software for commercial purposes
-# under the terms of the License.
+# This file is part of qData Data Middle Platform (Open Source Edition).
 #
-# Special Notice:
-# All derivative versions are strictly prohibited from modifying or removing
-# the default system logo and copyright information.
-# For brand customization, please apply for brand customization authorization via official channels.
+# qData is licensed under Apache License 2.0 with additional qData terms.
+# You may use qData for commercial purposes, but you may not remove, hide,
+# modify, or replace the qData logo, copyright notices, license notices,
+# or attribution information without a separate commercial license.
 #
-# More information: https://qdata.qiantong.tech/business.html
+# White-label use, OEM distribution, rebranding, or presenting qData as
+# another product requires separate commercial authorization from
+# Jiangsu Qiantong Technology Co., Ltd.
+#
+# Business License: https://community.qdata.tech/business/policy.html
+# See the LICENSE file in the project root for full license information.
 
-# 用户配置
+# User configuration
 user:
   password:
-    # 密码最大错误次数
+    # Maximum number of failed password attempts
     maxRetryCount: 5
-    # 密码锁定时间（默认10分钟）
+    # Password lockout duration (default: 10 minutes)
     lockTime: 10
-    #万能密码 配置为空则不生效
+    # Master password; leave empty to disable
     universalPassword: qData123
 
-# 主数据源选择
+# Primary data source selection
 datasource:
   type: ${DB_TYPE}
 
-# Spring配置
+# Spring configuration
 spring:
-  # redis 配置
+  # Redis configuration
   redis:
-    # 地址
+    # Address
     host: redis
-    # 端口，默认为6379
+    # Port, defaults to 6379
     port: 6379
-    # 数据库索引
+    # Database index
     database: 0
-    # 密码
+    # Password
     password: J98%FHF#9h@e88h9fre9
-    # 连接超时时间
+    # Connection timeout
     timeout: 10s
     lettuce:
       pool:
-        # 连接池中的最小空闲连接
+        # Minimum idle connections in the connection pool
         min-idle: 0
-        # 连接池中的最大空闲连接
+        # Maximum idle connections in the connection pool
         max-idle: 8
-        # 连接池的最大数据库连接数
+        # Maximum database connections in the connection pool
         max-active: 8
-        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        # Maximum blocking wait time for the connection pool (use a negative value for no limit)
         max-wait: -1ms
   rabbitmq:
     host: rabbitmq
@@ -77,50 +78,50 @@ spring:
   datasource:
     druid:
       stat-view-servlet:
-        # 是否启用Druid的监控统计功能
+        # Whether to enable Druid monitoring statistics
         enabled: false
-        # 访问Druid监控页面的用户名
+        # Username for accessing the Druid monitoring page
         loginUsername: qdata
-        # 访问Druid监控页面的密码
+        # Password for accessing the Druid monitoring page
         loginPassword: 123456
     dynamic:
       druid:
-        # 连接池初始化时创建的连接数量
+        # Number of connections created when the connection pool is initialized
         initial-size: 5
-        # 连接池中最小空闲连接数
+        # Minimum idle connections in the connection pool
         min-idle: 5
-        # 连接池中最大活动连接数
+        # Maximum active connections in the connection pool
         maxActive: 20
-        # 连接池等待连接的最长时间（毫秒）
+        # Maximum time to wait for a connection from the pool (milliseconds)
         maxWait: 60000
-        # 数据库连接超时时间（毫秒）
+        # Database connection timeout (milliseconds)
         connectTimeout: 30000
-        # Socket超时时间（毫秒）
+        # Socket timeout (milliseconds)
         socketTimeout: 60000
-        # 空闲连接的检测周期（毫秒）
+        # Idle connection check interval (milliseconds)
         timeBetweenEvictionRunsMillis: 60000
-        # 最小空闲连接的存活时间（毫秒）
+        # Minimum lifetime of idle connections (milliseconds)
         minEvictableIdleTimeMillis: 300000
-        # 用于检测连接是否有效的SQL语句
+        # SQL statement used to validate connections
         validationQuery: SELECT 1 FROM DUAL
-        # 是否在空闲时检测连接的有效性
+        # Whether to validate connections while idle
         testWhileIdle: true
-        # 借用连接时是否测试连接的有效性
+        # Whether to validate connections when borrowed
         testOnBorrow: false
-        # 归还连接时是否测试连接的有效性
+        # Whether to validate connections when returned
         testOnReturn: false
-        # 是否打开连接池的PreparedStatement缓存
+        # Whether to enable the PreparedStatement cache for the connection pool
         poolPreparedStatements: true
-        # 每个连接池的PreparedStatement缓存上限
+        # Maximum PreparedStatement cache size per connection pool
         maxPoolPreparedStatementPerConnectionSize: 20
-        # 配置Druid的过滤器
+        # Configure Druid filters
         filters: stat,slf4j
-        # Druid连接属性配置
+        # Druid connection properties
         connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
-        # 主库数据源配置
+        # Primary database data source configuration
         master:
-          # 动态加载的配置属性
+          # Dynamically loaded configuration properties
           driver-class-name: ${${datasource.type}.driver-class-name}
           url: ${${datasource.type}.url}
           username: ${${datasource.type}.username}
@@ -131,59 +132,59 @@ spring:
 #          username: MOON
 #          password: 1234567890
 
-# MySQL配置文件
+# MySQL configuration
 mysql:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: com.mysql.cj.jdbc.Driver
-  # 主库JDBC连接URL
+  # Primary database JDBC connection URL
   url: jdbc:mysql://mysql:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-  # 主库用户名
+  # Primary database username
   username: root
-  # 主库密码
+  # Primary database password
   password: o5KjnPYxswsiURZHCPwd
 
-# 达梦配置文件
+# DM configuration
 dm8:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: dm.jdbc.driver.DmDriver
-  # 主库JDBC连接URL
+  # Primary database JDBC connection URL
   url: jdbc:dm://dm8:5236/QDATA?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=QDATA&serverTimezone=Asia/Shanghai
-  # 主库用户名
+  # Primary database username
   username: QDATA
-  # 主库密码
+  # Primary database password
   password: s2LKr6LMQxVDTQx
 
-## 工作流模块的访问地址
+# Workflow module endpoint
 flow:
   enable: false
   url: http://192.168.0.5:26859/
 
-##文件存储路径
+# File storage path
 file:
   job:
     log:
       task_prefix_url: /tmp/qData/job-log/task-prefix-url
 
-#调度器相关配置
+# Scheduler-related configuration
 ds:
   base_url: http://dolphinscheduler-api:12345/dolphinscheduler
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor/runExecuteTask
   http_url: http://qdata-api:8080/da/daDiscoveryTask/runDaDiscoveryTask
-  # 元数据采集任务api前缀
+  # Metadata collection task API prefix
   mc_url: http://qdata-api:8080/mc/taskExecutor/runExecuteTask
   http_projectCode: 134799536571008
   http_quality_projectCode: 147372832245312
-  # 元数据采集任务dolphinscheduler项目编码
+  # DolphinScheduler project code for metadata collection tasks
   http_mc_projectCode: 173198624561952
   token: b07f0e57c4818043a57ba05a28da291a
   temp_table_data_source: "{\"ip\":\"192.168.0.5\",\"datasourceType\":\"DM8\",\"port\":5236,\"datasourceConfig\":\"{\\\"username\\\":\\\"TEMP\\\",\\\"password\\\":\\\"InC3tmU4bijT4vkl\\\",\\\"dbname\\\":\\\"TEMP\\\",\\\"sid\\\":\\\"helowin\\\"}\"}"
   resource_url: /dolphinscheduler/
   spark:
-    #spark-master的地址
+    # Spark master address
     master_url: spark://spark:7077
-    #jar包在ds的路径
+    # JAR package path in DolphinScheduler
     main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl.jar
-    #jar main入口
+    # JAR main entry point
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   hdfs:
     url: hdfs://namenode:8020
@@ -191,3 +192,14 @@ ds:
 path:
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor
   mc_url: http://qdata-api:8080/mc/taskExecutor
+datax:
+  # DataX根目录，可通过 QDATA_DATAX_HOME 覆盖
+  home: ${user.dir}/datax
+  # Python命令；
+  python-command: python3
+  # datax.py调用文件路径
+  datax-py-path: ${user.dir}/datax/bin/datax.py
+  # DataX lib目录
+  lib-dir: ${user.dir}/datax/lib
+  # qData生成DataX Job JSON的目录
+  job-dir: ${user.dir}/upload/datax/job

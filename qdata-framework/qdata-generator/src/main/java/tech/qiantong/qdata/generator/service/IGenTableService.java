@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.generator.service;
@@ -39,134 +25,134 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 业务 服务层
+ * Business service layer
  *
  * @author qdata
  */
 public interface IGenTableService
 {
     /**
-     * 查询业务列表
+     * Query business list
      *
-     * @param genTable 业务信息
-     * @return 业务集合
+     * @param genTable business information
+     * @return business collection
      */
     public List<GenTable> selectGenTableList(GenTable genTable);
 
     /**
-     * 查询据库列表
+     * Query database list
      *
-     * @param genTable 业务信息
-     * @return 数据库表集合
+     * @param genTable business information
+     * @return database table collection
      */
     public List<GenTable> selectDbTableList(GenTable genTable);
 
     /**
-     * 查询据库列表
+     * Query database list
      *
-     * @param tableNames 表名称组
-     * @return 数据库表集合
+     * @param tableNames table name group
+     * @return database table collection
      */
     public List<GenTable> selectDbTableListByNames(String[] tableNames);
 
     /**
-     * 查询所有表信息
+     * Query all table information
      *
-     * @return 表信息集合
+     * @return table information collection
      */
     public List<GenTable> selectGenTableAll();
 
     /**
-     * 查询业务信息
+     * Query business information
      *
-     * @param id 业务ID
-     * @return 业务信息
+     * @param id business ID
+     * @return business information
      */
     public GenTable selectGenTableById(Long id);
 
     /**
-     * 修改业务
+     * Modify business
      *
-     * @param genTable 业务信息
-     * @return 结果
+     * @param genTable business information
+     * @return result
      */
     public void updateGenTable(GenTable genTable);
 
     /**
-     * 删除业务信息
+     * Delete business information
      *
-     * @param tableIds 需要删除的表数据ID
-     * @return 结果
+     * @param tableIds table data ID to be deleted
+     * @return result
      */
     public void deleteGenTableByIds(Long[] tableIds);
 
     /**
-     * 创建表
+     * Create table
      *
-     * @param sql 创建表语句
-     * @return 结果
+     * @param sql create table statement
+     * @return result
      */
     public boolean createTable(String sql);
 
     /**
-     * 导入表结构
+     * Import table structure
      *
-     * @param tableList 导入表列表
-     * @param operName 操作人员
+     * @param tableList import table list
+     * @param operName operator
      */
     public void importGenTable(List<GenTable> tableList, String operName);
 
     /**
-     * 预览代码
+     * Preview code
      *
-     * @param tableId 表编号
-     * @return 预览数据列表
+     * @param tableId table number
+     * @return preview data list
      */
     public Map<String, String> previewCode(Long tableId);
 
     /**
-     * 生成代码（下载方式）
+     * Generate code (download method)
      *
-     * @param tableName 表名称
-     * @return 数据
+     * @param tableName table name
+     * @return data
      */
     public byte[] downloadCode(String tableName);
 
     /**
-     * 生成代码（自定义路径）
+     * Generate code (custom path)
      *
-     * @param tableName 表名称
-     * @return 数据
+     * @param tableName table name
+     * @return data
      */
     public void generatorCode(String tableName);
 
     /**
-     * 同步数据库
+     * Sync database
      *
-     * @param tableName 表名称
+     * @param tableName table name
      */
     public void synchDb(String tableName);
 
     /**
-     * 批量生成代码（下载方式）
+     * Generate codes in batches (download method)
      *
-     * @param tableNames 表数组
-     * @return 数据
+     * @param tableNames table array
+     * @return data
      */
     public byte[] downloadCode(String[] tableNames);
 
     /**
-     * 修改保存参数校验
+     * Modify and save parameter verification
      *
-     * @param genTable 业务信息
+     * @param genTable business information
      */
     public void validateEdit(GenTable genTable);
 
     /**
-     * 批量生成字典枚举类（下载方式）
+     * Batch generation of dictionary enumeration classes (download method)
      *
-     * @param dictTypesList 字典类型数组
-     * @return 数据
+     * @param dictTypesList dictionary type array
+     * @return data
      */
     byte[] downloadEnums(List<SysDictType> dictTypesList);
 }

@@ -1,23 +1,24 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
-// 数据源配置表 (图标 + 标签类型)
+// Data source configuration table (icon + label type)
 const DATASOURCE_CONFIG = {
-  DM: { icon: "datasource/dimg-m.png" },
+  DM: { icon: "datasource/img-dm.png" },
   DM8: { icon: "datasource/img-dm.png" },
   ORACLE: { icon: "datasource/img-oracle.png" },
   ORACLE11: { icon: "datasource/img-oracle.png" },
@@ -45,9 +46,9 @@ const DATASOURCE_CONFIG = {
 };
 
 /**
- * 获取数据源图标
- * @param {string} type 数据源类型
- * @returns {string} 图标URL
+ * Get data source icon
+ * @param {string} type data source type
+ * @returns {string} Icon URL
  */
 export const getDatasourceIcon = (type) => {
   if (!type) return "";
@@ -55,18 +56,18 @@ export const getDatasourceIcon = (type) => {
   const config = DATASOURCE_CONFIG[key];
   if (!config || !config.icon) return "";
 
-  // 使用相对路径以确保 Vite 能正确解析动态 URL
+  // Use relative paths to ensure Vite can correctly resolve dynamic URLs
   // src/utils/datasource.js -> src/assets/images/common/
   return new URL(`../assets/images/common/${config.icon}`, import.meta.url).href;
 };
 
 /**
- * 获取数据源标签类型
- * @param {string} type 数据源类型
- * @returns {string} 标签类型 (info, warning, success, etc.)
+ * Get data source label type
+ * @param {string} type data source type
+ * @returns {string} tag type (info, warning, success, etc.)
  */
 export const getDatasourceTagType = (type) => {
-  if (!type) return "success"; // 默认返回 success
+  if (!type) return "success"; // Returns success by default
   const key = type.toUpperCase();
   const config = DATASOURCE_CONFIG[key];
   return (config && config.tagType) || "success";

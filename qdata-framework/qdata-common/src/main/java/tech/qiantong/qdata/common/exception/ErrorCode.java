@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.exception;
@@ -37,13 +23,13 @@ import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
 import tech.qiantong.qdata.common.utils.MessageUtils;
 
 /**
- * 错误码对象
+ * Error code object
  *
- * 全局错误码，占用 [0, 999]，参见 {@link GlobalErrorCodeConstants}
- * 业务异常错误码，占用 [1 000 000 000, +∞)，参见 {@link ServiceErrorCodeRange}
+ * Global error code, occupies [0, 999], see {@link GlobalErrorCodeConstants}
+ * Business exception error code, occupies [1 000 000 000, +∞), see {@link ServiceErrorCodeRange}
  *
- * i18n 国际化：getMsg() 优先从资源文件读取（key = "error.{code}"），找不到则使用构造函数传入的默认 message
- * 资源文件：qdata-server/src/main/resources/i18n/messages*.properties
+ * i18n internationalization: getMsg() preferentially reads from the resource file (key = "error.{code}"). If it cannot find it, the default message passed in the constructor is used.
+ * Resource file: qdata-server/src/main/resources/i18n/messages*.properties
  *
  * @author qdata
  */
@@ -51,11 +37,11 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 public class ErrorCode {
 
     /**
-     * 错误码
+     * Error code
      */
     private final Integer code;
     /**
-     * 错误提示（默认消息，i18n 获取失败时的兜底）
+     * Error message (default message, clarification when i18n acquisition fails)
      */
     private final String msg;
 
@@ -65,9 +51,9 @@ public class ErrorCode {
     }
 
     /**
-     * 获取国际化后的错误提示
-     * 优先从 i18n 资源文件获取 key = "error.{code}" 的文案
-     * 获取不到则使用构造函数传入的 msg 作为兜底
+     * Get the error message after internationalization
+     * Prioritize getting the copy of key = "error.{code}" from the i18n resource file
+     * If it cannot be obtained, use the msg passed in the constructor as a backup
      */
     public String getMsg() {
         return MessageUtils.messageWithFallback("error." + code, msg);

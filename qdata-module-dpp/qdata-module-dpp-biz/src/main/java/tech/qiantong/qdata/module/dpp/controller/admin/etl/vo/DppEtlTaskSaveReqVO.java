@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
@@ -40,12 +26,12 @@ import javax.validation.constraints.Size;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 数据集成任务 创建/修改 Request VO DPP_ETL_TASK
+ * Data Integration Task Create/Update Request VO DPP_ETL_TASK
  *
  * @author qdata
  * @date 2025-02-13
  */
-@Schema(description = "数据集成任务 Response VO")
+@Schema(description = "Data Integration Task Response VO")
 @Data
 public class DppEtlTaskSaveReqVO extends BaseEntity {
 
@@ -54,75 +40,85 @@ public class DppEtlTaskSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    /** 类目Id */
-    @Schema(description = "类目Id", example = "")
+    /** Category ID */
+    @Schema(description = "Category ID", example = "")
     private Long catId;
 
-    /** 类目编码 */
-    @Schema(description = "类目编码", example = "")
+    /** Category Code */
+    @Schema(description = "Category Code", example = "")
     private String catCode;
 
-    @Schema(description = "任务类型", example = "")
-    @Size(max = 256, message = "任务类型长度不能超过256个字符")
+    @Schema(description = "Task Type", example = "")
+    @Size(max = 256, message = "Task Type length cannot exceed 256 characters")
     private String type;
 
-    @Schema(description = "任务名称", example = "")
-    @Size(max = 256, message = "任务名称长度不能超过256个字符")
+    @Schema(description = "Task Name", example = "")
+    @Size(max = 256, message = "Task Name length cannot exceed 256 characters")
     private String name;
 
-    @Schema(description = "任务编码", example = "")
-    @Size(max = 256, message = "任务编码长度不能超过256个字符")
+    @Schema(description = "Task Code", example = "")
+    @Size(max = 256, message = "Task Code length cannot exceed 256 characters")
     private String code;
 
-    @Schema(description = "任务版本", example = "")
+    @Schema(description = "Task Version", example = "")
     private Integer version;
 
-    @Schema(description = "项目id", example = "")
+    @Schema(description = "Project ID", example = "")
     private Long projectId;
 
-    @Schema(description = "项目编码", example = "")
-    @Size(max = 256, message = "项目编码长度不能超过256个字符")
+    @Schema(description = "Project Code", example = "")
+    @Size(max = 256, message = "Project Code length cannot exceed 256 characters")
     private String projectCode;
 
-    @Schema(description = "责任人", example = "")
-    @Size(max = 256, message = "责任人长度不能超过256个字符")
+    @Schema(description = "Person in Charge", example = "")
+    @Size(max = 256, message = "Person in Charge length cannot exceed 256 characters")
     private String personCharge;
 
-    /** 联系电话 */
-    @Schema(description = "联系电话", example = "")
-    @Size(max = 256, message = "联系电话长度不能超过256个字符")
+    /** Contact Number */
+    @Schema(description = "Contact Number", example = "")
+    @Size(max = 256, message = "Contact Number length cannot exceed 256 characters")
     private String contactNumber;
 
-    @Schema(description = "节点坐标信息", example = "")
+    @Schema(description = "Node Coordinate Info", example = "")
     private String locations;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 256, message = "描述长度不能超过256个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 256, message = "Description length cannot exceed 256 characters")
     private String description;
 
-    @Schema(description = "超时时间", example = "")
+    @Schema(description = "Timeout", example = "")
     private Long timeout;
 
-    @Schema(description = "抽取量", example = "")
+    @Schema(description = "Extraction Count", example = "")
     private Long extractionCount;
 
-    @Schema(description = "写入量", example = "")
+    @Schema(description = "Write Count", example = "")
     private Long writeCount;
 
-    @Schema(description = "任务状态", example = "")
-    @Size(max = 256, message = "任务状态长度不能超过256个字符")
+    @Schema(description = "Task Status", example = "")
+    @Size(max = 256, message = "Task Status length cannot exceed 256 characters")
     private String status;
 
-    @Schema(description = "执行策略", example = "")
+    @Schema(description = "Execution Strategy", example = "")
     private String executionType;
 
-    @Schema(description = "DolphinScheduler的id", example = "")
+    @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    // Store the Quartz job ID on the task so the backend can operate its schedule directly.
+    @Schema(description = "Quartz调度任务id", example = "")
+    private Long quartzId;
+
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
+
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "Remark length cannot exceed 256 characters")
     private String remark;
 
-    @Schema(description = "草稿任务配置信息", example = "")
+    @Schema(description = "Draft Task Config", example = "")
     private String draftJson;
 }

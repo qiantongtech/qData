@@ -201,7 +201,16 @@ export default {
     confirmDeleteModel: '論理モデル「{id}」を削除しますか？',
     tableNamePattern: 'テーブル名は英字、数字、アンダースコアのみ使用でき、英字で始まる必要があります',
     maxLength: '500文字',
-    defaultLengthError: 'デフォルト値の長さは属性長{length}を超えてはいけません'
+    defaultLengthError: 'デフォルト値の長さは属性長{length}を超えてはいけません',
+    defaultValueNumericOnly: '数値型のデフォルト値は数値のみ許可されます',
+    defaultValueIntegerError: '整数型のデフォルト値に小数点を含めることはできません',
+    defaultValueIntPartError: '整数部の長さは<int>桁を超えることはできません',
+    defaultValueDecPartError: '小数部の長さは<scale>桁を超えることはできません',
+    defaultStringMaxLengthError: '文字列の長さは<length>文字を超えることはできません',
+    defaultValueDateError: '日付の形式が正しくありません。YYYY-MM-DD形式を使用してください',
+    defaultValueDateInvalid: '日付の値が無効です',
+    defaultValueDatetimeError: '日付時刻の形式が正しくありません。YYYY-MM-DD HH:mm:ss形式を使用してください',
+    defaultValueDatetimeInvalid: '日付時刻の値が無効です'
   },
   materializedModel: {
     publishModel: 'モデルの公開',
@@ -314,7 +323,10 @@ export default {
     detailInfo: '詳細情報',
     releaseLog: '公開ログ',
     virtualAssetCreate: '仮想アセット作成',
-    fullAssetCreate: '完全アセット作成'
+    fullAssetCreate: '完全アセット作成',
+    asset: {
+      deleteConfirm: '番号「{id}」のデータ要素とデータ資産の関連を削除してもよろしいですか？'
+    }
   },
   common: {
     query: '検索',

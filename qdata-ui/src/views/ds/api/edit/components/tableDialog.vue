@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,7 +27,7 @@
             <el-table-column prop="engName" :label="td('ds.apiEdit.parameter.tableDialogColumn.columnName')" align="center" width="200" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="columnType" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataType')" align="center" width="120" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="columnLength" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataLength')" width="90" align="center" :show-overflow-tooltip="{effect: 'light'}" />
-            <!--            <el-table-column prop="dataPrecision" label="数据精度" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
+            <!--            <el-table-column prop="dataPrecision" label="data precision" align="center" :show-overflow-tooltip="{effect: 'light'}" />-->
             <el-table-column prop="columnScale" :label="td('ds.apiEdit.parameter.tableDialogColumn.dataDecimal')" width="100" align="center" :show-overflow-tooltip="{effect: 'light'}" />
             <el-table-column prop="pkFlag" :label="td('ds.apiEdit.parameter.tableDialogColumn.primaryKey')" align="center" width="100" :show-overflow-tooltip="{effect: 'light'}">
                 <template #default="scope">
@@ -82,7 +83,7 @@ const props = defineProps({
 })
 
 const data = reactive({
-    isInitialized: false, // 标识是否已初始化选中项
+    isInitialized: false, // Identifies whether the selected item has been initialized
     checkedTableColumns: [],
     total: 0,
     queryParams: {
@@ -94,7 +95,7 @@ const data = reactive({
     },
     loading: true,
     tableHeight: document.body.offsetHeight - 400 + 'px',
-    AddListRows: [], lastSqlText: '', // 存储上次的 SQL 文本，用于检测是否发生变化
+    AddListRows: [], lastSqlText: '', // Stores the last SQL text to detect whether changes have occurred
     firstDialogVisible: false,
     secondDialogVisible: false,
     sortDialogVisible: false,
@@ -107,7 +108,7 @@ const { queryParams, AddListRows, tableHeight, loading, isInitialized,
 
 const computedTitle = computed(() => props.dialogTitle || td('ds.apiEdit.tableDialog.tableData'));
 
-//添加计算属性
+//Add computed properties
 const dialogVisible = computed({
     get: () => props.visible,
     set: (newValue) => {
@@ -123,7 +124,7 @@ function handleClose() {
     isInitialized.value = false;
     AddListRows.value = [];
 }
-function echoSelected() { // 回显选中
+function echoSelected() { // echo selected
     this.$nextTick(() => {
         proxy.$refs.multipleTable.clearSelection();
         tableData.forEach(item => {

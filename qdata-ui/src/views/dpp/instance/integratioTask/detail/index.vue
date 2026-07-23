@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,11 +22,11 @@
       <div class="infotop">
         <div class="infotop-title mb15">
           <div class="task-item">
-            <!-- 正方形编号 -->
+            <!-- square number -->
             <div class="task-id" style=" aspect-ratio: auto !important">
               {{ dppEtlTaskDetail.id || '-' }}
             </div>
-            <!-- 名称 -->
+            <!-- Name -->
             <div class="task-name">
               {{ dppEtlTaskDetail.names || '' }}
             </div>
@@ -42,7 +43,7 @@
           </el-col> -->
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', '任务实例名称333') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', 'Task Instance Name') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.name || '-' }}
               </div>
@@ -50,7 +51,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime', '创建时间') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime', 'Created Time') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
 
@@ -59,7 +60,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', '执行状态') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', 'Execution Status') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="dpp_etl_node_instance" :value="dppEtlTaskDetail.status" />
               </div>
@@ -67,7 +68,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdBy', '创建人') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdBy', 'Created By') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.createBy || '-' }}
               </div>
@@ -75,7 +76,7 @@
           </el-col>
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', '责任人') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', 'Responsible Person') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.personChargeName || '-' }}
               </div>
@@ -84,7 +85,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', '执行类型') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', 'Execution Type') }}</div>
               <div class="infotop-row-value">
 
                 <dict-tag :options="dpp_etl_task_instance_command_type" :value="dppEtlTaskDetail.commandType" />
@@ -95,7 +96,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', '开始时间') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', 'Start Time') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -109,7 +110,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', '结束时间') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', 'End Time') }}</div>
               <div class="infotop-row-value">
                 {{
                   parseTime(
@@ -126,10 +127,10 @@
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('dpp.instance.taskFlow', '任务流程')" name="1" key="1">
+        <el-tab-pane :label="td('dpp.instance.taskFlow', 'Task Flow')" name="1" key="1">
           <processNode ref="compRef" />
         </el-tab-pane>
-        <el-tab-pane :label="td('dpp.instance.taskLog', '任务日志')" name="2" key="2">
+        <el-tab-pane :label="td('dpp.instance.taskLog', 'Task Log')" name="2" key="2">
           <instanceLog ref="compReftwo" />
         </el-tab-pane>
       </el-tabs>
@@ -219,7 +220,7 @@ watch(
   { immediate: true }
 );
 
-// 清理函数
+// Cleanup function
 const clearPolling = () => {
   polling.value = false;
   if (timer) {

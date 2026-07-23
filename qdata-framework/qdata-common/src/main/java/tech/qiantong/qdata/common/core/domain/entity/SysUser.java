@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain.entity;
@@ -50,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 用户对象 sys_user
+ * User entity sys_user
  *
  * @author qdata
  */
@@ -58,59 +44,59 @@ public class SysUser extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 用户ID */
+    /** User ID */
     @Excel(name = "用户序号", type = Type.EXPORT, cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 
-    //认证平台id
+    // Authentication platform ID
     private String authId;
 
-    /** 部门ID */
+    /** Department ID */
     @Excel(name = "部门编号", type = Type.IMPORT)
     private Long deptId;
 
-    /** 用户账号 */
+    /** User account */
     @Excel(name = "登录名称")
     private String userName;
 
-    /** 用户昵称 */
+    /** User nickname */
     @Excel(name = "用户名称")
     private String nickName;
 
-    /** 用户邮箱 */
+    /** User email */
     @Excel(name = "用户邮箱")
     private String email;
 
-    /** 手机号码 */
+    /** Phone number */
     @Excel(name = "手机号码", cellType = ColumnType.TEXT)
     private String phonenumber;
 
-    /** 用户性别 */
+    /** User gender */
     @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
     private String sex;
 
-    /** 用户头像 */
+    /** User avatar */
     private String avatar;
 
-    /** 密码 */
+    /** Password */
     private String password;
 
-    /** 帐号状态（0正常 1停用） */
+    /** Account status (0=normal, 1=disabled) */
     @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    /** Delete flag (0=exists, 2=deleted) */
     private String delFlag;
 
-    /** 最后登录IP */
+    /** Last login IP */
     @Excel(name = "最后登录IP", type = Type.EXPORT)
     private String loginIp;
 
-    /** 最后登录时间 */
+    /** Last login time */
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
 
-    /** 部门对象 */
+    /** Department object */
     @Excels({
         @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
         @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
@@ -118,23 +104,23 @@ public class SysUser extends BaseEntity
     private SysDept dept;
 
     /**
-     * 角色字符串
+     * Role string
      */
     private String roleStr;
 
-    /** 角色对象 */
+    /** Role object */
     private List<SysRole> roles;
 
-    /** 角色组 */
+    /** Role group */
     private Long[] roleIds;
 
-    /** 岗位组 */
+    /** Post group */
     private Long[] postIds;
 
-    /** 用户id */
+    /** User ID list */
     private List<Long> userIdList;
 
-    /** 角色ID */
+    /** Role ID */
     private Long roleId;
 
     public SysUser()

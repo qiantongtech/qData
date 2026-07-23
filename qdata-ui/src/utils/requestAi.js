@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import axios from 'axios'
@@ -26,47 +27,47 @@ import useUserStore from '@/store/system/user'
 import { i18n } from '@/plugins/vueI18n'
 import { getStoredLang } from '@/store/system/locale'
 let downloadLoadingInstance;
-// 是否显示重新登录
+// Whether to show re-login
 export let isRelogin = { show: false };
-// 白名单
+// whitelist
 const errorSilentWhitelist = ['/dpp/etlTask/compile/check'];
 const isInWhitelist = (url) => errorSilentWhitelist.some(p => typeof url === 'string' && url.indexOf(p) !== -1);
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-// 创建axios实例
+// Create axios instance
 const service = axios.create({
-  // axios中请求配置有baseURL选项，表示请求URL公共部分
+  // The request configuration in axios has the baseURL option, which indicates the public part of the request URL.
   baseURL: import.meta.env.VITE_APP_BASE_AI,
-  // 超时
+  // timeout
   timeout: 600000
 })
 
 let cancelTokens = [];
 
-// request拦截器
+// request interceptor
 service.interceptors.request.use(config => {
-  // 是否需要设置 token
+  // Do you need to set token?
   const isToken = (config.headers || {}).isToken === false
-  // 是否需要防止数据重复提交
+  // Is it necessary to prevent repeated submission of data?
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
   if (getToken() && !isToken) {
-    config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['Authorization'] = 'Bearer ' + getToken() // Let each request carry a custom token. Please modify it according to the actual situation.
   }
 
-  // 统一设置请求语言参数，保证后端能识别当前语言
+  // Set the request language parameters uniformly to ensure that the backend can recognize the current language
   config.headers['accept-language'] = getStoredLang()
 
-  // 处理生产环境政务内网无法使用put、delete请求
+  // The government affairs intranet in the production environment cannot use put and delete requests.
   const env = import.meta.env.VITE_APP_ENV;
   const openProxyPutDeleteRequest = import.meta.env.VITE_APP_OPEN_PROXY_PUT_DELETE_REQUEST;
   if (openProxyPutDeleteRequest === 'true') {
-    // 检查请求方法，并为PUT和DELETE请求改为POST请求
+    // Check the request method and change to POST request for PUT and DELETE requests
     if (config.method === 'put' || config.method === 'delete') {
-      config.headers['X-HTTP-Method-Override'] = config.method.toUpperCase(); // 保留原请求方法信息
-      config.method = 'post'; // 改变请求方法为POST
+      config.headers['X-HTTP-Method-Override'] = config.method.toUpperCase(); // Keep original request method information
+      config.method = 'post'; // Change the request method to POST
     }
   }
-  // get请求映射params参数
+  // get request mapping params parameters
   if (config.method === 'get' && config.params) {
     let url = config.url + '?' + tansParams(config.params);
     url = url.slice(0, -1);
@@ -79,24 +80,24 @@ service.interceptors.request.use(config => {
       data: typeof config.data === 'object' ? JSON.stringify(config.data) : config.data,
       time: new Date().getTime()
     }
-    const requestSize = Object.keys(JSON.stringify(requestObj)).length; // 请求数据大小
-    const limitSize = 5 * 1024 * 1024; // 限制存放数据5M
+    const requestSize = Object.keys(JSON.stringify(requestObj)).length; // Request data size
+    const limitSize = 5 * 1024 * 1024; // Limit storage data to 5M
     if (requestSize >= limitSize) {
-      console.warn(`[${config.url}]: ` + '请求数据大小超出允许的5M限制，无法进行防重复提交验证。')
+      console.warn(`[${config.url}]: ` + "The request data exceeds the permitted 5 MB limit; duplicate submission validation cannot be performed.")
       return config;
     }
     const sessionObj = cache.session.getJSON('sessionObj')
     if (sessionObj === undefined || sessionObj === null || sessionObj === '') {
       cache.session.setJSON('sessionObj', requestObj)
     } else {
-      const s_url = sessionObj.url;                // 请求地址
-      const s_data = sessionObj.data;              // 请求数据
-      const s_time = sessionObj.time;              // 请求时间
-      const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
+      const s_url = sessionObj.url;                // Request address
+      const s_data = sessionObj.data;              // Request data
+      const s_time = sessionObj.time;              // Request time
+      const interval = 1000;                       // Interval time (ms), less than this time is considered a duplicate submission
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
         const message = i18n.global.t('common.request.repeatSubmit');
         const err = new Error(message);
-        err.isRepeatSubmit = true; // 标记为重复提交
+        err.isRepeatSubmit = true; // Mark as duplicate submission
         return Promise.reject(err);
       } else {
         cache.session.setJSON('sessionObj', requestObj)
@@ -104,7 +105,7 @@ service.interceptors.request.use(config => {
     }
   }
 
-  // 创建取消令牌并添加到请求配置中
+  // Create a cancellation token and add it to the request configuration
   const source = axios.CancelToken.source();
   config.cancelToken = source.token;
   cancelTokens.push(source);
@@ -114,13 +115,13 @@ service.interceptors.request.use(config => {
   Promise.reject(error)
 })
 
-// 响应拦截器
+// response interceptor
 service.interceptors.response.use(res => {
-  // 未设置状态码则默认成功状态
+  // If the status code is not set, the default success status is
   const code = res.data.code || 200;
-  // 获取错误信息
+  // Get error message
   const msg = errorCode[code] || res.data.msg || errorCode['default']
-  // 二进制数据则直接返回
+  // Binary data is returned directly
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
   }
@@ -180,7 +181,7 @@ service.interceptors.response.use(res => {
   }
 )
 
-// 通用下载方法
+// Universal download method
 export function download(url, params, filename, config) {
   downloadLoadingInstance = ElLoading.service({ text: i18n.global.t('common.request.downloading'), background: "rgba(0, 0, 0, 0.7)", })
   return service.post(url, params, {
@@ -210,7 +211,7 @@ export function download2(url, params, filename, config) {
   downloadLoadingInstance = ElLoading.service({ text: i18n.global.t('common.request.downloading'), background: "rgba(0, 0, 0, 0.7)" });
 
   return service.get(url, {
-    params: params, // 使用 GET 请求时，参数作为查询参数传递
+    params: params, // When using a GET request, parameters are passed as query parameters
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     responseType: 'blob',
     ...config
@@ -218,14 +219,14 @@ export function download2(url, params, filename, config) {
     const isBlob = blobValidate(data);
     if (isBlob) {
       const blob = new Blob([data]);
-      saveAs(blob, filename);  // 保存文件
+      saveAs(blob, filename);  // save file
     } else {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
       const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default'];
-      ElMessage.warning(errMsg);  // 显示错误消息
+      ElMessage.warning(errMsg);  // Show error message
     }
-    downloadLoadingInstance.close();  // 关闭加载动画
+    downloadLoadingInstance.close();  // Turn off loading animation
   }).catch((r) => {
     console.error(r);
     ElMessage.warning(i18n.global.t('common.request.downloadError'));
@@ -236,7 +237,7 @@ export function download2(url, params, filename, config) {
 
 export default service
 
-// 导出取消请求的函数
+// Export function to cancel request
 export function clearCancelTokens() {
   cancelTokens.forEach(source => source.cancel('Route change: Request canceled'));
   cancelTokens = [];

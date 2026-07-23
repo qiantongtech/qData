@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.example.websocket;
@@ -43,7 +29,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.Semaphore;
 
 /**
- * websocket 消息处理
+ * WebSocket Message Handler
  *
  * @author qdata
  */
@@ -52,81 +38,81 @@ import java.util.concurrent.Semaphore;
 public class WebSocketServer
 {
     /**
-     * WebSocketServer 日志控制器
+     * WebSocketServer log controller
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
 
     /**
-     * 默认最多允许同时在线人数100
+     * Maximum concurrent online users allowed by default: 100
      */
     public static int socketMaxOnlineCount = 100;
 
     private static Semaphore socketSemaphore = new Semaphore(socketMaxOnlineCount);
 
     /**
-     * 连接建立成功调用的方法
+     * Method called when connection is established
      */
     @OnOpen
     public void onOpen(Session session) throws Exception
     {
         boolean semaphoreFlag = false;
-        // 尝试获取信号量
+        // Try to acquire semaphore
         semaphoreFlag = SemaphoreUtils.tryAcquire(socketSemaphore);
         if (!semaphoreFlag)
         {
-            // 未获取到信号量
-            LOGGER.error("\n 当前在线人数超过限制数- {}", socketMaxOnlineCount);
-            WebSocketUsers.sendMessageToUserByText(session, "当前在线人数超过限制数：" + socketMaxOnlineCount);
+            // Semaphore not acquired
+            LOGGER.error("\n Current online users exceed limit - {}", socketMaxOnlineCount);
+            WebSocketUsers.sendMessageToUserByText(session, "Current online users exceed limit: " + socketMaxOnlineCount);
             session.close();
         }
         else
         {
-            // 添加用户
+            // Add user
             WebSocketUsers.put(session.getId(), session);
-            LOGGER.info("\n 建立连接 - {}", session);
-            LOGGER.info("\n 当前人数 - {}", WebSocketUsers.getUsers().size());
-            WebSocketUsers.sendMessageToUserByText(session, "连接成功");
+            LOGGER.info("\n Connection established - {}", session);
+            LOGGER.info("\n Current users - {}", WebSocketUsers.getUsers().size());
+            WebSocketUsers.sendMessageToUserByText(session, "Connection successful");
         }
     }
 
     /**
-     * 连接关闭时处理
+     * Method called when connection is closed
      */
     @OnClose
     public void onClose(Session session)
     {
-        LOGGER.info("\n 关闭连接 - {}", session);
-        // 移除用户
+        LOGGER.info("\n Connection closed - {}", session);
+        // Remove user
         boolean removeFlag = WebSocketUsers.remove(session.getId());
         if (!removeFlag)
         {
-            // 获取到信号量则需释放
+            // Semaphore acquired, need to release
             SemaphoreUtils.release(socketSemaphore);
         }
     }
 
     /**
-     * 抛出异常时处理
+     * Method called when an exception is thrown
      */
     @OnError
     public void onError(Session session, Throwable exception) throws Exception
     {
         if (session.isOpen())
         {
-            // 关闭连接
+            // Close connection
             session.close();
         }
         String sessionId = session.getId();
-        LOGGER.info("\n 连接异常 - {}", sessionId);
-        LOGGER.info("\n 异常信息 - {}", exception);
-        // 移出用户
+        LOGGER.info("\n Connection error - {}", sessionId);
+        LOGGER.info("\n Error details - {}", exception);
+        // Remove user
         WebSocketUsers.remove(sessionId);
-        // 获取到信号量则需释放
+        // Semaphore acquired, need to release
         SemaphoreUtils.release(socketSemaphore);
     }
 
     /**
-     * 服务器接收到客户端消息时调用的方法
+     * Method called when server receives a client message
      */
     @OnMessage
     public void onMessage(String message, Session session)

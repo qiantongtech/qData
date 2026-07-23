@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询用户类型列表
+// Query user type list
 export function listUserType(query) {
   return request({
     url: '/example/userType/list',
@@ -26,7 +27,7 @@ export function listUserType(query) {
   })
 }
 
-// 查询用户类型详细
+// Query user type details
 export function getUserType(id) {
   return request({
     url: '/example/userType/' + id,
@@ -34,7 +35,7 @@ export function getUserType(id) {
   })
 }
 
-// 新增用户类型
+// Add new user type
 export function addUserType(data) {
   return request({
     url: '/example/userType',
@@ -43,7 +44,7 @@ export function addUserType(data) {
   })
 }
 
-// 修改用户类型
+// Modify user type
 export function updateUserType(data) {
   return request({
     url: '/example/userType',
@@ -52,7 +53,7 @@ export function updateUserType(data) {
   })
 }
 
-// 删除用户类型
+// Delete user type
 export function delUserType(id) {
   return request({
     url: '/example/userType/' + id,

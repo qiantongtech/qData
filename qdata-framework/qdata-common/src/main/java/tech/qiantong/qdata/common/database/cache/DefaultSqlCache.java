@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.cache;
@@ -47,9 +33,9 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
 
     public DefaultSqlCache(int capacity, long expire) {
         super((int) Math.ceil(capacity / 0.75) + 1, 0.75f, true);
-        // 容量
+        // Capacity
         this.capacity = capacity;
-        // 固定过期时间
+        // Fixed expiration time
         this.expire = expire;
     }
 
@@ -61,7 +47,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         }
         lock.writeLock().lock();
         try {
-            // 封装成过期时间节点
+            // Wrap as expiration time node
             put(key, new ExpireNode<>(expireTime, value));
         } finally {
             lock.writeLock().unlock();
@@ -80,7 +66,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         if (expireNode == null) {
             return null;
         }
-        // 惰性删除过期的
+        // Lazy deletion of expired entries
         if (this.expire > -1L && expireNode.expire < System.currentTimeMillis()) {
             try {
                 lock.writeLock().lock();
@@ -98,7 +84,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         try {
             lock.writeLock().lock();
             Iterator<Map.Entry<String, ExpireNode<Object>>> iterator = super.entrySet().iterator();
-            // 清除key的缓存
+            // Clear the cache entry for the given key
             while (iterator.hasNext()) {
                 Map.Entry<String, ExpireNode<Object>> entry = iterator.next();
                 if (entry.getKey().equals(key)) {
@@ -116,12 +102,12 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
         if (this.expire > -1L && size() > capacity) {
             clean();
         }
-        // lru淘汰
+        // LRU eviction
         return size() > this.capacity;
     }
 
     /**
-     * 清理已过期的数据
+     * Clean up expired data
      */
     private void clean() {
         try {
@@ -130,7 +116,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
             long now = System.currentTimeMillis();
             while (iterator.hasNext()) {
                 Map.Entry<String, ExpireNode<Object>> next = iterator.next();
-                // 判断是否过期
+                // Check if expired
                 if (next.getValue().expire < now) {
                     iterator.remove();
                 }
@@ -142,7 +128,7 @@ public class DefaultSqlCache extends LinkedHashMap<String, DefaultSqlCache.Expir
 
 
     /**
-     * 过期时间节点
+     * Expiration time node
      */
     static class ExpireNode<V> {
         long expire;

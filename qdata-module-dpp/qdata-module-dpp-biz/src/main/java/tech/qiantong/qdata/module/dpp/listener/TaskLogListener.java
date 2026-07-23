@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.listener;
@@ -49,7 +35,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -68,20 +54,20 @@ public class TaskLogListener {
             key = {"ds.queue.taskInstance.log"},
             value = @Queue(value = "ds.queue.taskInstance.log", durable = "true", exclusive = "false", autoDelete = "false")))
     public void taskInstanceLogInsert(Map map, Channel channel, Message message) {
-        //任务实例id
+        //Task instance ID
         String taskInstanceId = String.valueOf(map.get("taskInstanceId"));
-        //工作流实例id
+        //Workflow instance ID
         String processInstanceId = String.valueOf(map.get("workflowInstanceId"));
-        //日志
+        //Log
         String logStr = String.valueOf(map.get("log"));
-        //处理日志
+        //Process log
         try {
             dppEtlNodeInstanceService.taskInstanceLogInsert(taskInstanceId, processInstanceId, logStr);
         } catch (Exception e) {
-            log.error("任务实例日志插入异常:{}", e.getMessage());
+            log.error("Failed to insert task instance log: {}", e.getMessage());
         }
 
-        // 手动确认
+        // Manual acknowledgment
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

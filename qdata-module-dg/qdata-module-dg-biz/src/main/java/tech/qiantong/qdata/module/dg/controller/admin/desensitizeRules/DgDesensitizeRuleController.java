@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules;
@@ -62,12 +48,12 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeRuleService;
 
 /**
- * 脱敏规则Controller
+ * Desensitize Rule Controller
  *
  * @author qdata
  * @date 2026-04-10
  */
-@Tag(name = "脱敏规则")
+@Tag(name = "Desensitize Rules")
 @RestController
 @RequestMapping("/dg/desensitizeRules")
 @Validated
@@ -75,7 +61,7 @@ public class DgDesensitizeRuleController extends BaseController {
     @Resource
     private IDgDesensitizeRuleService dgDesensitizeRuleService;
 
-    @Operation(summary = "查询脱敏规则列表")
+    @Operation(summary = "Query desensitize rule list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDesensitizeRuleRespVO>> list(DgDesensitizeRulePageReqVO dgDesensitizeRule) {
@@ -83,20 +69,20 @@ public class DgDesensitizeRuleController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDesensitizeRuleRespVO.class));
     }
 
-    @Operation(summary = "导出脱敏规则列表")
+    @Operation(summary = "Export desensitize rule list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:export')")
-    @Log(title = "脱敏规则", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.rule", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeRulePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeRuleDO> list = (List<DgDesensitizeRuleDO>) dgDesensitizeRuleService.getDgDesensitizeRulePage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeRuleRespVO> util = new ExcelUtil<>(DgDesensitizeRuleRespVO.class);
-        util.exportExcel(response, DgDesensitizeRuleConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeRuleConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
-    @Operation(summary = "导入脱敏规则列表")
+    @Operation(summary = "Import desensitize rule list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:import')")
-    @Log(title = "脱敏规则", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.rule", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeRuleRespVO> util = new ExcelUtil<>(DgDesensitizeRuleRespVO.class);
@@ -106,7 +92,7 @@ public class DgDesensitizeRuleController extends BaseController {
         return success(message);
     }
 
-    @Operation(summary = "获取脱敏规则详细信息")
+    @Operation(summary = "Get desensitize rule detail")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDesensitizeRuleRespVO> getInfo(@PathVariable("id") Long id) {
@@ -114,9 +100,9 @@ public class DgDesensitizeRuleController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDesensitizeRuleDO, DgDesensitizeRuleRespVO.class));
     }
 
-    @Operation(summary = "新增脱敏规则")
+    @Operation(summary = "Add desensitize rule")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:add')")
-    @Log(title = "脱敏规则", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.rule", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeRuleSaveReqVO dgDesensitizeRule) {
         dgDesensitizeRule.setCreatorId(getUserId());
@@ -125,9 +111,9 @@ public class DgDesensitizeRuleController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeRuleService.createDgDesensitizeRule(dgDesensitizeRule));
     }
 
-    @Operation(summary = "修改脱敏规则")
+    @Operation(summary = "Update desensitize rule")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:edit')")
-    @Log(title = "脱敏规则", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.rule", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeRuleSaveReqVO dgDesensitizeRule) {
         dgDesensitizeRule.setUpdatorId(getUserId());
@@ -136,9 +122,9 @@ public class DgDesensitizeRuleController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeRuleService.updateDgDesensitizeRule(dgDesensitizeRule));
     }
 
-    @Operation(summary = "删除脱敏规则")
+    @Operation(summary = "Delete desensitize rule")
     @PreAuthorize("@ss.hasPermi('dg:desensitizerules:remove')")
-    @Log(title = "脱敏规则", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.rule", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeRuleService.removeDgDesensitizeRule(Arrays.asList(ids)));

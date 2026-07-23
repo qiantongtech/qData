@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package ${packageName}.service.${moduleName}.impl;
@@ -63,7 +49,7 @@ import ${packageName}.service.${moduleName}.I${ClassName}Service;
 #elseif($table.tree)
 #end
 /**
- * ${functionName}Service业务层处理
+ * ${functionName}Service business layer processing
  *
  * @author ${author}
  * @date ${datetime}
@@ -89,22 +75,22 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
 
     @Override
     public int update${ClassName}(${ClassName}SaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新${functionName}
+        // Update ${functionName}
         ${ClassName}DO updateObj = BeanUtils.toBean(updateReqVO, ${ClassName}DO.class);
         return ${className}Mapper.updateById(updateObj);
     }
     #if($table.crud || $table.sub)
     @Override
     public int remove${ClassName}(Collection<Long> idList) {
-        // 批量删除${functionName}
+        // Delete ${functionName} in batches
         return ${className}Mapper.deleteBatchIds(idList);
     }
     #elseif($table.tree)
     @Override
     public int remove${ClassName}(Long id) {
-        // 单独删除${functionName}
+        // Delete ${functionName} individually
         return ${className}Mapper.deleteById(id);
     }
     #end
@@ -126,7 +112,7 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
                 .collect(Collectors.toMap(
                         ${ClassName}DO::getId,
                         ${className}DO -> ${className}DO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
@@ -140,17 +126,17 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
 
     #if($table.crud || $table.sub)
         /**
-         * 导入${functionName}数据
+         * Import ${functionName} data
          *
-         * @param importExcelList ${functionName}数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList ${functionName}data list
+         * @param isUpdateSupport Whether to update support, if it already exists, update the data
+         * @param operName operating user
+         * @return result
          */
         @Override
         public String import${ClassName}(List<${ClassName}RespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("导入数据不能为空！");
+                throw new ServiceException("common.error.import.empty", "导入数据不能为空！");
             }
 
             int successNum = 0;
@@ -168,14 +154,17 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
                             if (existing${ClassName} != null) {
                                 ${className}Mapper.updateById(${className}DO);
                                 successNum++;
-                                successMessages.add("数据更新成功，ID为 " + ${className}Id + " 的${functionName}记录。");
+                                successMessages.add(MessageUtils.messageWithFallback("common.import.update.success",
+                                        "数据更新成功，ID为 " + ${className}Id + " 的${functionName}记录。", ${className}Id, "${functionName}"));
                             } else {
                                 failureNum++;
-                                failureMessages.add("数据更新失败，ID为 " + ${className}Id + " 的${functionName}记录不存在。");
+                                failureMessages.add(MessageUtils.messageWithFallback("common.import.update.fail",
+                                        "数据更新失败，ID为 " + ${className}Id + " 的${functionName}记录不存在。", ${className}Id, "${functionName}"));
                             }
                         } else {
                             failureNum++;
-                            failureMessages.add("数据更新失败，某条记录的ID不存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("common.import.update.fail",
+                                    "数据更新失败，某条记录的ID不存在。", "${functionName}"));
                         }
                     } else {
                         QueryWrapper<${ClassName}DO> queryWrapper = new QueryWrapper<>();
@@ -184,26 +173,32 @@ public class ${ClassName}ServiceImpl  extends ServiceImpl<${ClassName}Mapper,${C
                         if (existing${ClassName} == null) {
                             ${className}Mapper.insert(${className}DO);
                             successNum++;
-                            successMessages.add("数据插入成功，ID为 " + ${className}Id + " 的${functionName}记录。");
+                            successMessages.add(MessageUtils.messageWithFallback("common.import.insert.success",
+                                    "数据插入成功，ID为 " + ${className}Id + " 的${functionName}记录。", ${className}Id, "${functionName}"));
                         } else {
                             failureNum++;
-                            failureMessages.add("数据插入失败，ID为 " + ${className}Id + " 的${functionName}记录已存在。");
+                            failureMessages.add(MessageUtils.messageWithFallback("common.import.insert.fail",
+                                    "数据插入失败，ID为 " + ${className}Id + " 的${functionName}记录已存在。", ${className}Id, "${functionName}"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
-                    String errorMsg = "数据导入失败，错误信息：" + e.getMessage();
+                    String errorMsg = MessageUtils.messageWithFallback("common.import.error.detail",
+                            "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
             }
             StringBuilder resultMsg = new StringBuilder();
             if (failureNum > 0) {
-                resultMsg.append("很抱歉，导入失败！共 ").append(failureNum).append(" 条数据格式不正确，错误如下：");
-                resultMsg.append("<br/>").append(String.join("<br/>", failureMessages));
-                throw new ServiceException(resultMsg.toString());
+                String failureDetails = String.join("<br/>", failureMessages);
+                resultMsg.append(MessageUtils.messageWithFallback("common.import.result.fail",
+                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        failureNum, failureDetails));
+                throw new ServiceException("common.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
-                resultMsg.append("恭喜您，数据已全部导入成功！共 ").append(successNum).append(" 条。");
+                resultMsg.append(MessageUtils.messageWithFallback("common.import.result.success",
+                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
             }
             return resultMsg.toString();
         }

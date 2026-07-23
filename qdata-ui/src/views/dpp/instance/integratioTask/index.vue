@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -25,7 +26,7 @@
         :placeholder="
           td(
             'dpp.instance.integratioTask.inputCategoryName',
-            '请输入数据集成类目名称'
+            'Please enter data integration category name'
           )
         "
         @node-click="handleNodeClick"
@@ -37,7 +38,7 @@
             :model="queryParams"
             ref="queryRef"
             :inline="true"
-            
+
             v-show="showSearch"
             @submit.prevent
           >
@@ -45,7 +46,7 @@
               :label="
                 td(
                   'dpp.instance.integratioTask.taskInstanceName',
-                  '任务实例名称'
+                  'Task Instance Name'
                 )
               "
               prop="name"
@@ -56,7 +57,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.integratioTask.inputTaskInstanceName',
-                    '请输入任务实例名称'
+                    'Please enter task instance name'
                   )
                 "
                 clearable
@@ -65,7 +66,7 @@
             </el-form-item>
             <el-form-item
               :label="
-                td('dpp.instance.integratioTask.executionStatus', '执行状态')
+                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
               "
               prop="status"
             >
@@ -74,7 +75,7 @@
                 :placeholder="
                   td(
                     'dpp.instance.integratioTask.selectExecutionStatus',
-                    '请选择执行状态'
+                    'Please select execution status'
                   )
                 "
                 clearable
@@ -111,14 +112,14 @@
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i
-                >{{ td("common.button.search", "查询") }}
+                >{{ td("common.button.search", "Search") }}
               </el-button>
               <el-button
                 @click="resetQuery"
                 @mousedown="(e) => e.preventDefault()"
               >
                 <i class="iconfont-mini icon-a-zu22378 mr5"></i
-                >{{ td("common.button.reset", "重置") }}
+                >{{ td("common.button.reset", "Reset") }}
               </el-button>
             </el-form-item>
           </el-form>
@@ -144,7 +145,7 @@
             <el-table-column
               v-if="getColumnVisibility(0)"
               width="150"
-              :label="td('dpp.instance.integratioTask.id', '编号')"
+              :label="td('dpp.instance.integratioTask.id', 'No.')"
               align="left"
               prop="id"
             />
@@ -154,7 +155,7 @@
               :label="
                 td(
                   'dpp.instance.integratioTask.taskInstanceName',
-                  '任务实例名称'
+                  'Task Instance Name'
                 )
               "
               align="left"
@@ -169,7 +170,7 @@
             <el-table-column
               v-if="getColumnVisibility(3)"
               :label="
-                td('dpp.instance.integratioTask.executionType', '执行类型')
+                td('dpp.instance.integratioTask.executionType', 'Execution Type')
               "
               width="140"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -187,7 +188,7 @@
               v-if="getColumnVisibility(4)"
               width="140"
               :label="
-                td('dpp.instance.integratioTask.executionStatus', '执行状态')
+                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
               "
               align="left"
               prop="status"
@@ -202,7 +203,7 @@
             <el-table-column
               v-if="getColumnVisibility(5)"
               width="160"
-              :label="td('dpp.instance.integratioTask.startTime', '开始时间')"
+              :label="td('dpp.instance.integratioTask.startTime', 'Start Time')"
               align="left"
               prop="startTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -214,7 +215,7 @@
             <el-table-column
               v-if="getColumnVisibility(6)"
               width="160"
-              :label="td('dpp.instance.integratioTask.endTime', '结束时间')"
+              :label="td('dpp.instance.integratioTask.endTime', 'End Time')"
               align="left"
               prop="endTime"
               :show-overflow-tooltip="{ effect: 'light' }"
@@ -230,7 +231,7 @@
               v-if="getColumnVisibility(9)"
               width="160"
               :label="
-                td('dpp.instance.integratioTask.responsiblePerson', '责任人')
+                td('dpp.instance.integratioTask.responsiblePerson', 'Responsible Person')
               "
               align="left"
               prop="createBy"
@@ -241,7 +242,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(10)"
-              :label="td('dpp.instance.integratioTask.createBy', '创建人')"
+              :label="td('dpp.instance.integratioTask.createBy', 'Created By')"
               :show-overflow-tooltip="true"
               align="left"
               prop="createBy"
@@ -253,7 +254,7 @@
             </el-table-column>
             <el-table-column
               v-if="getColumnVisibility(11)"
-              :label="td('dpp.instance.integratioTask.createTime', '创建时间')"
+              :label="td('dpp.instance.integratioTask.createTime', 'Created Time')"
               align="left"
               prop="create_time"
               width="150"
@@ -268,7 +269,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              :label="td('dpp.instance.integratioTask.operation', '操作')"
+              :label="td('dpp.instance.integratioTask.operation', 'Operation')"
               align="center"
               class-name="small-padding fixed-width"
               fixed="right"
@@ -286,7 +287,7 @@
                     })
                   "
                   >{{
-                    td("dpp.instance.integratioTask.detail", "详情")
+                    td("dpp.instance.integratioTask.detail", "Detail")
                   }}</el-button
                 >
                 <el-button
@@ -297,7 +298,7 @@
                   @mousedown="(e) => e.preventDefault()"
                 >
                   {{
-                    td("dpp.instance.integratioTask.downloadLog", "下载日志")
+                    td("dpp.instance.integratioTask.downloadLog", "Download Log")
                   }}
                 </el-button>
               </template>
@@ -374,7 +375,7 @@ const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
 );
 const dppEtlTaskLogList = ref([]);
 
-// 列显隐状态
+// Show hidden status
 const columnVisible = ref({
   0: true,
   1: true,
@@ -387,56 +388,56 @@ const columnVisible = ref({
   11: true,
 });
 
-// 列配置（使用计算属性，确保国际化文本能响应语言切换）
+// Column configuration (use computed properties to ensure internationalized text responds to language switches)
 const columns = computed(() => [
   {
     key: 0,
-    label: td("dpp.instance.integratioTask.id", "编号"),
+    label: td("dpp.instance.integratioTask.id", "No."),
     visible: columnVisible.value[0],
   },
   {
     key: 1,
-    label: td("dpp.instance.integratioTask.taskInstanceName", "任务实例名称"),
+    label: td("dpp.instance.integratioTask.taskInstanceName", "Task Instance Name"),
     visible: columnVisible.value[1],
   },
   {
     key: 3,
-    label: td("dpp.instance.integratioTask.executionType", "执行类型"),
+    label: td("dpp.instance.integratioTask.executionType", "Execution Type"),
     visible: columnVisible.value[3],
   },
   {
     key: 4,
-    label: td("dpp.instance.integratioTask.executionStatus", "执行状态"),
+    label: td("dpp.instance.integratioTask.executionStatus", "Execution Status"),
     visible: columnVisible.value[4],
   },
   {
     key: 5,
-    label: td("dpp.instance.integratioTask.startTime", "开始时间"),
+    label: td("dpp.instance.integratioTask.startTime", "Start Time"),
     visible: columnVisible.value[5],
   },
   {
     key: 6,
-    label: td("dpp.instance.integratioTask.endTime", "结束时间"),
+    label: td("dpp.instance.integratioTask.endTime", "End Time"),
     visible: columnVisible.value[6],
   },
   {
     key: 9,
-    label: td("dpp.instance.integratioTask.responsiblePerson", "责任人"),
+    label: td("dpp.instance.integratioTask.responsiblePerson", "Responsible Person"),
     visible: columnVisible.value[9],
   },
   {
     key: 10,
-    label: td("dpp.instance.integratioTask.createBy", "创建人"),
+    label: td("dpp.instance.integratioTask.createBy", "Created By"),
     visible: columnVisible.value[10],
   },
   {
     key: 11,
-    label: td("dpp.instance.integratioTask.createTime", "创建时间"),
+    label: td("dpp.instance.integratioTask.createTime", "Created Time"),
     visible: columnVisible.value[11],
   },
 ]);
 
-// 监听 RightToolbar 对 columns 的修改，同步到 columnVisible
+// Monitor the modification of columns by RightToolbar and synchronize to columnVisible
 watch(
   columns,
   (newColumns) => {
@@ -468,19 +469,19 @@ const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const emit = defineEmits(["resetCat"]);
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dpp/dppEtlTaskLog/importData",
 });
 
@@ -528,7 +529,7 @@ function handleTimeClear() {
   queryParams.value.startTime = null;
   queryParams.value.endTime = null;
 }
-/** 查询数据集成任务-日志列表 */
+/** Query data integration tasks-log list */
 function getList() {
   loading.value = true;
   queryParams.value.projectCode = userStore.projectCode;
@@ -549,7 +550,7 @@ function getList() {
 // }
 const logDialogRef = ref(null);
 
-// 打开日志弹窗
+// Open the log pop-up window
 const logDetailCatList = (row) => {
   logDialogRef.value.open(row.id);
 };
@@ -557,14 +558,14 @@ const logDetailCatList = (row) => {
 const formattedText = computed(() => {
   console.log("msg.value", msg.value);
 
-  return msg.value.replace(/\n/g, "<br>"); // 将换行符替换为 <br> 标签
+  return msg.value.replace(/\n/g, "<br>"); // Replace newlines with <br> tags
 });
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
   queryParams.value.pageNum = 1;
   handleQuery();
 }
-/** 导出按钮操作 */
+/** Export button action */
 async function handleExport(row) {
   proxy.download(
     "/dpp/etlTaskInstance/downloadLog",
@@ -575,14 +576,14 @@ async function handleExport(row) {
   );
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -613,7 +614,7 @@ function reset() {
   proxy.resetForm("dppEtlTaskLogRef");
 }
 let deptOptions = ref([]);
-/** 下拉树结构 */
+/** Drop down tree structure */
 function getDeptTree() {
   listAttTaskCat({
     projectId: userStore.projectId,
@@ -625,7 +626,7 @@ function getDeptTree() {
       {
         name: td(
           "dpp.instance.integratioTask.dataIntegrationCategory",
-          "数据集成类目"
+          "Data Integration Category"
         ),
         value: "",
         id: 0,
@@ -634,12 +635,12 @@ function getDeptTree() {
     ];
   });
 }
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-const DeptTreeRef = ref(null); /** 重置按钮操作 */
+const DeptTreeRef = ref(null); /** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -651,28 +652,28 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('dpp.instance.integratioTask.addLogTitle');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
@@ -683,7 +684,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -694,7 +695,7 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dppEtlTaskLogRef"].validate((valid) => {
     if (valid) {
@@ -719,11 +720,11 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', '', { id: _ids }))
+    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', 'Are you sure to delete the data integration task log with ID "{id}"?', { id: _ids }))
     .then(function () {
       return delDppEtlNodeInstance(_ids);
     })
@@ -754,7 +755,7 @@ function routeTo(link, row) {
   }
 }
 
-// 监听projectCode数据变化
+// Monitor projectCode data changes
 watch(
   () => userStore.projectCode,
   (projectCode) => {
@@ -762,7 +763,7 @@ watch(
       getList();
     }
   },
-  { immediate: true } // 立即触发，防止数据已存在的情况
+  { immediate: true } // Trigger immediately to prevent data already existing
 );
 getDeptTree();
 getList();

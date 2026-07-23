@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-   <!-- 授权用户 -->
+   <!-- authorized user -->
    <el-dialog :title="td('sys.system.roleAuth.selectUser')" v-model="visible" width="830px" top="5vh" append-to-body>
       <el-form :model="queryParams" ref="queryRef" :inline="true">
          <el-form-item :label="td('sys.system.roleAuth.userName')" prop="userName">
@@ -90,24 +91,24 @@ const queryParams = reactive({
    phonenumber: undefined
 });
 
-// 显示弹框
+// Show popup
 function show() {
    queryParams.roleId = props.roleId;
    getList();
    visible.value = true;
 }
 
-/**选择行 */
+/**Select row */
 function clickRow(row) {
    proxy.$refs["refTable"].toggleRowSelection(row);
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
    userIds.value = selection.map(item => item.userId);
 }
 
-// 查询表数据
+// Query table data
 function getList() {
    unallocatedUserList(queryParams).then(res => {
       userList.value = res.rows;
@@ -115,20 +116,20 @@ function getList() {
    });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
    queryParams.pageNum = 1;
    getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
    proxy.resetForm("queryRef");
    handleQuery();
 }
 
 const emit = defineEmits(["ok"]);
-/** 选择授权用户操作 */
+/** Select authorized user operations */
 function handleSelectUser() {
    const roleId = queryParams.roleId;
    const uIds = userIds.value.join(",");

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.Rel.impl;
@@ -66,7 +52,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 标签与资产关联关系Service业务层处理
+ * Tag and asset association relationship Service business layer processing
  *
  * @author qdata
  * @date 2025-07-11
@@ -91,7 +77,7 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
 
         attTagAssetRelMapper.delete("asset_id", createReqVO.getAssetId());
         List<String> tagIds = createReqVO.getTagIds();
-        // 添加关系表，更新标签关联资产数量
+        // Add relation table, update tag asset count
         for (String tagId : tagIds) {
             AttTagAssetRelDO relDo = new AttTagAssetRelDO();
             relDo.setAssetId(createReqVO.getAssetId());
@@ -109,15 +95,15 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
 
     @Override
     public int updateAttTagAssetRel(AttTagAssetRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validation
 
-        // 更新标签与资产关联关系
+        // Update tag and asset association relationship
         AttTagAssetRelDO updateObj = BeanUtils.toBean(updateReqVO, AttTagAssetRelDO.class);
         return attTagAssetRelMapper.updateById(updateObj);
     }
     @Override
     public int removeAttTagAssetRel(Collection<Long> idList) {
-        // 批量删除标签与资产关联关系
+        // Batch delete tag and asset association relationship
         return attTagAssetRelMapper.deleteBatchIds(idList);
     }
 
@@ -138,24 +124,24 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
                 .collect(Collectors.toMap(
                         AttTagAssetRelDO::getId,
                         attTagAssetRelDO -> attTagAssetRelDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入标签与资产关联关系数据
+         * Import tag and asset association relationship data
          *
-         * @param importExcelList 标签与资产关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         *  importExcelList tag and asset association relationship data list
+         * @param isUpdateSupport Whether to support update; if already exists, update the data
+         *  operName Operator
+         *  Result
          */
         @Override
         public String importAttTagAssetRel(List<AttTagAssetRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -174,16 +160,16 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
                                 attTagAssetRelMapper.updateById(attTagAssetRelDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                        "数据更新成功，ID为 " + attTagAssetRelId + " 的标签与资产关联关系记录。", attTagAssetRelId, "标签与资产关联关系"));
+                                        "Update succeeded, record with ID " + attTagAssetRelId + " (tag and asset association).", attTagAssetRelId, "tag and asset association"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                        "数据更新失败，ID为 " + attTagAssetRelId + " 的标签与资产关联关系记录不存在。", attTagAssetRelId, "标签与资产关联关系"));
+                                        "Update failed, record with ID " + attTagAssetRelId + " (tag and asset association) does not exist.", attTagAssetRelId, "tag and asset association"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Update failed, the ID of some record does not exist."));
                         }
                     } else {
                         QueryWrapper<AttTagAssetRelDO> queryWrapper = new QueryWrapper<>();
@@ -193,17 +179,17 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
                             attTagAssetRelMapper.insert(attTagAssetRelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                    "数据插入成功，ID为 " + attTagAssetRelId + " 的标签与资产关联关系记录。", attTagAssetRelId, "标签与资产关联关系"));
+                                    "Insert succeeded, record with ID " + attTagAssetRelId + " (tag and asset association).", attTagAssetRelId, "tag and asset association"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                    "数据插入失败，ID为 " + attTagAssetRelId + " 的标签与资产关联关系记录已存在。", attTagAssetRelId, "标签与资产关联关系"));
+                                    "Insert failed, record with ID " + attTagAssetRelId + " (tag and asset association) already exists.", attTagAssetRelId, "tag and asset association"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Import failed, error: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -212,12 +198,12 @@ public class AttTagAssetRelServiceImpl  extends ServiceImpl<AttTagAssetRelMapper
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! " + failureNum + " records have incorrect format. Errors:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "All data imported successfully! Total: " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

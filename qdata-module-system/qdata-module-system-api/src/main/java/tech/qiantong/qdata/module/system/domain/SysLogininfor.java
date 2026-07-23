@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.domain;
@@ -40,7 +26,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 系统访问记录表 sys_logininfor
+ * System access record table sys_logininfor
  *
  * @author qdata
  */
@@ -49,40 +35,40 @@ public class SysLogininfor extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    @Excel(name = "序号", cellType = ColumnType.NUMERIC)
+    @Excel(name = "ID", cellType = ColumnType.NUMERIC)
     private Long infoId;
 
-    /** 用户账号 */
-    @Excel(name = "用户账号")
+    /** Login User Account */
+    @Excel(name = "Username")
     private String userName;
 
-    /** 登录状态 0成功 1失败 */
-    @Excel(name = "登录状态", readConverterExp = "0=成功,1=失败")
+    /** Login Status (0=success, 1=failure) */
+    @Excel(name = "Status", readConverterExp = "0=success,1=failure")
     private String status;
 
-    /** 登录IP地址 */
-    @Excel(name = "登录地址")
+    /** Login IP Address */
+    @Excel(name = "IP Address")
     private String ipaddr;
 
-    /** 登录地点 */
-    @Excel(name = "登录地点")
+    /** Login Location */
+    @Excel(name = "Location")
     private String loginLocation;
 
-    /** 浏览器类型 */
-    @Excel(name = "浏览器")
+    /** Browser Type */
+    @Excel(name = "Browser")
     private String browser;
 
-    /** 操作系统 */
-    @Excel(name = "操作系统")
+    /** Operating System */
+    @Excel(name = "OS")
     private String os;
 
-    /** 提示消息 */
-    @Excel(name = "提示消息")
+    /** Prompt Message */
+    @Excel(name = "Message")
     private String msg;
 
-    /** 访问时间 */
+    /** Access Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Access Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 
     public Long getInfoId()

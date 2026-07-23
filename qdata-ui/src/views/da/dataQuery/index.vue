@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,7 +27,7 @@
       </div>
       <div class="head-btns">
         <div class="head-select">
-          <!-- 标题后附加下拉选择框 -->
+          <!-- Dropdown select box attached after title -->
           <el-select v-model="queryParams.id" :placeholder="td('da.dataQuery.datasourcePlaceholder')" class="head-select-el" style="width: 300px;">
             <el-option v-for="item in TablesByDataSource" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
@@ -38,12 +39,12 @@
       </div>
     </div>
     <el-container style="90%">
-      <!-- 树：数据源->表->字段 -->
+      <!-- Tree: data source -> table -> field -->
       <DeptTree :deptOptions="TablesByDataSource" :leftWidth="leftWidth" :placeholder="td('da.dataQuery.datasourceSearchPlaceholder')" ref="DeptTreeRef"
         @node-click="handleTreeNodeClick" @nodeload-click="loadTreeData" :loading="loading" />
       <el-main style="padding: 0;">
         <div class="pagecont-bottom" style="padding: 0;">
-          <!-- SQL 编辑器 -->
+          <!-- SQL editor -->
           <Editor ref="editorRef" :model-value="queryParams.sqlText" @update:model-value="handleChange"
             @query="handleQuery" />
         </div>
@@ -84,16 +85,16 @@ const queryParams = ref({
   pageNum: 1,
   pageSize: 20,
   sqlText: "",
-  id: "", // 选中数据源 id，用于查询
+  id: "", // Selected data source ID for querying
   datasourceType: '',
 });
 let spl = ref('')
 
-const TablesByDataSource = ref([]); // 树顶级为数据源节点
+const TablesByDataSource = ref([]); // Tree top level is data source node
 
 const editorRef = ref(null);
 const nodeData = ref({ name: "", taskConfig: {} });
-// 1. 获取数据源列表，构造树根节点（数据源）
+// 1. Get data source list, construct tree root nodes
 const getDatasourcesTree = async () => {
   loading.value = true;
   try {
@@ -121,7 +122,7 @@ const getDatasourcesTree = async () => {
   }
 };
 
-// 2. 懒加载表或字段
+// 2. Lazy load tables or fields
 const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   console.log("🚀 ~ loadTreeData ~ node:", node)
   if (!node) {
@@ -172,7 +173,7 @@ const loadTreeData = async (node, resolveSuccess, resolveFail) => {
   }
 };
 
-// 3. 点击树节点插入SQL
+// 3. Click tree node to insert SQL
 function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
   queryParams.value.id = expandedRootId;
   if (type === 'node') {
@@ -183,7 +184,7 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
       return;
     }
 
-    // 点击表或字段插入对应名字
+    // Click table or field to insert corresponding name
     const currentSql = queryParams.value.sqlText || "";
     const suffix = currentSql.endsWith(" ") || currentSql === "" ? "" : " ";
     queryParams.value.sqlText = currentSql + suffix + data.name;
@@ -198,14 +199,14 @@ function handleTreeNodeClick({ type, expandedRootId, payload, }, node) {
     queryParams.value.sqlText = currentSql + suffix + payload;
   }
 }
-// 4. 编辑器内容变化
+// 4. Editor content change
 function handleChange(val) {
   queryParams.value.sqlText = val;
 }
 let DeptTreeRef = ref()
 let loadings = ref()
 
-// 5. 查询按钮
+// 5. Query button
 async function handleQuery() {
   spl.value = editorRef.value?.getEditorSelectedOrAll();
   console.log("🚀 ~ handleQuery ~ spl:", spl)
@@ -215,7 +216,7 @@ async function handleQuery() {
     errors.push(td('da.dataQuery.sqlRequired'));
   }
 
-  // 校验数据源 id
+  // Validate data source ID
   if (!queryParams.value.id) {
     errors.push(td('da.dataQuery.datasourceRequired'));
   }
@@ -223,7 +224,7 @@ async function handleQuery() {
     ElMessage.warning(errors.join("，"));
     return;
   }
-  // 执行 SQL 查询
+  // Execute SQL query
   dialogVisible.value = false;
   try {
     loadings.value = true;
@@ -242,7 +243,7 @@ async function handleQuery() {
   }
 }
 
-// 6. 清空编辑器
+// 6. Clear editor
 function handleClear() {
   queryParams.value.sqlText = "";
 }

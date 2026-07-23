@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 //package tech.qiantong.module.system.controller.admin.tool;
@@ -55,11 +41,11 @@
 //import io.swagger.annotations.ApiOperation;
 //
 ///**
-// * swagger 用户测试方法
+// * Swagger user test methods
 // *
 // * @author qdata
 // */
-//@Api("用户信息管理")
+//@Api("User information management")
 //@RestController
 //@RequestMapping("/test/user")
 //public class TestController extends BaseController
@@ -70,7 +56,7 @@
 //        users.put(2, new UserEntity(2, "ry", "admin123", "15666666666"));
 //    }
 //
-//    @ApiOperation("获取用户列表")
+//    @ApiOperation("Get user list")
 //    @GetMapping("/list")
 //    public R<List<UserEntity>> userList()
 //    {
@@ -78,8 +64,8 @@
 //        return R.ok(userList);
 //    }
 //
-//    @ApiOperation("获取用户详细")
-//    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
+//    @ApiOperation("Get user details")
+//    @ApiImplicitParam(name = "userId", value = "User ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
 //    @GetMapping("/{userId}")
 //    public R<UserEntity> getUser(@PathVariable Integer userId)
 //    {
@@ -89,47 +75,47 @@
 //        }
 //        else
 //        {
-//            return R.fail("用户不存在");
+//            return R.fail("User does not exist");
 //        }
 //    }
 //
-//    @ApiOperation("新增用户")
+//    @ApiOperation("Create user")
 //    @ApiImplicitParams({
-//        @ApiImplicitParam(name = "userId", value = "用户id", dataType = "Integer", dataTypeClass = Integer.class),
-//        @ApiImplicitParam(name = "username", value = "用户名称", dataType = "String", dataTypeClass = String.class),
-//        @ApiImplicitParam(name = "password", value = "用户密码", dataType = "String", dataTypeClass = String.class),
-//        @ApiImplicitParam(name = "mobile", value = "用户手机", dataType = "String", dataTypeClass = String.class)
+//        @ApiImplicitParam(name = "userId", value = "User ID", dataType = "Integer", dataTypeClass = Integer.class),
+//        @ApiImplicitParam(name = "username", value = "Username", dataType = "String", dataTypeClass = String.class),
+//        @ApiImplicitParam(name = "password", value = "User password", dataType = "String", dataTypeClass = String.class),
+//        @ApiImplicitParam(name = "mobile", value = "User mobile number", dataType = "String", dataTypeClass = String.class)
 //    })
 //    @PostMapping("/save")
 //    public R<String> save(UserEntity user)
 //    {
 //        if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
 //        {
-//            return R.fail("用户ID不能为空");
+//            return R.fail("User ID cannot be empty");
 //        }
 //        users.put(user.getUserId(), user);
 //        return R.ok();
 //    }
 //
-//    @ApiOperation("更新用户")
+//    @ApiOperation("Update user")
 //    @PutMapping("/update")
 //    public R<String> update(@RequestBody UserEntity user)
 //    {
 //        if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
 //        {
-//            return R.fail("用户ID不能为空");
+//            return R.fail("User ID cannot be empty");
 //        }
 //        if (users.isEmpty() || !users.containsKey(user.getUserId()))
 //        {
-//            return R.fail("用户不存在");
+//            return R.fail("User does not exist");
 //        }
 //        users.remove(user.getUserId());
 //        users.put(user.getUserId(), user);
 //        return R.ok();
 //    }
 //
-//    @ApiOperation("删除用户信息")
-//    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
+//    @ApiOperation("Delete user information")
+//    @ApiImplicitParam(name = "userId", value = "User ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
 //    @DeleteMapping("/{userId}")
 //    public R<String> delete(@PathVariable Integer userId)
 //    {
@@ -140,24 +126,24 @@
 //        }
 //        else
 //        {
-//            return R.fail("用户不存在");
+//            return R.fail("User does not exist");
 //        }
 //    }
 //}
 //
-//@ApiModel(value = "UserEntity", description = "用户实体")
+//@ApiModel(value = "UserEntity", description = "User entity")
 //class UserEntity
 //{
-//    @ApiModelProperty("用户ID")
+//    @ApiModelProperty("User ID")
 //    private Integer userId;
 //
-//    @ApiModelProperty("用户名称")
+//    @ApiModelProperty("Username")
 //    private String username;
 //
-//    @ApiModelProperty("用户密码")
+//    @ApiModelProperty("User password")
 //    private String password;
 //
-//    @ApiModelProperty("用户手机")
+//    @ApiModelProperty("User mobile number")
 //    private String mobile;
 //
 //    public UserEntity()

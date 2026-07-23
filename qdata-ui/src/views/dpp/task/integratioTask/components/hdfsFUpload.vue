@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -20,17 +21,17 @@
     <el-form ref="daDiscoveryTaskRef" :model="form" label-width="120px" @submit.prevent :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.fieldName', '字段名称')" prop="columnName" :rules="[
-            { required: true, message: td('dpp.integration.fieldNameRequired', '请输入字段名称'), trigger: 'blur' },
+          <el-form-item :label="td('dpp.integration.fieldName', 'Field Name')" prop="columnName" :rules="[
+            { required: true, message: td('dpp.integration.fieldNameRequired', 'Please enter field name'), trigger: 'blur' },
           ]" :label-position="labelPosition">
-            <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', '请输入字段名称')" />
+            <el-input v-model="form.columnName" :placeholder="td('dpp.integration.fieldNamePlaceholder', 'Please enter field name')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.fieldType', '字段类型')" prop="columnType" :rules="[
-            { required: true, message: td('dpp.integration.fieldTypeRequired', '请选择字段类型'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.fieldType', 'Field Type')" prop="columnType" :rules="[
+            { required: true, message: td('dpp.integration.fieldTypeRequired', 'Please select field type'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', '请选择字段类型')">
+            <el-select v-model="form.columnType" :placeholder="td('dpp.integration.fieldTypePlaceholder', 'Please select field type')">
               <el-option v-for="dict in columntype" :key="dict.value" :label="dict.label"
                 :value="dict.value"></el-option>
             </el-select>
@@ -39,12 +40,12 @@
       </el-row>
       <el-row :gutter="20" v-if="type != 1">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.index', '索引')" prop="index" :rules="[
-            { required: true, message: td('dpp.integration.indexRequired', '请输入索引'), trigger: 'blur' },
+          <el-form-item :label="td('dpp.integration.index', 'Index')" prop="index" :rules="[
+            { required: true, message: td('dpp.integration.indexRequired', 'Please enter index'), trigger: 'blur' },
             {
               validator: (_rule, value, callback) => {
                 if (value < 0) {
-                  callback(new Error(td('dpp.integration.indexNoNegative', '索引不能为负数')))
+                  callback(new Error(td('dpp.integration.indexNoNegative', 'Index cannot be negative')))
                 } else {
                   callback()
                 }
@@ -52,7 +53,7 @@
               trigger: 'blur'
             }
           ]">
-            <el-input v-model.number="form.index" type="number" :placeholder="td('dpp.integration.indexPlaceholder', '请输入索引')" :min="0" />
+            <el-input v-model.number="form.index" type="number" :placeholder="td('dpp.integration.indexPlaceholder', 'Please enter index')" :min="0" />
           </el-form-item>
 
         </el-col>
@@ -61,9 +62,9 @@
 
     <template #footer>
       <div style="text-align: right">
-        <!-- 关闭按钮 -->
+        <!-- close button -->
         <el-button @click="closeDialog">{{ td('common.button.close') }}</el-button>
-        <!-- 保存按钮 -->
+        <!-- save button -->
         <el-button type="primary" @click="saveData">{{ td('common.button.save') }}</el-button>
       </div>
     </template>
@@ -85,10 +86,10 @@ const props = defineProps({
   type: { type: String, default: '0' },
 });
 
-const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "表单标题"));
+const dialogTitle = computed(() => props.title || td("common.form.namePlaceholder", "Please enter name"));
 
 const emit = defineEmits(["update:visible", "confirm"]);
-// 定义字段类型数组
+// Define field type array
 const columntype = [
   { value: "STRING", label: "STRING" },
   { value: "BOOL", label: "BOOL" },
@@ -122,7 +123,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -132,12 +133,12 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
 let daDiscoveryTaskRef = ref();
-// 保存数据的方法
+// How to save data
 const saveData = () => {
   daDiscoveryTaskRef.value.validate((valid) => {
     if (valid) {
@@ -146,7 +147,7 @@ const saveData = () => {
       emit("update:visible", false);
     } else {
 
-      console.log("表单校验未通过");
+      console.log("Form validation failed");
     }
   });
 };

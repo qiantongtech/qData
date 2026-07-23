@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl.transition;
@@ -39,6 +25,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.spark.sql.*;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.enums.etl.transition.FieldDerivationTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
@@ -51,7 +38,7 @@ import java.util.stream.Collectors;
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
- * 字段派生器
+ * Field Derivator
  */
 public class FieldDerivationTransition implements Transition {
 
@@ -71,45 +58,47 @@ public class FieldDerivationTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logPath) {
         LogUtils.writeLog(logPath, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logPath, "开始字段派生器节点");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logPath, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logPath, "Starting field derivation node");
+        LogUtils.writeLog(logPath, "Task start time: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logPath, "Task parameters: " + transition.toJSONString(PrettyFormat));
         JSONObject parameter = transition.getJSONObject("parameter");
 
-        //字段派生类型
+        //Field derived type
         String fieldDerivationType = MapUtils.getString(parameter,"fieldDerivationType");
 
-        // 校验
+        // Verification
         if (StringUtils.isEmpty(fieldDerivationType)) {
-            throw new IllegalArgumentException("字段派生类型不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.field.derivation.type.required", "Field derivation type is required"));
         }
 
         FieldDerivationTypeEnum typeEnum = FieldDerivationTypeEnum.fromCode(fieldDerivationType);
 
         switch (typeEnum) {
             case FIELD_DERIVE_CONCAT:
-                // 拼接处理逻辑
+                // Splicing processing logic
                 return handleConcat(parameter,dataset,logPath);
             case FIELD_DERIVE_SUBSTRING:
-                // 截取处理逻辑
+                // Interception processing logic
                 return handleSubstring(parameter,dataset,logPath);
             case FIELD_DERIVE_REPLACE:
-                // 替换处理逻辑
+                // Replace processing logic
                 return handleReplace();
             case FIELD_DERIVE_EXPRESSION:
-                // 表达式处理逻辑
+                // Expression processing logic
                 return handleExpression();
             case FIELD_DERIVE_HASH:
-                // 哈希处理逻辑
+                // Hash processing logic
                 return handleHash();
             case FIELD_DERIVE_REGEX:
-                // 正则提取处理逻辑
+                // Regular extraction processing logic
                 return handleRegex();
             case FIELD_DERIVE_CONSTANT:
-                // 常量赋值处理逻辑
+                // Constant assignment processing logic
                 return handleConstant();
             default:
-                throw new IllegalArgumentException("未知的字段派生类型: " + fieldDerivationType);
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "etl.error.field.derivation.type.unknown", "Unknown field derivation type: {0}", fieldDerivationType));
         }
     }
 
@@ -140,7 +129,7 @@ public class FieldDerivationTransition implements Transition {
      *   "fieldDerivationName": "phone_suffix",
      *   "direction": "FROM_END",                // FROM_START | FROM_END
      *   "startIndex": 4,
-     *   "endIndex": 8,                          // 可选，endIndex 不填表示截取到末尾
+     * "endIndex": 8, // Optional, leaving endIndex blank means cutting to the end
      *   "tableFields": [
      *     { "columnName": "phone" }
      *   ]
@@ -148,38 +137,43 @@ public class FieldDerivationTransition implements Transition {
      * @return
      */
     private Dataset<Row> handleSubstring(JSONObject parameter, Dataset<Row> dataset, LogUtils.Params logParams) {
-        LogUtils.writeLog(logParams, "开始字段派生-截取处理");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "Starting field derivation substring processing");
+        LogUtils.writeLog(logParams, "Task start time: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
 
-        //规则配置的合并后存储的字段名字存入
+        //The field names stored after merging the rule configuration are stored in
         String fieldDerivationName = MapUtils.getString(parameter,"fieldDerivationName");
-        //截取标识符：  1 从前开始  ｜  2 从后开始
+        //Interception identifier: 1 starts from the front | 2 starts from the back
         String direction = MapUtils.getString(parameter,"direction");
 
-        //前缀符号
+        //Prefix symbol
         Integer startIndex = MapUtils.getInteger(parameter,"startIndex",null);
         Integer endIndex = MapUtils.getInteger(parameter,"endIndex",null);
 
-        //选择的字段---只存储了一个，可以直接区 0下标
+        //The selected field---only one is stored, you can directly enter the 0 subscript
         List<Map<String, Object>> tableFields = (List<Map<String, Object>>) MapUtils.getObject(parameter, "tableFields");
 
-        //检验
+        //Inspect
         if (CollectionUtils.isEmpty(tableFields)) {
-            throw new IllegalArgumentException("进行计算的字段不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.calculation.field.required", "A field for calculation is required"));
         }
         if (StringUtils.isEmpty(fieldDerivationName)) {
-            throw new IllegalArgumentException("需要存储的字段名称不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.storage.field.name.required", "The field name to store is required"));
         }
         if (StringUtils.isEmpty(direction)) {
-            throw new IllegalArgumentException("需要截取的类型不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.substring.type.required", "Substring type is required"));
         }
         if (startIndex == null) {
-            throw new IllegalArgumentException("需要截取的类型不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.substring.type.required", "Substring type is required"));
         }
 
         String columnName = MapUtils.getString(tableFields.get(0), "columnName");
         if (StringUtils.isEmpty(columnName)) {
-            throw new IllegalArgumentException("需要截取的字段名不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.substring.field.required", "The field to substring is required"));
         }
 
         Column sourceCol = functions.col(columnName).cast("string");
@@ -187,39 +181,42 @@ public class FieldDerivationTransition implements Transition {
         Column derivedCol;
 
         if ("1".equalsIgnoreCase(direction)) {
-            // 从前开始： substring(col, start, length)
+            // Start from before: substring(col, start, length)
             if (endIndex != null) {
                 int length = endIndex - startIndex;
                 if (length < 0) {
-                    throw new IllegalArgumentException("endIndex 必须大于 startIndex");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.substring.index.invalid", "endIndex must be greater than startIndex"));
                 }
                 derivedCol = functions.expr("substring(" + columnName + ", " + (startIndex + 1) + ", " + length + ")");
             } else {
-                // 到结尾：length 无穷大
+                // To the end: length is infinity
                 derivedCol = functions.expr("substring(" + columnName + ", " + (startIndex + 1) + ")");
             }
         } else if ("2".equalsIgnoreCase(direction)) {
-            // 从后开始：先计算字符串长度减去 startIndex，然后截取 length
-            // 例：substr(phone, length(phone) - startIndex + 1, length)
+            // Starting from the end: first calculate the string length minus startIndex, then intercept length
+            // Example: substr(phone, length(phone) - startIndex + 1, length)
             Column lengthCol = functions.length(sourceCol);
             Column startPos = lengthCol.minus(startIndex).plus(1);
 
             if (endIndex != null) {
                 int length = endIndex - startIndex;
                 if (length < 0) {
-                    throw new IllegalArgumentException("endIndex 必须大于 startIndex");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.substring.index.invalid", "endIndex must be greater than startIndex"));
                 }
                 derivedCol = functions.expr("substring(" + columnName + ", length(" + columnName + ") - " + startIndex + " + 1, " + length + ")");
             } else {
                 derivedCol = functions.expr("substring(" + columnName + ", length(" + columnName + ") - " + startIndex + " + 1)");
             }
         } else {
-            throw new IllegalArgumentException("不支持的方向类型：" + direction);
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "etl.error.direction.unsupported", "Unsupported direction type: {0}", direction));
         }
 
         Dataset<Row> result = dataset.withColumn(fieldDerivationName, derivedCol);
 
-        // 打印结果以便调试
+        // Print results for debugging
         result.printSchema();
         result.show(10, false);
 
@@ -227,43 +224,45 @@ public class FieldDerivationTransition implements Transition {
     }
 
     /**
-     * 拼接处理逻辑
+     * Splicing processing logic
      * {
-     * "fieldDerivationType":"传递的字段名字"
-     *   ,"fieldDerivationName":"规则配置的合并后存储的字段名字存入"
-     *   ,"delimiter":"连接符"
+     * "fieldDerivationType":"The passed field name"
+     * ,"fieldDerivationName":"Save the field name stored after merging the rule configuration"
+     * ,"delimiter":"connector"
      *   ,"tableFields":[
-     *     {"columnName":"进行拼接的字段名称"}
+     * {"columnName":"Field name for splicing"}
      *   ]
-     *   ,"fieldDerivationPrefix":"前缀符"
-     *   ,"fieldDerivationSuffix":"后缀符"
+     * ,"fieldDerivationPrefix":"prefix"
+     * ,"fieldDerivationSuffix":"Suffix"
      * }
      * @return
      */
     private Dataset<Row> handleConcat(JSONObject parameter, Dataset<Row> dataset, LogUtils.Params logPath) {
-        LogUtils.writeLog(logPath, "开始字段派生-拼接处理");
-        LogUtils.writeLog(logPath, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logPath, "Starting field derivation concatenation processing");
+        LogUtils.writeLog(logPath, "Task start time: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
 
-        //规则配置的合并后存储的字段名字存入
+        //The field names stored after merging the rule configuration are stored in
         String fieldDerivationName = MapUtils.getString(parameter,"fieldDerivationName");
-        //链接符
+        //Linker
         String delimiter = MapUtils.getString(parameter,"delimiter","");
-        //前缀符号
+        //Prefix symbol
         String prefix = MapUtils.getString(parameter,"fieldDerivationPrefix","");
-        //后缀符号
+        //Suffix symbol
         String suffix = MapUtils.getString(parameter,"fieldDerivationSuffix","");
-        //选择的字段
+        //Selected fields
         List<Map<String, Object>> tableFields = (List<Map<String, Object>>) MapUtils.getObject(parameter, "tableFields");
 
-        //检验
+        //Inspect
         if (CollectionUtils.isEmpty(tableFields)) {
-            throw new IllegalArgumentException("进行计算的字段不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.calculation.field.required", "A field for calculation is required"));
         }
         if (StringUtils.isEmpty(fieldDerivationName)) {
-            throw new IllegalArgumentException("需要存储的字段名称不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.storage.field.name.required", "The field name to store is required"));
         }
 
-        // 构造字段列表，转换为字符串，并用 "null" 占位
+        // Construct a field list, convert it to a string, and use "null" as a placeholder
         List<Column> columns = tableFields.stream()
                 .map(field -> {
                     String colName = MapUtils.getString(field, "columnName");
@@ -275,23 +274,24 @@ public class FieldDerivationTransition implements Transition {
                 .collect(Collectors.toList());
 
         if (columns.isEmpty()) {
-            throw new IllegalArgumentException("未获取到任何有效字段用于拼接！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.concat.fields.empty", "No valid fields are available for concatenation"));
         }
 
-        // 用 delimiter 拼接字段值
+        // Use delimiter to splice field values
         Column concatCol = functions.concat_ws(delimiter, columns.toArray(new Column[0]));
 
-        // 添加前缀和后缀
+        // Add prefixes and suffixes
         concatCol = functions.concat_ws("", functions.lit(prefix), concatCol, functions.lit(suffix));
 
-        // 添加派生字段列
+        // Add derived field column
         Dataset<Row> rowDataset = dataset.withColumn(fieldDerivationName, concatCol);
 
-        // 调试日志
-        System.out.println("拼接后的字段结构：");
+        // Debug log
+        System.out.println("Field schema after concatenation: ");
         rowDataset.printSchema();
 
-        System.out.println("拼接后的前10条数据：");
+        System.out.println("First 10 rows after concatenation: ");
         rowDataset.show(10, false);
 
         return rowDataset;

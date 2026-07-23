@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 业务域 创建/修改 Request VO MC_DOMAIN
+ * Business Domain Create/Modify Request VO MC_DOMAIN
  *
  * @author qdata
  * @date 2026-02-12

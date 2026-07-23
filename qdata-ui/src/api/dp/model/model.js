@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询已发布逻辑模型列表
+// Query the list of published logical models
 export function releaseList(query) {
     return request({
         url: '/dp/model/releaseList',
@@ -26,7 +27,7 @@ export function releaseList(query) {
     });
 }
 
-// 查询逻辑模型列表
+// Query logical model list
 export function listDpModel(query) {
     return request({
         url: '/dp/model/list',
@@ -35,7 +36,7 @@ export function listDpModel(query) {
     });
 }
 
-// 查询逻辑模型详细
+// Query logical model details
 export function getDpModel(ID) {
     return request({
         url: '/dp/model/' + ID,
@@ -43,7 +44,7 @@ export function getDpModel(ID) {
     });
 }
 
-// 新增逻辑模型
+// Add new logical model
 export function addDpModel(data) {
     return request({
         url: '/dp/model',
@@ -51,7 +52,7 @@ export function addDpModel(data) {
         data: data
     });
 }
-// 新增逻辑模型
+// Add new logical model
 export function dpModelColumn(data) {
     return request({
         url: '/dp/modelColumn/addList',
@@ -59,7 +60,7 @@ export function dpModelColumn(data) {
         data: data
     });
 }
-// 新增逻辑模型
+// Add new logical model
 export function updateDpModel(data) {
     return request({
         url: '/dp/model',
@@ -67,7 +68,7 @@ export function updateDpModel(data) {
         data: data
     });
 }
-// 修改逻辑模型
+// Modify logical model
 // export function updateDpModel(data) {
 //   return request({
 //     url: '/dp/dpModelColumn/editList',
@@ -76,7 +77,7 @@ export function updateDpModel(data) {
 //   })
 // }
 
-// 删除逻辑模型
+// Delete logical model
 export function delDpModel(ID) {
     return request({
         url: '/dp/model/' + ID,
@@ -84,14 +85,14 @@ export function delDpModel(ID) {
     });
 }
 
-// 删除逻辑模型字段
+// Delete logical model fields
 export function delDpModelColumn(ID) {
     return request({
         url: '/dp/model/columnAll/' + ID,
         method: 'delete'
     });
 }
-// 查询逻辑模型类目管理列表
+// Query the logical model category management list
 export function listAttModelCat(query) {
     return request({
         url: '/att/modelCat/list',
@@ -99,7 +100,7 @@ export function listAttModelCat(query) {
         params: query
     });
 }
-// 查询树
+// query tree
 export function getTreeData(query) {
     return request({
         url: '/dp/model/getTreeData',
@@ -107,7 +108,7 @@ export function getTreeData(query) {
         params: query
     });
 }
-// 获取 表信息
+// Get table information
 export function getDpModelColumnList(query) {
     return request({
         url: '/dp/modelColumn/getDpModelColumnList',
@@ -115,7 +116,7 @@ export function getDpModelColumnList(query) {
         params: query
     });
 }
-// 修改逻辑模型
+// Modify logical model
 export function updateDpModelColumn(data) {
     return request({
         url: '/dp/modelColumn/editList',
@@ -123,7 +124,7 @@ export function updateDpModelColumn(data) {
         data: data
     });
 }
-// 发布
+// publish
 export function createMaterializedTable(data) {
     return request({
         url: '/dp/modelMaterialized/createMaterializedTable',
@@ -131,7 +132,7 @@ export function createMaterializedTable(data) {
         data: data
     });
 }
-// 数据连接名称
+// Data connection name
 export function getDaDatasourceList(query) {
     return request({
         url: '/da/dataSource/getDaDatasourceList',
@@ -139,14 +140,14 @@ export function getDaDatasourceList(query) {
         params: query
     });
 }
-// 修改状态
+// Modify status
 export function updateStatusDpDataModel(id, status) {
     return request({
         url: `/dp/model/updateStatus/${id}/${status}`,
         method: 'post'
     });
 }
-//表
+//table
 export function tableList(ID, limit) {
     const idVal = typeof ID === 'object' ? ID.datasourceId : ID
     const params = typeof ID === 'object' ? { tableName: ID.tableName, limit } : { limit }
@@ -156,7 +157,7 @@ export function tableList(ID, limit) {
         params
     });
 }
-// 表字段
+// table fields
 export function columnsList(data) {
     return request({
         url: `/da/dataSource/columnsList`,
@@ -165,7 +166,7 @@ export function columnsList(data) {
     });
 }
 
-// 查询逻辑模型属性信息列表
+// Query logical model attribute information list
 export function listDpModelColumn(query) {
     return request({
         url: '/dp/modelColumn/list',
@@ -174,7 +175,7 @@ export function listDpModelColumn(query) {
     })
 }
 
-// 查询逻辑模型属性信息详细
+// Query logical model attribute information details
 export function getDpModelColumn(id) {
     return request({
         url: '/dp/modelColumn/' + id,
@@ -182,7 +183,7 @@ export function getDpModelColumn(id) {
     })
 }
 
-// 新增逻辑模型属性信息
+// Added logical model attribute information
 export function addDpModelColumn(data) {
     return request({
         url: '/dp/modelColumn',
@@ -191,7 +192,7 @@ export function addDpModelColumn(data) {
     })
 }
 
-// 修改逻辑模型属性信息
+// Modify logical model attribute information
 export function updateDpModelColumns(data) {
     return request({
         url: '/dp/modelColumn',
@@ -200,14 +201,14 @@ export function updateDpModelColumns(data) {
     })
 }
 
-// 删除逻辑模型属性信息
+// Delete logical model attribute information
 export function delDpModelColumns(id) {
     return request({
         url: '/dp/modelColumn/' + id,
         method: 'delete'
     })
 }
-// 查询发布模型记录列表
+// Query the release model record list
 export function listDpModelMaterialized(query) {
     return request({
         url: '/dp/modelMaterialized/list',
@@ -216,7 +217,7 @@ export function listDpModelMaterialized(query) {
     })
 }
 
-// 查询发布模型记录详细
+// Query release model record details
 export function getDpModelMaterialized(id) {
     return request({
         url: '/dp/modelMaterialized/' + id,
@@ -224,7 +225,7 @@ export function getDpModelMaterialized(id) {
     })
 }
 
-// 新增发布模型记录
+// Added release model record
 export function addDpModelMaterialized(data) {
     return request({
         url: '/dp/modelMaterialized',
@@ -233,7 +234,7 @@ export function addDpModelMaterialized(data) {
     })
 }
 
-// 修改发布模型记录
+// Modify release model records
 export function updateDpModelMaterialized(data) {
     return request({
         url: '/dp/modelMaterialized',
@@ -242,14 +243,14 @@ export function updateDpModelMaterialized(data) {
     })
 }
 
-// 删除发布模型记录
+// Delete release model record
 export function delDpModelMaterialized(id) {
     return request({
         url: '/dp/modelMaterialized/' + id,
         method: 'delete'
     })
 }
-// 批量删除模型校验
+// Delete model verification in batches
 export function batchDeleteCheck(id) {
     return request({
         url: '/dp/model/batchDeleteCheck/' + id,

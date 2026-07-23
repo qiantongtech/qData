@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.rule.impl;
@@ -58,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 稽查规则Service业务层处理
+ * Audit Rule Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -85,16 +71,16 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
 
     @Override
     public int updateAttAuditRule(AttAuditRuleSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新稽查规则
+        // Update audit rule
         AttAuditRuleDO updateObj = BeanUtils.toBean(updateReqVO, AttAuditRuleDO.class);
         return attAuditRuleMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAttAuditRule(Collection<Long> idList) {
-        // 批量删除稽查规则
+        // Batch delete audit rules
         return attAuditRuleMapper.deleteBatchIds(idList);
     }
 
@@ -115,47 +101,47 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
                 .collect(Collectors.toMap(
                         AttAuditRuleDO::getId,
                         attAuditRuleDO -> attAuditRuleDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
     @Override
     public List<AttAuditRuleRespVO> getAttAuditRuleTree(Long dataElemId) {
-        // 1. 获取所有稽查规则列表
+        // 1. Get all audit rule list
         List<AttAuditRuleDO> list = attAuditRuleMapper.selectAttAuditRuleList(dataElemId);
-        // 2. 转换为VO对象
+        // 2. Convert to VO objects
         List<AttAuditRuleRespVO> voList = BeanUtils.toBean(list, AttAuditRuleRespVO.class);
-        // 3. 构建树形结构
+        // 3. Build tree structure
         return buildTreeByType(voList);
     }
 
     /**
-     * 构建树形结构 - 以type字段作为父节点
+     * Build tree structure - use type field as parent node
      *
-     * @param list 规则列表
-     * @return 树形结构列表
+     * @param list Rule list
+     *  Tree structure list
      */
     private List<AttAuditRuleRespVO> buildTreeByType(List<AttAuditRuleRespVO> list) {
         List<AttAuditRuleRespVO> resultList = new ArrayList<>();
-        // 创建type映射，用于存储相同type的节点
+        // Create type mapping for storing nodes with same type
         Map<String, List<AttAuditRuleRespVO>> typeMap = list.stream()
                 .collect(Collectors.groupingBy(AttAuditRuleRespVO::getType));
 
-        // 遍历每个type分组
+        // Iterate each type group
         for (Map.Entry<String, List<AttAuditRuleRespVO>> entry : typeMap.entrySet()) {
             String type = entry.getKey();
             List<AttAuditRuleRespVO> typeNodes = entry.getValue();
             for (AttAuditRuleRespVO typeNode : typeNodes) {
                 typeNode.setDataType("2");
             }
-            // 创建父节点
+            // Create parent node
             AttAuditRuleRespVO parentNode = new AttAuditRuleRespVO();
-            parentNode.setId(0L); // 设置一个特殊的ID
+            parentNode.setId(0L); // Set a special ID
             parentNode.setType(type);
             parentNode.setDataType("1");
-            // 使用枚举获取类型名称
+            // Use enum to get type name
             String typeName = RuleTypeEnum.getNameByType(type);
-            parentNode.setName(typeName); // 设置父节点名称
+            parentNode.setName(typeName); // Set parent node name
             parentNode.setChildren(new ArrayList<>(typeNodes));
 
             resultList.add(parentNode);
@@ -165,18 +151,18 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
     }
 
     /**
-     * 导入稽查规则数据
+     * Import audit rule data
      *
-     * @param importExcelList 稽查规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList audit rule data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  @return Result
      */
     @Override
     public String importAttAuditRule(List<AttAuditRuleRespVO> importExcelList, boolean isUpdateSupport,
                                      String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -195,16 +181,16 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
                             attAuditRuleMapper.updateById(attAuditRuleDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attAuditRuleId + " 的稽查规则记录。", attAuditRuleId, "稽查规则"));
+                                    "Data update successful, ID {0} {1} record.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attAuditRuleId + " 的稽查规则记录不存在。", attAuditRuleId, "稽查规则"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttAuditRuleDO> queryWrapper = new QueryWrapper<>();
@@ -214,17 +200,17 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
                         attAuditRuleMapper.insert(attAuditRuleDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attAuditRuleId + " 的稽查规则记录。", attAuditRuleId, "稽查规则"));
+                                "Data insert successful, ID {0} {1} record.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attAuditRuleId + " 的稽查规则记录已存在。", attAuditRuleId, "稽查规则"));
+                                "Data insert failed, ID {0} {1} record already exists.", attAuditRuleId, MessageUtils.messageWithFallback("att.entity.audit.rule", "Audit rule")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -233,12 +219,12 @@ public class AttAuditRuleServiceImpl extends ServiceImpl<AttAuditRuleMapper, Att
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

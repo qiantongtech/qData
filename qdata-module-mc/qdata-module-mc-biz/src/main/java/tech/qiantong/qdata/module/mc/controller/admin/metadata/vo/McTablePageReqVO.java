@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 元数据信息 Request VO 对象 MC_TABLE
+ * Metadata information Request VO object MC_TABLE
  *
  * @author qdata
  * @date 2026-02-11
@@ -100,25 +100,25 @@ public class McTablePageReqVO extends PageParam {
     private String sourceSystemId;
 
     /**
-     * 库集合筛选
+     * Library collection filter
      */
     private List<Long> dbIdList;
 
 
     /**
-     * 模糊查询名字或注释
+     * Fuzzy query for names or comments
      */
     private String keyWord;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
 
     /**
-     * 不展示的数据，多个一逗号拼接
+     * Data not displayed, multiple comma splicing
      */
     @Schema(description = "不展示的数据，多个一逗号拼接", example = "0")
     private String hideTableIds;

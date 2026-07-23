@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
@@ -84,7 +70,7 @@ import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.success;
 
 /**
- * 数据集成任务实例Service业务层处理
+ * Data Integration Task Instance Service business layer processing
  *
  * @author qdata
  * @date 2025-02-13
@@ -162,16 +148,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Override
     public int updateDppEtlTaskInstance(DppEtlTaskInstanceSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新数据集成任务实例
+        // Update data integration task instance
         DppEtlTaskInstanceDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskInstanceDO.class);
         return dppEtlTaskInstanceMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDppEtlTaskInstance(Collection<Long> idList) {
-        // 批量删除数据集成任务实例
+        // Batch delete data integration task instance
         return dppEtlTaskInstanceMapper.deleteBatchIds(idList);
     }
 
@@ -192,24 +178,24 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .collect(Collectors.toMap(
                         DppEtlTaskInstanceDO::getId,
                         dppEtlTaskInstanceDO -> dppEtlTaskInstanceDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成任务实例数据
+     * Import data integration task instance data
      *
-     * @param importExcelList 数据集成任务实例数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data integration task instance data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName        operator user
+     * @return result
      */
     @Override
     public String importDppEtlTaskInstance(List<DppEtlTaskInstanceRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -228,16 +214,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                             dppEtlTaskInstanceMapper.updateById(dppEtlTaskInstanceDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                    "数据更新成功，ID为 " + dppEtlTaskInstanceId + " 的数据集成任务实例记录。", dppEtlTaskInstanceId, "数据集成任务实例"));
+                                    "Data update successful, ID {0} {1} record.", dppEtlTaskInstanceId, MessageUtils.messageWithFallback("dpp.entity.etl.task.instance", "Data integration task instance")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                    "数据更新失败，ID为 " + dppEtlTaskInstanceId + " 的数据集成任务实例记录不存在。", dppEtlTaskInstanceId, "数据集成任务实例"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dppEtlTaskInstanceId, MessageUtils.messageWithFallback("dpp.entity.etl.task.instance", "Data integration task instance")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DppEtlTaskInstanceDO> queryWrapper = new QueryWrapper<>();
@@ -247,17 +233,17 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                         dppEtlTaskInstanceMapper.insert(dppEtlTaskInstanceDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                "数据插入成功，ID为 " + dppEtlTaskInstanceId + " 的数据集成任务实例记录。", dppEtlTaskInstanceId, "数据集成任务实例"));
+                                "Data insert successful, ID {0} {1} record.", dppEtlTaskInstanceId, MessageUtils.messageWithFallback("dpp.entity.etl.task.instance", "Data integration task instance")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                "数据插入失败，ID为 " + dppEtlTaskInstanceId + " 的数据集成任务实例记录已存在。", dppEtlTaskInstanceId, "数据集成任务实例"));
+                                "Data insert failed, ID {0} {1} record already exists.", dppEtlTaskInstanceId, MessageUtils.messageWithFallback("dpp.entity.etl.task.instance", "Data integration task instance")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -266,12 +252,12 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -387,7 +373,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                         if (child.getStartTime() != null && child.getEndTime() != null) {
                             child.setDuration(DateUtils.format2Duration(child.getEndTime().getTime() - child.getStartTime().getTime()));
                         }
-                        //判断是否是子任务
+                        // Check if it is a sub-task
                         if (StringUtils.equals(String.valueOf(TaskComponentTypeEnum.SUB_PROCESS), child.getNodeType())) {
                             child.setHasChildren(true);
                         }
@@ -403,14 +389,16 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public AjaxResult execute(Long taskInstanceId, ExecuteType executeType) {
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
         if (dppEtlTaskInstanceDO == null) {
-            return error("任务实例不存在，请刷新后重试！");
+            return error(MessageUtils.messageWithFallback("dpp.error.task.instance.notfound.refresh",
+                    "Task instance does not exist; refresh and try again"));
         }
         String status = dppEtlTaskInstanceDO.getStatus();
         if (ExecuteType.REPEAT_RUNNING.getCode() == executeType.getCode() && !StringUtils.equals(status, "3") &&
                 !StringUtils.equals(status, "5") &&
                 !StringUtils.equals(status, "6") &&
                 !StringUtils.equals(status, "7")) {
-            return error("当前状态无法重跑，请刷新后重试！");
+            return error(MessageUtils.messageWithFallback("dpp.error.task.instance.rerun.status.invalid",
+                    "The task instance cannot be rerun in its current state; refresh and try again"));
         }
         if (ExecuteType.STOP.getCode() == executeType.getCode() &&
                 !StringUtils.equals(status, "0") &&
@@ -419,7 +407,8 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 !StringUtils.equals(status, "3") &&
                 !StringUtils.equals(status, "12") &&
                 !StringUtils.equals(status, "14")) {
-            return error("当前状态无法停止，请刷新后重试！");
+            return error(MessageUtils.messageWithFallback("dpp.error.task.instance.stop.status.invalid",
+                    "The task instance cannot be stopped in its current state; refresh and try again"));
         }
         DsStatusRespDTO dsStatusRespDTO = dsEtlExecutorService.execute(DSExecuteDTO.builder()
                 .processInstanceId(taskInstanceId)
@@ -446,17 +435,18 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
         String log = "";
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
-        //获取任务信息
+        // Get task info
         DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
                 .code(dppEtlTaskInstanceDO.getTaskCode())
                 .version(dppEtlTaskInstanceDO.getTaskVersion())
                 .build());
         if (dppEtlTaskLogRespVO == null) {
-            throw new RuntimeException("任务不存在");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "dpp.error.task.notfound", "Task does not exist"));
         }
-        //获取节点关系数据
+        // Get node relation data
         JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
-        //获取节点数据
+        // Get node data
         List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
                 .select(DppEtlNodeInstanceDO::getId,
                         DppEtlNodeInstanceDO::getNodeCode,
@@ -465,11 +455,11 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .eq(DppEtlNodeInstanceDO::getTaskInstanceId, taskInstanceId));
 
         String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + taskInstanceId;
-        if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {//判断是否是离线任务
+        if (StringUtils.equals("1", dppEtlTaskInstanceDO.getTaskType())) {// Check if it is an offline task
             if (redisService.hasKey(processInstanceLogKey)) {
                 log = redisService.get(processInstanceLogKey);
             } else {
-                //获取表中的日志
+                // Get logs from the table
                 String logContent = dppEtlTaskInstanceLogService.getLog(taskInstanceId);
                 if (logContent != null) {
                     log = logContent;
@@ -488,7 +478,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                     if (redisService.hasKey(taskInstanceLogKey)) {
                         log += redisService.get(taskInstanceLogKey) + "\n";
                     } else {
-                        //获取表中的日志
+                        // Get logs from the table
                         String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
                         if (logContent != null) {
                             log += logContent + "\n";
@@ -520,7 +510,7 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Override
     public DppEtlTaskUpdateQueryRespVO getTaskInfo(Long id) {
-        //根据任务实例id获取任务信息
+        // Get task info by task instance ID
         MPJLambdaWrapper<DppEtlTaskInstanceDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(DppEtlTaskInstanceDO.class)
                 .select("t3.NICK_NAME AS personChargeName")
@@ -528,24 +518,25 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .eq(DppEtlTaskInstanceDO::getId, id);
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = dppEtlTaskInstanceMapper.selectJoinOne(DppEtlTaskInstanceDO.class, lambdaWrapper);
 
-        //获取任务信息
+        // Get task info
         DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
                 .code(dppEtlTaskInstanceDO.getTaskCode())
                 .version(dppEtlTaskInstanceDO.getTaskVersion())
                 .build());
         if (dppEtlTaskLogRespVO == null) {
-            throw new RuntimeException("任务不存在");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "dpp.error.task.notfound", "Task does not exist"));
         }
         DppEtlTaskUpdateQueryRespVO bean = new DppEtlTaskUpdateQueryRespVO(BeanUtils.toBean(dppEtlTaskLogRespVO, DppEtlTaskDO.class));
         bean.setTaskInstance(dppEtlTaskInstanceDO);
-        //获取关系数据
+        // Get relation data
         List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList = iDppEtlTaskNodeRelService.getDppEtlTaskNodeRelRespVOList(DppEtlTaskNodeRelPageReqVO.builder()
                 .taskCode(bean.getCode())
                 .taskVersion(bean.getVersion())
                 .build());
         bean.setTaskRelationJsonFromNodeRelList(dppEtlTaskNodeRelRespVOList);
 
-        //获取捷信信息
+        // Get node info
         List<DppEtlNodeLogDO> dppEtlNodeLogDOList = dppEtlNodeLogService.listByTaskCode(dppEtlTaskInstanceDO.getTaskCode(), dppEtlTaskInstanceDO.getTaskVersion());
         bean.setTaskDefinitionList(BeanUtils.toBean(dppEtlNodeLogDOList, DppEtlNodeRespVO.class));
         bean.createTaskConfig();

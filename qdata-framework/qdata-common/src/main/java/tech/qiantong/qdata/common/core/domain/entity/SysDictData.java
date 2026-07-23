@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain.entity;
@@ -46,7 +32,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 字典数据表 sys_dict_data
+ * Dictionary data table sys_dict_data
  *
  * @author qdata
  */
@@ -57,37 +43,37 @@ public class SysDictData extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 字典编码 */
+    /** Dictionary encoding */
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
     private Long dictCode;
 
-    /** 字典排序 */
+    /** Dictionary sorting */
     @Excel(name = "字典排序", cellType = ColumnType.NUMERIC)
     private Long dictSort;
 
-    /** 字典标签 */
+    /** Dictionary tag */
     @Excel(name = "字典标签")
     private String dictLabel;
 
-    /** 字典键值 */
+    /** Dictionary key value */
     @Excel(name = "字典键值")
     private String dictValue;
 
-    /** 字典类型 */
+    /** Dictionary type */
     @Excel(name = "字典类型")
     private String dictType;
 
-    /** 样式属性（其他样式扩展） */
+    /** Style attributes (other style extensions) */
     private String cssClass;
 
-    /** 表格字典样式 */
+    /** Table dictionary style */
     private String listClass;
 
-    /** 是否默认（Y是 N否） */
+    /** Is it the default (Y yes N no) */
     @Excel(name = "是否默认", readConverterExp = "Y=是,N=否")
     private String isDefault;
 
-    /** 状态（0正常 1停用） */
+    /** Status (0 normal 1 disabled) */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
 

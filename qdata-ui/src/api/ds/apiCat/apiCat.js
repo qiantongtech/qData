@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据服务类目管理列表
+// Query the data service category management list
 export function listAttApiCat(query) {
   return request({
     url: '/att/apiCat/list',
@@ -26,7 +27,7 @@ export function listAttApiCat(query) {
   })
 }
 
-// 查询数据服务类目管理详细
+// Query data service category management details
 export function getAttApiCat(id) {
   return request({
     url: '/att/apiCat/' + id,
@@ -34,7 +35,7 @@ export function getAttApiCat(id) {
   })
 }
 
-// 新增数据服务类目管理
+// Added new data service category management
 export function addAttApiCat(data) {
   return request({
     url: '/att/apiCat',
@@ -43,7 +44,7 @@ export function addAttApiCat(data) {
   })
 }
 
-// 修改数据服务类目管理
+// Modify data service category management
 export function updateAttApiCat(data) {
   return request({
     url: '/att/apiCat',
@@ -52,7 +53,7 @@ export function updateAttApiCat(data) {
   })
 }
 
-// 删除数据服务类目管理
+// Delete data service category management
 export function delAttApiCat(id) {
   return request({
     url: '/att/apiCat/' + id,

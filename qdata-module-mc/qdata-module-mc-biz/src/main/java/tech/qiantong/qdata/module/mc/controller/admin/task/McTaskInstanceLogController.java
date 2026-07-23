@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 采集任务实例-日志Controller
+ * Collection task instance-Log Controller
  *
  * @author qdata
  * @date 2025-12-16
@@ -48,13 +48,13 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务实例-日志列表")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskInstanceLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTaskInstanceLogDO> list = (List<McTaskInstanceLogDO>) mcTaskInstanceLogService.getMcTaskInstanceLogPage(exportReqVO).getRows();
         ExcelUtil<McTaskInstanceLogRespVO> util = new ExcelUtil<>(McTaskInstanceLogRespVO.class);
-        util.exportExcel(response, McTaskInstanceLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTaskInstanceLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取采集任务实例-日志详细信息")
@@ -65,7 +65,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
         mcTaskInstanceLog.setCreatorId(getUserId());
@@ -75,7 +75,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskInstanceLogSaveReqVO mcTaskInstanceLog) {
         mcTaskInstanceLog.setUpdatorId(getUserId());
@@ -85,7 +85,7 @@ public class McTaskInstanceLogController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务实例-日志")
-    @Log(title = "采集任务实例-日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task.instance.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{taskInstanceIds}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskInstanceLogService.removeMcTaskInstanceLog(Arrays.asList(ids)));

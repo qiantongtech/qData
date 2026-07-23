@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ds.service.api.impl;
@@ -101,7 +87,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * API服务Service业务层处理
+ * API service service implementation
  *
  * @author lhs
  * @date 2025-02-12
@@ -129,7 +115,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
 
     @Override
     public void releaseDataApi(String id, Long updateId, String updateBy) {
-        // 获取详细信息
+        // Get detailed information.
         DsApiDO dataApiEntity = dsApiMapper.selectById(id);
         DsApiLogDO apiLogEntity = null;
         try {
@@ -142,15 +128,15 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             updateWrapper.eq(DsApiDO::getId, id);
             dsApiMapper.update(null, updateWrapper);
 
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApiEntity, updateId, updateBy, id, 1, "", "1", 5);
         } catch (Exception e) {
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApiEntity, updateId, updateBy, id, 0, e.getMessage().toString(), "0", 5);
         } finally {
-            // 封装信息进行异步存储日志
+            // Build the information and persist the log asynchronously.
             // asyncTask.doTask(apiLogEntity);
         }
 
@@ -165,7 +151,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
 
     @Override
     public void cancelDataApi(String id, Long updateId, String updateBy) {
-        // 获取详细信息
+        // Get detailed information.
         DsApiDO dataApiEntity = dsApiMapper.selectById(id);
         DsApiLogDO apiLogEntity = null;
         try {
@@ -178,15 +164,15 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             updateWrapper.eq(DsApiDO::getId, id);
             dsApiMapper.update(null, updateWrapper);
 
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApiEntity, updateId, updateBy, id, 1, "", "1", 6);
         } catch (Exception e) {
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApiEntity, updateId, updateBy, id, 0, e.getMessage().toString(), "0", 6);
         } finally {
-            // 封装信息进行异步存储日志
+            // Build the information and persist the log asynchronously.
             // asyncTask.doTask(apiLogEntity);
         }
 
@@ -232,7 +218,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     /**
-     * 保存API
+     * Saves the API.
      *
      * @param dataApi
      * @return
@@ -251,7 +237,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     /**
-     * 测试调用参数
+     * Tests call parameters.
      *
      * @param dataApi
      * @return
@@ -262,8 +248,8 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         List<ResParam> resParamsList = dataApiEntity.getResParamsList();
         Map<String, Object> params = dataApi.getParams();
 
-        // 返回结果类型 1:分页 2:列表 3:详情-废弃
-        // 返回结果类型;1：详情，2：列表，3：分页
+        // Result type (1: paginated, 2: list, 3: detail) - deprecated
+        // Result type (1: detail, 2: list, 3: paginated)
         String resDataType = dataApiEntity.getResDataType();
         DaDatasourceRespDTO dataSource = iDaDatasourceApiService
                 .getDatasourceById(Long.valueOf(dataApiEntity.getExecuteConfig().getSourceId()));
@@ -274,7 +260,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 dataSource.getPort(),
                 dataSource.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
-        // 参数
+        // Parameter
 
         Integer pageNum = Integer.parseInt(MapUtils.getString(params, "pageNum", "1"));
         Integer pageSize = Integer.parseInt(MapUtils.getString(params, "pageSize", "20"));
@@ -286,7 +272,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                     params);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new ServiceException("ds.error.api.sql.build", "API调用动态构造SQL语句出错");
+            throw new ServiceException("ds.error.api.sql.build", "API call: failed to build dynamic SQL");
         }
         Map<String, Object> acceptedFilters = sqlFilterResult.getAcceptedFilters();
 
@@ -320,7 +306,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                     break;
             }
         } catch (Exception e) {
-            throw new ServiceException("ds.error.api.query.rs", "API调用查询结果集出错");
+            throw new ServiceException("ds.error.api.query.rs", "API call: failed to query result set");
         } finally {
             dbQuery.close();
         }
@@ -337,7 +323,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     /**
-     * 时间转换成字符串
+     * Converts a time value to a string.
      *
      * @param resParamsList
      * @param data
@@ -354,12 +340,12 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 this.dateToStr(resParamsList, map);
             }
         } catch (Exception e) {
-            log.error("时间转换成字符串出错", e);
+            log.error("Failed to convert time to string", e);
         }
     }
 
     /**
-     * 时间转换成字符串
+     * Converts a time value to a string.
      *
      * @param resParamsList
      * @param data
@@ -372,12 +358,12 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 }
             });
         } catch (Exception e) {
-            log.error("时间转换成字符串出错", e);
+            log.error("Failed to convert time to string", e);
         }
     }
 
     /**
-     * 解析SQL
+     * Parses SQL.
      *
      * @param sqlParseDto
      * @return
@@ -393,9 +379,9 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         try {
             stmt = CCJSqlParserUtil.parse(sql);
         } catch (JSQLParserException e) {
-            throw new ServiceException("ds.error.sql.parse", "SQL语法有问题，解析出错");
+            throw new ServiceException("ds.error.sql.parse", "SQL syntax error, parsing failed");
         }
-        // 查询数据源信息
+        // Query data source information.
         DaDatasourceRespDTO datasourceById = iDaDatasourceApiService.getDatasourceById(Long.valueOf(sourceId));
         DbQueryProperty dbQueryProperty = new DbQueryProperty(
                 datasourceById.getDatasourceType(),
@@ -403,14 +389,14 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 datasourceById.getPort(),
                 datasourceById.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
-        // 维护元数据缓存数据
+        // Maintain metadata cache data.
         TablesNamesFinder tablesNamesFinder = new TablesNamesFinder();
         List<String> tables = tablesNamesFinder.getTableList(stmt);
-        // 查询字段
+        // Query fields.
         final List<Map<String, String>> cols = new ArrayList<>();
-        // 查询参数
+        // Query parameters.
         final List<String> vars = new ArrayList<>();
-        // 注掉单表解析 多表解析可以兼容单表
+        // Disable single-table parsing because multi-table parsing also supports single-table queries.
         multipleSqlParse(stmt, cols, vars, dbQuery);
         SqlParseVo sqlParseVo = new SqlParseVo();
         List<ReqParam> reqParams = vars.stream().map(s -> {
@@ -472,7 +458,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     /**
-     * 归纳修改入口
+     * Consolidates update handling.
      *
      * @param dataApi
      */
@@ -480,7 +466,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         DsApiLogDO apiLogEntity = null;
         try {
             baseMapper.updateById(dataApi);
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getUpdatorId(), dataApi.getUpdateBy(), dataApi.toString(), 1, "", "1", 3);
             if (StringUtils.equals("1",dataApi.getStatus())) {
@@ -489,25 +475,25 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 invokeReleaseOrCancelApi(String.valueOf(dataApi.getId()), "2");
             }
         } catch (Exception e) {
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getUpdatorId(), dataApi.getUpdateBy(), dataApi.toString(), 0,
                     e.getMessage().toString(), "0", 3);
-            throw new ServiceException("ds.error.update.fail", "修改失败！");
+            throw new ServiceException("ds.error.update.fail", "Update failed!");
         } finally {
-            // 封装信息进行异步存储日志
+            // Build the information and persist the log asynchronously.
             // asyncTask.doTask(apiLogEntity);
         }
     }
 
     /**
-     * 归纳新增入口
+     * Consolidates creation handling.
      */
     private void dataApiDaoInsert(DsApiDO dataApi) {
         DsApiLogDO apiLogEntity = null;
         try {
             baseMapper.insert(dataApi);
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getCreatorId(), dataApi.getCreateBy(), dataApi.toString(), 1, "", "1", 2);
             if (StringUtils.equals("1",dataApi.getStatus())) {
@@ -515,19 +501,19 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             }
         } catch (Exception e) {
             dataApi.setId(0L);
-            // 封装信息
+            // Build the information.
             apiLogEntity = packApiLogEntity(
                     dataApi, dataApi.getCreatorId(), dataApi.getCreateBy(), dataApi.toString(), 0,
                     e.getMessage().toString(), "0", 2);
-            throw new ServiceException("ds.error.create.fail", "新增失败！");
+            throw new ServiceException("ds.error.create.fail", "Create failed!");
         } finally {
-            // 封装信息进行异步存储日志
+            // Build the information and persist the log asynchronously.
             // asyncTask.doTask(apiLogEntity);
         }
     }
 
     /**
-     * 封装 ApiLogEntity
+     * Builds an ApiLogEntity.
      *
      * @return
      */
@@ -537,31 +523,31 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         DsApiLogDO apiLogEntity = new DsApiLogDO();
         // id
         apiLogEntity.setApiId(dataApiEntity.getId());
-        // 名字
+        // Name.
         apiLogEntity.setApiName(dataApiEntity.getName());
-        // 用户名字
+        // Username.
         apiLogEntity.setCallerId(String.valueOf(callerId));
-        // 用户id
+        // User ID.
         apiLogEntity.setCallerBy(callerBy);
-        // 调取URL
+        // Called URL.
         apiLogEntity.setCallerUrl(dataApiEntity.getApiUrl());
-        // 调用参数
+        // Call parameters
         apiLogEntity.setCallerParams(callerParams);
-        // 调用数据量
+        // Called record count
         apiLogEntity.setCallerSize(callerSize);
-        // 信息
+        // Information.
         apiLogEntity.setMsg(msg);
-        // 状态 0:失败，1：成功
+        // Status (0: failed, 1: successful)
         apiLogEntity.setStatus(Integer.valueOf(status));
-        // 触发时间
+        // Trigger time.
         apiLogEntity.setCallerStartDate(LocalDateTime.now());
         apiLogEntity.setCallerIp("");
-        // 服务类型 1: 请求, 2: 创建, 3: 修改, 4: 删除, 5: 发布, 6: 注销, 7: 浏览
+        // Service type (1: request, 2: create, 3: update, 4: delete, 5: publish, 6: unpublish, 7: view)
         return apiLogEntity;
     }
 
     /**
-     * 数据脱敏
+     * Desensitizes data.
      *
      * @param data
      * @param apiId
@@ -576,13 +562,13 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             // metadataDsnRuleLinkList =
             // metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
         } catch (Exception e) {
-            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
+            throw new ServiceException("ds.error.api.desensitize", "API call: failed to query desensitization rules");
         }
 
         if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
             return data;
         }
-        // 脱敏
+        // Desensitize the data.
         // for (Map<String, Object> datum : data) {
         // metadataDsnRuleLinkList.stream()
         // .filter(columnEntity -> datum.containsKey(columnEntity.getColumnName()))
@@ -611,7 +597,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             // metadataDsnRuleLinkList =
             // metadataSourceServiceFeign.getMetadataDsnRuleLinkList(apiId);
         } catch (Exception e) {
-            throw new ServiceException("ds.error.api.desensitize", "API调用查询脱敏规则出错");
+            throw new ServiceException("ds.error.api.desensitize", "API call: failed to query desensitization rules");
         }
 
         if (CollectionUtils.isEmpty(metadataDsnRuleLinkList)) {
@@ -644,7 +630,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
             try {
                 dataApiDto.getExecuteConfig().setSqlText(sqlJdbcNamedParameterBuild(dataApiDto));
             } catch (JSQLParserException e) {
-                throw new ServiceException("ds.error.sql.parse", "SQL语法有问题，解析出错");
+                throw new ServiceException("ds.error.sql.parse", "SQL syntax error, parsing failed");
             }
         } else if (ConfigType.SCRIPT.getKey().equals(configType)) {
         }
@@ -655,10 +641,10 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         String tableName = dataApi.getExecuteConfig().getTableName();
         ExecuteConfig executeConfig = dataApi.getExecuteConfig();
         if (StringUtils.isEmpty(executeConfig.getDbType())) {
-            //通过数据源id获取
+            //Get by data source ID.
             DaDatasourceRespDTO dataSource = iDaDatasourceApiService.getDatasourceById(Long.valueOf(executeConfig.getSourceId()));
             if (dataSource == null) {
-                throw new ServiceException("ds.error.datasource.notfound", "数据源不存在");
+                throw new ServiceException("ds.error.datasource.notfound", "Data source does not exist");
             }
             executeConfig.setDbType(dataSource.getDatasourceType());
             JSONObject dataSourceConfig = JSONObject.parseObject(dataSource.getDatasourceConfig());
@@ -716,7 +702,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                                     } else if (value instanceof Function) {
                                         columnName = value.toString();
                                     } else {
-                                        // 增加对select 'aaa' from table; 的支持
+                                        // Add support for select 'aaa' from table.
                                         columnName = String.valueOf(value);
                                         columnName = columnName.replace("'", "");
                                         columnName = columnName.replace("\"", "");
@@ -815,14 +801,14 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                                         Table table = column.getTable();
 
                                         if (table != null && table.getName() != null) {
-                                            // 有表前缀，解析 alias 到实际表名
+                                            // Resolve the alias to the actual table name when a table prefix is present.
                                             String tName = table.getName();
                                             tableName = aliasToTableMap.getOrDefault(tName, tName);
                                         } else if (aliasToTableMap.size() == 1) {
-                                            // 无表前缀 + 单表查询，直接取唯一表
+                                            // Use the only table for a single-table query without a table prefix.
                                             tableName = aliasToTableMap.values().iterator().next();
                                         } else {
-                                            // 无法判断归属表（多表 or 无 from），设为 unknown
+                                            // Use unknown when the owning table cannot be determined for multi-table or no-FROM queries.
                                             tableName = "unknown";
                                         }
 
@@ -903,7 +889,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
     }
 
     /**
-     * 解析子查询
+     * Parses subqueries.
      *
      * @param select
      * @param cols
@@ -913,7 +899,7 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         select.getSelectBody().accept(new SelectVisitorAdapter() {
             @Override
             public void visit(PlainSelect plainSelect) {
-                // 存储表名
+                // Store the table name.
                 Map<String, String> map = new HashMap<>();
                 Table table = (Table) plainSelect.getFromItem();
                 if (org.apache.commons.lang3.StringUtils.equals(table.getName().toUpperCase(Locale.ROOT), "DUAL")) {
@@ -977,16 +963,16 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
 
     @Override
     public int updateDsApi(DsApiSaveReqVO updateReqVO) {
-        // 相关校验
+        // Perform related validation.
 
-        // 更新API服务
+        // Updates an API service.
         DsApiDO updateObj = BeanUtils.toBean(updateReqVO, DsApiDO.class);
         return dsApiMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDsApi(Collection<Long> idList) {
-        // 批量删除API服务
+        // Deletes API services in batches.
         return dsApiMapper.deleteBatchIds(idList);
     }
 
@@ -1007,22 +993,22 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                 .collect(Collectors.toMap(
                         DsApiDO::getId,
                         dsApiDO -> dsApiDO,
-                        // 保留已存在的值
+                        // Preserve the existing value.
                         (existing, replacement) -> existing));
     }
 
     /**
-     * 导入API服务数据
+     * Imports API service data.
      *
-     * @param importExcelList API服务数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList API service data list
+     * @param isUpdateSupport whether existing records should be updated
+     * @param operName        Operator
+     * @return the result
      */
     @Override
     public String importDsApi(List<DsApiRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("ds.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("ds.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -1041,16 +1027,16 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                             dsApiMapper.updateById(dsApiDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("ds.import.update.success",
-                                    "数据更新成功，ID为 " + dsApiId + " 的API服务记录。", dsApiId, "API服务"));
+                                    "Data update successful, ID {0} {1} record.", dsApiId, MessageUtils.messageWithFallback("ds.entity.api.service", "API service")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("ds.import.update.fail",
-                                    "数据更新失败，ID为 " + dsApiId + " 的API服务记录不存在。", dsApiId, "API服务"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dsApiId, MessageUtils.messageWithFallback("ds.entity.api.service", "API service")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("ds.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DsApiDO> queryWrapper = new QueryWrapper<>();
@@ -1060,17 +1046,17 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
                         dsApiMapper.insert(dsApiDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("ds.import.insert.success",
-                                "数据插入成功，ID为 " + dsApiId + " 的API服务记录。", dsApiId, "API服务"));
+                                "Data insert successful, ID {0} {1} record.", dsApiId, MessageUtils.messageWithFallback("ds.entity.api.service", "API service")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("ds.import.insert.fail",
-                                "数据插入失败，ID为 " + dsApiId + " 的API服务记录已存在。", dsApiId, "API服务"));
+                                "Data insert failed, ID {0} {1} record already exists.", dsApiId, MessageUtils.messageWithFallback("ds.entity.api.service", "API service")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("ds.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -1079,12 +1065,12 @@ public class DsApiServiceImpl extends ServiceImpl<DsApiMapper, DsApiDO> implemen
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("ds.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("ds.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("ds.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

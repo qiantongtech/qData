@@ -10,12 +10,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据元 Response VO 对象 DG_DATA_ELEM
+ * Data Element Response VO Object DG_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
  */
-@Schema(description = "数据元 Response VO")
+@Schema(description = "Data Element Response VO")
 @Data
 public class DgDataElemRespVO implements Serializable {
 
@@ -25,104 +25,102 @@ public class DgDataElemRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "编码")
-    @Schema(description = "编码", example = "")
+    @Excel(name = "Code")
+    @Schema(description = "Code", example = "")
     private String code;
 
-    @Excel(name = "名称")
-    @Schema(description = "名称", example = "")
+    @Excel(name = "Name")
+    @Schema(description = "Name", example = "")
     private String name;
 
-    @Excel(name = "英文名称")
-    @Schema(description = "英文名称", example = "")
+    @Excel(name = "English name")
+    @Schema(description = "English name", example = "")
     private String engName;
 
-    @Excel(name = "类目编码")
-    @Schema(description = "类目编码", example = "")
+    @Excel(name = "Category code")
+    @Schema(description = "Category code", example = "")
     private String catCode;
 
-    @Excel(name = "类目编码")
-    @Schema(description = "类目编码", example = "")
+    @Excel(name = "Category name")
+    @Schema(description = "Category name", example = "")
     private String catName;
 
-    @Excel(name = "类型")
-    @Schema(description = "类型", example = "")
+    @Excel(name = "Type")
+    @Schema(description = "Type", example = "")
     private String type;
 
-    @Excel(name = "责任人")
-    @Schema(description = "责任人", example = "")
+    @Excel(name = "Person in charge")
+    @Schema(description = "Person in charge", example = "")
     private String personCharge;
 
-    /**
-     * 责任人名称
-     */
+    /** Person in Charge Name */
     private String personChargeName;
 
-    @Excel(name = "联系电话")
-    @Schema(description = "联系电话", example = "")
+    @Excel(name = "Contact number")
+    @Schema(description = "Contact number", example = "")
     private String contactNumber;
 
-    @Excel(name = "字段类型")
-    @Schema(description = "字段类型", example = "")
+    @Excel(name = "Column type")
+    @Schema(description = "Column type", example = "")
     private String columnType;
 
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
+    @Excel(name = "Status")
+    @Schema(description = "Status", example = "")
     private String status;
 
-    @Excel(name = "描述")
-    @Schema(description = "描述", example = "")
+    @Excel(name = "Description")
+    @Schema(description = "Description", example = "")
     private String description;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Valid flag")
+    @Schema(description = "Valid flag", example = "")
     private Boolean validFlag;
 
-    @Excel(name = "删除标志")
-    @Schema(description = "删除标志", example = "")
+    @Excel(name = "Delete flag")
+    @Schema(description = "Delete flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created by")
+    @Schema(description = "Created by", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Create time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Schema(description = "Create time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated by")
+    @Schema(description = "Updated by", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Update time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "更新时间", example = "")
+    @Schema(description = "Update time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
     private Long documentId;
 
-    /** 名称 */
+    /** Name */
     @TableField(exist = false)
     private String documentName;
 
-    /** 名称 */
+    /** Code */
     @TableField(exist = false)
     private String documentCode;
 
-    /** 文件标准类型字段， */
+    /** Document Standard Type Field */
     @TableField(exist = false)
     private String documentType;
 }

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,7 +22,7 @@
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="td('dpp.cleanRule.inputRuleType', '请输入规则类型')"
+        :placeholder="td('dpp.cleanRule.inputRuleType', 'Please enter rule type')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
         :showFilter="false"
@@ -68,7 +69,7 @@
                     src="../../../../../../../assets/images/system/no_data/empty-nodata.png"
                     alt=""
                   />
-                  <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+                  <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
                 </div>
               </div>
             </template>
@@ -103,7 +104,7 @@ import {
 
 const contentWrapper = ref(null);
 const selectedCard = ref(null);
-const leftWidth = ref(250); // 初始左侧宽度
+const leftWidth = ref(250); // Initial left width
 const emit = defineEmits(["card-click"]);
 const props = defineProps({
   type: {
@@ -111,6 +112,8 @@ const props = defineProps({
     default: "",
   },
 });
+const integratioTaskType = inject("integratioTaskType", ref(""));
+const dataxEnabledRuleIds = new Set(["1", "7", "8", "9"]);
 let queryParams = ref({
   type: "",
   // validFlag: '1'
@@ -125,7 +128,7 @@ let attCleanRuleList = ref([]);
 function getDataTree() {
   listAttCleanCat().then((response) => {
     processedData.value = [];
-    const data = { id: "", name: td('dpp.cleanRule.cleanRuleTree', '清洗规则'), children: [] };
+    const data = { id: "", name: td('dpp.cleanRule.cleanRuleTree', 'Clean Rule'), children: [] };
     data.children = proxy.handleTree(response.data, "id", "parentId");
     processedData.value.push(data);
   });
@@ -137,7 +140,12 @@ async function fetchRulesByDimension() {
   const list = res.data || [];
   console.log("🚀 ~ fetchRulesByDimension ~ list:", list);
 
-  if (props.type == "3") {
+  if (String(integratioTaskType.value || "").toUpperCase() == "DATAX") {
+    attCleanRuleList.value = list.map((item) => ({
+      ...item,
+      validFlag: dataxEnabledRuleIds.has(String(item.id)),
+    }));
+  } else if (props.type == "3") {
     const disabledCodes = ["029", "039"];
     attCleanRuleList.value = list.map((item) => {
       if (disabledCodes.includes(item.code)) {
@@ -149,7 +157,7 @@ async function fetchRulesByDimension() {
     attCleanRuleList.value = list;
   }
 
-  // 排序，把 validFlag == false 的放后面
+  // Sort, put validFlag == false at the end
   attCleanRuleList.value.sort((a, b) => {
     return (b.validFlag === true) - (a.validFlag === true);
   });
@@ -159,7 +167,7 @@ async function fetchRulesByDimension() {
 
 function cardClick(data) {
   if (data.validFlag == false) {
-    return ElMessage.info(td('dpp.cleanRule.developing', '开发中'));
+    return ElMessage.info(td('dpp.cleanRule.developing', 'Under Development'));
   }
   selectedCard.value = data;
   emit("card-click", data);
@@ -198,7 +206,7 @@ onMounted(() => {
   position: relative;
 }
 
-/* 右侧内容 */
+/* Right content */
 .content-col {
   height: 75vh;
   overflow: hidden;
@@ -266,7 +274,7 @@ onMounted(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 17ch;
-    /* 限制最大宽度为8个字符 */
+    /* Limit maximum width to 8 characters */
     margin: 0 auto;
     cursor: pointer;
     text-align: center;
@@ -287,7 +295,7 @@ onMounted(() => {
     word-break: break-word;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    /* 显示3行 */
+    /* Show 3 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -319,7 +327,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 
-  /* 文字样式 */
+  /* text style */
   font-size: 16px;
   color: #999;
   user-select: none;

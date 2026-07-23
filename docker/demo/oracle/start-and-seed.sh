@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# 不用 -e，避免 init 脚本非零返回码中断
+# Do not use -e, so a non-zero init-script exit code does not stop execution
 set -u
 
-# 固定使用 XE 标准路径（你的镜像里 sqlplus 可以跑）
+# Use the standard XE path where sqlplus is available in the image
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export ORACLE_SID="${ORACLE_SID:-XE}"
 export PATH="$ORACLE_HOME/bin:$PATH"
@@ -17,7 +17,7 @@ CFG_FILE="/etc/default/oracle-xe"
 echo "[INFO] ORACLE_HOME=${ORACLE_HOME}"
 "$ORACLE_HOME/bin/sqlplus" -v || true
 
-# 1) 如未配置则生成配置并 configure
+# 1) Generate configuration and run configure when needed
 if /etc/init.d/oracle-xe status 2>&1 | grep -qi "not configured"; then
   echo "[INFO] Writing XE non-interactive config -> ${CFG_FILE}"
   {
@@ -34,11 +34,11 @@ else
   echo "[INFO] XE seems configured already. Skipping configure."
 fi
 
-# 2) 启动服务
+# 2) Start the service
 echo "[INFO] Starting oracle-xe ..."
 /etc/init.d/oracle-xe start || echo "[WARN] start returned non-zero (will still probe)"
 
-# 3) 等待数据库 ready（用 sqlplus 探活）
+# 3) Wait for database readiness using sqlplus
 echo "[INFO] Waiting for database to be ready ..."
 READY=0
 for i in $(seq 1 240); do
@@ -46,7 +46,7 @@ for i in $(seq 1 240); do
     READY=1
     break
   fi
-  # 若状态又说没配置，再兜底一次
+  # Retry configuration if the status still reports an unconfigured database
   if /etc/init.d/oracle-xe status 2>&1 | grep -qi "not configured"; then
     echo "[WARN] status says 'not configured'; re-configuring ..."
     /etc/init.d/oracle-xe configure || true
@@ -56,7 +56,7 @@ for i in $(seq 1 240); do
 done
 [ "$READY" -ne 1 ] && echo "[WARN] DB not confirmed ready; will still try seed."
 
-# 4) 执行 seed.sql（建议“DROP USER … CASCADE → CREATE → 建表 → INSERT”的重置式）
+# 4) Run seed.sql using the reset flow: DROP USER ... CASCADE, CREATE, create tables, then INSERT
 if [ -f "$SEED_SQL" ]; then
   echo "[INFO] Running seed: $SEED_SQL"
   "$ORACLE_HOME/bin/sqlplus" -s / as sysdba @"$SEED_SQL" || echo "[WARN] seed failed (check SQL/logs)"
@@ -64,7 +64,7 @@ else
   echo "[WARN] Seed file not found: $SEED_SQL (skipped)"
 fi
 
-# 5) 前台守护
+# 5) Keep the process in the foreground
 echo "[INFO] Tailing alert log ..."
 tail -F /u01/app/oracle/diag/rdbms/*/*/trace/alert_*.log 2>/dev/null || \
 tail -F /home/oracle/app/oracle/diag/rdbms/*/*/trace/alert_*.log 2>/dev/null || \

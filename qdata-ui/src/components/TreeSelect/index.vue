@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -50,35 +51,35 @@
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
-  /* 配置项 */
+  /* Configuration items */
   objMap: {
     type: Object,
     default: () => {
       return {
-        value: 'id', // ID字段名
-        label: 'label', // 显示名称
-        children: 'children' // 子级字段名
+        value: 'id', // ID field name
+        label: 'label', // display name
+        children: 'children' // Child field name
       }
     }
   },
-  /* 自动收起 */
+  /* Automatically fold */
   accordion: {
     type: Boolean,
     default: () => {
       return false
     }
   },
-  /**当前双向数据绑定的值 */
+  /**The current value of the two-way data binding */
   value: {
     type: [String, Number],
     default: ''
   },
-  /**当前的数据 */
+  /**current data */
   options: {
     type: Array,
     default: () => []
   },
-  /**输入框内部的文字 */
+  /**Text inside the input box */
   placeholder: {
     type: String,
     default: ''
@@ -103,8 +104,8 @@ function initHandle() {
       const node = proxy.$refs.selectTree.getNode(selectedValue)
       if (node) {
         valueTitle.value = node.data[props.objMap.label]
-        proxy.$refs.selectTree.setCurrentKey(selectedValue) // 设置默认选中
-        defaultExpandedKey.value = [selectedValue] // 设置默认展开
+        proxy.$refs.selectTree.setCurrentKey(selectedValue) // Set default selected
+        defaultExpandedKey.value = [selectedValue] // Set default expansion
       }
     } else {
       clearHandle()

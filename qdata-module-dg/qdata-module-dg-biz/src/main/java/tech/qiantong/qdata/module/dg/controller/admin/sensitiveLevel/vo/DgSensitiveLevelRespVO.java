@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 敏感等级 Response VO 对象 DA_SENSITIVE_LEVEL
+ * Sensitive Level Response VO DA_SENSITIVE_LEVEL
  *
  * @author Chaos
  * @date 2025-01-21

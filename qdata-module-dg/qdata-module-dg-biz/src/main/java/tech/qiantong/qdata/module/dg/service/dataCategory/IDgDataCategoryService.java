@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.service.dataCategory;
@@ -45,7 +31,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.dataCategory.vo.DgDataCate
 import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategory.DgDataCategoryDO;
 
 /**
- * 数据分类Service接口
+ * Data Category Service Interface
  *
  * @author qdata
  * @date 2026-04-07
@@ -53,78 +39,78 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.dataCategory.DgDataCategoryD
 public interface IDgDataCategoryService extends IService<DgDataCategoryDO> {
 
     /**
-     * 获得数据分类分页列表
+     * Get data category paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据分类分页列表
+     * @param pageReqVO Pagination request
+     * @return Data category paginated list
      */
     PageResult<DgDataCategoryDO> getDgDataCategoryPage(DgDataCategoryPageReqVO pageReqVO);
 
     /**
-     * 创建数据分类
+     * Create data category
      *
-     * @param createReqVO 数据分类信息
-     * @return 数据分类编号
+     * @param createReqVO Data category information
+     * @return Data category ID
      */
     Long createDgDataCategory(DgDataCategorySaveReqVO createReqVO);
 
     /**
-     * 更新数据分类
+     * Update data category
      *
-     * @param updateReqVO 数据分类信息
+     * @param updateReqVO Data category information
      */
     int updateDgDataCategory(DgDataCategorySaveReqVO updateReqVO);
 
     /**
-     * 删除数据分类
+     * Delete data category
      *
-     * @param idList 数据分类编号
+     * @param idList Data category IDs
      */
     int removeDgDataCategory(Collection<Long> idList);
 
     /**
-     * 获得数据分类详情
+     * Get data category details
      *
-     * @param id 数据分类编号
-     * @return 数据分类
+     * @param id Data category ID
+     * @return Data category
      */
     DgDataCategoryDO getDgDataCategoryById(Long id);
 
     /**
-     * 获得全部数据分类列表
+     * Get all data category list
      *
-     * @return 数据分类列表
+     * @return Data category list
      */
     List<DgDataCategoryDO> getDgDataCategoryList();
 
 
     /**
-     * 获得全部数据分类 Map
+     * Get all data category Map
      *
-     * @return 数据分类 Map
+     * @return Data category Map
      */
     Map<Long, DgDataCategoryDO> getDgDataCategoryMap();
 
 
     /**
-     * 导入数据分类数据
+     * Import data category data
      *
-     * @param importExcelList 数据分类数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data category data list
+     * @param isUpdateSupport Whether to update support, if exists then update data
+     * @param operName        Operator user
+     * @return Result
      */
     String importDgDataCategory(List<DgDataCategoryRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获取数据分类树列表
+     * Get data category tree list
      *
-     * @return 树列表
+     * @return Tree list
      */
     List<DgDataCategoryTreeRespVO> selectTree(String type);
 
     /**
-     * 根据分类编码获取数量
+     * Get count by category code
      *
      * @param catCode
      * @return
@@ -132,11 +118,11 @@ public interface IDgDataCategoryService extends IService<DgDataCategoryDO> {
     Long getCountByCatCode(String catCode);
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode Old category code
+     * @param newCatCode New category code
+     * @return Number of affected rows
      */
     int updateCatCode(String codeOld, String codeNew);
 

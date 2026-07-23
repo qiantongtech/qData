@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.impl;
@@ -54,7 +40,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 字典 业务层处理
+ * Dictionary Business Layer Processing
  *
  * @author qdata
  */
@@ -68,7 +54,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     private SysDictDataMapper dictDataMapper;
 
     /**
-     * 项目启动时，初始化字典到缓存
+     * Initialize dictionary to cache on project startup
      */
     @PostConstruct
     public void init()
@@ -77,10 +63,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 根据条件分页查询字典类型
+     * Query dictionary type list by conditions
      *
-     * @param dictType 字典类型信息
-     * @return 字典类型集合信息
+     * @param dictType Dictionary type information
+     * @return Dictionary type collection information
      */
     @Override
     public List<SysDictType> selectDictTypeList(SysDictType dictType)
@@ -89,9 +75,9 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 根据所有字典类型
+     * Query all dictionary types
      *
-     * @return 字典类型集合信息
+     * @return Dictionary type collection information
      */
     @Override
     public List<SysDictType> selectDictTypeAll()
@@ -100,10 +86,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 根据字典类型查询字典数据
+     * Query dictionary data by dictionary type
      *
-     * @param dictType 字典类型
-     * @return 字典数据集合信息
+     * @param dictType Dictionary type
+     * @return Dictionary data collection information
      */
     @Override
     public List<SysDictData> selectDictDataByType(String dictType)
@@ -123,10 +109,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 根据字典类型ID查询信息
+     * Query dictionary type information by dictionary type ID
      *
-     * @param dictId 字典类型ID
-     * @return 字典类型
+     * @param dictId Dictionary type ID
+     * @return Dictionary type
      */
     @Override
     public SysDictType selectDictTypeById(Long dictId)
@@ -135,10 +121,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 根据字典类型查询信息
+     * Query dictionary type information by dictionary type string
      *
-     * @param dictType 字典类型
-     * @return 字典类型
+     * @param dictType Dictionary type
+     * @return Dictionary type
      */
     @Override
     public SysDictType selectDictTypeByType(String dictType)
@@ -147,9 +133,9 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 批量删除字典类型信息
+     * Batch delete dictionary type information
      *
-     * @param dictIds 需要删除的字典ID
+     * @param dictIds Dictionary IDs to be deleted
      */
     @Override
     public void deleteDictTypeByIds(Long[] dictIds)
@@ -159,7 +145,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
             SysDictType dictType = selectDictTypeById(dictId);
             if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
+                throw new ServiceException(String.format("%1$s is allocated and cannot be deleted", dictType.getDictName()));
             }
             dictTypeMapper.deleteDictTypeById(dictId);
             DictUtils.removeDictCache(dictType.getDictType());
@@ -167,7 +153,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 加载字典缓存数据
+     * Load dictionary cache data
      */
     @Override
     public void loadingDictCache()
@@ -182,7 +168,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 清空字典缓存数据
+     * Clear dictionary cache data
      */
     @Override
     public void clearDictCache()
@@ -191,7 +177,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 重置字典缓存数据
+     * Reset dictionary cache data
      */
     @Override
     public void resetDictCache()
@@ -201,10 +187,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 新增保存字典类型信息
+     * Insert and save dictionary type information
      *
-     * @param dict 字典类型信息
-     * @return 结果
+     * @param dict Dictionary type information
+     * @return Result
      */
     @Override
     public int insertDictType(SysDictType dict)
@@ -218,10 +204,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 修改保存字典类型信息
+     * Update and save dictionary type information
      *
-     * @param dict 字典类型信息
-     * @return 结果
+     * @param dict Dictionary type information
+     * @return Result
      */
     @Override
     @Transactional
@@ -239,10 +225,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
     }
 
     /**
-     * 校验字典类型称是否唯一
+     * Verify whether the dictionary type name is unique
      *
-     * @param dict 字典类型
-     * @return 结果
+     * @param dict Dictionary type
+     * @return Result
      */
     @Override
     public boolean checkDictTypeUnique(SysDictType dict)
@@ -256,7 +242,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, ISystemDictD
         return UserConstants.UNIQUE;
     }
 
-    // 获取字典类型及字典数据
+    // Get dictionary type and dictionary data
     @Override
     public List<SysDictType> getDictTypeAndDataList(String[] dictTypesArr) {
         List<SysDictType> sysDictTypes = Lists.newArrayList();

@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 采集任务实例Controller
+ * Collection task instanceController
  *
  * @author qdata
  * @date 2025-12-16
@@ -50,17 +50,17 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "导出采集任务实例列表")
-    @Log(title = "采集任务实例", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.task.instance", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTaskInstancePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTaskInstanceDO> list = (List<McTaskInstanceDO>) mcTaskInstanceService.getMcTaskInstancePage(exportReqVO).getRows();
         ExcelUtil<McTaskInstanceRespVO> util = new ExcelUtil<>(McTaskInstanceRespVO.class);
-        util.exportExcel(response, McTaskInstanceConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTaskInstanceConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入采集任务实例列表")
-    @Log(title = "采集任务实例", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.mc.task.instance", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<McTaskInstanceRespVO> util = new ExcelUtil<>(McTaskInstanceRespVO.class);
@@ -78,7 +78,7 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "新增采集任务实例")
-    @Log(title = "采集任务实例", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.task.instance", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTaskInstanceSaveReqVO mcTaskInstance) {
         mcTaskInstance.setCreatorId(getUserId());
@@ -88,7 +88,7 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "修改采集任务实例")
-    @Log(title = "采集任务实例", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.task.instance", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTaskInstanceSaveReqVO mcTaskInstance) {
         mcTaskInstance.setUpdatorId(getUserId());
@@ -98,7 +98,7 @@ public class McTaskInstanceController extends BaseController {
     }
 
     @Operation(summary = "删除采集任务实例")
-    @Log(title = "采集任务实例", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.task.instance", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTaskInstanceService.removeMcTaskInstance(Arrays.asList(ids)));

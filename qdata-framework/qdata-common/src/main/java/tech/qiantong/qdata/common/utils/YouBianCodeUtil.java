@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -35,7 +21,7 @@ package tech.qiantong.qdata.common.utils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 流水号生成规则(按默认规则递增，数字从1-99开始递增，数字到99，递增字母;位数不够增加位数)
+ * Serial number generation rules (increment according to the default rules, numbers increase from 1-99, numbers to 99, increase letters; if the number of digits is not enough, increase the number of digits)
  * A001
  * A001A002
  *
@@ -43,10 +29,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class YouBianCodeUtil {
 
-    // 数字位数(默认生成3位的数字)
+    // Number of digits (default generates 3-digit number)
 
     /**
-     * 代表数字位数
+     * Represents the number of digits
      */
     private static final int NUM_LENGTH = 2;
 
@@ -55,8 +41,8 @@ public class YouBianCodeUtil {
     public static final char LETTER = 'Z';
 
     /**
-     * 根据前一个code，获取同级下一个code
-     * 例如:当前最大code为D01A04，下一个code为：D01A05
+     * Based on the previous code, get the next code at the same level
+     * For example: the current maximum code is D01A04, and the next code is: D01A05
      *
      * @param code
      * @return
@@ -74,20 +60,20 @@ public class YouBianCodeUtil {
             Integer afterCodeNum = Integer.parseInt(afterCode.substring(1));
             String nextNum = "";
             char nextZimu = 'A';
-            // 先判断数字等于999*，则计数从1重新开始，递增
+            // First determine that the number is equal to 999*, then the counting will restart from 1 and increase
             if (afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
                 nextNum = getNextStrNum(0);
             } else {
                 nextNum = getNextStrNum(afterCodeNum);
             }
-            // 先判断数字等于999*，则字母从A重新开始,递增
+            // First determine that the number is equal to 999*, then the letters start again from A and increase
             if (afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
                 nextZimu = getNextZiMu(afterCodeZimu);
             } else {
                 nextZimu = afterCodeZimu;
             }
 
-            // 例如Z99，下一个code就是Z99A01
+            // For example, Z99, the next code is Z99A01
             if (LETTER == afterCodeZimu && getMaxNumByLength(NUM_LENGTH) == afterCodeNum) {
                 newcode = code + (nextZimu + nextNum);
             } else {
@@ -99,14 +85,14 @@ public class YouBianCodeUtil {
     }
 
     /**
-     * 根据父亲code,获取下级的下一个code
+     * According to the father code, get the next code of the subordinate
      * <p>
-     * 例如：父亲CODE:A01
-     * 当前CODE:A01B03
-     * 获取的code:A01B04
+     * For example: Father CODE:A01
+     * Current CODE:A01B03
+     * Obtained code:A01B04
      *
-     * @param parentCode 上级code
-     * @param localCode  同级code
+     * @param parentCode parent code
+     * @param localCode sibling code
      * @return
      */
     public static synchronized String getSubYouBianCode(String parentCode, String localCode) {
@@ -123,7 +109,7 @@ public class YouBianCodeUtil {
 
 
     /**
-     * 将数字前面位数补零
+     * Pad the number in front with zeros
      *
      * @param num
      * @return
@@ -133,7 +119,7 @@ public class YouBianCodeUtil {
     }
 
     /**
-     * 将数字前面位数补零
+     * Pad the number in front with zeros
      *
      * @param num
      * @return
@@ -144,7 +130,7 @@ public class YouBianCodeUtil {
     }
 
     /**
-     * 递增获取下个数字
+     * Incrementally get the next number
      *
      * @param num
      * @return
@@ -155,7 +141,7 @@ public class YouBianCodeUtil {
     }
 
     /**
-     * 递增获取下个字母
+     * Get the next letter incrementally
      *
      * @param zimu
      * @return
@@ -169,7 +155,7 @@ public class YouBianCodeUtil {
     }
 
     /**
-     * 根据数字位数获取最大值
+     * Get the maximum value based on the number of digits
      *
      * @param length
      * @return
@@ -189,7 +175,7 @@ public class YouBianCodeUtil {
         if (StringUtils.isBlank(code)) {
             return null;
         } else {
-            //获取标准长度为numLength+1,截取的数量为code.length/numLength+1
+            //The standard length obtained is numLength+1, and the intercepted quantity is code.length/numLength+1
             int c = code.length() / (NUM_LENGTH + 1);
             String[] cutcode = new String[c];
             for (int i = 0; i < c; i++) {

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dm.service.dm.impl;
@@ -66,7 +52,7 @@ import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.mybatis.core.query.MPJLambdaWrapperX;
 
 /**
- * 主题域管理Service业务层处理
+ * Theme Domain Service - Business Layer Processing
  *
  * @author FXB
  * @date 2026-03-24
@@ -97,32 +83,32 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         if (catDO == null) {
             return 0;
         }
-        //判断是否选择了他自己
+        // Check if the parent is set to itself
         if (catDO.getId().equals(updateReqVO.getParentId())) {
-            throw new ServiceException("dm.error.parent.self", "切换上级不能选择自身作为上级类目");
+            throw new ServiceException("dm.error.parent.self", "Cannot select itself as the parent category");
         }
         if (Boolean.FALSE.equals(updateReqVO.getValidFlag())) {
             baseMapper.updateValidFlag(catDO.getCode(), updateReqVO.getValidFlag());
         } else if (Boolean.TRUE.equals(updateReqVO.getValidFlag())) {
             DmThemeDomainDO parent = baseMapper.selectById(catDO.getParentId());
             if (parent != null && Boolean.FALSE.equals(parent.getValidFlag())) {
-                throw new ServiceException("dm.error.parent.disabled", "须先启用父级");
+                throw new ServiceException("dm.error.parent.disabled", "Parent must be enabled first");
             }
         }
-        //修改上下级判断
+        // Check if the parent relationship has changed
         boolean flag = false;
         if (!catDO.getParentId().equals(updateReqVO.getParentId())) {
             updateReqVO.setCode(createCode(updateReqVO.getParentId(), null));
             flag = true;
         }
 
-        // 更新数据服务类目管理
+        // Update theme domain
         DmThemeDomainDO updateObj = BeanUtils.toBean(updateReqVO, DmThemeDomainDO.class);
         int i = baseMapper.updateById(updateObj);
 
-        //判断上下级是否发生了改变
+        // If the parent relationship has changed
         if (flag) {
-            //更改所有下级
+            // Update all child codes
             changeCodeByPid(updateObj.getId(), updateObj.getCode());
         }
         return i;
@@ -130,7 +116,7 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
 
     @Override
     public int removeDmThemeDomain(Collection<Long> idList) {
-        // 批量删除主题域管理
+        // Batch delete theme domains
         return dmThemeDomainMapper.deleteBatchIds(idList);
     }
 
@@ -157,24 +143,24 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                 .collect(Collectors.toMap(
                         DmThemeDomainDO::getId,
                         dmThemeDomainDO -> dmThemeDomainDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入主题域管理数据
+     * Import theme domain data
      *
-     * @param importExcelList 主题域管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Theme domain data list
+     * @param isUpdateSupport Whether to support update, if exists, update the data
+     * @param operName        Operation user
+     * @return Result
      */
     @Override
     public String importDmThemeDomain(List<DmThemeDomainRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dm.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dm.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -193,16 +179,16 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                             dmThemeDomainMapper.updateById(dmThemeDomainDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dm.import.update.success",
-                                    "数据更新成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。", dmThemeDomainId, "主题域管理"));
+                                    "Data update successful, theme domain record with ID " + dmThemeDomainId + ".", dmThemeDomainId, "ThemeDomain"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.fail",
-                                    "数据更新失败，ID为 " + dmThemeDomainId + " 的主题域管理记录不存在。", dmThemeDomainId, "主题域管理"));
+                                    "Data update failed, theme domain record with ID " + dmThemeDomainId + " does not exist.", dmThemeDomainId, "ThemeDomain"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, a record has no ID."));
                     }
                 } else {
                     QueryWrapper<DmThemeDomainDO> queryWrapper = new QueryWrapper<>();
@@ -212,17 +198,17 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                         dmThemeDomainMapper.insert(dmThemeDomainDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dm.import.insert.success",
-                                "数据插入成功，ID为 " + dmThemeDomainId + " 的主题域管理记录。", dmThemeDomainId, "主题域管理"));
+                                "Data insert successful, theme domain record with ID " + dmThemeDomainId + ".", dmThemeDomainId, "ThemeDomain"));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dm.import.insert.fail",
-                                "数据插入失败，ID为 " + dmThemeDomainId + " 的主题域管理记录已存在。", dmThemeDomainId, "主题域管理"));
+                                "Data insert failed, theme domain record with ID " + dmThemeDomainId + " already exists.", dmThemeDomainId, "ThemeDomain"));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dm.import.error.detail",
-                        "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                        "Data import failed, error: " + e.getMessage(), e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -231,11 +217,11 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails, failureNum, failureDetails));
+                    "Import failed! " + failureNum + " records have incorrect format, errors below:<br/>" + failureDetails, failureNum, failureDetails));
             throw new ServiceException("dm.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dm.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "All data imported successfully! Total " + successNum + " records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -257,9 +243,9 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
                 .eqIfPresent(DmThemeDomainDO::getDataLayerId, reqVO.getDataLayerId())
                 .likeIfPresent(DmThemeDomainDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DmThemeDomainDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add exact matching condition for name (name = '<name>')
                 // .likeIfPresent(DmThemeDomainDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime in descending order
                 .orderByDesc(DmThemeDomainDO::getCreateTime);
         return dmThemeDomainMapper.selectList(lambdaWrapper);
     }
@@ -268,12 +254,12 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
     public String createCode(Long parentId, String parentCode) {
         String categoryCode = null;
         /*
-         * 分成三种情况
-         * 1.数据库无数据 调用YouBianCodeUtil.getNextYouBianCode(null);
-         * 2.添加子节点，无兄弟元素 YouBianCodeUtil.getSubYouBianCode(parentCode,null);
-         * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
+         * Divided into three scenarios:
+         * 1. No data in the database, call YouBianCodeUtil.getNextYouBianCode(null);
+         * 2. Adding child node, no sibling elements, call YouBianCodeUtil.getSubYouBianCode(parentCode,null);
+         * 3. Adding child node with sibling elements, call YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
-        //找同类 确定上一个最大的code值
+        // Find siblings to determine the previous maximum code value
         LambdaQueryWrapper<DmThemeDomainDO> query = new LambdaQueryWrapper<DmThemeDomainDO>()
                 .eq(DmThemeDomainDO::getParentId, parentId)
                 .likeRight(StringUtils.isNotBlank(parentCode), DmThemeDomainDO::getCode, parentCode)
@@ -282,15 +268,15 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         List<DmThemeDomainDO> list = baseMapper.selectList(query);
         if (list == null || list.size() == 0) {
             if (parentId == 0) {
-                //情况1
+                // Scenario 1
                 categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
-                //情况2
+                // Scenario 2
                 DmThemeDomainDO parent = baseMapper.selectById(parentId);
                 categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
             }
         } else {
-            //情况3
+            // Scenario 3
             categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
         }
         return categoryCode;
@@ -313,7 +299,7 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
 
     @Override
     public List<TreeData> getTreeData(String type) {
-        //获取所有开启的数据
+        // Get all enabled data
         MPJLambdaWrapperX<DmThemeDomainDO> lambdaWrapper = new MPJLambdaWrapperX<>();
         lambdaWrapper.selectAll(DmThemeDomainDO.class)
                 .eq(DmThemeDomainDO::getValidFlag, true);
@@ -330,7 +316,7 @@ public class DmThemeDomainServiceImpl extends ServiceImpl<DmThemeDomainMapper, D
         }
         List<DmThemeDomainDO> list = baseMapper.selectList(lambdaWrapper);
 
-        //组装业务分类树
+        // Build business category tree
         Map<Long, TreeData> treeDataMap = list.stream()
                 .collect(Collectors.toMap(k -> k.getId(), v -> TreeData.builder()
                         .id(v.getId())

@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询脱敏规则列表
+// Query the list of desensitization rules
 export function listDesensitizeRules(query) {
   return request({
     url: '/dg/desensitizeRules/list',
@@ -26,7 +27,7 @@ export function listDesensitizeRules(query) {
   })
 }
 
-// 查询脱敏规则详细
+// Query the details of desensitization rules
 export function getDesensitizeRules(id) {
   return request({
     url: '/dg/desensitizeRules/' + id,
@@ -34,7 +35,7 @@ export function getDesensitizeRules(id) {
   })
 }
 
-// 新增脱敏规则
+// Add desensitization rules
 export function addDesensitizeRules(data) {
   return request({
     url: '/dg/desensitizeRules',
@@ -43,7 +44,7 @@ export function addDesensitizeRules(data) {
   })
 }
 
-// 修改脱敏规则
+// Modify desensitization rules
 export function updateDesensitizeRules(data) {
   return request({
     url: '/dg/desensitizeRules',
@@ -52,7 +53,7 @@ export function updateDesensitizeRules(data) {
   })
 }
 
-// 删除脱敏规则
+// Delete desensitization rule
 export function delDesensitizeRules(id) {
   return request({
     url: '/dg/desensitizeRules/' + id,

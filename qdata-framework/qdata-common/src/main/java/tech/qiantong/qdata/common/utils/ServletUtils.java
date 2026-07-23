@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -51,14 +37,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 客户端工具类
+ * Client tools
  *
  * @author qdata
  */
 public class ServletUtils
 {
     /**
-     * 获取String参数
+     * Get String parameters
      */
     public static String getParameter(String name)
     {
@@ -66,7 +52,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取String参数
+     * Get String parameters
      */
     public static String getParameter(String name, String defaultValue)
     {
@@ -74,7 +60,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取Integer参数
+     * Get Integer parameter
      */
     public static Integer getParameterToInt(String name)
     {
@@ -82,7 +68,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取Integer参数
+     * Get Integer parameter
      */
     public static Integer getParameterToInt(String name, Integer defaultValue)
     {
@@ -90,7 +76,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取Boolean参数
+     * Get Boolean parameters
      */
     public static Boolean getParameterToBool(String name)
     {
@@ -98,7 +84,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取Boolean参数
+     * Get Boolean parameters
      */
     public static Boolean getParameterToBool(String name, Boolean defaultValue)
     {
@@ -106,9 +92,9 @@ public class ServletUtils
     }
 
     /**
-     * 获得所有请求参数
+     * Get all request parameters
      *
-     * @param request 请求对象{@link ServletRequest}
+     * @param request request object {@link ServletRequest}
      * @return Map
      */
     public static Map<String, String[]> getParams(ServletRequest request)
@@ -118,9 +104,9 @@ public class ServletUtils
     }
 
     /**
-     * 获得所有请求参数
+     * Get all request parameters
      *
-     * @param request 请求对象{@link ServletRequest}
+     * @param request request object {@link ServletRequest}
      * @return Map
      */
     public static Map<String, String> getParamMap(ServletRequest request)
@@ -134,7 +120,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取request
+     * Get request
      */
     public static HttpServletRequest getRequest()
     {
@@ -142,7 +128,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取response
+     * Get response
      */
     public static HttpServletResponse getResponse()
     {
@@ -150,7 +136,7 @@ public class ServletUtils
     }
 
     /**
-     * 获取session
+     * Get session
      */
     public static HttpSession getSession()
     {
@@ -164,10 +150,10 @@ public class ServletUtils
     }
 
     /**
-     * 将字符串渲染到客户端
+     * Render string to client
      *
-     * @param response 渲染对象
-     * @param string 待渲染的字符串
+     * @param response rendering object
+     * @param string string to be rendered
      */
     public static void renderString(HttpServletResponse response, String string)
     {
@@ -185,7 +171,7 @@ public class ServletUtils
     }
 
     /**
-     * 是否是Ajax异步请求
+     * Is it an Ajax asynchronous request?
      *
      * @param request
      */
@@ -214,10 +200,10 @@ public class ServletUtils
     }
 
     /**
-     * 内容编码
+     * Content encoding
      *
-     * @param str 内容
-     * @return 编码后的内容
+     * @param str content
+     * @return encoded content
      */
     public static String urlEncode(String str)
     {
@@ -232,10 +218,10 @@ public class ServletUtils
     }
 
     /**
-     * 内容解码
+     * Content decoding
      *
-     * @param str 内容
-     * @return 解码后的内容
+     * @param str content
+     * @return decoded content
      */
     public static String urlDecode(String str)
     {

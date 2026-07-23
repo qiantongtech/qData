@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 采集范围Service业务层处理
+ * Collection scope Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -52,16 +52,16 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
 
     @Override
     public int updateMcTaskScope(McTaskScopeSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新采集范围
+        // Update collection range
         McTaskScopeDO updateObj = BeanUtils.toBean(updateReqVO, McTaskScopeDO.class);
         return mcTaskScopeMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskScope(Collection<Long> idList) {
-        // 批量删除采集范围
+        // Delete collection ranges in batches
         return mcTaskScopeMapper.deleteBatchIds(idList);
     }
 
@@ -82,24 +82,24 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                 .collect(Collectors.toMap(
                         McTaskScopeDO::getId,
                         mcTaskScopeDO -> mcTaskScopeDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入采集范围数据
+     * Import collection range data
      *
-     * @param importExcelList 采集范围数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList collection range data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTaskScope(List<McTaskScopeRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("mc.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("mc.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -118,16 +118,16 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                             mcTaskScopeMapper.updateById(mcTaskScopeDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("mc.import.update.success",
-                                    "数据更新成功，ID为 " + mcTaskScopeId + " 的采集范围记录。", mcTaskScopeId, "采集范围"));
+                                    "Data update successful, ID {0} {1} record.", mcTaskScopeId, MessageUtils.messageWithFallback("mc.entity.task.scope", "Collection scope")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.fail",
-                                    "数据更新失败，ID为 " + mcTaskScopeId + " 的采集范围记录不存在。", mcTaskScopeId, "采集范围"));
+                                    "Data update failed, ID {0} {1} record does not exist.", mcTaskScopeId, MessageUtils.messageWithFallback("mc.entity.task.scope", "Collection scope")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<McTaskScopeDO> queryWrapper = new QueryWrapper<>();
@@ -137,17 +137,17 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
                         mcTaskScopeMapper.insert(mcTaskScopeDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("mc.import.insert.success",
-                                "数据插入成功，ID为 " + mcTaskScopeId + " 的采集范围记录。", mcTaskScopeId, "采集范围"));
+                                "Data insert successful, ID {0} {1} record.", mcTaskScopeId, MessageUtils.messageWithFallback("mc.entity.task.scope", "Collection scope")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.insert.fail",
-                                "数据插入失败，ID为 " + mcTaskScopeId + " 的采集范围记录已存在。", mcTaskScopeId, "采集范围"));
+                                "Data insert failed, ID {0} {1} record already exists.", mcTaskScopeId, MessageUtils.messageWithFallback("mc.entity.task.scope", "Collection scope")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("mc.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -156,12 +156,12 @@ public class McTaskScopeServiceImpl extends ServiceImpl<McTaskScopeMapper, McTas
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("mc.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

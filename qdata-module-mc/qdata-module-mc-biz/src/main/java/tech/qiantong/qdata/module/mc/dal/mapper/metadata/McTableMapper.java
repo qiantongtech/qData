@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 元数据信息Mapper接口
+ * Metadata information Mapper interface
  *
  * @author qdata
  * @date 2026-02-11
@@ -26,7 +26,7 @@ import java.util.Set;
 public interface McTableMapper extends BaseMapperX<McTableDO> {
 
     default PageResult<McTableDO> selectPage(McTablePageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         boolean selfScopeWithUnassigned = BizDataScopeQueryHelper.useSelfScopeWithUnassigned(
                 reqVO.getBizScopeMode(), reqVO.getBizScopeIncludeUnassigned(), reqVO.getBusinessLeader());
         boolean deptScopeWithUnassigned = BizDataScopeQueryHelper.useDeptScopeWithUnassigned(
@@ -82,7 +82,7 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
         if (!"0".equals(reqVO.getSourceSystemId())) {
             lambdaWrapperX.likeRightIfExists("d", McDbDO::getSourceSystemId, reqVO.getSourceSystemId());
         }
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
 
@@ -107,7 +107,7 @@ public interface McTableMapper extends BaseMapperX<McTableDO> {
                                 .or()
                                 .like(McTableDO::getTableComment, reqVO.getKeyWord()))
                 .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
     default List<McTableDO> getMcTableListAsset(McTablePageReqVO reqVO){

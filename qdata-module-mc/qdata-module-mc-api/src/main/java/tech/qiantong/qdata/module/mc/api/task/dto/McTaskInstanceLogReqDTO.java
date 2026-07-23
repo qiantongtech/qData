@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 采集任务实例-日志 DTO 对象 MC_TASK_INSTANCE_LOG
+ * Collection task instance-log DTO object MC_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-12-16
@@ -15,22 +15,22 @@ public class McTaskInstanceLogReqDTO {
 
     private static final long serialVersionUID = 1L;
 
-    /** 任务实例id */
+    /** Task instance id */
     private Long taskInstanceId;
 
-    /** 时间 */
+    /** time */
     private Date time;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 日志内容 */
+    /** Log content */
     private String logContent;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
 

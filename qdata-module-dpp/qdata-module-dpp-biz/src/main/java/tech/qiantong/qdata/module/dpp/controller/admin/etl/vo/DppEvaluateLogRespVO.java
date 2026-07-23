@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
@@ -42,12 +28,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 评测规则结果 Response VO 对象 DPP_EVALUATE_LOG
+ * Evaluate Rule Result Response VO Object DPP_EVALUATE_LOG
  *
  * @author qdata
  * @date 2025-07-21
  */
-@Schema(description = "评测规则结果 Response VO")
+@Schema(description = "Evaluate Rule Result Response VO")
 @Data
 public class DppEvaluateLogRespVO implements Serializable {
 
@@ -57,97 +43,97 @@ public class DppEvaluateLogRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "表名称")
-    @Schema(description = "表名称", example = "")
+    @Excel(name = "Table Name")
+    @Schema(description = "Table Name", example = "")
     private String tableName;
     private Long datasourceId;
 
-    @Excel(name = "字段名")
-    @Schema(description = "字段名", example = "")
+    @Excel(name = "Column Name")
+    @Schema(description = "Column Name", example = "")
     private String columnName;
 
-    @Excel(name = "稽查规则编号")
-    @Schema(description = "稽查规则编号", example = "")
+    @Excel(name = "Audit Rule Code")
+    @Schema(description = "Audit Rule Code", example = "")
     private String ruleCode;
 
-    @Excel(name = "稽查规则名称")
-    @Schema(description = "稽查规则名称", example = "")
+    @Excel(name = "Audit Rule Name")
+    @Schema(description = "Audit Rule Name", example = "")
     private String ruleName;
 
-    @Excel(name = "质量维度")
-    @Schema(description = "质量维度", example = "")
+    @Excel(name = "Quality Dimension")
+    @Schema(description = "Quality Dimension", example = "")
     private String dimensionType;
 
-    @Excel(name = "规则描述")
-    @Schema(description = "规则描述", example = "")
+    @Excel(name = "Rule Description")
+    @Schema(description = "Rule Description", example = "")
     private String ruleDescription;
 
-    @Excel(name = "数据质量记录id")
-    @Schema(description = "数据质量记录id", example = "")
+    @Excel(name = "Data Quality Record ID")
+    @Schema(description = "Data Quality Record ID", example = "")
     private String taskLogId;
 
-    @Excel(name = "评测id")
-    @Schema(description = "评测id", example = "")
+    @Excel(name = "Evaluate ID")
+    @Schema(description = "Evaluate ID", example = "")
     private String evaluateId;
 
-    @Excel(name = "总数")
-    @Schema(description = "总数", example = "")
+    @Excel(name = "Total")
+    @Schema(description = "Total", example = "")
     private Long total;
 
-    @Excel(name = "问题总数")
-    @Schema(description = "问题总数", example = "")
+    @Excel(name = "Problem Total")
+    @Schema(description = "Problem Total", example = "")
     private Long problemTotal;
 
-    @Excel(name = "核查时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Check Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "核查时间", example = "")
+    @Schema(description = "Check Time", example = "")
     private Date checkDate;
 
-    @Excel(name = "是否有效")
-    @Schema(description = "是否有效", example = "")
+    @Excel(name = "Valid")
+    @Schema(description = "Valid", example = "")
     private Boolean validFlag;
 
-    @Excel(name = "删除标志")
-    @Schema(description = "删除标志", example = "")
+    @Excel(name = "Delete Flag")
+    @Schema(description = "Delete Flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Create Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Schema(description = "Create Time", example = "")
     private Date createTime;
 
-    @Excel(name = "更新人")
-    @Schema(description = "更新人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "更新人id")
-    @Schema(description = "更新人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "Update Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "更新时间", example = "")
+    @Schema(description = "Update Time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remark;
 
-    @Excel(name = "不同规则的自定义,JSON形式")
-    @Schema(description = "不同规则的自定义,JSON形式", example = "")
+    @Excel(name = "Rule Custom Config, JSON Format")
+    @Schema(description = "Rule Custom Config, JSON Format", example = "")
     private String rule;
-    // 占比
+    // Proportion
     private BigDecimal proportion;
 
-    /** 数据源名称 */
+    /** Data Source Name */
     private String datasourceType;
     private String datasourceName;
 

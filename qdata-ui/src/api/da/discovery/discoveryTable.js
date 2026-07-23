@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据发现库信息列表
+// Query the data discovery library information list
 export function listDaDiscoveryTable(query) {
   return request({
     url: '/da/discoveryTable/list',
@@ -26,7 +27,7 @@ export function listDaDiscoveryTable(query) {
   })
 }
 
-// 查询数据发现库信息列表
+// Query the data discovery library information list
 export function getDaDiscoveryTableList(query) {
   return request({
     url: '/da/discoveryTable/getDaDiscoveryTableList',
@@ -35,7 +36,7 @@ export function getDaDiscoveryTableList(query) {
   })
 }
 
-// 查询数据发现库信息详细
+// Query data discovery database information details
 export function getDaDiscoveryTable(id) {
   return request({
     url: '/da/discoveryTable/' + id,
@@ -43,7 +44,7 @@ export function getDaDiscoveryTable(id) {
   })
 }
 
-// 新增数据发现库信息
+// Add new data discovery library information
 export function addDaDiscoveryTable(data) {
   return request({
     url: '/da/discoveryTable',
@@ -51,7 +52,7 @@ export function addDaDiscoveryTable(data) {
     data: data
   })
 }
-// 新增数据发现库信息
+// Add new data discovery library information
 export function commitOrRevokeDiscoveryInfo(data) {
   return request({
     url: '/da/discoveryTable/commitOrRevokeDiscoveryInfo',
@@ -60,7 +61,7 @@ export function commitOrRevokeDiscoveryInfo(data) {
   })
 }
 
-// 修改数据发现库信息
+// Modify data discovery library information
 export function updateDaDiscoveryTable(data) {
   return request({
     url: '/da/discoveryTable',
@@ -69,14 +70,14 @@ export function updateDaDiscoveryTable(data) {
   })
 }
 
-// 删除数据发现库信息
+// Delete data discovery library information
 export function delDaDiscoveryTable(id) {
   return request({
     url: '/da/discoveryTable/' + id,
     method: 'delete'
   })
 }
-// 表字段
+// table fields
 export function getDaDiscoveryColumnList(params) {
   return request({
     url: '/da/discoveryColumn/getDaDiscoveryColumnList',

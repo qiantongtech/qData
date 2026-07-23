@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 class WebSocketService {
@@ -25,39 +26,39 @@ class WebSocketService {
     init() {
         if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
             console.warn('WebSocket already initialized.');
-            return;  // 如果连接已经初始化并且没有关闭，就不需要再初始化
+            return;  // If the connection has been initialized and not closed, there is no need to initialize it again.
         }
 
-        // 创建 WebSocket 连接
+        // Create a WebSocket connection
         const wsUri = import.meta.env.VITE_APP_WEBSOCKET_API + `/websocket/message/${this.userId}`
-        // 建立socket连接
+        // Establish socket connection
         this.socket = new WebSocket(wsUri);
 
-        // 连接打开时发送认证信息
+        // Send authentication information when the connection is opened
         this.socket.onopen = () => {
             console.log('WebSocket connection opened');
             this.socket.send(JSON.stringify({ type: 'authenticate', token: this.token }));
         };
 
-        // 监听消息
+        // Listen for messages
         this.socket.onmessage = (event) => {
             console.log('---------------Received message:', event.data);
         };
 
-        // 连接出错时的处理
+        // Handling when connection errors occur
         this.socket.onerror = (error) => {
             console.error('WebSocket error:', error);
         };
 
-        // 连接关闭时的处理
+        // Handling when connection is closed
         this.socket.onclose = () => {
             console.log('WebSocket connection closed');
         };
     }
 
     sendMessage(message) {
-        console.log('-----------WebSocket 发送消息----------', message);
-        // 确保连接已建立
+        console.log("-----------WebSocket message sent----------", message);
+        // Make sure the connection is established
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
             this.socket.send(JSON.stringify({ type: 'message', content: message }));
         } else {
@@ -67,10 +68,10 @@ class WebSocketService {
     }
 
     reconnect() {
-        // 尝试重新连接 WebSocket
+        // Try reconnecting WebSocket
         console.log('Attempting to reconnect WebSocket...');
         if (this.socket && this.socket.readyState === WebSocket.CLOSED) {
-            this.init(); // 重新初始化 WebSocket 连接
+            this.init(); // Reinitialize WebSocket connection
         }
     }
 

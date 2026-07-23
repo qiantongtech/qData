@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.service.quality.impl;
@@ -41,6 +27,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import tech.qiantong.qdata.common.httpClient.HttpTaskLogger;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.quality.controller.qa.vo.DppEvaluateLogSaveReqVO;
 import tech.qiantong.qdata.quality.dal.dataobject.datasource.DaDatasourceDO;
 import tech.qiantong.qdata.quality.dal.dataobject.quality.CheckErrorData;
@@ -91,20 +78,20 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
     public QualityCheckResult call() {
         try {
             DppEvaluateLogSaveReqVO createReqVO = new DppEvaluateLogSaveReqVO(rule);
-            logger.log("质量任务-开始执行规则，规则ID：" + rule.getId() + "，规则类型：" + rule.getRuleType());
-            // 1. 生成 SQL 脚本（策略模式）
-            logger.log("质量任务-获取 SQL 生成器并生成 SQL 脚本。");
+            logger.log(MessageUtils.messageEn("quality.log.rule.exec.start", rule.getId(), rule.getRuleType()));
+            // 1. Generate SQL script (strategy mode)
+            logger.log(MessageUtils.messageEn("quality.log.sql.generating"));
             QualitySqlGenerator generator = sqlFactory.getGenerator(rule.getRuleType());
             String checkSql = generator.generateSql(rule);
             String errorSql = generator.generateErrorSql(rule);
-            logger.log("质量任务-SQL 生成完成，CheckSQL：" + checkSql + "，ErrorSQL：" + errorSql);
+            logger.log(MessageUtils.messageEn("quality.log.sql.generated", checkSql, errorSql));
 
-            // 2. 执行 SQL
+            // 2. Execute SQL
             try (Connection conn = getConn(rule,dbQuery).getConnection();
                  Statement stmt = conn.createStatement()) {
 
-                logger.log("质量任务-开始执行校验 SQL。");
-                // 查询异常数 & 总数
+                logger.log(MessageUtils.messageEn("quality.log.sql.executing"));
+                // Query the number of exceptions & total number
                 int errorCount = 0;
                 int totalCount = 0;
                 try (ResultSet rs = stmt.executeQuery(checkSql)) {
@@ -115,9 +102,9 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                         errorCount = ((Number) rs.getObject("errorCount")).intValue();
                     }
                 }
-                logger.log("质量任务-校验 SQL 执行完成，异常数：" + errorCount + "，总数：" + totalCount);
-                // 查询异常明细
-                logger.log("质量任务-开始查询错误明细数据。");
+                logger.log(MessageUtils.messageEn("quality.log.sql.executed", errorCount, totalCount));
+                // Query exception details
+                logger.log(MessageUtils.messageEn("quality.log.error.query"));
                 List<JSONObject> errorList = new ArrayList<>();
                 try (ResultSet rs = stmt.executeQuery(errorSql)) {
                     while (rs.next()) {
@@ -129,14 +116,14 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                     }
                 }
 
-                logger.log("质量任务-错误明细数据查询完成，共：" + errorList.size() + " 条。");
+                logger.log(MessageUtils.messageEn("quality.log.error.count", errorList.size()));
 
                 createReqVO.setTotal((long)totalCount);
                 createReqVO.setProblemTotal((long)errorCount);
                 Long dppEvaluateLog = iDppEvaluateLogService.createDppEvaluateLog(createReqVO);
 
-                // 保存 Mongo 错误
-                logger.log("质量任务-开始写入错误数据至 MongoDB。");
+                // Save Mongo errors
+                logger.log(MessageUtils.messageEn("quality.log.mongo.writing"));
                 for (JSONObject obj : errorList) {
                     CheckErrorData doc = CheckErrorData.builder()
                             .reportId(String.valueOf(dppEvaluateLog))
@@ -153,13 +140,13 @@ public class RuleExecutorTask implements Callable<QualityCheckResult> {
                             .build();
                     MongoUtil.safeSave(mongoTemplate, doc, "quality_error_data");
                 }
-                logger.log("质量任务-MongoDB 写入完成。");
-                // 构建返回
-                logger.log("质量任务-规则执行完成，构建结果对象返回。");
+                logger.log(MessageUtils.messageEn("quality.log.mongo.done"));
+                // Build returns
+                logger.log(MessageUtils.messageEn("quality.log.result.build"));
                 return new QualityCheckResult(rule.getId(), batch, errorCount, totalCount);
             }
         } catch (Exception e) {
-            logger.log("质量任务-规则执行异常，规则ID：" + rule.getId() + "，错误信息：" + e.getMessage());
+            logger.log(MessageUtils.messageEn("quality.log.rule.exception", rule.getId(), e.getMessage()));
             e.printStackTrace();
             return new QualityCheckResult(rule.getId(), batch, e.getMessage());
         }

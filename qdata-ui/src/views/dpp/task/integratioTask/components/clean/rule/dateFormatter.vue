@@ -1,34 +1,35 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
-<!-- 日期格式统一 -->
+<!-- Date format normalization -->
 <template>
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
         <el-form-item
-          :label="td('dpp.cleanRule.dateFormat', '日期格式')"
+          :label="td('dpp.cleanRule.dateFormat', 'Date Format')"
           prop="selectedOption"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.selectDateFormat', '请选择日期格式'),
+                    message: td('dpp.cleanRule.selectDateFormat', 'Please select date format'),
                     trigger: 'change',
                   },
                 ]
@@ -38,7 +39,7 @@
           <template v-if="!falg">
             <el-select
               v-model="form.selectedOption"
-              :placeholder="td('dpp.cleanRule.selectDateFormat', '请选择日期格式')"
+              :placeholder="td('dpp.cleanRule.selectDateFormat', 'Please select date format')"
               class="rule-half"
             >
               <el-option label="yyyy" value="yyyy" />
@@ -58,14 +59,14 @@
     <el-row>
       <el-col :span="12" v-if="form.selectedOption == '1'">
         <el-form-item
-          :label="td('dpp.cleanRule.dateFormat', '日期格式')"
+          :label="td('dpp.cleanRule.dateFormat', 'Date Format')"
           prop="targetFormat"
           :rules="
             !falg
               ? [
                   {
                     required: true,
-                    message: td('dpp.cleanRule.inputDateFormat', '请输入日期格式，例如：YY-MM-DD'),
+                    message: td('dpp.cleanRule.inputDateFormat', 'Please enter date format, e.g.: YY-MM-DD'),
                     trigger: 'blur',
                   },
                 ]
@@ -75,7 +76,7 @@
           <el-input
             v-if="!falg"
             v-model="form.targetFormat"
-            :placeholder="td('dpp.cleanRule.inputDateFormat', '请输入日期格式，例如：YY-MM-DD')"
+            :placeholder="td('dpp.cleanRule.inputDateFormat', 'Please enter date format, e.g.: YY-MM-DD')"
             class="rule-half"
           />
           <div v-else class="form-readonly">{{ form.targetFormat || "-" }}</div>
@@ -100,14 +101,14 @@ const emit = defineEmits(["update:form"]);
 
 const formRef = ref(null);
 
-// 初始化 selectedOption
+// Initialize selectedOption
 // const getInitialSelectedOption = (targetFormat) => {
 //   if (!targetFormat) return "yyyy-MM-dd";
-//   // 判断是否为预设值
+//   // Determine whether it is the default value
 //   if (targetFormat === "yyyy-MM-dd" || targetFormat === "YYYY-MM-DD HH:mm:ss") {
 //     return targetFormat;
 //   }
-//   // 否则为自定义值，选择配置模板
+//   // Otherwise, it is a custom value, select the configuration template
 //   return "1";
 // };
 
@@ -115,7 +116,7 @@ const form = reactive({
   ...props.form,
 });
 const selectedOptionText = computed(() => {
-  if (form.selectedOption === "1") return td('dpp.cleanRule.custom', '自定义');
+  if (form.selectedOption === "1") return td('dpp.cleanRule.custom', 'Custom');
   return form.selectedOption || "-";
 });
 
@@ -123,10 +124,10 @@ watch(
   () => form.selectedOption,
   (newVal, oldVal) => {
     if (newVal === "1" && oldVal !== "1") {
-      // 从预设值切换到配置模板时，清空 targetFormat，让用户输入自定义格式
+      // When switching from the default value to the configuration template, clear the targetFormat to allow the user to enter a custom format
       form.targetFormat = "";
     } else if (newVal !== "1") {
-      // 选择预设值时，targetFormat 设置为选中的值
+      // When selecting a preset, targetFormat is set to the selected value
       form.targetFormat = newVal;
     }
   }

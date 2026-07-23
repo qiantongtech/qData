@@ -1,43 +1,31 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.utils.datax;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.utils.MD5Util;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 
 import java.util.*;
 
@@ -46,46 +34,46 @@ public class FlinkxJson {
 
     public static String buildJobJsonMasterdata(Map<String, Object> taskParams) {
 
-        // 创建最外层的 jobJson Map
+        // Create outermost jobJson Map
         Map<String, Object> jobJson = new HashMap<>();
 
-        // 设置 job 相关的 setting 配置
+        // Set job-related setting config
         Map<String, Object> setting = new HashMap<>();
 
-        // speed 配置，默认值已直接赋予
+        // Speed config, default values assigned directly
         Map<String, Object> speed = new HashMap<>();
-        speed.put("channel", 1);  // 默认值
-        speed.put("bytes", 0);    // 默认值
+        speed.put("channel", 1);  // Default value
+        speed.put("bytes", 0);    // Default value
         setting.put("speed", speed);
 
-        // errorLimit 配置，默认值已直接赋予
+        // ErrorLimit config, default values assigned directly
         Map<String, Object> errorLimit = new HashMap<>();
-        errorLimit.put("record", 999999999);  // 默认值
+        errorLimit.put("record", 999999999);  // Default value
         setting.put("errorLimit", errorLimit);
 
-        // restore 配置，默认值已直接赋予
+        // Restore config, default values assigned directly
         Map<String, Object> restore = new HashMap<>();
-        restore.put("maxRowNumForCheckpoint", 0);   // 默认值
-        restore.put("isRestore", false);            // 默认值
-        restore.put("restoreColumnName", "");       // 默认值
-        restore.put("restoreColumnIndex", 0);       // 默认值
+        restore.put("maxRowNumForCheckpoint", 0);   // Default value
+        restore.put("isRestore", false);            // Default value
+        restore.put("restoreColumnName", "");       // Default value
+        restore.put("restoreColumnIndex", 0);       // Default value
         setting.put("restore", restore);
 
-        // log 配置，默认值已直接赋予
+        // Log config, default values assigned directly
         Map<String, Object> log = new HashMap<>();
-        log.put("isLogger", false);  // 默认值
-        log.put("level", "debug");   // 默认值
-        log.put("path", "");         // 默认值
-        log.put("pattern", "");      // 默认值
+        log.put("isLogger", false);  // Default value
+        log.put("level", "debug");   // Default value
+        log.put("path", "");         // Default value
+        log.put("pattern", "");      // Default value
         setting.put("log", log);
 
         jobJson.put("setting", setting);
 
 
-        //取出数据源链接
-        // 输出readerDatasource
+        //Extract datasource connection
+        // Output readerDatasource
         Map<String, Object> readerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "readerDatasource");
-        //输入writerDatasource
+        //Input writerDatasource
         Map<String, Object> writerDatasource = (Map<String, Object>) MapUtils.getObject(taskParams, "writerDatasource");
 
         DbQueryProperty readerProperty = MD5Util.buildJobDatasource(readerDatasource);
@@ -100,8 +88,8 @@ public class FlinkxJson {
         String target_table_name = MapUtils.getString(taskParams, "target_table_name", "");
         Object columns = MapUtils.getObject(taskParams, "columns");
         Object target_columns = MapUtils.getObject(taskParams, "target_columns");
-        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");//主键
-        //节点类型 1:输入节点 2:输出节点
+        Object writeKeySet = MapUtils.getObject(taskParams, "selectedColumns");//Primary key
+        //Node type: 1=input node, 2=output node
         String type = MapUtils.getString(taskParams, "type", "");
         String writeModeType = MapUtils.getString(taskParams, "writeModeType", "");
         if (StringUtils.equals("1", type)) {
@@ -109,17 +97,17 @@ public class FlinkxJson {
         }
         if (StringUtils.equals("2", type)) {
             writeMode = readerProperty.trainToJdbcWriteMode(writeKeySet, writeModeType,writerProperty.getDbType());
-            //当写入是全量时，则输入前置删除sql
+            //When write mode is full, prepend delete SQL
             if (StringUtils.equals("1", writeModeType)) {
                 preSql = readerProperty.trainToJdbcTruncateTable(writerProperty.getDbNameTableName(target_table_name));
             }
         }
 
-        // 创建 job 相关的 content 配置
+        // Create job-related content config
         List<Map<String, Object>> content = new ArrayList<>();
         Map<String, Object> contentItem = new HashMap<>();
 
-        // reader 配置
+        // Reader config
         Map<String, Object> reader = new HashMap<>();
         reader.put("name", readerProperty.trainToJdbcReaderName());
         Map<String, Object> readerParameter = new HashMap<>();
@@ -136,13 +124,13 @@ public class FlinkxJson {
         readerParameter.put("connection", readerConnection);
         reader.put("parameter", readerParameter);
 
-        // writer 配置
+        // Writer config
         Map<String, Object> writer = new HashMap<>();
         writer.put("name", writerProperty.trainToJdbcWriterName());
         Map<String, Object> writerParameter = new HashMap<>();
         writerParameter.put("username", writerProperty.getUsername());
         writerParameter.put("password", writerProperty.getPassword());
-        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // 默认1024
+        writerParameter.put("batchSize", taskParams.getOrDefault("batchSize", 1024)); // Default 1024
         //
         writerParameter.put("writeMode", writeMode);
         writerParameter.put("column", target_columns);
@@ -160,7 +148,7 @@ public class FlinkxJson {
         writerParameter.put("connection", writerConnection);
         writer.put("parameter", writerParameter);
 
-        // 将 reader 和 writer 添加到 content 中
+        // Add reader and writer to content
         contentItem.put("reader", reader);
         contentItem.put("writer", writer);
         content.add(contentItem);
@@ -168,7 +156,42 @@ public class FlinkxJson {
         jobJson.put("content", content);
         Map<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("job", jobJson);
-        // 转换为 JSON 字符串并返回
+        // Convert to JSON string and return
         return JSON.toJSONString(objectObjectHashMap);
+    }
+
+    /**
+     * Finds a node of the specified component type in the node list.
+     * The initial local DataX implementation supports only database input and output, so lookup uses component type only.
+     */
+    public static DppEtlNodeRespVO findLocalDataXNode(List<DppEtlNodeRespVO> nodeList, String componentType) {
+        List<DppEtlNodeRespVO> matchedNodes = findLocalDataXNode(nodeList, Collections.singletonList(componentType));
+        return CollectionUtils.isEmpty(matchedNodes) ? null : matchedNodes.get(0);
+    }
+
+    /**
+     * 从节点列表里找到任一指定组件类型的节点。
+     *
+     * @param nodeList       待查询的节点列表
+     * @param componentTypes 允许匹配的组件类型列表
+     * @return 按节点顺序返回所有匹配节点；没有匹配节点时返回空列表
+     */
+    public static List<DppEtlNodeRespVO> findLocalDataXNode(List<DppEtlNodeRespVO> nodeList,
+                                                            Collection<String> componentTypes) {
+        List<DppEtlNodeRespVO> matchedNodes = new ArrayList<>();
+        if (CollectionUtils.isEmpty(nodeList) || CollectionUtils.isEmpty(componentTypes)) {
+            return matchedNodes;
+        }
+        for (DppEtlNodeRespVO node : nodeList) {
+            // Skip null nodes to prevent invalid data from causing a null pointer exception.
+            if (node == null) {
+                continue;
+            }
+            if (componentTypes.stream()
+                    .anyMatch(componentType -> StringUtils.equals(componentType, node.getComponentType()))) {
+                matchedNodes.add(node);
+            }
+        }
+        return matchedNodes;
     }
 }

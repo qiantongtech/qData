@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -98,7 +99,7 @@
                             " v-hasPermi="['dp:qualityLog:edit']">{{ td('common.button.details') }}</el-button>
                         <!-- <el-button link type="primary" style="padding-left: 14px" @click="sendMessage(scope.row)"
                             v-hasPermi="['dp:qualityLog:edit']" :disabled="scope.row.status == 1">
-                            <svg-icon iconClass="damessage" style="margin-right: 6px;" />通知处理
+                            <svg-icon iconClass="damessage" style="margin-right: 6px;" />Notification Handling
                         </el-button> -->
                     </template>
                 </el-table-column>
@@ -131,7 +132,7 @@ const { quality_log_success_flag } = proxy.useDict(
     'quality_log_success_flag'
 );
 const DppQualityLogList = ref([]);
-// 列显隐信息
+// Column visibility information
 const columns = ref([
     { key: 0, label: td('da.qualityTaskLog.columnLabels.id'), visible: true },
     { key: 1, label: td('da.qualityTaskLog.columnLabels.taskName'), visible: true },
@@ -169,14 +170,14 @@ const data = reactive({
 
 const { queryParams, } = toRefs(data);
 
-/** 排序触发事件 */
+/** Sort trigger event */
 function handleSortChange({ column, prop, order }) {
     queryParams.value.orderByColumn = column?.columnKey || prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
 
-/** 查询数据质量日志列表 */
+/** Query data quality log list */
 function getList() {
     loading.value = true;
     listDppQualityLog(queryParams.value).then(response => {
@@ -185,12 +186,12 @@ function getList() {
         loading.value = false;
     });
 }
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
     proxy.resetForm("queryRef");
     handleQuery();

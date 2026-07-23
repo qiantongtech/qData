@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 采集任务实例-日志 Response VO 对象 MC_TASK_INSTANCE_LOG
+ * Collection task instance-log Response VO object MC_TASK_INSTANCE_LOG
  *
  * @author qdata
  * @date 2025-12-16

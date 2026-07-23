@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 采集任务实例 创建/修改 Request VO MC_TASK_INSTANCE
+ * Collection task instance Create/modify Request VO MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16

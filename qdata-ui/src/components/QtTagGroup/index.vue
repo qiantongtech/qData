@@ -1,22 +1,23 @@
 <!--
-  Copyright (c) 2026 Jiangsu Qiantong Technology Co., Ltd.
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
 
-  QtTagGroup 组件说明:
-  用于展示标签组，支持自动折叠和 Tooltip 显示全部内容。
-  常用于展示数据源列表、标签列表等。
+  QtTagGroup Component Notes:
+  This component is used to display tag groups. It supports automatic
+  collapsing and shows the full content in a tooltip.
+  It is commonly used for data source lists, tag lists, and similar cases.
 
-  使用示例:
-  1. 基础用法 (字符串数组):
-     <QtTagGroup :items="['标签1', '标签2', '标签3']" />
+  Usage Examples:
+  1. Basic usage (string array):
+     <QtTagGroup :items="['tag1', 'tag2', 'tag3']" />
 
-  2. 对象数组 (自动映射字段):
-     字段映射: label/DATASOURCE_NAME/name, datasourceType/DATASOURCE_TYPE/type
+  2. Object array (auto-mapped fields):
+     Field mapping: label/DATASOURCE_NAME/name, datasourceType/DATASOURCE_TYPE/type
      <QtTagGroup :items="[{ name: 'MySQL', type: 'MYSQL' }, { name: 'Oracle', type: 'ORACLE' }]" />
 
-  3. 自定义最大显示数量:
+  3. Custom maximum display count:
      <QtTagGroup :items="items" :max-count="3" />
 
-  4. 强制数据源样式:
+  4. Force data source style:
      <QtTagGroup :items="['MySQL', 'Oracle']" is-datasource />
 -->
 
@@ -91,37 +92,37 @@ import {
 } from "vue";
 
 const props = defineProps({
-  /** 标签数据数组 (可以是字符串数组 or 对象数组) */
+  /** Tag data array (can be a string array or object array) */
   items: { type: Array, default: () => [] },
-  /** 最大显示数量 (仅在 type 为 'none' 时生效) */
+  /** Maximum display quantity (only takes effect when type is 'none') */
   maxCount: { type: Number, default: 2 },
   /**
-   * 展示类型:
-   * - 'none': 使用 maxCount 逻辑
-   * - 'single': 自动展示一行
-   * - 'double': 自动展示两行
+   * Display type:
+   * - 'none': use maxCount logic
+   * - 'single': automatically display one line
+   * - 'double': automatically display two lines
    */
   type: { type: String, default: "single" },
-  /** 是否强制为数据源模式 */
+  /** Whether to force data source mode */
   isDatasource: { type: Boolean, default: false },
-  /** 标签尺寸: large / default / small */
+  /** Label size: large / default / small */
   size: { type: String, default: "default" },
 });
 
 const containerRef = ref(null);
 const visibleCount = ref(props.items.length);
 
-// 判断整个组是否为数据源模式
+// Determine whether the entire group is in data source mode
 const isDatasourceGroup = computed(() => {
   if (props.isDatasource) return true;
-  // 如果 items 中有任何一项包含数据源特有字段，则视为数据源组
+  // If any item in items contains a data source-specific field, it is considered a data source group
   return props.items.some(
     (item) =>
       typeof item === "object" && (item.datasourceType || item.DATASOURCE_TYPE)
   );
 });
 
-// 计算实际显示的项
+// Calculate the actual displayed items
 const displayItems = computed(() => {
   const items =
     props.type === "none"
@@ -131,7 +132,7 @@ const displayItems = computed(() => {
   return items.map((item) => getItemProps(item));
 });
 
-// 计算未显示的项数量
+// Count the number of items not shown
 const overflow = computed(() => {
   if (props.type === "none") {
     return Math.max(0, props.items.length - props.maxCount);
@@ -139,10 +140,10 @@ const overflow = computed(() => {
   return Math.max(0, props.items.length - visibleCount.value);
 });
 
-// 容器样式，用于控制行数
+// Container style, used to control the number of rows
 const containerStyle = computed(() => {
   if (props.type === "none") return {};
-  // 增加估算行高，确保不会因为微小的像素差异导致裁剪
+  // Increase estimated row height to ensure small pixel differences don't cause clipping
   const rowHeight = props.size === "small" ? 32 : 44;
   const maxRows = props.type === "double" ? 2 : 1;
   return {
@@ -152,12 +153,12 @@ const containerStyle = computed(() => {
 });
 
 /**
- * 计算自动折叠下的可见数量
+ * Calculate visible quantity under auto-collapse
  */
 const calculateVisibleCount = () => {
   if (props.type === "none" || !containerRef.value) return;
 
-  // 1. 先展示所有项以便测量（在隐藏状态下测量 offsetTop）
+  // 1. Display all items first for measurement (measure offsetTop in hidden state)
   visibleCount.value = props.items.length;
 
   nextTick(() => {
@@ -169,16 +170,16 @@ const calculateVisibleCount = () => {
     const firstTop = tags[0].offsetTop;
     const maxRows = props.type === "double" ? 2 : 1;
 
-    // 动态获取第一个标签的高度作为行高基准
+    // Dynamically obtain the height of the first label as the row height base
     const itemHeight = tags[0].offsetHeight;
     const gap = 6;
     const lineHeight = itemHeight + gap;
-    // 阈值：第一行 top + (行高 * 行数) - 缓冲
+    // Threshold: first line top + (line height * number of lines) - buffer
     const threshold = firstTop + lineHeight * maxRows - 2;
 
     let count = 0;
     for (let i = 0; i < tags.length; i++) {
-      // 检查标签的底部是否超出了阈值
+      // Check if bottom of label exceeds threshold
       if (tags[i].offsetTop + tags[i].offsetHeight <= threshold) {
         count++;
       } else {
@@ -186,9 +187,9 @@ const calculateVisibleCount = () => {
       }
     }
 
-    // 如果有溢出，需要留出空间给 "+N" 标签
+    // If there is overflow, space needs to be left for the "+N" tag
     if (count < props.items.length) {
-      // 预留一个位置给 "+N"，但至少保留一个标签
+      // Reserve a spot for "+N", but keep at least one label
       visibleCount.value = Math.max(1, count - 1);
     } else {
       visibleCount.value = count;
@@ -243,8 +244,8 @@ watch(
 );
 
 /**
- * 转换项属性
- * 支持多种字段格式: DATASOURCE_NAME, label, name, DATASOURCE_TYPE, datasourceType, type 等
+ * Conversion item properties
+ * Supports multiple field formats: DATASOURCE_NAME, label, name, DATASOURCE_TYPE, datasourceType, type, etc.
  */
 const getItemProps = (item) => {
   if (typeof item === "string") {
@@ -255,7 +256,7 @@ const getItemProps = (item) => {
     ...item,
     label,
     value: item.value || label,
-    // 如果是数据源模式且没有指定类型，默认使用 primary (对齐 DictTag 的蓝色标签)
+    // If it is data source mode and no type is specified, primary is used by default (aligned with the blue label of DictTag)
     elTagType:
       item.elTagType ||
       item.tagType ||

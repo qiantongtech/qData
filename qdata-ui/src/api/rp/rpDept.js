@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询服务资源门户部门列表
+// Query Service Resource Portal Department List
 export function listRpDept(query) {
   return request({
     url: '/rp/rpDept/list',
@@ -26,7 +27,7 @@ export function listRpDept(query) {
   })
 }
 
-// 查询服务资源门户部门列表
+// Query Service Resource Portal Department List
 export function listRpDeptList(query) {
   return request({
     url: '/rp/rpDept/deptList',
@@ -35,7 +36,7 @@ export function listRpDeptList(query) {
   })
 }
 
-// 查询服务资源门户部门详细
+// Query service resource portal department details
 export function getRpDept(deptId) {
   return request({
     url: '/rp/rpDept/' + deptId,
@@ -43,7 +44,7 @@ export function getRpDept(deptId) {
   })
 }
 
-// 新增服务资源门户部门
+// Added new service resource portal department
 export function addRpDept(data) {
   return request({
     url: '/rp/rpDept',
@@ -52,7 +53,7 @@ export function addRpDept(data) {
   })
 }
 
-// 修改服务资源门户部门
+// Modify Service Resource Portal Department
 export function updateRpDept(data) {
   return request({
     url: '/rp/rpDept',
@@ -61,7 +62,7 @@ export function updateRpDept(data) {
   })
 }
 
-// 删除服务资源门户部门
+// Delete Service Resource Portal Department
 export function delRpDept(deptId) {
   return request({
     url: '/rp/rpDept/' + deptId,

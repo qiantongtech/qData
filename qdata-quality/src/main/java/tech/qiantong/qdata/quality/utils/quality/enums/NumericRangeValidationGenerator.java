@@ -6,7 +6,7 @@ import tech.qiantong.qdata.quality.utils.quality.QualitySqlGenerator;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentItem;
 import tech.qiantong.qdata.quality.utils.qualityDB.ComponentRegistry;
 
-// 数值字段范围校验
+// Numeric field range check
 @Component("NUMERIC_RANGE_VALIDATION")
 public class NumericRangeValidationGenerator implements QualitySqlGenerator {
     @Override

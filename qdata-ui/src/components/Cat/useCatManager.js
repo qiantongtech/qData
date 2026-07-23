@@ -90,7 +90,7 @@ export default function useCatManager({
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = td('components.catEditDialog.addTitle', '', { nameLabel });
+    title.value = td('components.catEditDialog.addTitle', 'Add {nameLabel}', { nameLabel });
   }
 
   async function handleUpdate(row) {
@@ -118,7 +118,7 @@ export default function useCatManager({
       delete res.data.updateTime;
       form.value = res.data;
       open.value = true;
-      title.value = td('components.catEditDialog.modifyTitle', '', { nameLabel });
+      title.value = td('components.catEditDialog.modifyTitle', 'Edit {nameLabel}', { nameLabel });
     });
   }
 
@@ -208,4 +208,3 @@ export default function useCatManager({
     reset,
   };
 }
-

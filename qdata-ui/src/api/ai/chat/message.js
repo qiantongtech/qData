@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/requestAi.js';
@@ -20,9 +21,9 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { getToken } from '@/utils/auth';
 // import { data } from 'vis-network';
 
-// AI chat 聊天
+// AI chat chat
 export const ChatMessageApi = {
-    // 消息列表
+    // Message list
     getChatMessageListByConversationId: (conversationId) => {
         return request({
             url: `/chat/message/list-by-conversation-id?conversationId=${conversationId}`
@@ -36,7 +37,7 @@ export const ChatMessageApi = {
         });
     },
 
-    // 导出明细列表
+    // Export detailed list
     exportDetailData: (params) => {
         return request({
             url: `/chat/message/exportDetailData`,
@@ -46,8 +47,8 @@ export const ChatMessageApi = {
         });
     },
 
-    // 发送 Stream 消息
-    // 为什么不用 axios 呢？因为它不支持 SSE 调用
+    // Send Stream message
+    // Why not use axios? Because it does not support SSE calls
     sendChatMessageStream: async (
         conversationId,
         content,
@@ -88,7 +89,7 @@ export const ChatMessageApi = {
             signal: ctrl.signal
         });
     },
-    // 删除消息
+    // Delete message
     deleteChatMessage: (id) => {
         return request({
             url: `/chat/message/` + id,
@@ -96,7 +97,7 @@ export const ChatMessageApi = {
         });
     },
 
-    // 删除指定对话的消息
+    // Delete messages from a specified conversation
     deleteByConversationId: (conversationId) => {
         return request({
             url: `/chat/message/deleteByConversationId?conversationId=${conversationId}`,
@@ -104,7 +105,7 @@ export const ChatMessageApi = {
         });
     }
 };
-// 查询模型管理详细
+// Query model management details
 export function getModelLists() {
   return request({
     url: '/model/list' ,

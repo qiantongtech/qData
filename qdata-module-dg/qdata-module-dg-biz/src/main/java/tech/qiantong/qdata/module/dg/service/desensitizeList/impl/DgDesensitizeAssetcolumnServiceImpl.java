@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.service.desensitizeList.impl;
@@ -58,7 +44,7 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.whitelist.DgDesensitizeUserR
 import tech.qiantong.qdata.module.dg.dal.mapper.desensitizeList.DgDesensitizeAssetcolumnMapper;
 import tech.qiantong.qdata.module.dg.service.desensitizeList.IDgDesensitizeAssetcolumnService;
 /**
- * 脱敏清单关联关系Service业务层处理
+ * Desensitize List Relationship Service Business Layer Processing
  *
  * @author qdata
  * @date 2026-04-12
@@ -84,15 +70,15 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
 
     @Override
     public int updateDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新脱敏清单关联关系
+        // Update desensitize list relationship
         DgDesensitizeAssetcolumnDO updateObj = BeanUtils.toBean(updateReqVO, DgDesensitizeAssetcolumnDO.class);
         return dgDesensitizeAssetcolumnMapper.updateById(updateObj);
     }
     @Override
     public int removeDgDesensitizeAssetcolumn(Collection<Long> idList) {
-        // 批量删除脱敏清单关联关系
+        // Batch delete desensitize list relationships
         return dgDesensitizeAssetcolumnMapper.deleteBatchIds(idList);
     }
 
@@ -103,7 +89,7 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
 
     @Override
     public DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnByAid(Long assetcolumnId) {
-        //通过 assetcolumnId 获取
+        // Query by assetcolumnId
         return dgDesensitizeAssetcolumnMapper.selectOne( new LambdaQueryWrapper<DgDesensitizeAssetcolumnDO>().eq(DgDesensitizeAssetcolumnDO::getAssetcolumnId, assetcolumnId));
     }
 
@@ -119,24 +105,24 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
                 .collect(Collectors.toMap(
                         DgDesensitizeAssetcolumnDO::getId,
                         dgDesensitizeAssetcolumnDO -> dgDesensitizeAssetcolumnDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入脱敏清单关联关系数据
+         * Import desensitize list relationship data
          *
-         * @param importExcelList 脱敏清单关联关系数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Desensitize list relationship data list
+         * @param isUpdateSupport Whether to update support, if already exists, update the data
+         * @param operName        Operator user
+         * @return Result
          */
         @Override
         public String importDgDesensitizeAssetcolumn(List<DgDesensitizeAssetcolumnRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("dg.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("dg.error.import.empty", "Imported data cannot be empty!");
             }
 
             int successNum = 0;
@@ -155,16 +141,16 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
                                 dgDesensitizeAssetcolumnMapper.updateById(dgDesensitizeAssetcolumnDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("dg.import.update.success",
-                                        "数据更新成功，ID为 " + dgDesensitizeAssetcolumnId + " 的脱敏清单关联关系记录。", dgDesensitizeAssetcolumnId, "脱敏清单关联关系"));
+                                        "Data updated successfully, desensitization list relationship record with ID " + dgDesensitizeAssetcolumnId + ".", dgDesensitizeAssetcolumnId, "Desensitization List Relationship"));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.fail",
-                                        "数据更新失败，ID为 " + dgDesensitizeAssetcolumnId + " 的脱敏清单关联关系记录不存在。", dgDesensitizeAssetcolumnId, "脱敏清单关联关系"));
+                                        "Data update failed, desensitization list relationship record with ID " + dgDesensitizeAssetcolumnId + " does not exist.", dgDesensitizeAssetcolumnId, "Desensitization List Relationship"));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, a record's ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DgDesensitizeAssetcolumnDO> queryWrapper = new QueryWrapper<>();
@@ -174,17 +160,17 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
                             dgDesensitizeAssetcolumnMapper.insert(dgDesensitizeAssetcolumnDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dg.import.insert.success",
-                                    "数据插入成功，ID为 " + dgDesensitizeAssetcolumnId + " 的脱敏清单关联关系记录。", dgDesensitizeAssetcolumnId, "脱敏清单关联关系"));
+                                    "Data inserted successfully, desensitization list relationship record with ID " + dgDesensitizeAssetcolumnId + ".", dgDesensitizeAssetcolumnId, "Desensitization List Relationship"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dg.import.insert.fail",
-                                    "数据插入失败，ID为 " + dgDesensitizeAssetcolumnId + " 的脱敏清单关联关系记录已存在。", dgDesensitizeAssetcolumnId, "脱敏清单关联关系"));
+                                    "Data insertion failed, desensitization list relationship record with ID " + dgDesensitizeAssetcolumnId + " already exists.", dgDesensitizeAssetcolumnId, "Desensitization List Relationship"));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("dg.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error message: " + e.getMessage(), e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -193,12 +179,12 @@ public class DgDesensitizeAssetcolumnServiceImpl  extends ServiceImpl<DgDesensit
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Sorry, import failed! A total of " + failureNum + " records have incorrect format, errors as follows:<br/>" + failureDetails,
                         failureNum, failureDetails));
                 throw new ServiceException("dg.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("dg.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations, all data imported successfully! Total: " + successNum + " records.", successNum));
             }
             return resultMsg.toString();
         }

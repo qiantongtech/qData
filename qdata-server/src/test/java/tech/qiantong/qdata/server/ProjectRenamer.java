@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.server;
@@ -40,42 +26,42 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
- * 一键修改包名
+ * Modify package name with one click
  * * @author qdata
  */
 public class ProjectRenamer {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // 输入修改前的工程路径
-        System.out.print("请输入修改前的工程路径: ");
+        // Enter the project path before modification
+        System.out.print("Enter the original project path: ");
         String originalDirectory = scanner.nextLine();
 
-        // 输入修改后的工程路径
-        System.out.print("请输入修改后的工程路径: ");
+        // Enter the modified project path
+        System.out.print("Enter the new project path: ");
         String newDirectory = scanner.nextLine();
 
-        // 输入修改前的工程名称
-        System.out.print("请输入修改前的工程名称: ");
+        // Enter the project name before modification
+        System.out.print("Enter the original project name: ");
         String oldProjectName = scanner.nextLine().toLowerCase();
 
-        // 输入修改后的工程名称
-        System.out.print("请输入修改后的工程名称: ");
+        // Enter the modified project name
+        System.out.print("Enter the new project name: ");
         String newProjectName = scanner.nextLine().toLowerCase();
 
         try {
-            // 创建新的功能目录
+            // Create a new feature directory
             File newDir = new File(newDirectory);
             if (!newDir.exists()) {
-                newDir.mkdirs(); // 创建新目录
+                newDir.mkdirs(); // Create new directory
             }
 
-            // 复制原工程内容到新目录并重命名
+            // Copy the original project contents to the new directory and rename it
             copyAndRename(new File(originalDirectory), newDir, oldProjectName, newProjectName);
-            // 替换文件内容中的原工程名称
+            // Replace the original project name in the file content
             replaceInFiles(newDir, oldProjectName, newProjectName);
 
-            System.out.println("工程已成功从 " + originalDirectory + " 修改为 " + newDirectory);
+            System.out.println("Project successfully renamed from " + originalDirectory + " to " + newDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -109,7 +95,7 @@ public class ProjectRenamer {
                 } else {
                     Path path = Paths.get(file.getPath());
                     String content = new String(Files.readAllBytes(path));
-                    // 替换包路径和工程名称
+                    // Replace package path and project name
                     content = content.replace(oldString, newString);
                     Files.write(path, content.getBytes());
                 }

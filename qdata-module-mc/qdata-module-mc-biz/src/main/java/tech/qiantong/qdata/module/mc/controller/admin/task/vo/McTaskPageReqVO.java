@@ -9,7 +9,7 @@ import tech.qiantong.qdata.common.core.page.PageParam;
 import java.util.Date;
 
 /**
- * 采集任务 Request VO 对象 MC_TASK
+ * Collection task Request VO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -55,13 +55,13 @@ public class McTaskPageReqVO extends PageParam {
     private String status;
 
     /**
-     * 采集任务类型：1-采集，2-DDL
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * 采集黑名单
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;

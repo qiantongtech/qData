@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain.model;
@@ -41,7 +27,7 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
- * 登录用户身份权限
+ * Login user identity permissions
  *
  * @author qdata
  */
@@ -50,57 +36,57 @@ public class LoginUser implements UserDetails
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户ID
+     * User ID
      */
     private Long userId;
 
     /**
-     * 部门ID
+     * Department ID
      */
     private Long deptId;
 
     /**
-     * 用户唯一标识
+     * User unique identifier
      */
     private String token;
 
     /**
-     * 登录时间
+     * Login time
      */
     private Long loginTime;
 
     /**
-     * 过期时间
+     * Expiration time
      */
     private Long expireTime;
 
     /**
-     * 登录IP地址
+     * Login IP address
      */
     private String ipaddr;
 
     /**
-     * 登录地点
+     * Login location
      */
     private String loginLocation;
 
     /**
-     * 浏览器类型
+     * Browser type
      */
     private String browser;
 
     /**
-     * 操作系统
+     * Operating system
      */
     private String os;
 
     /**
-     * 权限列表
+     * Permission list
      */
     private Set<String> permissions;
 
     /**
-     * 用户信息
+     * User information
      */
     private SysUser user;
 
@@ -166,7 +152,7 @@ public class LoginUser implements UserDetails
     }
 
     /**
-     * 账户是否未过期,过期无法验证
+     * Whether the account has not expired or not, it cannot be verified if it has expired.
      */
     @JSONField(serialize = false)
     @Override
@@ -176,7 +162,7 @@ public class LoginUser implements UserDetails
     }
 
     /**
-     * 指定用户是否解锁,锁定的用户无法进行身份验证
+     * Specifies whether the user is unlocked. Locked users cannot authenticate.
      *
      * @return
      */
@@ -188,7 +174,7 @@ public class LoginUser implements UserDetails
     }
 
     /**
-     * 指示是否已过期的用户的凭据(密码),过期的凭据防止认证
+     * Indicates whether the user's credentials (password) have expired. Expired credentials prevent authentication.
      *
      * @return
      */
@@ -200,7 +186,7 @@ public class LoginUser implements UserDetails
     }
 
     /**
-     * 是否可用 ,禁用的用户不能身份验证
+     * If available, disabled users cannot authenticate
      *
      * @return
      */

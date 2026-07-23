@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -188,7 +189,7 @@ const subLoading = ref(false);
 const nowCacheName = ref("");
 const tableHeight = ref(window.innerHeight - 200);
 
-/** 查询缓存名称列表 */
+/** Query cache name list */
 function getCacheNames() {
   loading.value = true;
   listCacheName().then(response => {
@@ -197,13 +198,13 @@ function getCacheNames() {
   });
 }
 
-/** 刷新缓存名称列表 */
+/** Refresh the cached name list */
 function refreshCacheNames() {
   getCacheNames();
   proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshSuccess'));
 }
 
-/** 清理指定名称缓存 */
+/** Clear cache of specified name */
 function handleClearCacheName(row) {
   clearCacheName(row.cacheName).then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearNameSuccess', { name: row.cacheName }));
@@ -211,7 +212,7 @@ function handleClearCacheName(row) {
   });
 }
 
-/** 查询缓存键名列表 */
+/** Query the cache key list */
 function getCacheKeys(row) {
   const cacheName = row !== undefined ? row.cacheName : nowCacheName.value;
   if (cacheName === "") {
@@ -225,13 +226,13 @@ function getCacheKeys(row) {
   });
 }
 
-/** 刷新缓存键名列表 */
+/** Refresh the cache key list */
 function refreshCacheKeys() {
   getCacheKeys();
   proxy.$modal.msgSuccess(td('sys.monitor.cacheList.refreshKeySuccess'));
 }
 
-/** 清理指定键名缓存 */
+/** Clear cache of specified key name */
 function handleClearCacheKey(cacheKey) {
   clearCacheKey(cacheKey).then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearKeySuccess', { key: cacheKey }));
@@ -239,24 +240,24 @@ function handleClearCacheKey(cacheKey) {
   });
 }
 
-/** 列表前缀去除 */
+/** List prefix removal */
 function nameFormatter(row) {
   return row.cacheName.replace(":", "");
 }
 
-/** 键名前缀去除 */
+/** Key name prefix removal */
 function keyFormatter(cacheKey) {
   return cacheKey.replace(nowCacheName.value, "");
 }
 
-/** 查询缓存内容详细 */
+/** Query cache content details */
 function handleCacheValue(cacheKey) {
   getCacheValue(nowCacheName.value, cacheKey).then(response => {
     cacheForm.value = response.data;
   });
 }
 
-/** 清理全部缓存 */
+/** Clear all cache */
 function handleClearCacheAll() {
   clearCacheAll().then(response => {
     proxy.$modal.msgSuccess(td('sys.monitor.cacheList.clearAllSuccess'));

@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.module.mc.dal.dataobject.metadata.McDbDO;
 
 import java.sql.Connection;
@@ -15,34 +16,34 @@ import java.sql.Statement;
 import java.util.*;
 
 /**
- * MySQL数据库方言实现
+ * MySQL database dialect implementation
  */
 @Slf4j
 public class MySqlDialect implements DatabaseDialect {
-    // 连接池映射，key为数据库连接信息的唯一标识
+    // Connection pool mapping, key is the unique identifier of database connection information
     private static final Map<String, HikariDataSource> dataSourceMap = new HashMap<>();
 
-    // 连接池配置参数
+    // Connection pool configuration parameters
     private static final int MAX_POOL_SIZE = 10;
     private static final int MIN_IDLE = 2;
-    private static final long CONNECTION_TIMEOUT = 30000; // 30秒
-    private static final long IDLE_TIMEOUT = 600000; // 10分钟
-    private static final long MAX_LIFETIME = 1800000; // 30分钟
+    private static final long CONNECTION_TIMEOUT = 30000; // 30 seconds
+    private static final long IDLE_TIMEOUT = 600000; // 10 minutes
+    private static final long MAX_LIFETIME = 1800000; // 30 minutes
 
     @Override
     public String getStorageEngine(McDbDO mcDbDO) {
         try {
-            // 从连接池获取连接
+            // Get connection from connection pool
             try (Connection conn = getConnection(mcDbDO)) {
                 DatabaseMetaData metaData = conn.getMetaData();
-                // 获取数据库产品名称和版本
+                // Get database product name and version
                 String productName = metaData.getDatabaseProductName();
                 String productVersion = metaData.getDatabaseProductVersion();
-                // MySQL默认使用InnoDB存储引擎
+                // MySQL uses the InnoDB storage engine by default
                 return "InnoDB";
             }
         } catch (Exception e) {
-            log.error("获取MySQL存储引擎失败", e);
+            log.error("Failed to get the MySQL storage engine", e);
             return null;
         }
     }
@@ -73,7 +74,7 @@ public class MySqlDialect implements DatabaseDialect {
     }
 
     /**
-     * 解析datasourceConfig获取连接信息
+     * Parse datasourceConfig to obtain connection information
      */
     private Map<String, Object> parseDatasourceConfig(String datasourceConfig) {
         if (StringUtils.isBlank(datasourceConfig)) {
@@ -83,13 +84,13 @@ public class MySqlDialect implements DatabaseDialect {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(datasourceConfig, Map.class);
         } catch (Exception e) {
-            log.error("解析datasourceConfig失败", e);
+            log.error("Failed to parse datasourceConfig", e);
             return null;
         }
     }
 
     /**
-     * 构建数据源
+     * Build data source
      */
     private HikariDataSource buildDataSource(McDbDO mcDbDO) {
         Map<String, Object> configMap = parseDatasourceConfig(mcDbDO.getDatasourceConfig());
@@ -103,26 +104,26 @@ public class MySqlDialect implements DatabaseDialect {
         try {
             password = AesEncryptUtil.desEncrypt(password).trim();
         } catch (Exception e) {
-            log.error("解密密码失败", e);
+            log.error("Failed to decrypt password", e);
             return null;
         }
 
-        // 生成数据源唯一标识
+        // Generate data source unique identifier
         String dataSourceKey = mcDbDO.getIp() + ":" + mcDbDO.getPort() + "/" + configMap.get("dbname") + ":" + username;
 
-        // 如果数据源已存在，直接返回
+        // If the data source already exists, return directly
         if (dataSourceMap.containsKey(dataSourceKey)) {
             HikariDataSource dataSource = dataSourceMap.get(dataSourceKey);
             if (!dataSource.isClosed()) {
                 return dataSource;
             } else {
-                // 数据源已关闭，移除并重新创建
+                // Data source has been closed, removed and recreated
                 dataSourceMap.remove(dataSourceKey);
                 dataSource.close();
             }
         }
 
-        // 创建新的数据源
+        // Create new data source
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(url);
         config.setUsername(username);
@@ -141,12 +142,13 @@ public class MySqlDialect implements DatabaseDialect {
     }
 
     /**
-     * 从数据源获取连接
+     * Get connection from data source
      */
     private Connection getConnection(McDbDO mcDbDO) throws Exception {
         HikariDataSource dataSource = buildDataSource(mcDbDO);
         if (dataSource == null) {
-            throw new Exception("获取数据源失败");
+            throw new Exception(MessageUtils.messageWithFallback(
+                    "mc.error.datasource.get.fail", "Failed to get data source"));
         }
         return dataSource.getConnection();
     }
@@ -155,10 +157,10 @@ public class MySqlDialect implements DatabaseDialect {
     public TableMetadata getTableMetadata(McDbDO mcDbDO, String tableName) {
         TableMetadata metadata = new TableMetadata();
         try {
-            // 从连接池获取连接
+            // Get connection from connection pool
             try (Connection conn = getConnection(mcDbDO)) {
                 String dbName = mcDbDO.getDbName();
-                // 获取表行数
+                // Get the number of table rows
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SELECT COUNT(*) FROM " + tableName;
                     ResultSet rs = stmt.executeQuery(sql);
@@ -167,7 +169,7 @@ public class MySqlDialect implements DatabaseDialect {
                     }
                 }
 
-                // 获取表索引信息
+                // Get table index information
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SHOW INDEX FROM " + tableName;
                     ResultSet rs = stmt.executeQuery(sql);
@@ -184,7 +186,7 @@ public class MySqlDialect implements DatabaseDialect {
                     metadata.setIndexes(indexes.toString());
                 }
 
-                // 获取表分区字段信息
+                // Get table partition field information
                 try (Statement stmt = conn.createStatement()) {
                     Set<String> fieldSet = new LinkedHashSet<>();
                     String sql = "SELECT DISTINCT " +
@@ -197,7 +199,7 @@ public class MySqlDialect implements DatabaseDialect {
                         String partExpr = rs.getString("PARTITION_EXPRESSION");
                         String subPartExpr = rs.getString("SUBPARTITION_EXPRESSION");
 
-                        // 解析并提取字段名
+                        // Parse and extract field names
                         if (partExpr != null) {
                             String fieldName = extractFieldName(partExpr);
                             if (fieldName != null && !fieldName.isEmpty()) {
@@ -205,16 +207,16 @@ public class MySqlDialect implements DatabaseDialect {
                             }
                         }
                         if (subPartExpr != null&& !subPartExpr.trim().isEmpty()) {
-                            // 去掉反引号
+                            // Remove backticks
                             String field = subPartExpr.trim().replaceAll("`", "");
                             fieldSet.add(field);
                         }
                     }
-                    // 拼接字段，用逗号分隔
+                    // Splice fields, separated by commas
                     metadata.setPartitionFields(String.join(",", fieldSet));
                 }
 
-                // 获取表存储大小、创建时间和修改时间
+                // Get table storage size, creation time and modification time
                 try (Statement stmt = conn.createStatement()) {
                         String sql = "SELECT DATA_LENGTH + INDEX_LENGTH AS table_size, ENGINE AS storage_engine, " +
                                 " DATE_FORMAT(CREATE_TIME, '%Y-%m-%d %H:%i:%s') AS create_time, DATE_FORMAT(UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS update_time ,TABLE_COMMENT as table_comment" +
@@ -224,7 +226,7 @@ public class MySqlDialect implements DatabaseDialect {
                         metadata.setTableSize(rsSize.getInt("table_size"));
                         metadata.setStorageEngine(rsSize.getString("storage_engine"));
                         metadata.setTableComment(rsSize.getString("table_comment"));
-                        // 确保时间格式正确，不包含毫秒
+                        // Make sure the time is in the correct format and does not include milliseconds
                         String createTime = rsSize.getString("create_time");
                         if (createTime != null && createTime.contains(".")) {
                             createTime = createTime.substring(0, createTime.indexOf("."));
@@ -238,7 +240,7 @@ public class MySqlDialect implements DatabaseDialect {
                     }
                 }
 
-                // 获取表主键字段
+                // Get table primary key field
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SHOW INDEX FROM " + tableName + " WHERE Key_name = 'PRIMARY'";
                     ResultSet rs = stmt.executeQuery(sql);
@@ -254,7 +256,7 @@ public class MySqlDialect implements DatabaseDialect {
                 }
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL表元数据失败", e);
+            log.error("Failed to fetch MySQL table metadata in batch", e);
         }
         return metadata;
     }
@@ -263,9 +265,9 @@ public class MySqlDialect implements DatabaseDialect {
     public ColumnMetadata getColumnMetadata(McDbDO mcDbDO, String tableName, String columnName) {
         ColumnMetadata metadata = new ColumnMetadata();
         try {
-            // 从连接池获取连接
+            // Get connection from connection pool
             try (Connection conn = getConnection(mcDbDO)) {
-                // 使用JDBC元数据API获取字段自增信息
+                // Use JDBC metadata API to obtain field auto-increment information
                 DatabaseMetaData metaData = conn.getMetaData();
                 ResultSet rs = metaData.getColumns(null, null, tableName, columnName);
                 if (rs.next()) {
@@ -273,7 +275,7 @@ public class MySqlDialect implements DatabaseDialect {
                     metadata.setAutoIncrement("YES".equals(isAutoIncrement));
                 }
 
-                // 查询字段是否唯一
+                // Check whether the field is unique
                 boolean isUnique = false;
                 try (ResultSet uniqueRs = metaData.getIndexInfo(null, null, tableName, true, false)) {
                     while (uniqueRs.next()) {
@@ -287,7 +289,7 @@ public class MySqlDialect implements DatabaseDialect {
                 metadata.setUnique(isUnique);
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL字段元数据失败", e);
+            log.error("Failed to fetch MySQL column metadata in batch", e);
         }
         return metadata;
     }
@@ -296,10 +298,10 @@ public class MySqlDialect implements DatabaseDialect {
     public DbMetadata getDbMetadata(McDbDO mcDbDO) {
         DbMetadata dbMetadata = new DbMetadata();
         try {
-            // 从连接池获取连接
+            // Get connection from connection pool
             try (Connection conn = getConnection(mcDbDO)) {
                 String dbName = mcDbDO.getDbName();
-                // 获取存储大小，转换为MB
+                // Get storage size, converted to MB
                 try (Statement stmt = conn.createStatement()) {
                     String sql = "SELECT ROUND(SUM(DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024, 2) AS total_size_mb " +
                             "FROM information_schema.TABLES " +
@@ -312,14 +314,14 @@ public class MySqlDialect implements DatabaseDialect {
 
             }
         } catch (Exception e) {
-            log.error("批量获取MySQL数据库元数据失败", e);
+            log.error("Failed to fetch MySQL database metadata in batch", e);
         }
         return dbMetadata;
     }
 
     /**
-     * 从分区表达式中提取原始字段名
-     * 例如：to_days(tm) -> tm
+     * Extract original field names from partition expression
+     * For example: to_days(tm) -> tm
      *       UNIX_TIMESTAMP(create_time) -> create_time
      *       user_id -> user_id
      */
@@ -330,14 +332,14 @@ public class MySqlDialect implements DatabaseDialect {
 
         expr = expr.trim().replaceAll("`", "");
 
-        // 去掉函数调用，保留括号内的内容
-        // 匹配 pattern: func_name(column_name)
+        // Remove the function call and keep the content in the brackets
+        // Match pattern: func_name(column_name)
         int openParen = expr.indexOf('(');
         int closeParen = expr.lastIndexOf(')');
 
         if (openParen > 0 && closeParen > openParen) {
             String funcName = expr.substring(0, openParen).trim().toLowerCase();
-            // 常见函数列表，可根据需要扩展
+            // List of common functions, which can be expanded as needed
             Set<String> knownFuncs = new HashSet<>(Arrays.asList(
                     "to_days", "year", "month", "day", "hour", "minute",
                     "unix_timestamp", "from_days", "date", "str_to_date"
@@ -345,13 +347,13 @@ public class MySqlDialect implements DatabaseDialect {
 
             if (knownFuncs.contains(funcName)) {
                 String inner = expr.substring(openParen + 1, closeParen).trim();
-                // 递归处理嵌套函数，如 to_days(date(create_time))
+                // Recursively handle nested functions, such as to_days(date(create_time))
                 return extractFieldName(inner);
             }
         }
 
-        // 如果没有函数包装，直接返回表达式（可能是字段名或常量）
-        // 过滤掉常量，如 '2024-01-01'，只保留标识符
+        // If there is no function wrapper, the expression is returned directly (maybe a field name or a constant)
+        // Filter out constants, such as '2024-01-01', and keep only identifiers
         if (expr.matches("^[a-zA-Z_][a-zA-Z0-9_]*$")) {
             return expr;
         }

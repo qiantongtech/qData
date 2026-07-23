@@ -84,39 +84,39 @@ button:focus-visible {
 }
 
 .cu_html_container {
-  display: flex; /* 水平排列 */
-  flex-direction: row; /* 图片在左，文字在右 */
-  align-items: center; /* 垂直居中对齐 */
+  display: flex; /* Arrange horizontally */
+  flex-direction: row; /* Picture on the left, text on the right */
+  align-items: center; /* vertical center alignment */
   justify-content: flex-start;
   background: white;
-  border: 1px solid #ddd; /* 添加边框 */
-  border-radius: 2px; /* 圆角 */
+  border: 1px solid #ddd; /* Add border */
+  border-radius: 2px; /* rounded corners */
   padding: 8px;
-  height: 50px; /* 高度固定 */
+  height: 50px; /* fixed height */
   box-shadow: 0 5px 8px rgba(128, 145, 165, 0.1);
   overflow: hidden;
 }
 
-/* 左侧图片 */
+/* Picture on the left */
 .cu_html_top {
-  width: 30px; /* 图片大小 */
+  width: 30px; /* Image size */
   height: 30px;
   // border-radius: 50%;
-  margin-right: 10px; /* 图片和文字间距 */
+  margin-right: 10px; /* Image and text spacing */
 }
 
-/* 右侧文字区域 */
+/* Right text area */
 .cu_html_text {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1; /* 占满剩余空间 */
-  white-space: nowrap; /* 防止换行 */
+  flex: 1; /* Take up remaining space */
+  white-space: nowrap; /* Prevent line breaks */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 标题 */
+/* Title */
 .cu_html_title {
   font-size: 14px;
   font-weight: 500;

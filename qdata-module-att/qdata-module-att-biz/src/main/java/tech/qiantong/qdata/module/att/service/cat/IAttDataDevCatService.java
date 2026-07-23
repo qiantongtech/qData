@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.cat;
@@ -43,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据开发类目管理Service接口
+ * Data Development Category Management Service Interface
  *
  * @author qdata
  * @date 2025-03-11
@@ -51,77 +37,92 @@ import java.util.Map;
 public interface IAttDataDevCatService extends IService<AttDataDevCatDO> {
 
     /**
-     * 获得数据开发类目管理分页列表
+     * Get data development category management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据开发类目管理分页列表
+     * @param pageReqVO page request
+     * @return data development category management paginated list
      */
     PageResult<AttDataDevCatDO> getAttDataDevCatPage(AttDataDevCatPageReqVO pageReqVO);
 
     /**
-     * 创建数据开发类目管理
+     * Create data development category management
      *
-     * @param createReqVO 数据开发类目管理信息
-     * @return 数据开发类目管理编号
+     * @param createReqVO data development category management info
+     * @return data development category management ID
      */
     Long createAttDataDevCat(AttDataDevCatSaveReqVO createReqVO);
 
     /**
-     * 更新数据开发类目管理
+     * Update data development category management
      *
-     * @param updateReqVO 数据开发类目管理信息
+     * @param updateReqVO data development category management info
      */
     int updateAttDataDevCat(AttDataDevCatSaveReqVO updateReqVO);
 
     /**
-     * 删除数据开发类目管理
+     * Check whether data development tasks exist under the category or its descendants.
+     */
+    boolean hasDataDevelopmentTask(Long id);
+
+    /**
+     * Check whether a category name is already used under the same parent.
+     */
+    boolean isNameUsed(Long id, Long parentId, String name);
+
+    /**
+     * Count data development tasks directly associated with the category.
+     */
+    long getDataDevelopmentTaskCount(Long id);
+
+    /**
+     * Delete data development category management
      *
-     * @param idList 数据开发类目管理编号
+     * @param idList data development category management ID list
      */
     int removeAttDataDevCat(Collection<Long> idList);
 
     /**
-     * 获得数据开发类目管理详情
+     * Get data development category management details
      *
-     * @param id 数据开发类目管理编号
-     * @return 数据开发类目管理
+     * @param id data development category management ID
+     * @return data development category management
      */
     AttDataDevCatDO getAttDataDevCatById(Long id);
 
     /**
-     * 获得全部数据开发类目管理列表
+     * Get all data development category management list
      *
-     * @return 数据开发类目管理列表
+     * @return data development category management list
      */
     List<AttDataDevCatDO> getAttDataDevCatList();
 
     /**
-     * 获得全部数据开发类目管理列表
+     * Get all data development category management list
      *
-     * @return 数据开发类目管理列表
+     * @return data development category management list
      */
     List<AttDataDevCatDO> getAttDataDevCatList(AttDataDevCatPageReqVO reqVO);
 
     /**
-     * 获得全部数据开发类目管理 Map
+     * Get all data development category management Map
      *
-     * @return 数据开发类目管理 Map
+     * @return data development category management Map
      */
     Map<Long, AttDataDevCatDO> getAttDataDevCatMap();
 
 
     /**
-     * 导入数据开发类目管理数据
+     * Import data development category management data
      *
-     * @param importExcelList 数据开发类目管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList data development category management data list
+     * @param isUpdateSupport whether to support update, if already exists, then update the data
+     * @param operName operating user
+     * @return result
      */
     String importAttDataDevCat(List<AttDataDevCatRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 生成code
+     * Generate code
      *
      * @param parentId
      * @param parentCode

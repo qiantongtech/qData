@@ -1,24 +1,25 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <div class="app-container stagingIndex">
 
-    <!-- 演示环境重要提醒 -->
+    <!-- Important reminder for presentation environment -->
     <GuideTip tip-id="index" />
 
     <el-row :gutter="15">
@@ -56,7 +57,7 @@
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="18" :lg="18" class="home-gutter">
-        <!-- 模块3 -->
+        <!-- Module 3 -->
         <div class="module-3">
           <div class="module-item" v-for="(item, index) in module1" :key="index">
             <!-- <router-link to="/sy/index"> -->
@@ -82,7 +83,7 @@
             <div class="module-9 border-item">
               <div class="border-item-head">
                 <span class="head-title">{{ td('sys.dashboard.apiCallTrend') }}</span>
-                <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
+                <!-- <el-link type="primary" :underline="false">See more </el-link> -->
               </div>
               <div class="border-item-body">
                 <div class="chart-container" ref="module5ChartRef"></div>
@@ -93,7 +94,7 @@
             <div class="module-8 border-item">
               <div class="border-item-head">
                 <span class="head-title">{{ td('sys.dashboard.governanceDataTrend') }}</span>
-                <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
+                <!-- <el-link type="primary" :underline="false">See more </el-link> -->
               </div>
               <div class="border-item-body">
                 <div class="chart-container" ref="module8ChartRef"></div>
@@ -149,7 +150,7 @@
         <div class="module-10 border-item">
           <div class="border-item-head">
             <span class="head-title">{{ td('sys.dashboard.monitorStatus') }}</span>
-            <!-- <el-link type="primary" :underline="false">查看更多 </el-link> -->
+            <!-- <el-link type="primary" :underline="false">See more </el-link> -->
           </div>
           <div class="cards">
             <div v-for="item in statusList" :key="item.title" class="card">
@@ -174,7 +175,7 @@
       </el-col>
     </el-row>
 
-    <!-- License 协议弹窗 -->
+    <!-- License agreement pop-up window -->
     <el-dialog
       v-model="licenseDialogVisible"
       :title="td('common.license.title')"
@@ -246,14 +247,14 @@ import { useTimeGreeting } from '@/composables/useTimeGreeting'
 const { greeting, message } = useTimeGreeting()
 const { td, locale, tm } = useDefaultLang();
 
-// 监听语言变化，重新渲染图表
+// Monitor language changes and re-render charts
 watch(locale, () => {
-  // 销毁现有图表实例
+  // Destroy existing chart instance
   chartIntances.forEach((instance) => {
     instance.dispose();
   });
   chartIntances.length = 0;
-  // 重新初始化图表
+  // Reinitialize the chart
   initModule5();
   initModule8();
 });
@@ -293,10 +294,10 @@ async function routeTo(link, query = {}) {
     } else {
       try {
         await router.push({ path: link, query });
-        // 跳转成功后再刷新
+        // Refresh after successful jump
         window.location.reload();
       } catch (err) {
-        console.error("路由跳转失败:", err);
+        console.error("Route navigation failed:", err);
       }
     }
   }
@@ -309,7 +310,7 @@ const getAssetsFile = (url) => {
 
 const carousel = ref(null);
 
-// License 弹窗逻辑
+// License pop-up window logic
 const LICENSE_CACHE_KEY = 'qdata_license_acknowledged';
 const LICENSE_COUNTDOWN_SECONDS = 10;
 const licenseDialogVisible = ref(false);
@@ -338,7 +339,7 @@ function startLicenseCountdown() {
 }
 
 /**
- * 检查用户是否已同意 License 协议
+ * Check whether the user has agreed to the License agreement
  */
 function checkLicense() {
   const acknowledged = localStorage.getItem(LICENSE_CACHE_KEY);
@@ -349,8 +350,8 @@ function checkLicense() {
 }
 
 /**
- * 处理 License 弹窗关闭事件
- * 记录用户已同意 License 协议
+ * Handle License pop-up window closing event
+ * Record that the user has agreed to the License agreement
  */
 function handleLicenseClose() {
   clearLicenseCountdown();
@@ -359,7 +360,7 @@ function handleLicenseClose() {
 }
 
 /**
- * 跳转至 License 协议页面
+ * Jump to License agreement page
  */
 function toPolicy() {
   window.open("https://community.qdata.tech/business/policy.html");
@@ -492,7 +493,7 @@ const entranceList = [
   },
 ];
 
-//新闻跳转
+//News jump
 function goxinwen(row) {
   if (row == "list") {
     proxy.$router.push("/sys/notice");
@@ -502,9 +503,9 @@ function goxinwen(row) {
 }
 
 function goprofile() {
-  proxy.$router.push("/user/profile"); // 内部页面路径
+  proxy.$router.push("/user/profile"); // internal page path
 }
-//获取心灵鸡汤内容
+//Get Chicken Soup for the Soul content
 const xljtcont = ref("");
 function getxljtcont() {
   let num = Math.floor(Math.random() * 9);
@@ -534,14 +535,14 @@ function initModule4() {
   let m2R2Data = [
     // {
     //     value: 335,
-    //     legendname: '种类06',
-    //     name: '种类06  335'
+    //     legendname: 'Type 06',
+    //     name: 'Type 06 335'
     //     // itemStyle: { color: '#fca4bb' }
     // },
     // {
     //     value: 335,
-    //     legendname: '种类07',
-    //     name: '种类07  335'
+    //     legendname: 'Type 07',
+    //     name: 'Type 07 335'
     //     // itemStyle: { color: '#f59a8f' }
     // },
     {
@@ -579,7 +580,7 @@ function initModule4() {
   let option = {
     title: [
       // {
-      //     text: '标题',
+      //     text: 'Title',
       //     textStyle: {
       //         fontSize: 16,
       //         color: 'black'
@@ -588,7 +589,7 @@ function initModule4() {
       // },
       {
         text: "100%",
-        // subtext: 12312 + '个',
+        // subtext: 12312 + 'piece',
         textStyle: {
           fontSize: 30,
           color: "rgba(0,0,0,0.65)",
@@ -629,17 +630,17 @@ function initModule4() {
       align: "left",
       top: "10%",
       // top: 'middle',
-      itemWidth: 8, // 设置图例项的宽度
-      itemHeight: 8, // 设置图例项的高度
-      icon: "circle", // 设置图例图标为圆形
+      itemWidth: 8, // Set the width of the legend items
+      itemHeight: 8, // Set the height of the legend item
+      icon: "circle", // Set the legend icon to be circular
       // textStyle: {
       //     color: '#8C8C8C',
       //     fontSize: 14,
-      //     lineHeight: 20 // 设置行高，以确保文本垂直居中
+      //     lineHeight: 20 // Set the line height to ensure the text is vertically centered
       // },
 
       formatter: function (name) {
-        // 找到对应的项并计算百分比
+        // Find the corresponding item and calculate the percentage
         console.log(name, "============name");
         let total = 770;
         let item = m2R2Data.find((item) => item.name === name);
@@ -647,8 +648,8 @@ function initModule4() {
         let percent = item
           ? ((item.value / total) * 100).toFixed(2) + "%"
           : "0%";
-        // return `${name} |  ${percent}  ${item.value}`; // 自定义图例显示
-        // 使用 HTML 语法自定义颜色
+        // return `${name} | ${percent} ${item.value}`; // Custom legend display
+        // Customize colors using HTML syntax
         let arr = [
           "{a|" + name + "}",
           // '{b|' + '|   ' + percent + '}',
@@ -658,9 +659,9 @@ function initModule4() {
         // return `${name}: <span style="color: red;">${percent}</span> (<span style="color: blue;">${percent}</span>)`;
       },
       textStyle: {
-        lineHeight: 25, // 设置行高，以确保文本垂直居中
+        lineHeight: 25, // Set line height to ensure text is vertically centered
 
-        // 添加
+        // add
         padding: [0, 0, 0, 0],
         rich: {
           a: {
@@ -686,7 +687,7 @@ function initModule4() {
         type: "pie",
         center: ["35%", "50%"],
         radius: ["35%", "55%"],
-        clockwise: false, //饼图的扇区是否是顺时针排布
+        clockwise: false, //Whether the slices of the pie chart are arranged clockwise
         avoidLabelOverlap: false,
         // label: {
         //     normal: {
@@ -698,8 +699,8 @@ function initModule4() {
         //     }
         // },
         label: {
-          formatter: "{d}%", // 显示每个部分的名称和占比
-          position: "outside", // 标签位置
+          formatter: "{d}%", // Show the name and proportion of each part
+          position: "outside", // label position
         },
         itemStyle: {
           normal: {
@@ -728,7 +729,7 @@ function initModule4() {
               ];
               return new echarts.graphic.LinearGradient(1, 0, 0, 0, [
                 {
-                  //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                  //The first four parameters of the color gradient function represent the four positions respectively: left, bottom, right, and top.
                   offset: 0,
                   color: colorList[params.dataIndex].c1,
                 },
@@ -746,12 +747,12 @@ function initModule4() {
   };
   intance.setOption(option);
   chartIntances.push(intance);
-  //  // 窗口大小变化时，自动更新图表大小
+  //  // Automatically update the chart size when the window size changes
   // window.addEventListener('resize', function() {
   //     intance.resize();
   // });
 }
-// 认证模式
+// Authentication mode
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 function logout() {
   ElMessageBox.confirm(td('sys.dashboard.confirmLogout'), td('common.message.prompt'), {
@@ -762,7 +763,7 @@ function logout() {
     .then(() => {
       userStore.logOut().then(() => {
         if (authType === 'sso') {
-          // 退出统一认证中心的登录状态
+          // Exit the login status of the Unified Certification Center
           loginOut(userStore.userId).then(() => {
             location.href = '/index';
           });
@@ -864,9 +865,13 @@ function initModule6() {
   let query = {
     pageNum: 1,
     pageSize: 5,
+    orderByColumn: "createTime",
+    isAsc: "descending",
   };
   listNotice(query).then((response) => {
-    module6.value = response.rows;
+    module6.value = [...(response.rows || [])].sort(
+      (a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime()
+    );
   });
 }
 
@@ -878,7 +883,7 @@ function initModule8() {
   instance.setOption({
     legend: {
       show: true,
-      itemGap: 10, // 缩小图例间距
+      itemGap: 10, // Reduce legend spacing
       data: [td('home.dataAggregation'), td('home.dataCleaning'), td('home.dataSharing')],
       icon: "circle",
       itemWidth: 6,
@@ -965,7 +970,7 @@ function initModule8() {
       {
         name: td('home.dataCleaning'),
         type: "line",
-        data: [0, 0, 0, 0, 0, 0, 0], // 用0占位，避免图例变灰
+        data: [0, 0, 0, 0, 0, 0, 0], // Use 0 placeholders to prevent the legend from turning gray.
         symbolSize: 8,
         itemStyle: {
           color: "#fa7f6f",
@@ -985,7 +990,7 @@ function initModule8() {
       {
         name: td('home.dataSharing'),
         type: "line",
-        data: [0, 0, 0, 0, 0, 0, 0], // 同上
+        data: [0, 0, 0, 0, 0, 0, 0], // Same as above
         symbolSize: 8,
         itemStyle: {
           color: "#72cddc",
@@ -1022,10 +1027,10 @@ onBeforeUnmount(() => {
   clearLicenseCountdown();
 });
 
-// 获取当前实例
+// Get the current instance
 const instance = getCurrentInstance();
 
-// 在组件销毁时移除事件监听
+// Remove event listener when component is destroyed
 onBeforeUnmount(() => {
   instance.appContext.config.globalProperties.$bus.off(
     "getsidebarStatus",
@@ -1057,7 +1062,7 @@ onMounted(() => {
     padding: 20px;
 
     .status-row {
-      margin-bottom: -20px; // 抵消最后一行 gutter 影响
+      margin-bottom: -20px; // Offset the effect of the last line of gutter
 
       .el-col {
         margin-bottom: 20px;
@@ -1215,7 +1220,7 @@ onMounted(() => {
           display: flex;
           justify-content: center;
 
-          // 图标圆角方形背景
+          // Icon rounded square background
           .icon-background {
             width: 40px;
             height: 40px;
@@ -1223,7 +1228,7 @@ onMounted(() => {
             position: relative;
           }
 
-          // 图标
+          // icon
           .icon {
             display: flex;
             justify-content: center;
@@ -1233,28 +1238,28 @@ onMounted(() => {
             line-height: 40px;
           }
 
-          // 背景色：主色
+          // Background color: main color
           .color-primary {
             background-image: linear-gradient(to bottom right,
                 #2162fc 30%,
                 #4f84fd 80%);
           }
 
-          // 背景色：橙色
+          // Background color: orange
           .color-orange {
             background-image: linear-gradient(to bottom right,
                 #f59040 30%,
                 #f9bd77 90%);
           }
 
-          // 背景色：淡蓝色
+          // Background color: light blue
           .color-pale-blue {
             background-image: linear-gradient(to bottom right,
                 #348bf2 10%,
                 #63abff 60%);
           }
 
-          // 背景色：粉红色
+          // Background color: pink
           .color-pink {
             background-image: linear-gradient(to bottom right,
                 #fb6594 20%,
@@ -1519,7 +1524,7 @@ onMounted(() => {
   border-radius: 50%;
   // border: 3px solid #fff;
   object-fit: cover;
-  // box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* 可选，加点阴影提升层次感 */
+  // box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* Optional, add some shadow to enhance the layering */
 }
 
 .userInfo .info-main .info-con {
@@ -1935,7 +1940,7 @@ onMounted(() => {
   // }
   ::v-deep {
 
-    // 列表表头
+    // List header
     .el-table thead {
       height: 53px;
 
@@ -2139,7 +2144,7 @@ onMounted(() => {
     }
 
     .card {
-      max-width: calc(50% - 8px); // 每行2个
+      max-width: calc(50% - 8px); // 2 per row
     }
   }
 }
@@ -2260,7 +2265,7 @@ onMounted(() => {
     height: auto !important;
 
     .cards {
-      flex-direction: column; // 改为一列
+      flex-direction: column; // Change to one column
       flex-wrap: wrap !important;
       gap: 12px;
     }

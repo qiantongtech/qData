@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.utils.model;
@@ -44,23 +30,23 @@ import java.util.Map;
 @Data
 public class TaskSaveReqInput extends BaseEntity {
 
-    @Schema(description = "任务名称", example = "")
+    @Schema(description = "Task name", example = "")
     private String name;
     private Long id;
-    /** 节点id */
-    @Schema(description = "节点id", example = "")
+    /** Node ID */
+    @Schema(description = "Node ID", example = "")
     private Long nodeId;
 
-    /** 节点编码 */
-    @Schema(description = "节点编码", example = "")
+    /** Node code */
+    @Schema(description = "Node code", example = "")
     private String nodeCode;
 
-    /** 任务id */
-    @Schema(description = "任务id", example = "")
+    /** Task ID */
+    @Schema(description = "Task ID", example = "")
     private Long taskId;
 
-    /** 任务编码 */
-    @Schema(description = "任务编码", example = "")
+    /** Task code */
+    @Schema(description = "Task code", example = "")
     private String taskCode;
 
     /**
@@ -70,25 +56,25 @@ public class TaskSaveReqInput extends BaseEntity {
      *   "value": "111111"
      * }
      *
-     * 	1.	PARAMETER：表示将参数作为 URL 参数传递。
-     * 	2.	BODY：表示参数作为请求体传递，通常在 POST 请求中使用。
-     * 	3.	HEADER：表示参数作为 HTTP 请求头的一部分传递。
+     *  1. PARAMETER: indicates that the parameter is passed as a URL parameter.
+     *  2. BODY: indicates that the parameter is passed as the request body, typically used in POST requests.
+     *  3. HEADER: indicates that the parameter is passed as part of the HTTP request header.
      */
     private List<Map<String, Object>> httpParams;
 
 
 
-    // 构造器
+    // Constructor
     public TaskSaveReqInput() {
-        this.httpParams = new ArrayList<>(); // 初始化 httpParams
+        this.httpParams = new ArrayList<>(); // Initialize httpParams
     }
 
-    // 方法：动态添加 httpParams
+    // Method: dynamically add httpParams
     public void addHttpParam(String prop, String httpParametersType, Object value) {
         Map<String, Object> param = new HashMap<>();
         param.put("prop", prop);
         param.put("httpParametersType", httpParametersType);
         param.put("value", value);
-        this.httpParams.add(param); // 将新参数添加到 httpParams 列表中
+        this.httpParams.add(param); // Add new parameter to the httpParams list
     }
 }

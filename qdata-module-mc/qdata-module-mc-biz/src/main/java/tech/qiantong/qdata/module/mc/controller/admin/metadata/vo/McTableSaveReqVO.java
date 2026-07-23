@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 元数据信息 创建/修改 Request VO MC_TABLE
+ * Metadata Information Create/Modify Request VO MC_TABLE
  *
  * @author qdata
  * @date 2026-02-11
@@ -106,36 +106,36 @@ public class McTableSaveReqVO extends BaseEntity {
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
 
-    //表格变更内容
+    //Table changes
     @TableField(exist = false)
     private String updateMsg;
 
-    //表格变更类型 1-注释变更 2-字段变更
+    //Table change type 1-Comment change 2-Field change
     @TableField(exist = false)
     private String updateType;
 
     @TableField(exist = false)
     private Long columnCount;
 
-    /** 表的行数 */
+    /** Number of rows in the table */
     @Schema(description = "行数", example = "")
     private Long rowCount;
 
-    /** 表的索引信息 */
+    /** Index information of the table */
     @Schema(description = "索引", example = "")
     private String tbIndex;
 
-    /** 表的分区字段信息 */
+    /** Table partition field information */
     @Schema(description = "分区字段", example = "")
     private String partitionKey;
     /**
-     * 存储引擎
+     * Storage engine
      */
     @Schema(description = "存储引擎", example = "")
     private String storageEngine;
@@ -144,19 +144,19 @@ public class McTableSaveReqVO extends BaseEntity {
     private Long responsibleDept;
 
     /**
-     * 主键字段
+     * Primary key field
      */
     @Schema(description = "主键字段", example = "")
     private Long primaryKey;
 
     /**
-     * 表创建时间
+     * Table creation time
      */
     @Schema(description = "表创建时间", example = "")
     private Date tbCreateTime;
 
     /**
-     * 数据更新时间
+     * Data update time
      */
     @Schema(description = "数据更新时间", example = "")
     private Date dataUpdateTime;

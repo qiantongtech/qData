@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.mybatis.core.util;
@@ -53,7 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * MyBatis 工具类
+ * MyBatis tool class
  */
 public class MyBatisUtils {
 
@@ -64,9 +50,9 @@ public class MyBatisUtils {
     }
 
     public static <T> Page<T> buildPage(PageParam pageParam, Collection<SortingField> sortingFields) {
-        // 页码 + 数量
+        // Page number + quantity
         Page<T> page = new Page<>(pageParam.getPageNum(), pageParam.getPageSize());
-        // 排序字段
+        // Sort field
         if (!CollectionUtil.isEmpty(sortingFields)) {
             page.addOrder(sortingFields.stream().map(sortingField -> SortingField.ORDER_ASC.equals(sortingField.getOrder()) ?
                             OrderItem.asc(sortingField.getField()) : OrderItem.desc(sortingField.getField()))
@@ -76,12 +62,12 @@ public class MyBatisUtils {
     }
 
     /**
-     * 将拦截器添加到链中
-     * 由于 MybatisPlusInterceptor 不支持添加拦截器，所以只能全量设置
+     * Add interceptor to chain
+     * Since MybatisPlusInterceptor does not support adding interceptors, it can only be set in full
      *
-     * @param interceptor 链
-     * @param inner       拦截器
-     * @param index       位置
+     * @param interceptor chain
+     * @param inner interceptor
+     * @param index position
      */
     public static void addInterceptor(MybatisPlusInterceptor interceptor, InnerInterceptor inner, int index) {
         List<InnerInterceptor> inners = new ArrayList<>(interceptor.getInterceptors());
@@ -90,12 +76,12 @@ public class MyBatisUtils {
     }
 
     /**
-     * 获得 Table 对应的表名
+     * Get the table name corresponding to Table
      * <p>
-     * 兼容 MySQL 转义表名 `t_xxx`
+     * Compatible with MySQL escaped table name `t_xxx`
      *
-     * @param table 表
-     * @return 去除转移字符后的表名
+     * @param table table
+     * @return table name after removing transfer characters
      */
     public static String getTableName(Table table) {
         String tableName = table.getName();
@@ -106,12 +92,12 @@ public class MyBatisUtils {
     }
 
     /**
-     * 构建 Column 对象
+     * Construct Column object
      *
-     * @param tableName  表名
-     * @param tableAlias 别名
-     * @param column     字段名
-     * @return Column 对象
+     * @param tableName table name
+     * @param tableAlias alias
+     * @param column field name
+     * @return Column object
      */
     public static Column buildColumn(String tableName, Alias tableAlias, String column) {
         if (tableAlias != null) {
@@ -121,14 +107,14 @@ public class MyBatisUtils {
     }
 
     /**
-     * 跨数据库的 find_in_set 实现
+     * Cross-database find_in_set implementation
      *
-     * @param column 字段名称
-     * @param value  查询值(不带单引号)
+     * @param column field name
+     * @param value query value (without single quotes)
      * @return sql
      */
     public static String findInSet(String column, Object value) {
-        // 这里不用SqlConstants.DB_TYPE，因为它是使用 primary 数据源的 url 推断出来的类型
+        // SqlConstants.DB_TYPE is not used here because it is a type inferred using the url of the primary data source.
         DbType dbType = JdbcUtils.getDbType();
         return DbTypeEnum.getFindInSetTemplate(dbType)
                 .replace("#{column}", column)

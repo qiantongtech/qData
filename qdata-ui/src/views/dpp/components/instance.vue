@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,13 +27,13 @@
     <el-table stripe height="580px" v-loading="loading" :data="jobLogList">
       <el-table-column
         width="150"
-        :label="td('dpp.instance.integratioTask.id', '编号')"
+        :label="td('dpp.instance.integratioTask.id', 'No.')"
         align="left"
         prop="id"
       />
       <el-table-column
         :show-overflow-tooltip="{ effect: 'light' }"
-        :label="td('dpp.instance.integratioTask.taskInstanceName', '任务名称')"
+        :label="td('dpp.instance.integratioTask.taskInstanceName', 'Task Instance Name')"
         align="left"
         width="300"
         prop="taskInstanceName"
@@ -43,7 +44,7 @@
       </el-table-column>
       <el-table-column
         width="100"
-        :label="td('dpp.instance.integratioTask.executionType', '执行类型')"
+        :label="td('dpp.instance.integratioTask.executionType', 'Execution Type')"
         align="left"
         prop="commandType"
       >
@@ -56,7 +57,7 @@
       </el-table-column>
       <el-table-column
         width="100"
-        :label="td('dpp.instance.integratioTask.executionStatus', '执行状态')"
+        :label="td('dpp.instance.integratioTask.executionStatus', 'Execution Status')"
         align="left"
         prop="status"
       >
@@ -69,7 +70,7 @@
       </el-table-column>
       <el-table-column
         width="160"
-        :label="td('dpp.instance.integratioTask.startTime', '开始时间')"
+        :label="td('dpp.instance.integratioTask.startTime', 'Start Time')"
         align="left"
         prop="startTime"
         :show-overflow-tooltip="{ effect: 'light' }"
@@ -82,7 +83,7 @@
       </el-table-column>
       <el-table-column
         width="160"
-        :label="td('dpp.instance.integratioTask.endTime', '结束时间')"
+        :label="td('dpp.instance.integratioTask.endTime', 'End Time')"
         align="left"
         prop="endTime"
         :show-overflow-tooltip="{ effect: 'light' }"
@@ -95,7 +96,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="td('dpp.instance.integratioTask.extractionCount', '抽取量')"
+        :label="td('dpp.instance.integratioTask.extractionCount', 'Extraction Count')"
         align="left"
         prop="extractionCount"
         width="80"
@@ -105,7 +106,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.instance.integratioTask.writeCount', '写入量')"
+        :label="td('dpp.instance.integratioTask.writeCount', 'Write Count')"
         align="left"
         prop="writeCount"
         width="80"
@@ -115,7 +116,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('dpp.instance.integratioTask.responsiblePerson', '责任人')"
+        :label="td('dpp.instance.integratioTask.responsiblePerson', 'Responsible Person')"
         align="left"
         prop="personChargeName"
         width="80"
@@ -125,7 +126,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="td('common.texts.operation', '操作')"
+        :label="td('common.texts.operation', 'Operation')"
         align="center"
         class-name="small-padding fixed-width"
         fixed="right"
@@ -138,7 +139,7 @@
             icon="View"
             @click="logDetailCatList(scope.row)"
             >{{
-              td("dpp.instance.integratioTask.detail", "查看日志")
+              td("dpp.instance.integratioTask.detail", "Detail")
             }}</el-button
           >
           <el-button
@@ -148,7 +149,7 @@
             icon="Download"
             @mousedown="(e) => e.preventDefault()"
           >
-            {{ td("dpp.instance.integratioTask.downloadLog", "下载日志") }}
+            {{ td("dpp.instance.integratioTask.downloadLog", "Download Log") }}
           </el-button>
         </template>
       </el-table-column>
@@ -168,14 +169,14 @@
     <template #footer>
       <div style="text-align: right">
         <el-button @click="visibleDialog = false">{{
-          td("common.button.close", "关闭")
+          td("common.button.close", "Close")
         }}</el-button>
       </div>
     </template>
   </el-dialog>
-  <!-- 调度日志详细 -->
+  <!-- Scheduling log details -->
   <el-dialog
-    :title="td('dpp.instance.integratioTask.detail', '查看日志')"
+    :title="td('dpp.instance.integratioTask.detail', 'Detail')"
     v-model="open"
     width="800px"
     :append-to="$refs['app-container']"
@@ -186,7 +187,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="open = false">{{
-          td("common.button.close", "关闭")
+          td("common.button.close", "Close")
         }}</el-button>
       </div>
     </template>
@@ -228,9 +229,9 @@ let queryParams = ref({
   taskId: undefined,
 });
 const formattedText = computed(() => {
-  return msg.value ? msg.value.replace(/\n/g, "<br>") : ""; // 将换行符替换为 <br> 标签
+  return msg.value ? msg.value.replace(/\n/g, "<br>") : ""; // Replace newlines with <br> tags
 });
-/** 导出按钮操作 */
+/** Export button action */
 async function handleExport(row) {
   proxy.download(
     "/dpp/etlTaskInstance/downloadLog",
@@ -249,7 +250,7 @@ async function logDetailCatList(row) {
 }
 const logDialogRef = ref(null);
 
-// 打开日志弹窗
+// Open the log pop-up window
 // const logDetailCatList = (row) => {
 //     logDialogRef.value.open(row.id);
 // };
@@ -257,7 +258,7 @@ const total = ref(0);
 const dateRange = ref([]);
 let jobLogList = ref([]);
 let loading = ref(false);
-/** 查询调度日志列表 */
+/** Query scheduling log list */
 function getList() {
   loading.value = true;
   queryParams.value.taskId = props.data.id;
@@ -287,7 +288,7 @@ watch(
   }
 );
 
-// 计算属性处理 v-model
+// Computed property handling v-model
 const visibleDialog = computed({
   get() {
     return props.visible;
@@ -297,12 +298,12 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-// 保存数据的方法
+// How to save data
 const saveData = () => {
   emit("confirm", localNode.value);
   emit("update:visible", false);

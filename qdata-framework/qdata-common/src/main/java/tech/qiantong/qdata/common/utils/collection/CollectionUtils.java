@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.collection;
@@ -45,9 +31,9 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 
 /**
- * Collection 工具类
+ * Collection tool class
  *
- * @author 芋道源码
+ * @author taro source code
  */
 public class CollectionUtils {
 
@@ -228,7 +214,7 @@ public class CollectionUtils {
                 .collect(Collectors.groupingBy(keyFunc, Collectors.mapping(valueFunc, Collectors.toList())));
     }
 
-    // 暂时没想好名字，先以 2 结尾噶
+    // I haven't thought of a name yet, so I'll end it with 2.
     public static <T, K, V> Map<K, Set<V>> convertMultiMap2(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();
@@ -246,36 +232,36 @@ public class CollectionUtils {
     }
 
     /**
-     * 对比老、新两个列表，找出新增、修改、删除的数据
+     * Compare the old and new lists to find out the newly added, modified, and deleted data
      *
-     * @param oldList  老列表
-     * @param newList  新列表
-     * @param sameFunc 对比函数，返回 true 表示相同，返回 false 表示不同
-     *                 注意，same 是通过每个元素的“标识”，判断它们是不是同一个数据
-     * @return [新增列表、修改列表、删除列表]
+     * @param oldList old list
+     * @param newList new list
+     * @param sameFunc comparison function, return true to indicate the same, return false to indicate different
+     * Note that same determines whether they are the same data through the "identification" of each element.
+     * @return [add list, modify list, delete list]
      */
     public static <T> List<List<T>> diffList(Collection<T> oldList, Collection<T> newList,
                                              BiFunction<T, T, Boolean> sameFunc) {
-        List<T> createList = new LinkedList<>(newList); // 默认都认为是新增的，后续会进行移除
+        List<T> createList = new LinkedList<>(newList); // By default, they are considered new and will be removed later.
         List<T> updateList = new ArrayList<>();
         List<T> deleteList = new ArrayList<>();
 
-        // 通过以 oldList 为主遍历，找出 updateList 和 deleteList
+        // Find updateList and deleteList by traversing mainly with oldList
         for (T oldObj : oldList) {
-            // 1. 寻找是否有匹配的
+            // 1. Find if there is a match
             T foundObj = null;
             for (Iterator<T> iterator = createList.iterator(); iterator.hasNext(); ) {
                 T newObj = iterator.next();
-                // 1.1 不匹配，则直接跳过
+                // 1.1 If it does not match, skip it directly.
                 if (!sameFunc.apply(oldObj, newObj)) {
                     continue;
                 }
-                // 1.2 匹配，则移除，并结束寻找
+                // 1.2 If it matches, remove it and end the search.
                 iterator.remove();
                 foundObj = newObj;
                 break;
             }
-            // 2. 匹配添加到 updateList；不匹配则添加到 deleteList 中
+            // 2. Matches are added to updateList; if they do not match, they are added to deleteList.
             if (foundObj != null) {
                 updateList.add(foundObj);
             } else {
@@ -308,7 +294,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return null;
         }
-        assert !from.isEmpty(); // 断言，避免告警
+        assert !from.isEmpty(); // Assert to avoid warnings
         T t = from.stream().max(Comparator.comparing(valueFunc)).get();
         return valueFunc.apply(t);
     }
@@ -317,7 +303,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return null;
         }
-        assert from.size() > 0; // 断言，避免告警
+        assert from.size() > 0; // Assert to avoid warnings
         T t = from.stream().min(Comparator.comparing(valueFunc)).get();
         return valueFunc.apply(t);
     }
@@ -332,7 +318,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return defaultValue;
         }
-        assert !from.isEmpty(); // 断言，避免告警
+        assert !from.isEmpty(); // Assert to avoid warnings
         return from.stream().map(valueFunc).filter(Objects::nonNull).reduce(accumulator).orElse(defaultValue);
     }
 

@@ -11,6 +11,8 @@ export default {
     parentIdRequired: 'Parent category cannot be empty',
     codeRequired: 'Code cannot be empty',
     nameRequired: '{nameLabel} cannot be empty',
+    addTitle: 'Add {nameLabel}',
+    modifyTitle: 'Edit {nameLabel}',
     editTitle: 'Edit'
   },
   catPage: {

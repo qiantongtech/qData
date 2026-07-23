@@ -1,29 +1,30 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
     <div class="dataBody">
         <el-row class="form-container" :gutter="20">
-            <!-- Logo 上传 -->
+            <!-- Logo upload -->
             <el-col :span="24">
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.loginLogo') }}</div>
                     <div class="form-input">
-                        <ImageUpload v-model="loginLogoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="loginLogoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
+                        <ImageUpload v-model="loginLogoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="loginLogoUpdate" :platForm="platForm"  />  <!-- Use components -->
                     </div>
                 </div>
             </el-col>
@@ -32,7 +33,7 @@
             <div class="form-item">
                 <div class="form-label">{{ td('sys.system.content.systemLogo') }}</div>
                 <div class="form-input">
-                    <ImageUpload v-model="logoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="logoUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
+                    <ImageUpload v-model="logoModelValue" :limit="1" :fileSize="10" :isShowTip="true" @update:modelValue="logoUpdate" :platForm="platForm"  />  <!-- Use components -->
                 </div>
             </div>
             </el-col>
@@ -41,12 +42,12 @@
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.loginCarousel') }}</div>
                     <div class="form-input">
-                        <ImageUpload v-model="carouselImageModelValue" :limit="3" :fileSize="10" :isShowTip="true" @update:modelValue="carouselImageUpdate" :platForm="platForm"  />  <!-- 使用组件 -->
+                        <ImageUpload v-model="carouselImageModelValue" :limit="3" :fileSize="10" :isShowTip="true" @update:modelValue="carouselImageUpdate" :platForm="platForm"  />  <!-- Use components -->
                     </div>
                 </div>
             </el-col>
 
-            <!-- 联系电话 -->
+            <!-- Contact number -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.contactPhone') }}</div>
@@ -56,7 +57,7 @@
                 </div>
             </el-col>
 
-            <!-- 电子邮箱 -->
+            <!-- Email -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.email') }}</div>
@@ -66,7 +67,7 @@
                 </div>
             </el-col>
 
-            <!-- 版权方 -->
+            <!-- Copyright owner -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.copyrightOwner') }}</div>
@@ -76,7 +77,7 @@
                 </div>
             </el-col>
 
-            <!-- 备案号 -->
+            <!-- Registration number -->
             <el-col :span="24" :xs="24">
                 <div class="form-item">
                     <div class="form-label">{{ td('sys.system.content.recordNo') }}</div>
@@ -90,7 +91,7 @@
             <div style="margin-top: 20px;">
                 <!--                <el-button @click="update" v-show="status">{{ td('common.button.update') }}</el-button>-->
                 <!--                <el-button @click="confirm" v-show="!status">{{ td('common.button.save') }}</el-button>-->
-                <el-button @click="confirm">{{ td('common.button.save') }}</el-button>
+                <el-button :loading="submitLoading" @click="confirm">{{ td('common.button.save') }}</el-button>
             </div>
 
         </el-row>
@@ -106,18 +107,19 @@ import { ref } from 'vue';
 
     const { td } = useDefaultLang();
     const { proxy } = getCurrentInstance();
+    const submitLoading = ref(false);
 
     const loginLogoModelValue = ref([])
     const logoModelValue = ref([])
     const carouselImageModelValue = ref([])
 
-    //存储平台名称
+    //Storage platform name
     const platForm = ref('aliyun-oss-qt')
-    //存储到服务器本地
+    //Store locally on the server
     // const platForm = ref('')
 
     const status = ref(true)
-    // 初始化 contentDetail 数据
+    // Initialize contentDetail data
     const contentDetail = ref({
         sysName: '',
         loginLogo: '',
@@ -141,12 +143,12 @@ import { ref } from 'vue';
         contentDetail.value.carouselImage = updatedFileList
     };
 
-    // 使用 getContent 来获取数据，而不是重新定义一个 getContent 函数
+    // Use getContent to get data instead of redefining a getContent function
     const fetchContent = async () => {
         try {
             contentDetail.value = {}
-            // 调用你从 API 导入的 getContent 方法
-            const res = await getContent(1);  // 假设请求的是 id 为 1 的数据
+            // Call the getContent method you imported from the API
+            const res = await getContent(1);  // Assume that the request is for data with id 1
             if(res.code == 200){
                 const data = res.data
                 if(data.loginLogo){
@@ -187,26 +189,28 @@ import { ref } from 'vue';
                 // console.log('------contentDetail.value-------',contentDetail.value)
             }
 
-            // this.$message.success('内容加载成功');
+            // this.$message.success('Content loaded successfully');
         } catch (error) {
-            // 错误处理
-            // this.$message.error('内容加载失败');
+            // Error handling
+            // this.$message.error('Content loading failed');
             console.error(td('sys.system.content.dataLoadFailed'), error);
         }
     };
 
-    // 在页面加载时自动调用 fetchContent
+    // Automatically call fetchContent when the page loads
     onMounted(() => {
         fetchContent();
     });
 
-    // 更新按钮点击事件
+    // Update button click event
     const update = () => {
         status.value = !status.value
     };
 
-    // 确认按钮点击事件
+    // Confirm button click event
     const confirm =  () => {
+        if (submitLoading.value) return;
+        submitLoading.value = true;
         proxy.$modal.confirm(td('sys.system.content.confirmSave')).then(function() {}).then(async () => {
             status.value = !status.value
             try {
@@ -216,15 +220,19 @@ import { ref } from 'vue';
                     fetchContent();
                     proxy.$modal.msgSuccess(td('sys.system.content.saveSuccess'));
                 } else {
-                    // 如果响应 code 不是 200，表示请求失败
+                    // If the response code is not 200, the request failed
                     proxy.$modal.msgError(td('sys.system.content.saveFailed'));
                 }
             } catch (error) {
-                // 捕获网络错误或请求失败的情况
-                console.error("请求失败:", error);
+                // Capture network errors or failed requests
+                console.error("Request failed:", error);
                 proxy.$modal.msgError(td('sys.system.content.saveException') + error.message);
+            } finally {
+                submitLoading.value = false;
             }
-        }).catch(() => {});
+        }).catch(() => {
+            submitLoading.value = false;
+        });
     };
 </script>
 
@@ -242,32 +250,32 @@ import { ref } from 'vue';
 
     .form-item {
         margin-bottom: 20px;
-        display: flex; /* 使用 Flexbox 布局 */
-        align-items: center; /* 垂直居中对齐 */
+        display: flex; /* Using Flexbox layout */
+        align-items: center; /* vertical center alignment */
     }
 
     .form-label {
         font-size: 16px;
         font-weight: 600;
         color: #333;
-        width: 120px; /* 标签的宽度 */
-        margin-right: 10px; /* 标签和输入框之间的间距 */
+        width: 120px; /* label width */
+        margin-right: 10px; /* spacing between label and input box */
     }
 
     .form-input {
         display: flex;
-        align-items: center; /* 输入框垂直居中对齐 */
-        width: 100%; /* 使输入框占满剩余宽度 */
+        align-items: center; /* Input box vertical center alignment */
+        width: 100%; /* Make the input box fill the remaining width */
     }
     .form-input-i {
         display: flex;
-        align-items: center; /* 输入框垂直居中对齐 */
-        width: 30%; /* 使输入框占满剩余宽度 */
+        align-items: center; /* Input box vertical center alignment */
+        width: 30%; /* Make the input box fill the remaining width */
     }
 
     .el-input {
-        flex-grow: 1; /* 使输入框占满剩余的空间 */
-        width: 30%; /* 确保输入框占据100%宽度 */
+        flex-grow: 1; /* Make the input box fill the remaining space */
+        width: 30%; /* Make sure the input box occupies 100% of the width */
     }
 
     .upload-demo {
@@ -291,13 +299,13 @@ import { ref } from 'vue';
 
     @media (max-width: 768px) {
         .form-item {
-            flex-direction: column; /* 屏幕较小时，标签和输入框竖排 */
-            align-items: flex-start; /* 左对齐 */
+            flex-direction: column; /* When the screen is smaller, labels and input boxes are arranged vertically */
+            align-items: flex-start; /* left aligned */
         }
 
         .form-label {
             margin-right: 0;
-            margin-bottom: 10px; /* 标签与输入框的垂直间距 */
+            margin-bottom: 10px; /* Vertical spacing between label and input box */
         }
     }
 </style>

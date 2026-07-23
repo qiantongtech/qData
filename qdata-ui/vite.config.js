@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import { defineConfig, loadEnv } from "vite";
@@ -24,9 +25,9 @@ export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd());
   const { VITE_APP_ENV, VITE_APP_FLOW_API } = env;
   return {
-    // 部署生产环境和开发环境下的URL。
-    // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    // 例如 https://www.qdata.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.qdata.vip/admin/，则设置 baseUrl 为 /admin/。
+    // Deploy URLs in production and development environments.
+    // By default, Vite will assume that your application is deployed on the root path of a domain name
+    // For example https://www.qdata.vip/. If the application is deployed on a subpath, you need to specify the subpath with this option. For example, if your application is deployed at https://www.qdata.vip/admin/, set the baseUrl to /admin/.
     base: VITE_APP_ENV === "production" ? "/" : "/",
     plugins: createVitePlugins(env, command === "build"),
     build: {
@@ -51,15 +52,15 @@ export default defineConfig(({ mode, command }) => {
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
-        // 设置路径
+        // Set path
         "~": path.resolve(__dirname, "./"),
-        // 设置别名
+        // Set alias
         "@": path.resolve(__dirname, "./src"),
       },
       // https://cn.vitejs.dev/config/#resolve-extensions
       extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
     },
-    // vite 相关配置
+    // Vite related configuration
     server: {
       port: 81,
       host: true,

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.utils;
@@ -63,16 +49,16 @@ public class DaTaskConverter {
     }
 
 
-    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // 默认条件类型为 "NONE"
-    private static final String DEFAULT_FLAG = "YES"; // 默认标志，表示节点启用
+    private static final String DEFAULT_CONDITION_TYPE = "NONE"; // Default condition type is "NONE"
+    private static final String DEFAULT_FLAG = "YES"; // Default flag, indicates node is enabled
 
 
-    // 默认配置常量
-    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // 默认环境编码
-    private static final String DEFAULT_WORKER_GROUP = "default"; // 默认工作组
-    private static final String DEFAULT_IS_CACHE = "NO"; // 默认不启用缓存
-    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // 默认任务优先级
-    private static final String DEFAULT_TASK_TYPE = "HTTP"; // 默认任务类型，SPARK或DATAX等
+    // Default config constants
+    private static final long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // Default environment code
+    private static final String DEFAULT_WORKER_GROUP = "default"; // Default worker group
+    private static final String DEFAULT_IS_CACHE = "NO"; // Cache disabled by default
+    private static final String DEFAULT_TASK_PRIORITY = "MEDIUM"; // Default task priority
+    private static final String DEFAULT_TASK_TYPE = "HTTP"; // Default task type, SPARK or DATAX etc.
     private static final String HTTP_METHOD = "PUT";
     private static final String HTTP_BODY = "";
     private static final String HTTP_CHECK_CONDITION = "STATUS_CODE_DEFAULT";
@@ -83,24 +69,24 @@ public class DaTaskConverter {
 
 
     public static DsTaskSaveReqDTO buildDsTaskSaveReq(TaskSaveReqInput input) {
-        // 创建返回实体
+        // Create return entity
         DsTaskSaveReqDTO dsTaskSaveReqDTO = new DsTaskSaveReqDTO();
 
-        // 1. 封装基础参数
-        dsTaskSaveReqDTO.setName(input.getName());  // 任务名
-        dsTaskSaveReqDTO.setDescription("");  // 描述为空
-        dsTaskSaveReqDTO.setExecutionType("PARALLEL");  // 写死执行类型为 "PARALLEL"
+        // 1. Set basic parameters
+        dsTaskSaveReqDTO.setName(input.getName());  // Task name
+        dsTaskSaveReqDTO.setDescription("");  // Empty description
+        dsTaskSaveReqDTO.setExecutionType("PARALLEL");  // Hardcoded execution type as "PARALLEL"
 
-        // 2. 封装节点信息，HTTP 类型
+        // 2. Set node information, HTTP type
         String taskDefinition = buildTaskDefinitionForHttp(input);
 
-        // 3. 构建任务关系
-        String taskRelation = buildTaskRelationJson(input);  // 默认关系类型为 "NONE"
+        // 3. Build task relation
+        String taskRelation = buildTaskRelationJson(input);  // Default relation type is "NONE"
 
-        // 4. 构建任务位置
+        // 4. Build task location
         String location = buildTaskNodeLocations(input);
 
-        // 设置任务的各个字段
+        // Set task fields
         dsTaskSaveReqDTO.setTaskDefinitionJson(taskDefinition);
         dsTaskSaveReqDTO.setTaskRelationJson(taskRelation);
         dsTaskSaveReqDTO.setLocations(location);
@@ -109,64 +95,64 @@ public class DaTaskConverter {
     }
 
     private static String buildTaskDefinitionForHttp(TaskSaveReqInput input) {
-        // 设置 HTTP 类型任务的参数
+        // Set HTTP task parameters
         Map<String, Object> taskMap = new HashMap<>();
 
-        taskMap.put("id", input.getNodeId());  // 使用传入的任务 ID
-        taskMap.put("name", input.getName());  // 写死任务名
-        taskMap.put("code", input.getNodeCode());  // 使用传入的任务 code
-        taskMap.put("version", 1);  // 写死版本
-        taskMap.put("description", "");  // 描述为空
-        taskMap.put("workerGroup",DEFAULT_WORKER_GROUP);  // 写死工作组
-        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE);  // 写死环境编码
-        taskMap.put("flag",  DEFAULT_FLAG); // 默认 flag 为 "YES"
-        taskMap.put("isCache", DEFAULT_IS_CACHE);  // 不缓存
-        taskMap.put("taskPriority", DEFAULT_TASK_PRIORITY);  // 中等优先级
-        taskMap.put("taskType", DEFAULT_TASK_TYPE);  // HTTP 类型任务
+        taskMap.put("id", input.getNodeId());  // Use the passed task ID
+        taskMap.put("name", input.getName());  // Hardcoded task name
+        taskMap.put("code", input.getNodeCode());  // Use the passed task code
+        taskMap.put("version", 1);  // Hardcoded version
+        taskMap.put("description", "");  // Empty description
+        taskMap.put("workerGroup",DEFAULT_WORKER_GROUP);  // Hardcoded worker group
+        taskMap.put("environmentCode", DEFAULT_ENVIRONMENT_CODE);  // Hardcoded environment code
+        taskMap.put("flag",  DEFAULT_FLAG); // Default flag is "YES"
+        taskMap.put("isCache", DEFAULT_IS_CACHE);  // No cache
+        taskMap.put("taskPriority", DEFAULT_TASK_PRIORITY);  // Medium priority
+        taskMap.put("taskType", DEFAULT_TASK_TYPE);  // HTTP type task
         taskMap.put("taskExecuteType", "BATCH");
 
-        // 任务参数
+        // Task parameters
         Map<String, Object> taskParams = new HashMap<>();
-        taskParams.put("localParams", new ArrayList<>());  // 默认空列表
-        taskParams.put("resourceList", new ArrayList<>());  // 默认空列表
-        taskParams.put("httpMethod", HTTP_METHOD);  // 默认 HTTP 方法为 GET
-        taskParams.put("httpBody", HTTP_BODY);  // 默认 HTTP body 空
-        taskParams.put("httpCheckCondition", HTTP_CHECK_CONDITION);  // 默认检查条件
-        taskParams.put("httpParams", input.getHttpParams());  // 使用传入的 httpParams
-        taskParams.put("url", defaultURL + "/"+ String.valueOf(input.getId()));  // 默认 URL
-        taskParams.put("condition", CONDITION);  // 默认条件为空
-        taskParams.put("connectTimeout", CONNECT_TIMEOUT);  // 默认连接超时 60000ms
-        taskParams.put("socketTimeout", SOCKET_TIMEOUT);  // 默认 socket 超时 60000ms
+        taskParams.put("localParams", new ArrayList<>());  // Default empty list
+        taskParams.put("resourceList", new ArrayList<>());  // Default empty list
+        taskParams.put("httpMethod", HTTP_METHOD);  // Default HTTP method is GET
+        taskParams.put("httpBody", HTTP_BODY);  // Default HTTP body empty
+        taskParams.put("httpCheckCondition", HTTP_CHECK_CONDITION);  // Default check condition
+        taskParams.put("httpParams", input.getHttpParams());  // Use the passed httpParams
+        taskParams.put("url", defaultURL + "/"+ String.valueOf(input.getId()));  // Default URL
+        taskParams.put("condition", CONDITION);  // Default condition is empty
+        taskParams.put("connectTimeout", CONNECT_TIMEOUT);  // Default connection timeout 60000ms
+        taskParams.put("socketTimeout", SOCKET_TIMEOUT);  // Default socket timeout 60000ms
 
-        // 将 taskParams 加入到 taskMap
+        // Add taskParams to taskMap
         taskMap.put("taskParams", taskParams);
 
-        // 返回 JSON 字符串
+        // Return JSON string
         return JSON.toJSONString(Collections.singletonList(taskMap));
     }
 
     private static String buildTaskRelationJson(TaskSaveReqInput input) {
-        // 构建任务关系
+        // Build task relation
         Map<String, Object> relationMap = new HashMap<>();
-        relationMap.put("id", input.getNodeId());  // 写死关系 ID
-        relationMap.put("preTaskCode", 0L);  // 前任务 code 写死为 0
-        relationMap.put("preTaskVersion", 0);  // 前任务版本号写死为 0
-        relationMap.put("postTaskCode", input.getNodeCode());  // 后任务 code 写死
-        relationMap.put("postTaskVersion", 1);  // 后任务版本号写死
-        relationMap.put("conditionType", DEFAULT_CONDITION_TYPE);  // 使用入参 conditionType
+        relationMap.put("id", input.getNodeId());  // Hardcoded relation ID
+        relationMap.put("preTaskCode", 0L);  // Pre-task code hardcoded as 0
+        relationMap.put("preTaskVersion", 0);  // Pre-task version hardcoded as 0
+        relationMap.put("postTaskCode", input.getNodeCode());  // Post-task code
+        relationMap.put("postTaskVersion", 1);  // Post-task version
+        relationMap.put("conditionType", DEFAULT_CONDITION_TYPE);  // Use input conditionType
 
-        // 返回 JSON 字符串
+        // Return JSON string
         return JSON.toJSONString(Collections.singletonList(relationMap));
     }
 
     private static String buildTaskNodeLocations(TaskSaveReqInput input) {
-        // 写死任务节点位置
+        // Hardcoded task node location
         Map<String, Object> locationMap = new HashMap<>();
-        locationMap.put("taskCode", input.getNodeCode());  // 任务 ID
-        locationMap.put("x", 138.4886474609375);  // 写死坐标 X
-        locationMap.put("y", 184.9232940673828);  // 写死坐标 Y
+        locationMap.put("taskCode", input.getNodeCode());  // Task ID
+        locationMap.put("x", 138.4886474609375);  // Hardcoded coordinate X
+        locationMap.put("y", 184.9232940673828);  // Hardcoded coordinate Y
 
-        // 返回位置的 JSON 字符串
+        // Return location JSON string
         return JSON.toJSONString(Collections.singletonList(locationMap));
     }
 
@@ -174,48 +160,48 @@ public class DaTaskConverter {
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {
-            // 如果转换失败，返回 null 或根据需要返回默认值
+            // If conversion fails, return null or a default value as needed
             System.err.println("Invalid number format: " + value);
-            return null; // 或者可以返回默认值，如 0L
+            return null; // Or return default value, e.g., 0L
         }
     }
 
     public static String longToString(Long value) {
         if (value == null) {
-            return null; // 或者返回空字符串 ""，根据需求调整
+            return null; // Or return empty string "", adjust as needed
         }
         return value.toString();
     }
     public static TaskDefinition getFirstTaskDefinition(ProcessDefinition definition) {
-        // 获取任务定义列表
+        // Get the task definition list
         List<TaskDefinition> taskDefinitionList = definition.getTaskDefinitionList();
 
-        // 判断列表是否为空，防止 IndexOutOfBoundsException
+        // Check if the list is empty, prevent IndexOutOfBoundsException
         if (taskDefinitionList != null && !taskDefinitionList.isEmpty()) {
-            // 返回第一个任务定义
+            // Return the first task definition
             return taskDefinitionList.get(0);
         }
 
-        // 如果列表为空，返回 null 或根据需要返回其他默认值
-        throw new ServiceException("da.error.scheduler.create", "创建调度器，失败！");
+        // If the list is empty, return null or other default value as needed
+        throw new ServiceException("da.error.scheduler.create", "Failed to create scheduler!");
     }
 
     /**
-     * 工具方法，生成 DsSchedulerSaveReqDTO。
+     * Utility method to generate DsSchedulerSaveReqDTO.
      *
-     * @param crontab Cron 表达式
-     * @param processDefinitionCode 任务编码
+     * @param crontab Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerSaveReqDTO
      */
     public static DsSchedulerSaveReqDTO createSchedulerRequest(String crontab, String processDefinitionCode) {
-        // 获取当前时间
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // 获取100年后的时间
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // 创建 DsSchedulerSaveReqDTO 并设置默认值
+        // Create DsSchedulerSaveReqDTO and set default values
         DsSchedulerSaveReqDTO dto = new DsSchedulerSaveReqDTO();
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
@@ -228,24 +214,24 @@ public class DaTaskConverter {
     }
 
     /**
-     * 工具方法，生成 DsSchedulerUpdateReqDTO。
+     * Utility method to generate DsSchedulerUpdateReqDTO.
      *
-     * @param id 调度ID
-     * @param crontab Cron 表达式
-     * @param processDefinitionCode 任务编码
+     * @param id Schedule ID
+     * @param crontab Cron expression
+     * @param processDefinitionCode Task code
      * @return DsSchedulerUpdateReqDTO
      */
     public static DsSchedulerUpdateReqDTO createSchedulerUpdateRequest(Long id, String crontab, String processDefinitionCode) {
-        // 获取当前时间
+        // Get current time
         String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // 获取100年后的时间
+        // Get time 100 years later
         long currentTime = System.currentTimeMillis();
         String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentTime + 100L * 365 * 24 * 60 * 60 * 1000));
 
-        // 创建 DsSchedulerUpdateReqDTO 并设置默认值
+        // Create DsSchedulerUpdateReqDTO and set default values
         DsSchedulerUpdateReqDTO dto = new DsSchedulerUpdateReqDTO();
-        dto.setId(id); // 设置调度ID
+        dto.setId(id); // Set schedule ID
         dto.setSchedule(String.format("{\"startTime\":\"%s\",\"endTime\":\"%s\",\"crontab\":\"%s\",\"timezoneId\":\"Asia/Shanghai\"}",
                 startTime, endTime, crontab));
         dto.setProcessDefinitionCode(processDefinitionCode);
@@ -257,12 +243,12 @@ public class DaTaskConverter {
     }
 
     public static DsStartTaskReqDTO createDsStartTaskReqDTO(String processDefinitionCode) {
-        // 获取当前日期，格式为 "yyyy-MM-dd"
+        // Get current date, format as "yyyy-MM-dd"
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        // 构造 scheduleTime 字段，固定格式 "yyyy-MM-dd 00:00:00"
+        // Construct scheduleTime field, fixed format "yyyy-MM-dd 00:00:00"
         String scheduleTime = String.format("{\"complementStartDate\":\"%s 00:00:00\",\"complementEndDate\":\"%s 00:00:00\"}", currentDate, currentDate);
 
-        // 使用 builder 模式创建 DsStartTaskReqDTO 对象，其他字段均为写死的值
+        // Use builder pattern to create DsStartTaskReqDTO object, other fields are hardcoded values
         return DsStartTaskReqDTO.builder()
                 .processDefinitionCode(JSONUtils.convertToLong(processDefinitionCode))
                 .failureStrategy("CONTINUE")

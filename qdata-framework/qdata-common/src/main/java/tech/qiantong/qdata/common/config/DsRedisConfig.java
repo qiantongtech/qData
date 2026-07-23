@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 用途: 读取 Redis 相关配置
+ * Purpose: Read Redis related configuration
  * </p>
  *
- * <p>对应 application.yml 中 ds.redis.* 的配置</p>
+ * <p>Corresponding to the configuration of ds.redis.* in application.yml</p>
  *
  * @author MING
  * @since 2025-04-28
@@ -20,22 +20,22 @@ import org.springframework.stereotype.Component;
 public class DsRedisConfig {
 
     /**
-     * Redis 服务地址
+     * Redis service address
      */
     private String host;
 
     /**
-     * Redis 服务端口
+     * Redis service port
      */
     private Integer port;
 
     /**
-     * Redis 使用的数据库索引
+     * Database index used by Redis
      */
     private Integer database;
 
     /**
-     * Redis 密码
+     * Redis password
      */
     private String password;
 }

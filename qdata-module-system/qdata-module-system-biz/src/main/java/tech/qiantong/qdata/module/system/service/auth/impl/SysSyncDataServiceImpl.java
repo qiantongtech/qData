@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.auth.impl;
@@ -60,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 处理认证平台推送的数据
+ * Handle data pushed from authentication platform
  */
 @Service
 public class SysSyncDataServiceImpl implements SysSyncDataService {
@@ -75,7 +61,7 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
     private SysUserRoleMapper sysUserRoleMapper;
 
     /**
-     * 处理认证平台推送的数据
+     * Handle data pushed from authentication platform
      *
      * @param jsonObject
      * @return
@@ -84,33 +70,33 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
         try {
             String mdType = jsonObject.getString("mdType");
             JSONArray masterData = jsonObject.getJSONArray("masterData");
-            //部门数据
+            // Department data
             if ("deptdocs".equals(mdType)) {
                 deptData(masterData);
             }
-            //人员数据
+            // Personnel data
             else if ("psndocs".equals(mdType)) {
                 userData(masterData);
             }
-            log.info("=================同步成功=================");
+            log.info("=================Sync succeeded=================");
             AjaxResult ajaxResult = new AjaxResult();
             ajaxResult.put("success", true);
             return ajaxResult;
         } catch (Exception e) {
-            log.info("接收认证平台推送的数据处理异常:{}", e);
+            log.info("Error processing data pushed from authentication platform: {}", e);
             return AjaxResult.error();
         }
     }
 
     /**
-     * 处理认证平台推送的用户数据
+     * Handle user data pushed from authentication platform
      *
      * @param masterData
      */
     private void userData(JSONArray masterData) {
         ArrayList<SysUser> sysUsers = new ArrayList<>();
 
-        //查询获取认证平台id不为空的数据
+        // Query data where authentication platform ID is not empty
         SysUser user = new SysUser();
         List<SysUser> sysUserList = sysUserMapper.selectUserAllList(user);
         sysUserList = sysUserList.stream().filter(item -> StringUtils.isNotBlank(item.getAuthId())).collect(Collectors.toList());
@@ -125,7 +111,7 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
             SysUser sysUser = new SysUser();
             String idHubId = RSAUtil.decryptWithPublicKey(dataJSONObject.getString("idHubId"));
             String userName = RSAUtil.decryptWithPublicKey(dataJSONObject.getString("userName"));
-            //如果是admin 忽略
+            // If admin, skip
             if ("admin".equals(userName)) continue;
             String nickName = RSAUtil.decryptWithPublicKey(dataJSONObject.getString("nickName"));
             String deptId = RSAUtil.decryptWithPublicKey(dataJSONObject.getString("deptId"));
@@ -141,7 +127,7 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
             sysUser.setUserName(userName);
             sysUser.setNickName(nickName);
             try {
-                //TODO 多个部门的数据导入不进去 冰凤框架deptId设置的为Long
+                // TODO: Multi-department data import fails; framework deptId is set as Long
                 sysUser.setDeptId(StringUtils.isBlank(deptId) ? null : Long.valueOf(deptId));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -165,11 +151,11 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
             sysUsers.add(sysUser);
         }
 
-        //重新查询获取全部用户数据
+        // Re-query to get all user data
         sysUserList = sysUserMapper.selectUserAllList(user);
 
         ArrayList<SysUserRole> userRoles = new ArrayList<>();
-        //因为userId为自增  存储的时候获取不到userId, 所以再循环一遍存储关联关系
+        // userId is auto-increment, cannot get userId during insert, so loop again to store associations
         for (SysUser sysUser : sysUserList) {
             if (StringUtils.isNotBlank(sysUser.getAuthId()) && !userMap.containsKey(sysUser.getAuthId())) {
                 RelUserAuthProductDO productDO = new RelUserAuthProductDO();
@@ -188,13 +174,13 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
     }
 
     /**
-     * 处理认证平台推送的科室数据
+     * Handle department data pushed from authentication platform
      *
      * @param masterData
      */
     private void deptData(JSONArray masterData) {
         ArrayList<SysDept> sysIdHubDepts = new ArrayList<>();
-        //解密数据
+        // Decrypt data
         for (int i = 0; i < masterData.size(); i++) {
             JSONObject dataJSONObject = masterData.getJSONObject(i);
             SysDept sysDept = new SysDept();
@@ -219,13 +205,13 @@ public class SysSyncDataServiceImpl implements SysSyncDataService {
         }
         SysDept dept = new SysDept();
         List<SysDept> sysDeptList = sysDeptMapper.selectDeptListAll(dept);
-        // 使用 HashMap 存储 sysDeptList 中的 DeptId 和对应的 SysDept
+        // Store sysDeptList DeptId and corresponding SysDept in HashMap
         Map<String, SysDept> deptMap = new HashMap<>();
         for (SysDept sys : sysDeptList) {
             deptMap.put(sys.getDeptId().toString(), sys);
         }
 
-        // 遍历 sysIdHubDepts，根据是否存在于 deptMap 中决定更新或插入
+        // Iterate sysIdHubDepts, update or insert based on existence in deptMap
         for (SysDept dep : sysIdHubDepts) {
             if (deptMap.containsKey(dep.getDeptId().toString())) {
                 sysDeptMapper.updateDept(dep);

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 元数据字段信息 - 日志Service接口
+ * Metadata field information - Log Service interface
  *
  * @author qdata
  * @date 2026-03-10
@@ -20,62 +20,62 @@ import java.util.Map;
 public interface IMcColumnLogService extends IService<McColumnLogDO> {
 
     /**
-     * 获得元数据字段信息 - 日志分页列表
+     * Get metadata field information - log paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 元数据字段信息 - 日志分页列表
+     * @param pageReqVO paging request
+     * @return metadata field information - log paging list
      */
     PageResult<McColumnLogDO> getMcColumnLogPage(McColumnLogPageReqVO pageReqVO);
 
     /**
-     * 创建元数据字段信息 - 日志
+     * Create metadata field information - log
      *
-     * @param createReqVO 元数据字段信息 - 日志信息
-     * @return 元数据字段信息 - 日志编号
+     * @param createReqVO metadata field information - log information
+     * @return metadata field information - log number
      */
     Long createMcColumnLog(McColumnLogSaveReqVO createReqVO);
 
     /**
-     * 批量创建元数据字段信息 - 日志
+     * Create metadata field information in batches - Log
      *
-     * @param columnDOList 元数据字段信息列表
-     * @return 元数据字段信息
+     * @param columnDOList metadata field information list
+     * @return metadata field information
      */
     Long createMcColumnLog(List<McColumnDO> columnDOList);
 
     /**
-     * 更新元数据字段信息 - 日志
+     * Update metadata field information - Log
      *
-     * @param updateReqVO 元数据字段信息 - 日志信息
+     * @param updateReqVO metadata field information - log information
      */
     int updateMcColumnLog(McColumnLogSaveReqVO updateReqVO);
 
     /**
-     * 删除元数据字段信息 - 日志
+     * Delete metadata field information - Log
      *
-     * @param idList 元数据字段信息 - 日志编号
+     * @param idList metadata field information - log number
      */
     int removeMcColumnLog(Collection<Long> idList);
 
     /**
-     * 获得元数据字段信息 - 日志详情
+     * Get metadata field information - log details
      *
-     * @param id 元数据字段信息 - 日志编号
-     * @return 元数据字段信息 - 日志
+     * @param id metadata field information - log number
+     * @return metadata field information - log
      */
     McColumnLogDO getMcColumnLogById(Long id);
 
     /**
-     * 获得全部元数据字段信息 - 日志列表
+     * Get all metadata field information - log list
      *
-     * @return 元数据字段信息 - 日志列表
+     * @return metadata field information - log list
      */
     List<McColumnLogDO> getMcColumnLogList();
 
     /**
-     * 获得全部元数据字段信息 - 日志 Map
+     * Get all metadata field information - Log Map
      *
-     * @return 元数据字段信息 - 日志 Map
+     * @return metadata field information - Log Map
      */
     Map<Long, McColumnLogDO> getMcColumnLogMap();
 

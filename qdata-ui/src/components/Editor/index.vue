@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -53,42 +54,42 @@ const { t } = useI18n();
 const { proxy } = getCurrentInstance();
 
 const quillEditorRef = ref();
-const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传的图片服务器地址
+const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // Uploaded image server address
 const headers = ref({
   Authorization: "Bearer " + getToken()
 });
 
 const props = defineProps({
-  /* 编辑器的内容 */
+  /* Editor content */
   modelValue: {
     type: String,
   },
-  /* 高度 */
+  /* height */
   height: {
     type: Number,
     default: null,
   },
-  /* 最小高度 */
+  /* minimum height */
   minHeight: {
     type: Number,
     default: null,
   },
-  /* 只读 */
+  /* read only */
   readOnly: {
     type: Boolean,
     default: false,
   },
-  /* 上传文件大小限制(MB) */
+  /* Upload file size limit (MB) */
   fileSize: {
     type: Number,
     default: 5,
   },
-  /* 类型（base64格式、url格式） */
+  /* Type (base64 format, url format) */
   type: {
     type: String,
     default: "url",
   },
-  /* 默认占位符 */
+  /* Default placeholder */
   placeholder: {
     type: String,
     default: "",
@@ -102,18 +103,18 @@ const options = ref({
   bounds: document.body,
   debug: "warn",
   modules: {
-    // 工具栏配置
+    // Toolbar configuration
     toolbar: [
-      ["bold", "italic", "underline", "strike"],      // 加粗 斜体 下划线 删除线
-      ["blockquote", "code-block"],                   // 引用  代码块
-      [{ list: "ordered" }, { list: "bullet" }],      // 有序、无序列表
-      [{ indent: "-1" }, { indent: "+1" }],           // 缩进
-      [{ size: ["small", false, "large", "huge"] }],  // 字体大小
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],        // 标题
-      [{ color: [] }, { background: [] }],            // 字体颜色、字体背景颜色
-      [{ align: [] }],                                // 对齐方式
-      ["clean"],                                      // 清除文本格式
-      ["link", "image", "video"]                      // 链接、图片、视频
+      ["bold", "italic", "underline", "strike"],      // Bold italic underline strikethrough
+      ["blockquote", "code-block"],                   // Quote code block
+      [{ list: "ordered" }, { list: "bullet" }],      // Ordered and unordered lists
+      [{ indent: "-1" }, { indent: "+1" }],           // indent
+      [{ size: ["small", false, "large", "huge"] }],  // font size
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],        // Title
+      [{ color: [] }, { background: [] }],            // Font color, font background color
+      [{ align: [] }],                                // Alignment
+      ["clean"],                                      // clear text format
+      ["link", "image", "video"]                      // Links, pictures, videos
     ],
   },
   placeholder: effectivePlaceholder.value,
@@ -138,9 +139,9 @@ watch(() => props.modelValue, (v) => {
   }
 }, { immediate: true });
 
-// 如果设置了上传地址则自定义图片上传事件
+// If the upload address is set, customize the image upload event
 onMounted(() => {
-  // 设置 CSS 变量用于国际化 Quill 编辑器的工具栏文本
+  // Setting CSS variables for internationalizing Quill editor toolbar text
   const editorStyles = document.documentElement.style;
   editorStyles.setProperty('--ql-text', t('components.editor.text'));
   editorStyles.setProperty('--ql-heading-1', t('components.editor.heading1'));
@@ -156,7 +157,7 @@ onMounted(() => {
   editorStyles.setProperty('--ql-video-placeholder', t('components.editor.videoPlaceholder'));
   editorStyles.setProperty('--ql-save', t('components.editor.save'));
 
-  // 手动更新工具栏按钮的显示文本
+  // Manually update the display text of a toolbar button
   updateQuillToolbarLabels();
 
   if (props.type == 'url') {
@@ -172,15 +173,15 @@ onMounted(() => {
   }
 });
 
-// 更新 Quill 编辑器工具栏标签
+// Update Quill editor toolbar labels
 function updateQuillToolbarLabels() {
   setTimeout(() => {
-    // 更新标题下拉菜单标签
+    // Update title dropdown label
     const headerPicker = document.querySelector('.ql-snow .ql-picker.ql-header');
     if (headerPicker) {
       const label = headerPicker.querySelector('.ql-picker-label');
       if (label) {
-        // 直接设置标签的显示文本（创建一个 span 来显示文本）
+        // Directly set the display text of the label (create a span to display the text)
         let labelText = label.querySelector('.ql-picker-label-text');
         if (!labelText) {
           labelText = document.createElement('span');
@@ -188,7 +189,7 @@ function updateQuillToolbarLabels() {
           label.appendChild(labelText);
         }
 
-        // 更新标签文本的函数
+        // Function to update label text
         const updateHeaderLabel = () => {
           const value = label.getAttribute('data-value');
           if (value === '1') labelText.textContent = t('components.editor.heading1');
@@ -200,10 +201,10 @@ function updateQuillToolbarLabels() {
           else labelText.textContent = t('components.editor.text');
         };
 
-        // 初始化时更新一次
+        // Update once during initialization
         updateHeaderLabel();
 
-        // 添加事件监听器，监听选项变化
+        // Add event listener to monitor option changes
         headerPicker.addEventListener('click', updateHeaderLabel);
       }
 
@@ -220,12 +221,12 @@ function updateQuillToolbarLabels() {
       });
     }
 
-    // 更新字体下拉菜单标签
+    // Update font dropdown label
     const fontPicker = document.querySelector('.ql-snow .ql-picker.ql-font');
     if (fontPicker) {
       const fontLabel = fontPicker.querySelector('.ql-picker-label');
       if (fontLabel) {
-        // 直接设置标签的显示文本
+        // Directly set the display text of the label
         let fontLabelText = fontLabel.querySelector('.ql-picker-label-text');
         if (!fontLabelText) {
           fontLabelText = document.createElement('span');
@@ -233,7 +234,7 @@ function updateQuillToolbarLabels() {
           fontLabel.appendChild(fontLabelText);
         }
 
-        // 更新标签文本的函数
+        // Function to update label text
         const updateFontLabel = () => {
           const value = fontLabel.getAttribute('data-value');
           if (value === 'serif') fontLabelText.textContent = t('components.editor.serifFont');
@@ -241,10 +242,10 @@ function updateQuillToolbarLabels() {
           else fontLabelText.textContent = t('components.editor.standardFont');
         };
 
-        // 初始化时更新一次
+        // Update once during initialization
         updateFontLabel();
 
-        // 添加事件监听器，监听选项变化
+        // Add event listener to monitor option changes
         fontPicker.addEventListener('click', updateFontLabel);
       }
 
@@ -257,33 +258,33 @@ function updateQuillToolbarLabels() {
       });
     }
 
-    // 更新链接工具提示
+    // Update link tooltip
     document.querySelectorAll('.ql-snow .ql-tooltip[data-mode="link"]').forEach((tooltip) => {
       tooltip.setAttribute('data-link-placeholder', t('components.editor.linkPlaceholder'));
     });
 
-    // 更新视频工具提示
+    // Update video tooltips
     document.querySelectorAll('.ql-snow .ql-tooltip[data-mode="video"]').forEach((tooltip) => {
       tooltip.setAttribute('data-video-placeholder', t('components.editor.videoPlaceholder'));
     });
 
-    // 更新保存按钮
+    // Update save button
     document.querySelectorAll('.ql-snow .ql-tooltip.ql-editing a.ql-action').forEach((action) => {
       action.setAttribute('data-save-text', t('components.editor.save'));
     });
   }, 100);
 }
 
-// 上传前校检格式和大小
+// Check format and size before uploading
 function handleBeforeUpload(file) {
   const type = ["image/jpeg", "image/jpg", "image/png", "image/svg"];
   const isJPG = type.includes(file.type);
-  //检验文件格式
+  //Check file format
   if (!isJPG) {
     proxy.$modal.msgError(t('components.editor.imageFormatError'));
     return false;
   }
-  // 校检文件大小
+  // Proof file size
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
@@ -294,24 +295,24 @@ function handleBeforeUpload(file) {
   return true;
 }
 
-// 上传成功处理
+// Upload successfully processed
 function handleUploadSuccess(res, file) {
-  // 如果上传成功
+  // If the upload is successful
   if (res.url) {
-    // 获取富文本实例
+    // Get rich text instance
     let quill = toRaw(quillEditorRef.value).getQuill();
-    // 获取光标位置
+    // Get cursor position
     let length = quill.selection.savedRange.index;
-    // 插入图片，res.url为服务器返回的图片链接地址
+    // Insert a picture, res.url is the picture link address returned by the server
     quill.insertEmbed(length, "image", import.meta.env.VITE_APP_BASE_API + '/profile/' + res.path + res.filename);
-    // 调整光标到最后
+    // Adjust the cursor to the end
     quill.setSelection(length + 1);
   } else {
     proxy.$modal.msgError(t('components.editor.imageUploadFailed'));
   }
 }
 
-// 上传失败处理
+// Upload failure handling
 function handleUploadError() {
   proxy.$modal.msgError(t('components.editor.imageUploadFailed'));
 }
@@ -328,7 +329,7 @@ function handleUploadError() {
 .quill-img {
   display: none;
 }
-/* 使用更强的选择器权重覆盖 Quill 默认样式 */
+/* Override Quill default styles with stronger selector weights */
 :deep(.ql-snow .ql-tooltip[data-mode="link"])::before {
   content: attr(data-link-placeholder) !important;
 }
@@ -360,7 +361,7 @@ function handleUploadError() {
 .ql-snow .ql-picker.ql-header .ql-picker-item::before {
   content: var(--ql-text, "文本");
 }
-/* 隐藏下拉菜单标签和列表项的伪元素，使用我们设置的 textContent 来显示文本 */
+/* Hide the pseudo-element of the drop-down menu label and list item, and use the textContent we set to display the text */
 .ql-snow .ql-picker.ql-header .ql-picker-label::before,
 .ql-snow .ql-picker.ql-header .ql-picker-item::before {
   opacity: 0 !important;

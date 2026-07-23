@@ -1,6 +1,6 @@
 import request from '@/utils/request.js';
 
-// 查询字段元数据列表
+// Query field metadata list
 export function listColumn(query) {
     return request({
         url: '/mc/column/list',
@@ -9,7 +9,7 @@ export function listColumn(query) {
     });
 }
 
-// 查询字段元数据详细
+// Query field metadata details
 export function getColumn(id) {
     return request({
         url: '/mc/column/' + id,
@@ -17,7 +17,7 @@ export function getColumn(id) {
     });
 }
 
-// 新增字段元数据
+// Add new field metadata
 export function addColumn(data) {
     return request({
         url: '/mc/column',
@@ -26,7 +26,7 @@ export function addColumn(data) {
     });
 }
 
-// 修改字段元数据
+// Modify field metadata
 export function updateColumn(data) {
     return request({
         url: '/mc/column',
@@ -35,7 +35,7 @@ export function updateColumn(data) {
     });
 }
 
-// 删除字段元数据
+// Remove field metadata
 export function delColumn(id) {
     return request({
         url: '/mc/column/' + id,
@@ -43,7 +43,7 @@ export function delColumn(id) {
     });
 }
 
-// 修改字段元数据状态
+// Modify field metadata status
 export function updateColumnStatus(data) {
     return request({
         url: '/mc/column/toggle',
@@ -52,7 +52,7 @@ export function updateColumnStatus(data) {
     });
 }
 
-// 暂存字段元数据
+// Staging field metadata
 export function draftColumn(data) {
     return request({
         url: '/mc/column/draft',
@@ -61,7 +61,7 @@ export function draftColumn(data) {
     });
 }
 
-// 获取库元数据可删除的列
+// Get the deleteable columns of library metadata
 export function batchDeleteCheck(id) {
     return request({
         url: '/mc/column/batchDeleteCheck/' + id,

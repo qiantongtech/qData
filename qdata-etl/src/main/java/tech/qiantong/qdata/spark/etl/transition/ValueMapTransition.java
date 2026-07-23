@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.spark.sql.*;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 import static com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat;
 
 /**
- * 值映射
+ * Value mapping
  */
 public class ValueMapTransition implements Transition {
 
@@ -34,9 +35,9 @@ public class ValueMapTransition implements Transition {
     @Override
     public Dataset<Row> transition(SparkSession spark, Dataset<Row> dataset, JSONObject transition, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始值映射节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, "Starting value mapping node");
+        LogUtils.writeLog(logParams, "Task start time: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
+        LogUtils.writeLog(logParams, "Task parameters: " + transition.toJSONString(PrettyFormat));
         JSONObject parameter = transition.getJSONObject("parameter");
 
 
@@ -45,30 +46,33 @@ public class ValueMapTransition implements Transition {
         String defaultValue = parameter.getString("defaultValue");
         JSONArray tableFields = parameter.getJSONArray("tableFields");
 
-        // 校验参数合法性
+        // Verify the legality of parameters
         if (StringUtils.isEmpty(inputField)) {
-            throw new IllegalArgumentException("使用的字段名称不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.source.field.required", "The source field name is required"));
         }
         if (StringUtils.isEmpty(outputField)) {
-            throw new IllegalArgumentException("目标字段不能为空！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.target.field.required", "The target field is required"));
         }
 //        if (StringUtils.isEmpty(defaultValue)) {
-//            throw new IllegalArgumentException("不匹配时的默认值不能为空！");
+// throw new IllegalArgumentException("The default value when not matching cannot be empty!");
 //        }
         if (tableFields == null || tableFields.isEmpty()) {
-            throw new IllegalArgumentException("值映射列表不能为空且必须为非空数组！");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "etl.error.value.map.list.invalid", "The value mapping list must be a non-empty array"));
         }
 
 
-        // 构造映射表 Map<原值, 映射值>
+        // Construct mapping table Map<original value, mapped value>
         Map<String, String> mappingMap = new HashMap<>();
         for (int i = 0; i < tableFields.size(); i++) {
             JSONObject mapItem = tableFields.getJSONObject(i);
             mappingMap.put(mapItem.getString("source"), mapItem.getString("target"));
         }
-        LogUtils.writeLog(logParams, "任务参数：" + transition.toJSONString(PrettyFormat));
+        LogUtils.writeLog(logParams, "Task parameters: " + transition.toJSONString(PrettyFormat));
 
-        // 构建 when...otherwise 表达式
+        // Constructing when...otherwise expressions
         Column mappedColumn = null;
         for (Map.Entry<String, String> entry : mappingMap.entrySet()) {
             Column condition = functions.col(inputField).equalTo(entry.getKey());
@@ -77,14 +81,14 @@ public class ValueMapTransition implements Transition {
                     : mappedColumn.when(condition, result);
         }
 
-        // 设置默认值
+        // Set default value
         if (defaultValue != null) {
             mappedColumn = mappedColumn.otherwise(functions.lit(defaultValue));
         } else {
             mappedColumn = mappedColumn.otherwise(functions.col(inputField));
         }
 
-        // 添加映射列
+        // Add mapping column
         Dataset<Row> result;
         if (inputField.equals(outputField)) {
             result = dataset.withColumn(inputField, mappedColumn);

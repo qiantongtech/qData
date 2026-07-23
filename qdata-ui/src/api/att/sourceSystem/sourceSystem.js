@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询来源系统列表
+// Query source system list
 export function listSourceSystem(query) {
   return request({
     url: '/att/sourceSystem/list',
@@ -26,7 +27,7 @@ export function listSourceSystem(query) {
   })
 }
 
-// 查询所有来源系统列表
+// Query the list of all source systems
 export function listValidSourceSystem(query) {
   return request({
     url: '/att/sourceSystem/listValid',
@@ -35,7 +36,7 @@ export function listValidSourceSystem(query) {
   })
 }
 
-// 查询来源系统详细
+// Query source system details
 export function getSourceSystem(id) {
   return request({
     url: '/att/sourceSystem/' + id,
@@ -43,7 +44,7 @@ export function getSourceSystem(id) {
   })
 }
 
-// 新增来源系统
+// Add source system
 export function addSourceSystem(data) {
   return request({
     url: '/att/sourceSystem',
@@ -52,7 +53,7 @@ export function addSourceSystem(data) {
   })
 }
 
-// 修改来源系统
+// Modify source system
 export function updateSourceSystem(data) {
   return request({
     url: '/att/sourceSystem',
@@ -61,7 +62,7 @@ export function updateSourceSystem(data) {
   })
 }
 
-// 删除来源系统
+// Delete source system
 export function delSourceSystem(id) {
   return request({
     url: '/att/sourceSystem/' + id,

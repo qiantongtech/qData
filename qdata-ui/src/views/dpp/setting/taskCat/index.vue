@@ -1,19 +1,21 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
+
 <template>
   <div class="app-container" ref="app-container">
     <div class="pagecont-top" v-show="showSearch">
@@ -22,7 +24,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        
+
         v-show="showSearch"
         @submit.prevent
       >
@@ -228,6 +230,7 @@
               link
               type="danger"
               icon="Delete"
+              :disabled="scope.row.validFlag === true"
               @click="handleDelete(scope.row)"
               v-hasPermi="['att:taskCat:remove']"
               >{{ td("common.button.delete") }}</el-button
@@ -245,7 +248,7 @@
             /> -->
     </div>
 
-    <!-- 添加或修改数据集成数据集成类目管理对话框 -->
+    <!-- Add or modify data integration data integration category management dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -270,6 +273,8 @@
             <el-form-item
               :label="td('dpp.setting.taskCat.categoryName')"
               prop="name"
+              required
+              :show-message="false"
              :label-position="labelPosition">
               <el-input
                 v-model="form.name"
@@ -352,14 +357,14 @@
           <el-button size="mini" @click="cancel">{{
             td("common.button.cancel")
           }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{
             td("common.button.confirm")
           }}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- 数据集成数据集成类目管理详情对话框 -->
+    <!-- Data Integration Data Integration Category Management Details Dialog Box -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -446,7 +451,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
@@ -522,6 +527,9 @@ import {
   delAttTaskCat,
   addAttTaskCat,
   updateAttTaskCat,
+  hasIntegrationTask,
+  isTaskCatNameUsed,
+  getTaskCatIntegrationTaskCount,
 } from "@/api/att/cat/taskCat/taskCat";
 import { getToken } from "@/utils/auth";
 import useUserStore from "@/store/system/user";
@@ -529,10 +537,32 @@ import useUserStore from "@/store/system/user";
 const { td } = useDefaultLang();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
+const originalName = ref("");
+let taskCatNameMessageInstance = null;
+let taskCatNameMessageText = "";
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
+
+async function withRequestWarning(requestPromise) {
+  try {
+    return await requestPromise;
+  } catch (error) {
+    showRequestWarning(error);
+    throw error;
+  }
+}
 
 const AttTaskCatList = ref([]);
 
-// 列显隐状态
+// Show hidden status
 const columnVisible = ref({
   1: true,
   2: true,
@@ -544,7 +574,7 @@ const columnVisible = ref({
   14: true,
 });
 
-// 列配置（使用计算属性，确保国际化文本能响应语言切换）
+// Column configuration (use computed properties to ensure internationalized text responds to language switches)
 const columns = computed(() => [
   {
     key: 1,
@@ -590,9 +620,9 @@ const columns = computed(() => [
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -611,19 +641,19 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/AttTaskCat/importData",
 });
 
@@ -642,8 +672,7 @@ const data = reactive({
   rules: {
     name: [
       {
-        required: true,
-        message: td("dpp.setting.taskCat.nameRequired"),
+        validator: validateTaskCatName,
         trigger: "blur",
       },
     ],
@@ -664,7 +693,7 @@ watch(
     getList();
   }
 );
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -673,32 +702,38 @@ function toggleExpandAll() {
   });
 }
 
-/** 查询数据集成数据集成类目管理列表 */
+/** Query data integration data integration category management list */
 function getList() {
   loading.value = true;
   queryParams.value.projectId = userStore.projectId;
   queryParams.value.projectCode = userStore.projectCode;
-  listAttTaskCat(queryParams.value).then((response) => {
-    AttTaskCatList.value = proxy.handleTree(response.data, "id", "parentId");
-    total.value = response.data.total;
-    loading.value = false;
+  listAttTaskCat(queryParams.value, warningRequestOptions)
+    .then((response) => {
+      const rows = response?.data || [];
+      AttTaskCatList.value = proxy.handleTree(rows, "id", "parentId");
+      total.value = rows.total || 0;
 
-    attTaskCatOptions.value = [];
-    const data = { id: 0, name: td('common.texts.topNode'), children: [] };
-    data.children = proxy.handleTree(response.data, "id", "parentId");
-    attTaskCatOptions.value.push(data);
-  });
+      attTaskCatOptions.value = [];
+      const data = { id: 0, name: td('common.texts.topNode'), children: [] };
+      data.children = proxy.handleTree(rows, "id", "parentId");
+      attTaskCatOptions.value.push(data);
+    })
+    .catch(showRequestWarning)
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
+  originalName.value = "";
   form.value = {
     id: null,
     name: null,
@@ -719,33 +754,33 @@ function reset() {
   proxy.resetForm("AttTaskCatRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   if (row != null && row.id) {
@@ -758,76 +793,201 @@ function handleAdd(row) {
   title.value = td("dpp.setting.taskCat.addTaskCat", "新增数据集成类目");
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCat(_id).then((response) => {
-    form.value = response.data;
-    open.value = true;
-    title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
-  });
+  getAttTaskCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      originalName.value = response.data.name || "";
+      open.value = true;
+      title.value = td("dpp.setting.taskCat.editTaskCat", "修改数据集成类目");
+    })
+    .catch(showRequestWarning);
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttTaskCat(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
-  });
+  getAttTaskCat(_id, warningRequestOptions)
+    .then((response) => {
+      form.value = response.data;
+      openDetail.value = true;
+      title.value = td("dpp.setting.taskCat.taskCatDetail", "数据集成类目详情");
+    })
+    .catch(showRequestWarning);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
-  proxy.$refs["AttTaskCatRef"].validate((valid) => {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
+  proxy.$refs["AttTaskCatRef"].validate(async (valid) => {
     if (valid) {
       if (form.value.id != null) {
-        updateAttTaskCatd(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-            open.value = false;
-            getList();
-          })
-          .catch((error) => {});
+        try {
+          if ((form.value.name || "").trim() !== originalName.value.trim()) {
+            const response = await withRequestWarning(
+              getTaskCatIntegrationTaskCount(form.value.id, warningRequestOptions)
+            );
+            await proxy.$modal.confirm(
+              td(
+                "dpp.setting.taskCat.confirmRenameWithTaskCount",
+                "该类目已被 {count} 个数据集成任务使用，修改名称后任务归属显示将同步变化。",
+                { count: response.data || 0 }
+              )
+            );
+          }
+          await withRequestWarning(updateAttTaskCat(form.value, warningRequestOptions));
+          proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+          open.value = false;
+          getList();
+        } catch (error) {
+          // The request interceptor displays API errors; cancelling only stops submission.
+        } finally {
+          submitLoading.value = false;
+        }
       } else {
         form.value.projectId = userStore.projectId;
         form.value.projectCode = userStore.projectCode;
-        addAttTaskCatd(form.value)
+        addAttTaskCat(form.value, warningRequestOptions)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => {});
+          .catch((error) => {
+            showRequestWarning(error);
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 改变启用状态值 */
-function handleStatusChange(row) {
-  const text = row.validFlag === true ? td('dpp.setting.taskCat.enable') : td('dpp.setting.taskCat.disable');
-  proxy.$modal
-    .confirm(td('dpp.setting.taskCat.confirmChangeStatus', '', { status: text, name: row.name }))
-    .then(function () {
-      updateAttTaskCatd({ id: row.id, validFlag: row.validFlag })
-        .then((response) => {
-          proxy.$modal.msgSuccess(text + td('common.message.success'));
-          getList();
-        })
-        .catch((err) => {
-          row.validFlag = !row.validFlag;
-        });
-    })
-    .catch(function () {
-      row.validFlag = !row.validFlag;
-    });
+async function validateTaskCatName(_rule, value, callback) {
+  const name = String(value || "").trim();
+  if (!name) {
+    showTaskCatNameValidateMessage(td("dpp.setting.taskCat.nameRequired"));
+    callback(new Error(td("dpp.setting.taskCat.nameRequired")));
+    return;
+  }
+  if (form.value.id != null) {
+    callback();
+    return;
+  }
+  try {
+    const response = await isTaskCatNameUsed({
+      parentId: form.value.parentId,
+      name,
+    }, warningRequestOptions);
+    if (response.data === true) {
+      const message = td("dpp.setting.taskCat.nameUsed", "名称已被使用");
+      showTaskCatNameValidateMessage(message);
+      callback(new Error(message));
+      return;
+    }
+    callback();
+  } catch (error) {
+    const message = td("dpp.setting.taskCat.nameValidationFailed", "名称校验失败");
+    showTaskCatNameValidateMessage(message);
+    callback(new Error(message));
+  }
 }
 
-/** 删除按钮操作 */
+function showTaskCatNameValidateMessage(message) {
+  if (taskCatNameMessageInstance && taskCatNameMessageText === message) {
+    return;
+  }
+  taskCatNameMessageInstance?.close();
+  taskCatNameMessageText = message;
+  taskCatNameMessageInstance = ElMessage.warning({
+    message,
+    duration: 2000,
+    onClose: () => {
+      taskCatNameMessageInstance = null;
+      taskCatNameMessageText = "";
+    },
+  });
+}
+
+/** Change enabled status value */
+async function handleStatusChange(row) {
+  if (row.validFlag === true && row.parentId != null && Number(row.parentId) !== 0) {
+    const parent = findCategoryById(AttTaskCatList.value, row.parentId);
+    if (!parent || parent.validFlag !== true) {
+      row.validFlag = false;
+      proxy.$modal.msgWarning(
+        td(
+          "dpp.setting.taskCat.enableParentFirst",
+          '请先启用父节点“{name}”，再启用当前节点。',
+          { name: parent?.name || row.parentId }
+        )
+      );
+      return;
+    }
+  }
+
+  const text = row.validFlag === true ? td('dpp.setting.taskCat.enable') : td('dpp.setting.taskCat.disable');
+  const isDisabling = row.validFlag === false;
+  const confirmMessage = isDisabling && row.children?.length
+    ? td(
+        'dpp.setting.taskCat.confirmDisableParent',
+        '停用父类目将同步影响子类目，请确认'
+      )
+    : td('dpp.setting.taskCat.confirmChangeStatus', '', { status: text, name: row.name });
+
+  try {
+    await proxy.$modal.confirm(confirmMessage);
+
+    if (isDisabling) {
+      const response = await withRequestWarning(hasIntegrationTask(row.id, warningRequestOptions));
+      if (response.data === true) {
+        row.validFlag = true;
+        proxy.$modal.msgWarning(
+          td(
+            'dpp.setting.taskCat.integrationTaskExistsCannotDisable',
+            '存在数据集成任务，不允许禁用'
+          )
+        );
+        return;
+      }
+    }
+
+    await withRequestWarning(updateAttTaskCat({
+      id: row.id,
+      projectId: row.projectId,
+      projectCode: row.projectCode,
+      name: row.name,
+      parentId: row.parentId,
+      sortOrder: row.sortOrder,
+      description: row.description,
+      validFlag: row.validFlag,
+      code: row.code,
+      remark: row.remark,
+    }, warningRequestOptions));
+    proxy.$modal.msgSuccess(text + td('common.message.success'));
+    getList();
+  } catch (error) {
+    row.validFlag = !row.validFlag;
+  }
+}
+
+function findCategoryById(categories, id) {
+  for (const category of categories) {
+    if (String(category.id) === String(id)) return category;
+    const child = findCategoryById(category.children || [], id);
+    if (child) return child;
+  }
+  return null;
+}
+
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
@@ -838,16 +998,16 @@ function handleDelete(row) {
       ).replace("{id}", _ids)
     )
     .then(function () {
-      return delAttTaskCatd(_ids);
+      return delAttTaskCat(_ids, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/AttTaskCat/export",
@@ -858,14 +1018,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('dpp.setting.taskCat.taskCatImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -874,17 +1034,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -151,7 +152,7 @@
          />
       </div>
 
-      <!-- 添加或修改参数配置对话框 -->
+      <!-- Add or modify parameter configuration dialog box -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -242,7 +243,7 @@ const title = ref("");
 const defaultDictType = ref("");
 const typeOptions = ref([]);
 const route = useRoute();
-// 数据标签回显样式
+// Data label echo style
 const listClassOptions = ref([
   { value: "default", label: td('sys.system.dictData.default') },
   { value: "primary", label: td('sys.system.dictData.primary') },
@@ -270,7 +271,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型详细 */
+/** Query dictionary type details */
 function getTypes(dictId) {
   getType(dictId).then(response => {
     queryParams.value.dictType = response.data.dictType;
@@ -279,14 +280,14 @@ function getTypes(dictId) {
   });
 }
 
-/** 查询字典类型列表 */
+/** Query dictionary type list */
 function getTypeList() {
   getDictOptionselect().then(response => {
     typeOptions.value = response.data;
   });
 }
 
-/** 查询字典数据列表 */
+/** Query dictionary data list */
 function getList() {
   loading.value = true;
   listData(queryParams.value).then(response => {
@@ -296,13 +297,13 @@ function getList() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     dictCode: undefined,
@@ -317,26 +318,26 @@ function reset() {
   proxy.resetForm("dataRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 返回按钮操作 */
+/** Back button action */
 function handleClose() {
   const obj = { path: "/system/dict" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   queryParams.value.dictType = defaultDictType.value;
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
@@ -344,14 +345,14 @@ function handleAdd() {
   form.value.dictType = queryParams.value.dictType;
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.dictCode);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const dictCode = row.dictCode || ids.value;
@@ -362,7 +363,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   proxy.$refs["dataRef"].validate(valid => {
     if (valid) {
@@ -385,7 +386,7 @@ function submitForm() {
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const dictCodes = row.dictCode || ids.value;
   proxy.$modal.confirm(td('sys.system.dictData.confirmDelete', { code: dictCodes })).then(function() {
@@ -397,7 +398,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("system/dict/data/export", {
     ...queryParams.value

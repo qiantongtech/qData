@@ -10,7 +10,7 @@ import tech.qiantong.qdata.module.mc.dal.dataobject.task.McTaskScopeDO;
 import java.util.List;
 
 /**
- * 采集范围 Convert
+ * Collection range Convert
  *
  * @author qdata
  * @date 2025-12-16
@@ -20,29 +20,29 @@ public interface McTaskScopeConvert {
     McTaskScopeConvert INSTANCE = Mappers.getMapper(McTaskScopeConvert.class);
 
     /**
-     * PageReqVO 转换为 DO
-     * @param mcTaskScopePageReqVO 请求参数
+     * PageReqVO converted to DO
+     * @param mcTaskScopePageReqVO request parameters
      * @return McTaskScopeDO
      */
      McTaskScopeDO convertToDO(McTaskScopePageReqVO mcTaskScopePageReqVO);
 
     /**
-     * SaveReqVO 转换为 DO
-     * @param mcTaskScopeSaveReqVO 保存请求参数
+     * SaveReqVO converted to DO
+     * @param mcTaskScopeSaveReqVO save request parameters
      * @return McTaskScopeDO
      */
      McTaskScopeDO convertToDO(McTaskScopeSaveReqVO mcTaskScopeSaveReqVO);
 
     /**
-     * DO 转换为 RespVO
-     * @param mcTaskScopeDO 实体对象
+     * DO to RespVO
+     * @param mcTaskScopeDO entity object
      * @return McTaskScopeRespVO
      */
      McTaskScopeRespVO convertToRespVO(McTaskScopeDO mcTaskScopeDO);
 
     /**
-     * DOList 转换为 RespVOList
-     * @param mcTaskScopeDOList 实体对象列表
+     * DOList to RespVOList
+     * @param mcTaskScopeDOList entity object list
      * @return List<McTaskScopeRespVO>
      */
      List<McTaskScopeRespVO> convertToRespVOList(List<McTaskScopeDO> mcTaskScopeDOList);

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 采集任务实例-日志Service接口
+ * Collection task instance-Log Service interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -18,47 +18,47 @@ import java.util.List;
 public interface IMcTaskInstanceLogService extends IService<McTaskInstanceLogDO> {
 
     /**
-     * 获得采集任务实例-日志分页列表
+     * Obtain collection task instance-log paging list
      *
-     * @param pageReqVO 分页请求
-     * @return 采集任务实例-日志分页列表
+     * @param pageReqVO paging request
+     * @return Collection task instance-log paging list
      */
     PageResult<McTaskInstanceLogDO> getMcTaskInstanceLogPage(McTaskInstanceLogPageReqVO pageReqVO);
 
     /**
-     * 创建采集任务实例-日志
+     * Create a collection task instance-log
      *
-     * @param createReqVO 采集任务实例-日志信息
-     * @return 采集任务实例-日志编号
+     * @param createReqVO collection task instance-log information
+     * @return collection task instance-log number
      */
     Long createMcTaskInstanceLog(McTaskInstanceLogSaveReqVO createReqVO);
 
     /**
-     * 更新采集任务实例-日志
+     * Update collection task instance-log
      *
-     * @param updateReqVO 采集任务实例-日志信息
+     * @param updateReqVO collection task instance-log information
      */
     int updateMcTaskInstanceLog(McTaskInstanceLogSaveReqVO updateReqVO);
 
     /**
-     * 删除采集任务实例-日志
+     * Delete collection task instance-log
      *
-     * @param idList 采集任务实例-日志编号
+     * @param idList collection task instance-log number
      */
     int removeMcTaskInstanceLog(Collection<Long> idList);
 
     /**
-     * 获得采集任务实例-日志详情
+     * Obtain collection task instance-log details
      *
-     * @param id 采集任务实例-日志编号
-     * @return 采集任务实例-日志
+     * @param id collection task instance-log number
+     * @return collection task instance-log
      */
     McTaskInstanceLogDO getMcTaskInstanceLogById(Long id);
 
     /**
-     * 获得全部采集任务实例-日志列表
+     * Get all collection task instances-log list
      *
-     * @return 采集任务实例-日志列表
+     * @return Collection task instance-log list
      */
     List<McTaskInstanceLogDO> getMcTaskInstanceLogList();
 

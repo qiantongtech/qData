@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 导入表 -->
+  <!-- Import table -->
   <el-dialog :title="td('sys.tool.genImport.title')" v-model="visible" width="800px" top="5vh" :append-to="$refs['app-container']"  draggable destroy-on-close>
     <el-form :model="queryParams" ref="queryRef" :inline="true" :label-position="labelPosition">
       <el-form-item :label="td('sys.tool.genImport.tableName')" prop="tableName" :label-position="labelPosition">
@@ -29,7 +30,7 @@
         />
       </el-form-item>
       <el-form-item :label-position="labelPosition">
-        <!-- <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <!-- <el-button type="primary" icon="Search" @click="handleQuery">Search</el-button>
         <el-button icon="Refresh" @click="resetQuery">{{ td('common.button.reset') }}</el-button> -->
         <el-button plain type="primary" @click="handleQuery">
             <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
@@ -82,23 +83,23 @@ const queryParams = reactive({
 
 const emit = defineEmits(["ok"]);
 
-/** 查询参数列表 */
+/** Query parameter list */
 function show() {
   getList();
   visible.value = true;
 }
 
-/** 单击选择行 */
+/** Click to select row */
 function clickRow(row) {
   proxy.$refs.table.toggleRowSelection(row);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   tables.value = selection.map(item => item.tableName);
 }
 
-/** 查询表数据 */
+/** Query table data */
 function getList() {
   listDbTable(queryParams).then(res => {
     dbTableList.value = res.rows;
@@ -106,19 +107,19 @@ function getList() {
   });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 导入按钮操作 */
+/** Import button actions */
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {

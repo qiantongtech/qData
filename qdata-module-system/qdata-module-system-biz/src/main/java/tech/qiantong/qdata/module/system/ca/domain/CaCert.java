@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.ca.domain;
@@ -38,7 +24,7 @@ import tech.qiantong.qdata.common.annotation.Excel;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 证书管理对象 ca_cert
+ * Certificate management domain object ca_cert
  *
  * @author qdata
  * @date 2024-08-18
@@ -47,50 +33,50 @@ public class CaCert extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** ID;ID */
+    /** ID */
     private Long id;
 
-    /** 证书名称;证书名称 */
-    @Excel(name = "证书名称")
+    /** certificate name */
+    @Excel(name = "certificate name")
     private String name;
 
-    /** 主体id;主体id */
-    @Excel(name = "主体id")
+    /** subject ID */
+    @Excel(name = "subject ID")
     private Long subjectId;
 
-    /** 主体名称;主体名称 */
-    @Excel(name = "主体名称")
+    /** subject name */
+    @Excel(name = "subject name")
     private String subjectName;
 
-    /** 证书;证书 */
-    @Excel(name = "证书")
+    /** certificate */
+    @Excel(name = "certificate")
     private String certificate;
 
-    /** 私钥;私钥 */
-    @Excel(name = "私钥")
+    /** private key */
+    @Excel(name = "private key")
     private String privateKey;
 
-    /** 颁发者;颁发者 */
-    @Excel(name = "颁发者")
+    /** issuer */
+    @Excel(name = "issuer")
     private String issuer;
 
-    /** 所有者;所有者 */
-    @Excel(name = "所有者")
+    /** possessor */
+    @Excel(name = "possessor")
     private String possessor;
 
-    /** 有效期;有效期 */
-    @Excel(name = "有效期")
+    /** validity period */
+    @Excel(name = "validity period")
     private String validTime;
 
-    /** 是否有效;是否有效 0：无效，1：有效 */
-    @Excel(name = "是否有效 0：无效，1：有效")
+    /** validity flag: 0=invalid, 1=valid */
+    @Excel(name = "validity flag")
     private Integer validFlag;
 
-    /** 删除标志;删除标志 1：已删除，0：未删除 */
+    /** deletion flag: 1=deleted, 0=not deleted */
     private Integer delFlag;
 
-    /** 创建人id;创建人id */
-    @Excel(name = "创建人id")
+    /** creator ID */
+    @Excel(name = "creator ID")
     private Long creatorId;
 
     public void setId(Long id)

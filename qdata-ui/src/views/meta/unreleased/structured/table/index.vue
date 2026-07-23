@@ -298,7 +298,7 @@ const searchStore = reactive({
   ],
 });
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -315,9 +315,9 @@ function handleTreeDataLoaded({ treeData, flatData }) {
   store.treeDomains = treeData;
 }
 
-// 节点单击事件
+// Node click event
 function handleNodeClick(data) {
-  // 清除之前的筛选
+  // Clear previous filters
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
@@ -334,12 +334,12 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-// 搜索按钮操作
+// Search button action
 function handleQueryClick() {
   tableRef.value?.getList();
 }
 
-// 重置按钮操作
+// reset button action
 function handleResetQueryClick() {
   if (sourceSystemTreeRef.value?.resetTree) {
     sourceSystemTreeRef.value.resetTree();
@@ -351,7 +351,7 @@ function handleResetQueryClick() {
   tableRef.value?.resetQuery();
 }
 
-// 获取库元素列表
+// Get a list of library elements
 function getMetaDatabases() {
   store.metaDatabases.splice(0, store.metaDatabases.length);
   return listDb({ pageSize: 1000 }).then((res) => {
@@ -365,14 +365,14 @@ function getMetaDatabases() {
   });
 }
 
-// 新增
+// New
 function handleAddClick() {
   router.push({
     path: route.path + "/add",
   });
 }
 
-// 修改
+// Modify
 function handleEditClick(row) {
   router.push({
     path: route.path + "/edit",
@@ -382,7 +382,7 @@ function handleEditClick(row) {
   });
 }
 
-// 删除选中行
+// Delete selected row
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   const ids = store.rows.map((item) => item.id);
@@ -393,14 +393,14 @@ function handleDeleteColumnClick() {
     ElMessageBox.confirm(
       td(
         "meta.unreleased.structured.table.list.confirmBatchDelete",
-        "可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分"
+        "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?"
       )
         .replace("{canDelete}", canDeleteCount)
         .replace("{cannotDelete}", cannotDeleteCount),
-      td("common.message.systemPrompt", "系统提示"),
+      td("common.message.systemPrompt", "System Prompt"),
       {
-        confirmButtonText: td("common.button.confirm", "确定"),
-        cancelButtonText: td("common.button.cancel", "取消"),
+        confirmButtonText: td("common.button.confirm", "Confirm"),
+        cancelButtonText: td("common.button.cancel", "Cancel"),
         type: "warning",
       }
     )
@@ -419,14 +419,14 @@ function handleDeleteColumnClick() {
   });
 }
 
-// 删除
+// Delete
 function handleDeleteClick(row) {
   ElMessageBox.confirm(
-      td("meta.unreleased.structured.table.list.confirmDelete", "是否确认删除编号为{id}的数据项？", {id: row.id}),
-      td("common.message.systemPrompt", "系统提示"),
+      td("meta.unreleased.structured.table.list.confirmDelete", "Are you sure to delete item with ID {id}?", {id: row.id}),
+      td("common.message.systemPrompt", "System Prompt"),
     {
-      confirmButtonText: td("common.button.confirm", "确定"),
-      cancelButtonText: td("common.button.cancel", "取消"),
+      confirmButtonText: td("common.button.confirm", "Confirm"),
+      cancelButtonText: td("common.button.cancel", "Cancel"),
       type: "warning",
     }
   )
@@ -439,7 +439,7 @@ function handleDeleteClick(row) {
     });
 }
 
-// 详情
+// Details
 function handleDetailClick(row, tab) {
   router.push({
     path: route.path + "/detail",
@@ -451,21 +451,21 @@ function handleDetailClick(row, tab) {
   });
 }
 
-// 切换状态
+// Switch status
 function handleStatusChange(row, status) {
   const action =
     status == 1
-      ? td("meta.unreleased.structured.table.list.publish", "发布")
-      : td("meta.unreleased.structured.table.list.unpublish", "取消发布");
+      ? td("meta.unreleased.structured.table.list.publish", "Publish")
+      : td("meta.unreleased.structured.table.list.unpublish", "Unpublish");
   ElMessageBox.confirm(
-      td("meta.unreleased.structured.table.list.confirmStatusChange", "是否确认{action}数据编号为{id}的表元数据吗？", {
+      td("meta.unreleased.structured.table.list.confirmStatusChange", "Are you sure to {action} table metadata with ID {id}?", {
         action,
         id: row.id
       }),
-    td("common.message.systemPrompt", "系统提示"),
+    td("common.message.systemPrompt", "System Prompt"),
     {
-      confirmButtonText: td("common.button.confirm", "确定"),
-      cancelButtonText: td("common.button.cancel", "取消"),
+      confirmButtonText: td("common.button.confirm", "Confirm"),
+      cancelButtonText: td("common.button.cancel", "Cancel"),
       type: "warning",
     }
   )
@@ -479,7 +479,7 @@ function handleStatusChange(row, status) {
       ElMessage.success(
         td(
           "meta.unreleased.structured.table.list.statusChangeSuccess",
-          "编号为{id}的表元数据{action}成功!"
+          "Table metadata with ID {id} {action} successful!"
         )
           .replace("{id}", row.id)
           .replace("{action}", action)

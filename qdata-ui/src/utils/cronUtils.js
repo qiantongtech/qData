@@ -1,18 +1,19 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 // cronUtils.js
@@ -24,10 +25,10 @@ import "cronstrue/locales/ja";
 import { i18n } from '@/plugins/vueI18n'
 
 /**
- * 获取翻译值
- * @param {string} key - 翻译键
- * @param {string} fallback - 默认值
- * @returns {string} - 翻译后的字符串
+ * Get translation value
+ * @param {string} key - translation key
+ * @param {string} fallback - default value
+ * @returns {string} - the translated string
  */
 function getTranslation(key, fallback) {
   if (i18n && i18n.global && i18n.global.t) {
@@ -42,9 +43,9 @@ function getTranslation(key, fallback) {
 }
 
 /**
- * 将 Cron 表达式转换为对应语言的描述
- * @param {string} cron - Cron 表达式
- * @returns {string} - 转换后的描述
+ * Convert Cron expressions into descriptions in the corresponding language
+ * @param {string} cron - Cron expression
+ * @returns {string} - converted description
  */
 export function cronToZh(cron) {
   if (!cron) return "";

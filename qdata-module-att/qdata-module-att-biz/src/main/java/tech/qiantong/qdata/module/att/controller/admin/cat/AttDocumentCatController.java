@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.controller.admin.cat;
@@ -44,6 +30,7 @@ import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageParam;
 import tech.qiantong.qdata.common.enums.BusinessType;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.controller.admin.cat.vo.AttDocumentCatPageReqVO;
@@ -59,7 +46,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 标准信息分类管理Controller
+ * Standard Information Category Management Controller
  *
  * @author qdata
  * @date 2025-08-21
@@ -91,13 +78,13 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "导出标准信息分类管理列表")
     @PreAuthorize("@ss.hasPermi('att:documentCat:export')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttDocumentCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttDocumentCatDO> list = (List<AttDocumentCatDO>) attDocumentCatService.getAttDocumentCatPage(exportReqVO).getRows();
         ExcelUtil<AttDocumentCatRespVO> util = new ExcelUtil<>(AttDocumentCatRespVO.class);
-        util.exportExcel(response, AttDocumentCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttDocumentCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
 
@@ -111,7 +98,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "新增标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:add')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttDocumentCatSaveReqVO attDocumentCat) {
         attDocumentCat.setCreatorId(getUserId());
@@ -122,7 +109,7 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "修改标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:edit')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttDocumentCatSaveReqVO attDocumentCat) {
         attDocumentCat.setUpdatorId(getUserId());
@@ -133,11 +120,13 @@ public class AttDocumentCatController extends BaseController {
 
     @Operation(summary = "删除标准信息分类管理")
     @PreAuthorize("@ss.hasPermi('att:documentCat:remove')")
-    @Log(title = "标准信息分类管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.document.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public CommonResult<Integer> remove(@PathVariable Long id) {
         if (attDocumentCatService.hasChildByAttDocumentCatId(id)) {
-            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),"存在子标准信息分类管理，无法删除。");
+            return CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(),
+                    MessageUtils.messageWithFallback("att.error.document.category.has.children",
+                            "The category contains child standard information categories and cannot be deleted"));
         }
         return CommonResult.toAjax(attDocumentCatService.removeAttDocumentCat(id));
     }

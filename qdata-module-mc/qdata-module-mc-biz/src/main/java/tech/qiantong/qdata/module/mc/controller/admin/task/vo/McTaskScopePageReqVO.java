@@ -5,7 +5,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 采集范围 Request VO 对象 MC_TASK_SCOPE
+ * Collection scope Request VO object MC_TASK_SCOPE
  *
  * @author qdata
  * @date 2025-12-16

@@ -1,34 +1,19 @@
-# Copyright © 2025 Qiantong Technology Co., Ltd.
-# qData Data Middle Platform (Open Source Edition)
+# Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
 #
-# License:
-# Released under the Apache License, Version 2.0.
-# You may use, modify, and distribute this software for commercial purposes
-# under the terms of the License.
+# This file is part of qData Data Middle Platform (Open Source Edition).
 #
-# Special Notice:
-# All derivative versions are strictly prohibited from modifying or removing
-# the default system logo and copyright information.
-# For brand customization, please apply for brand customization authorization via official channels.
+# qData is licensed under Apache License 2.0 with additional qData terms.
+# You may use qData for commercial purposes, but you may not remove, hide,
+# modify, or replace the qData logo, copyright notices, license notices,
+# or attribution information without a separate commercial license.
 #
-# More information: https://qdata.qiantong.tech/business.html
+# White-label use, OEM distribution, rebranding, or presenting qData as
+# another product requires separate commercial authorization from
+# Jiangsu Qiantong Technology Co., Ltd.
 #
-# ============================================================================
-#
-# 版权所有 © 2025 江苏千桐科技有限公司
-# qData 数据中台（开源版）
-#
-# 许可协议：
-# 本项目基于 Apache License 2.0 开源协议发布，
-# 允许在遵守协议的前提下进行商用、修改和分发。
-#
-# 特别说明：
-# 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-# 如需定制品牌，请通过官方渠道申请品牌定制授权。
-#
-# 更多信息请访问：https://qdata.qiantong.tech/business.html
+# Business License: https://community.qdata.tech/business/policy.html
+# See the LICENSE file in the project root for full license information.
 
-# 主数据源选择
 datasource:
   type: dm8
 
@@ -36,35 +21,35 @@ custom:
   mongo:
     enabled: true
 
-# Spring配置
+# Spring configuration
 spring:
-  # redis 配置
+  # redis configuration
   redis:
-    # 地址
+    # Address
     host: 127.0.0.1
-    # 端口，默认为6379
+    # Port, default is 6379
     port: 12138
-    # 数据库索引
+    # Database index
     database: 0
-    # 密码
+    # Password
     password:
-    # 连接超时时间
+    # Connection timeout
     timeout: 10s
     lettuce:
       pool:
-        # 连接池中的最小空闲连接
+        # Minimum idle connections in the connection pool
         min-idle: 0
-        # 连接池中的最大空闲连接
+        # Maximum idle connections in the connection pool
         max-idle: 8
-        # 连接池的最大数据库连接数
+        # Maximum number of database connections for the connection pool
         max-active: 8
-        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        # #The maximum blocking waiting time of the connection pool (use a negative value to indicate no limit)
         max-wait: -1ms
   rabbitmq:
     host: 127.0.0.1
     port: 40003
     username: admin
-    password: 密码
+    password: password
     listener:
       simple:
         acknowledge-mode: manual
@@ -73,104 +58,104 @@ spring:
   data:
     mongodb:
       uri: mongodb://sjzt:Desl9Y4eIQP1BHh7@127.0.0.1:27017/data?authSource=admin
-      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy # 自动转驼峰
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy # Automatically map snake_case to camelCase
       print: true
       slowQuery: true
       slowTime: 1000
   datasource:
     druid:
       stat-view-servlet:
-        # 是否启用Druid的监控统计功能
+        # Whether to enable Druid’s monitoring statistics function
         enabled: false
-        # 访问Druid监控页面的用户名
+        # Username to access the Druid monitoring page
         loginUsername: qdata
-        # 访问Druid监控页面的密码
+        # Password to access Druid monitoring page
         loginPassword: 123456
     dynamic:
       druid:
-        # 连接池初始化时创建的连接数量
+        # The number of connections created when the connection pool is initialized
         initial-size: 5
-        # 连接池中最小空闲连接数
+        # Minimum number of idle connections in the connection pool
         min-idle: 5
-        # 连接池中最大活动连接数
+        # Maximum number of active connections in the connection pool
         maxActive: 20
-        # 连接池等待连接的最长时间（毫秒）
+        # Maximum time the connection pool waits for a connection (milliseconds)
         maxWait: 60000
-        # 数据库连接超时时间（毫秒）
+        # Database connection timeout (milliseconds)
         connectTimeout: 30000
-        # Socket超时时间（毫秒）
+        # Socket timeout (milliseconds)
         socketTimeout: 60000
-        # 空闲连接的检测周期（毫秒）
+        # Idle connection detection period (milliseconds)
         timeBetweenEvictionRunsMillis: 60000
-        # 最小空闲连接的存活时间（毫秒）
+        # Minimum idle connection lifetime (milliseconds)
         minEvictableIdleTimeMillis: 300000
-        # 用于检测连接是否有效的SQL语句
+        # SQL statement used to check whether the connection is valid
         validationQuery: SELECT 1 FROM DUAL
-        # 是否在空闲时检测连接的有效性
+        # Whether to check the validity of the connection when idle
         testWhileIdle: true
-        # 借用连接时是否测试连接的有效性
+        # Whether to test the validity of the connection when borrowing it
         testOnBorrow: false
-        # 归还连接时是否测试连接的有效性
+        # Whether to test the validity of the connection when returning it
         testOnReturn: false
-        # 是否打开连接池的PreparedStatement缓存
+        # Whether to turn on the PreparedStatement cache of the connection pool
         poolPreparedStatements: true
-        # 每个连接池的PreparedStatement缓存上限
+        # PreparedStatement cache limit per connection pool
         maxPoolPreparedStatementPerConnectionSize: 20
-        # 配置Druid的过滤器
+        # Configure Druid filters
         filters: stat,slf4j
-        # Druid连接属性配置
+        # Druid connection property configuration
         connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
-        # 主库数据源配置
+        # Main database data source configuration
         master:
-          # 动态加载的配置属性
+          # Dynamically loaded configuration properties
           driver-class-name: ${${datasource.type}.driver-class-name}
           url: ${${datasource.type}.url}
           username: ${${datasource.type}.username}
           password: ${${datasource.type}.password}
 
-# MySQL配置文件
+# MySQL configuration file
 mysql:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: com.mysql.cj.jdbc.Driver
-  # 主库JDBC连接URL
+  # Main library JDBC connection URL
   url: jdbc:mysql://mysql:3306/qdata?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-  # 主库用户名
+  # Main library username
   username: root
-  # 主库密码
+  # Main database password
   password: o5KjnPYxswsiURZHCPwd
 
-# 达梦配置文件
+# Dameng configuration file
 dm8:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: dm.jdbc.driver.DmDriver
-  # 主库JDBC连接URL
-  url: jdbc:dm://127.0.0.1:5236/QDATA?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=QDATA&serverTimezone=Asia/Shanghai
-  # 主库用户名
+  # Main library JDBC connection URL
+  url: jdbc:dm://127.0.0.1:5236/QDATA?STU&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&schema=LS_OPEN&serverTimezone=Asia/Shanghai
+  # Main library username
   username: QDATA
-  # 主库密码
-  password: 密码
+  # Main database password
+  password: password
 
-# 人大金仓配置文件
+# NPC Treasury configuration file
 kingbase8:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: com.kingbase8.Driver
-  # 主库JDBC连接URL
+  # Main library JDBC connection URL
   url: jdbc:kingbase8://127.0.0.1:54321/QDATA?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC&currentSchema=qdata
-  # 主库用户名
+  # Main library username
   username: kingbase
-  # 主库密码
+  # Main database password
   password: 123456
 
-# Oracle12c 配置文件
+# Oracle12c configuration file
 oracle:
-  # JDBC驱动类名
+  # JDBC driver class name
   driver-class-name: oracle.jdbc.OracleDriver
-  # 主库JDBC连接URL
+  # Main library JDBC connection URL
   url: jdbc:oracle:thin:@127.0.0.1:1521:xe?oracle.jdbc.timezoneAsRegion=true&oracle.jdbc.defaultTimezone=Asia/Shanghai&currentSchema=ANIVIA
-  # 主库用户名
+  # Main library username
   username: ANIVIA
-  # 主库密码
+  # Main database password
   password: ANIVIA
 
 ##

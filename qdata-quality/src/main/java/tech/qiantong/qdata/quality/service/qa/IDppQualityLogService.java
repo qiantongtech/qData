@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.service.qa;
@@ -43,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据质量日志Service接口
+ * Data quality log Service interface
  *
  * @author qdata
  * @date 2025-07-19
@@ -51,65 +37,65 @@ import java.util.Map;
 public interface IDppQualityLogService extends IService<DppQualityLogDO> {
 
     /**
-     * 获得数据质量日志分页列表
+     * Get a paginated list of data quality logs
      *
-     * @param pageReqVO 分页请求
-     * @return 数据质量日志分页列表
+     * @param pageReqVO paging request
+     * @return Data quality log paginated list
      */
     PageResult<DppQualityLogDO> getDppQualityLogPage(DppQualityLogPageReqVO pageReqVO);
 
     /**
-     * 创建数据质量日志
+     * Create data quality log
      *
-     * @param createReqVO 数据质量日志信息
-     * @return 数据质量日志编号
+     * @param createReqVO data quality log information
+     * @return data quality log number
      */
     Long createDppQualityLog(DppQualityLogSaveReqVO createReqVO);
 
     /**
-     * 更新数据质量日志
+     * Update data quality log
      *
-     * @param updateReqVO 数据质量日志信息
+     * @param updateReqVO data quality log information
      */
     int updateDppQualityLog(DppQualityLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据质量日志
+     * Delete data quality logs
      *
-     * @param idList 数据质量日志编号
+     * @param idList data quality log number
      */
     int removeDppQualityLog(Collection<Long> idList);
 
     /**
-     * 获得数据质量日志详情
+     * Get data quality log details
      *
-     * @param id 数据质量日志编号
-     * @return 数据质量日志
+     * @param id data quality log number
+     * @return data quality log
      */
     DppQualityLogDO getDppQualityLogById(Long id);
 
     /**
-     * 获得全部数据质量日志列表
+     * Get a list of all data quality logs
      *
-     * @return 数据质量日志列表
+     * @return Data quality log list
      */
     List<DppQualityLogDO> getDppQualityLogList();
 
     /**
-     * 获得全部数据质量日志 Map
+     * Get all data quality log map
      *
-     * @return 数据质量日志 Map
+     * @return Data quality log Map
      */
     Map<Long, DppQualityLogDO> getDppQualityLogMap();
 
 
     /**
-     * 导入数据质量日志数据
+     * Import data quality log data
      *
-     * @param importExcelList 数据质量日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Data quality log data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     String importDppQualityLog(List<DppQualityLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

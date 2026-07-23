@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -26,16 +27,16 @@
                 <plus />
             </el-icon>
         </el-upload>
-        <!-- 上传提示 -->
+        <!-- Upload tips -->
         <!-- <div class="el-upload__tip" v-if="showTip">
-      请上传
+      Please upload
       <template v-if="fileSize">
-        大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
+        No larger than <b style="color: #f56c6c">{{ fileSize }}MB</b>
       </template>
 <template v-if="fileType">
-        格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
+        The format is <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
       </template>
-的文件
+files
 </div> -->
 
         <el-dialog v-model="dialogVisible" :title="t('components.imageUpload.preview')" width="800px" :append-to="$refs['app-container']" draggable
@@ -53,27 +54,27 @@ const { t } = useI18n();
 
 const props = defineProps({
     modelValue: [String, Object, Array],
-    // 图片数量限制
+    // Picture quantity limit
     limit: {
         type: Number,
         default: 5,
     },
-    // 大小限制(MB)
+    // Size limit(MB)
     fileSize: {
         type: Number,
         default: 5,
     },
-    // 文件类型, 例如['png', 'jpg', 'jpeg']
+    // File types, such as ['png', 'jpg', 'jpeg']
     fileType: {
         type: Array,
         default: () => ["png", "jpg", "jpeg"],
     },
-    // 是否显示提示
+    // Whether to display prompts
     isShowTip: {
         type: Boolean,
         default: true
     },
-    // platform参数
+    // platform parameters
     platForm: {
         type: String,
         default: ""
@@ -87,7 +88,7 @@ const uploadList = ref([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传的图片服务器地址
+const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // Uploaded image server address
 const headers = ref({ Authorization: "Bearer " + getToken() });
 const fileList = ref([]);
 const uploadData = ref({
@@ -99,16 +100,16 @@ const showTip = computed(
 
 watch(() => props.modelValue, val => {
     if (val) {
-        // 首先将值转为数组
+        // First convert the value into an array
         const list = Array.isArray(val) ? val : props.modelValue.split(",");
-        // 然后将数组转为对象数组
+        // Then convert the array into an object array
         fileList.value = list.map(item => {
-            // 如果 item 是字符串，统一处理成对象
+            // If item is a string, it will be processed into an object.
             if (typeof item === "string") {
                 const url = item.indexOf(baseUrl) === -1 && props.platForm === '' ? baseUrl + item : item;
                 return { name: url, url };
             }
-            // 如果 item 已经是对象，直接返回
+            // If item is already an object, return directly
             return item;
         });
         // fileList.value = list.map(item => {
@@ -127,7 +128,7 @@ watch(() => props.modelValue, val => {
     }
 }, { deep: true, immediate: true });
 
-// 上传前loading加载
+// loading before uploading
 function handleBeforeUpload(file) {
     let isImg = false;
     if (props.fileType.length) {
@@ -158,12 +159,12 @@ function handleBeforeUpload(file) {
     number.value++;
 }
 
-// 文件个数超出
+// The number of files exceeds
 function handleExceed() {
     proxy.$modal.msgError(t('components.imageUpload.exceedLimit', { limit: props.limit }));
 }
 
-// 上传成功回调
+// Upload success callback
 function handleUploadSuccess(res, file) {
     if (res.url) {
         uploadList.value.push({ name: '/profile/' + res.path + res.filename, url: res.url });
@@ -177,7 +178,7 @@ function handleUploadSuccess(res, file) {
     }
 }
 
-// 删除图片
+// Delete picture
 function handleDelete(file) {
     const findex = fileList.value.map(f => f.name).indexOf(file.name);
     if (findex > -1 && uploadList.value.length === number.value) {
@@ -187,7 +188,7 @@ function handleDelete(file) {
     }
 }
 
-// 上传结束处理
+// Upload end processing
 function uploadedSuccessfully() {
     if (number.value > 0 && uploadList.value.length === number.value) {
         fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
@@ -198,13 +199,13 @@ function uploadedSuccessfully() {
     }
 }
 
-// 上传失败
+// Upload failed
 function handleUploadError() {
     proxy.$modal.msgError(t('components.imageUpload.uploadError'));
     proxy.$modal.closeLoading();
 }
 
-// 预览
+// Preview
 function handlePictureCardPreview(file) {
     let url = file.url;
     if (!url.includes(baseUrl)) {
@@ -214,7 +215,7 @@ function handlePictureCardPreview(file) {
     dialogVisible.value = true;
 }
 
-// 对象转成指定字符串分隔
+// Convert the object to the specified string delimited
 function listToString(list, separator) {
     let strs = "";
     separator = separator || ",";
@@ -228,7 +229,7 @@ function listToString(list, separator) {
 </script>
 
 <style scoped lang="scss">
-// .el-upload--picture-card 控制加号部分
+// .el-upload--picture-card controls the plus part
 :deep(.hide .el-upload--picture-card) {
     opacity: 0;
     pointer-events: none;

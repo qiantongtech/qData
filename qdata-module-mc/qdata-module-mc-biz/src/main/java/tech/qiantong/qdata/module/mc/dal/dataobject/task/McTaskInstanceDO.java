@@ -7,14 +7,14 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 采集任务实例 DO 对象 MC_TASK_INSTANCE
+ * Collection task instance DO object MC_TASK_INSTANCE
  *
  * @author qdata
  * @date 2025-12-16
  */
 @Data
 @TableName(value = "MC_TASK_INSTANCE")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_TASK_INSTANCE_seq")
 @Builder
 @NoArgsConstructor
@@ -28,90 +28,90 @@ public class McTaskInstanceDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 来源系统ID */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** 采集任务id */
+    /** Collection task id */
     private Long taskId;
 
-    /** 采集模式 */
+    /** Collection mode */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Collection range */
     private String collectionScope;
 
-    /** 采集表总数量 */
+    /** Total number of collection tables */
     private Long totalCount;
 
-    /** 采集表成功数量 */
+    /** Number of successful collection tables */
     private Long successCount;
 
-    /** 采集表失败数量 */
+    /** Number of failed collection tables */
     private Long failCount;
 
-    /** 失败原因 */
+    /** Reason for failure */
     private String failCause;
 
-    /** 新增数量 */
+    /** New quantity */
     private Long addCount;
 
-    /** 删减数量 */
+    /** Delete quantity */
     private Long delCount;
 
-    /** 变更数量 */
+    /** Change quantity */
     private Long updateCount;
 
-    /** 开始时间 */
+    /** Start time */
     private Date startTime;
 
-    /** 结束时间 */
+    /** End time */
     private Date endTime;
 
-    /** 耗时 */
+    /** Time consuming */
     private Long duration;
 
-    /** 状态 */
+    /** status */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is valid. */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 任务名称
+     * Task name
      */
     @TableField(exist = false)
     private String name;
     /**
-     * 任务状态
+     * Task status
      */
     @TableField(exist = false)
     private String taskStatus;
 
     /**
-     * 创建人电话
+     * Creator phone number
      */
     @TableField(exist = false)
     private String createPhoneNumber;
 
     /**
-     * 数据源名称
+     * Data source name
      */
     @TableField(exist = false)
     private String datasourceName;
 
 
     /**
-     * 数据源类型
+     * Data source type
      */
     @TableField(exist = false)
     private String datasourceType;

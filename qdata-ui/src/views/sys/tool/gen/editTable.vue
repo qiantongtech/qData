@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -62,7 +63,7 @@
               </template>
             </el-table-column>
 
-            <!--          <el-table-column label="插入" width="60" align="center">
+            <!--          <el-table-column label="insert" width="60" align="center">
                         <template #default="scope">
                           <el-checkbox true-label="1" false-label="0" v-model="scope.row.isInsert"></el-checkbox>
                         </template>
@@ -165,7 +166,7 @@ const columns = ref([]);
 const dictOptions = ref([]);
 const info = ref({});
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
   const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
@@ -208,13 +209,13 @@ function close() {
 (() => {
   const tableId = route.params && route.params.tableId;
   if (tableId) {
-    // 获取表详细信息
+    // Get table details
     getGenTable(tableId).then(res => {
       columns.value = res.data.rows;
       info.value = res.data.info;
       tables.value = res.data.tables;
     });
-    /** 查询字典下拉列表 */
+    /** Query dictionary drop-down list */
     getDictOptionselect().then(response => {
       dictOptions.value = response.data;
     });

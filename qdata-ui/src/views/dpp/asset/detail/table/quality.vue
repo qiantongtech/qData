@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-    <!-- 资产质量 tab-->
+    <!-- Asset quality tab-->
     <div v-loading="loading">
         <div class="quality-header" v-if="taskData.id">
             <div class="quality-info">
@@ -52,7 +53,7 @@
         </div>
         <div class="app-container  stagingIndex" v-loading="loading" v-if="taskData.id">
             <el-row gutter="20" class="top-section">
-                <!-- 左侧评分 -->
+                <!-- Rating on the left -->
                 <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                     <div class="module-8 border-item">
                         <div class="border-item-head">
@@ -105,7 +106,7 @@
                     </div>
                 </el-col>
 
-                <!-- 右侧折线图 -->
+                <!-- Line chart on the right -->
                 <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                     <div class="module-8 border-item">
                         <div class="border-item-head">
@@ -123,7 +124,7 @@
                 </el-col>
             </el-row>
 
-            <!-- 规则列表 -->
+            <!-- Rule list -->
             <el-row>
                 <div class="module-8 border-item" style="width: 100%">
                     <div class="border-item-head">
@@ -187,7 +188,7 @@
                 <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dpp.asset.detail.quality.addTask') }}
             </el-button>
         </el-empty>
-        <!-- 问题数据弹窗 -->
+        <!-- Question data pop-up window -->
         <ProblemDialog ref="problemDialogRef" />
         <qualityTaskDialog ref="qualityDialog" @submit-success="fetchData" />
         <DataViewDialog :visible="DataView" :taskType="3" @update:visible="DataView = $event" :data="form"
@@ -207,7 +208,7 @@
         </el-dialog>
     </div>
 
-    <!-- 引入弹窗组件，绑定visible -->
+    <!-- Introduce pop-up component and bind visible -->
 
 </template>
 
@@ -267,7 +268,7 @@ function openQualityDialog(row) {
 
 let expression = ref("");
 let openCron = ref(false)
-/** 运行实例按钮操作 */
+/** Run instance button action */
 function handleJobLog(data) {
 
     openCron.value = true;
@@ -283,7 +284,7 @@ function crontabFill(value) {
         fetchData()
     });
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(status, row, e) {
     const text = row?.status == "1" ? td('dpp.asset.detail.quality.online') : td('dpp.asset.detail.quality.offline');
     proxy.$modal
@@ -355,7 +356,7 @@ function getLabelsByColumnName(row, columnName) {
             ? ruleObj.evaColumns
             : Object.values(ruleObj.evaColumns || {});
     } catch (err) {
-        console.warn('规则字段解析失败', err);
+        console.warn("Failed to parse rule fields", err);
         return '-';
     }
 
@@ -458,12 +459,12 @@ const loadChartWithData = (data = []) => {
 };
 
 
-// 评分和质量维度汇总
+// Summary of ratings and quality dimensions
 const loadScoreAndSummary = async () => {
     try {
         const res = await statisticsEvaluateOne(id.value);
         const result = res?.data || [];
-        // 构造一个维度映射，用于快速查找
+        // Construct a dimensional map for quick search
         const resultMap = result.reduce((map, item) => {
             map[item.dimensionType] = item;
             return map;
@@ -477,10 +478,10 @@ const loadScoreAndSummary = async () => {
             };
         });
     } catch (err) {
-        console.warn('评分/维度汇总失败', err);
+        console.warn("Failed to aggregate scores and dimensions", err);
     }
 };
-// 规则列表
+// Rule list
 const loadRuleTable = async () => {
     try {
         const res = await statisticsEvaluateTable(id.value);
@@ -495,12 +496,12 @@ const loadRuleTable = async () => {
             ruleList.value = [];
         }
     } catch (err) {
-        console.warn('规则列表失败', err);
+        console.warn("Failed to load rule list", err);
     } finally {
     }
 };
 
-// 折线图数据
+// Line chart data
 const loadTrendChart = async () => {
     try {
         const range = Number(selectedRange.value);
@@ -512,11 +513,11 @@ const loadTrendChart = async () => {
 
         loadChartWithData(res?.data || []);
     } catch (err) {
-        console.warn('折线图数据失败', err);
+        console.warn("Failed to load line chart data", err);
     }
 };
 
-// 监听语言变化，重新渲染图表
+// Monitor language changes and re-render charts
 watch(locale, () => {
     if (chartInstance) {
         chartInstance.dispose();
@@ -561,8 +562,8 @@ const fetchData = async () => {
             proportion: 0,
             trendType: '-1',
         }));
-        console.log("✅ 接口返回的任务状态是：", res.data.status);
-        console.log("✅ 设置后的 taskData.status 是：", taskData.value.status);
+        console.log("✅ Task status returned by the API:", res.data.status);
+        console.log("✅ taskData.status after update:", taskData.value.status);
         const data = await fetchTrendData(Number(selectedRange.value));
         loadChartWithData(data);
     }

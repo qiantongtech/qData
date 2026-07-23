@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询清洗规则类目列表
+// Query the cleaning rule category list
 export function listAttCleanCat(query) {
   return request({
     url: '/att/cleanCat/list',
@@ -26,7 +27,7 @@ export function listAttCleanCat(query) {
   })
 }
 
-// 查询清洗规则类目详细
+// Query cleaning rule category details
 export function getAttCleanCat(ID) {
   return request({
     url: '/att/cleanCat/' + ID,
@@ -34,7 +35,7 @@ export function getAttCleanCat(ID) {
   })
 }
 
-// 新增清洗规则类目
+// Added cleaning rule category
 export function addAttCleanCat(data) {
   return request({
     url: '/att/cleanCat',
@@ -43,7 +44,7 @@ export function addAttCleanCat(data) {
   })
 }
 
-// 修改清洗规则类目
+// Modify cleaning rule category
 export function updateAttCleanCat(data) {
   return request({
     url: '/att/cleanCat',
@@ -52,7 +53,7 @@ export function updateAttCleanCat(data) {
   })
 }
 
-// 删除清洗规则类目
+// Delete cleaning rule category
 export function delAttCleanCat(ID) {
   return request({
     url: '/att/cleanCat/' + ID,

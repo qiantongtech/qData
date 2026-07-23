@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询脱敏白名单列表
+// Query desensitization whitelist list
 export function listDesensitizeWhitelist(query) {
   return request({
     url: '/dg/desensitizeWhitelist/list',
@@ -26,7 +27,7 @@ export function listDesensitizeWhitelist(query) {
   })
 }
 
-// 查询脱敏白名单详细
+// Check the desensitization whitelist details
 export function getDesensitizeWhitelist(id) {
   return request({
     url: '/dg/desensitizeWhitelist/' + id,
@@ -34,7 +35,7 @@ export function getDesensitizeWhitelist(id) {
   })
 }
 
-// 新增脱敏白名单
+// Added desensitization whitelist
 export function addDesensitizeWhitelist(data) {
   return request({
     url: '/dg/desensitizeWhitelist',
@@ -43,7 +44,7 @@ export function addDesensitizeWhitelist(data) {
   })
 }
 
-// 修改脱敏白名单
+// Modify desensitization whitelist
 export function updateDesensitizeWhitelist(data) {
   return request({
     url: '/dg/desensitizeWhitelist',
@@ -52,7 +53,7 @@ export function updateDesensitizeWhitelist(data) {
   })
 }
 
-// 删除脱敏白名单
+// Delete desensitization whitelist
 export function delDesensitizeWhitelist(id) {
   return request({
     url: '/dg/desensitizeWhitelist/' + id,

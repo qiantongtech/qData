@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -33,17 +34,17 @@
   const {proxy} = getCurrentInstance();
 
   import { ref,nextTick, onMounted, onBeforeUnmount, watch } from 'vue';
-  import WebSocketService from '@/api/system/system/message/websocketService'; // 导入服务
-  import { getToken } from '../../../../../utils/auth'; // 引入token获取工具
+  import WebSocketService from '@/api/system/system/message/websocketService'; // Import services
+  import { getToken } from '../../../../../utils/auth'; // Introduce token acquisition tool
 
-  // 获取当前用户的 token
+  // Get the current user's token
   const userId = ref('test11111111111');
   const token = ref(getToken());
   let message = ref('');
 
-  const webSocketService = ref(null); // WebSocket 服务实例
+  const webSocketService = ref(null); // WebSocket service instance
 
-  // 获取父组件传递的用户ID
+  // Get the user ID passed by the parent component
   const props = defineProps({
     userId: String,
     token: String,
@@ -58,18 +59,18 @@
       title: td('sys.system.message.newMessage'),
       time: 'test'
     },
-  ]); // 用于保存接收到的站内信
+  ]); // Used to save received site messages
 
-  // 初始化 WebSocket
+  // Initialize WebSockets
   const initWebSocket = () => {
     webSocketService.value = new WebSocketService(userId.value, token.value);
 
     if (userId.value) {
-      // 初始化 WebSocket 并监听消息
+      // Initialize WebSocket and listen for messages
       webSocketService.value.init();
       webSocketService.value.socket.onmessage = (event) => {
         const messageData = JSON.parse(event.data);
-        console.log('-----------监听消息 messageData----------', messageData);
+        console.log("-----------Listening for messageData----------", messageData);
         if (messageData) {
 
           messages.value = [
@@ -78,47 +79,47 @@
               time: '11111111111'
             },
           ]
-          // 在 WebSocket 数据更新后，强制视图更新
+          // Force view update after WebSocket data is updated
           nextTick(() => {
-            console.log('视图已更新:', messages.value);
+            console.log("View updated:", messages.value);
           });
           // messageData.time = messageData.createTime;
-          // 用新数组替换原数组，触发 Vue 的视图更新
+          // Replace the original array with the new array to trigger Vue's view update
           // messages.value = [...messages.value, {
           //   title: messageData.title,
           //   time: messageData.createTime
           // }];
         }
-        console.log('-----------数据更新----------', messages.value);
+        console.log("-----------Data updated----------", messages.value);
       };
     }
   };
 
-  // 组件挂载时初始化 WebSocket 连接
+  // Initialize the WebSocket connection when the component is mounted
   onMounted(() => {
     initWebSocket();
   });
 
-  // // 发送消息
+  // // send message
   // const sendMessage = () => {
-  //   console.log('-----------发送消息----------',message.value)
+  //   console.log('-----------Send message----------',message.value)
   //   if (message.value) {
   //     webSocketService.value.sendMessage(message.value);
-  //     message.value = ''; // 清空输入框
+  //     message.value = ''; // Clear the input box
   //   }
   // };
 
-  // 组件卸载时关闭 WebSocket 连接
+  // Close WebSocket connection when component is uninstalled
   // onBeforeUnmount(() => {
   //   if (webSocketService.value) {
   //     webSocketService.value.close();
   //   }
   // });
 
-  // 监听 token 变化，更新 WebSocket 连接
+  // Monitor token changes and update WebSocket connections
   // watch(() => props.token, (newToken) => {
   //   if (webSocketService.value) {
-  //     webSocketService.value.updateToken(newToken); // 假设 WebSocketService 有一个更新 token 的方法
+  //     webSocketService.value.updateToken(newToken); // Assume that WebSocketService has a method to update token
   //   }
   // });
 </script>

@@ -1,137 +1,155 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询项目与用户关联关系列表
-export function listAttProjectUserRel(query) {
+const buildHeaders = (options = {}) => ({
+    hideErrorMessage: options.hideErrorMessage === true
+});
+
+// Query the list of relationships between projects and users
+export function listAttProjectUserRel(query, options = {}) {
     return request({
         url: '/att/projectUserRel/list',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
-// 查询项目与用户关联关系详细
-export function getAttProjectUserRel(id) {
+// Query the detailed relationship between items and users
+export function getAttProjectUserRel(id, options = {}) {
     return request({
         url: '/att/projectUserRel/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
-// 查询项目与用户关联关系详细
-export function getRoleUser(id) {
+// Query the detailed relationship between items and users
+export function getRoleUser(id, options = {}) {
     return request({
         url: '/att/projectUserRel/roleUser/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
-// 新增项目与用户关联关系
-export function addAttProjectUserRel(data) {
+// Add new project-user relationship
+export function addAttProjectUserRel(data, options = {}) {
     return request({
         url: '/att/projectUserRel',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 新增项目与用户关联关系
-export function addUserListAndRoleList(data) {
+// Add new project-user relationship
+export function addUserListAndRoleList(data, options = {}) {
     return request({
         url: '/att/projectUserRel/addUserListAndRoleList',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 修改项目与用户关联关系
-export function updateAttProjectUserRel(data) {
+// Modify the relationship between projects and users
+export function updateAttProjectUserRel(data, options = {}) {
     return request({
         url: '/att/projectUserRel',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 修改项目与用户关联关系
-export function editUserListAndRoleList(data) {
+// Modify the relationship between projects and users
+export function editUserListAndRoleList(data, options = {}) {
     return request({
         url: '/att/projectUserRel/editUserListAndRoleList',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 删除项目与用户关联关系
-export function delAttProjectUserRel(id) {
+// Delete the relationship between project and user
+export function delAttProjectUserRel(id, options = {}) {
     return request({
         url: '/att/projectUserRel/' + id,
-        method: 'delete'
+        method: 'delete',
+        headers: buildHeaders(options)
     });
 }
 
-// 查询角色列表
-export function listRole(query) {
+// Query role list
+export function listRole(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/list',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
-// 查询角色详细
-export function getRole(roleId) {
+// Query role details
+export function getRole(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/' + roleId,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
-// 新增角色
-export function addRole(data) {
+// Add new role
+export function addRole(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role',
         method: 'post',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 修改角色
-export function updateRole(data) {
+// Modify role
+export function updateRole(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 角色数据权限
-export function dataScope(data) {
+// Role data permissions
+export function dataScope(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/dataScope',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 角色状态修改
-export function changeRoleStatus(roleId, status) {
+// Character status modification
+export function changeRoleStatus(roleId, status, options = {}) {
     const data = {
         roleId,
         status
@@ -139,67 +157,75 @@ export function changeRoleStatus(roleId, status) {
     return request({
         url: '/att/projectUserRel/role/changeStatus',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 删除角色
-export function delRole(roleId) {
+// Delete role
+export function delRole(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/' + roleId,
-        method: 'delete'
+        method: 'delete',
+        headers: buildHeaders(options)
     });
 }
 
-// 查询角色已授权用户列表
-export function allocatedUserList(query) {
+// Query the list of users authorized by the role
+export function allocatedUserList(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/allocatedList',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
-// 查询角色未授权用户列表
-export function unallocatedUserList(query) {
+// Query the list of users whose role is not authorized
+export function unallocatedUserList(query, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/unallocatedList',
         method: 'get',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
-// 取消用户授权角色
-export function authUserCancel(data) {
+// Cancel user authorization role
+export function authUserCancel(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/cancel',
         method: 'put',
-        data: data
+        data: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 批量取消用户授权角色
-export function authUserCancelAll(data) {
+// Cancel user authorization roles in batches
+export function authUserCancelAll(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/cancelAll',
         method: 'put',
-        params: data
+        params: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 授权用户选择
-export function authUserSelectAll(data) {
+// Authorized user selection
+export function authUserSelectAll(data, options = {}) {
     return request({
         url: '/att/projectUserRel/role/authUser/selectAll',
         method: 'put',
-        params: data
+        params: data,
+        headers: buildHeaders(options)
     });
 }
 
-// 根据角色ID查询部门树结构
-export function deptTreeSelect(roleId) {
+// Query department tree structure based on role ID
+export function deptTreeSelect(roleId, options = {}) {
     return request({
         url: '/att/projectUserRel/role/deptTree/' + roleId,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }

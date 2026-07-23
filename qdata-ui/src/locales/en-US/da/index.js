@@ -307,6 +307,21 @@ export default {
       editInspectionRule: 'Edit Inspection Rule',
       editEvaluationRule: 'Edit Evaluation Rule'
     },
+    dataQuery: {
+      queryResult: {
+        export: 'Export',
+        serialNumber: 'No.',
+        close: 'Close',
+        formTitle: 'Form Title',
+        notification: {
+          title: 'Notice',
+          noData: 'This table contains no data',
+          exportConfirm: 'Export {total} records in files of 5,000 records each, for a total of {files} files?',
+          confirm: 'Confirm',
+          cancel: 'Cancel'
+        }
+      }
+    },
     // SpotCheckResult component
     spotCheckResult: {
       title: 'View Spot Check Results',
@@ -486,7 +501,7 @@ export default {
     datasourceTypeRequired: 'Data connection type is required',
     configRequired: 'Data source config (JSON string) is required',
     ipRequired: 'IP is required',
-    ipInvalid: 'IP cannot contain Chinese characters',
+    ipInvalid: 'IP address format is invalid, e.g. 192.168.1.1',
     portRequired: 'Port is required',
     portInvalid: 'Port must be a 1-9 digit number',
     accountRequired: 'Account is required',
@@ -504,6 +519,10 @@ export default {
     deleteSuccess: 'Deleted successfully',
     confirmDelete: 'Are you sure to delete data source with ID "{id}"?',
     confirmStatusChange: 'Are you sure to {text} data connection "{name}"?',
+    connectionValidationFailedConfirm: 'Datasource validation failed. Continue adding it? If you confirm, this datasource will be automatically disabled.',
+    enableFailedTitle: 'Data Connection',
+    enableFailedMessage: 'Failed to enable the data connection. Please check the database connection information.',
+    enablingWait: 'Enabling, please wait.',
     statusSuccess: '{text} succeeded',
     importTitle: 'Data Source Import',
     importResult: 'Import Result',
@@ -536,6 +555,11 @@ export default {
     startCharPosPlaceholder: 'Please enter start char position',
     endCharPos: 'End Char Position',
     endCharPosPlaceholder: 'Please enter end char position',
+    startCharPosRequired: 'Start char position is required',
+    startCharPosPattern: 'Start char position must be a number',
+    endCharPosRequired: 'End char position is required',
+    endCharPosPattern: 'End char position must be a number',
+    endCharPosLessThanStart: 'End char position must be greater than start char position',
     onlineFlag: 'Online/Offline Flag',
     addTitle: 'Add Sensitivity Level',
     editTitle: 'Edit Sensitivity Level',

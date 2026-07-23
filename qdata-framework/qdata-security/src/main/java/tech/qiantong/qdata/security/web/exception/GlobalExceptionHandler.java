@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.security.web.exception;
@@ -54,8 +40,8 @@ import tech.qiantong.qdata.common.utils.html.EscapeUtil;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 全局异常处理器
- * 系统异常和业务异常统一返回 i18n 消息（根据请求语言 zh_CN / en_US / ja_JP 返回对应文案）
+ * Global exception handler
+ * System exceptions and business exceptions uniformly return i18n messages (corresponding copy is returned according to the request language zh_CN / en_US / ja_JP)
  *
  * @author qdata
  */
@@ -65,35 +51,35 @@ public class GlobalExceptionHandler
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * 权限校验异常
+     * Permission verification exception
      */
     @ExceptionHandler(AccessDeniedException.class)
     public AjaxResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败,异常:{}", requestURI, e.getMessage());
-        String message = MessageUtils.messageWithFallback("sys.error", "没有权限，请联系管理员授权");
+        log.error(MessageUtils.messageEn("log.exception.access.denied"), requestURI, e.getMessage());
+        String message = MessageUtils.messageWithFallback("sys.error", "Internal server error, please contact administrator");
         return AjaxResult.error(HttpStatus.FORBIDDEN, message);
     }
 
     /**
-     * 请求方式不支持
+     * The request method is not supported
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public AjaxResult handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
             HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
+        log.error(MessageUtils.messageEn("log.exception.method.not.supported"), requestURI, e.getMethod());
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error.method", e.getMessage());
         return AjaxResult.error(message);
     }
 
     /**
-     * 业务异常
-     * 优先使用 ServiceException 中设置的 i18nCode 获取国际化消息，
-     * 未设置 i18nCode 则直接返回原始 message（向后兼容）
+     * Business abnormality
+     * Prioritize using the i18nCode set in ServiceException to obtain internationalized messages.
+     * If i18nCode is not set, the original message will be returned directly (backwards compatible)
      */
     @ExceptionHandler(ServiceException.class)
     public AjaxResult handleServiceException(ServiceException e, HttpServletRequest request)
@@ -105,20 +91,21 @@ public class GlobalExceptionHandler
     }
 
     /**
-     * 请求路径中缺少必需的路径变量
+     * A required path variable is missing from the request path
      */
     @ExceptionHandler(MissingPathVariableException.class)
     public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
-        String message = StringUtils.isNotEmpty(e.getVariableName()) ? String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName())
-                : MessageUtils.messageWithFallback("sys.error.path.missing", String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
+        String variableName = e.getVariableName();
+        log.error(MessageUtils.messageEn("log.exception.path.variable.missing"), requestURI, e);
+        String message = StringUtils.isNotEmpty(variableName) ? MessageUtils.messageWithFallback("sys.error.path.missing", String.format(MessageUtils.message("log.exception.path.variable.missing"), variableName))
+                : MessageUtils.messageWithFallback("sys.error.path.missing", "Missing required path variable");
         return AjaxResult.error(message);
     }
 
     /**
-     * 请求参数类型不匹配
+     * Request parameter type mismatch
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public AjaxResult handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request)
@@ -129,41 +116,43 @@ public class GlobalExceptionHandler
         {
             value = EscapeUtil.clean(value);
         }
-        log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
-        String tips = String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value);
+        log.error(MessageUtils.message("log.exception.param.type.mismatch"), requestURI, e);
+        String tips = MessageUtils.messageWithFallback("sys.error.param.type.detail",
+                "Request parameter type mismatch: parameter [{0}] requires type ''{1}'', but the input value is ''{2}''",
+                e.getName(), e.getRequiredType().getName(), value);
         String message = StringUtils.isNotEmpty(e.getName()) ? tips :
-                MessageUtils.messageWithFallback("sys.error.param.type", tips);
+                MessageUtils.messageWithFallback("sys.error.param.type", "Request parameter type mismatch");
         return AjaxResult.error(message);
     }
 
     /**
-     * 拦截未知的运行时异常
+     * Intercept unknown runtime exceptions
      */
     @ExceptionHandler(RuntimeException.class)
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        log.error(MessageUtils.message("log.exception.unknown"), requestURI, e);
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error.unknown", e.getMessage());
         return AjaxResult.error(message);
     }
 
     /**
-     * 系统异常
+     * System exception
      */
     @ExceptionHandler(Exception.class)
     public AjaxResult handleException(Exception e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生系统异常.", requestURI, e);
+        log.error(MessageUtils.message("log.exception.system"), requestURI, e);
         String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() :
                 MessageUtils.messageWithFallback("sys.error", e.getMessage());
         return AjaxResult.error(message);
     }
 
     /**
-     * 自定义验证异常
+     * Custom validation exception
      */
     @ExceptionHandler(BindException.class)
     public AjaxResult handleBindException(BindException e)
@@ -174,7 +163,7 @@ public class GlobalExceptionHandler
     }
 
     /**
-     * 自定义验证异常
+     * Custom validation exception
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
@@ -185,12 +174,12 @@ public class GlobalExceptionHandler
     }
 
     /**
-     * 演示模式异常
+     * Demo mode exception
      */
     @ExceptionHandler(DemoModeException.class)
     public AjaxResult handleDemoModeException(DemoModeException e)
     {
-        String message = MessageUtils.messageWithFallback("biz.error.demo", "演示模式，不允许操作");
+        String message = MessageUtils.messageWithFallback("biz.error.demo", "Demo mode, operation not allowed");
         return AjaxResult.error(message);
     }
 }

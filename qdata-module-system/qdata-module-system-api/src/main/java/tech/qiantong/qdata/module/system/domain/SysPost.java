@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.domain;
@@ -43,7 +29,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * 岗位表 sys_post
+ * Position table sys_post
  *
  * @author qdata
  */
@@ -51,27 +37,27 @@ public class SysPost extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 岗位序号 */
-    @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
+    /** Position ID */
+    @Excel(name = "Position ID", cellType = ColumnType.NUMERIC)
     private Long postId;
 
-    /** 岗位编码 */
-    @Excel(name = "岗位编码")
+    /** Position Code */
+    @Excel(name = "Position Code")
     private String postCode;
 
-    /** 岗位名称 */
-    @Excel(name = "岗位名称")
+    /** Position Name */
+    @Excel(name = "Position Name")
     private String postName;
 
-    /** 岗位排序 */
-    @Excel(name = "岗位排序")
+    /** Position Sort Order */
+    @Excel(name = "Position Sort")
     private Integer postSort;
 
-    /** 状态（0正常 1停用） */
-    @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    /** Status (0=normal, 1=disabled) */
+    @Excel(name = "Status", readConverterExp = "0=normal,1=disabled")
     private String status;
 
-    /** 用户是否存在此岗位标识 默认不存在 */
+    /** Whether the user holds this position, defaults to false */
     private boolean flag = false;
 
     public Long getPostId()
@@ -84,8 +70,8 @@ public class SysPost extends BaseEntity
         this.postId = postId;
     }
 
-    @NotBlank(message = "岗位编码不能为空")
-    @Size(min = 0, max = 64, message = "岗位编码长度不能超过64个字符")
+    @NotBlank(message = "Position code is required")
+    @Size(min = 0, max = 64, message = "Position code must not exceed 64 characters")
     public String getPostCode()
     {
         return postCode;
@@ -96,8 +82,8 @@ public class SysPost extends BaseEntity
         this.postCode = postCode;
     }
 
-    @NotBlank(message = "岗位名称不能为空")
-    @Size(min = 0, max = 50, message = "岗位名称长度不能超过50个字符")
+    @NotBlank(message = "Position name is required")
+    @Size(min = 0, max = 50, message = "Position name must not exceed 50 characters")
     public String getPostName()
     {
         return postName;
@@ -108,7 +94,7 @@ public class SysPost extends BaseEntity
         this.postName = postName;
     }
 
-    @NotNull(message = "显示顺序不能为空")
+    @NotNull(message = "Sort order is required")
     public Integer getPostSort()
     {
         return postSort;

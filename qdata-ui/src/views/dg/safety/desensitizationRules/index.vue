@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -298,7 +299,7 @@ function handleStatusChange(id, row, e) {
   const text = e === true ? td('dg.desensitizationRules.detailStatusEnable') : td('dg.desensitizationRules.detailStatusDisable');
   const dataForm = { id, validFlag: row.validFlag };
   proxy.$modal
-    .confirm(td('dg.desensitizationRules.confirmStatus', '确认要"{text}","{name}"脱敏规则吗？', { text: text, name: row.name }))
+    .confirm(td('dg.desensitizationRules.confirmStatus', 'Are you sure to "{text}" desensitization rule "{name}"?', { text: text, name: row.name }))
     .then(function () {
       updateDesensitizeRules(dataForm).then(() => {
         proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
@@ -337,7 +338,7 @@ function handleDialogSuccess() {
   else ids = store.rows.map((x) => x.id).join(",");
   if (!ids) return;
   proxy.$modal
-    .confirm('是否确认删除编号为"' + ids + '"的数据项？')
+    .confirm('Are you sure to delete the data item numbered "' + ids + '"?')
     .then(function () {
       return delDesensitizeRules(ids);
     })
@@ -353,15 +354,15 @@ function handleDelete(row) {
   const message=ref(td('dg.desensitizationRules.confirmDeleteSimple'));
   if (row?.id) {
     invalidIds.push(row.id);
-    message.value=td('dg.desensitizationRules.confirmDeleteId', '是否确认删除编号为{id}的数据项？', { id: row.id })
+    message.value=td('dg.desensitizationRules.confirmDeleteId', 'Are you sure to delete item with ID "{id}"?', { id: row.id })
   }else {
     store.rows.forEach(item => {
-      // 当 validFlag 为 false 时，记录 id
+      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }
     });
-    message.value=td('dg.desensitizationRules.confirmDeleteCount', '可删除{canDelete}个，不可删除{cannotDelete}个，是否删除可删部分', { canDelete: invalidIds.length, cannotDelete: store.rows.length-invalidIds.length })
+    message.value=td('dg.desensitizationRules.confirmDeleteCount', 'Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?', { canDelete: invalidIds.length, cannotDelete: store.rows.length-invalidIds.length })
   }
   proxy.$modal
       .confirm(message.value)

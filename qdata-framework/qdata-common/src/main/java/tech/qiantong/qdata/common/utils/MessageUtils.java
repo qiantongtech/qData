@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -42,7 +28,7 @@ import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 import java.util.Locale;
 
 /**
- * 获取 i18n 资源文件
+ * i18n resource file utility
  *
  * @author qdata
  */
@@ -50,15 +36,15 @@ public class MessageUtils
 {
     private static final Logger log = LoggerFactory.getLogger(MessageUtils.class);
 
-    /** 最终兜底错误消息 */
+    /** Final fallback error message */
     private static final String DEFAULT_ERROR_MESSAGE = "系统异常，请联系管理员";
 
     /**
-     * 根据消息键和参数获取消息，委托给 spring messageSource
+     * Get message by key and parameters, delegating to Spring MessageSource
      *
-     * @param code 消息键
-     * @param args 参数
-     * @return 国际化翻译值
+     * @param code message key
+     * @param args parameters
+     * @return i18n translated value
      */
     public static String message(String code, Object... args)
     {
@@ -67,37 +53,50 @@ public class MessageUtils
     }
 
     /**
-     * 根据消息键获取消息，支持兜底链：
-     *   当前语言 → 英文 → 简体中文 → defaultMessage → 硬编码兜底
+     * Get English message by key and parameters, ignoring the current request locale
      *
-     * @param code 消息键（对应 messages.properties 中的 key）
-     * @param defaultMessage 兜底消息
-     * @param args 格式化参数
-     * @return 国际化翻译值，保证不返回 null
+     * @param code message key
+     * @param args parameters
+     * @return English translated value
+     */
+    public static String messageEn(String code, Object... args)
+    {
+        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        return messageSource.getMessage(code, args, Locale.US);
+    }
+
+    /**
+     * Get message by key with fallback chain:
+     *   current locale -> English -> Simplified Chinese -> defaultMessage -> hardcoded fallback
+     *
+     * @param code message key (corresponding to key in messages.properties)
+     * @param defaultMessage fallback message
+     * @param args format parameters
+     * @return i18n translated value, guaranteed non-null
      */
     public static String messageWithFallback(String code, String defaultMessage, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
         Locale currentLocale = LocaleContextHolder.getLocale();
 
-        // 1. 尝试当前请求语言
+        // 1. Try current request locale
         String msg = resolveMessage(messageSource, code, args, currentLocale);
         if (msg != null)
         {
             return msg;
         }
 
-        // 2. 尝试英文
-        if (!Locale.ENGLISH.getLanguage().equals(currentLocale.getLanguage()))
+        // 2. Try English
+        if (!Locale.US.getLanguage().equals(currentLocale.getLanguage()))
         {
-            msg = resolveMessage(messageSource, code, args, Locale.ENGLISH);
+            msg = resolveMessage(messageSource, code, args, Locale.US);
             if (msg != null)
             {
                 return msg;
             }
         }
 
-        // 3. 尝试简体中文
+        // 3. Try Simplified Chinese
         if (!Locale.SIMPLIFIED_CHINESE.getLanguage().equals(currentLocale.getLanguage())
                 || !Locale.SIMPLIFIED_CHINESE.equals(currentLocale))
         {
@@ -108,21 +107,59 @@ public class MessageUtils
             }
         }
 
-        // 4. 使用传入的 defaultMessage
+        // 4. Use the provided defaultMessage
         if (!StringUtils.isEmpty(defaultMessage))
         {
             return defaultMessage;
         }
 
-        // 5. 最终硬编码兜底
-        log.warn("无法获取消息键'{}'的国际化翻译，使用默认错误消息", code);
+        // 5. Final hardcoded fallback
+        log.warn("Cannot resolve the localized translation for message key '{}'; using the default error message", code);
+        return DEFAULT_ERROR_MESSAGE;
+    }
+
+
+
+
+
+    /**
+     * Get English message by key with fallback chain:
+     *   English -> defaultMessage -> hardcoded fallback
+     *
+     * Differs from messageEn: does not throw an exception when English translation is missing, uses fallback logic instead.
+     *
+     * @param code message key (corresponding to key in messages.properties)
+     * @param defaultMessage fallback message, returned when English translation is not found
+     * @param args format parameters
+     * @return English translated value, guaranteed non-null
+     */
+    public static String messageEnWithFallback(String code, String defaultMessage, Object... args)
+    {
+
+        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+
+        // 1. Try English
+        String msg = resolveMessage(messageSource, code, args, Locale.US);
+        if (msg != null)
+        {
+            return msg;
+        }
+
+        // 2. Use the provided defaultMessage
+        if (!StringUtils.isEmpty(defaultMessage))
+        {
+            return defaultMessage;
+        }
+
+        // 3. Final hardcoded fallback
+        log.warn("Cannot resolve the English translation for message key '{}'; using the default error message", code);
         return DEFAULT_ERROR_MESSAGE;
     }
 
     /**
-     * 从 MessageSource 解析消息，不抛出异常
+     * Resolve message from MessageSource without throwing exceptions
      *
-     * @return 解析到的消息，未找到返回 null
+     * @return resolved message, or null if not found
      */
     private static String resolveMessage(MessageSource messageSource, String code, Object[] args, Locale locale)
     {

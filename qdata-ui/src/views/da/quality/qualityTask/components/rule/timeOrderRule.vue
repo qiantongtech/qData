@@ -1,21 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
+
 <template>
-  <!-- 时间字段先后顺序校验 -->
+  <!-- Time field order validation -->
   <el-form ref="formRef" :model="form" :disabled="falg">
     <el-form-item label="">
       <div
@@ -69,7 +71,7 @@
           />
         </template>
 
-        <!-- 添加按钮 -->
+        <!-- Add button -->
         <el-button
           v-if="!falg"
           icon="Plus"
@@ -120,18 +122,18 @@ const timeColumns = computed(() =>
   })
 );
 
-// 拼接选择的时间字段，参考evaColumn的实现
+// Concatenate selected time fields, referencing evaColumn implementation
 const timeOrderFields = computed(() => {
   if (!form.conditions || form.conditions.length === 0) return "";
-  // 获取所有唯一的字段名
+  // Get all unique field names
   const fieldNames = new Set();
   form.conditions.forEach((cond) => {
     if (cond.leftField) fieldNames.add(cond.leftField);
     if (cond.rightField) fieldNames.add(cond.rightField);
   });
-  // 转换为数组并排序
+  // Convert to array and sort
   const fieldsArray = Array.from(fieldNames);
-  // 使用columnList中的label显示，如果没有则显示columnName
+  // Use label from columnList, fallback to columnName
   const map = new Map(
     (columnList.value || []).map((c) => [c.columnName, c.label || c.columnName])
   );
@@ -208,21 +210,21 @@ function validate() {
         return;
       }
 
-      // 获取所有唯一的字段名
+      // Get all unique field names
       const fieldNames = new Set();
       form.conditions.forEach((cond) => {
         if (cond.leftField) fieldNames.add(cond.leftField);
         if (cond.rightField) fieldNames.add(cond.rightField);
       });
 
-      // 转换为数组
+      // Convert to array
       const fieldsArray = Array.from(fieldNames);
 
       resolve({
         valid: true,
         data: {
           conditions: JSON.parse(JSON.stringify(form.conditions)),
-          evaColumn: fieldsArray, // 直接返回字段数组，用于赋值给父组件的evaColumn
+          evaColumn: fieldsArray, // Return field array directly for parent's evaColumn
         },
       });
     });

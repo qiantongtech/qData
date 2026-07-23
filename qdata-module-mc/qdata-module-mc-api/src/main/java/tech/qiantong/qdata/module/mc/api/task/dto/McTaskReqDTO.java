@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * 采集任务 DTO 对象 MC_TASK
+ * Collection task DTO object MC_TASK
  *
  * @author qdata
  * @date 2025-12-16
@@ -17,53 +17,53 @@ public class McTaskReqDTO {
     /** ID */
     private Long id;
 
-    /** 来源系统ID */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** 任务名称 */
+    /** Task name */
     private String name;
 
-    /** 数据连接id */
+    /** Data connection id */
     private Long datasourceId;
 
-    /** 数据库类型 */
+    /** Database type */
     private String dbType;
 
-    /** 责任人 */
+    /** Responsible person */
     private Long leader;
 
-    /** 责任人电话 */
+    /** Responsible person’s phone number */
     private String leaderPhone;
 
-    /** 采集模式 */
+    /** Collection mode */
     private String collectionMode;
 
-    /** 采集范围 */
+    /** Collection range */
     private String collectionScope;
 
-    /** 任务状态 */
+    /** Task status */
     private String status;
 
-    /** 是否有效 */
+    /** Whether the record is active */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 采集任务类型：1-采集，2-DDL
+     * Collection task type: 1-Collection, 2-DDL
      */
     @Schema(description = "采集任务类型：1-采集，2-DDL", example = "1")
     private String collectType;
 
     /**
-     * 采集黑名单
+     * Collection blacklist
      */
     @Schema(description = "采集黑名单", example = "")
     private String blacklist;

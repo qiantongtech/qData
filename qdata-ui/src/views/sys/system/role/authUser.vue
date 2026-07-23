@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -106,7 +107,7 @@ const queryParams = reactive({
   phonenumber: undefined,
 });
 
-/** 查询授权用户列表 */
+/** Query the list of authorized users */
 function getList() {
   loading.value = true;
   allocatedUserList(queryParams).then((response) => {
@@ -116,36 +117,36 @@ function getList() {
   });
 }
 
-/** 返回按钮 */
+/** back button */
 function handleClose() {
   const obj = { path: "/system/role" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   userIds.value = selection.map((item) => item.userId);
   multiple.value = !selection.length;
 }
 
-/** 打开授权用户表弹窗 */
+/** Open the authorized user table pop-up window */
 function openSelectUser() {
   proxy.$refs["selectRef"].show();
 }
 
-/** 取消授权按钮操作 */
+/** Cancel authorization button operation */
 function cancelAuthUser(row) {
   proxy.$modal
     .confirm(td('sys.system.roleAuth.confirmCancelAuth', { name: row.userName }))
@@ -159,7 +160,7 @@ function cancelAuthUser(row) {
     .catch(() => { });
 }
 
-/** 批量取消授权按钮操作 */
+/** Batch deauthorization button operation */
 function cancelAuthUserAll(row) {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");

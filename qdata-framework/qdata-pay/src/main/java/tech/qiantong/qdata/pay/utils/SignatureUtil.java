@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.pay.utils;
@@ -35,31 +21,31 @@ package tech.qiantong.qdata.pay.utils;
 import java.util.Map;
 
 /**
- * 签名验证
+ * Signature verification
  * @author qdata
  */
 public class SignatureUtil {
 
     /**
-     * 生成签名字符串。
-     * @param parameters 需要签名的参数集合
-     * @param secret 签名密钥
-     * @return 生成的签名字符串
+     * Generate signature string.
+     * @param parameters A collection of parameters that need to be signed
+     * @param secret signing key
+     * @return generated signature string
      */
     public static String generateSignature(Map<String, String> parameters, String secret) {
-        // 实现签名生成逻辑
+        // Implement signature generation logic
         return "";
     }
 
     /**
-     * 验证签名的有效性。
-     * @param parameters 需要验证的参数集合
-     * @param signature 传入的签名字符串
-     * @param secret 签名密钥
-     * @return 如果签名有效返回true，否则返回false
+     * Verify the validity of the signature.
+     * @param parameters collection of parameters that need to be verified
+     * @param signature the incoming signature string
+     * @param secret signing key
+     * @return true if the signature is valid, false otherwise
      */
     public static boolean verifySignature(Map<String, String> parameters, String signature, String secret) {
-        // 实现签名验证逻辑
+        // Implement signature verification logic
         return true;
     }
 }

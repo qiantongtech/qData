@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.dialect;
@@ -40,6 +26,7 @@ import tech.qiantong.qdata.common.database.core.DbColumn;
 import tech.qiantong.qdata.common.database.core.DbName;
 import tech.qiantong.qdata.common.database.core.DbTable;
 import tech.qiantong.qdata.common.database.utils.DatabaseUtil;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -48,7 +35,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Kingbase8 数据库方言
+ * Kingbase8 database dialect
  *
  * @author QianTongDC
  * @date 2024-02-08
@@ -84,7 +71,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbName + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + "public" + "' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -117,7 +104,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE (SELECT current_database()) =  '" + dbQueryProperty.getDbName() + "'  " +
                 "AND c.relname =  '" + tableName + "'  " +
                 "AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname =  '" + dbQueryProperty.getSid() + "' ) " +
-                "AND a.attnum > 0 " +  // 过滤掉系统隐藏列
+                "AND a.attnum > 0 " +  // Filter out system hidden columns
                 "ORDER BY a.attnum";
     }
 
@@ -125,7 +112,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
     @Override
     public String getDbColumns(DbQueryProperty dbQueryProperty) {
         return "SELECT " +
-                "c.relname AS TABLENAME, " +                       // ★ 新增
+                "c.relname AS TABLENAME, " +                       // ★ New
                 "a.attname AS COLNAME, " +
                 "CASE " +
                 "  WHEN t.typname = 'int2' THEN 'SMALLINT' " +
@@ -165,7 +152,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
                 "WHERE c.relnamespace = ( " +
                 "  SELECT oid FROM pg_namespace WHERE nspname = '" + dbQueryProperty.getSid() + "' " +
                 ") " +
-                "AND a.attnum > 0 " +                               // 过滤系统列
+                "AND a.attnum > 0 " +                               // Filter system column
                 "ORDER BY c.relname, a.attnum";
     }
 
@@ -276,7 +263,7 @@ public class Kingbase8Dialect extends AbstractDbDialect {
     }
 
     private static String mapKingbaseColumnType(DbColumn col) {
-        // 类似 Oracle
+        // Similar to Oracle
         String type = col.getDataType().toUpperCase(Locale.ROOT);
         Long length = DatabaseUtil.getStringToLong(col.getDataLength());
         Long scale = DatabaseUtil.getStringToLong(col.getDataScale());
@@ -369,17 +356,17 @@ public class Kingbase8Dialect extends AbstractDbDialect {
 
     @Override
     public String buildQuerySqlFields(List<DbColumn> columns, String tableName, DbQueryProperty dbQueryProperty) {
-        // 如果没有传入字段，则默认使用 * 查询所有字段
+        // If no fields are passed in, * will be used by default to query all fields.
         if (columns == null || columns.isEmpty()) {
             return "SELECT * FROM " + tableName;
         }
 
-        // 根据传入的 DbColumn 列表获取所有字段名，并用逗号分隔
+        // Get all field names based on the passed in DbColumn list, separated by commas
         String fields = columns.stream()
                 .map(DbColumn::getColName)
                 .collect(Collectors.joining(", "));
 
-        // 构造最终的 SQL 查询语句
+        // Construct the final SQL query statement
         return "SELECT " + fields + " FROM " + dbQueryProperty.getSid() + "." + tableName;
     }
 
@@ -405,14 +392,15 @@ public class Kingbase8Dialect extends AbstractDbDialect {
             return "SELECT datname AS DBNAME, 2 AS TOTALLEVELS " +
                     "FROM pg_database WHERE datistemplate = false ORDER BY DBNAME";
         } else if (level == 2) {
-            // 必须先用 dbName 重建连接，再执行：
+            // The connection must be reestablished using dbName before executing:
             return "SELECT schema_name AS DBNAME, 2 AS TOTALLEVELS " +
                     "FROM information_schema.schemata " +
                     "WHERE schema_name NOT LIKE 'pg_%' " +
                     "AND schema_name <> 'information_schema' " +
                     "ORDER BY DBNAME";
         }
-        throw new UnsupportedOperationException("仅支持 level=1/2");
+        throw new UnsupportedOperationException(MessageUtils.messageWithFallback(
+                "sys.error.database.kingbase.level.unsupported", "Only level=1/2 is supported"));
     }
 
     @Override

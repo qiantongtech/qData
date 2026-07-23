@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ai.service.chat;
@@ -44,7 +30,7 @@ import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatConversation
 import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 
 /**
- * ai聊天对话Service接口
+ * ai chat conversation service interface
  *
  * @author FXB
  * @date 2026-04-01
@@ -52,59 +38,59 @@ import tech.qiantong.qdata.module.ai.dal.dataobject.chat.AiChatConversationDO;
 public interface IAiChatConversationService extends IService<AiChatConversationDO> {
 
     /**
-     * 获得ai聊天对话分页列表
+     * Get a paginated list of ai chat conversations
      *
-     * @param pageReqVO 分页请求
-     * @return ai聊天对话分页列表
+     * @param pageReqVO paging request
+     * @return ai chat conversation paginated list
      */
     PageResult<AiChatConversationDO> getAiChatConversationPage(AiChatConversationPageReqVO pageReqVO);
 
     /**
-     * 创建ai聊天对话
+     * Create ai chat conversation
      *
-     * @param createReqVO ai聊天对话信息
-     * @return ai聊天对话编号
+     * @param createReqVO ai chat conversation information
+     * @return AI chat conversation ID
      */
     Long createAiChatConversation(AiChatConversationSaveReqVO createReqVO);
 
     /**
-     * 更新ai聊天对话
+     * Update ai chat conversation
      *
-     * @param updateReqVO ai聊天对话信息
+     * @param updateReqVO ai chat conversation information
      */
     int updateAiChatConversation(AiChatConversationSaveReqVO updateReqVO);
 
     /**
-     * 删除ai聊天对话
+     * Delete ai chat conversation
      *
-     * @param idList ai聊天对话编号
+     * @param idList AI chat conversation IDs
      */
     int removeAiChatConversation(Collection<Long> idList);
 
     /**
-     * 获得ai聊天对话详情
+     * Get ai chat conversation details
      *
-     * @param id ai聊天对话编号
-     * @return ai聊天对话
+     * @param id AI chat conversation ID
+     * @return ai chat conversation
      */
     AiChatConversationDO getAiChatConversationById(Long id);
 
     /**
-     * 获得全部ai聊天对话列表
+     * Get a list of all ai chat conversations
      *
-     * @return ai聊天对话列表
+     * @return ai chat conversation list
      */
     List<AiChatConversationDO> getAiChatConversationList();
 
     /**
-     * 获得全部ai聊天对话 Map
+     * Get all ai chat conversation map
      *
-     * @return ai聊天对话 Map
+     * @return ai chat conversation map
      */
     Map<Long, AiChatConversationDO> getAiChatConversationMap();
 
     /**
-     * 通过用户id获取ai聊天对话列表
+     * Get the AI chat conversation list by user ID
      *
      * @param userId
      * @return

@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 资产预览tab -->
+  <!-- Asset preview tab -->
   <div style="padding: 5px">
     <div class="justify-between mb15">
       <el-row :gutter="15" class="btn-style">
@@ -29,7 +30,7 @@
             :loading="loading"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add', '新增') }}
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add', 'Add') }}
           </el-button>
         </el-col>
         <el-button
@@ -40,10 +41,10 @@
           @click="handleQuery"
           @mousedown="(e) => e.preventDefault()"
         >
-          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query', '查询') }}
+          <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query', 'Search') }}
         </el-button>
         <el-button @click="handleReset" @mousedown="(e) => e.preventDefault()">
-          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset', '重置') }}
+          <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset', 'Reset') }}
         </el-button>
       </el-row>
     </div>
@@ -60,7 +61,7 @@
       <el-col :span="7">
         <el-alert
           style="height: 24px"
-          :title="td('dpp.asset.addFilterTip', '点击”+”以添加筛选准则')"
+          :title="td('dpp.asset.addFilterTip', 'Click + to add filter criteria')"
           type="info"
           :closable="false"
         />
@@ -88,7 +89,7 @@
                 :class="item.checked ? 'select' : ''"
                 style="margin: 0; width: 100px; border: none; color: red"
                 v-model="item.field"
-                :placeholder="td('dpp.asset.selectField', '选择字段')"
+                :placeholder="td('dpp.asset.selectField', 'Select Field')"
               >
                 <el-option
                   v-for="field in tableColumns"
@@ -120,7 +121,7 @@
                 v-if="item.operator === '='"
                 :disabled="!item.checked"
                 v-model="item.value"
-                :placeholder="td('dpp.asset.enterValue', '请输入值')"
+                :placeholder="td('dpp.asset.enterValue', 'Please enter value')"
               ></el-input>
 
               <el-input
@@ -128,7 +129,7 @@
                 :disabled="!item.checked"
                 v-model="item.value"
                 type="number"
-                :placeholder="td('dpp.asset.enterValue', '请输入值')"
+                :placeholder="td('dpp.asset.enterValue', 'Please enter value')"
               ></el-input>
             </div>
           </el-form-item>
@@ -141,7 +142,7 @@
               v-if="index < formData.rows.length - 1"
               style="margin: 0; width: 80px; display: block"
               v-model="item.logic"
-              :placeholder="td('dpp.asset.selectLogic', '选择逻辑')"
+              :placeholder="td('dpp.asset.selectLogic', 'Select Logic')"
             >
               <el-option value="AND" style="text-align: center">AND</el-option>
               <el-option value="OR" style="text-align: center">OR</el-option>
@@ -179,7 +180,7 @@
         icon="Edit"
         @click="handleUpdate(row)"
         v-hasPermi="['da:asset:edit']"
-        >{{ td('common.button.update', '修改') }}</el-button
+        >{{ td('common.button.update', 'Edit') }}</el-button
       >
       <el-button
         link
@@ -187,7 +188,7 @@
         icon="view"
         @click="openHistory(row)"
         v-hasPermi="['da:asset:edit']"
-        >{{ td('dpp.asset.updateRecord', '修改记录') }}</el-button
+        >{{ td('dpp.asset.updateRecord', 'Update Record') }}</el-button
       >
     </template>
   </qt-table>
@@ -230,7 +231,7 @@ const formData = ref({
   rows: [],
 });
 const formVisible = ref(false);
-const updateDialogRef = ref(null); // 组件的 ref 引用
+const updateDialogRef = ref(null); // ref reference to the component
 watch(
   () => route.query.id,
   (newId) => {
@@ -266,7 +267,7 @@ const generateSqlQuery = () => {
   return sql;
 };
 
-// 查询按钮点击事件
+// Query button click event
 const handleQuery = () => {
   let falg = validateFields();
   if (!falg) return false;
@@ -276,7 +277,7 @@ const handleQuery = () => {
 const validateFields = () => {
   for (let row of formData.value.rows) {
     if (!row.field || !row.operator) {
-      ElMessage.warning(td('dpp.asset.validateIncomplete', '校验未通过，查询条件请输入完整'));
+      ElMessage.warning(td('dpp.asset.validateIncomplete', 'Validation failed, please complete query criteria'));
       return false;
     }
   }
@@ -326,7 +327,7 @@ function openHistory(row) {
   }
 }
 function handleDelete() {
-  proxy.$message.warning(td('dpp.asset.funcDeveloping', '功能开发中....'));
+  proxy.$message.warning(td('dpp.asset.funcDeveloping', 'Feature under development...'));
 }
 
 const handleReset = () => {
@@ -370,7 +371,7 @@ const tableStore = reactive({
           width: 230,
         }));
         const handleCol = {
-          label: td('common.texts.operation', '操作'),
+          label: td('common.texts.operation', 'Operation'),
           fixed: "right",
           slot: "handle",
         };

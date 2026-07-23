@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据发现字段列表
+// Query data discovery field list
 export function listDaDiscoveryColumn(query) {
   return request({
     url: '/da/discoveryColumn/list',
@@ -26,7 +27,7 @@ export function listDaDiscoveryColumn(query) {
   })
 }
 
-// 查询数据发现字段详细
+// Query data discovery field details
 export function getDaDiscoveryColumn(id) {
   return request({
     url: '/da/discoveryColumn/' + id,
@@ -34,7 +35,7 @@ export function getDaDiscoveryColumn(id) {
   })
 }
 
-// 新增数据发现字段
+// Add new data discovery fields
 export function addDaDiscoveryColumn(data) {
   return request({
     url: '/da/discoveryColumn',
@@ -43,7 +44,7 @@ export function addDaDiscoveryColumn(data) {
   })
 }
 
-// 修改数据发现字段
+// Modify data discovery fields
 export function updateDaDiscoveryColumn(data) {
   return request({
     url: '/da/discoveryColumn',
@@ -52,7 +53,7 @@ export function updateDaDiscoveryColumn(data) {
   })
 }
 
-// 删除数据发现字段
+// Remove data discovery fields
 export function delDaDiscoveryColumn(id) {
   return request({
     url: '/da/discoveryColumn/' + id,

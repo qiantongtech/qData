@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 资产血缘 tab -->
+  <!-- Asset lineage tab -->
   <div class="containerServer" v-loding="loding">
     <el-empty :description="td('common.noAssetLineage')" v-if="noData">
     </el-empty>
@@ -78,12 +79,12 @@ const initGraph = () => {
 
 Graph.registerConnector("curveConnector", (sourcePoint, targetPoint) => {
   const hgap = Math.abs(targetPoint.x - sourcePoint.x);
-  const offset = Math.max(hgap * 0.6, 80); // 控制曲线弯曲
+  const offset = Math.max(hgap * 0.6, 80); // Control curve bending
 
   const path = new Path();
-  // 起点直接用 sourcePoint
+  // Use sourcePoint directly as the starting point
   path.appendSegment(Path.createSegment("M", sourcePoint.x, sourcePoint.y));
-  // 曲线控制点
+  // curve control points
   path.appendSegment(Path.createSegment(
     "C",
     sourcePoint.x + offset,
@@ -122,7 +123,7 @@ register({
 
 const TeleportContainer = getTeleport();
 
-// ====================== 节点/边状态 ======================
+// ====================== Node/Edge status ======================
 const nodeStatusList = [
   { id: "node-0", status: "success" },
   { id: "node-1", status: "success" },

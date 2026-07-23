@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.api.model.dto;
@@ -35,7 +21,7 @@ package tech.qiantong.qdata.module.dp.api.model.dto;
 import lombok.Data;
 
 /**
- * 逻辑模型 DTO 对象 DP_MODEL
+ * Logical Model DTO - DP_MODEL
  *
  * @author qdata
  * @date 2025-01-21
@@ -51,92 +37,92 @@ public class DpModelReqDTO {
     private Long ID;
 
     /**
-     * 模型编码
+     * Model Code
      */
     private String modelName;
 
     /**
-     * 模型名称
+     * Model Name
      */
     private String modelComment;
 
     /**
-     * 类目编码
+     * Category Code
      */
     private String catCode;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table Type; 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table
      */
     private String tableType;
     /**
-     * 数仓分层id
+     * Data Warehouse Layer ID
      */
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business Category ID; Only available when table type is not Application Table
      */
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business Category Hierarchy Code
      */
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data Domain ID; Only available when table type is not Application Table
      */
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme Domain ID (Theme Planning); Only available when table type is Application Table
      */
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme Domain Hierarchy Code
      */
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table Name Case; 1: Uppercase 2: Lowercase
      */
     private String tableCase;
 
     /**
-     * 状态
+     * Status
      */
     private String status;
 
     /**
-     * 创建方式
+     * Creation Type
      */
     private String createType;
 
     /**
-     * 数据源id
+     * Datasource ID
      */
     private Long datasourceId;
 
     private Long documentId;
 
     /**
-     * 联系人
+     * Contact
      */
     private String contact;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     private Boolean delFlag;
 

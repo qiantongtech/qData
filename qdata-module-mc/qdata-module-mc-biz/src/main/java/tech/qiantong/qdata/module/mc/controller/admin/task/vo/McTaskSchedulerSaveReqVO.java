@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 数据集成调度信息 创建/修改 Request VO MC_TASK_SCHEDULER
+ * Data integration scheduling information Create/modify Request VO MC_TASK_SCHEDULER
  *
  * @author qdata
  * @date 2025-12-16
@@ -38,6 +38,9 @@ public class McTaskSchedulerSaveReqVO extends BaseEntity {
     @Schema(description = "DolphinScheduler任务编码（用于API调用）", example = "")
     @Size(max = 256, message = "任务编码长度不能超过256个字符")
     private String taskCode;
+
+    @Schema(description = "调度引擎", example = "DOLPHINSCHEDULER")
+    private String scheduler;
 
     @Schema(description = "开始时间", example = "")
     private Date startTime;

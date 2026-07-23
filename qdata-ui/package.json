@@ -1,8 +1,8 @@
 {
   "name": "anivia",
   "version": "3.8.8",
-  "description": "qData开源数据中台",
-  "author": "冰凤",
+  "description": "qData Open-Source Data Platform",
+  "author": "Bingfeng",
   "license": "MIT",
   "type": "module",
   "scripts": {

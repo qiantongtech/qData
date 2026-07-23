@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
@@ -42,7 +28,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -55,59 +41,59 @@ public class DppEtlTaskInstanceTreeListRespVO {
 
     private Long id;
 
-    @Excel(name = "实例名称")
-    @Schema(description = "实例名称", example = "")
+    @Excel(name = "Instance Name")
+    @Schema(description = "Instance Name", example = "")
     private String name;
 
-    @Excel(name = "任务名称")
-    @Schema(description = "任务名称,只有实例节点才有", example = "")
+    @Excel(name = "Task Name")
+    @Schema(description = "Task Name, only for instance nodes", example = "")
     private String taskName;
 
-    @Excel(name = "编码")
-    @Schema(description = "任务编码", example = "")
+    @Excel(name = "Code")
+    @Schema(description = "Task Code", example = "")
     private String code;
 
-    @Excel(name = "调度时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "调度时间", example = "")
+    @Excel(name = "Schedule Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Schedule Time", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date scheduleTime;
 
-    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "开始时间", example = "")
+    @Excel(name = "Start Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Start Time", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "结束时间", example = "")
+    @Excel(name = "End Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "End Time", example = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-    @Excel(name = "运行时长", width = 30)
-    @Schema(description = "运行时长", example = "")
+    @Excel(name = "Duration", width = 30)
+    @Schema(description = "Duration", example = "")
     private String duration;
 
-    @Schema(description = "运行次数", example = "")
+    @Schema(description = "Run Times", example = "")
     private Integer runTimes;
 
-    @Excel(name = "运行类型")
-    @Schema(description = "运行类型", example = "")
+    @Excel(name = "Command Type")
+    @Schema(description = "Command Type", example = "")
     private String commandType;
 
-    @Excel(name = "是否是子任务")
-    @Schema(description = "是否是子任务", example = "")
+    @Excel(name = "Sub-task Flag")
+    @Schema(description = "Sub-task Flag", example = "")
     private String subTaskFlag;
 
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
+    @Excel(name = "Status")
+    @Schema(description = "Status", example = "")
     private String status;
 
-    @Schema(description = "数据类型 1:作业任务实例 2:作业任务节点实例  3:子任务节点实例", example = "")
+    @Schema(description = "数据类型 1:Job Task Instance 2:Job Task Node Instance 3:Sub-task Node Instance", example = "")
     private String dataType;
 
-    @Schema(description = "节点类型", example = "")
+    @Schema(description = "Node Type", example = "")
     private String nodeType;
 
-    @Schema(description = "日志", example = "")
+    @Schema(description = "Log", example = "")
     private String logPath;
 
     private boolean hasChildren;

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -48,7 +34,7 @@ import tech.qiantong.qdata.module.system.service.ISysMenuService;
 import java.util.List;
 
 /**
- * 菜单信息
+ * Menu Information
  *
  * @author qdata
  */
@@ -60,7 +46,7 @@ public class SysMenuController extends BaseController
     private ISysMenuService menuService;
 
     /**
-     * 获取菜单列表
+     * Get menu list
      */
     @PreAuthorize("@ss.hasPermi('system:menu:list')")
     @GetMapping("/list")
@@ -71,7 +57,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 根据菜单编号获取详细信息
+     * Get detailed information by menu ID
      */
     @PreAuthorize("@ss.hasPermi('system:menu:query')")
     @GetMapping(value = "/{menuId}")
@@ -81,7 +67,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 获取菜单下拉树列表
+     * Get menu dropdown tree list
      */
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysMenu menu)
@@ -91,7 +77,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 获取菜单下拉树列表(排除数据研发模块)
+     * Get menu dropdown tree list (excluding data development module)
      */
     @GetMapping("/treeselectNoDpp")
     public AjaxResult treeselectNoDpp(SysMenu menu)
@@ -101,7 +87,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 获取菜单下拉树列表(只限于数据研发模块)
+     * Get menu dropdown tree list (only for data development module)
      */
     @GetMapping("/treeselectDpp")
     public AjaxResult treeselectDpp(SysMenu menu)
@@ -111,7 +97,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 加载对应角色菜单列表树
+     * Load role-specific menu list tree
      */
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
@@ -124,7 +110,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 加载对应角色菜单列表树(排除数据研发模块)
+     * Load role-specific menu list tree (excluding data development module)
      */
     @GetMapping(value = "/roleMenuTreeselectNoDpp/{roleId}")
     public AjaxResult roleMenuTreeselectNoDpp(@PathVariable("roleId") Long roleId)
@@ -137,7 +123,7 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 加载对应角色菜单列表树(只限于数据研发模块)
+     * Load role-specific menu list tree (only for data development module)
      */
     @GetMapping(value = "/roleMenuTreeselectDpp/{roleId}")
     public AjaxResult roleMenuTreeselectDpp(@PathVariable("roleId") Long roleId)
@@ -152,64 +138,64 @@ public class SysMenuController extends BaseController
     }
 
     /**
-     * 新增菜单
+     * Add menu
      */
     @PreAuthorize("@ss.hasPermi('system:menu:add')")
-    @Log(title = "菜单管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.menu", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
     {
         if (!menuService.checkMenuNameUnique(menu))
         {
-            return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
+            return error("Add menu '" + menu.getMenuName() + "' failed, menu name already exists");
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
         {
-            return error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
+            return error("Add menu '" + menu.getMenuName() + "' failed, address must start with http(s)://");
         }
         menu.setCreateBy(getUsername());
         return toAjax(menuService.insertMenu(menu));
     }
 
     /**
-     * 修改菜单
+     * Modify menu
      */
     @PreAuthorize("@ss.hasPermi('system:menu:edit')")
-    @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.menu", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysMenu menu)
     {
         if (!menuService.checkMenuNameUnique(menu))
         {
-            return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
+            return error("Modify menu '" + menu.getMenuName() + "' failed, menu name already exists");
         }
         else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
         {
-            return error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
+            return error("Modify menu '" + menu.getMenuName() + "' failed, address must start with http(s)://");
         }
         else if (menu.getMenuId().equals(menu.getParentId()))
         {
-            return error("修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己");
+            return error("Modify menu '" + menu.getMenuName() + "' failed, parent menu cannot be itself");
         }
         menu.setUpdateBy(getUsername());
         return toAjax(menuService.updateMenu(menu));
     }
 
     /**
-     * 删除菜单
+     * Delete menu
      */
     @PreAuthorize("@ss.hasPermi('system:menu:remove')")
-    @Log(title = "菜单管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.menu", businessType = BusinessType.DELETE)
     @DeleteMapping("/{menuId}")
     public AjaxResult remove(@PathVariable("menuId") Long menuId)
     {
         if (menuService.hasChildByMenuId(menuId))
         {
-            return warn("存在子菜单,不允许删除");
+            return warn("Sub-menus exist, deletion is not allowed");
         }
         if (menuService.checkMenuExistRole(menuId))
         {
-            return warn("菜单已分配,不允许删除");
+            return warn("Menu is assigned, deletion is not allowed");
         }
         return toAjax(menuService.deleteMenuById(menuId));
     }

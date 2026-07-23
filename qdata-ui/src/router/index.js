@@ -1,103 +1,104 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import { createWebHistory, createRouter } from 'vue-router';
-import { clearCancelTokens } from '@/utils/request'; // 确保导入路径正确
+import { clearCancelTokens } from '@/utils/request'; // Make sure the import path is correct
 
 /* Layout */
 import Layout from '@/layout';
-/* 系统模块公共路由 */
+/* System module public routing */
 import systemPublicRouter from './system/public/index.js';
-/* 系统模块动态路由 */
+/* System module dynamic routing */
 import systemDynamicRouter from './system/dynamic/index.js';
 
-/* 示例模块公共路由 */
+/* Example module public routing */
 import examplePublicRouter from './example/public/index.js';
-/* 示例模块动态路由 */
+/* Example module dynamic routing */
 import exampleDynamicRouter from './example/dynamic/index.js';
 
-/* 示例模块公共路由 */
+/* Example module public routing */
 import daPublicRouter from './da/public/index.js';
-/* 示例模块动态路由 */
+/* Example module dynamic routing */
 import daDynamicRouter from './da/dynamic/index.js';
-/* 数据资产资产地图 */
+/* Data asset asset map */
 import daAssetRouter from './da/asset/index.js';
-/* 数据质量 */
+/* Data quality */
 import daQualityRouter from './da/quality/index.js';
 
 
 import dsPublicRouter from './ds/public/index.js';
-/* api服务 */
+/* api service */
 import dsDynamicRouter from './ds/dynamic/index.js';
 
-/* 数据规划公共路由 */
+/* Data planning public routing */
 import dpPublicRouter from './dp/model/index.js';
-/* 标签管理公共路由 */
+/* Tag management public routing */
 import dsCatRouter from './ds/client/index.js';
-/* 数据规划动态路由 */
+/* Data planning dynamic routing */
 import dpDataElemRouter from './dp/dataElem/index.js';
 
-// // 研发路由
+// // R&D routing
 import dppRouter from './dpp/index.js';
 
 import dmRouter from './dm/businessLayer/index.js'
 
 import dPdocument from './dp/document/index.js';
 
-/* 元数据采集*/
+/* Metadata collection*/
 import mcPublicRouter from './mc/public/index.js';
-/* 元数据采集 */
+/* Metadata collection */
 import mcDynamicRouter from './mc/dynamic/index.js';
-/* 表元数据 */
+/* table metadata */
 import metaPublicRouter from './meta/public/index.js';
-/* 表元数据 */
+/* table metadata */
 import metaDynamicRouter from './meta/dynamic/index.js';
 import attTag from './att/tag/index.js';
 
-/* 数据规划动态路由 */
-// 用来存储当前请求的取消源
+/* Data planning dynamic routing */
+// Used to store the cancellation source of the current request
 // let currentCancelSource = null;
 
 /**
- * Note: 路由配置项
+ * Note: Routing configuration items
  *
- * hidden: true                     // 当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
- * alwaysShow: true                 // 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
- *                                  // 只有一个时，会将那个子路由当做根路由显示在侧边栏--如引导页面
- *                                  // 若你想不管路由下面的 children 声明的个数都显示你的根路由
- *                                  // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
- * redirect: noRedirect             // 当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
- * name:'router-name'               // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
- * query: '{"id": 1, "name": "ry"}' // 访问路由的默认传递参数
- * roles: ['admin', 'common']       // 访问路由的角色权限
- * permissions: ['a:a:a', 'b:b:b']  // 访问路由的菜单权限
+ * hidden: true // When true is set, the route will not appear in the sidebar, such as 401, login and other pages, or some editing pages /edit/1
+ * alwaysShow: true // When you declare more than 1 route as children under a route, it will automatically become a nested mode - such as a component page
+ * // When there is only one, that sub-route will be displayed in the sidebar as the root route - such as the guide page
+ * // If you want to display your root route regardless of the number of children declared under the route
+ * // You can set alwaysShow: true so that it will ignore the previously defined rules and always show the root route
+ * redirect: noRedirect // When noRedirect is set, the route cannot be clicked in the breadcrumb navigation.
+ * name:'router-name' // Set the name of the route, be sure to fill it in otherwise various problems will occur when using <keep-alive>
+ * query: '{"id": 1, "name": "ry"}' // Default passing parameters for access routes
+ * roles: ['admin', 'common'] // Role permissions to access routing
+ * permissions: ['a:a:a', 'b:b:b'] // Access route menu permissions
  * meta : {
-    noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
-    icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
-    breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
-    activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
+    noCache: true // If set to true, it will not be cached by <keep-alive> (default false)
+    title: 'title' // Set the name of the route displayed in the sidebar and breadcrumbs
+    icon: 'svg-name' // Set the icon of this route, corresponding to the path src/assets/icons/svg
+    breadcrumb: false // If set to false, it will not be displayed in breadcrumbs
+    activeMenu: '/system/user' // When the route sets this attribute, the corresponding sidebar will be highlighted.
   }
  */
 
-// 公共路由
+// public route
 export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
 
-// 动态路由，基于用户权限动态去加载
+// Dynamic routing, dynamic loading based on user permissions
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];
 
 const router = createRouter({
@@ -112,14 +113,14 @@ const router = createRouter({
     }
 });
 
-// 在路由守卫中添加取消请求逻辑
+// Add cancellation request logic in route guard
 router.beforeEach((to, from, next) => {
-    clearCancelTokens(); // 在路由切换前取消所有未完成的请求
+    clearCancelTokens(); // Cancel all outstanding requests before routing switch
     next();
 });
 
 /**
- * 重置路由
+ * Reset routing
  */
 export function resetRouter() {
     window.location.href = `${window.location.protocol}//${window.location.host}/login/`;

@@ -1,31 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 软件名称：qData 数据中台（商业版） | 软著登字第16069171号
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.utils.ds.component;
@@ -39,7 +27,7 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -47,22 +35,22 @@ import java.util.Map;
  **/
 public interface ComponentItem {
 
-    long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // 默认环境编码
-    String DEFAULT_WORKER_GROUP = "default"; // 默认工作组
-    String DEFAULT_FLAG = "YES"; // 默认标志，表示节点启用
-    String DEFAULT_IS_CACHE = "NO"; // 默认不启用缓存
-    String DEFAULT_TASK_PRIORITY = "MEDIUM"; // 默认任务优先级
-    String DEFAULT_TASK_TYPE = "SPARK"; // 默认任务类型，SPARK或DATAX等
-    String DEFAULT_PROGRAM_TYPE = "JAVA"; // 默认程序类型，JAVA
-    String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // 默认主Jar路径
-    String DEFAULT_DEPLOY_MODE = "client"; // 默认部署模式
-    int DEFAULT_DRIVER_CORES = 1; // 默认驱动核心数
-    String DEFAULT_DRIVER_MEMORY = "512M"; // 默认驱动内存
-    int DEFAULT_NUM_EXECUTORS = 1; // 默认执行器数量
-    String DEFAULT_EXECUTOR_MEMORY = "1G"; // 默认执行器内存
-    int DEFAULT_EXECUTOR_CORES = 1; // 默认执行器核心数
-    String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // 默认SQL执行类型
-    String DEFAULT_CONDITION_TYPE = "NONE"; // 默认条件类型为 "NONE"
+    long DEFAULT_ENVIRONMENT_CODE = 133155949418208L; // Default environment code
+    String DEFAULT_WORKER_GROUP = "default"; // Default worker group
+    String DEFAULT_FLAG = "YES"; // Default flag, indicates the node is enabled
+    String DEFAULT_IS_CACHE = "NO"; // Default cache disabled
+    String DEFAULT_TASK_PRIORITY = "MEDIUM"; // Default task priority
+    String DEFAULT_TASK_TYPE = "SPARK"; // Default task type, SPARK or DATAX etc.
+    String DEFAULT_PROGRAM_TYPE = "JAVA"; // Default program type, JAVA
+    String DEFAULT_MAIN_JAR = "file:/dolphinscheduler/default/resources/spart-demo-1.0.jar"; // Default main Jar path
+    String DEFAULT_DEPLOY_MODE = "client"; // Default deploy mode
+    int DEFAULT_DRIVER_CORES = 1; // Default driver cores
+    String DEFAULT_DRIVER_MEMORY = "512M"; // Default driver memory
+    int DEFAULT_NUM_EXECUTORS = 1; // Default number of executors
+    String DEFAULT_EXECUTOR_MEMORY = "1G"; // Default executor memory
+    int DEFAULT_EXECUTOR_CORES = 1; // Default executor cores
+    String DEFAULT_SQL_EXECUTION_TYPE = "SCRIPT"; // Default SQL execution type
+    String DEFAULT_CONDITION_TYPE = "NONE"; // Default condition type is "NONE"
 
     default Map<String, Object> parse(Map<String, Object> params) {
         return null;

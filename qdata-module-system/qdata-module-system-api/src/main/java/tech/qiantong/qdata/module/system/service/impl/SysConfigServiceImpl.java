@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.impl;
@@ -51,7 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 参数配置 服务层实现
+ * Parameter Configuration Service Layer Implementation
  *
  * @author qdata
  */
@@ -65,7 +51,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     private RedisCache redisCache;
 
     /**
-     * 项目启动时，初始化参数到缓存
+     * Initialize parameters to cache on project startup
      */
     @PostConstruct
     public void init()
@@ -74,10 +60,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 查询参数配置信息
+     * Query parameter configuration information
      *
-     * @param configId 参数配置ID
-     * @return 参数配置信息
+     * @param configId Parameter configuration ID
+     * @return Parameter configuration information
      */
     @Override
     @DataSource(DataSourceType.MASTER)
@@ -89,10 +75,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 根据键名查询参数配置信息
+     * Query parameter configuration information by key name
      *
-     * @param configKey 参数key
-     * @return 参数键值
+     * @param configKey Parameter key
+     * @return Parameter key value
      */
     @Override
     public String selectConfigByKey(String configKey)
@@ -114,9 +100,9 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 获取验证码开关
+     * Get captcha enabled status
      *
-     * @return true开启，false关闭
+     * @return true for enabled, false for disabled
      */
     @Override
     public boolean selectCaptchaEnabled()
@@ -130,10 +116,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 查询参数配置列表
+     * Query parameter configuration list
      *
-     * @param config 参数配置信息
-     * @return 参数配置集合
+     * @param config Parameter configuration information
+     * @return Parameter configuration collection
      */
     @Override
     public List<SysConfig> selectConfigList(SysConfig config)
@@ -142,10 +128,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 新增参数配置
+     * Insert parameter configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config Parameter configuration information
+     * @return Result
      */
     @Override
     public int insertConfig(SysConfig config)
@@ -159,10 +145,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 修改参数配置
+     * Update parameter configuration
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config Parameter configuration information
+     * @return Result
      */
     @Override
     public int updateConfig(SysConfig config)
@@ -182,9 +168,9 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 批量删除参数信息
+     * Batch delete parameter information
      *
-     * @param configIds 需要删除的参数ID
+     * @param configIds Parameter IDs to be deleted
      */
     @Override
     public void deleteConfigByIds(Long[] configIds)
@@ -194,7 +180,7 @@ public class SysConfigServiceImpl implements ISysConfigService
             SysConfig config = selectConfigById(configId);
             if (StringUtils.equals(UserConstants.YES, config.getConfigType()))
             {
-                throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
+                throw new ServiceException(String.format("Built-in parameter [%1$s] cannot be deleted", config.getConfigKey()));
             }
             configMapper.deleteConfigById(configId);
             redisCache.deleteObject(getCacheKey(config.getConfigKey()));
@@ -202,7 +188,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 加载参数缓存数据
+     * Load parameter cache data
      */
     @Override
     public void loadingConfigCache()
@@ -215,7 +201,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 清空参数缓存数据
+     * Clear parameter cache data
      */
     @Override
     public void clearConfigCache()
@@ -225,7 +211,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 重置参数缓存数据
+     * Reset parameter cache data
      */
     @Override
     public void resetConfigCache()
@@ -235,10 +221,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 校验参数键名是否唯一
+     * Verify whether the parameter key is unique
      *
-     * @param config 参数配置信息
-     * @return 结果
+     * @param config Parameter configuration information
+     * @return Result
      */
     @Override
     public boolean checkConfigKeyUnique(SysConfig config)
@@ -253,10 +239,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
-     * 设置cache key
+     * Set cache key
      *
-     * @param configKey 参数键
-     * @return 缓存键key
+     * @param configKey Parameter key
+     * @return Cache key
      */
     private String getCacheKey(String configKey)
     {

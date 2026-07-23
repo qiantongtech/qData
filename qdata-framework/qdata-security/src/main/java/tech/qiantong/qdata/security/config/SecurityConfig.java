@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.security.config;
@@ -54,7 +40,7 @@ import tech.qiantong.qdata.security.handle.AuthenticationEntryPointImpl;
 import tech.qiantong.qdata.security.handle.LogoutSuccessHandlerImpl;
 
 /**
- * spring security配置
+ * spring security configuration
  *
  * @author qdata
  */
@@ -63,43 +49,43 @@ import tech.qiantong.qdata.security.handle.LogoutSuccessHandlerImpl;
 public class SecurityConfig
 {
     /**
-     * 自定义用户认证逻辑
+     * Custom user authentication logic
      */
     @Autowired
     private UserDetailsService userDetailsService;
 
     /**
-     * 认证失败处理类
+     * Authentication failure handling class
      */
     @Autowired
     private AuthenticationEntryPointImpl unauthorizedHandler;
 
     /**
-     * 退出处理类
+     * Exit processing class
      */
     @Autowired
     private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
     /**
-     * token认证过滤器
+     * token authentication filter
      */
     @Autowired
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     /**
-     * 跨域过滤器
+     * Cross domain filter
      */
     @Autowired
     private CorsFilter corsFilter;
 
     /**
-     * 允许匿名访问的地址
+     * Addresses that allow anonymous access
      */
     @Autowired
     private PermitAllUrlProperties permitAllUrl;
 
     /**
-     * 身份验证实现
+     * Authentication implementation
      */
     @Bean
     public AuthenticationManager authenticationManager()
@@ -111,40 +97,40 @@ public class SecurityConfig
     }
 
     /**
-     * anyRequest          |   匹配所有请求路径
-     * access              |   SpringEl表达式结果为true时可以访问
-     * anonymous           |   匿名可以访问
-     * denyAll             |   用户不能访问
-     * fullyAuthenticated  |   用户完全认证可以访问（非remember-me下自动登录）
-     * hasAnyAuthority     |   如果有参数，参数表示权限，则其中任何一个权限可以访问
-     * hasAnyRole          |   如果有参数，参数表示角色，则其中任何一个角色可以访问
-     * hasAuthority        |   如果有参数，参数表示权限，则其权限可以访问
-     * hasIpAddress        |   如果有参数，参数表示IP地址，如果用户IP和参数匹配，则可以访问
-     * hasRole             |   如果有参数，参数表示角色，则其角色可以访问
-     * permitAll           |   用户可以任意访问
-     * rememberMe          |   允许通过remember-me登录的用户访问
-     * authenticated       |   用cacheManager户登录后可访问
+     * anyRequest | Matches all request paths
+     * access | It can be accessed when the SpringEl expression result is true
+     * anonymous | Anonymous can access
+     * denyAll | User cannot access
+     * fullyAuthenticated | Users are fully authenticated and can access (automatic login without remember-me)
+     * hasAnyAuthority | If there are parameters and the parameters represent permissions, any one of them can be accessed
+     * hasAnyRole | If there are parameters and the parameters represent roles, any one of the roles can access
+     * hasAuthority | If there is a parameter and the parameter represents the permission, then its permission can be accessed
+     * hasIpAddress | If there is a parameter, the parameter represents the IP address. If the user IP matches the parameter, it can be accessed
+     * hasRole | If there is a parameter and the parameter represents a role, its role can access
+     * permitAll | Users can access at will
+     * rememberMe | Allow access to users logged in via remember-me
+     * authenticated | Accessible after logging in as cacheManager user
      */
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception
     {
         return httpSecurity
-                // CSRF禁用，因为不使用session
+                // CSRF disabled because session is not used
                 .csrf(csrf -> csrf.disable())
-                // 禁用HTTP响应标头
+                // Disable HTTP response headers
                 .headers((headersCustomizer) -> {
                     headersCustomizer.cacheControl(cache -> cache.disable()).frameOptions(options -> options.sameOrigin());
                 })
-                // 认证失败处理类
+                // Authentication failure handling class
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                // 基于token，所以不需要session
+                // Based on token, so no session is required
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 注解标记允许匿名访问的url
+                // Annotation marks URLs that allow anonymous access
                 .authorizeHttpRequests((requests) -> {
                     permitAllUrl.getUrls().forEach(url -> requests.antMatchers(url).permitAll());
-                    // 对于登录login 注册register 验证码captchaImage 允许匿名访问
+                    // For login login registration register verification code captchaImage allows anonymous access
                     requests.antMatchers("/login","/updater/**","/register","/**", "/captchaImage", "/flyflow/**","/services/**","/jmreport/**", "/rp/**", "/drag/**", "/jimubi/**").permitAll()
-                            // 静态资源，可匿名访问
+                            // Static resources, accessible anonymously
                             .antMatchers(HttpMethod.GET, "/",
                                     "/*.html",
                                     "/**/*.html",
@@ -170,24 +156,24 @@ public class SecurityConfig
                                     "/syncData/**",
                                     "/sys/**",
                                     "/oauth2/**",
-                                    // 调度器白名单
+                                    // Scheduler whitelist
                                     "/mc/taskExecutor/runExecuteTask/**"
                             ).permitAll()
-                            // 除上面外的所有请求全部需要鉴权认证
+                            // All requests except the above require authentication and authentication
                             .anyRequest().authenticated();
                 })
-                // 添加Logout filter
+                // Add Logout filter
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler))
-                // 添加JWT filter
+                // Add JWT filter
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                // 添加CORS filter
+                // Add CORS filter
                 .addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class)
                 .addFilterBefore(corsFilter, LogoutFilter.class)
                 .build();
     }
 
     /**
-     * 强散列哈希加密实现
+     * Strong hash encryption implementation
      */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder()

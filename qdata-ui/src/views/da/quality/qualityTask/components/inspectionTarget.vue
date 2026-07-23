@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-    <!-- 稽查对象信息 新增修改弹窗 第二步 -->
+    <!-- Inspection object info add/edit popup step 2 -->
     <el-dialog v-model="dialogVisible" draggable class="dialog" :title="dialogTitle" destroy-on-close width="800px"
         :append-to="$refs['app-container']">
         <el-form ref="formRef" :model="form" :rules="formRules" label-width="120px" @submit.prevent :label-position="labelPosition">
@@ -138,7 +139,7 @@ const loadDatasourceOptions = async () => {
         const res = await getDaDatasourceList()
         datasourceOptions.value = res.data
     } catch (error) {
-        console.error('获取数据源失败:', error)
+        console.error('Failed to fetch datasource:', error)
     }
 }
 
@@ -162,7 +163,7 @@ const onDatasourceChange = async (id) => {
 const onTableChange = async (val) => {
     const selectedTable = tableOptions.value.find(item => item.tableName == val);
     if (selectedTable) {
-        form.value.columnComment = selectedTable?.tableComment; // 保存中文名
+        form.value.columnComment = selectedTable?.tableComment; // Save Chinese name
         if (!form.value.name) {
             form.value.name = selectedTable?.tableComment;
         }

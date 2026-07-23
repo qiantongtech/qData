@@ -1,7 +1,7 @@
-// 数据模型模块翻译
+// Data model module translation
 export default {
   businessCategory: {
-    // 业务分类
+    // Business classification
     name: '业务分类名称',
     namePlaceholder: '请输入业务分类名称',
     nameRequired: '业务分类名称不能为空',
@@ -40,7 +40,7 @@ export default {
     detailInfo: '详细信息'
   },
   dataDomain: {
-    // 数据分域
+    // Data domain
     name: '数据分域名称',
     namePlaceholder: '请输入数据分域名称',
     nameRequired: '数据分域名称不能为空',
@@ -76,7 +76,7 @@ export default {
     confirmDeleteByName: '是否确认删除数据域名称为"<name>"的数据项？'
   },
   dataLayer: {
-    // 数仓分层
+    // Data warehouse stratification
     name: '数仓分层名称',
     namePlaceholder: '请输入数仓分层名称',
     nameRequired: '数仓分层名称不能为空',
@@ -123,7 +123,7 @@ export default {
     tablePrefixFixed: '表名前缀固定为'
   },
   themeDomain: {
-    // 主题域
+    // subject area
     name: '主题域名称',
     namePlaceholder: '请输入主题域名称',
     nameRequired: '主题域名称不能为空',
@@ -167,5 +167,54 @@ export default {
     cancel: '取消',
     enable: '启用',
     disable: '禁用'
+  },
+  dm: {
+    tag:'数据分类',
+    subTable: '${subTable.functionName}',
+    title: {
+      add: '新增数据分类',
+      edit: '修改数据分类',
+      detail: '数据分类详情',
+      import: '数据分类导入'
+    },
+    placeholder: {
+      catId: '请输入类目id',
+      catCode: '请输入类目编码',
+      name: '请输入分类名称',
+      shortName: '请输入分类名称缩写名',
+      dataLevelId: '请输入数据分级',
+      priority: '请输入任务优先级',
+      description: '请输入描述',
+      validFlag: '请输入是否有效',
+      createTime: '请选择创建时间',
+      remark: '请输入备注',
+    },
+    column: {
+      id: 'ID',
+      catId: '类目id',
+      catCode: '类目编码',
+      name: '分类名称',
+      shortName: '分类名称缩写名',
+      dataLevelId: '数据分级',
+      priority: '任务优先级',
+      description: '描述',
+      validFlag: '是否有效',
+      delFlag: '删除标志',
+      createBy: '创建人',
+      creatorId: '创建人id',
+      createTime: '创建时间',
+      updateBy: '更新人',
+      updaterId: '更新人id',
+      updateTime: '更新时间',
+      remark: '备注',
+    },
+    validations: {
+    },
+    message: {
+      confirmDelete: '是否确认删除编号为_ids的数据项？',
+      selectRecord: '请先选择要删除的${subTable.functionName}数据'
+
+    }
   }
+
 }

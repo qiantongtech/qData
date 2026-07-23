@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain;
@@ -40,15 +26,16 @@ import org.springframework.util.Assert;
 import tech.qiantong.qdata.common.exception.ErrorCode;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.exception.enums.GlobalErrorCodeConstants;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 通用返回
+ * Generic return
  *
  * @author Ming
- * @param <T> 数据泛型
+ * @param <T> Data generics
  */
 @Schema(description = "通用返回")
 @Data
@@ -57,19 +44,19 @@ public class CommonResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 错误码
+     * Error code
      *
      * @see ErrorCode#getCode()
      */
     @Schema(description = "错误码")
     private Integer code;
     /**
-     * 返回数据
+     * Return data
      */
     @Schema(description = "返回数据")
     private T data;
     /**
-     * 错误提示，用户可阅读
+     * Error message, user can read
      *
      * @see ErrorCode#getMsg() ()
      */
@@ -77,20 +64,22 @@ public class CommonResult<T> implements Serializable {
     private String msg;
 
     /**
-     * 将传入的 result 对象，转换成另外一个泛型结果的对象
+     * Convert the incoming result object into another generic result object
      *
-     * 因为 A 方法返回的 CommonResult 对象，不满足调用其的 B 方法的返回，所以需要进行转换。
+     * Because the CommonResult object returned by method A does not satisfy the return of method B that calls it, conversion needs to be performed.
      *
-     * @param result 传入的 result 对象
-     * @param <T>    返回的泛型
-     * @return 新的 CommonResult 对象
+     * @param result the incoming result object
+     * @param <T> the returned generic
+     * @return new CommonResult object
      */
     public static <T> CommonResult<T> error(CommonResult<?> result) {
         return error(result.getCode(), result.getMsg());
     }
 
     public static <T> CommonResult<T> error(Integer code, String message) {
-        Assert.isTrue(!GlobalErrorCodeConstants.SUCCESS.getCode().equals(code), "code 必须是错误的！");
+        Assert.isTrue(!GlobalErrorCodeConstants.SUCCESS.getCode().equals(code),
+                MessageUtils.messageWithFallback("common.error.code.must.error",
+                        "Code must represent an error"));
         CommonResult<T> result = new CommonResult<>();
         result.code = code;
         result.msg = message;
@@ -125,34 +114,34 @@ public class CommonResult<T> implements Serializable {
         return Objects.equals(code, GlobalErrorCodeConstants.SUCCESS.getCode());
     }
 
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public boolean isSuccess() {
         return isSuccess(code);
     }
 
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public boolean isError() {
         return !isSuccess();
     }
 
-    // ========= 和 Exception 异常体系集成 =========
+    // ========= Integrated with Exception exception system =========
 
     /**
-     * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
+     * Determine whether there is any abnormality. If so, throw {@link ServiceException} exception
      */
     public void checkError() throws ServiceException {
         if (isSuccess()) {
             return;
         }
-        // 业务异常
+        // Business abnormality
         throw new ServiceException(msg, code);
     }
 
     /**
-     * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
-     * 如果没有，则返回 {@link #data} 数据
+     * Determine whether there is any abnormality. If so, throw {@link ServiceException} exception
+     * If not, return {@link #data} data
      */
-    @JsonIgnore // 避免 jackson 序列化
+    @JsonIgnore // Avoid jackson serialization
     public T getCheckedData() {
         checkError();
         return data;

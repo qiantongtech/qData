@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request.js'
 
-// 查询缓存详细
+// Query cache details
 export function getCache() {
   return request({
     url: '/monitor/cache',
@@ -25,7 +26,7 @@ export function getCache() {
   })
 }
 
-// 查询缓存名称列表
+// Query cache name list
 export function listCacheName() {
   return request({
     url: '/monitor/cache/getNames',
@@ -33,7 +34,7 @@ export function listCacheName() {
   })
 }
 
-// 查询缓存键名列表
+// Query the cache key list
 export function listCacheKey(cacheName) {
   return request({
     url: '/monitor/cache/getKeys/' + cacheName,
@@ -41,7 +42,7 @@ export function listCacheKey(cacheName) {
   })
 }
 
-// 查询缓存内容
+// Query cache content
 export function getCacheValue(cacheName, cacheKey) {
   return request({
     url: '/monitor/cache/getValue/' + cacheName + '/' + cacheKey,
@@ -49,7 +50,7 @@ export function getCacheValue(cacheName, cacheKey) {
   })
 }
 
-// 清理指定名称缓存
+// Clear cache of specified name
 export function clearCacheName(cacheName) {
   return request({
     url: '/monitor/cache/clearCacheName/' + cacheName,
@@ -57,7 +58,7 @@ export function clearCacheName(cacheName) {
   })
 }
 
-// 清理指定键名缓存
+// Clear cache of specified key name
 export function clearCacheKey(cacheKey) {
   return request({
     url: '/monitor/cache/clearCacheKey/' + cacheKey,
@@ -65,7 +66,7 @@ export function clearCacheKey(cacheKey) {
   })
 }
 
-// 清理全部缓存
+// Clear all cache
 export function clearCacheAll() {
   return request({
     url: '/monitor/cache/clearCacheAll',

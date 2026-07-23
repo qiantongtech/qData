@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,41 +22,41 @@
 <script setup>
 import beautify from "js-beautify";
 import * as monaco from "monaco-editor";
-// 注册快捷键-右键菜单
+// Register shortcut keys-right-click menu
 import { registerEditorKeyBindingAndAction } from "@/utils/function";
-// flinksql语法
+// flinksql syntax
 import { FlinkSQLLanguage } from "../languages/flinksql/index";
 import { LogLanguage } from "../languages/javalog/index";
 
 const props = defineProps({
-  // 绑定值
+  // Binding value
   modelValue: {
     type: String,
     default: "",
   },
-  // 只读
+  // read only
   readOnly: {
     type: Boolean,
     default: false,
   },
-  // 配置
+  // Configuration
   config: {
     type: Object,
     default() {
       return {};
     },
   },
-  // 语言
+  // Language
   language: {
     type: String,
     default: "flinksql",
   },
-  // 启用建议
+  // Enable suggestions
   enableSuggestions: {
     type: Boolean,
     default: true,
   },
-  // 启用建议预览
+  // Enable suggestion preview
   enableSuggestionPreview: {
     type: Boolean,
     default: true,
@@ -98,22 +99,22 @@ const defaultConfig = {
   // scrollBeyondLastLine: false, //is scroll beyond the last line
   // autoDetectHighContrast: true, // auto detect high contrast
   // ---------------------
-  formatOnPaste: true, // 粘贴时格式化
-  mouseWheelZoom: true, // 鼠标滚轮缩放
-  screenReaderAnnounceInlineSuggestion: true, // 屏幕阅读器提示
-  automaticLayout: true, // 自动布局，编辑器自适应大小
-  theme: "vs", // 官方自带三种主题vs, hc-black, or vs-dark
+  formatOnPaste: true, // Format when pasting
+  mouseWheelZoom: true, // Mouse wheel zoom
+  screenReaderAnnounceInlineSuggestion: true, // Screen reader tips
+  automaticLayout: true, // Automatic layout, editor adaptive size
+  theme: "vs", // There are three official themes: vs, hc-black, or vs-dark
   minimap: {
-    enabled: false, // 是否开启右侧代码小窗
+    enabled: false, // Whether to open the small code window on the right
   },
-  codeLens: true, // 代码镜头
-  colorDecorators: true, // 颜色装饰器
+  codeLens: true, // code lens
+  colorDecorators: true, // color decorator
   parameterHints: {
     enabled: true,
   },
-  selectOnLineNumbers: true, //显示行号
-  quickSuggestionsDelay: 100, //代码提示延时
-  autoIndent: true, //自动布局
+  selectOnLineNumbers: true, //Show line number
+  quickSuggestionsDelay: 100, //Code prompt delay
+  autoIndent: true, //autolayout
   wrappingStrategy: "advanced",
   scrollBeyondLastLine: false,
   autoDetectHighContrast: true, // auto detect high contrast
@@ -150,21 +151,21 @@ onMounted(() => {
   });
   monacoInstance = monaco.editor.create(monacoDom.value, {
     ...defaultConfig,
-    tabCompletion: "on", // tab 补全
-    cursorSmoothCaretAnimation: false, // 光标动画
-    screenReaderAnnounceInlineSuggestion: true, // 屏幕阅读器提示
-    formatOnPaste: true, // 粘贴时格式化
-    mouseWheelZoom: true, // 鼠标滚轮缩放
-    autoClosingBrackets: "always", // 自动闭合括号
-    autoClosingOvertype: "always", // 用于在右引号或括号上键入的选项
-    autoClosingQuotes: "always", // 自动闭合引号
-    showUnused: true, // 显示未使用的代码
-    unfoldOnClickAfterEndOfLine: true, // 控制在折叠线之后单击空内容是否会展开该线
-    showFoldingControls: "always", // 代码折叠控件 'always' | 'mouseover' | 'never'
-    automaticLayout: true, // 自动布局
-    glyphMargin: true, // 字形边缘
-    formatOnType: true, // 代码格式化
-    // columnSelection: true, // 列选择
+    tabCompletion: "on", // tab completion
+    cursorSmoothCaretAnimation: false, // Cursor animation
+    screenReaderAnnounceInlineSuggestion: true, // Screen reader tips
+    formatOnPaste: true, // Format when pasting
+    mouseWheelZoom: true, // Mouse wheel zoom
+    autoClosingBrackets: "always", // Automatic closing brackets
+    autoClosingOvertype: "always", // Options for typing around closing quotes or brackets
+    autoClosingQuotes: "always", // Automatic closing quotes
+    showUnused: true, // Show unused code
+    unfoldOnClickAfterEndOfLine: true, // Controls whether clicking empty content after a collapsed line expands the line
+    showFoldingControls: "always", // Code folding control 'always' | 'mouseover' | 'never'
+    automaticLayout: true, // autolayout
+    glyphMargin: true, // glyph edge
+    formatOnType: true, // Code formatting
+    // columnSelection: true, // column selection
     wrappingIndent: props.language === "yaml" || props.language === "yml" || props.language === "json" ? "indent" : "none",
     inlineSuggest: {
       enabled: true,
@@ -234,12 +235,12 @@ onMounted(() => {
     language: props.language,
     ...props.config,
   });
-  // 注册快捷键及右键菜单
+  // Register shortcut keys and right-click menu
   registerEditorKeyBindingAndAction(monacoInstance);
-  // 注册自定义语言 monacoLanguages, monacoEditor, registerCompletion: 代码提示
+  // Register custom languages monacoLanguages, monacoEditor, registerCompletion: code tips
   FlinkSQLLanguage(monaco.languages, monaco.editor, true);
   LogLanguage(monaco.languages);
-  // 注册主题色
+  // Register theme color
   convertCodeEditTheme(monaco.editor);
   monaco.editor.setTheme("light");
 
@@ -248,7 +249,7 @@ onMounted(() => {
     emits("change", monacoInstance?.getValue());
   });
   emits("ready", monacoInstance, monaco);
-  //   代码提示
+  //   Code tips
   //   editorDidMountChange(monacoInstance, monaco);
 });
 onActivated(() => {
@@ -278,13 +279,13 @@ function convertCodeEditTheme(editorInstance) {
     return CODE_EDIT_THEME.LIGHT;
   } else {
     /**
-     * 定义亮色 覆盖vs主题,增加扩展规则
+     * Define bright colors, cover vs themes, and add expansion rules
      */
     editorInstance?.defineTheme?.(CODE_EDIT_THEME.LIGHT, {
-      base: "vs", // 指定基础主题 , 可选值: 'vs', 'vs-dark', 'hc-black' , base theme
-      inherit: true, // 是否继承主题配置
+      base: "vs", // Specify the base theme, optional values: 'vs', 'vs-dark', 'hc-black', base theme
+      inherit: true, // Whether to inherit theme configuration
       rules: [
-        // 注意,默认的不做修改 因为上边继承了父主题, 只添加自己定义的 , 否则会覆盖默认的 , 导致编辑器样式不一致
+        // Note that the default is not modified because it inherits the parent theme and only adds your own defined ones. Otherwise, the default ones will be overwritten, resulting in inconsistent editor styles.
         { token: "custom-info", foreground: "#808080" },
         { token: "custom-thread", foreground: "#9fa19f" },
         { token: "custom-class", foreground: "#1060d9" },
@@ -307,13 +308,13 @@ function convertCodeEditTheme(editorInstance) {
     });
 
     /**
-     * 定义暗色 覆盖vs-dark主题,增加扩展规则
+     * Define dark color, cover vs-dark theme, add extension rules
      */
     editorInstance?.defineTheme?.(CODE_EDIT_THEME.DARK, {
-      base: "vs-dark", // 指定基础主题 , 可选值: 'vs', 'vs-dark', 'hc-black' , base theme
-      inherit: true, // 是否继承主题配置
+      base: "vs-dark", // Specify the base theme, optional values: 'vs', 'vs-dark', 'hc-black', base theme
+      inherit: true, // Whether to inherit theme configuration
       rules: [
-        // 注意,默认的不做修改 因为上边继承了父主题, 只添加自己定义的 , 否则会覆盖默认的 , 导致编辑器样式不一致
+        // Note that the default is not modified because it inherits the parent theme and only adds your own defined ones. Otherwise, the default ones will be overwritten, resulting in inconsistent editor styles.
         { token: "custom-info", foreground: "#008800" },
         { token: "custom-thread", foreground: "#9fa19f" },
         { token: "custom-class", foreground: "#1060d9" },
@@ -363,10 +364,10 @@ function reloadCompilation(monacoIns, segmentedWords) {
         };
       });
 
-      // 获取当前光标行的文本
+      // Get the text of the current cursor line
       const lineText = model.getLineContent(position.lineNumber) ?? "";
       context.triggerKind = monacoIns.languages.CompletionTriggerKind.TriggerCharacter;
-      // 设置以当前光标行的文本为触发字符
+      // Set the text of the current cursor line as the trigger character
       context.triggerCharacter = lineText;
       return suggestions;
     },

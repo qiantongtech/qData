@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 通用描述信息组件：基于 Element Plus el-descriptions，支持字典、时间、标签、格式化 -->
+  <!-- Universal description information component: based on Element Plus el-descriptions, supports dictionary, time, label, formatting -->
   <div class="descriptions-info">
     <el-descriptions :title="title" :column="column" :border="border">
       <el-descriptions-item
@@ -43,10 +44,10 @@
           </div>
         </template>
 
-        <!-- 自定义插槽 -->
+        <!-- Custom slot -->
         <slot v-if="item.slot" :name="item.slot" :item="item" :data="data" />
 
-        <!-- 标签类型 -->
+        <!-- Tag type -->
         <span v-else-if="item.type === 'tags'">
           <template
             v-if="
@@ -64,7 +65,7 @@
           <template v-else>{{ placeholder }}</template>
         </span>
 
-        <!-- 字典类型 -->
+        <!-- dictionary type -->
         <span v-else-if="item.dictOptions">
           <dict-tag
             v-if="
@@ -78,36 +79,36 @@
           <template v-else>{{ placeholder }}</template>
         </span>
 
-        <!-- 时间类型 -->
+        <!-- time type -->
         <span v-else-if="isTimeItem(item)">
           {{ formatTime(resolveValue(item)) || placeholder }}
         </span>
 
-        <!-- 自定义格式化 -->
+        <!-- Custom formatting -->
         <span v-else-if="item.formatter">
           {{ stringify(resolveFormatted(item)) || placeholder }}
         </span>
 
-        <!-- 普通文本 -->
+        <!-- normal text -->
         <span v-else>
           {{ stringify(resolveValue(item)) || placeholder }}
         </span>
       </el-descriptions-item>
     </el-descriptions>
   </div>
-  <!-- 使用示例：
+  <!-- Usage example:
     <DescriptionsInfo
-      title="基础信息"
+      title="Basic information"
       :data="detail"
       :items="[
-        { label: '文件名称', key: 'fileName' },
-        { label: '状态', key: 'status', dictOptions: dp_document_status },
-        { label: '标签', key: 'tags', type: 'tags' },
-        { label: '创建时间', key: 'createTime', type: 'time' },
-        { label: '创建人', key: 'createBy' },
-        { label: '更新时间', key: 'updateTime', type: 'time' },
-        { label: '备注', key: 'remark', span: 2 },
-        { label: '创建类型', key: 'createType', formatter: (v) => v === 1 ? '虚拟资产创建' : '完整资产创建' },
+        { label: 'file name', key: 'fileName' },
+        { label: 'status', key: 'status', dictOptions: dp_document_status },
+        { label: 'label', key: 'tags', type: 'tags' },
+        { label: 'Creation Time', key: 'createTime', type: 'time' },
+        { label: 'Creator', key: 'createBy' },
+        { label: 'updateTime', key: 'updateTime', type: 'time' },
+        { label: 'remark', key: 'remark', span: 2 },
+        { label: 'CreateType', key: 'createType', formatter: (v) => v === 1 ? 'Virtual asset creation' : 'Complete asset creation' },
       ]"
     />
   -->
@@ -115,34 +116,34 @@
 
 <script setup name="DescriptionsInfo">
 /**
- * 设计说明：
- * - 通用全局组件，统一封装 el-descriptions 的常见展示能力；
- * - 支持四类展示：tags 标签、字典 dictOptions、时间 type='time'、自定义 formatter、普通文本；
- * - items 支持 span、className、key（支持嵌套 a.b.c）、value（直接传值）、dictOptions、formatter；
- * - 通过 props.placeholder 控制空值展示占位符（默认 "-"）；
- * - 通过 props.timeFormat 控制时间格式（默认 "{y}-{m}-{d} {h}:{i}"）；
+ * Design description:
+ * - Universal global component that uniformly encapsulates the common display capabilities of el-descriptions;
+ * - Supports four types of display: tags tags, dictionary dictOptions, time type='time', custom formatter, and ordinary text;
+ * - items supports span, className, key (supports nested a.b.c), value (direct value passing), dictOptions, formatter;
+ * - Control empty value display placeholder through props.placeholder (default "-");
+ * - Control the time format through props.timeFormat (default "{y}-{m}-{d} {h}:{i}");
  */
 
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
-  // 标题（与 el-descriptions 保持一致）
+  // Title (consistent with el-descriptions)
   title: { type: String, default: "" },
-  // 数据源对象
+  // data source object
   data: { type: Object, default: () => ({}) },
-  // 配置项
+  // Configuration items
   items: { type: Array, default: () => [] },
-  // 列数
+  // Number of columns
   column: { type: Number, default: 2 },
-  // 是否显示边框
+  // Whether to display borders
   border: { type: Boolean, default: true },
-  // 标签类名
+  // Tag class name
   labelClass: { type: String, default: "base-label" },
-  // 内容类名
+  // Content class name
   contentClass: { type: String, default: "base-content" },
-  // 空值占位
+  // Null value placeholder
   placeholder: { type: String, default: "-" },
-  // 默认时间格式
+  // Default time format
   timeFormat: { type: String, default: "{y}-{m}-{d} {h}:{i}" },
 });
 

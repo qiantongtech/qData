@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 业务域Service接口
+ * Business domain Service interface
  *
  * @author qdata
  * @date 2026-02-12
@@ -20,59 +20,59 @@ import java.util.Map;
 public interface IMcDomainService extends IService<McDomainDO> {
 
     /**
-     * 获得业务域分页列表
+     * Get a paginated list of business domains
      *
-     * @param pageReqVO 分页请求
-     * @return 业务域分页列表
+     * @param pageReqVO paging request
+     * @return Business domain paging list
      */
     PageResult<McDomainDO> getMcDomainPage(McDomainPageReqVO pageReqVO);
 
     /**
-     * 创建业务域
+     * Create business domain
      *
-     * @param createReqVO 业务域信息
-     * @return 业务域编号
+     * @param createReqVO business domain information
+     * @return business domain number
      */
     Long createMcDomain(McDomainSaveReqVO createReqVO);
 
     /**
-     * 更新业务域
+     * Update business domain
      *
-     * @param updateReqVO 业务域信息
+     * @param updateReqVO business domain information
      */
     int updateMcDomain(McDomainSaveReqVO updateReqVO);
 
     /**
-     * 删除业务域
+     * Delete business domain
      *
-     * @param idList 业务域编号
+     * @param idList business domain number
      */
     int removeMcDomain(Collection<Long> idList);
 
     /**
-     * 获得业务域详情
+     * Get business domain details
      *
-     * @param id 业务域编号
-     * @return 业务域
+     * @param id business domain number
+     * @return business domain
      */
     McDomainDO getMcDomainById(Long id);
 
     /**
-     * 获得全部业务域列表
+     * Get a list of all business domains
      *
-     * @return 业务域列表
+     * @return business domain list
      */
     List<McDomainDO> getMcDomainList(McDomainPageReqVO mcDomain);
 
     /**
-     * 获得全部业务域 Map
+     * Get all business domain maps
      *
-     * @return 业务域 Map
+     * @return business domain map
      */
     Map<Long, McDomainDO> getMcDomainMap();
 
     /**
-     * 批量删除检查,查询可删除数和不可删除数
+     * Batch deletion check, query the number that can be deleted and the number that cannot be deleted
      * @param ids
      * @return
      */

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.exception;
@@ -36,7 +22,7 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 /**
- * 业务异常
+ * Business abnormality
  *
  * @author qdata
  */
@@ -45,41 +31,41 @@ public final class ServiceException extends RuntimeException
     private static final long serialVersionUID = 1L;
 
     /**
-     * 错误码（HTTP 状态码，保留向后兼容）
+     * Error code (HTTP status code, retained for backward compatibility)
      */
     private Integer code;
 
     /**
-     * i18n 消息键（对应 messages.properties 中的 key）
+     * i18n message key (corresponding to the key in messages.properties)
      */
     private String i18nCode;
 
     /**
-     * 消息格式化参数
+     * Message formatting parameters
      */
     private Object[] args;
 
     /**
-     * 错误提示（兜底消息）
+     * Error message (secret message)
      */
     private String message;
 
     /**
-     * 错误明细，内部调试错误
+     * Error details, internal debugging errors
      *
-     * 和 {@link CommonResult#getDetailMessage()} 一致的设计
+     * Design consistent with {@link CommonResult#getDetailMessage()}
      */
     private String detailMessage;
 
     /**
-     * 空构造方法，避免反序列化问题
+     * Empty constructor to avoid deserialization problems
      */
     public ServiceException()
     {
     }
 
     /**
-     * 使用纯文本消息构造（不进行 i18n）
+     * Use plain text message construction (no i18n)
      */
     public ServiceException(String message)
     {
@@ -87,7 +73,7 @@ public final class ServiceException extends RuntimeException
     }
 
     /**
-     * 使用纯文本消息 + HTTP 状态码构造
+     * Constructed using plain text message + HTTP status code
      */
     public ServiceException(String message, Integer code)
     {
@@ -96,12 +82,12 @@ public final class ServiceException extends RuntimeException
     }
 
     /**
-     * 使用 i18n 消息键 + 兜底消息构造
-     * 优先从资源文件按当前语言获取文案，获取不到则使用 defaultMessage
+     * Use i18n message key + hidden message structure
+     * Prioritize getting the copy in the current language from the resource file. If it cannot be obtained, use defaultMessage.
      *
-     * @param i18nCode 消息键（如 "user.not.exists"）
-     * @param defaultMessage 兜底消息
-     * @param args 格式化参数（可替换 {0}、{1} 等占位符）
+     * @param i18nCode message key (such as "user.not.exists")
+     * @param defaultMessage divulge message
+     * @param args format parameters (can replace {0}, {1} and other placeholders)
      */
     public ServiceException(String i18nCode, String defaultMessage, Object... args)
     {
@@ -111,7 +97,7 @@ public final class ServiceException extends RuntimeException
     }
 
     /**
-     * 使用 i18n 消息键 + 兜底消息 + HTTP 状态码构造
+     * Use i18n message key + cryptic message + HTTP status code structure
      */
     public ServiceException(String i18nCode, String defaultMessage, Integer code, Object... args)
     {
@@ -127,15 +113,15 @@ public final class ServiceException extends RuntimeException
     }
 
     /**
-     * 获取国际化后的消息文本
-     * 优先从 i18n 资源文件获取，兜底使用 message 字段
+     * Get the internationalized message text
+     * Get it from the i18n resource file first, and use the message field for details.
      */
     @Override
     public String getMessage()
     {
         if (!StringUtils.isEmpty(i18nCode))
         {
-            // 通过 MessageUtils 获取当前语言文案，支持兜底链
+            // Obtain the current language copy through MessageUtils and support the backend chain
             String i18nMessage = MessageUtils.messageWithFallback(i18nCode, message, args);
             if (i18nMessage != null)
             {
@@ -151,7 +137,7 @@ public final class ServiceException extends RuntimeException
     }
 
     /**
-     * 获取 i18n 消息键
+     * Get i18n message key
      */
     public String getI18nCode()
     {

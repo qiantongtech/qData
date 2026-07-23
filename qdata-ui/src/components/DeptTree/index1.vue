@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -51,7 +52,7 @@
         >
           <template #default="{ node, data }">
             <span class="custom-tree-node">
-              <!-- 第一级 -->
+              <!-- first level -->
               <el-icon
                 class="iconimg colorxz"
                 v-if="node.expanded && node.level === 1"
@@ -65,7 +66,7 @@
                 <Folder />
               </el-icon>
 
-              <!-- 有子节点的所有层级 -->
+              <!-- All levels with child nodes -->
               <el-icon
                 class="iconimg colorxz"
                 v-if="node.expanded && node.childNodes.length && node.level > 1"
@@ -81,7 +82,7 @@
                 <Folder />
               </el-icon>
 
-              <!-- 无子节点的节点 -->
+              <!-- Node without child nodes -->
               <el-icon
                 class="zjiconimg colorwxz"
                 v-show="
@@ -123,7 +124,7 @@
     </div>
   </el-aside>
 
-  <!-- 拖拽栏 -->
+  <!-- drag bar -->
   <div class="resize-bar" @mousedown="startResize">
     <div class="resize-handle-sx">
       <span class="zjsx"></span>
@@ -170,7 +171,7 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: "asset", // 默认资产类型
+    default: "asset", // Default asset type
   },
   leftWidth: {
     type: Number,
@@ -190,7 +191,7 @@ const emit = defineEmits(["node-click", "update:deptName", "update:leftWidth"]);
 const projectStore = useProjectStore();
 const loading = ref(false);
 
-// 优先使用传入的 props，否则根据 type 使用 store 中的缓存
+// Prioritize using the incoming props, otherwise use the cache in the store according to type
 const treeData = computed(() => {
   if (props.deptOptions) return props.deptOptions;
   return props.type === "model"
@@ -198,31 +199,31 @@ const treeData = computed(() => {
     : projectStore.assetDeptTree;
 });
 
-// 1. 初始化高度
+// 1. Initialize height
 const qtWrapheight = ref("86vh");
-// 定义 ResizeObserver 实例，用于监听高度变化
+// Define a ResizeObserver instance to monitor height changes
 let resizeObserver = null;
 
-// 2. 封装获取高度的方法
+// 2. Encapsulate the method of obtaining height
 const getQtWrapHeight = () => {
-  // 确保 DOM 已挂载后再获取
+  // Make sure the DOM is mounted before retrieving it
   const qtWrap = document.querySelector(".qt-wrap");
   const elMain = document.querySelector(".el-main");
   const element = qtWrap || elMain;
 
   if (element) {
-    // 用 offsetHeight 更稳定（包含边框/内边距），也可根据需求用 clientHeight（仅内容+内边距）
+    // Using offsetHeight is more stable (including borders/padding), or clientHeight (only content + padding) can be used according to needs.
     qtWrapheight.value = element.offsetHeight + "px";
   } else {
-    qtWrapheight.value = "86vh"; // 兜底默认值
+    qtWrapheight.value = "86vh"; // pocket default value
   }
 };
-// 3. 组件挂载后执行（核心：确保 DOM 已渲染）
+// 3. Execute after the component is mounted (core: ensure that the DOM has been rendered)
 onMounted(async () => {
-  // 首次获取高度
+  // Get height for the first time
   getQtWrapHeight();
 
-  // 如果没有传入 props 且 store 中也没有数据，则自动请求一次
+  // If no props are passed in and there is no data in the store, it will be automatically requested once.
   if (!props.deptOptions) {
     if (props.type === "model" && projectStore.modelDeptTree.length === 0) {
       loading.value = true;
@@ -238,7 +239,7 @@ onMounted(async () => {
     }
   }
 
-  // 监听高度变化（适配动态高度场景）
+  // Monitor height changes (adapt to dynamic height scenarios)
   const qtWrap = document.querySelector(".qt-wrap");
   const elMain = document.querySelector(".el-main");
   const targetElement = qtWrap || elMain;
@@ -250,11 +251,11 @@ onMounted(async () => {
     resizeObserver.observe(targetElement);
   }
 
-  // 额外：监听窗口resize，防止布局变化导致高度失效
+  // Extra: Monitor window resize to prevent height failure caused by layout changes
   window.addEventListener("resize", getQtWrapHeight);
 });
 
-// 4. 组件卸载时销毁监听（防止内存泄漏）
+// 4. Destroy the listener when the component is unloaded (to prevent memory leaks)
 onUnmounted(() => {
   if (resizeObserver) {
     const qtWrap = document.querySelector(".qt-wrap");
@@ -279,7 +280,7 @@ function getIdsByLevel(nodes, level = 2, currentLevel = 1) {
   if (!nodes || currentLevel > level) return ids;
 
   for (const node of nodes) {
-    ids.push(node.id); // 当前层 id
+    ids.push(node.id); // Current layer id
     if (node.children && node.children.length > 0) {
       ids = ids.concat(getIdsByLevel(node.children, level, currentLevel + 1));
     }
@@ -296,7 +297,7 @@ watch(
   },
   { immediate: true }
 );
-// 过滤节点
+// Filter nodes
 const filterNode = (value, data) => {
   if (!value) return true;
   return data.name.indexOf(value) !== -1;
@@ -315,7 +316,7 @@ watch(
   }
 );
 
-// 拖拽逻辑
+// Drag and drop logic
 const isResizing = ref(false);
 let startX = 0;
 const startResize = (event) => {
@@ -331,15 +332,15 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => {});
   }
 };
 
-// 折叠展开
+// Collapse and expand
 const toggleCollapse = () => {
   if (leftWidth.value === 0) {
     leftWidth.value = 300;
@@ -380,10 +381,10 @@ defineExpose({ resetTree });
 
 .left-tree {
   padding: 15px 15px 15px 15px;
-  max-height: var(--qt-wrap-height); // 限制最大高度
-  overflow-y: auto; // 超过高度时出现滚动条
-  scrollbar-width: thin; // 火狐滚动条细一些
-  -ms-overflow-style: none; // IE滚动条隐藏
+  max-height: var(--qt-wrap-height); // Limit maximum height
+  overflow-y: auto; // Scroll bar appears when height is exceeded
+  scrollbar-width: thin; // Firefox scroll bars are thinner
+  -ms-overflow-style: none; // IE scroll bar hidden
 }
 
 .el-aside {
@@ -457,7 +458,7 @@ defineExpose({ resetTree });
   width: 15px;
   text-align: center;
   position: relative;
-  /* 必须加，用来定位 collapse-icon */
+  /* Must be added to locate collapse-icon */
 }
 
 .zjsx {
@@ -473,7 +474,7 @@ defineExpose({ resetTree });
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* 真正的居中 */
+  /* true center */
   font-size: 28px;
   color: #aaa;
   cursor: pointer;
@@ -494,7 +495,7 @@ defineExpose({ resetTree });
 }
 
 :deep(.dept-tree) {
-  //组织树 背景颜色 及右边线颜色
+  //Organization tree background color and right line color
   &.el-tree--highlight-current
     .el-tree-node.is-current
     > .el-tree-node__content {

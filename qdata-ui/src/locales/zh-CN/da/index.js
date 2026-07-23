@@ -155,7 +155,7 @@ export default {
       status: '状态',
       remark: '备注'
     },
-    // 质量规则注册中心
+    // Centre for Registration of Quality Rules
     ruleRegistry: {
       DECIMAL_PRECISION_VALIDATION: '数值精度校验',
       CHARACTER_VALIDATION: '字符串类型校验',
@@ -165,7 +165,7 @@ export default {
       GROUP_FIELD_COMPLETENESS: '字段组完整性校验',
       TIME_ORDER_VALIDATION: '时间字段先后顺序校验'
     },
-    // 数据查询结果组件
+    // DataQuery Result Component
     dataQuery: {
       queryResult: {
         export: '导出',
@@ -181,7 +181,7 @@ export default {
         }
       }
     },
-    // 数据源管理
+    // Data source management
     datasource: {
       columnVisibility: {
         id: '编号',
@@ -195,7 +195,7 @@ export default {
       },
       belongProject: '所属项目'
     },
-    // 资产申请
+    // Asset claims
     assetApply: {
       columnVisibility: {
         assetName: '资产名称',
@@ -208,7 +208,7 @@ export default {
         auditStatus: '审核状态'
       }
     },
-    // 资产列表
+    // List of assets
     asset: {
       columnVisibility: {
         id: '编号',
@@ -555,7 +555,7 @@ export default {
     datasourceTypeRequired: '数据连接类型不能为空',
     configRequired: '数据源配置(json字符串)不能为空',
     ipRequired: 'IP不能为空',
-    ipInvalid: 'IP不能包含中文',
+    ipInvalid: 'IP地址格式不正确，例如192.168.1.1',
     portRequired: '端口号不能为空',
     portInvalid: '端口号必须为1-9位数字',
     accountRequired: '账号不能为空',
@@ -573,6 +573,10 @@ export default {
     deleteSuccess: '删除成功',
     confirmDelete: '是否确认删除数据源编号为"{id}"的数据项？',
     confirmStatusChange: '确认要{text}"{name}"数据连接吗？',
+    connectionValidationFailedConfirm: '数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用',
+    enableFailedTitle: '数据连接',
+    enableFailedMessage: '数据连接启动失败,请查看数据库连接信息',
+    enablingWait: '开启中，请等待。',
     statusSuccess: '{text}成功',
     importTitle: '数据源导入',
     importResult: '导入结果',
@@ -605,6 +609,11 @@ export default {
     startCharPosPlaceholder: '请输入起始字符位置',
     endCharPos: '截止字符位置',
     endCharPosPlaceholder: '请输入截止字符位置',
+    startCharPosRequired: '起始字符位置不能为空',
+    startCharPosPattern: '起始字符位置只能输入数字',
+    endCharPosRequired: '截止字符位置不能为空',
+    endCharPosPattern: '截止字符位置只能输入数字',
+    endCharPosLessThanStart: '截止字符位置必须大于起始字符位置',
     onlineFlag: '上下线标识',
     addTitle: '新增敏感等级',
     editTitle: '修改敏感等级',

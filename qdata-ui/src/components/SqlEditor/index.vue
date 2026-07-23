@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -28,14 +29,14 @@ import "codemirror/theme/blackboard.css";
 import "codemirror/addon/hint/show-hint.css";
 import CodeMirror from "codemirror/lib/codemirror";
 
-// 导入所需的附加功能和模式
+// Import required additional functions and modes
 import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/selection/active-line";
 import "codemirror/mode/sql/sql";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/sql-hint";
 
-// 如果需要引入样式文件（例如主题），也可以用同样的方式：
+// If you need to introduce style files (such as themes), you can also use the same method:
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint.css";
 
@@ -67,7 +68,7 @@ export default {
     // }
   },
   watch: {
-    //监听editor，发生变化就执行this.$emit('changeTextarea', this.editor)
+    //Monitor the editor and execute this.$emit('changeTextarea', this.editor) when changes occur.
     // editor(newV, oldV) {
     //     if (this.editor) {
     //         this.$emit('changeTextarea', this.editor)
@@ -79,7 +80,7 @@ export default {
     //     }
     // },
     // value(newVal) {
-    //     console.log("我是value",newVal)
+    //     console.log("I am value",newVal)
     //     console.log(this.editor.getValue())
     //     if (this.editor && newVal !== this.editor.getValue()) {
     //         this.$emit('changeTextarea', this.editor.getValue());
@@ -87,14 +88,14 @@ export default {
     //     }
     // }
   },
-  //设置失焦后自动执行 this.$emit('changeTextarea', this.editor.getValue())
+  //Automatically execute this.$emit('changeTextarea', this.editor.getValue()) after setting the defocus
 
   mounted() {
     const mime = "text/x-mariadb";
-    const theme = "blackboard"; // 设置主题，不设置的会使用默认主题
+    const theme = "blackboard"; // Set the theme. If not set, the default theme will be used.
     this.editor = CodeMirror.fromTextArea(this.$refs.mycode, {
       value: this.value,
-      mode: mime, // 选择对应代码编辑器的语言，我这边选的是数据库，根据个人情况自行设置即可
+      mode: mime, // Select the language corresponding to the code editor. I chose the database here. You can set it according to your personal situation.
       indentWithTabs: true,
       smartIndent: true,
       lineNumbers: true,
@@ -104,17 +105,17 @@ export default {
       readOnly: this.readOnly,
       theme: theme,
       autofocus: true,
-      extraKeys: { Ctrl: "autocomplete" }, // 自定义快捷键
+      extraKeys: { Ctrl: "autocomplete" }, // Custom shortcut keys
       hintOptions: {
-        // 自定义提示选项
+        // Custom prompt options
         completeSingle: false,
       },
     });
-    // 代码自动提示功能，记住使用cursorActivity事件不要使用change事件，这是一个坑，那样页面直接会卡死
+    // Code automatic prompt function, remember to use the cursorActivity event and not the change event. This is a pitfall, and the page will freeze directly.
     // this.editor.on('inputRead', () => {
     //     this.editor.showHint()
     // })
-    // 监听 blur 事件
+    // Listen to the blur event
     this.editor.on("blur", () => {
       this.$emit("changeTextarea", this.editor.getValue());
     });
@@ -129,7 +130,7 @@ export default {
   font-size: 13px;
 }
 
-// 这句为了解决匹配框显示有问题而加
+// This sentence is added to solve the problem of matching box display.
 .CodeMirror-hints {
   z-index: 9999 !important;
 }

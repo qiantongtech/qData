@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -218,6 +219,7 @@
             link
             type="danger"
             icon="Delete"
+            :disabled="isDeleteDisabled(scope.row)"
             @click="handleDelete(scope.row)"
             v-hasPermi="['att:projectUserRel:remove']"
             >{{ td("common.button.delete") }}</el-button
@@ -242,7 +244,7 @@
     />
   </div>
 
-  <!-- 新增或修改项目与用户关联关系对话框 -->
+  <!-- Add or modify project-user association dialog box -->
   <el-dialog
     :title="title"
     v-model="open"
@@ -353,7 +355,13 @@
         <el-button size="mini" @click="cancel">{{
           td("common.button.cancel")
         }}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">{{
+        <el-button
+          type="primary"
+          size="mini"
+          :loading="submitLoading"
+          :disabled="submitLoading"
+          @click="submitForm"
+        >{{
           td("common.button.confirm")
         }}</el-button>
       </div>
@@ -372,13 +380,13 @@
         {{ td("dpp.setting.projectUserRel.userSelect") }}
       </span>
     </template>
-    <!--用户数据-->
+    <!--User data-->
     <el-form
       class="btn-style"
       :model="queryParamsUser"
       ref="queryRef"
       :inline="true"
-      
+
      >
       <el-form-item
         :label="td('dpp.setting.projectUserRel.loginAccount')"
@@ -502,7 +510,12 @@
         <el-button size="mini" @click="openTwo = false">{{
           td("common.button.cancel")
         }}</el-button>
-        <el-button type="primary" size="mini" @click="submitFormUser">{{
+        <el-button
+          type="primary"
+          size="mini"
+          :disabled="!idsUser.length"
+          @click="submitFormUser"
+        >{{
           td("common.button.confirm")
         }}</el-button>
       </div>
@@ -539,7 +552,7 @@ const size = (ref < "default") | "large" | ("small" > "default");
 const value1 = ref("");
 const value2 = ref("");
 const activeName = ref("first");
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('dpp.setting.projectUserRel.id'), visible: true },
   { key: 2, label: td('dpp.setting.projectUserRel.userId'), visible: true },
@@ -548,9 +561,9 @@ const columns = ref([
 const userList = ref([]);
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 const userStore = useUserStore();
@@ -559,10 +572,12 @@ const openTwo = ref(false);
 const openDetail = ref(false);
 const loading = ref(true);
 const loadingUser = ref(true);
+const submitLoading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const idsUser = ref([]);
 const userName = ref([]);
+const selectedRows = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
@@ -571,19 +586,28 @@ const title = ref("");
 const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const roleList = ref([]);
-/*** 用户导入参数 */
+const warningRequestOptions = { hideErrorMessage: true };
+
+function showRequestWarning(error) {
+  if (error === "cancel" || error === "close") return;
+  const message = error?.message || error;
+  if (message) {
+    proxy.$modal.msgWarning(message);
+  }
+}
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/att/AttProjectUserRel/importData",
 });
 const createTime = ref(null);
@@ -631,7 +655,7 @@ const data = reactive({
 
 const { queryParams, queryParamsUser, form, rules } = toRefs(data);
 let addUserAdnProject = ref(false);
-// 监听 userStore 中的 projectId 变化
+// Monitor projectId changes in userStore
 watch(
   () => userStore.projectId,
   (newValue, oldValue) => {
@@ -649,46 +673,58 @@ function handleDateChange(value) {
   queryParams.value.startTime = value[0];
   queryParams.value.endTime = value[1];
 }
-/** 查询项目与用户关联关系列表 */
+/** Query the list of relationships between projects and users */
 function getList() {
   loading.value = true;
   if (queryParams.value.projectId) {
-    listAttProjectUserRel(queryParams.value).then((response) => {
-      AttProjectUserRelList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-    addUserAndProject(queryParams.value.projectId).then((response) => {
-      addUserAdnProject.value = response.data;
-    });
+    listAttProjectUserRel(queryParams.value, warningRequestOptions)
+      .then((response) => {
+        AttProjectUserRelList.value = response?.data?.rows || [];
+        total.value = response?.data?.total || 0;
+      })
+      .catch(showRequestWarning)
+      .finally(() => {
+        loading.value = false;
+      });
+    addUserAndProject(queryParams.value.projectId, warningRequestOptions)
+      .then((response) => {
+        addUserAdnProject.value = response?.data || false;
+      })
+      .catch(showRequestWarning);
+  } else {
+    loading.value = false;
   }
 }
 
 function getListUser() {
   loadingUser.value = true;
-  noProjectUser(queryParamsUser.value).then((response) => {
-    userList.value = response.rows;
-    openTwo.value = true;
-    totalUser.value = response.total;
-    loadingUser.value = false;
-    console.log(userList.value, "userList");
+  noProjectUser(queryParamsUser.value, warningRequestOptions)
+    .then((response) => {
+      userList.value = response?.rows || [];
+      openTwo.value = true;
+      totalUser.value = response?.total || 0;
+      console.log(userList.value, "userList");
 
-    // 在表格加载完成后，设置之前选中的用户
-    nextTick(() => {
-      userList.value.forEach((user) => {
-        if (form.value.userIdList.includes(user.userId)) {
-          proxy.$refs.userTableRef.toggleRowSelection(user, true);
-        }
+      // After the table is loaded, set the previously selected user
+      nextTick(() => {
+        userList.value.forEach((user) => {
+          if (form.value.userIdList.includes(user.userId)) {
+            proxy.$refs.userTableRef.toggleRowSelection(user, true);
+          }
+        });
       });
+    })
+    .catch(showRequestWarning)
+    .finally(() => {
+      loadingUser.value = false;
     });
-  });
 }
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQueryUser() {
   queryParamsUser.value.pageNum = 1;
   getListUser();
 }
-/** 重置按钮操作 */
+/** reset button action */
 function resetQueryUser() {
   queryParamsUser.value = {
     pageNum: 1,
@@ -701,33 +737,35 @@ function resetQueryUser() {
   };
   handleQueryUser();
 }
-/** 提交按钮操作 */
+/** Submit button action */
 function submitFormUser() {
   form.value.userIdList = idsUser.value;
   form.value.userNameList = userName.value;
   openTwo.value = false;
 }
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChangeUser(selection) {
   idsUser.value = selection.map((item) => item.userId);
   userName.value = selection.map((item) => item.nickName);
 }
 function getRoleList() {
   if (queryParams.value.projectId) {
-    listRole(queryParams.value).then((response) => {
-      roleList.value = response.rows;
-      console.log(roleList.value, "roleList");
-    });
+    listRole(queryParams.value, warningRequestOptions)
+      .then((response) => {
+        roleList.value = response?.rows || [];
+        console.log(roleList.value, "roleList");
+      })
+      .catch(showRequestWarning);
   }
 }
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -750,13 +788,13 @@ function reset() {
   proxy.resetForm("AttProjectUserRelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   createTime.value = null;
   queryParams.value = {
@@ -772,21 +810,22 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
+  selectedRows.value = selection;
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   getRoleList();
   reset();
@@ -794,47 +833,60 @@ function handleAdd() {
   title.value = td("dpp.setting.projectUserRel.addMember", "新增项目成员");
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _id = row.id || ids.value;
   getRoleList();
-  getRoleUser(_id).then((response) => {
-    form.value = response.data;
-    console.log(form.value, "form");
-    open.value = true;
-    title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
-  });
+  getRoleUser(_id, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      console.log(form.value, "form");
+      open.value = true;
+      title.value = td("dpp.setting.projectUserRel.editMember", "修改项目成员");
+    })
+    .catch(showRequestWarning);
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
-  getAttProjectUserRel(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td(
-      "dpp.setting.projectUserRel.memberDetail",
-      "项目与用户关联关系详情"
-    );
-  });
+  getAttProjectUserRel(_id, warningRequestOptions)
+    .then((response) => {
+      if (!response?.data) return;
+      form.value = response.data;
+      openDetail.value = true;
+      title.value = td(
+        "dpp.setting.projectUserRel.memberDetail",
+        "项目与用户关联关系详情"
+      );
+    })
+    .catch(showRequestWarning);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
   proxy.$refs["AttProjectUserRelRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
-        editUserListAndRoleList(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
-            open.value = false;
-            getList();
+        submitLoading.value = true;
+        proxy.$modal
+          .confirm('修改角色后，该成员可能无法继续维护部分任务，请确认。')
+          .then(() => editUserListAndRoleList(form.value, warningRequestOptions))
+          .then(() => {
+              proxy.$modal.msgSuccess(td("common.message.editSuccess"));
+              open.value = false;
+              getList();
           })
-          .catch((error) => {});
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       } else {
-        // 新增时增加额外验证
+        // Add additional verification when adding
         if (!form.value.userIdList || form.value.userIdList.length === 0) {
           proxy.$modal.msgWarning(
             td(
@@ -844,45 +896,91 @@ function submitForm() {
           );
           return;
         }
+        submitLoading.value = true;
         form.value.projectId = userStore.projectId;
-        addUserListAndRoleList(form.value)
+        addUserListAndRoleList(form.value, warningRequestOptions)
           .then((response) => {
             proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
             getList();
           })
-          .catch((error) => {});
+          .catch(showRequestWarning)
+          .finally(() => {
+            submitLoading.value = false;
+          });
       }
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
-  const _userId =
-    row.userId ||
-    AttProjectUserRelList.value
-      .filter((item) => ids.value.includes(item.id))
-      .map((item) => item.userId);
+  const _ids = row?.id || ids.value;
+  const selectedRows = row?.id
+    ? [row]
+    : AttProjectUserRelList.value.filter((item) => ids.value.includes(item.id));
+  const selectedUserIds = selectedRows.map((item) => item.userId);
+  if (isDeleteDisabled(selectedRows)) {
+    showDeleteDisabledMessage(selectedRows);
+    return;
+  }
+  const removingSelf = selectedUserIds.includes(userStore.id);
+  const confirmText = removingSelf
+    ? '确认移除自己的项目权限吗？操作后可能无法继续管理项目。'
+    : selectedRows.length > 1
+      ? `本次将移除${selectedRows.length}名成员，请确认。`
+      : td(
+          "dpp.setting.projectUserRel.confirmDelete",
+          '是否确认移除编号为"{id}"的数据项？'
+        ).replace("{id}", selectedUserIds[0]);
   proxy.$modal
-    .confirm(
-      td(
-        "dpp.setting.projectUserRel.confirmDelete",
-        '是否确认移除编号为"{id}"的数据项？'
-      ).replace("{id}", _userId)
-    )
+    .confirm(confirmText)
     .then(function () {
-      return delAttProjectUserRel(_ids);
+      return delAttProjectUserRel(_ids, warningRequestOptions);
     })
     .then(() => {
       getList();
       proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => {});
+    .catch(showRequestWarning);
 }
 
-/** 导出按钮操作 */
+function isCurrentUser(row) {
+  return String(row?.userId) === String(userStore.id);
+}
+
+function getMemberTotal() {
+  return total.value || AttProjectUserRelList.value.length;
+}
+
+function isDeleteDisabled(rows) {
+  const deleteRows = Array.isArray(rows) ? rows : rows ? [rows] : [];
+  if (!deleteRows.length) return true;
+  if (deleteRows.some(isCurrentUser)) return true;
+  return getMemberTotal() - deleteRows.length < 1;
+}
+
+function showDeleteDisabledMessage(rows) {
+  const deleteRows = Array.isArray(rows) ? rows : rows ? [rows] : [];
+  if (!deleteRows.length) {
+    proxy.$modal.msgWarning(td("common.message.selectRecord", "请选择要删除的数据"));
+    return;
+  }
+  if (deleteRows.some(isCurrentUser)) {
+    proxy.$modal.msgWarning(
+      td("dpp.setting.projectUserRel.cannotDeleteSelf", "自己不能删除自己")
+    );
+    return;
+  }
+  proxy.$modal.msgWarning(
+    td(
+      "dpp.setting.projectUserRel.keepOneMember",
+      "项目至少保留一个成员，不能全部移除"
+    )
+  );
+}
+
+/** Export button action */
 function handleExport() {
   proxy.download(
     "att/AttProjectUserRel/export",
@@ -893,14 +991,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('dpp.setting.projectUserRel.memberImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -909,17 +1007,17 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -998,7 +1096,7 @@ function routeTo(link, row) {
 .checkbox-vertical {
   display: flex;
   flex-direction: column;
-  /* 竖排 */
+  /* Vertical */
   margin-top: 8px;
 }
 

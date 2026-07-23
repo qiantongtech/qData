@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.domain.vo;
@@ -41,12 +27,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 系统配置 Response VO 对象 system_content
+ * System Config Response VO object system_content
  *
  * @author qdata
  * @date 2024-12-31
  */
-@Schema(description = "系统配置 Response VO")
+@Schema(description = "System Config Response VO")
 @Data
 public class SystemContentRespVO implements Serializable {
 
@@ -56,8 +42,8 @@ public class SystemContentRespVO implements Serializable {
     @Schema(description = "ID")
     private Long id;
 
-    @Excel(name = "系统名称")
-    @Schema(description = "系统名称", example = "")
+    @Excel(name = "System Name")
+    @Schema(description = "System Name", example = "")
     private String sysName;
 
     @Excel(name = "loginLogo")
@@ -68,62 +54,62 @@ public class SystemContentRespVO implements Serializable {
     @Schema(description = "logo", example = "")
     private String logo;
 
-    @Excel(name = "轮播图")
-    @Schema(description = "轮播图", example = "")
+    @Excel(name = "Carousel Image")
+    @Schema(description = "Carousel Image", example = "")
     private String carouselImage;
 
-    @Excel(name = "联系电话")
-    @Schema(description = "联系电话", example = "")
+    @Excel(name = "Contact Number")
+    @Schema(description = "Contact Number", example = "")
     private String contactNumber;
 
-    @Excel(name = "电子邮箱")
-    @Schema(description = "电子邮箱", example = "")
+    @Excel(name = "Email")
+    @Schema(description = "Email", example = "")
     private String email;
 
-    @Excel(name = "版权方")
-    @Schema(description = "版权方", example = "")
+    @Excel(name = "Copyright")
+    @Schema(description = "Copyright", example = "")
     private String copyright;
 
-    @Excel(name = "备案号")
-    @Schema(description = "备案号", example = "")
+    @Excel(name = "Record Number")
+    @Schema(description = "Record Number", example = "")
     private String recordNumber;
 
-    @Excel(name = "删除标记")
-    @Schema(description = "删除标记", example = "")
+    @Excel(name = "Delete Flag")
+    @Schema(description = "Delete Flag", example = "")
     private Boolean delFlag;
 
-    @Excel(name = "状态")
-    @Schema(description = "状态", example = "")
+    @Excel(name = "Status")
+    @Schema(description = "Status", example = "")
     private Integer status;
 
-    @Excel(name = "创建人")
-    @Schema(description = "创建人", example = "")
+    @Excel(name = "Created By")
+    @Schema(description = "Created By", example = "")
     private String createBy;
 
-    @Excel(name = "创建人id")
-    @Schema(description = "创建人id", example = "")
+    @Excel(name = "Creator ID")
+    @Schema(description = "Creator ID", example = "")
     private Long creatorId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "创建时间", example = "")
+    @Excel(name = "Created Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Created Time", example = "")
     private Date createTime;
 
-    @Excel(name = "修改人")
-    @Schema(description = "修改人", example = "")
+    @Excel(name = "Updated By")
+    @Schema(description = "Updated By", example = "")
     private String updateBy;
 
-    @Excel(name = "修改人id")
-    @Schema(description = "修改人id", example = "")
+    @Excel(name = "Updater ID")
+    @Schema(description = "Updater ID", example = "")
     private Long updaterId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Schema(description = "修改时间", example = "")
+    @Excel(name = "Updated Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Updated Time", example = "")
     private Date updateTime;
 
-    @Excel(name = "备注")
-    @Schema(description = "备注", example = "")
+    @Excel(name = "Remark")
+    @Schema(description = "Remark", example = "")
     private String remarks;
 
 }

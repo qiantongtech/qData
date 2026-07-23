@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -171,22 +172,22 @@ const { queryParams, form } = toRefs(data);
 
 // -------------------------------------------
 const visible = ref(false);
-// 定义多选数据
+// Define multiple selection data
 const multiple = ref([]);
-// 定义上次勾选数据==用于对比删除
+// Define the last checked data == used for comparison and deletion
 const oldSelection = ref([]);
-// 是否分页切换
+// Whether to switch between pages
 const isAuto = ref(false);
-// 当前界面table
+// Current interface table
 const multipletableRef = ref();
 
 const emit = defineEmits(["open", "confirm", "cancel"]);
 
-/** 多选框选中事件 */
+/** Multi-select box selection event */
 function handleSelectionChange(selection) {
   // console.log(selection, "===handleSelectionChange");
   if (selection.length > 0) {
-    // 如果选中值不是空值且少选了一个值
+    // If the selected value is not a null value and one less value is selected
     if (oldSelection.value.length > selection.length) {
       oldSelection.value.forEach((item) => {
         let index = selection.findIndex((ece) => ece.id == item.id);
@@ -210,9 +211,9 @@ function handleSelectionChange(selection) {
       multiple.value.push(...selection);
     }
   } else {
-    // 如果不是分页导致的
+    // If it is not caused by paging
     if (!isAuto.value) {
-      // 如果选中值，取消到没有选择任何值
+      // If a value is selected, cancel to no value selected
       oldSelection.value.forEach((item) => {
         let index = selection.findIndex((ece) => ece.id == item.id);
         if (index == -1) {
@@ -226,30 +227,30 @@ function handleSelectionChange(selection) {
   oldSelection.value = selection;
 }
 
-/** 行单机事件 */
+/** Single machine event */
 function handleRowClick(row) {
-  // 检查当前行是否已经在 multiple 中
+  // Check if current row is already in multiple
   const index = multiple.value.findIndex(item => item.id === row.id);
 
-  // 如果行已经被选中，移除它
+  // If the row is already selected, remove it
   if (index > -1) {
     multiple.value = multiple.value.filter(item => item.id !== row.id);
   } else {
-    // 如果行未被选中，添加到 multiple 中
+    // If row is not selected, add to multiple
     multiple.value.push(row);
   }
 
-  // 同步更新表格的选中状态
+  // Synchronously update the selected status of the table
   multipletableRef.value.toggleRowSelection(row, index === -1);
 }
 
 /**
- * 选中table的复选框
- * @param {Array} rows 选中的对象数组
- * @param {Boolean} ignoreSelectable 是否忽略可选
+ * Select the checkbox of the table
+ * @param {Array} rows Array of selected objects
+ * @param {Boolean} ignoreSelectable Whether to ignore optional
  */
 function setSelectionRow(rows, ignoreSelectable) {
-  // 选中数据
+  // Select data
   if (rows.length > 0) {
     rows.forEach((row) => {
       let data = dataList.value.filter((item) => item.id == row.id);
@@ -267,12 +268,12 @@ function rest() {
 }
 
 /**
- * 打开选择框
- * @param {Array} val 选中的对象数组
+ * Open selection box
+ * @param {Array} val array of selected objects
  */
 function open(val) {
   if (!Array.isArray(val)) {
-    val = [val];  // 将非可迭代值转化为数组
+    val = [val];  // Convert non-iterable values to array
   }
   visible.value = true;
   multiple.value = [...val];
@@ -280,8 +281,8 @@ function open(val) {
 }
 
 /**
- * 取消按钮
- * @description 取消按钮时，重置所有状态
+ * Cancel button
+ * @description When canceling the button, reset all states
  */
 function cancel() {
   rest();
@@ -289,8 +290,8 @@ function cancel() {
 }
 
 /**
- * 确定按钮
- * @description 确定按钮时，emit confirm 事件，以便父组件接收到选中的数据
+ * OK button
+ * @description When confirming the button, emit the confirm event so that the parent component receives the selected data
  */
 function confirm() {
   if (multiple.value.length == 0) {
@@ -302,7 +303,7 @@ function confirm() {
   visible.value = false;
 }
 
-/** 查询字典类型列表 */
+/** Query dictionary type list */
 function getList() {
   loading.value = true;
   listClient(proxy.addDateRange(queryParams.value, dateRange.value)).then(
@@ -310,7 +311,7 @@ function getList() {
       dataList.value = response.data.rows;
       total.value = response.data.total;
       loading.value = false;
-      // 初始化及分页切换选中逻辑
+      // Initialization and paging switching selection logic
       isAuto.value = true;
       await nextTick();
       setSelectionRow(multiple.value);
@@ -319,12 +320,12 @@ function getList() {
   );
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   queryParams.value.pageNum = 1;

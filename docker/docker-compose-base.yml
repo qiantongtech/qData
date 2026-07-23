@@ -1,24 +1,25 @@
-# Copyright © 2025 Qiantong Technology Co., Ltd.
-# qData Data Middle Platform (Open Source Edition)
+# Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
 #
-# License:
-# Released under the Apache License, Version 2.0.
-# You may use, modify, and distribute this software for commercial purposes
-# under the terms of the License.
+# This file is part of qData Data Middle Platform (Open Source Edition).
 #
-# Special Notice:
-# All derivative versions are strictly prohibited from modifying or removing
-# the default system logo and copyright information.
-# For brand customization, please apply for brand customization authorization via official channels.
+# qData is licensed under Apache License 2.0 with additional qData terms.
+# You may use qData for commercial purposes, but you may not remove, hide,
+# modify, or replace the qData logo, copyright notices, license notices,
+# or attribution information without a separate commercial license.
 #
-# More information: https://qdata.qiantong.tech/business.html
+# White-label use, OEM distribution, rebranding, or presenting qData as
+# another product requires separate commercial authorization from
+# Jiangsu Qiantong Technology Co., Ltd.
+#
+# Business License: https://community.qdata.tech/business/policy.html
+# See the LICENSE file in the project root for full license information.
 
 version: "3.8"
 
 services:
   redis:
     image: redis:6-alpine
-    profiles: ["all", "local"]
+    profiles: ["all", "light", "local"]
     env_file: .env
     restart: always
     environment:
@@ -43,11 +44,11 @@ services:
       - 15672:15672
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
-    profiles: ["all", "local"]
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
+    profiles: ["all", "light", "local"]
     env_file: .env
     environment:
 #      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
@@ -62,7 +63,7 @@ services:
   nginx:
     image: nginx:1.24.0
     restart: always
-    profiles: [ "all" ]
+    profiles: [ "all", "light" ]
     env_file: .env
     ports:
       - '${EXPOSE_NGINX_PORT:-80}:${NGINX_PORT:-80}'
@@ -74,10 +75,10 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites/:/etc/nginx/http_vhost/:ro
 
-  #达梦主库
+  #Primary DM database
   dm8:
     image: ${QDATA_HUB}/dm8:mixed
-    profiles: [ "all", "schema", "local", "qdata-dm8"  ]
+    profiles: [ "all", "light", "schema", "local", "qdata-dm8"  ]
     env_file: .env
     privileged: true
     hostname: dm8
@@ -97,16 +98,16 @@ services:
       - QDATA_PWD=${QDATA_PWD}
     healthcheck:
       test: [ "CMD-SHELL", "echo > /dev/tcp/127.0.0.1/5236" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet
 
   mongodb:
     restart: always
-    profiles: [ "all", "schema", "local"  ]
+    profiles: [ "all", "light", "schema", "local"  ]
     env_file: .env
     image: mongo:4.4
     ports:
@@ -128,7 +129,7 @@ services:
   neo4j:
     privileged: true
     image: neo4j:4.4.40
-    profiles: [ "all", "neo4j" ]
+    profiles: [ "all", "light", "neo4j" ]
     restart: always
     ports:
       - "7474:7474"
@@ -141,9 +142,9 @@ services:
       - ./neo4j/conf:/var/lib/neo4j/conf
     healthcheck:
       test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "InC3tmU4bijT4vkl", "RETURN 1;" ]
-      interval: 20s      # 每 20 秒检测一次
-      timeout: 5s        # 超过 5 秒算失败
-      retries: 10        # 连续 10 次失败算 unhealthy
-      start_period: 1200s # 容忍 20 分钟内失败
+      interval: 20s      # Check every 20 seconds
+      timeout: 5s        # Fail after 5 seconds
+      retries: 10        # Mark unhealthy after 10 consecutive failures
+      start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet

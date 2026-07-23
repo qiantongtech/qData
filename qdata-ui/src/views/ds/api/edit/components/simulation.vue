@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -47,7 +48,7 @@
                             <!--                            <el-input v-model="form.reqMethod"/>-->
                             <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
                         </el-form-item>
-                        <!--                        <el-table-column v-if="getColumnVisibility(4)" label="请求方式" align="center" prop="reqMethod">-->
+                        <!--                        <el-table-column v-if="getColumnVisibility(4)" label="Request method" align="center" prop="reqMethod">-->
                         <!--                            <template #default="scope">-->
                         <!--                                <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod"/>-->
                         <!--                            </template>-->
@@ -92,7 +93,7 @@
                         <el-table-column prop="paramType" :label="td('ds.apiEdit.simulation.paramType')" align="center" :show-overflow-tooltip="{effect: 'light'}">
                             <template #default="scope">
                                 <dict-tag :options="ds_api_param_type" :value="scope.row.paramType" />
-                                <!--                                <el-select v-model="scope.row.paramType" placeholder="请选择参数类型" disabled>-->
+                                <!--                                <el-select v-model="scope.row.paramType" placeholder="Please select the parameter type" disabled>-->
                                 <!--                                    <el-option v-for="dict in paramTypeOptions" :key="dict.id" :label="dict.itemValue"-->
                                 <!--                                               :value="dict.itemText"/>-->
                                 <!--                                </el-select>-->
@@ -207,7 +208,7 @@ const props = defineProps({
 });
 const data = reactive({
     title: td('ds.apiEdit.simulation.dataApiCall'),
-    // 展示切换
+    // display toggle
     showOptions: {
         data: {},
         showList: true,
@@ -219,9 +220,9 @@ const data = reactive({
     activeTabName: 'table0',
     apiHeader: {},
     apiHeaderList: [],
-    // 操作符数据字典
+    // operator data dictionary
     whereTypeOptions: [],
-    // 参数类型数据字典
+    // Parameter type data dictionary
     paramTypeOptions: [],
     apiExecuting: false,
     callData: {
@@ -311,25 +312,25 @@ function handleCall() {
     });
     props.form.params = data;
     let params = {};
-    //将props.form的值全部给params
+    //Give all the values of props.form to params
     Object.assign(params, props.form);
     params.reqParamsList = params.reqParams;
     params.resParamsList = params.resParams;
-    //删除reqParams和resParams
+    //Remove reqParams and resParams
     delete params.reqParams;
     delete params.resParams;
     delete params.createTime;
     delete params.updateTime;
-    // 根据请求方法 (GET / POST) 进行处理
+    // Processed based on request method (GET / POST)
     if (props.form.reqMethod === '1') {
-        // 使用 serviceTesting 来模拟 GET 请求
+        // Use serviceTesting to simulate GET requests
         serviceTesting(params).then((response) => {
             if (response.code === 200) {
                 proxy.$message.success(td('ds.apiEdit.simulation.callSuccess'));
                 const { data } = response;
                 const dataList = [];
 
-                // 根据 resDataType 处理返回的数据
+                // Process the returned data according to resDataType
                 if (props.form.resDataType == 3) {
                     dataList.push(...data.data);
                 } else if (props.form.resDataType == '2') {
@@ -338,24 +339,24 @@ function handleCall() {
                     dataList.push(data);
                 }
 
-                // 获取列名
+                // Get column names
                 let columnList = [];
                 if (dataList.length > 0) {
                     columnList = Object.keys(dataList[0]);
                 }
 
-                // 更新数据和列名
+                // Update data and column names
                 callData.value.dataList = dataList;
                 callData.value.columnList = columnList;
 
-                // 如果 resDataType 为 '1'，更新 total
+                // If resDataType is '1', update total
                 if (props.form.resDataType == '1' || props.form.resDataType == '3') {
                     callData.value.dataTotal = data.total;
                 }
-                // 更新 API 执行状态
+                // Update API execution status
                 apiExecuting.value = true;
             } else {
-                // 请求失败的处理
+                // Handling of failed requests
                 proxy.$message.warning(td('ds.apiEdit.simulation.callFailed'));
             }
         });
@@ -367,7 +368,7 @@ function handleCall() {
                 const { data } = response;
                 const dataList = [];
 
-                // 根据 resDataType 处理返回的数据
+                // Process the returned data according to resDataType
                 if (props.form.resDataType == 3) {
                     dataList.push(...data.data);
                 } else if (props.form.resDataType === '2') {
@@ -376,21 +377,21 @@ function handleCall() {
                     dataList.push(data);
                 }
 
-                // 获取列名
+                // Get column names
                 let columnList = [];
                 if (dataList.length > 0) {
                     columnList = Object.keys(dataList[0]);
                 }
 
-                // 更新数据和列名
+                // Update data and column names
                 callData.value.dataList = dataList;
                 callData.value.columnList = columnList;
 
-                // 如果 resDataType 为 '1'，更新 total
+                // If resDataType is '1', update total
                 if (props.form.resDataType === '1' || props.form.resDataType == '3') {
                     callData.value.dataTotal = data.total;
                 }
-                // 更新 API 执行状态
+                // Update API execution status
                 apiExecuting.value = true;
             } else {
                 proxy.$message.warning(td('ds.apiEdit.simulation.callFailed'));

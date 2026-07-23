@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.domain.vo;
@@ -37,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 
 /**
- * 路由配置信息
+ * Route configuration information
  *
  * @author qdata
  */
@@ -45,47 +31,47 @@ import java.util.List;
 public class RouterVo
 {
     /**
-     * 路由名字
+     * Route name
      */
     private String name;
 
     /**
-     * 路由地址
+     * Route path
      */
     private String path;
 
     /**
-     * 是否隐藏路由，当设置 true 的时候该路由不会再侧边栏出现
+     * Whether to hide the route; when set to true, this route will not appear in the sidebar
      */
     private boolean hidden;
 
     /**
-     * 重定向地址，当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
+     * Redirect address; when set to noRedirect, this route cannot be clicked in breadcrumb navigation
      */
     private String redirect;
 
     /**
-     * 组件地址
+     * Component path
      */
     private String component;
 
     /**
-     * 路由参数：如 {"id": 1, "name": "ry"}
+     * Route parameters, e.g. {"id": 1, "name": "ry"}
      */
     private String query;
 
     /**
-     * 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
+     * When there are more than 1 child routes declared under a route, it automatically becomes nested mode -- e.g. component pages
      */
     private Boolean alwaysShow;
 
     /**
-     * 其他元素
+     * Other elements
      */
     private MetaVo meta;
 
     /**
-     * 子路由
+     * Child routes
      */
     private List<RouterVo> children;
 

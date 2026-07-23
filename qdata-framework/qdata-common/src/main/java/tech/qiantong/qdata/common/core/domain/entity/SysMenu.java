@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain.entity;
@@ -43,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 菜单权限表 sys_menu
+ * Menu permission table sys_menu
  *
  * @author qdata
  */
@@ -51,58 +37,58 @@ public class SysMenu extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 菜单ID */
+    /** Menu ID */
     private Long menuId;
 
-    /** 菜单名称 */
+    /** Menu name */
     private String menuName;
 
-    /** 父菜单名称 */
+    /** Parent menu name */
     private String parentName;
 
-    /** 父菜单ID */
+    /** Parent menu ID */
     private Long parentId;
 
-    /** 显示顺序 */
+    /** Display order */
     private Integer orderNum;
 
-    /** 路由地址 */
+    /** Route path */
     private String path;
 
-    /** 组件路径 */
+    /** Component path */
     private String component;
 
-    /** 路由参数 */
+    /** Route parameters */
     private String query;
 
-    /** 路由名称，默认和路由地址相同的驼峰格式（注意：因为vue3版本的router会删除名称相同路由，为避免名字的冲突，特殊情况可以自定义） */
+    /** Route name, defaults to camelCase of route path (note: because vue3 router deletes routes with same name, use custom name to avoid conflicts) */
     private String routeName;
 
-    /** 是否为外链（0是 1否） */
+    /** Whether it is an external link (0=yes, 1=no) */
     private String isFrame;
 
-    /** 是否缓存（0缓存 1不缓存） */
+    /** Whether to cache (0=cache, 1=no cache) */
     private String isCache;
 
-    /** 类型（M目录 C菜单 F按钮） */
+    /** Type (M=directory, C=menu, F=button) */
     private String menuType;
 
-    /** 显示状态（0显示 1隐藏） */
+    /** Visibility (0=visible, 1=hidden) */
     private String visible;
 
-    /** 菜单状态（0正常 1停用） */
+    /** Menu status (0=normal, 1=disabled) */
     private String status;
 
-    /** 权限字符串 */
+    /** Permission string */
     private String perms;
 
-    /** 菜单图标 */
+    /** Menu icon */
     private String icon;
 
-    /** 权限字符串 */
+    /** Project ID */
     private Long projectId;
 
-    /** 子菜单 */
+    /** Child menus */
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId()

@@ -1,42 +1,43 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
     <el-aside :style="{ width: `${leftWidth}px`, marginLeft: leftWidth == 0 ? '-15px' : '0px' }" class="left-pane">
         <div class="left-tree" v-loading="loading">
-            <!-- 搜索框 -->
+            <!-- search box -->
             <el-input class="filter-tree" size="large" v-model="deptName" :placeholder="effectivePlaceholder" clearable
                 prefix-icon="Search" />
 
-            <!-- 树 -->
+            <!-- tree -->
             <el-tree class="dept-tree" ref="deptTreeRef" :data="deptOptions" node-key="id" highlight-current
                 :props="{ label: 'name', children: 'children', isLeaf: 'isLeaf' }" :lazy="true" :load="handleNodeLoad"
                 :default-expand-all="defaultExpand" :filter-node-method="filterNode"
                 @node-contextmenu="onNodeContextMenu">
                 <template #default="{ node, data }">
                     <span class="custom-tree-node" @dblclick.stop="handleNodeClick(data, node, 'node')">
-                        <!-- 数据源/层级图标 -->
+                        <!-- Data source/hierarchy icon -->
                         <img v-if="node.level === 1" :src="getDatasourceIcon(data.datasourceType)" class="node-icon" />
                         <img v-if="node.level === 2" src="@/assets/images/common/dpp/img-sr.png" class="node-icon" />
                         <img v-if="node.level === 3" src="@/assets/images/common/dpp/img-zt.png" class="node-icon" />
                         <!-- label -->
                         <span class="treelable">{{ node.label }}</span>
 
-                        <!-- 状态图标 -->
+                        <!-- status icon -->
                         <el-icon v-if="data.loadSuccess" style="color: #22c55e; margin-left: 6px" class="iconimg"
                             :title="t('components.deptTree.loadSuccess')">
                             <CircleCheckFilled />
@@ -49,7 +50,7 @@
                 </template>
             </el-tree>
 
-            <!-- 右键菜单 -->
+            <!-- right click menu -->
             <div v-if="contextMenuVisible" :style="{ top: `${contextMenuY}px`, left: `${contextMenuX}px` }"
                 class="context-menu" @click.stop>
                 <ul>
@@ -59,7 +60,7 @@
         </div>
     </el-aside>
 
-    <!-- 拖拽栏 -->
+    <!-- drag bar -->
     <div class="resize-bar" @mousedown="startResize">
         <div class="resize-handle-sx">
             <span class="zjsx"></span>
@@ -111,7 +112,7 @@ const contextMenuX = ref(0);
 const contextMenuY = ref(0);
 const contextMenuNode = ref(null);
 
-// 图标
+// icon
 const getDatasourceIcon = (type) => {
     switch (type) {
         case "DM8": return new URL("@/assets/images/common/dpp/ds-dm.png", import.meta.url).href;
@@ -130,7 +131,7 @@ const getDatasourceIcon = (type) => {
     }
 };
 
-// 右键菜单
+// right click menu
 const onNodeContextMenu = (event, data, node) => {
     event.preventDefault();
     if (node.level !== 2) {
@@ -173,12 +174,12 @@ const generateSQL = (type) => {
   handleNodeClick(sql, node, "sql");
 };
 
-// 点击空白关闭右键菜单
+// Click on a blank space to close the right-click menu
 const onClickOutside = () => {
     contextMenuVisible.value = false;
 };
 
-// 拖拽
+// drag
 const startResize = (event) => {
     isResizing.value = true;
     startX = event.clientX;
@@ -234,7 +235,7 @@ const handleNodeClick = (payload, node, type = "node") => {
 };
 
 
-// 懒加载
+// Lazy loading
 const handleNodeLoad = (node, resolve) => {
     node.data.loadError = false;
     node.data.loadSuccess = false;
@@ -260,7 +261,7 @@ const retryLoad = (node) => {
     node.expand();
 };
 
-// 树过滤
+// tree filter
 const filterNode = (value, data) => {
     if (!value) return true;
     return data.name.includes(value);
@@ -315,7 +316,7 @@ onBeforeUnmount(() => {
 }
 
 
-/* 自定义节点样式 */
+/* Custom node style */
 .custom-tree-node {
     width: 100%;
     display: flex;
@@ -343,7 +344,7 @@ onBeforeUnmount(() => {
     font-size: 15px;
 }
 
-/* 拖拽栏 */
+/* drag bar */
 .resize-bar {
     cursor: ew-resize;
     background-color: #f0f2f5;
@@ -370,7 +371,7 @@ onBeforeUnmount(() => {
     padding: 5px;
 }
 
-/* 搜索框样式 */
+/* Search box style */
 :deep(.filter-tree) {
     margin-bottom: 16px;
 
@@ -383,7 +384,7 @@ onBeforeUnmount(() => {
     }
 }
 
-/* 树选中样式 */
+/* Tree selection style */
 :deep(.dept-tree) {
     &.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
         background: rgba(51, 103, 252, 0.06) !important;
@@ -397,7 +398,7 @@ onBeforeUnmount(() => {
     }
 }
 
-/* 右键菜单 */
+/* right click menu */
 .context-menu {
     position: fixed;
     background-color: white;

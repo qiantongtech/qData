@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 敏感等级Mapper接口
+ * Sensitive Level Mapper Interface
  *
  * @author Chaos
  * @date 2025-01-21
@@ -19,10 +19,10 @@ import java.util.Set;
 public interface DgSensitiveLevelMapper extends BaseMapperX<DgSensitiveLevelDO> {
 
     default PageResult<DgSensitiveLevelDO> selectPage(DgSensitiveLevelPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define allowed sort columns (prevent SQL injection, must match database field names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Build dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<DgSensitiveLevelDO>()
                 .likeIfPresent(DgSensitiveLevelDO::getSensitiveLevel, reqVO.getSensitiveLevel())
                 .eqIfPresent(DgSensitiveLevelDO::getSensitiveRule, reqVO.getSensitiveRule())

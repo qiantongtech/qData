@@ -1,7 +1,7 @@
 
 import request from '@/utils/request.js'
 
-// 查询术语标签类目管理列表
+// Query term label category management list
 export function listAttTagCat(query) {
     return request({
         url: '/da/termCat/list',
@@ -10,7 +10,7 @@ export function listAttTagCat(query) {
     })
 }
 
-// 查询术语标签类目管理详细
+// Query term label category management details
 export function getAttTagCat(id) {
     return request({
         url: '/da/termCat/' + id,
@@ -18,7 +18,7 @@ export function getAttTagCat(id) {
     })
 }
 
-// 新增术语标签类目管理
+// Added term label category management
 export function addAttTagCat(data) {
     return request({
         url: '/da/termCat',
@@ -27,7 +27,7 @@ export function addAttTagCat(data) {
     })
 }
 
-// 修改术语标签类目管理
+// Modify term label category management
 export function updateAttTagCat(data) {
     return request({
         url: '/da/termCat',
@@ -36,7 +36,7 @@ export function updateAttTagCat(data) {
     })
 }
 
-// 删除术语标签类目管理
+// Delete term tag category management
 export function delAttTagCat(id) {
     return request({
         url: '/da/termCat/' + id,

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.rsa;
@@ -56,23 +42,23 @@ public class RSAUtil {
     }
 
     /**
-     * 使用私钥解密数据
-     * @param encryptedData 用公钥加密过后的数据
-     * @return 明文
+     * Decrypt data using private key
+     * @param encryptedData data encrypted with public key
+     * @return plaintext
      */
     public static String decryptData(String encryptedData) {
         try {
-            // 从classpath读取私钥文件
+            // Read private key file from classpath
             String privateKey = loadPrivateKey("private_key.pem");
             privateKey = privateKey.replace("-----BEGIN PRIVATE KEY-----", "");
             privateKey = privateKey.replace("-----END PRIVATE KEY-----", "");
-            // 创建RSA对象，使用私钥
+            // Create RSA object using private key
             RSA rsa = new RSA(privateKey, null);
 
-            // 解密数据
+            // Decrypt data
             byte[] decryptedBytes = rsa.decrypt(encryptedData, KeyType.PrivateKey);
 
-            // 返回解密后的字符串
+            // Return decrypted string
             return new String(decryptedBytes);
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,27 +67,27 @@ public class RSAUtil {
     }
 
     /**
-     * 使用私钥加密数据
-     * @param data 要加密的明文数据
-     * @return 加密后的数据
+     * Encrypt data using private key
+     * @param data plaintext data to encrypt
+     * @return encrypted data
      */
     public static String encryptData(String data) {
         try {
             if (data == null) {
                 return "";
             }
-            // 从classpath读取私钥文件
+            // Read private key file from classpath
             String privateKey = loadPrivateKey("private_key.pem");
             privateKey = privateKey.replace("-----BEGIN PRIVATE KEY-----", "");
             privateKey = privateKey.replace("-----END PRIVATE KEY-----", "");
 
-            // 创建RSA对象，使用私钥
+            // Create RSA object using private key
             RSA rsa = new RSA(privateKey, null);
 
-            // 加密数据
+            // Encrypt data
             byte[] encryptedBytes = rsa.encrypt(data.getBytes(), KeyType.PrivateKey);
 
-            // 返回加密后的字符串（通常使用Base64编码以便可读性）
+            // Return encrypted string (usually Base64 encoded for readability)
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,28 +96,28 @@ public class RSAUtil {
     }
 
     /**
-     * 使用公钥解密数据
-     * @param encryptedData 使用私钥加密过后的数据
-     * @return 解密后的明文
+     * Decrypt data using public key
+     * @param encryptedData data encrypted with private key
+     * @return decrypted plaintext
      */
     public static String decryptWithPublicKey(String encryptedData) {
         try {
             if(StringUtils.isBlank(encryptedData)) return null;
-            // 从classpath读取公钥文件
+            // Read public key file from classpath
             String publicKey = loadPrivateKey("public_key.pem");
             publicKey = publicKey.replace("-----BEGIN PUBLIC KEY-----", "");
             publicKey = publicKey.replace("-----END PUBLIC KEY-----", "");
 
-            // 创建RSA对象，使用公钥
+            // Create RSA object using public key
             RSA rsa = new RSA(null, publicKey);
 
-            // 使用Base64解码加密数据
+            // Decode encrypted data using Base64
             byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
 
-            // 解密数据
+            // Decrypt data
             byte[] decryptedBytes = rsa.decrypt(encryptedBytes, KeyType.PublicKey);
 
-            // 返回解密后的字符串
+            // Return decrypted string
             return new String(decryptedBytes);
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,35 +127,35 @@ public class RSAUtil {
 
 
     /**
-     * 解密公钥加密后的数据
+     * Decrypt data encrypted with public key
      */
 //    public static void main(String[] args) {
-//        // 替换为您的加密数据
+//        // Replace with your encrypted data
 //        String encryptedData = "U/ANHv0/jZLQIKGRq/4syageiHcd93x9mUjaAyBeyWNf4GvVGizZwi1D7VQWHyDO4nbPJCu/bvyJ7ppT0cb4SpxHZN6KpTBW4bLQAF6fdxOAmPFxRS4xBilrawRm9fVJVW91h7mC4gF0V4KKteUoLe2egJisAnrZ6yVYg4uxLP0=";
 //
-//        // 调用解密方法
+//        // Call decryption method
 //        String decryptedData = decryptData(encryptedData);
 //
-//        // 输出解密后的数据
+//        // Output decrypted data
 //        System.out.println("Decrypted Data: " + decryptedData);
 //    }
 
     /**
-     * 主方法，演示使用私钥加密和公钥解密数据
-     * 通过 RSA 算法实现数据的加密和解密
-     * @param args 参数
+     * Main method, demonstrating private key encryption and public key decryption
+     * Implements data encryption and decryption using RSA algorithm
+     * @param args arguments
      */
     public static void main(String[] args) {
-        // 原始数据，待加密的明文
-        String data = "这是一个测试数据";
+        // Original data, plaintext to be encrypted
+        String data = "This is test data";
 
-        // 使用私钥加密数据
+        // Encrypt data using private key
         String encryptedData = encryptData(data);
-        System.out.println("加密后的数据: " + encryptedData);
+        System.out.println("Encrypted data: " + encryptedData);
 
-        // 使用公钥解密数据 【公钥会给到第三方】
+        // Decrypt data using public key [public key will be provided to third parties]
         String decryptedData = decryptWithPublicKey(encryptedData);
-        System.out.println("解密后的数据: " + decryptedData);
+        System.out.println("Decrypted data: " + decryptedData);
     }
 
 }

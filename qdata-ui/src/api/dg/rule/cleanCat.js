@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询清洗规则类目管理列表
+// Query the cleaning rule category management list
 export function listCleanCat(query) {
   return request({
     url: '/dg/cleanCat/list',
@@ -9,7 +9,7 @@ export function listCleanCat(query) {
   })
 }
 
-// 查询清洗规则类目管理详细
+// Query cleaning rule category management details
 export function getCleanCat(id) {
   return request({
     url: '/dg/cleanCat/' + id,
@@ -17,7 +17,7 @@ export function getCleanCat(id) {
   })
 }
 
-// 新增清洗规则类目管理
+// Added cleaning rule category management
 export function addCleanCat(data) {
   return request({
     url: '/dg/cleanCat',
@@ -26,7 +26,7 @@ export function addCleanCat(data) {
   })
 }
 
-// 修改清洗规则类目管理
+// Modify cleaning rule category management
 export function updateCleanCat(data) {
   return request({
     url: '/dg/cleanCat',
@@ -35,14 +35,14 @@ export function updateCleanCat(data) {
   })
 }
 
-// 删除清洗规则类目管理
+// Delete cleaning rule category management
 export function delCleanCat(id) {
   return request({
     url: '/dg/cleanCat/' + id,
     method: 'delete'
   })
 }
-// 批量删除清洗规则类目管理前的校验
+// Verification before batch deletion of cleaning rule category management
 export function batchDeleteCheck(ids) {
   return request({
     url: '/dg/cleanCat/batchDeleteCheck/' + ids,

@@ -1,33 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -38,7 +24,7 @@
             type="primary"
             plain
             icon="Plus"
-        >新增</el-button>
+        >td('common.button.add')</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -46,7 +32,7 @@
             plain
             icon="Sort"
             @click="toggleExpandAll"
-        >展开/折叠</el-button>
+        >td('common.button.un_fold')</el-button>
       </el-col>
     </el-row>
     <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -66,40 +52,41 @@
         {{ scope.row.id || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="标题" prop="title" />
-    <el-table-column label="内容" align="center" prop="content" >
+    <el-table-column :label=td('common.display.title') prop="title" />
+    <el-table-column :label=td('common.display.content') align="center" prop="content" >
       <template #default="scope">
         {{ scope.row.content || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="创建人" align="center" prop="createBy" >
+    <el-table-column :label=td('common.display.createBy') align="center" prop="createBy" >
       <template #default="scope">
         {{ scope.row.createBy || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+    <el-table-column :label=td('common.display.createTime') align="center" prop="createTime" width="180">
       <template #default="scope">
         <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="备注" align="center" prop="remark" >
+    <el-table-column :label=td('common.display.remark') align="center" prop="remark" >
       <template #default="scope">
         {{ scope.row.remark || '-' }}
       </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+    <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width">
       <template #default="scope">
-        <el-button link type="primary" icon="Edit"  >修改</el-button>
-        <el-button link type="primary" icon="Plus"  >新增</el-button>
-        <el-button link type="danger" icon="Delete" >删除</el-button>
+        <el-button link type="primary" icon="Edit"  >td('common.button.update')</el-button>
+        <el-button link type="primary" icon="Plus"  >td('common.button.add')</el-button>
+        <el-button link type="danger" icon="Delete" >td('common.button.delete')</el-button>
       </template>
     </el-table-column>
   </el-table>
-  <!-- 添加或修改详情对话框 -->
+  <!-- Add or modify details dialog box -->
 </template>
 
 <script setup name="ComponentTwo">
-
+  import useDefaultLang from "@/composables/useDefaultLang";
+  const { td } = useDefaultLang();
   const { proxy } = getCurrentInstance();
 
   const detailsList = ref([]);
@@ -123,29 +110,29 @@
     },
     rules: {
       parentId: [
-        { required: true, message: "节点不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.node')", trigger: "blur" }
       ],
       title: [
-        { required: true, message: "标题不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.title')", trigger: "blur" }
       ],
       validFlag: [
-        { required: true, message: "是否有效不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.validFlag')", trigger: "blur" }
       ],
       delFlag: [
-        { required: true, message: "删除标志不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.delFlag')", trigger: "blur" }
       ],
       createTime: [
-        { required: true, message: "创建时间不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.createTime')", trigger: "blur" }
       ],
       updateTime: [
-        { required: true, message: "更新时间不能为空", trigger: "blur" }
+        { required: true, message: "td('common.rules.updateTime')", trigger: "blur" }
       ],
     }
   });
 
   const { queryParams, form, rules } = toRefs(data);
 
-  /** 查询详情列表 */
+  /** Query details list */
   function getList() {
     loading.value = true;
     let responseData = [
@@ -153,7 +140,7 @@
         "id": 1,
         "parentId": 0,
         "bidId": 13,
-        "title": "测试",
+        "title": "",
         "content": "11",
         "validFlag": true,
         "delFlag": false,
@@ -169,7 +156,7 @@
         "id": 2,
         "parentId": 1,
         "bidId": 13,
-        "title": "测试2",
+        "title": "",
         "content": "2",
         "validFlag": true,
         "delFlag": false,
@@ -186,18 +173,18 @@
     loading.value = false;
   }
 
-  /** 查询详情下拉树结构 */
+  /** Query details drop-down tree structure */
   function getTreeselect() {
 
   }
 
-  // 取消按钮
+  // Cancel button
   function cancel() {
     open.value = false;
     reset();
   }
 
-  // 表单重置
+  // Form reset
   function reset() {
     form.value = {
       id: null,
@@ -218,18 +205,18 @@
     proxy.resetForm("bidDetailsRef");
   }
 
-  /** 搜索按钮操作 */
+  /** Search button operation */
   function handleQuery() {
     getList();
   }
 
-  /** 重置按钮操作 */
+  /** Reset button operation */
   function resetQuery() {
     proxy.resetForm("queryRef");
     handleQuery();
   }
 
-  /** 新增按钮操作 */
+  /** Add button operation */
   function handleAdd(row) {
     reset();
     getTreeselect();
@@ -239,10 +226,10 @@
       form.value.parentId = 0;
     }
     open.value = true;
-    title.value = "添加内容";
+    title.value = td('${controllerPrefix}.${moduleName}.title.add');
   }
 
-  /** 展开/折叠操作 */
+  /** Expand/collapse operations */
   function toggleExpandAll() {
     refreshTable.value = false;
     isExpandAll.value = !isExpandAll.value;
@@ -251,7 +238,7 @@
     });
   }
 
-  /** 修改按钮操作 */
+  /** Modify button operation */
   async function handleUpdate(row) {
     reset();
     await getTreeselect();
@@ -261,7 +248,7 @@
     // (row.id).then(response => {
     //   form.value = response.data;
     //   open.value = true;
-    //   title.value = "修改详情";
+    // title.value = "Modify details";
     // });
   }
 

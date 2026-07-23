@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.project.impl;
@@ -61,7 +47,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 项目与用户关联关系Service业务层处理
+ * Project-User Relationship Service business layer processing
  *
  * @author qdata
  * @date 2025-02-11
@@ -93,18 +79,25 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
 
     @Override
     public int updateAttProjectUserRel(AttProjectUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新项目与用户关联关系
+        // Update project-user relationship
         AttProjectUserRelDO updateObj = BeanUtils.toBean(updateReqVO, AttProjectUserRelDO.class);
         return attProjectUserRelMapper.updateById(updateObj);
     }
 
     @Override
     public int updateUserListAndRoleList(AttProjectUserRelSaveReqVO updateReqVO) {
-        // 相关校验
+        List<Long> adminRoleIds = getProjectAdminRoleIds(updateReqVO.getProjectId());
+        boolean currentIsAdmin = sysUserRoleMapper.getUserRoleByRoleId(updateReqVO.getUserId()).stream()
+                .anyMatch(rel -> adminRoleIds.contains(rel.getRoleId()));
+        boolean remainsAdmin = updateReqVO.getRoleIdList() != null && updateReqVO.getRoleIdList().stream()
+                .anyMatch(adminRoleIds::contains);
+        if (currentIsAdmin && !remainsAdmin && getProjectAdminUserIds(updateReqVO.getProjectId()).size() <= 1) {
+            throw new ServiceException("att.error.project.admin.required", "项目至少需要保留一名项目管理员");
+        }
 
-        // 更新项目与用户关联关系
+        // Update project-user relationship
         SysRole sysRole = new SysRole();
         sysRole.setProjectId(updateReqVO.getProjectId());
         List<SysRole> sysRoleList = sysRoleMapper.selectRoleList(sysRole);
@@ -138,10 +131,18 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         QueryWrapper<AttProjectUserRelDO> projectWrapper = new QueryWrapper<>();
         projectWrapper.in(!CollectionUtils.isEmpty(idList), "id", idList);
         List<AttProjectUserRelDO> attProjectUserRelDOList = attProjectUserRelMapper.selectList(projectWrapper);
+        if (attProjectUserRelDOList.isEmpty()) {
+            return 0;
+        }
         List<Long> userId = attProjectUserRelDOList.stream().map(AttProjectUserRelDO::getUserId).collect(Collectors.toList());
+        Long projectId = attProjectUserRelDOList.get(0).getProjectId();
+        Set<Long> adminUserIds = getProjectAdminUserIds(projectId);
+        long deletingAdminCount = userId.stream().distinct().filter(adminUserIds::contains).count();
+        if (!adminUserIds.isEmpty() && deletingAdminCount >= adminUserIds.size()) {
+            throw new ServiceException("att.error.project.admin.required", "项目至少需要保留一名项目管理员");
+        }
         List<SysUserRole> byUserIdList = sysUserRoleMapper.getByUserIdList(userId);
         SysRole sysRole = new SysRole();
-        Long projectId = attProjectUserRelDOList.get(0) != null ? attProjectUserRelDOList.get(0).getProjectId() : -999;
         sysRole.setProjectId(projectId);
         List<SysRole> sysRoleList = sysRoleMapper.selectRoleList(sysRole);
         List<Long> roleIdList = sysRoleList.stream().map(SysRole::getRoleId).collect(Collectors.toList());
@@ -154,8 +155,31 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
         if (!userRoleList.isEmpty()){
             sysUserRoleMapper.deleteUserRoleList(userRoleList);
         }
-        // 批量删除项目与用户关联关系
+        // Batch delete project-user relationship
         return attProjectUserRelMapper.deleteBatchIds(idList);
+    }
+
+    private List<Long> getProjectAdminRoleIds(Long projectId) {
+        SysRole query = new SysRole();
+        query.setProjectId(projectId);
+        return sysRoleMapper.selectRoleList(query).stream()
+                .filter(role -> "gly".equals(role.getRoleKey()))
+                .map(SysRole::getRoleId)
+                .collect(Collectors.toList());
+    }
+
+    private Set<Long> getProjectAdminUserIds(Long projectId) {
+        List<Long> memberUserIds = attProjectUserRelMapper.selectList(
+                new QueryWrapper<AttProjectUserRelDO>().eq("PROJECT_ID", projectId)
+        ).stream().map(AttProjectUserRelDO::getUserId).distinct().collect(Collectors.toList());
+        List<Long> adminRoleIds = getProjectAdminRoleIds(projectId);
+        if (memberUserIds.isEmpty() || adminRoleIds.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return sysUserRoleMapper.getByUserIdList(memberUserIds).stream()
+                .filter(rel -> adminRoleIds.contains(rel.getRoleId()))
+                .map(SysUserRole::getUserId)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -175,19 +199,19 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
                 .collect(Collectors.toMap(
                         AttProjectUserRelDO::getId,
                         attProjectUserRelDO -> attProjectUserRelDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入项目与用户关联关系数据
+     * Import project-user relationship data
      *
-     * @param importExcelList 项目与用户关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList project-user relationship data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     @Override
     public String importAttProjectUserRel(List<AttProjectUserRelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
@@ -211,16 +235,16 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
                             attProjectUserRelMapper.updateById(attProjectUserRelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录。", attProjectUserRelId, "项目与用户关联关系"));
+                                    "数据Update 成功，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录。", attProjectUserRelId, "项目与用户关联关系"));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录不存在。", attProjectUserRelId, "项目与用户关联关系"));
+                                    "数据Update 失败，ID为 " + attProjectUserRelId + " 的项目与用户关联关系记录不存在。", attProjectUserRelId, "项目与用户关联关系"));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "数据Update 失败，某条记录的ID不存在。"));
                     }
                 } else {
                     QueryWrapper<AttProjectUserRelDO> queryWrapper = new QueryWrapper<>();
@@ -261,16 +285,19 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
 
 
     /**
-     * 创建项目前端传用户集合和角色集合
+     * Create project-user and role list from frontend
      *
-     * @param attProject 项目信息
-     * @return 项目编号
+     * @param attProject Project info with user and role ID lists
      */
     @Override
     public Boolean createUserListAndRoleList(AttProjectUserRelSaveReqVO attProject) {
         List<AttProjectUserRelDO> attProjectUserRelDOList = new ArrayList<>();
         List<SysUserRole> sysUserRoleList = new ArrayList<>();
         for (Long userId : attProject.getUserIdList()) {
+            SysUser user = sysUserMapper.selectUserById(userId);
+            if (user == null || !"0".equals(user.getStatus())) {
+                throw new ServiceException("att.error.project.user.disabled", "该系统用户已停用，不能添加为项目成员。");
+            }
             AttProjectUserRelDO attProjectUserRelDO = new AttProjectUserRelDO();
             attProjectUserRelDO.setUserId(userId);
             attProjectUserRelDO.setProjectId(attProject.getProjectId());
@@ -288,7 +315,7 @@ public class AttProjectUserRelServiceImpl extends ServiceImpl<AttProjectUserRelM
     }
 
     /**
-     * 获取项目与用户关联关系详细信息包括角色信息
+     * Get project-user relationship details including role info
      *
      * @param id
      * @return

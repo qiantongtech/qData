@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.domain;
@@ -44,45 +30,45 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.common.xss.Xss;
 
 /**
- * 通知公告表 sys_notice
+ * Notification/Announcement table sys_notice
  *
  * @author qdata
  */
 public class SysNotice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** 公告ID */
+    /** Announcement ID */
     private Long noticeId;
 
-    /** 公告标题 */
+    /** Announcement Title */
     private String noticeTitle;
 
-    /** 公告类型（1通知 2公告） */
+    /** Announcement Type (1=notification, 2=announcement) */
     private String noticeType;
 
-    /** 公告内容 */
+    /** Announcement Content */
     private String noticeContent;
 
-    /** 公告状态（0正常 1关闭） */
+    /** Announcement Status (0=normal, 1=closed) */
     private String status;
 
-    /** 是否置顶（0否 1是） */
+    /** Whether to Pin to Top (0=no, 1=yes) */
     private Integer topFlag;
 
-    /** 是否弹窗（0否 1是） */
+    /** Whether to Show as Popup (0=no, 1=yes) */
     private Integer alertFlag;
 
-    /** 开始弹窗时间 */
+    /** Popup Start Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date alertStartTime;
 
-    /** 结束弹窗时间 */
+    /** Popup End Time */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date alertEndTime;
 
-    /** 公告内容文本 */
+    /** Plain text of announcement content */
     private String noticeContentText;
 
     public Long getNoticeId() {
@@ -93,9 +79,9 @@ public class SysNotice extends BaseEntity {
         this.noticeId = noticeId;
     }
 
-    @Xss(message = "公告标题不能包含脚本字符")
-    @NotBlank(message = "公告标题不能为空")
-    @Size(min = 0, max = 50, message = "公告标题不能超过50个字符")
+    @Xss(message = "Announcement title must not contain script characters")
+    @NotBlank(message = "Announcement title is required")
+    @Size(min = 0, max = 50, message = "Announcement title must not exceed 50 characters")
     public String getNoticeTitle() {
         return noticeTitle;
     }

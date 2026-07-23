@@ -1,28 +1,29 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <el-form ref="formRef" :model="form" label-width="130px" :disabled="false">
     <el-row>
       <el-col :span="12">
-        <el-form-item :label="td('dpp.integration.trimSpaceRule', '去除空格规则')" prop="handleType">
+        <el-form-item :label="td('dpp.integration.trimSpaceRule', 'Trim Space Rule')" prop="handleType">
           <el-radio-group v-model="form.handleType" :disabled="falg">
-            <el-radio :value="'1'">{{ td('dpp.integration.trimLeadingTrailing', '去除前后空格') }}</el-radio>
-            <el-radio :value="'2'">{{ td('dpp.integration.trimAll', '去除所有空格') }}</el-radio>
+            <el-radio :value="'1'">{{ td('dpp.integration.trimLeadingTrailing', 'Trim Leading/Trailing Spaces') }}</el-radio>
+            <el-radio :value="'2'">{{ td('dpp.integration.trimAll', 'Trim All Spaces') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -48,9 +49,9 @@ const formRef = ref(null);
 const form = reactive({ ...props.form });
 const handleTypeText = computed(() =>
   form.handleType === "1"
-    ? td("dpp.integration.trimLeadingTrailing", "去除前后空格")
+    ? td("dpp.integration.trimLeadingTrailing", "Trim Leading/Trailing Spaces")
     : form.handleType === "2"
-    ? td("dpp.integration.trimAll", "去除所有空格")
+    ? td("dpp.integration.trimAll", "Trim All Spaces")
     : "-"
 );
 function validate() {

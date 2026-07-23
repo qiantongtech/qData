@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules;
@@ -62,12 +48,12 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensiti
 import tech.qiantong.qdata.module.dg.service.desensitizeRules.IDgDesensitizeIntervalService;
 
 /**
- * 脱敏区间Controller
+ * Desensitize Interval Controller
  *
  * @author qdata
  * @date 2026-04-10
  */
-@Tag(name = "脱敏区间")
+@Tag(name = "Desensitize Intervals")
 @RestController
 @RequestMapping("/dg/desensitizeInterval")
 @Validated
@@ -75,7 +61,7 @@ public class DgDesensitizeIntervalController extends BaseController {
     @Resource
     private IDgDesensitizeIntervalService dgDesensitizeIntervalService;
 
-    @Operation(summary = "查询脱敏区间列表")
+    @Operation(summary = "Query desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DgDesensitizeIntervalRespVO>> list(DgDesensitizeIntervalPageReqVO dgDesensitizeInterval) {
@@ -83,20 +69,20 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(page, DgDesensitizeIntervalRespVO.class));
     }
 
-    @Operation(summary = "导出脱敏区间列表")
+    @Operation(summary = "Export desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:export')")
-    @Log(title = "脱敏区间", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DgDesensitizeIntervalPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DgDesensitizeIntervalDO> list = (List<DgDesensitizeIntervalDO>) dgDesensitizeIntervalService.getDgDesensitizeIntervalPage(exportReqVO).getRows();
         ExcelUtil<DgDesensitizeIntervalRespVO> util = new ExcelUtil<>(DgDesensitizeIntervalRespVO.class);
-        util.exportExcel(response, DgDesensitizeIntervalConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DgDesensitizeIntervalConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
-    @Operation(summary = "导入脱敏区间列表")
+    @Operation(summary = "Import desensitize interval list")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:import')")
-    @Log(title = "脱敏区间", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DgDesensitizeIntervalRespVO> util = new ExcelUtil<>(DgDesensitizeIntervalRespVO.class);
@@ -106,7 +92,7 @@ public class DgDesensitizeIntervalController extends BaseController {
         return success(message);
     }
 
-    @Operation(summary = "获取脱敏区间详细信息")
+    @Operation(summary = "Get desensitize interval detail")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:query')")
     @GetMapping(value = "/{id}")
     public CommonResult<DgDesensitizeIntervalRespVO> getInfo(@PathVariable("id") Long id) {
@@ -114,9 +100,9 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(dgDesensitizeIntervalDO, DgDesensitizeIntervalRespVO.class));
     }
 
-    @Operation(summary = "新增脱敏区间")
+    @Operation(summary = "Add desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:add')")
-    @Log(title = "脱敏区间", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgDesensitizeIntervalSaveReqVO dgDesensitizeInterval) {
         dgDesensitizeInterval.setCreatorId(getUserId());
@@ -125,9 +111,9 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeIntervalService.createDgDesensitizeInterval(dgDesensitizeInterval));
     }
 
-    @Operation(summary = "修改脱敏区间")
+    @Operation(summary = "Update desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:edit')")
-    @Log(title = "脱敏区间", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgDesensitizeIntervalSaveReqVO dgDesensitizeInterval) {
         dgDesensitizeInterval.setUpdatorId(getUserId());
@@ -136,9 +122,9 @@ public class DgDesensitizeIntervalController extends BaseController {
         return CommonResult.toAjax(dgDesensitizeIntervalService.updateDgDesensitizeInterval(dgDesensitizeInterval));
     }
 
-    @Operation(summary = "删除脱敏区间")
+    @Operation(summary = "Delete desensitize interval")
     @PreAuthorize("@ss.hasPermi('dg:desensitizeinterval:remove')")
-    @Log(title = "脱敏区间", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.desensitize.interval", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dgDesensitizeIntervalService.removeDgDesensitizeInterval(Arrays.asList(ids)));

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -30,7 +31,7 @@
         <span class="el-dialog__title">{{ currentNode?.data?.name }}</span>
         <el-tooltip
           effect="light"
-          :content="td('dpp.integration.dedupFilterTooltip', '根据指定字段判断数据是否重复，并保留第一条出现的记录')"
+          :content="td('dpp.integration.dedupFilterTooltip', 'Determines if data is duplicated based on specified fields, keeping the first occurrence (i.e., when duplicates are encountered, keeps the first one in the dataset), use with sort node')"
           placement="top"
         >
           <el-icon class="tip-icon">
@@ -50,26 +51,26 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
-              { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+              { required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' },
             ]"
            :label-position="labelPosition">
             <el-input
               v-if="!info"
               v-model="form.name"
-              :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')"
+              :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')"
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
             <el-select
               v-if="!info"
               v-model="form.taskParams.typeName"
-              :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')"
+              :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')"
               filterable
               disabled
             >
@@ -104,7 +105,7 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.column.fieldTerm', '字段') }}</span>
+        <span class="blue-text">{{ td('dpp.column.fieldTerm', 'Field Term') }}</span>
       </el-divider>
       <div class="justify-between mb15" v-if="!info">
         <el-row :gutter="15" class="btn-style">
@@ -123,7 +124,7 @@
         ref="dragTable"
         row-key="columnName"
       >
-        <el-table-column :label="td('common.display.index', '序号')" width="80" align="left">
+        <el-table-column :label="td('common.display.index', 'Index')" width="80" align="left">
           <template #default="{ $index }">
             <div
               class="allowDrag"
@@ -141,12 +142,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName">
+        <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName">
           <template #default="scope">
             <el-select
               v-model="scope.row.columnName"
-              :placeholder="td('dpp.integration.selectFieldPlaceholder', '请选择字段')"
+              :placeholder="td('dpp.integration.selectFieldPlaceholder', 'Please select field name')"
               style="flex: 1"
+              @change="handleColumnChange($event, scope.row)"
             >
               <el-option
                 v-for="item in inputFields"
@@ -159,15 +161,15 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="td('dpp.integration.ignoreCase', '忽略大小写')"
+          :label="td('dpp.integration.ignoreCase', 'Ignore Case')"
           align="left"
           prop="ignoreCase"
           :show-overflow-tooltip="{ effect: 'light' }"
         >
           <template #default="scope">
-            <el-select v-model="scope.row.ignoreCase" :placeholder="td('common.form.statusPlaceholder', '请选择')">
-              <el-option :label="td('dpp.integration.yes', '是')" :value="0" />
-              <el-option :label="td('dpp.integration.no', '否')" :value="1" />
+            <el-select v-model="scope.row.ignoreCase" :placeholder="td('common.form.statusPlaceholder', 'Please select status')">
+              <el-option :label="td('dpp.integration.yes', 'Yes')" :value="0" />
+              <el-option :label="td('dpp.integration.no', 'No')" :value="1" />
             </el-select>
           </template>
         </el-table-column>
@@ -200,7 +202,7 @@
           >{{ td('common.button.save') }}</el-button
         >
         <el-button type="warning" @click="handleFetchFields" v-if="!info"
-          >{{ td('dpp.integration.fetchFields', '获取字段') }}</el-button
+          >{{ td('dpp.integration.fetchFields', 'Fetch Fields') }}</el-button
         >
       </div>
     </template>
@@ -261,7 +263,7 @@ function setSort() {
       ".el-table__body-wrapper tbody"
     );
     if (!tbody) {
-      console.warn("tbody 找不到，拖拽初始化失败");
+      console.warn("tbody not found; drag initialization failed");
       return;
     }
 
@@ -276,7 +278,7 @@ function setSort() {
         const movedItem = tableFields.value.splice(evt.oldIndex, 1)[0];
         tableFields.value.splice(evt.newIndex, 0, movedItem);
         console.log(
-          "拖拽后顺序:",
+          "Order after drag:",
           tableFields.value.map((f) => f.columnName)
         );
       },
@@ -286,19 +288,19 @@ function setSort() {
 
 function handleAddField() {
   if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "输入字段为空，无法添加字段"));
+    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
     return;
   }
-  // 已添加的字段名
+  // Added field name
   const usedNames = tableFields.value.map((item) => item.columnName);
 
-  // 找到未使用的字段
+  // Unused fields found
   const nextField = inputFields.value.find(
     (item) => !usedNames.includes(item.columnName)
   );
 
   if (!nextField) {
-    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "新增失败，已无可添加的字段"));
+    proxy.$message.warning(td("dpp.integration.noMoreFieldsToAdd", "Add failed, no more fields to add"));
     return;
   }
 
@@ -324,15 +326,15 @@ function onResolveFields(payload) {
     tableNames.every((name, idx) => name === inputNames[idx]);
   switch (payload.action) {
     case "addNewOnly": {
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
 
-      // 计算已有字段名称
+      // Calculate existing field names
       const existingNames = tableFields.value.map((f) => f.columnName);
-      // 找到新字段中不在已有字段中的字段
+      // Find fields in the new field that are not among the existing fields
       const newUniqueFields = inputFields.value.filter(
         (f) => !existingNames.includes(f.columnName)
       );
-      // 加入到 tableFields 中
+      // Add to tableFields
       tableFields.value = tableFields.value.concat(deepCopy(newUniqueFields));
       break;
     }
@@ -343,27 +345,27 @@ function onResolveFields(payload) {
         tableFields.value
       );
       if (isEqual) {
-        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "新增失败，当前已是最新字段"));
+        proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "Add failed, already at latest fields"));
       }
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       tableFields.value = [];
-      // 这里先清空，再加全部字段，避免重复
+      // Clear it here first and then add all the fields to avoid duplication.
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "clearAndAddAll": {
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
 
-      // 恢复原始备份字段
+      // Restore original backup fields
       tableFields.value = deepCopy(inputFields.value);
 
       break;
     }
 
     case "cancel": {
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
     }
   }
@@ -373,6 +375,15 @@ const isOptionDisabled = (optionValue, currentRow) => {
   return tableFields.value.some(
     (row) => row !== currentRow && row.columnName === optionValue
   );
+};
+
+const handleColumnChange = (columnName, currentRow) => {
+  const selectedField = inputFields.value.find(
+    (field) => field.columnName === columnName
+  );
+  if (!selectedField) return;
+
+  currentRow.columnType = selectedField.columnType;
 };
 
 const emit = defineEmits(["update", "confirm"]);
@@ -405,12 +416,12 @@ function canChangeIgnoreCase(row) {
   const isString = ["varchar", "char", "text", "string"].some((t) =>
     normType.startsWith(t)
   );
-  // 3. 非字符串列：禁用 + 强制 ignoreCase = 1
+  // 3. Non-string columns: disable + force ignoreCase = 1
   if (!isString) {
     row.ignoreCase = 1;
     return false;
   }
-  // 4. 字符串列：可编辑，若值为空给 0
+  // 4. String column: editable, if the value is empty, give 0
   if (row.ignoreCase == null) row.ignoreCase = 0;
   return true;
 }
@@ -421,7 +432,7 @@ function handleRule(data) {
 }
 
 function handleDelete(row) {
-  // 1. 从 tableFields 中删除对应项
+  // 1. Delete the corresponding item from tableFields
   const idxTable = tableFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -444,7 +455,7 @@ function handleDelete(row) {
   setSort();
 }
 
-// 提交弹窗规则数据
+// Submit pop-up rule data
 const submitForm = (value) => {
   if (!value || !Array.isArray(value)) return;
 
@@ -455,7 +466,7 @@ const submitForm = (value) => {
     try {
       parsedConfig = JSON.parse(ruleItem.ruleConfig);
     } catch (e) {
-      console.warn("无法解析 ruleConfig:", ruleItem.ruleConfig);
+      console.warn("Unable to parse ruleConfig:", ruleItem.ruleConfig);
       return;
     }
     const sourceField = parsedConfig?.fieldMerge?.sourceField;
@@ -496,9 +507,9 @@ const saveData = async () => {
   try {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
-    // 判断表格是否为空
+    // Determine whether the table is empty
     if (!tableFields.value || tableFields.value.length === 0) {
-      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "校验未通过，请至少添加一个字段"));
+      proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
       return;
     }
     if (!form.value.code) {
@@ -514,7 +525,7 @@ const saveData = async () => {
     taskParams.tableFields = tableFields.value;
     taskParams.mainArgs = taskParams.mainArgs || {};
 
-    // 构造 outputFields = inputFields + tableFields 的增强值
+    // Construct outputFields = inputFields + enhanced value of tableFields
     taskParams.outputFields = inputFields.value.map((input) => {
       const matched = tableFields.value.find(
         (item) => item.columnName === input.columnName
@@ -522,10 +533,10 @@ const saveData = async () => {
       return matched ? { ...input, ...matched } : { ...input };
     });
 
-    console.log("保存数据 - outputFields:", taskParams.outputFields);
+    console.log("Save data - outputFields:", taskParams.outputFields);
     emit("confirm", form.value);
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };

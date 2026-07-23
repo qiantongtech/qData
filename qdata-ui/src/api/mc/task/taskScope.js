@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询采集范围列表
+// Query collection range list
 export function listTaskScope(query) {
   return request({
     url: '/mc/taskScope/list',
@@ -9,7 +9,7 @@ export function listTaskScope(query) {
   })
 }
 
-// 查询采集范围详细
+// Query the collection range details
 export function getTaskScope(id) {
   return request({
     url: '/mc/taskScope/' + id,
@@ -17,7 +17,7 @@ export function getTaskScope(id) {
   })
 }
 
-// 新增采集范围
+// Add new collection range
 export function addTaskScope(data) {
   return request({
     url: '/mc/taskScope',
@@ -26,7 +26,7 @@ export function addTaskScope(data) {
   })
 }
 
-// 修改采集范围
+// Modify collection range
 export function updateTaskScope(data) {
   return request({
     url: '/mc/taskScope',
@@ -35,7 +35,7 @@ export function updateTaskScope(data) {
   })
 }
 
-// 删除采集范围
+// Delete collection range
 export function delTaskScope(id) {
   return request({
     url: '/mc/taskScope/' + id,

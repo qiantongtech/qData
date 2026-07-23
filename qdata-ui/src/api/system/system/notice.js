@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request.js'
 
-// 查询公告列表
+// Query announcement list
 export function listNotice(query) {
   return request({
     url: '/system/notice/list',
@@ -26,7 +27,7 @@ export function listNotice(query) {
   })
 }
 
-// 查询公告详细
+// Check the announcement details
 export function getNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -34,7 +35,7 @@ export function getNotice(noticeId) {
   })
 }
 
-// 新增公告
+// New announcement
 export function addNotice(data) {
   return request({
     url: '/system/notice',
@@ -43,7 +44,7 @@ export function addNotice(data) {
   })
 }
 
-// 修改公告
+// Modification notice
 export function updateNotice(data) {
   return request({
     url: '/system/notice',
@@ -52,7 +53,7 @@ export function updateNotice(data) {
   })
 }
 
-// 删除公告
+// Delete announcement
 export function delNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -60,7 +61,7 @@ export function delNotice(noticeId) {
   })
 }
 
-// 首页公告列表
+// Home Announcement List
 export function sortListNotice(query) {
   return request({
     url: '/system/notice/sortList',
@@ -69,7 +70,7 @@ export function sortListNotice(query) {
   })
 }
 
-// 首页特殊提示
+// Home page special tips
 export function alertNotice() {
   return request({
     url: '/system/notice/alertNotice',
@@ -77,7 +78,7 @@ export function alertNotice() {
   })
 }
 
-// 查询公告详细-new
+// Check the announcement details-new
 export function getNoticeOne(noticeId) {
   return request({
     url: `/system/notice/one?noticeId=${noticeId}`,

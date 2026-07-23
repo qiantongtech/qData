@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:数结构数据
+ * Purpose: number structure data
  * </p>
  *
  * @author: FXB
@@ -25,32 +25,32 @@ public class TreeData implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 节点ID
+     * Node ID
      */
     private Long id;
 
     /**
-     * 父节点ID（可空）
+     * Parent node ID (nullable)
      */
     private Long parentId;
 
     /**
-     * 节点名称
+     * Node name
      */
     private String name;
 
     /**
-     * 节点类型
+     * Node type
      */
     private String type;
 
     /**
-     * 其他扩展数据
+     * Other extended data
      */
     private JSONObject otherData;
 
     /**
-     * 子节点
+     * Child node
      */
     private List<TreeData> children;
 }

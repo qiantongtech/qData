@@ -1,14 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
  *
- * 数据源管理 API
- * 当前可切换为 datasource.mock.js 进行前端联调，对接后端时使用本文件 request 调用。
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-/** 查询数据源列表 */
+/** Query data source list */
 export function listDppDatasource(query) {
   return request({
     url: '/dpp/datasource/list',
@@ -17,7 +27,7 @@ export function listDppDatasource(query) {
   })
 }
 
-/** 查询数据源详情 */
+/** Query data source details */
 export function getDppDatasource(id) {
   return request({
     url: '/dpp/datasource/' + id,
@@ -25,7 +35,7 @@ export function getDppDatasource(id) {
   })
 }
 
-/** 新增数据源 */
+/** Add new data source */
 export function addDppDatasource(data) {
   return request({
     url: '/dpp/datasource',
@@ -34,7 +44,7 @@ export function addDppDatasource(data) {
   })
 }
 
-/** 修改数据源 */
+/** Modify data source */
 export function updateDppDatasource(data) {
   return request({
     url: '/dpp/datasource',
@@ -43,7 +53,7 @@ export function updateDppDatasource(data) {
   })
 }
 
-/** 删除数据源（删除前后端校验是否被数据资产或元数据采集任务引用） */
+/** Delete the data source (check whether the deletion front-end and back-end are referenced by data assets or metadata collection tasks) */
 export function delDppDatasource(id) {
   return request({
     url: '/dpp/datasource/' + id,
@@ -51,7 +61,7 @@ export function delDppDatasource(id) {
   })
 }
 
-/** 连接测试 */
+/** Connection test */
 export function testDppDatasource(id) {
   return request({
     url: '/dpp/datasource/test/' + id,
@@ -59,7 +69,7 @@ export function testDppDatasource(id) {
   })
 }
 
-/** 连接测试（未保存时传表单参数） */
+/** Connection test (passing form parameters when not saved) */
 export function testDppDatasourceForm(data) {
   return request({
     url: '/dpp/datasource/test',
@@ -68,7 +78,7 @@ export function testDppDatasourceForm(data) {
   })
 }
 
-/** 启用/禁用数据源 */
+/** Enable/disable data source */
 export function toggleDppDatasourceStatus(id) {
   return request({
     url: '/dpp/datasource/status/' + id,

@@ -10,10 +10,10 @@
 
     <name>qdata</name>
     <url>https://qiantong.tech</url>
-    <description>qData开源版</description>
+    <description>qData Open Source Edition</description>
 
     <properties>
-        <qdata.version>1.5.4</qdata.version>
+        <qdata.version>1.6.0</qdata.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -34,25 +34,25 @@
         <scala.version>2.12.18</scala.version>
         <spark.version>3.4.4</spark.version>
         <hadoop.version>3.0.0</hadoop.version>
-        <!-- Docker 镜像构建配置 -->
+        <!-- Docker image build configuration -->
         <docker.hub>crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji</docker.hub>
-        <!-- 镜像仓库名：默认使用模块名称（module name） -->
+        <!-- Image repository name: uses the module name by default -->
         <docker.repo>${project.name}-ce</docker.repo>
-        <!-- 镜像版本号：默认使用当前模块版本 -->
+        <!-- Image version: uses the current module version by default -->
         <docker.tag>${project.version}</docker.tag>
-        <!-- 是否打印构建命令（默认打印，便于调试，不执行实际构建） -->
+        <!-- Whether to print the build command (printed by default for debugging without executing the actual build) -->
         <docker.print.skip>true</docker.print.skip>
-        <!-- 是否跳过镜像构建（默认跳过，避免在开发环境误构建镜像） -->
+        <!-- Whether to skip the image build (skipped by default to prevent accidental builds in the development environment) -->
         <docker.build.skip>true</docker.build.skip>
-        <!-- 是否跳过镜像推送（默认跳过，避免误将测试镜像推送至镜像仓库） -->
+        <!-- Whether to skip the image push (skipped by default to prevent test images from being pushed accidentally) -->
         <docker.push.skip>true</docker.push.skip>
     </properties>
 
-    <!-- 依赖声明 -->
+    <!-- Dependency declarations -->
     <dependencyManagement>
         <dependencies>
 
-            <!-- SpringFramework的依赖配置-->
+            <!-- Spring Framework dependency configuration -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
@@ -61,7 +61,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- SpringSecurity的依赖配置-->
+            <!-- Spring Security dependency configuration -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
@@ -70,7 +70,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- SpringBoot的依赖配置-->
+            <!-- Spring Boot dependency configuration -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -79,35 +79,35 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- 阿里数据库连接池 -->
+            <!-- Alibaba database connection pool -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
 
-            <!-- 解析客户端操作系统、浏览器等 -->
+            <!-- Parse the client operating system, browser, and other information -->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${bitwalker.version}</version>
             </dependency>
 
-            <!-- pagehelper 分页插件 -->
+            <!-- PageHelper pagination plugin -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.boot.version}</version>
             </dependency>
 
-            <!-- 获取系统信息 -->
+            <!-- Retrieve system information -->
             <dependency>
                 <groupId>com.github.oshi</groupId>
                 <artifactId>oshi-core</artifactId>
                 <version>${oshi.version}</version>
             </dependency>
 
-            <!-- Swagger3依赖 -->
+            <!-- Swagger 3 dependency -->
 <!--            <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-boot-starter</artifactId>
@@ -120,77 +120,77 @@
                 </exclusions>
             </dependency>-->
 
-            <!-- io常用工具类 -->
+            <!-- Common I/O utilities -->
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
             </dependency>
 
-            <!-- excel工具 -->
+            <!-- Excel utilities -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi.version}</version>
             </dependency>
 
-            <!-- velocity代码生成使用模板 -->
+            <!-- Velocity templates used for code generation -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
             </dependency>
 
-            <!-- 阿里JSON解析器 -->
+            <!-- Alibaba JSON parser -->
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
 
-            <!-- Token生成与解析-->
+            <!-- Token generation and parsing -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
 
-            <!-- 验证码 -->
+            <!-- CAPTCHA -->
             <dependency>
                 <groupId>pro.fessional</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
+            <!-- Scheduled tasks -->
             <dependency>
                 <groupId>tech.qiantong</groupId>
                 <artifactId>qdata-quartz</artifactId>
                 <version>${qdata.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
+            <!-- Code generation -->
             <dependency>
                 <groupId>tech.qiantong</groupId>
                 <artifactId>qdata-generator</artifactId>
                 <version>${qdata.version}</version>
             </dependency>
 
-            <!-- 核心模块-->
+            <!-- Core module -->
             <dependency>
                 <groupId>tech.qiantong</groupId>
                 <artifactId>qdata-framework</artifactId>
                 <version>${qdata.version}</version>
             </dependency>
 
-            <!-- 系统模块-->
+            <!-- System module -->
             <dependency>
                 <groupId>tech.qiantong</groupId>
                 <artifactId>qdata-module-system</artifactId>
                 <version>${qdata.version}</version>
             </dependency>
 
-            <!-- 通用工具-->
+            <!-- Common utilities -->
             <dependency>
                 <groupId>tech.qiantong</groupId>
                 <artifactId>qdata-common</artifactId>
@@ -230,7 +230,7 @@
                     <flattenMode>defaults</flattenMode>
                 </configuration>
                 <executions>
-                    <!-- 在编译前执行 flatten -->
+                    <!-- Run flatten before compilation -->
                     <execution>
                         <id>flatten</id>
                         <phase>process-resources</phase>
@@ -238,7 +238,7 @@
                             <goal>flatten</goal>
                         </goals>
                     </execution>
-                    <!-- 在 clean 时清理生成的文件 -->
+                    <!-- Remove generated files during clean -->
                     <execution>
                         <id>flatten.clean</id>
                         <phase>clean</phase>

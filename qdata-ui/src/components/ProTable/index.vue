@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 通用表格组件：支持列插槽、字典/时间格式化、自定义排序与分页 -->
+  <!-- Universal table component: supports column slots, dictionary/time formatting, custom sorting and paging -->
   <el-table
     v-bind="tableBinding"
     v-loading="conf.loading"
@@ -34,7 +35,7 @@
     />
     <template v-for="col in renderColumns" :key="getColumnKey(col)">
       <el-table-column v-bind="columnProps(col)">
-        <!-- 自定义列头，支持 label + tooltip 组合展示 -->
+        <!-- Customize column headers, support label + tooltip combination display -->
         <template #header>
           <template
             v-if="
@@ -62,7 +63,7 @@
             <span>{{ col.label }}</span>
           </template>
         </template>
-        <!-- 单元格默认渲染：优先插槽，其次字典/时间，最后纯文本 -->
+        <!-- Cell default rendering: slots first, dictionary/time second, plain text last -->
         <template #default="scope">
           <slot
             v-if="col.slot"
@@ -153,48 +154,48 @@ const noDataImg = new URL(
   import.meta.url
 ).href;
 /**
- * ProTable（通用表格）——帮助页面“怎么做、做什么、注意什么”
+ * ProTable (General Table) - Help page "How to do, what to do, what to pay attention to"
  *
- * 一步一步怎么用（推荐）：
- * 1) 引入组件：import ProTable from '@/components/ProTable/index.vue'
- * 2) 定义列：const columns = [{ prop: 'name', label: '名称' }, { prop: 'status', label: '状态', dictOptions: [...] }]
- * 3) 准备数据与分页状态：list、loading、total、query({ pageNum, pageSize })
- * 4) 组装唯一入口 `config`：{ columns, data: list, loading, table, selection, actions, pagination }
- * 5) 模板中使用：<ProTable :config="tableConfig" @sort-change @pagination @update:selected> ...插槽 ...</ProTable>
- * 6) 可选：定义列插槽（如 `slot:'name'`）、操作列（`#actions`）、选择禁用（`selectionSelectable`）与排序（`sortKey`）
+ * How to use it step by step (recommended):
+ * 1) Introduce components: import ProTable from '@/components/ProTable/index.vue'
+ * 2) Define columns: const columns = [{ prop: 'name', label: 'name' }, { prop: 'status', label: 'status', dictOptions: [...] }]
+ * 3) Prepare data and paging status: list, loading, total, query({ pageNum, pageSize })
+ * 4) Assemble the only entrance `config`: { columns, data: list, loading, table, selection, actions, pagination }
+ * 5) Used in the template: <ProTable :config="tableConfig" @sort-change @pagination @update:selected> ...slot ...</ProTable>
+ * 6) Optional: define column slots (such as `slot:'name'`), operation columns (`#actions`), selection disable (`selectionSelectable`) and sorting (`sortKey`)
  *
- * 关键字段解释（最常用）：
- * - columns[].prop/label：数据字段名与列头文案（必填）
- * - columns[].dictOptions：字典渲染（根据 value 显示 label）
- * - columns[].time/timeFormat：时间渲染；默认格式 '{y}-{m}-{d} {h}:{i}'
- * - columns[].slot：自定义列渲染（模板里写 `#<slot>`）
- * - columns[].sort / sortable:'custom'：开启自定义排序；配合 sortKey 指定后端排序字段
- * - selectionSelectable：控制哪些行可选；支持三种：函数、字符串字段名、对象 { field, disabledValues }
- * - table.defaultSort：用 'asc' | 'desc'（内部自动映射为 ElementPlus 的 ascending/descending）
- * - pagination：{ total, page, limit }；当 total>0 自动显示分页
+ * Explanation of key fields (most commonly used):
+ * - columns[].prop/label: data field names and column header copy (required)
+ * - columns[].dictOptions: dictionary rendering (display label according to value)
+ * - columns[].time/timeFormat: time rendering; default format '{y}-{m}-{d} {h}:{i}'
+ * - columns[].slot: Custom column rendering (write `#<slot>` in the template)
+ * - columns[].sort / sortable:'custom': enable custom sorting; use sortKey to specify the backend sorting field
+ * - selectionSelectable: controls which rows are selectable; supports three types: function, string field name, object { field, disabledValues }
+ * - table.defaultSort: use 'asc' | 'desc' (automatically mapped internally to ascending/descending of ElementPlus)
+ * - pagination: { total, page, limit }; when total>0, pagination is automatically displayed
  *
- * 常见场景示例（摘抄）：
- * - 字典：{ prop:'status', label:'状态', dictOptions:[{value:'1',label:'启用'},{value:'0',label:'停用'}] }
- * - 时间：{ prop:'createTime', label:'创建时间', time:true, timeFormat:'{y}-{m}-{d} {h}:{i}' }
- * - 图片：{ prop:'icon', label:'图标', image:true, imageWidth:50, imageHeight:50, imageFallback:占位图 }
- * - 图标+文本：{ prop:'name', label:'名称', iconGetter:(row)=>url, iconSize:20 }
- * - 插槽：{ prop:'name', label:'名称', slot:'name' }，模板写 <template #name="{ row }">...</template>
- * - 操作列：在组件内统一开启 `actions:true`，模板写 <template #actions="{ row }"><el-button>...</el-button></template>
- * - 禁用选择：selectionSelectable: 'disabled' 或 { field:'status', disabledValues:['1'] } 或 (row)=>boolean
- * - 自定义排序：{ prop:'createTime', label:'创建时间', sort:true, sortKey:'create_time' }
+ * Examples of common scenarios (excerpts):
+ * - Dictionary: { prop:'status', label:'status', dictOptions:[{value:'1',label:'enable'},{value:'0',label:'disable'}] }
+ * - Time: { prop:'createTime', label:'Creation Time', time:true, timeFormat:'{y}-{m}-{d} {h}:{i}' }
+ * - Image: { prop:'icon', label:'icon', image:true, imageWidth:50, imageHeight:50, imageFallback: placeholder image }
+ * - Icon + text: { prop:'name', label:'name', iconGetter:(row)=>url, iconSize:20 }
+ * - Slot: { prop:'name', label:'name', slot:'name' }, the template is written as <template #name="{ row }">...</template>
+ * - Action column: Turn on `actions:true` uniformly in the component, and write the template as <template #actions="{ row }"><el-button>...</el-button></template>
+ * - Disable selection: selectionSelectable: 'disabled' or { field:'status', disabledValues:['1'] } or (row)=>boolean
+ * - Custom sorting: { prop:'createTime', label:'Creation Time', sort:true, sortKey:'create_time' }
  *
- * 事件（只需接收并回填/透传）：
- * - sort-change(e)：e.order 为 'asc'|'desc'；根据 e.column/e.prop 触发后端排序
- * - selection-change(rows)/update:selected(rows)：选中行集合
- * - pagination({ page, limit })：更新查询参数并刷新列表
+ * Events (just receive and backfill/passthrough):
+ * - sort-change(e): e.order is 'asc'|'desc'; trigger backend sorting based on e.column/e.prop
+ * - selection-change(rows)/update:selected(rows): selected row set
+ * - pagination({ page, limit }): Update query parameters and refresh the list
  * - row-dblclick(row, column, event) / cell-dblclick({ row, column, cell, event })
  *
- * 最佳实践与注意：
- * - 统一只用 `config` 传参，减少多入口维护成本
- * - 列显隐用 `visible:false` 控制；不删除列定义，方便复用
- * - 长文本默认已开启溢出提示（showOverflowTooltip），如需关闭设为 false
- * - 大列表务必设置稳定的 `rowKey`（如 id）以优化渲染与选择
- * - 后端排序时使用 `sortKey`，并在 `sort-change` 里把 `order/prop` 透传给请求
+ * Best practices and notes:
+ * - Unified and only use `config` to pass parameters, reducing multi-entry maintenance costs
+ * - Use `visible:false` to control column display; do not delete column definitions, making it easier to reuse
+ * - The overflow tip (showOverflowTooltip) is turned on by default for long text. If you need to turn it off, set it to false.
+ * - For large lists, be sure to set a stable `rowKey` (such as id) to optimize rendering and selection
+ * - Use `sortKey` when sorting on the backend, and transparently pass `order/prop` to the request in `sort-change`
  */
 const props = defineProps({
   config: { type: Object, default: () => ({}) },
@@ -209,7 +210,7 @@ const emit = defineEmits([
   "cell-dblclick",
 ]);
 
-// 统一入口：仅从 props.config 读取配置
+// Unified entrance: only read configuration from props.config
 const cfgRef = computed(() => props.config || {});
 const conf = computed(() => ({
   columns: cfgRef.value.columns || [],
@@ -230,7 +231,7 @@ const ui = computed(() => ({
   actionsFixed: conf.value.actionsFixed,
 }));
 
-// 选择列：判断某行是否允许选择
+// Select column: Determine whether a row allows selection
 function rowSelectable(row, index) {
   const rule = conf.value.selectionSelectable;
   if (!rule) return true;
@@ -248,14 +249,14 @@ function rowSelectable(row, index) {
   return true;
 }
 
-// 将 'asc' | 'desc' 映射为 ElementPlus 需要的 'ascending' | 'descending'
+// Map 'asc' | 'desc' to 'ascending' | 'descending' required by ElementPlus
 function mapOrderToEl(order) {
   if (order === "asc") return "ascending";
   if (order === "desc") return "descending";
   return order;
 }
 
-// 组装传给 el-table 的绑定参数
+// Assemble the binding parameters passed to el-table
 const tableBinding = computed(() => {
   const extra = conf.value.table || {};
   const ds = extra.defaultSort || {};
@@ -272,12 +273,12 @@ const tableBinding = computed(() => {
   };
 });
 
-// 过滤不可见列
+// Filter invisible columns
 const renderColumns = computed(() => {
   return (conf.value.columns || []).filter((c) => c.visible !== false);
 });
 
-// 文本转 kebab：用于自动生成稳定列键
+// Text to kebab: used to automatically generate stable column keys
 function toKebab(str) {
   if (!str) return str;
   return String(str)
@@ -285,15 +286,15 @@ function toKebab(str) {
     .toLowerCase();
 }
 
-// 列唯一键：不强制要求传入 key，自动生成稳定键
-// 优先使用 columnKey/sortKey，其次用 prop 的 kebab 形式，最后回退到 label
+// Column unique key: It is not mandatory to pass in the key, and a stable key is automatically generated
+// Use columnKey/sortKey first, then use the kebab form of prop, and finally fall back to label
 function getColumnKey(col) {
   return col?.columnKey || col?.sortKey || toKebab(col?.prop) || col?.label;
 }
 
-// 将列配置映射为 el-table-column 的 props
+// Map column configuration to props of el-table-column
 function columnProps(col) {
-  // 开启自定义排序：sort/time 为真或显式 sortable="custom"
+  // Turn on custom sorting: sort/time is true or explicit sortable="custom"
   const isSortable =
     col.sort === true || col.time === true || col.sortable === "custom";
   const columnKey = col.columnKey || col.sortKey || toKebab(col.prop);
@@ -308,19 +309,19 @@ function columnProps(col) {
   };
 }
 
-// 默认文本渲染：空值展示为 "-"
+// Default text rendering: null values are displayed as "-"
 function displayCell(row, prop) {
   const val = prop ? row?.[prop] : undefined;
   return val ?? "-";
 }
 
-// 选择变更：同步 v-model:selected 与事件
+// Select changes: Synchronize v-model:selected with events
 function onSelectionChange(rows) {
   emit("update:selected", rows);
   emit("selection-change", rows);
 }
 
-// 排序事件标准化：order 统一输出为 'asc' | 'desc'
+// Sorting event standardization: order unified output is 'asc' | 'desc'
 function onSortChange(e) {
   const order =
     e?.order === "ascending"
@@ -345,17 +346,17 @@ function onCellDblclick(row, col, index) {
   }
 }
 
-// 分页配置：仅从 config.pagination 读取
+// Pagination configuration: only read from config.pagination
 const paginationConfig = computed(() => {
   return conf.value.pagination || null;
 });
-// 当 total > 0 时显示分页组件
+// Show pagination component when total > 0
 const showPagination = computed(() => {
   const cfg = paginationConfig.value;
   const total = cfg && typeof cfg.total !== "undefined" ? Number(cfg.total) : 0;
   return !!cfg && total > 0;
 });
-// 本地分页状态
+// local paging status
 const pageLocal = ref(1);
 const limitLocal = ref(10);
 watch(
@@ -370,11 +371,11 @@ const paginationTotal = computed(() => {
   const cfg = paginationConfig.value;
   return cfg && typeof cfg.total !== "undefined" ? Number(cfg.total) : 0;
 });
-// 分页事件透传
+// Transparent transmission of pagination events
 function onPagination(e) {
   emit("pagination", e);
 }
-// 列值获取：优先使用自定义 valueGetter
+// Column value acquisition: preferentially use custom valueGetter
 function getDictValue(row, col) {
   if (typeof col.valueGetter === "function") {
     try {

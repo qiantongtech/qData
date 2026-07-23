@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dm.api.dm.dto;
@@ -35,7 +21,7 @@ package tech.qiantong.qdata.module.dm.api.dm.dto;
 import lombok.*;
 
 /**
- * 数仓分层-规范管理 DTO 对象 DM_DATA_LAYER_SPECIFICATION
+ * Data Warehouse Layer Specification DTO - DM_DATA_LAYER_SPECIFICATION
  *
  * @author FXB
  * @date 2026-03-24
@@ -48,28 +34,28 @@ public class DmDataLayerSpecificationReqDTO {
     /** ID */
     private Long id;
 
-    /** 数仓分层ID */
+    /** Data Warehouse Layer ID */
     private Long dataLayerId;
 
-    /** 表前缀 */
+    /** Table Prefix */
     private String prefixName;
 
-    /** 业务大类英文缩写 */
+    /** Business English Abbreviation */
     private String businessEngName;
 
-    /** 负责人ID */
+    /** Owner User ID */
     private Long ownerUserId;
 
-    /** 状态 */
+    /** Status */
     private String status;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
-    /** 是否有效 */
+    /** Valid Flag */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete Flag */
     private Boolean delFlag;
 
 

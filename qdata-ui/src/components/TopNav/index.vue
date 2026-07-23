@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -37,13 +38,13 @@
       </el-menu-item>
     </template>
 
-    <!-- 顶部菜单超出数量折叠 -->
+    <!-- Top menu collapsed beyond quantity -->
     <el-sub-menu
       :style="{ '--theme': theme }"
       index="more"
       v-if="topMenus.length > visibleNumber"
     >
-      <template #title>{{td("router.dynamic.more", "更多菜单")}}</template>
+      <template #title>{{td("router.dynamic.more", "More Menus")}}</template>
       <template v-for="(item, index) in topMenus">
         <el-menu-item
           :index="item.path"
@@ -79,11 +80,11 @@ window.demo = function(name){
 }
 const NAVBAR_LOGO_WIDTH = 200;
 const { proxy } = getCurrentInstance();
-// 顶部栏初始数
+// Top bar initial number
 const visibleNumber = ref(null);
-// 当前激活菜单的 index
+// The index of the currently active menu
 const currentIndex = ref("/system");
-// 隐藏侧边栏路由
+// Hide sidebar routing
 const hideList = ["/index", "/user/profile"];
 
 const appStore = useAppStore();
@@ -92,19 +93,19 @@ const permissionStore = usePermissionStore();
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(["getRouter"]);
-// 主题颜色
+// theme color
 const theme = computed(() => settingsStore.theme);
-// 所有的路由信息
+// All routing information
 const routers = computed(() => permissionStore.topbarRouters);
 let resizeObserver = null;
 let mutationObserver = null;
 
-// 顶部显示菜单
+// Show menu at top
 const topMenus = computed(() => {
   let topMenus = [];
   routers.value.map((menu) => {
     if (menu.hidden !== true) {
-      // 兼容顶部栏一级菜单内部跳转
+      // Compatible with top bar first-level menu internal jump
       if (menu.path === "/") {
         topMenus.push(menu.children[0]);
       } else {
@@ -115,7 +116,7 @@ const topMenus = computed(() => {
   return topMenus;
 });
 
-// 设置子路由
+// Set up subroutes
 const childrenMenus = computed(() => {
   let childrenMenus = [];
   routers.value.map((router) => {
@@ -137,14 +138,14 @@ const childrenMenus = computed(() => {
   return constantRoutes.concat(childrenMenus);
 });
 
-// 默认激活的菜单
+// Menu activated by default
 const activeMenu = computed(() => {
   const path = route.path;
   let activePath = path;
-  console.log(route, "菜单");
+  console.log(route, "Menu");
   emit("getRouter", path);
 
-  // 如果是根路径，选择第一个可见的菜单项
+  // If it is the root path, selects the first visible menu item
   if (path === "/index") {
     const firstMenu = topMenus.value[0];
     if (firstMenu) {
@@ -188,7 +189,7 @@ const activeMenu = computed(() => {
 //     visibleNumber.value = parseInt(width / 85);
 // }
 
-// 计算可用宽度下的顶部导航栏可显示菜单数量
+// Calculate the number of menus that can be displayed in the top navigation bar based on the available width
 function calculateVisibleMenus() {
   const el = proxy?.$el;
   if (!el) return;
@@ -204,10 +205,10 @@ function calculateVisibleMenus() {
     ? hamburger.getBoundingClientRect().width
     : 50;
 
-  // 动态计算左侧宽度：Navbar 距离窗口左侧的距离（通常是侧边栏宽度）+ Hamburger 宽度
+  // Dynamically calculate the left width: Navbar distance from the left side of the window (usually the sidebar width) + Hamburger width
   let leftWidth = navbarRect.left + hamburgerWidth;
 
-  // 当处于需要显示 Logo 的路由时，增加 Logo 宽度
+  // When on a route where the logo needs to be displayed, increase the logo width
   const currentPath = route.path;
   const navbarLogoRoutes = defaultSettings.navbarLogoRoutes || [];
   const isLogoRoute = navbarLogoRoutes.some((logoPath) =>
@@ -217,13 +218,13 @@ function calculateVisibleMenus() {
     leftWidth += NAVBAR_LOGO_WIDTH;
   }
 
-  // 动态计算右侧宽度：直接取 RightMenu 的宽度，如果没取到则使用默认值 606
+  // Dynamically calculate the width of the right side: directly get the width of RightMenu, if not, use the default value of 606
   const rightWidth = rightMenu
     ? rightMenu.getBoundingClientRect().width + 110
     : 606;
 
   const bodyWidth = document.body.getBoundingClientRect().width;
-  let menuWidth =  124; // 每个菜单项宽度
+  let menuWidth =  124; // Each menu item width
   if(locale.value === "en-US"){
     menuWidth = 170;
   }else if(locale.value === "ja-JP"){
@@ -243,7 +244,7 @@ function calculateVisibleMenus() {
   if (totalCount <= rawCount) {
     visibleNumber.value = totalCount;
   } else {
-    visibleNumber.value = Math.max(0, rawCount - 1); // 减1留给“更多菜单”
+    visibleNumber.value = Math.max(0, rawCount - 1); // Minus 1 for "More Menus"
   }
 }
 
@@ -271,42 +272,42 @@ function closePageExclusion(key) {
   }
 }
 
-// 处理顶部导航菜单的选择事件
+// Handle the selection event of the top navigation menu
 async function handleSelect(key, keyPath, type) {
   console.log(key, "key");
   // console.log(currentIndex.value,"value");
 
-  //子组件调用父组件
+  //Child component calls parent component
   emit("getRouter", key);
 
-  // 设置当前选中的菜单索引
+  // Set the currently selected menu index
   currentIndex.value = key;
-  // 查找选中的路由配置
+  // Find selected routing configuration
   const route = routers.value.find((item) => item.path === key);
 
   if (isHttp(key)) {
-    // 如果是http(s)链接,在新窗口打开
+    // If it is an http(s) link, it will open in a new window
     window.open(key, "_blank");
   } else if (!route || !route.children) {
-    // 如果没有子路由,在当前窗口打开
+    // If there is no sub-route, open it in the current window
     const routeMenu = childrenMenus.value.find((item) => item.path === key);
     if (routeMenu && routeMenu.query) {
-      // 如果有query参数,解析后带上
+      // If there is a query parameter, bring it after parsing
       let query = JSON.parse(routeMenu.query);
       router.push({ path: key, query: query });
     } else {
-      // 没有query参数直接跳转
+      // Jump directly without query parameters
       router.push({ path: key });
     }
-    // 隐藏左侧菜单
+    // Hide left menu
     appStore.toggleSideBarHide(true);
   } else {
-    // 有子路由,显示左侧联动菜单
+    // If there are sub-routes, the linkage menu on the left will be displayed.
     let routes = activeRoutes(key);
     if (type) {
       closePageExclusion(key);
       if (routes.length > 0) {
-        // 获取所有标签页
+        // Get all tabs
 
         if (
           routes[0].children != null &&
@@ -327,7 +328,7 @@ async function handleSelect(key, keyPath, type) {
         }
       }
     }
-    // 显示左侧菜单
+    // Show left menu
     appStore.toggleSideBarHide(false);
   }
 }
@@ -365,14 +366,14 @@ onMounted(() => {
           calculateVisibleMenus();
         });
 
-        // 监听 navbar 本身
+        // Listen to navbar itself
         resizeObserver.observe(navbar);
 
         if (rightMenu) {
-          // 监听整个右侧菜单容器
+          // Listen to the entire right menu container
           resizeObserver.observe(rightMenu);
 
-          // 监听右侧菜单的所有子元素，以防它们内部发生宽度变化（如搜索框展开）
+          // Listen to all child elements of the right menu in case width changes occur within them (such as the search box expanding)
           const observeChildren = (parent) => {
             Array.from(parent.children).forEach((child) => {
               resizeObserver.observe(child);
@@ -380,7 +381,7 @@ onMounted(() => {
           };
           observeChildren(rightMenu);
 
-          // 使用 MutationObserver 监听右侧菜单子节点的动态增减（如 v-if 切换）
+          // Use MutationObserver to monitor the dynamic increase and decrease of sub-nodes in the right menu (such as v-if switching)
           mutationObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
               if (mutation.type === "childList") {
@@ -412,7 +413,7 @@ onBeforeUnmount(() => {
     mutationObserver = null;
   }
 });
-// 如果需要暴露给父组件使用，可以使用 defineExpose
+// If you need to expose it to the parent component, you can use defineExpose
 defineExpose({
   handleSelect,
 });
@@ -456,7 +457,7 @@ defineExpose({
   color: #fff !important;
 }
 
-/* 背景色隐藏 */
+/* Background color hidden */
 .topmenu-container.el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
 .topmenu-container.el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
 .topmenu-container.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
@@ -464,7 +465,7 @@ defineExpose({
   color: #fff !important;
 }
 
-/* 图标右间距 */
+/* Icon right spacing */
 .topmenu-container .svg-icon {
   margin-right: 4px;
 }

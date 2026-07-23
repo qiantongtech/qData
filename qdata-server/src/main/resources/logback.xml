@@ -1,123 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <configuration>
-    <!-- 日志存放路径 -->
+    <!-- Log storage path -->
     <property name="log.path" value="logs" />
-    <!-- 日志输出格式 -->
+    <!-- Log output format -->
     <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
 
-    <!-- 控制台输出 -->
+    <!-- Console output -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
     </appender>
 
-    <!-- 系统日志输出 -->
+    <!-- System log output -->
     <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/info.log</file>
-        <!-- 循环政策：基于时间创建日志文件 -->
+        <!-- Rotation policy: create log files based on time -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志文件名格式 -->
+            <!-- Log file name format -->
             <fileNamePattern>${log.path}/info.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 60天 -->
+            <!-- Log maximum history 60 days -->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 过滤的级别 -->
+            <!-- Filter level -->
             <level>INFO</level>
-            <!-- 匹配时的操作：接收（记录） -->
+            <!-- Action on match: receive (record) -->
             <onMatch>ACCEPT</onMatch>
-            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <!-- Action in case of mismatch: reject (do not log) -->
             <onMismatch>ACCEPT</onMismatch>
         </filter>
     </appender>
 
     <appender name="file_warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/warn.log</file>
-        <!-- 循环政策：基于时间创建日志文件 -->
+        <!-- Rotation policy: create log files based on time -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志文件名格式 -->
+            <!-- Log file name format -->
             <fileNamePattern>${log.path}/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 60天 -->
+            <!-- Log maximum history 60 days -->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 过滤的级别 -->
+            <!-- Filter level -->
             <level>WARN</level>
-            <!-- 匹配时的操作：接收（记录） -->
+            <!-- Action on match: receive (record) -->
             <onMatch>ACCEPT</onMatch>
-            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <!-- Action in case of mismatch: reject (do not log) -->
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
 
     <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/error.log</file>
-        <!-- 循环政策：基于时间创建日志文件 -->
+        <!-- Rotation policy: create log files based on time -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志文件名格式 -->
+            <!-- Log file name format -->
             <fileNamePattern>${log.path}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 60天 -->
+            <!-- Log maximum history 60 days -->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 过滤的级别 -->
+            <!-- Filter level -->
             <level>ERROR</level>
-            <!-- 匹配时的操作：接收（记录） -->
+            <!-- Action on match: receive (record) -->
             <onMatch>ACCEPT</onMatch>
-            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <!-- Action in case of mismatch: reject (do not log) -->
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
 
-    <!-- 用户访问日志输出  -->
+    <!-- User access log output  -->
     <appender name="user" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/user.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 按天回滚 daily -->
+            <!-- Rollback daily -->
             <fileNamePattern>${log.path}/user.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 60天 -->
+            <!-- Log maximum history 60 days -->
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -125,23 +111,23 @@
         </encoder>
     </appender>
 
-    <!-- 系统模块日志级别控制  -->
+    <!-- System module log level control  -->
     <logger name="tech.qiantong.qMes" level="info" />
-    <!-- Spring日志级别控制  -->
+    <!-- Spring log level control  -->
     <logger name="org.springframework" level="warn" />
 
     <root level="info">
         <appender-ref ref="console" />
     </root>
 
-    <!--系统操作日志-->
+    <!--System operation log-->
     <root level="info">
         <appender-ref ref="file_info" />
         <appender-ref ref="file_warn" />
         <appender-ref ref="file_error" />
     </root>
 
-    <!--系统用户操作日志-->
+    <!--System user operation log-->
     <logger name="user" level="info">
         <appender-ref ref="user"/>
     </logger>

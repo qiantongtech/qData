@@ -1,19 +1,21 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
+
 <template>
   <div class="app-container" v-loading="store.loading">
     <el-container>
@@ -233,7 +235,7 @@ const dialog = reactive({
   content: "",
 });
 
-// 获取来源系统路径
+// Get the source system path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -250,9 +252,9 @@ function handleTreeDataLoaded({ treeData, flatData }) {
   store.treeDomains = treeData;
 }
 
-// 节点单击事件
+// Node click event
 function handleNodeClick(data) {
-  // 清除之前的筛选
+  // Clear previous filters
   tableStroe.params.sourceSystemId = undefined;
   tableStroe.params.datasourceId = undefined;
   tableStroe.params.taskId = undefined;
@@ -267,12 +269,12 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-// 搜索按钮操作
+// Search button action
 function handleQueryClick() {
   tableRef.value?.getList();
 }
 
-// 重置按钮操作
+// reset button action
 function handleResetQueryClick() {
   if (sourceSystemTreeRef.value?.resetTree) {
     sourceSystemTreeRef.value.resetTree();
@@ -290,18 +292,18 @@ function handleViewClick(row) {
   });
 }
 
-// 下载日志
+// Download log
 function handleDownloadClick(row) {
   getTaskInstanceLog(row.id).then((res) => {
     const content = res.data?.logContent || td("common.noLog");
     const taskName = row.name || 'task';
     const instanceId = String(row.id).replace(/[^\w\-]/g, '_');
-    const fileName = td('mc.instance.structured.logFileName', "{name}_{id}_日志.log", {name: taskName, id: instanceId});
+    const fileName = td('mc.instance.structured.logFileName', "{name}_{id}_log.log", {name: taskName, id: instanceId});
     proxy.downloadContent(content, fileName);
   });
 }
 
-// 删除选中行
+// Delete selected row
 function handleDeleteColumnClick() {
   if (!store.rows.length) return;
   ElMessageBox.confirm(

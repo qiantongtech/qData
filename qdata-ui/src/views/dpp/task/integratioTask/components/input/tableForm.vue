@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -113,7 +114,7 @@
                     </el-col>
                     <el-col :span="12" v-if="form.taskParams.clmt == '0'">
                         <el-form-item :label="td('dpp.integration.selectTable', '选择表')" prop="taskParams.asset_id"
-                            :rules="[{ required: true, message: td('dpp.integration.selectTableRequired', '请选择表'), trigger: 'change' }]" :label-position="labelPosition">
+                            required :rules="[{ validator: validateSelectedTable, trigger: 'change' }]" :label-position="labelPosition">
                             <el-select v-if="!info" v-model="form.taskParams.asset_id" filterable @change="handleChange"
                                 :loading="loadingTables">
                                 <el-option v-for="item in TablesByDataSource" :key="item.tableName"
@@ -199,15 +200,15 @@
             <template v-if="form.taskParams.readModeType == 3">
                 <el-row :gutter="20">
 <!--                    <el-col :span="12">-->
-<!--                        <el-form-item label="逻辑连接符" prop="taskParams.dateIncrementConfig.logic" :rules="[-- :label-position="labelPosition">
+<!--                        <el-form-item label="Logical Connector" prop="taskParams.dateIncrementConfig.logic" :rules="[-- :label-position="labelPosition">
 <!--                            {-->
 <!--                                required: true,-->
-<!--                                message: '请选择逻辑连接符',-->
+<!--                                message: 'Please select a logical connector',-->
 <!--                                trigger: 'change'-->
 <!--                            }-->
 <!--                        ]">-->
 <!--                            <el-select v-if="!info" v-model="form.taskParams.dateIncrementConfig.logic" filterable-->
-<!--                                placeholder="下拉选择 and/or，默认 and" @change="handleChange">-->
+<!--                                placeholder="drop-down selection and/or, default and" @change="handleChange">-->
 <!--                                <el-option label="and" value="and" />-->
 <!--                                <el-option label="or" value="or" />-->
 <!--                            </el-select>-->
@@ -281,9 +282,11 @@
                 :dateIncrementConfig_dateFormat="form.taskParams.dateIncrementConfig.dateFormat" />
             <el-row :gutter="20" v-if="form.taskParams.clmt != '2'">
                 <el-col :span="24">
-                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="where" :label-position="labelPosition">
+                    <el-form-item :label="td('dpp.integration.whereCondition', 'where条件')" prop="taskParams.where"
+                        :rules="[{ validator: validateWhereRule, trigger: 'change' }]" :label-position="labelPosition">
                         <el-input v-if="!info" v-model="form.taskParams.where" type="textarea"
-                            :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')" />
+                            :placeholder="td('dpp.integration.whereConditionPlaceholder', '例如 id > 10 and id < 1000，请不要以分号;结尾')"
+                            @input="handleWhereInput" />
                         <div class="form-readonly" v-else>{{ form.taskParams.where || '-' }}</div>
                     </el-form-item>
                 </el-col>
@@ -355,6 +358,7 @@ import {
     sqlParse
 } from '@/api/da/dataSource/dataSource.js';
 import { listDppAsset } from '@/api/da/asset/asset.js';
+import { isDateColumnType, isNumericColumnType, validateWhereCondition } from '../../utils/foolproof.js';
 const { proxy } = getCurrentInstance();
 import useUserStore from '@/store/system/user.js';
 
@@ -378,16 +382,17 @@ const visibleDialog = computed({
     }
 });
 
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref([]);
 let dpModelRefs = ref();
 let form = ref({});
-const tableFields = ref([]); // 来源表格
-const createTypeList = ref([]); // 数据源列表
-// 修改 时间范围增
+const tableFields = ref([]); // Source form
+const createTypeList = ref([]); // Data source list
+const skipSelectTableValidate = ref(false);
+// Modify the time range to increase
 const open = ref(false);
 let row = ref({});
 const openDialog = (obj) => {
@@ -401,8 +406,8 @@ const dateFormatOptions = [
 
 const handlereadModeTypeChange = (val) => {
     form.value.taskParams.idIncrementConfig = {
-        incrementColumn: "", // 增量字段
-        incrementStart: "", // 开始值
+        incrementColumn: "", // Increment field
+        incrementStart: "", // start value
     };
     form.value.taskParams.dateIncrementConfig = {
         logic: "and",
@@ -430,7 +435,31 @@ const checkInteger = (rule, value, callback) => {
 
     callback()
 }
-// 获取数据源列表
+const validateSelectedTable = (rule, value, callback) => {
+    if (skipSelectTableValidate.value) {
+        callback();
+        return;
+    }
+    if (value === '' || value === null || value === undefined) {
+        callback(new Error(td('dpp.integration.selectTableRequired', '请选择表')));
+        return;
+    }
+    callback();
+};
+const validateWhereRule = (rule, value, callback) => {
+    const result = validateWhereCondition(value);
+    if (!result.valid) {
+        callback(new Error(result.message));
+        return;
+    }
+    callback();
+};
+const handleWhereInput = () => {
+    nextTick(() => {
+        dpModelRefs.value?.validateField('taskParams.where').catch(() => {});
+    });
+};
+// Get a list of data sources
 const getDatasourceList = async () => {
     try {
         loading.value = true;
@@ -438,6 +467,7 @@ const getDatasourceList = async () => {
             pageSize: 9999,
             projectCode: userStore.projectCode,
             projectId: userStore.projectId,
+            validFlag: true,
             datasourceType: "DM8,Oracle11,MySql,Oracle,Kingbase8,Doris,SQL_Server,SQL_Server2008,PostgreSQL",
         });
         createTypeList.value = response.data.rows;
@@ -446,7 +476,7 @@ const getDatasourceList = async () => {
     }
 };
 let loadingTables = ref(false);
-// 获取表列表
+// Get table list
 const getTablesByDatasourceId = async (id) => {
     TablesByDataSource.value = await fetchData(
         getTablesByDataSourceId,
@@ -454,7 +484,7 @@ const getTablesByDatasourceId = async (id) => {
         loadingTables
     );
 };
-// 获取列数据
+// Get column data
 const getColumnByAssetIdList = async (id, data) => {
     ColumnByAssettab.value = await fetchData(
         getColumnByAssetId,
@@ -469,7 +499,7 @@ const getColumnByAssetIdList = async (id, data) => {
     form.value.taskParams.idIncrementConfig.incrementColumn = null;
     form.value.taskParams.inputFields = ColumnByAssettab.value;
 };
-// 通用的获取数据的函数
+// General functions for obtaining data
 const fetchData = async (requestFn, params, loadingState) => {
     try {
         loadingState.value = true;
@@ -480,28 +510,54 @@ const fetchData = async (requestFn, params, loadingState) => {
     }
 };
 
-// 处理数据源变化
-const resetAndFetchTables = async (selectedDatasource) => {
-    TablesByDataSource.value = [];
-    ColumnByAssettab.value = [];
-    let { datasourceType, datasourceConfig, ip, port, id } = selectedDatasource;
-    let code = JSON.parse(datasourceConfig);
-    form.value.taskParams.readerDatasource = {
-        datasourceType,
-        datasourceConfig,
-        ip,
-        port,
-        dbname: code.dbname,
-        datasource_id: id,
-        datasourceId: id
-    };
-    form.value.taskParams.dateIncrementConfig.column = [];
-    form.value.taskParams.idIncrementConfig.incrementColumn = null;
-
-    await getTablesByDatasourceId(id);
+const clearSelectedTableConfig = () => {
+    const taskParams = form.value.taskParams;
+    taskParams.asset_id = '';
+    taskParams.table_name = '';
+    taskParams.tableFields = [];
+    taskParams.inputFields = [];
+    taskParams.columns = [];
+    taskParams.columnsList = [];
+    if (taskParams.dateIncrementConfig) {
+        taskParams.dateIncrementConfig.column = [];
+    }
+    if (taskParams.idIncrementConfig) {
+        taskParams.idIncrementConfig.incrementColumn = null;
+    }
+    nextTick(() => {
+        dpModelRefs.value?.clearValidate('taskParams.asset_id');
+    });
 };
 
-// 处理数据源变化
+// Handle data source changes
+const resetAndFetchTables = async (selectedDatasource) => {
+    skipSelectTableValidate.value = true;
+    try {
+        TablesByDataSource.value = [];
+        ColumnByAssettab.value = [];
+        tableFields.value = [];
+        clearSelectedTableConfig();
+        let { datasourceType, datasourceConfig, ip, port, id } = selectedDatasource;
+        let code = JSON.parse(datasourceConfig);
+        form.value.taskParams.readerDatasource = {
+            datasourceType,
+            datasourceConfig,
+            ip,
+            port,
+            dbname: code.dbname,
+            datasource_id: id,
+            datasourceId: id
+        };
+
+        await getTablesByDatasourceId(id);
+    } finally {
+        await nextTick();
+        dpModelRefs.value?.clearValidate('taskParams.asset_id');
+        skipSelectTableValidate.value = false;
+    }
+};
+
+// Handle data source changes
 const handleDatasourceChange = (value) => {
     const selectedDatasource = createTypeList.value.find((item) => item.id == value);
     if (selectedDatasource) {
@@ -509,7 +565,7 @@ const handleDatasourceChange = (value) => {
     }
 };
 
-// 处理表变化
+// Handle table changes
 const setTableName = (selectedDatasource) => {
     form.value.taskParams.table_name = selectedDatasource.tableName;
 };
@@ -553,7 +609,7 @@ const getdppNoPageListList = async (id) => {
     });
 };
 
-// 连接方式切换
+// Connection mode switch
 const handleReleaseStateChange = (value) => {
     if (value == 1) {
         getdppNoPageListList();
@@ -577,7 +633,7 @@ const handleDelete = (row) => {
         type: 'warning'
     })
         .then(() => {
-            // 删除操作
+            // Delete operation
             const index = form.value.taskParams.dateIncrementConfig.column.indexOf(row);
             if (index !== -1) {
                 form.value.taskParams.dateIncrementConfig.column.splice(index, 1);
@@ -589,17 +645,17 @@ const handleDelete = (row) => {
         });
 };
 const handleAssetTableChange = (value) => {
-    // 找到对应的选中项
+    // Find the corresponding selected item
     const selectedItem = dppNoPageListList.value.find((item) => item.id == value);
 
     form.value.taskParams.asset_id = selectedItem.tableName;
     form.value.taskParams.table_name = selectedItem.tableName;
 
-    // 调用 API 获取数据源信息
+    // Call API to obtain data source information
     getDaDatasource(selectedItem.datasourceId).then((response) => {
         let { datasourceType, datasourceConfig, ip, port, id } = response.data;
         let code = JSON.parse(datasourceConfig);
-        // 更新 readerDatasource
+        // Update readerDatasource
         form.value.taskParams.readerDatasource = {
             datasourceType,
             datasourceConfig,
@@ -610,7 +666,7 @@ const handleAssetTableChange = (value) => {
             datasourceId: id
         };
         // setTableName(response.data);
-        // 获取列数据
+        // Get column data
         ColumnByAssettab.value = [];
         getColumnByAssetIdList(id, value);
     });
@@ -618,15 +674,17 @@ const handleAssetTableChange = (value) => {
 
 const off = () => {
     proxy.resetForm('dpModelRefs');
-    // 清空表格字段数据
+    // Clear table field data
     ColumnByAssettab.value = [];
     TablesByDataSource.value = [];
     tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
     try {
-        // 异步验证表单
+        skipSelectTableValidate.value = false;
+        await nextTick();
+        // Asynchronous validation form
         const valid = await dpModelRefs.value.validate();
         if (!valid) return;
         if (
@@ -635,7 +693,29 @@ const saveData = async () => {
         ) {
             return proxy.$message.warning(td('dpp.integration.validateFailedSelectFields', '校验未通过，请选择属性字段'));
         }
-        // 如果没有 code，就调用接口获取唯一的 code
+        const taskParams = form.value?.taskParams;
+        const whereResult = validateWhereCondition(taskParams.where);
+        if (!whereResult.valid) {
+            return proxy.$message.warning(whereResult.message);
+        }
+        if (taskParams.readModeType == 2) {
+            const incrementField = ColumnByAssettab.value.find(
+                (field) => field.columnName === taskParams.idIncrementConfig?.incrementColumn
+            );
+            if (!incrementField || !isNumericColumnType(incrementField.columnType)) {
+                return proxy.$message.warning('请选择增量字段，且字段类型需与读取模式匹配。');
+            }
+        }
+        if (taskParams.readModeType == 3) {
+            const dateColumns = taskParams.dateIncrementConfig?.column || [];
+            if (dateColumns.length === 0 || dateColumns.some((item) => {
+                const field = ColumnByAssettab.value.find((column) => column.columnName === item.incrementColumn);
+                return !field || !isDateColumnType(field.columnType);
+            })) {
+                return proxy.$message.warning('请选择增量字段，且字段类型需与读取模式匹配。');
+            }
+        }
+        // If there is no code, call the interface to get the unique code
         if (!form.value.code) {
             loading.value = true;
             const response = await getNodeUniqueKey({
@@ -645,7 +725,6 @@ const saveData = async () => {
             loading.value = false;
             form.value.code = response.data;
         }
-        const taskParams = form.value?.taskParams;
         taskParams.tableFields = ColumnByAssettab.value;
         taskParams.columnsList = ColumnByAssettab.value.map(({ columnName, columnType }) => ({
             colName: columnName,
@@ -658,25 +737,25 @@ const saveData = async () => {
         emit("confirm", form.value);
 
     } catch (error) {
-        console.error('保存数据失败:', error);
+        console.error("Failed to save data:", error);
         loading.value = false;
     }
 };
 const closeDialog = () => {
     off();
-    // 关闭对话框
+    // Close dialog
     emit('update', false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
     if (data === undefined || data === null) {
-        return {}; // 或者返回一个默认值
+        return {}; // Or return a default value
     }
     try {
         return JSON.parse(JSON.stringify(data));
     } catch (e) {
-        return {}; // 或者返回一个默认值
+        return {}; // Or return a default value
     }
 }
 function sqlParseFunction() {
@@ -694,10 +773,10 @@ function sqlParseFunction() {
 function changeTextarea(val) {
     form.value.taskParams.querySql = val;
 }
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
     if (props.visible) {
-        // 数据源
+        // data source
         if (props.currentNode.data.taskParams.clmt == 1) {
             getdppNoPageListList();
         } else {

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -23,7 +24,7 @@
                 :model="queryParams"
                 ref="queryRef"
                 :inline="true"
-                
+
             >
                 <el-form-item :label="td('sys.system.message.msgType')" prop="category">
                     <el-select
@@ -267,9 +268,9 @@ const handleView = (e) => {
     updateMessage(e);
     msgList.value = msgList.value.map(item => {
         if (e.id == item.id) {
-            return { ...item, hasRead: '1' }; // 创建一个新对象，修改 hasRead
+            return { ...item, hasRead: '1' }; // Create a new object and modify hasRead
         }
-        return item; // 保持其他项不变
+        return item; // Keep everything else unchanged
     });
     openView.value = true;
     viewData.value = e;
@@ -295,20 +296,20 @@ const getList = () => {
 };
 getList();
 
-/** 全部已读 */
+/** All read */
 function readAllMsg() {
     ElMessageBox.confirm(td('sys.system.message.confirmSetAllRead'))
         .then(() => {
             return readAll();
         })
         .then((res) => {
-            console.log('------设置为已读----',res)
+            console.log("------Mark as read----",res)
             getList();
             ElMessage.success(td('common.message.msgOpSuccess'));
         })
         .catch(() => {});
 }
-/** 删除 */
+/** Delete */
 function deleteMsg(id) {
     ElMessageBox.confirm(td('sys.system.message.confirmDelete'))
         .then(() => {
@@ -322,7 +323,7 @@ function deleteMsg(id) {
 }
 
 // /**
-//  * 修改状态为已读
+//  * Change status to read
 //  * @param id
 //  */
 // function updateMsg(row) {

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.Tag;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标签管理Service接口
+ * Tag Management Service Interface
  *
  * @author qdata
  * @date 2025-07-11
@@ -52,65 +38,65 @@ import java.util.Map;
 public interface IAttTagService extends IService<AttTagDO> {
 
     /**
-     * 获得标签管理分页列表
+     * Get tag management paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 标签管理分页列表
+     * @param pageReqVO page request
+     * @return tag management paginated list
      */
     PageResult<AttTagDO> getAttTagPage(AttTagPageReqVO pageReqVO);
 
     /**
-     * 创建标签管理
+     * Create Tag Management
      *
-     * @param createReqVO 标签管理信息
-     * @return 标签管理编号
+     * @param createReqVO tag management info
+     * @return tag management ID
      */
     Long createAttTag(AttTagSaveReqVO createReqVO);
 
     /**
-     * 更新标签管理
+     * Update Tag Management
      *
-     * @param updateReqVO 标签管理信息
+     * @param updateReqVO tag management info
      */
     int updateAttTag(AttTagSaveReqVO updateReqVO);
 
     /**
-     * 删除标签管理
+     * Delete Tag Management
      *
-     * @param idList 标签管理编号
+     * @param idList tag management ID list
      */
     int removeAttTag(Collection<Long> idList);
 
     /**
-     * 获得标签管理详情
+     * Get tag management details
      *
-     * @param id 标签管理编号
-     * @return 标签管理
+     * @param id tag management ID
+     * @return tag management
      */
     AttTagRespVO getAttTagById(Long id);
 
     /**
-     * 获得全部标签管理列表
+     * Get all tag management list
      *
-     * @return 标签管理列表
+     * @return tag management list
      */
     List<AttTagDO> getAttTagList();
 
     /**
-     * 获得全部标签管理 Map
+     * Get all tag management Map
      *
-     * @return 标签管理 Map
+     * @return tag management Map
      */
     Map<Long, AttTagDO> getAttTagMap();
 
 
     /**
-     * 导入标签管理数据
+     * Import tag management data
      *
-     * @param importExcelList 标签管理数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList tag management data list
+     * @param isUpdateSupport whether to support update, if already exists, then update the data
+     * @param operName operator name
+     * @return result
      */
     String importAttTag(List<AttTagRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -118,11 +104,11 @@ public interface IAttTagService extends IService<AttTagDO> {
 
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode old category code
+     * @param newCatCode new category code
+     * @return affected row count
      */
     int updateCatCode(String oldCatCode, String newCatCode);
 }

@@ -137,15 +137,15 @@ const tabData = [
   },
   // {
   //   key: "DataGovern",
-  //   label: "数据治理",
+  //   label: "data governance",
   // },
   // {
   //   key: "LineageAnalysis",
-  //   label: "血缘分析",
+  //   label: "ancestry analysis",
   // },
   // {
   //   key: "ImpactAnalysis",
-  //   label: "影响分析",
+  //   label: "Impact Analysis",
   // },
   {
     key: "VersionManagement",
@@ -183,7 +183,7 @@ const store = reactive({
 
 const form = computed(() => store.form);
 
-// 获取业务域路径
+// Get business domain path
 const getDomainPath = computed(() => {
   return function (id) {
     let domainName = getParentLabelPath(store.treeDomains, id, {
@@ -196,7 +196,7 @@ const getDomainPath = computed(() => {
   };
 });
 
-// 获取业务域列表
+// Get business domain list
 function getDomains() {
   return listDomain().then((res) => {
     store.domains = [...res.data];
@@ -212,7 +212,7 @@ function getDomains() {
   });
 }
 
-// 获取详情
+// Get details
 async function getDetail() {
   store.loading = true;
   // await getDomains();
@@ -227,7 +227,7 @@ async function getDetail() {
   });
 }
 
-// 切换tab
+// switch tab
 function handleTabChange(tab) {
   router.push({
     query: {

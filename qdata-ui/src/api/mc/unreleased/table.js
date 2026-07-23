@@ -1,6 +1,6 @@
 import request from '@/utils/request.js';
 
-// 查询表元数据列表
+// Query table metadata list
 export function listTable(query) {
     return request({
         url: '/mc/table/list',
@@ -9,7 +9,7 @@ export function listTable(query) {
     });
 }
 
-// 查询表元数据详细
+// Query table metadata details
 export function getTable(id) {
     return request({
         url: '/mc/table/' + id,
@@ -17,7 +17,7 @@ export function getTable(id) {
     });
 }
 
-// 新增表元数据
+// Add table metadata
 export function addTable(data) {
     return request({
         url: '/mc/table',
@@ -26,7 +26,7 @@ export function addTable(data) {
     });
 }
 
-// 修改表元数据
+// Modify table metadata
 export function updateTable(data) {
     return request({
         url: '/mc/table',
@@ -35,7 +35,7 @@ export function updateTable(data) {
     });
 }
 
-// 删除表元数据
+// Delete table metadata
 export function delTable(id) {
     return request({
         url: '/mc/table/' + id,
@@ -43,7 +43,7 @@ export function delTable(id) {
     });
 }
 
-// 修改表元数据状态
+// Modify table metadata status
 export function updateTableStatus(data) {
     return request({
         url: '/mc/table/toggle',
@@ -52,7 +52,7 @@ export function updateTableStatus(data) {
     });
 }
 
-// 暂存表元数据
+// Staging table metadata
 export function draftTable(data) {
     return request({
         url: '/mc/table/draft',
@@ -61,7 +61,7 @@ export function draftTable(data) {
     });
 }
 
-// 获取表元数据可删除的列
+// Get the deleteable columns of table metadata
 export function batchDeleteCheck(id) {
     return request({
         url: '/mc/table/batchDeleteCheck/' + id,

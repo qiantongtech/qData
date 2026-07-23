@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -49,7 +35,7 @@ import tech.qiantong.qdata.module.system.service.ISysDeptService;
 import java.util.List;
 
 /**
- * 部门信息
+ * Department Information
  *
  * @author qdata
  */
@@ -66,7 +52,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 获取部门列表
+     * Get department list
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list")
@@ -77,7 +63,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 查询部门列表（排除节点）
+     * Query department list (exclude node)
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list/exclude/{deptId}")
@@ -90,7 +76,7 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 根据部门编号获取详细信息
+     * Get detailed information by department ID
      */
     @PreAuthorize("@ss.hasPermi('system:dept:query')")
     @GetMapping(value = "/{deptId}")
@@ -101,26 +87,26 @@ public class SysDeptController extends BaseController
     }
 
     /**
-     * 新增部门
+     * Add department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:add')")
-    @Log(title = "部门管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.dept", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDept dept)
     {
         if (!deptService.checkDeptNameUnique(dept))
         {
-            return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+            return error("Add department '" + dept.getDeptName() + "' failed, department name already exists");
         }
         dept.setCreateBy(getUsername());
         return toAjax(deptService.insertDept(dept));
     }
 
     /**
-     * 修改部门
+     * Modify department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:edit')")
-    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.dept", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysDept dept)
     {
@@ -128,35 +114,35 @@ public class SysDeptController extends BaseController
         deptService.checkDeptDataScope(deptId);
         if (!deptService.checkDeptNameUnique(dept))
         {
-            return error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+            return error("Modify department '" + dept.getDeptName() + "' failed, department name already exists");
         }
         else if (dept.getParentId().equals(deptId))
         {
-            return error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
+            return error("Modify department '" + dept.getDeptName() + "' failed, parent department cannot be itself");
         }
         else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus()) && deptService.selectNormalChildrenDeptById(deptId) > 0)
         {
-            return error("该部门包含未停用的子部门！");
+            return error("This department contains non-disabled sub-departments!");
         }
         dept.setUpdateBy(getUsername());
         return toAjax(deptService.updateDept(dept));
     }
 
     /**
-     * 删除部门
+     * Delete department
      */
     @PreAuthorize("@ss.hasPermi('system:dept:remove')")
-    @Log(title = "部门管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.dept", businessType = BusinessType.DELETE)
     @DeleteMapping("/{deptId}")
     public AjaxResult remove(@PathVariable Long deptId)
     {
         if (deptService.hasChildByDeptId(deptId))
         {
-            return warn("存在下级部门,不允许删除");
+            return warn("Sub-departments exist, deletion is not allowed");
         }
         if (deptService.checkDeptExistUser(deptId))
         {
-            return warn("部门存在用户,不允许删除");
+            return warn("Department has users, deletion is not allowed");
         }
         deptService.checkDeptDataScope(deptId);
         return toAjax(deptService.deleteDeptById(deptId));

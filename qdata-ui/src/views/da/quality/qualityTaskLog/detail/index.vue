@@ -1,25 +1,26 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
     <div class="app-container stagingIndex" v-loading="loading">
-        <!-- 顶部区域：评分 + 折线图 -->
+        <!-- Top area: score + line chart -->
         <el-row gutter="20" class="top-section">
-            <!-- 左侧评分 -->
+            <!-- Left score -->
             <el-col :xs="24" :sm="24" :md="12" class="stats-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -71,7 +72,7 @@
                 </div>
             </el-col>
 
-            <!-- 右侧折线图 -->
+            <!-- Right line chart -->
             <el-col :xs="24" :sm="24" :md="12" class="trend-chart-panel">
                 <div class="module-8 border-item">
                     <div class="border-item-head">
@@ -89,7 +90,7 @@
             </el-col>
         </el-row>
 
-        <!-- 规则列表 -->
+        <!-- Rule list -->
         <el-row>
             <div class="module-8 border-item" style="width: 100%">
                 <div class="border-item-head">
@@ -146,7 +147,7 @@
             </div>
         </el-row>
 
-        <!-- 问题数据弹窗 -->
+        <!-- Problem data popup -->
         <ProblemDialog ref="problemDialogRef" />
     </div>
 </template>
@@ -223,7 +224,7 @@ function getLabelsByColumnName(row, columnName) {
             ? ruleObj.evaColumns
             : Object.values(ruleObj.evaColumns || {});
     } catch (err) {
-        console.warn('规则字段解析失败', err);
+        console.warn('Rule field parse failed', err);
         return '-';
     }
 
@@ -326,14 +327,14 @@ const loadChartWithData = (data = []) => {
 };
 
 
-// 评分和质量维度汇总
-// 评分和质量维度汇总
+// Score and quality dimension summary
+// Score and quality dimension summary
 const loadScoreAndSummary = async (id) => {
     try {
         const res = await statisticsEvaluateOne(id);
         const result = res?.data || [];
 
-        // 构造一个维度映射，用于快速查找
+        // Build dimension mapping for quick lookup
         const resultMap = result.reduce((map, item) => {
             map[item.dimensionType] = item;
             return map;
@@ -348,10 +349,10 @@ const loadScoreAndSummary = async (id) => {
             };
         });
     } catch (err) {
-        console.warn('评分/维度汇总失败', err);
+        console.warn('Score/dimension summary failed', err);
     }
 };
-// 规则列表
+// Rule list
 const loadRuleTable = async (id) => {
     try {
         const res = await statisticsEvaluateTable(id);
@@ -366,12 +367,12 @@ const loadRuleTable = async (id) => {
             ruleList.value = [];
         }
     } catch (err) {
-        console.warn('规则列表失败', err);
+        console.warn('Rule list failed', err);
     } finally {
     }
 };
 
-// 折线图数据
+// Line chart data
 const loadTrendChart = async (id) => {
     try {
         const range = Number(selectedRange.value);
@@ -383,11 +384,11 @@ const loadTrendChart = async (id) => {
 
         loadChartWithData(res?.data || []);
     } catch (err) {
-        console.warn('折线图数据失败', err);
+        console.warn('Line chart data failed', err);
     }
 };
 
-// 监听语言变化，重新渲染图表
+// Watch language changes, re-render charts
 watch(locale, () => {
     if (chartInstance) {
         chartInstance.dispose();

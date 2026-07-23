@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,39 +22,39 @@
 <script setup>
 import beautify from "js-beautify";
 import * as monaco from "monaco-editor";
-// flinksql语法
+// flinksql syntax
 import { FlinkSQLLanguage } from "../languages/flinksql/index";
 import { LogLanguage } from "../languages/javalog/index";
 
 const props = defineProps({
-  // 绑定值
+  // Binding value
   modelValue: {
     type: String,
     default: "",
   },
-  // 只读
+  // read only
   readOnly: {
     type: Boolean,
     default: true,
   },
-  // 配置
+  // Configuration
   config: {
     type: Object,
     default() {
       return {};
     },
   },
-  // 语言
+  // Language
   language: {
     type: String,
     default: "sql",
   },
-  // 启用建议
+  // Enable suggestions
   enableSuggestions: {
     type: Boolean,
     default: true,
   },
-  // 启用建议预览
+  // Enable suggestion preview
   enableSuggestionPreview: {
     type: Boolean,
     default: true,
@@ -120,7 +121,7 @@ onMounted(() => {
   });
   monacoInstance = monaco.editor.create(monacoDom.value, {
     ...defaultConfig,
-    // scrollBeyondLastLine: props.enableAutoScroll,//无效
+    // scrollBeyondLastLine: props.enableAutoScroll,//Invalid
     readOnly: true,
     glyphMargin: false,
     wordWrap: props.autoWrap,
@@ -130,9 +131,9 @@ onMounted(() => {
     autoClosingDelete: "always",
     lineNumbers: props.lineNumbers,
     minimap: {
-      enabled: false, // 是否开启右侧代码小窗
+      enabled: false, // Whether to open the small code window on the right
     },
-    // 控制台
+    // console
     scrollbar: {
       // Subtle shadows to the left & top. Defaults to true.
       useShadows: false,
@@ -158,10 +159,10 @@ onMounted(() => {
     language: props.language,
     ...props.config,
   });
-  // 注册javalog语言
+  // Register javalog language
   FlinkSQLLanguage(monaco.languages, monaco.editor, true);
   LogLanguage(monaco.languages);
-  // 注册主题色
+  // Register theme color
   convertCodeEditTheme(monaco.editor);
   monaco.editor.setTheme("light");
 
@@ -205,13 +206,13 @@ function convertCodeEditTheme(editorInstance) {
     return CODE_EDIT_THEME.LIGHT;
   } else {
     /**
-     * 定义亮色 覆盖vs主题,增加扩展规则
+     * Define bright colors, cover vs themes, and add expansion rules
      */
     editorInstance?.defineTheme?.(CODE_EDIT_THEME.LIGHT, {
-      base: "vs", // 指定基础主题 , 可选值: 'vs', 'vs-dark', 'hc-black' , base theme
-      inherit: true, // 是否继承主题配置
+      base: "vs", // Specify the base theme, optional values: 'vs', 'vs-dark', 'hc-black', base theme
+      inherit: true, // Whether to inherit theme configuration
       rules: [
-        // 注意,默认的不做修改 因为上边继承了父主题, 只添加自己定义的 , 否则会覆盖默认的 , 导致编辑器样式不一致
+        // Note that the default is not modified because it inherits the parent theme and only adds your own defined ones. Otherwise, the default ones will be overwritten, resulting in inconsistent editor styles.
         { token: "custom-info", foreground: "#808080" },
         { token: "custom-thread", foreground: "#9fa19f" },
         { token: "custom-class", foreground: "#1060d9" },
@@ -228,13 +229,13 @@ function convertCodeEditTheme(editorInstance) {
     });
 
     /**
-     * 定义暗色 覆盖vs-dark主题,增加扩展规则
+     * Define dark color, cover vs-dark theme, add extension rules
      */
     editorInstance?.defineTheme?.(CODE_EDIT_THEME.DARK, {
-      base: "vs-dark", // 指定基础主题 , 可选值: 'vs', 'vs-dark', 'hc-black' , base theme
-      inherit: true, // 是否继承主题配置
+      base: "vs-dark", // Specify the base theme, optional values: 'vs', 'vs-dark', 'hc-black', base theme
+      inherit: true, // Whether to inherit theme configuration
       rules: [
-        // 注意,默认的不做修改 因为上边继承了父主题, 只添加自己定义的 , 否则会覆盖默认的 , 导致编辑器样式不一致
+        // Note that the default is not modified because it inherits the parent theme and only adds your own defined ones. Otherwise, the default ones will be overwritten, resulting in inconsistent editor styles.
         { token: "custom-info", foreground: "#008800" },
         { token: "custom-thread", foreground: "#9fa19f" },
         { token: "custom-class", foreground: "#1060d9" },

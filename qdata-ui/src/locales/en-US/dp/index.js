@@ -201,7 +201,16 @@ export default {
     confirmDeleteModel: 'Are you sure to delete logical model "{id}"?',
     tableNamePattern: 'Table name can only contain letters, numbers and underscores, and must start with a letter',
     maxLength: '500 characters',
-    defaultLengthError: 'Default value length cannot exceed attribute length {length}'
+    defaultLengthError: 'Default value length cannot exceed attribute length {length}',
+    defaultValueNumericOnly: 'Default value for numeric types must be a number',
+    defaultValueIntegerError: 'Integer type default value cannot contain a decimal point',
+    defaultValueIntPartError: 'Integer part length cannot exceed <int> digits',
+    defaultValueDecPartError: 'Decimal part length cannot exceed <scale> digits',
+    defaultStringMaxLengthError: 'String length cannot exceed <length> characters',
+    defaultValueDateError: 'Date format is incorrect, please use YYYY-MM-DD',
+    defaultValueDateInvalid: 'Date value is invalid',
+    defaultValueDatetimeError: 'Datetime format is incorrect, please use YYYY-MM-DD HH:mm:ss',
+    defaultValueDatetimeInvalid: 'Datetime value is invalid'
   },
   materializedModel: {
     publishModel: 'Publish Model',
@@ -314,7 +323,10 @@ export default {
     detailInfo: 'Detail Info',
     releaseLog: 'Release Log',
     virtualAssetCreate: 'Virtual Asset Creation',
-    fullAssetCreate: 'Full Asset Creation'
+    fullAssetCreate: 'Full Asset Creation',
+    asset: {
+      deleteConfirm: 'Are you sure to delete the data element-asset relation with ID "{id}"?'
+    }
   },
   common: {
     query: 'Search',

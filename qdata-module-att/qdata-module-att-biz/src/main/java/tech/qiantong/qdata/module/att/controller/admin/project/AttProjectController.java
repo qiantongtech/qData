@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.controller.admin.project;
@@ -48,6 +34,7 @@ import tech.qiantong.qdata.common.core.domain.entity.SysUser;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.core.page.TableDataInfo;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.att.controller.admin.project.vo.AttProjectPageReqVO;
@@ -63,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目Controller
+ * Project Controller
  *
  * @author shu
  * @date 2025-01-20
@@ -92,7 +79,7 @@ public class AttProjectController extends BaseController {
     }
 
     /**
-     * 获取用户列表排除当前项目已经存在的用户
+     * Get user list excluding users already in the current project
      */
     @PreAuthorize("@ss.hasPermi('att:project:list')")
     @PostMapping("/noProjectUser/list")
@@ -103,7 +90,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "导入项目列表")
     @PreAuthorize("@ss.hasPermi('att:project:import')")
-    @Log(title = "项目", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttProjectRespVO> util = new ExcelUtil<>(AttProjectRespVO.class);
@@ -130,7 +117,7 @@ public class AttProjectController extends BaseController {
 
     @Operation(summary = "新增项目")
     @PreAuthorize("@ss.hasPermi('att:project:add')")
-    @Log(title = "项目", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttProjectSaveReqVO attProject) {
         attProject.setCreatorId(getUserId());
@@ -138,17 +125,20 @@ public class AttProjectController extends BaseController {
         attProject.setCreateTime(DateUtil.date());
         Long serviceAttProject = attProjectService.createAttProject(attProject);
         if (serviceAttProject == -1) {
-            return CommonResult.error(serviceAttProject.intValue(), "创建失败，请检查海豚调度器是否宕机或者是否存在该数据!");
+            return CommonResult.error(serviceAttProject.intValue(),
+                    MessageUtils.messageWithFallback("att.error.project.create.scheduler.or.exists",
+                            "创建失败，请检查海豚调度器是否宕机或者是否存在该数据!"));
         }
         if (serviceAttProject == -2) {
-            return CommonResult.error(serviceAttProject.intValue(), "创建失败!");
+            return CommonResult.error(serviceAttProject.intValue(),
+                    MessageUtils.messageWithFallback("att.error.project.create.fail", "创建失败!"));
         }
         return CommonResult.toAjax(serviceAttProject);
     }
 
     @Operation(summary = "修改项目")
     @PreAuthorize("@ss.hasPermi('att:project:edit')")
-    @Log(title = "项目", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttProjectSaveReqVO attProject) {
         attProject.setUpdatorId(getUserId());
@@ -156,7 +146,8 @@ public class AttProjectController extends BaseController {
         attProject.setUpdateTime(DateUtil.date());
         int i = attProjectService.updateAttProject(attProject);
         if (i == -1) {
-            return CommonResult.error(i, "修改失败！");
+            return CommonResult.error(i,
+                    MessageUtils.messageWithFallback("att.error.project.update.fail", "修改失败！"));
         }
         return CommonResult.toAjax(i);
     }
@@ -167,21 +158,26 @@ public class AttProjectController extends BaseController {
     public AjaxResult editProjectStatus(@PathVariable Long id, @PathVariable Long status) {
         Boolean isOk = attProjectService.editProjectStatus(id, status);
         if (!isOk) {
-            return AjaxResult.error("任务状态修改失败，请联系系统管理员");
+            return AjaxResult.error(MessageUtils.messageWithFallback("att.error.project.status.update.fail",
+                    "任务状态修改失败，请联系系统管理员"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback("att.success.project.update", "修改成功"));
     }
 
     @Operation(summary = "删除项目")
     @PreAuthorize("@ss.hasPermi('att:project:remove')")
-    @Log(title = "项目", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.project", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         int project = attProjectService.removeAttProject(Arrays.asList(ids));
         if (project == -1) {
-            return CommonResult.error(500, "删除失败，项目有人员存在!");
+            return CommonResult.error(500,
+                    MessageUtils.messageWithFallback("att.error.project.delete.member.exists",
+                            "删除失败，项目有人员存在!"));
         } else if (project == -2) {
-            return CommonResult.error(500, "删除失败，检查海豚调度器是否宕机!");
+            return CommonResult.error(500,
+                    MessageUtils.messageWithFallback("att.error.project.delete.scheduler.down",
+                            "删除失败，检查海豚调度器是否宕机!"));
         }
         return CommonResult.toAjax(project);
     }

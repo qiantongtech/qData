@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.controller.admin.desensitizeRules.vo;
@@ -45,12 +31,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeRules.DgDesensitizeIntervalDO;
 
 /**
- * 脱敏规则 创建/修改 Request VO DG_DESENSITIZE_RULE
+ * Desensitize Rule Create/Update Request VO DG_DESENSITIZE_RULE
  *
  * @author qdata
  * @date 2026-04-10
  */
-@Schema(description = "脱敏规则 Response VO")
+@Schema(description = "Desensitize Rule Save Request VO")
 @Data
 public class DgDesensitizeRuleSaveReqVO extends BaseEntity {
 
@@ -59,43 +45,43 @@ public class DgDesensitizeRuleSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "分级名称", example = "")
-    @Size(max = 256, message = "分级名称长度不能超过256个字符")
+    @Schema(description = "Classification name", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String name;
 
-    @Schema(description = "数据分类ID", example = "")
+    @Schema(description = "Data category ID", example = "")
     private Long dataCategoryId;
 
-    @Schema(description = "应用场景;1：数据资产  2：数据查询  3：数据服务", example = "")
-    @Size(max = 256, message = "应用场景;1：数据资产  2：数据查询  3：数据服务长度不能超过256个字符")
+    @Schema(description = "Application scene; 1: Data asset 2: Data query 3: Data service", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String applicationScene;
 
-    @Schema(description = "脱敏方式;1：底层脱敏  2：展示脱敏", example = "")
-    @Size(max = 256, message = "脱敏方式;1：底层脱敏  2：展示脱敏长度不能超过256个字符")
+    @Schema(description = "Mask type; 1: Underlying mask 2: Display mask", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String maskType;
 
-    @Schema(description = "替换规则", example = "")
-    @Size(max = 256, message = "替换规则长度不能超过256个字符")
+    @Schema(description = "Replace rule", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String replaceRule;
 
-    @Schema(description = "替换内容", example = "")
-    @Size(max = 256, message = "替换内容长度不能超过256个字符")
+    @Schema(description = "Replace content", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String replaceContent;
 
-    @Schema(description = "脱敏区间", example = "")
+    @Schema(description = "Desensitize intervals", example = "")
     private List<DgDesensitizeIntervalDO> intervalList;
 
-    @Schema(description = "排序", example = "")
+    @Schema(description = "Sort order", example = "")
     private Long sortOrder;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 256, message = "描述长度不能超过256个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String description;
 
-    @Schema(description = "备注", example = "")
-    @Size(max = 256, message = "备注长度不能超过256个字符")
+    @Schema(description = "Remark", example = "")
+    @Size(max = 256, message = "{valid.max.size}")
     private String remark;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 }

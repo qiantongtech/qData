@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- 新增或修改数据资产地图任务对话框 -->
+  <!-- Add or modify data asset map task dialog box -->
   <el-dialog
       :title="dialogTitle"
       v-model="visibleDialog"
@@ -78,17 +79,17 @@
       </qt-form-item>
 <!--      <el-form-item-- :label-position="labelPosition">
 <!--          v-if="!props.isRegister"-->
-<!--          label="创建类型"-->
+<!--          label="Creation type"-->
 <!--          prop="status"-->
 <!--          :rules="[-->
 <!--          {-->
 <!--            required: true,-->
-<!--            message: '请选择创建类型',-->
+<!--            message: 'Please select the creation type',-->
 <!--            trigger: 'change',-->
 <!--          },-->
 <!--        ]"-->
 <!--          :tip="{-->
-<!--          content: `注册资产：正式纳入资产管理，支持后续治理、质量监控、权限控制<br/>暂不注册资产：仅记录信息，不参与后续流程，适用于临时测试或非核心资产【不确定】`,-->
+<!--          content: `Registered assets: formally included in asset management, supporting subsequent governance, quality monitoring, and authority control<br/> Temporarily not registering assets: only recording information, not participating in subsequent processes, suitable for temporary testing or non-core assets [uncertain]`,-->
 <!--          custom: true,-->
 <!--        }"-->
 <!--      >-->
@@ -97,8 +98,8 @@
 <!--            :disabled="form.id"-->
 <!--            @change="handleCreateChange"-->
 <!--        >-->
-<!--          <el-radio value="1">暂不注册资产</el-radio>-->
-<!--          <el-radio value="2">注册资产</el-radio>-->
+<!--          <el-radio value="1">No asset registration yet</el-radio>-->
+<!--          <el-radio value="2">Registered assets</el-radio>-->
 <!--        </el-radio-group>-->
 <!--      </el-form-item>-->
 
@@ -228,9 +229,9 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <!-- 关闭按钮 -->
+        <!-- close button -->
         <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
-        <!-- 保存按钮 -->
+        <!-- save button -->
         <el-button type="primary" @click="saveData" :loading="loading"
         >{{ td('common.button.confirm') }}</el-button
         >
@@ -244,15 +245,15 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 // import Crontab from "@/components/Crontab/ruleBase.vue";
 // import { getDaDiscoveryTask } from "@/api/da/discovery/discoveryTask";
-// 数据库表
+// database table
 import tableConfigForm from "./tableAdd.vue";
-// 外部api
+// external api
 import apiConfigForm from "./apiAdd.vue";
-// 视频
+// video
 import daAssetVideo from "./videoAdd.vue";
-// 矢量数据 上传
+// Vector data upload
 import excelAdd from "./excelAdd.vue";
-// 非结构化数据
+// unstructured data
 import Unstructured from "./unstructuredAdd.vue";
 import { getThemeList } from "@/api/att/theme/theme.js";
 import useUserStore from "@/store/system/user";
@@ -285,7 +286,7 @@ const props = defineProps({
 
 const dialogTitle = computed(() => props.title || td('dpp.asset.add.formTitle'));
 const excelAddRef = ref(null);
-let loading = ref(false); // 加载状态（全局）
+let loading = ref(false); // Loading status (global)
 const isInitializing = ref(false);
 const isResetting = ref(false);
 
@@ -294,7 +295,7 @@ const emit = defineEmits(["update:visible", "confirm"]);
 const daDiscoveryTaskRef = ref(null);
 let ApiConfigRef = ref();
 
-// 创建一个本地响应式数据，用来修改表单内容
+// Create a local responsive data to modify the form content
 const form = ref({
   type: "1",
   createType: "2",
@@ -312,7 +313,7 @@ const form = ref({
   datasourceType: "",
   dbname: "",
 
-  // 新增字段
+  // Add new field
   tableType: "1",
   dataLayerId: null,
   businessDomainId: null,
@@ -396,7 +397,7 @@ async function getAssetThemeList() {
   excelAddRef.value.show(form.value);
 }
 // eslint-disable-next-line no-unused-vars
-const createTypeList = ref([]); // 数据源列表
+const createTypeList = ref([]); // Data source list
 // const getDatasourceList = async () => {
 //   try {
 //     loading.value = true;
@@ -411,13 +412,13 @@ const createTypeList = ref([]); // 数据源列表
 // };
 let openCron = ref(false);
 const expression = ref("");
-/** 调度周期按钮操作 */
+/** Scheduling cycle button operation */
 // eslint-disable-next-line no-unused-vars
 function handleShowCron() {
   expression.value = form.value.cronExpression;
   openCron.value = true;
 }
-/** 确定后回传值 */
+/** Return value after confirmation */
 // eslint-disable-next-line no-unused-vars
 function crontabFill(value) {
   form.value.cronExpression = value;
@@ -441,7 +442,7 @@ watch(
     }
 );
 const handleTypeChange = () => {
-  // 清空表格字段
+  // Clear form fields
   form.value.tableName = "";
   form.value.datasourceId = "";
   form.value.tableComment = "";
@@ -505,7 +506,7 @@ const visibleDialog = computed({
   },
 });
 
-// 关闭对话框的方法
+// How to close a dialog box
 const closeDialog = async () => {
   emit("update:visible", false);
 };
@@ -527,7 +528,7 @@ watch(
               ) || [];
           form.value.createType = props.isRegister ? "2" : form.value.createType;
 
-          // 回显新增字段
+          // Echo new fields
           form.value.tableType = form.value.tableType || "1";
           form.value.dataLayerId = form.value.dataLayerId
               ? Number(form.value.dataLayerId)
@@ -546,7 +547,7 @@ watch(
           form.value.tableCase =
               form.value.tableCase !== undefined ? Number(form.value.tableCase) : 1;
 
-          // 视频配置处理
+          // Video configuration processing
           if (props.data.type == "5") {
             if (form.value.daAssetVideo == null) {
               form.value.daAssetVideo = {
@@ -556,7 +557,7 @@ watch(
                 platform: "",
                 cameraName: "",
                 cameraCode: "",
-                artemisPath: "", //服务上下文
+                artemisPath: "", //service context
                 config: JSON.stringify({
                   cameraName: "",
                   cameraCode: "",
@@ -597,7 +598,7 @@ watch(
             };
           }
         } else {
-          // 新增模式，如果传入了 type，则同步到 form 中
+          // Add a new mode. If type is passed in, it will be synchronized to form.
           if (newVal.type) {
             form.value.type = newVal.type;
           }
@@ -644,11 +645,11 @@ function getFormDataByType(type) {
     id: form.value.id,
     themeIdList: form.value.themeIdList,
 
-    // 新增字段
+    // Add new field
     tableType: form.value.tableType,
     dataLayerId: form.value.dataLayerId,
     businessDomainId: form.value.businessDomainId,
-    businessCategoryId: form.value.businessDomainId, // 兼容性映射
+    businessCategoryId: form.value.businessDomainId, // Compatibility mapping
     businessCategoryCode: form.value.businessCategoryCode,
     dataDomainId: form.value.dataDomainId,
     themeDomainId: form.value.themeDomainId,
@@ -732,7 +733,7 @@ function getFormDataByType(type) {
 }
 
 const saveData = async () => {
-  loading.value = true; // 开始加载
+  loading.value = true; // Start loading
   try {
     if (form.value.type === "2" && form.value.createType == "2") {
       const valid = await ApiConfigRef.value.validateForms();
@@ -752,7 +753,7 @@ const saveData = async () => {
             platform: "",
             cameraName: "",
             cameraCode: "",
-            artemisPath: "", //服务上下文
+            artemisPath: "", //service context
             config: JSON.stringify({
               cameraName: "",
               cameraCode: "",
@@ -798,11 +799,11 @@ const saveData = async () => {
       proxy.$message.warning(td('dpp.asset.add.validateFormFailed'));
     }
   } finally {
-    loading.value = false; // 结束加载
+    loading.value = false; // end loading
   }
 };
 
-// 清空表单数据
+// Clear form data
 const clearForm = () => {
   form.value = {
     type: "1",
@@ -815,7 +816,7 @@ const clearForm = () => {
     description: "",
     source: "3",
 
-    // 新增字段
+    // Add new field
     tableType: "1",
     dataLayerId: null,
     businessDomainId: null,
@@ -864,7 +865,7 @@ const clearForm = () => {
       platform: "",
       cameraName: "",
       cameraCode: "",
-      artemisPath: "", //服务上下文
+      artemisPath: "", //service context
       config: JSON.stringify({
         cameraName: "",
         cameraCode: "",

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -381,7 +382,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="closeDialog">{{ td('common.button.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
+        <el-button type="primary" :loading="loading" @click="confirmDialog">{{ td('common.button.confirm') }}</el-button>
       </div>
     </template>
   </el-dialog>
@@ -452,7 +453,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:dialogFormVisible", "confirm", "submit"]);
 
-// --- 响应式变量声明 (提前至顶部) ---
+// --- Responsive variable statement (in advance to top) ---
 let loading = ref(false);
 let layerLoading = ref(false);
 let businessLoading = ref(false);
@@ -504,7 +505,7 @@ const form = ref({
 const formatTreeData = (list) => {
   return list.map((item) => {
     const newItem = { ...item };
-    newItem.id = Number(item.id); // 强制转换为数字以匹配回显
+    newItem.id = Number(item.id); // Force conversion to a number to match the echo
     const abbreviation = item.engName || item.shortName;
     newItem.displayName = abbreviation
       ? `${item.name} / ${abbreviation}`
@@ -518,7 +519,7 @@ const formatTreeData = (list) => {
 
 const fetchAllOptions = (currentType) => {
   const targetType = currentType || props.type || form.value.tableType;
-  // 数仓分层
+  // Deck Layer
   layerLoading.value = true;
   const p1 = treeDataLayer()
     .then((res) => {
@@ -526,7 +527,7 @@ const fetchAllOptions = (currentType) => {
       const processTree = (list) => {
         return list.map((item) => {
           const newItem = { ...item };
-          newItem.id = Number(item.id); // 强制转换为数字以匹配回显
+          newItem.id = Number(item.id); // Force conversion to a number to match the echo
           const abbreviation = item.engName || item.shortName;
           newItem.displayName = abbreviation
             ? `${item.name} / ${abbreviation}`
@@ -548,7 +549,7 @@ const fetchAllOptions = (currentType) => {
 
   let p2;
   if (targetType == "4") {
-    // 主题域
+    // Theme Field
     themeLoading.value = true;
     p2 = listThemeDomain({ pageNum: 1, pageSize: 1000, validFlag: true })
       .then((res) => {
@@ -563,7 +564,7 @@ const fetchAllOptions = (currentType) => {
         themeLoading.value = false;
       });
   } else {
-    // 业务分类
+    // Classification of operations
     businessLoading.value = true;
     p2 = listBusinessCategory({
       pageNum: 1,
@@ -619,7 +620,7 @@ const generateModelName = (initialRow = null) => {
   if (isResetting.value) return;
 
   if (initialRow) {
-    // 修改模式下的第一次回显，直接使用 formatModelName 传参并拼接表英文名
+    // First appearance in modified mode, directly using formatModelName pass and spell table English First Name
     form.value.namingSpec = formatModelName(form.value);
     return;
   }
@@ -642,7 +643,7 @@ const generateModelName = (initialRow = null) => {
 
   form.value.namingSpec = formatModelName(options);
 
-  // 同步业务/主题代码
+  // Synchronize business/theme code
   if (form.value.tableType === "4") {
     const theme = findInTree(themeDomainList.value, form.value.themeDomainId);
     form.value.themeDomainCode = theme ? theme.code : "";
@@ -689,17 +690,17 @@ watch(
     getDaDatasourceListList();
     if (newVal) {
       isInitializing.value = true;
-      // 修改模式下，优先使用 props.dataList.tableType
+      // Under modified mode, priority is given to props.dataList.tableType
       const currentType =
         props.dataList && props.dataList.tableType
           ? String(props.dataList.tableType)
           : props.type;
-      // 并行请求，不使用 await 阻塞
+      // Parallel request, do not use await block
       fetchAllOptions(currentType);
 
       if (props.dataList && props.dataList.id) {
         const echoData = { ...props.dataList };
-        // 映射业务分类 ID，处理详情接口返回的 businessCategoryId
+        // Map business classification ID, process details returned businessCategoryId
         if (echoData.businessCategoryId) {
           echoData.businessDomainId = echoData.businessCategoryId;
         }
@@ -716,7 +717,7 @@ watch(
 
         Object.assign(form.value, echoData);
 
-        // 初始化命名大小写模式
+        // Initialisation Case Mode
         if (echoData.tableCase !== undefined && echoData.tableCase !== null) {
           form.value.tableCase = Number(echoData.tableCase);
         } else if (form.value.modelName) {
@@ -737,7 +738,7 @@ watch(
           fetchSecondLevelDocs(form.value.documentType, true);
         }
 
-        // 获取列信息
+        // Get column information
         getDpModelColumnList({ modelId: form.value.id }).then((res) => {
           tableData.value = res.data || [];
         });
@@ -745,11 +746,11 @@ watch(
         reset();
       }
 
-      // 延迟结束初始化状态，确保 echo 赋值引起的 watch 不会触发 generateModelName
+      // Delay ending initialisation to ensure that echo-granted watch does not trigger generateModelName
       setTimeout(() => {
         isInitializing.value = false;
-        // 初始化完成后手动触发一次名称生成，确保回显时 namingSpec 正确
-        // 修改模式下传入 props.dataList 使用 formatHierarchyName 传参回显
+        // Manually trigger a name generation once after initialization to make sure that namingSpec is correct
+        // Change mode to programs. dataList to use formathierarchyName for reference
         generateModelName(
           props.dataList && props.dataList.id ? props.dataList : null
         );
@@ -800,10 +801,10 @@ const getDaDatasourceListList = async () => {
     createTypeList.value = getAvailableDatasource(response, "dpModel");
     console.log("createTypeList.value", createTypeList.value);
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
   }
 };
-// 表
+// Table
 let TablesByDataSource = ref([]);
 const remoteSearchTables = async (query) => {
   if (!form.value.datasourceId) {
@@ -822,25 +823,30 @@ const fetchDpModelColumnList = async () => {
   try {
     loading.value = true;
     console.log("props.dataList.id", form.value.id);
-    const response = await getDpModelColumnList({ modelId: form.value.id }); // 传递 `form` 数据
+    const response = await getDpModelColumnList({ modelId: form.value.id }); // Transfer `modelId` data
     tableData.value = response.data;
     loading.value = false;
-    // 处理返回的数据
+    // Process returned data
   } catch (error) {
-    console.error("请求失败:", error);
+    console.error("Request failed:", error);
+    loading.value = false;
   }
 };
 const getColumnByAssetIdList = async (isOld) => {
   loading.value = true;
-  const response = await columnsList({
-    modelId: form.value.id,
-    id: form.value.datasourceId,
-    tableName: form.value.tableName,
-    type: form.value.datasourceType,
-    isOld: isOld,
-  });
-  tableData.value = response.data;
-  loading.value = false;
+  try {
+    const response = await columnsList({
+      modelId: form.value.id,
+      id: form.value.datasourceId,
+      tableName: form.value.tableName,
+      type: form.value.datasourceType,
+      isOld: isOld,
+    });
+    tableData.value = response.data;
+    loading.value = false;
+  } catch (error) {
+    loading.value = false;
+  }
 };
 const handleDatasourceChange = (value, selectedDatasource) => {
   if (selectedDatasource) {
@@ -881,7 +887,7 @@ const visibleDialog = computed({
     return props.visible;
   },
   set(newValue) {
-    emit("update:visible", newValue); // 使用 emit 触发父组件更新
+    emit("update:visible", newValue); // Use emit to trigger parent component update
   },
 });
 
@@ -1000,7 +1006,7 @@ const handleContactChange = (selectedValue) => {
   form.value.contactNumber = selectedUser?.phonenumber || "";
 };
 function getDeptLabel(row) {
-  // 递归查找树形结构中匹配的节点
+  // Recursively search for matching nodes in tree structures
   const findLabel = (tree) => {
     for (let node of tree) {
       if (node.id == row.authorityDept) {
@@ -1017,20 +1023,20 @@ function getDeptLabel(row) {
   };
   return findLabel(props.deptList) || "-";
 }
-//表字段的新增
+//New Table Fields
 function handleFormSubmit(formData) {
-  console.log("提交的表单数据:", formData);
+  console.log("Submitted form data:", formData);
   if (formData.index !== undefined && formData.index !== null) {
-    // 如果存在 index，则直接修改对应索引的数据
+    // If index exists, change the corresponding index data directly
     tableData.value[formData.index] = { ...formData };
-    console.log("数据已修改:", tableData.value[formData.index]);
+    console.log("Data updated:", tableData.value[formData.index]);
   } else {
-    // 如果没有 index，则新增数据
+    // Add data if no index
     tableData.value.push({ ...formData });
-    console.log("新数据已新增:", formData);
+    console.log("New data added:", formData);
   }
 
-  console.log("当前表格数据:", tableData.value);
+  console.log("Current table data:", tableData.value);
 }
 
 function handleAdd() {
@@ -1109,15 +1115,18 @@ const closeDialog = () => {
 };
 
 const confirmDialog = () => {
+  if (loading.value) return;
   if (!proxy || !proxy.$refs["dpModelRef"]) return;
   proxy.$refs["dpModelRef"].validate((valid) => {
     if (valid) {
+      loading.value = true;
       if (!tableData.value || tableData.value.length === 0) {
         proxy.$message.warning(td('dp.modelForm.addFieldWarning'));
+        loading.value = false;
         return;
       }
 
-      // 确保 tableType 和 tableCase 格式正确
+      // Ensure that tableType and tableCase formats are correct
       const { namingSpec, ...restForm } = form.value;
       const submitForm = {
         ...restForm,
@@ -1144,6 +1153,7 @@ const confirmDialog = () => {
         });
       }
       closeDialog();
+      loading.value = false;
     }
   });
 };

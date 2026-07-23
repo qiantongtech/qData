@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -159,7 +160,7 @@
          />
       </div>
 
-      <!-- 调度日志详细 -->
+      <!-- Scheduling log details -->
       <el-dialog :title="td('sys.monitor.jobLog.scheduleLogDetail')" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form :model="form" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -247,7 +248,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询调度日志列表 */
+/** Query scheduling log list */
 function getList() {
   loading.value = true;
   listJobLog(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -257,38 +258,38 @@ function getList() {
   });
 }
 
-// 返回按钮
+// back button
 function handleClose() {
   const obj = { path: "/monitor/job" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.jobLogId);
   multiple.value = !selection.length;
 }
 
-/** 详细按钮操作 */
+/** Detailed button operations */
 function handleView(row) {
   open.value = true;
   form.value = row;
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal.confirm(td('sys.monitor.jobLog.confirmDelete', { ids: ids.value })).then(function () {
     return delJobLog(ids.value);
@@ -298,7 +299,7 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-/** 清空按钮操作 */
+/** Clear button action */
 function handleClean() {
   proxy.$modal.confirm(td('sys.monitor.jobLog.confirmClearAll')).then(function () {
     return cleanJobLog();
@@ -308,7 +309,7 @@ function handleClean() {
   }).catch(() => {});
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download("monitor/jobLog/export", {
     ...queryParams.value,

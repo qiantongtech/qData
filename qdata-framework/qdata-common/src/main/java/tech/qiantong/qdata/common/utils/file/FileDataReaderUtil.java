@@ -1,37 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.file;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -48,9 +35,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 文件数据读取工具类
- * 支持读取Excel(xlsx, xls)和CSV文件数据
- * 返回格式与数据库查询结果一致
+ * File data reading tool class
+ * Supports reading Excel (xlsx, xls) and CSV file data
+ * The return format is consistent with the database query results
  *
  * @author system
  * @date 2025-01-21
@@ -59,69 +46,73 @@ import java.util.concurrent.atomic.AtomicLong;
 public class FileDataReaderUtil {
 
     /**
-     * 支持的文件扩展名
+     * Supported file extensions
      */
     private static final List<String> SUPPORTED_EXTENSIONS = Arrays.asList(".xlsx", ".xls", ".csv");
 
     /**
-     * 读取文件数据并返回与getColumnData相同格式的数据
+     * Read file data and return data in the same format as getColumnData
      *
-     * @param filePath    文件路径
-     * @param pageNum     页码（从1开始）
-     * @param pageSize    每页条数
-     * @param startRow    起始行（Excel文件专用，从1开始）
-     * @param startColumn 起始列（Excel文件专用，从1开始）
-     * @param filter      过滤条件（可选）
-     * @return 返回格式与getColumnData相同的数据结构
+     * @param filePath file path
+     * @param pageNum page number (starting from 1)
+     * @param pageSize Number of items per page
+     * @param startRow starting row (exclusive for Excel files, starting from 1)
+     * @param startColumn starting column (exclusive for Excel files, starting from 1)
+     * @param filter filter conditions (optional)
+     * @return Returns a data structure with the same format as getColumnData
      *         {
-     *         "columns": [{"field": "列名", "en": "英文名", "cn": "中文名",
+     * "columns": [{"field": "column name", "en": "English name", "cn": "Chinese name",
      *         "columnNullable": true, "columnKey": false}],
-     *         "tableData": [{"列名1": "值1", "列名2": "值2"}],
-     *         "total": 总记录数
+     * "tableData": [{"Column name 1": "Value 1", "Column name 2": "Value 2"}],
+     * "total": total number of records
      *         }
      */
     public static Map<String, Object> readFileData(String filePath, Long pageNum, Long pageSize,
             Integer startRow, Integer startColumn, String filter) {
-        // 参数校验
+        // Parameter verification
         validateParams(filePath, pageNum, pageSize);
 
-        // 检查文件是否存在
+        // Check if the file exists
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
-        // 获取文件扩展名
+        // Get file extension
         String extension = getFileExtension(filePath);
         if (!SUPPORTED_EXTENSIONS.contains(extension.toLowerCase())) {
-            throw new RuntimeException("不支持的文件格式: " + extension + "，支持格式: " + SUPPORTED_EXTENSIONS);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.format.unsupported", "Unsupported file format: {0}; supported formats: {1}",
+                    extension, SUPPORTED_EXTENSIONS));
         }
 
         try {
-            // 根据文件类型调用不同的读取方法
+            // Call different read methods based on file type
             if (extension.equalsIgnoreCase(".csv")) {
                 return readCsvFile(filePath, pageNum, pageSize, filter);
             } else {
                 return readExcelFile(filePath, pageNum, pageSize, startRow, startColumn, filter);
             }
         } catch (Exception e) {
-            log.error("读取文件数据失败: {}", filePath, e);
-            throw new RuntimeException("读取文件数据失败: " + e.getMessage());
+            log.error("Failed to read file data: {}", filePath, e);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.read.fail", "Failed to read file data: {0}", e.getMessage()));
         }
     }
 
     /**
-     * 读取文件数据（简化版本，使用默认参数）
+     * Read file data (simplified version, using default parameters)
      */
     public static Map<String, Object> readFileData(String filePath, Long pageNum, Long pageSize) {
         return readFileData(filePath, pageNum, pageSize, 1, 1, null);
     }
 
     /**
-     * 读取文件数据（使用JSONObject参数）
+     * Read file data (using JSONObject parameters)
      */
     public static Map<String, Object> readFileData(JSONObject jsonObject) {
         if (jsonObject == null) {
-            throw new ServiceException("sys.error.param.empty", "参数不能为空");
+            throw new ServiceException("sys.error.param.empty", "Parameter cannot be empty");
         }
 
         String filePath = jsonObject.getStr("filePath");
@@ -135,11 +126,12 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取文件总行数
+     * Get the total number of lines in the file
      */
     public static Long getFileTotalRows(String filePath) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         String extension = getFileExtension(filePath);
@@ -151,11 +143,12 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取文件列信息
+     * Get file column information
      */
     public static List<Map<String, Object>> getFileColumns(String filePath, Integer startRow, Integer startColumn) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         String extension = getFileExtension(filePath);
@@ -167,14 +160,14 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取文件列信息（简化版本）
+     * Get file column information (simplified version)
      */
     public static List<Map<String, Object>> getFileColumns(String filePath) {
         return getFileColumns(filePath, 1, 1);
     }
 
     /**
-     * 读取CSV文件数据
+     * Read CSV file data
      */
     private static Map<String, Object> readCsvFile(String filePath, Long pageNum, Long pageSize, String filter) {
         List<String> lines = FileUtil.readLines(filePath, StandardCharsets.UTF_8);
@@ -182,10 +175,10 @@ public class FileDataReaderUtil {
             return createEmptyResult();
         }
 
-        // 获取列信息（第一行作为列名）
+        // Get column information (first row as column name)
         List<Map<String, Object>> columns = getCsvColumns(filePath);
 
-        // 读取数据行
+        // Read data row
         List<Map<String, Object>> allData = new ArrayList<>();
         for (int i = 1; i < lines.size(); i++) {
             String line = lines.get(i);
@@ -199,23 +192,23 @@ public class FileDataReaderUtil {
             }
         }
 
-        // 应用过滤条件
+        // Apply filters
         if (StrUtil.isNotBlank(filter)) {
             allData = applyFilter(allData, columns, filter);
         }
 
-        // 分页处理
+        // Pagination
         return applyPagination(allData, columns, pageNum, pageSize);
     }
 
     /**
-     * 读取Excel文件数据
+     * Read Excel file data
      */
     private static Map<String, Object> readExcelFile(String filePath, Long pageNum, Long pageSize,
             Integer startRow, Integer startColumn, String filter) {
         final List<Map<String, Object>> allData = new ArrayList<>();
         final List<Map<String, Object>> columns = new ArrayList<>();
-        int headerRowIndex = startRow - 1; // 用户传1，实际是第0行
+        int headerRowIndex = startRow - 1; // The user passes 1, which is actually line 0
         try {
             EasyExcel.read(filePath, new ReadListener<Map<Integer, String>>() {
                 private int currentRow = 0;
@@ -250,7 +243,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 处理Excel表头
+     * Processing Excel headers
      */
     private static List<Map<String, Object>> processExcelHeader(Map<Integer, String> rowData, Integer startColumn) {
         List<Map<String, Object>> columns = new ArrayList<>();
@@ -276,7 +269,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 处理Excel数据行
+     * Process Excel data rows
      */
     private static Map<String, Object> processExcelRow(Map<Integer, String> rowData, List<Map<String, Object>> columns,
             Integer startColumn) {
@@ -294,7 +287,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 解析CSV行数据
+     * Parse CSV row data
      */
     private static Map<String, Object> parseCsvLine(String line, List<Map<String, Object>> columns) {
         String[] values = parseCsvValues(line);
@@ -309,7 +302,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 解析CSV值（处理引号内的逗号）
+     * Parsing CSV values (handling commas within quotes)
      */
     private static String[] parseCsvValues(String line) {
         List<String> values = new ArrayList<>();
@@ -334,7 +327,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取CSV列信息
+     * Get CSV column information
      */
     private static List<Map<String, Object>> getCsvColumns(String filePath) {
         List<String> lines = FileUtil.readLines(filePath, StandardCharsets.UTF_8);
@@ -364,18 +357,18 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取Excel列信息
+     * Get Excel column information
      */
     private static List<Map<String, Object>> getExcelColumns(String filePath, Integer startRow, Integer startColumn) {
         List<Map<String, Object>> columns = new ArrayList<>();
-        int headerRowIndex = startRow - 1; // 用户传1，实际是第0行
+        int headerRowIndex = startRow - 1; // The user passes 1, which is actually line 0
         try {
             EasyExcel.read(filePath, new ReadListener<Map<Integer, String>>() {
                 private int currentRow = 0;
 
                 @Override
                 public void invoke(Map<Integer, String> rowData, AnalysisContext context) {
-                    // 打印调试
+                    // Print debugging
                     // System.out.println("currentRow=" + currentRow + ", rowData=" + rowData);
                     if (currentRow == headerRowIndex) {
                         columns.addAll(processExcelHeader(rowData, startColumn));
@@ -397,7 +390,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取CSV文件总行数
+     * Get the total number of rows in a CSV file
      */
     private static Long getCsvTotalRows(String filePath) {
         List<String> lines = FileUtil.readLines(filePath, StandardCharsets.UTF_8);
@@ -405,7 +398,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取Excel文件总行数
+     * Get the total number of rows in an Excel file
      */
     private static Long getExcelTotalRows(String filePath) {
         AtomicLong rowCount = new AtomicLong(0);
@@ -418,7 +411,7 @@ public class FileDataReaderUtil {
 
                 @Override
                 public void doAfterAllAnalysed(AnalysisContext context) {
-                    // 读取完成后的处理
+                    // Processing after reading is completed
                 }
             }).sheet().doRead();
         } catch (RuntimeException e) {
@@ -430,18 +423,18 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 应用过滤条件
-     * 这里可以实现简单的过滤逻辑
-     * 目前返回所有数据，可以根据需要扩展过滤功能
+     * Apply filters
+     * Simple filtering logic can be implemented here
+     * Currently returns all data, filtering functionality can be expanded as needed
      */
     private static List<Map<String, Object>> applyFilter(List<Map<String, Object>> data,
             List<Map<String, Object>> columns, String filter) {
-        // TODO: 可根据filter参数实现简单的过滤逻辑
+        // TODO: Simple filtering logic can be implemented based on filter parameters
         return data;
     }
 
     /**
-     * 应用分页
+     * Apply paging
      */
     private static Map<String, Object> applyPagination(List<Map<String, Object>> allData,
             List<Map<String, Object>> columns,
@@ -464,7 +457,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 创建空结果
+     * Create empty results
      */
     private static Map<String, Object> createEmptyResult() {
         Map<String, Object> result = new HashMap<>();
@@ -475,7 +468,7 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取文件扩展名
+     * Get file extension
      */
     private static String getFileExtension(String filePath) {
         int lastDotIndex = filePath.lastIndexOf('.');
@@ -483,24 +476,24 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 参数校验
+     * Parameter verification
      */
     private static void validateParams(String filePath, Long pageNum, Long pageSize) {
         if (StrUtil.isBlank(filePath)) {
-            throw new ServiceException("sys.error.file.path.empty", "文件路径不能为空");
+            throw new ServiceException("sys.error.file.path.empty", "File path cannot be empty");
         }
 
         if (pageNum == null || pageNum < 1) {
-            throw new ServiceException("sys.error.page.num.invalid", "页码不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.num.invalid", "Page number cannot be empty and must be greater than 0");
         }
 
         if (pageSize == null || pageSize < 1) {
-            throw new ServiceException("sys.error.page.size.invalid", "每页条数不能为空且必须大于0");
+            throw new ServiceException("sys.error.page.size.invalid", "Page size cannot be empty and must be greater than 0");
         }
     }
 
     /**
-     * 检查文件是否支持
+     * Check if the file supports
      */
     public static boolean isSupportedFile(String filePath) {
         if (StrUtil.isBlank(filePath)) {
@@ -511,14 +504,14 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取支持的文件扩展名列表
+     * Get a list of supported file extensions
      */
     public static List<String> getSupportedExtensions() {
         return new ArrayList<>(SUPPORTED_EXTENSIONS);
     }
 
     /**
-     * 批量读取文件数据
+     * Read file data in batches
      */
     public static Map<String, Map<String, Object>> batchReadFileData(List<String> filePaths,
             Long pageNum, Long pageSize,
@@ -530,7 +523,7 @@ public class FileDataReaderUtil {
                 Map<String, Object> data = readFileData(filePath, pageNum, pageSize, startRow, startColumn, null);
                 results.put(filePath, data);
             } catch (Exception e) {
-                log.error("读取文件失败: {}", filePath, e);
+                log.error("Failed to read file: {}", filePath, e);
                 results.put(filePath, createEmptyResult());
             }
         }
@@ -539,11 +532,12 @@ public class FileDataReaderUtil {
     }
 
     /**
-     * 获取文件基本信息
+     * Get basic file information
      */
     public static Map<String, Object> getFileInfo(String filePath) {
         if (!FileUtil.exist(filePath)) {
-            throw new RuntimeException("文件不存在: " + filePath);
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "sys.error.file.notfound.path", "File does not exist: {0}", filePath));
         }
 
         File file = new File(filePath);

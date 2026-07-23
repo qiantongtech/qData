@@ -1,31 +1,32 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <div ref="contentRef" class="markdown-view markdown-body">
-    <!-- 深度思考   -->
+    <!-- deep thinking   -->
     <div
       v-html="deepThinking"
       v-if="deepThinking !== ''"
       style="background-color: #ddd; padding: 5px; border-radius: 5px"
     ></div>
-    <!-- 对话输出 -->
+    <!-- Dialog output -->
     <div v-html="renderedMarkdown" ref="dialogue"></div>
-    <!-- 文章引用 -->
+    <!-- Article citation -->
     <div
       class="quote"
       v-if="documentIdList != null && documentIdList.length > 0"
@@ -81,7 +82,7 @@ import pdf from "@/assets/images/ai/office/img-pdf.png";
 import ppt from "@/assets/images/ai/office/img-ppt.png";
 import tet from "@/assets/images/ai/office/img-tet.png";
 
-// 定义组件属性
+// Define component properties
 const props = defineProps({
   messageId: {
     type: Number,
@@ -108,9 +109,9 @@ const props = defineProps({
 });
 const { proxy } = getCurrentInstance();
 const router = useRouter();
-const message = proxy.$modal; // 消息弹窗
+const message = proxy.$modal; // Message pop-up window
 
-const { copy } = useClipboard(); // 初始化 copy 到粘贴板
+const { copy } = useClipboard(); // Initialize copy to pasteboard
 const title = ref("");
 const resourcesList = ref([]);
 const dialogue = ref();
@@ -130,7 +131,7 @@ const fileImg = {
 };
 
 const md = new MarkdownIt({
-  html: true, // 允许解析 HTML（可选）
+  html: true, // Allow parsing HTML (optional)
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -159,7 +160,7 @@ const getFileType = (name) => {
   return fileImg[getFileFormat(name)];
 };
 
-/** 复制 */
+/** Copy */
 const copyContent = async () => {
   await copy(dialogue.value.textContent);
   message.msgSuccess(t('common.message.copySuccess'));
@@ -189,16 +190,16 @@ const deepThinking = computed(() => {
   );
 });
 
-/** 渲染 markdown */
+/** render markdown */
 const renderedMarkdown = computed(() => {
   const content = props.content;
   let remainingContent = renderContent(content);
   return md.render(remainingContent);
 });
 
-/** 初始化 **/
+/** Initialization **/
 onMounted(async () => {
-  // 添加 copy 监听
+  // Add copy listener
   contentRef.value.addEventListener("click", (e) => {
     if (e.target.id === "copy") {
       copy(e.target?.dataset?.copy);
@@ -207,11 +208,11 @@ onMounted(async () => {
   });
 });
 
-defineExpose({ copyContent }); // 提供方法给 parent 调用
+defineExpose({ copyContent }); // Provide methods for parent to call
 </script>
 
 <style lang="scss" scoped>
-// 引入css
+// Introduce css
 
 .markdown-view {
   font-family: PingFang SC;
@@ -263,7 +264,7 @@ defineExpose({ copyContent }); // 提供方法给 parent 调用
     margin-bottom: 3px;
   }
 
-  /* 标题通用格式 */
+  /* General format for titles */
   h1,
   h2,
   h3,
@@ -305,7 +306,7 @@ defineExpose({ copyContent }); // 提供方法给 parent 调用
     line-height: 24px;
   }
 
-  /* 列表（有序，无序） */
+  /* List (ordered, unordered) */
   ul,
   ol {
     margin: 0 0 8px 0;
@@ -323,7 +324,7 @@ defineExpose({ copyContent }); // 提供方法给 parent 调用
   ol > li {
     list-style-type: decimal;
     margin-bottom: 1rem;
-    // 表达式,修复有序列表序号展示不全的问题
+    // Expression, fix the problem of incomplete display of sequence numbers in ordered lists
     // &:nth-child(n + 10) {
     //     margin-left: 30px;
     // }
@@ -364,7 +365,7 @@ defineExpose({ copyContent }); // 提供方法给 parent 调用
     list-style: square;
   }
 
-  //  引用
+  //  Quote
   .quote {
     :deep(.el-divider__text) {
       background-color: #f0f0f6;
@@ -385,7 +386,7 @@ defineExpose({ copyContent }); // 提供方法给 parent 调用
     }
   }
 
-  // 资源文件
+  // Resource file
   :deep(.file-resources),
   :deep(.system-resources),
   :deep(.other-resources) {

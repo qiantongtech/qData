@@ -19,7 +19,7 @@ const badgeText = computed(() => {
   return props.levelData ?? "";
 });
 
-// 根据 badgeText 内容决定背景色
+// Determine the background color based on badgeText content
 const badgeColor = computed(() => {
   switch (props.levelData) {
     case "L1":

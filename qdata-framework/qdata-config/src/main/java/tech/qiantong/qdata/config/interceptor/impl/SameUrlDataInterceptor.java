@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.config.interceptor.impl;
@@ -50,8 +36,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 判断请求url和数据是否和上一次相同，
- * 如果和上次相同，则是重复提交表单。 有效时间为10秒内。
+ * Determine whether the request URL and data are the same as the last time,
+ * If it is the same as last time, the form is submitted again. Valid time is within 10 seconds.
  *
  * @author qdata
  */
@@ -62,7 +48,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
 
     public final String REPEAT_TIME = "repeatTime";
 
-    // 令牌自定义标识
+    // Token custom identification
     @Value("${token.header}")
     private String header;
 
@@ -80,7 +66,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
             nowParams = HttpHelper.getBodyString(repeatedlyRequest);
         }
 
-        // body参数为空，获取Parameter的数据
+        // The body parameter is empty, get Parameter data
         if (StringUtils.isEmpty(nowParams))
         {
             nowParams = JSON.toJSONString(request.getParameterMap());
@@ -89,13 +75,13 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
         nowDataMap.put(REPEAT_PARAMS, nowParams);
         nowDataMap.put(REPEAT_TIME, System.currentTimeMillis());
 
-        // 请求地址（作为存放cache的key值）
+        // Request address (as the key value for storing cache)
         String url = request.getRequestURI();
 
-        // 唯一值（没有消息头则使用请求地址）
+        // Unique value (if there is no header, the request address is used)
         String submitKey = StringUtils.trimToEmpty(request.getHeader(header));
 
-        // 唯一标识（指定key + url + 消息头）
+        // Unique identification (specify key + url + message header)
         String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
 
         Object sessionObj = redisCache.getCacheObject(cacheRepeatKey);
@@ -118,7 +104,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     }
 
     /**
-     * 判断参数是否相同
+     * Determine whether the parameters are the same
      */
     private boolean compareParams(Map<String, Object> nowMap, Map<String, Object> preMap)
     {
@@ -128,7 +114,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor
     }
 
     /**
-     * 判断两次间隔时间
+     * Determine the time between two times
      */
     private boolean compareTime(Map<String, Object> nowMap, Map<String, Object> preMap, int interval)
     {

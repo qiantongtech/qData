@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -61,7 +62,7 @@
 import variables from "@/assets/styles/system/variables.module.scss";
 import logo from "@/assets/images/system/logo/logo-qdata-white.png";
 import logo1 from "@/assets/images/system/logo/logo-qdata-grey.png";
-import simpLogo from "@/assets/images/system/logo/logo-qdata-sim.png"; //千数
+import simpLogo from "@/assets/images/system/logo/logo-qdata-sim.png"; //Thousands
 
 import useSettingsStore from "@/store/system/settings";
 import defaultSettings from "@/settings";
@@ -69,11 +70,11 @@ import { getContent } from "@/api/system/system/content";
 
 import {computed, ref as vueRef, nextTick} from "vue";
 
-// 使用 ref 来创建响应式的 logo
-const refLogo = ref(null); // 初始化 logo 为 simpLogo.png
-const refSimpLogo = ref(null); // 初始化 logo 为 simpLogo.png
+// Use ref to create a responsive logo
+const refLogo = ref(null); // Initialize logo to simpLogo.png
+const refSimpLogo = ref(null); // Initialize logo to simpLogo.png
 
-// 动画控制
+// animation control
 const logoIntroActive = ref(false);
 
 const props = defineProps({
@@ -109,7 +110,7 @@ onMounted(() => {
   }, 1800);
   fetchContent();
 });
-// 使用 getContent 来获取数据，而不是重新定义一个 getContent 函数
+// Use getContent to get data instead of redefining a getContent function
 const fetchContent = async () => {
   try {
     const res = await getContent(1);
@@ -120,7 +121,7 @@ const fetchContent = async () => {
       refSimpLogo.value = sysLogo ? sysLogo : simpLogo;
     }
 
-    // this.$message.success('内容加载成功');
+    // this.$message.success('Content loaded successfully');
   } catch (error) {
     refLogo.value = logo;
     refSimpLogo.value = simpLogo;
@@ -191,9 +192,9 @@ const sideTheme = computed(() => settingsStore.sideTheme);
   }
 }
 
-/* 入场动画：阶段1 淡入滑入+缩放 → 阶段2 缩放到位 → 阶段3 皮球回弹 */
+/* Entrance animation: Phase 1: Fade in and slide in + zoom → Phase 2: Zoom in place → Phase 3: Ball rebound */
 @keyframes logoEntrance {
-  /* 阶段1：从左淡入滑入，同时从小到大缩放 */
+  /* Stage 1: Fade in from left while zooming from small to large */
   0% {
     transform: translateX(-200px) scale(0.3);
     opacity: 0;

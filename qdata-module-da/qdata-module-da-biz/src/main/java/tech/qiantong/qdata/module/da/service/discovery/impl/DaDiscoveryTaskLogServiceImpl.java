@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.discovery.impl;
@@ -60,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据发现任务日志Service业务层处理
+ * Data Discovery Task Log Service business layer processing
  *
  * @author qdata
  * @date 2025-02-17
@@ -91,15 +77,15 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
 
     @Override
     public int updateDaDiscoveryTaskLog(DaDiscoveryTaskLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新数据发现任务日志
+        // Update data discovery task log
         DaDiscoveryTaskLogDO updateObj = BeanUtils.toBean(updateReqVO, DaDiscoveryTaskLogDO.class);
         return daDiscoveryTaskLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDaDiscoveryTaskLog(Collection<Long> idList) {
-        // 批量删除数据发现任务日志
+        // Batch delete data discovery task logs
         int i = daDiscoveryTaskLogMapper.deleteBatchIds(idList);
         for (Long id : idList) {
             iDaDiscoveryLogBodyService.deleteByPk(id);
@@ -124,24 +110,24 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
                 .collect(Collectors.toMap(
                         DaDiscoveryTaskLogDO::getId,
                         daDiscoveryTaskLogDO -> daDiscoveryTaskLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
 
 
         /**
-         * 导入数据发现任务日志数据
+         * Import data discovery task log data
          *
-         * @param importExcelList 数据发现任务日志数据列表
-         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-         * @param operName 操作用户
-         * @return 结果
+         * @param importExcelList Data discovery task log data list
+         * @param isUpdateSupport Whether to support update, if already exists, update the data
+         * @param operName Operating user
+         * @return result
          */
         @Override
         public String importDaDiscoveryTaskLog(List<DaDiscoveryTaskLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
             if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-                throw new ServiceException("da.error.import.empty", "导入数据不能为空！");
+                throw new ServiceException("da.error.import.empty", "Import data cannot be empty!");
             }
 
             int successNum = 0;
@@ -160,16 +146,16 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
                                 daDiscoveryTaskLogMapper.updateById(daDiscoveryTaskLogDO);
                                 successNum++;
                                 successMessages.add(MessageUtils.messageWithFallback("da.import.update.success",
-                                        "数据更新成功，ID为 " + daDiscoveryTaskLogId + " 的数据发现任务日志记录。", daDiscoveryTaskLogId, "数据发现任务日志"));
+                                        "Data update successful, ID {0} {1} record.", daDiscoveryTaskLogId, MessageUtils.messageWithFallback("da.entity.discovery.task.log", "Data discovery task log")));
                             } else {
                                 failureNum++;
                                 failureMessages.add(MessageUtils.messageWithFallback("da.import.update.fail",
-                                        "数据更新失败，ID为 " + daDiscoveryTaskLogId + " 的数据发现任务日志记录不存在。", daDiscoveryTaskLogId, "数据发现任务日志"));
+                                        "Data update failed, ID {0} {1} record does not exist.", daDiscoveryTaskLogId, MessageUtils.messageWithFallback("da.entity.discovery.task.log", "Data discovery task log")));
                             }
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.update.id.missing",
-                                    "数据更新失败，某条记录的ID不存在。"));
+                                    "Data update failed, record ID does not exist."));
                         }
                     } else {
                         QueryWrapper<DaDiscoveryTaskLogDO> queryWrapper = new QueryWrapper<>();
@@ -179,17 +165,17 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
                             daDiscoveryTaskLogMapper.insert(daDiscoveryTaskLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("da.import.insert.success",
-                                    "数据插入成功，ID为 " + daDiscoveryTaskLogId + " 的数据发现任务日志记录。", daDiscoveryTaskLogId, "数据发现任务日志"));
+                                    "Data insert successful, ID {0} {1} record.", daDiscoveryTaskLogId, MessageUtils.messageWithFallback("da.entity.discovery.task.log", "Data discovery task log")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("da.import.insert.fail",
-                                    "数据插入失败，ID为 " + daDiscoveryTaskLogId + " 的数据发现任务日志记录已存在。", daDiscoveryTaskLogId, "数据发现任务日志"));
+                                    "Data insert failed, ID {0} {1} record already exists.", daDiscoveryTaskLogId, MessageUtils.messageWithFallback("da.entity.discovery.task.log", "Data discovery task log")));
                         }
                     }
                 } catch (Exception e) {
                     failureNum++;
                     String errorMsg = MessageUtils.messageWithFallback("da.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                     failureMessages.add(errorMsg);
                     log.error(errorMsg, e);
                 }
@@ -198,12 +184,12 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
             if (failureNum > 0) {
                 String failureDetails = String.join("<br/>", failureMessages);
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.fail",
-                        "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                        "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                         failureNum, failureDetails));
                 throw new ServiceException("da.error.import.fail", resultMsg.toString(), resultMsg.toString());
             } else {
                 resultMsg.append(MessageUtils.messageWithFallback("da.import.result.success",
-                        "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                        "Congratulations! All data imported! Total: {0} records.", successNum));
             }
             return resultMsg.toString();
         }
@@ -216,7 +202,7 @@ public class DaDiscoveryTaskLogServiceImpl  extends ServiceImpl<DaDiscoveryTaskL
         if (redisService.hasKey(taskInstanceLogKey)) {
             content += redisService.get(taskInstanceLogKey) + "\n";
         } else {
-            //获取表中的日志
+            //Fetch log from table
             String logContent = iDaDiscoveryLogBodyService.getLog(id);
             if (logContent != null) {
                 content += logContent + "\n";

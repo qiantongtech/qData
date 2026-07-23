@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl.utils;
@@ -53,68 +39,68 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public final class RedisUtils {
 
-    // ================= 默认值（兼容历史任务数据） =================
+    // ================= Default value (compatible with historical mission data) =================
     private static final String DEFAULT_HOST = "redis";
-    /** 默认 Redis 端口 */
+    /** Default Redis port */
     private static final int DEFAULT_PORT = 6379;
-    /** 默认 Redis 数据库索引 */
+    /** Default Redis database index */
     private static final int DEFAULT_DATABASE = 0;
-    /** 默认连接超时时间（毫秒） */
+    /**Default connection timeout (milliseconds) */
     private static final int DEFAULT_TIMEOUT_MS = 5000;
-    /** 默认 Redis 密码（null 表示无密码） */
+    /** Default Redis password (null means no password) */
     private static final String DEFAULT_PASSWORD = "J98%FHF#9h@e88h9fre9";
 
-    /** 心跳周期（秒）。想关掉心跳就设为 0 或负数 */
+    /** Heartbeat period (seconds). If you want to turn off the heartbeat, set it to 0 or a negative number */
     private static final int DEFAULT_HEARTBEAT_SECONDS = 10;
 
     private static volatile RedisClient client;
     private static volatile StatefulRedisConnection<String, String> conn;
-    /** 缓存上次 init 的配置，断线可自动重连 */
+    /** Cache the configuration of the last init, and automatically reconnect when disconnected */
     private static volatile JSONObject lastConfig;
 
-    /** 心跳线程（单线程守护） */
+    /** Heartbeat thread (single-threaded daemon) */
     private static volatile ScheduledExecutorService heartbeatExec;
     private static volatile ScheduledFuture<?> heartbeatTask;
 
     private RedisUtils() {}
 
-    // ======= 初始化 / 关闭 =======
+    // ======= Initialization / Shutdown =======
 
-    /** 幂等初始化；支持 host/port/database/password/timeoutMs/heartbeatSeconds */
+    /** Idempotent initialization; supports host/port/database/password/timeoutMs/heartbeatSeconds */
     public static synchronized void init(JSONObject config) {
-        // 缓存配置
+        // Cache configuration
         lastConfig = (config == null) ? new JSONObject() : new JSONObject(config);
 
-        // 先关闭旧连接（如果存在）
+        // Close the old connection first (if it exists)
         internalClose(false);
 
-        // 构造 URI
+        // Construct URI
         RedisURI uri = buildUri(lastConfig);
 
-        // 建 client + 基本高可用选项
+        // Build client + basic high availability options
         client = RedisClient.create(uri);
         client.setOptions(ClientOptions.builder()
-                .autoReconnect(true)                 // 关键：自动重连
-                .pingBeforeActivateConnection(true)  // 建连前 PING，提高首次可用性
-                .timeoutOptions(TimeoutOptions.enabled()) // 让超时能触发重连
+                .autoReconnect(true)                 // Key: Automatic reconnection
+                .pingBeforeActivateConnection(true)  // PING before establishing a connection to improve first-time availability
+                .timeoutOptions(TimeoutOptions.enabled()) // Allow timeout to trigger reconnection
                 .build());
 
-        // 建连接
+        // Establish a connection
         conn = client.connect();
         log.info("[Redis] connected to {}:{}, db={}, timeout={}ms",
                 uri.getHost(), uri.getPort(), uri.getDatabase(), uri.getTimeout().toMillis());
 
-        // 心跳（可选）
+        // Heartbeat (optional)
         int hb = getInt(lastConfig, "heartbeatSeconds", DEFAULT_HEARTBEAT_SECONDS);
         startHeartbeat(hb);
     }
 
-    /** 是否已连接可用 */
+    /** Whether the connection is available */
     public static boolean isReady() {
         return client != null && conn != null && conn.isOpen();
     }
 
-    /** 优雅关闭（进程退出前调用一次即可） */
+    /** Graceful shutdown (just call it once before the process exits) */
     public static synchronized void close() {
         stopHeartbeat();
         internalClose(true);
@@ -226,14 +212,14 @@ public final class RedisUtils {
         }
     }
 
-    // ======= 核心保障：懒加载 + 自动重连 =======
+    // ======= Core guarantee: lazy loading + automatic reconnect =======
 
     private static RedisCommands<String, String> cmd() {
         ensureReady();
         try {
             return conn.sync();
         } catch (Exception e) {
-            // 极端情况下再重连一次
+            // In extreme cases, reconnect again
             log.warn("[Redis] sync() failed, retry reconnect once. cause={}", e.toString());
             reconnectOnce();
             return conn.sync();
@@ -268,7 +254,7 @@ public final class RedisUtils {
         }
     }
 
-    // ======= 心跳（可选，一行配置即可开启） =======
+    // ======= Heartbeat (optional, one line of configuration can enable it) =======
 
     private static synchronized void startHeartbeat(int seconds) {
         stopHeartbeat();
@@ -284,7 +270,7 @@ public final class RedisUtils {
         heartbeatTask = heartbeatExec.scheduleAtFixedRate(() -> {
             try {
                 ensureReady();
-                conn.async().ping(); // 异步 PING，轻量保活
+                conn.async().ping(); // Asynchronous PING, lightweight keep-alive
             } catch (Exception e) {
                 log.warn("[Redis] heartbeat ping failed: {}", e.toString());
             }
@@ -305,7 +291,7 @@ public final class RedisUtils {
         }
     }
 
-    // ======= 工具 =======
+    // ======= Tools =======
 
     private static RuntimeException wrap(String op, Exception e) {
         return new RuntimeException("[Redis] " + op + " failed: " + e.getMessage(), e);
@@ -337,7 +323,7 @@ public final class RedisUtils {
         try { return cfg.getIntValue(k); } catch (Exception ignore) { return defVal; }
     }
 
-    // ======= 自测 =======
+    // ======= Self-test =======
 
     public static void main(String[] args) throws Exception {
         JSONObject cfg = new JSONObject();
@@ -345,7 +331,7 @@ public final class RedisUtils {
         cfg.put("port", 12138);
         cfg.put("database", 0);
         cfg.put("timeoutMs", 3000);
-        cfg.put("heartbeatSeconds", 60); // 打开保活（可不配）
+        cfg.put("heartbeatSeconds", 60); // Turn on keep-alive (optional)
 
         RedisUtils.init(cfg);
         try {
@@ -358,7 +344,7 @@ public final class RedisUtils {
             RedisUtils.hset("demo:hash", map);
             System.out.println("HGETALL demo:hash = " + RedisUtils.hgetAll("demo:hash"));
 
-            // 模拟长时间空闲：几小时后再调用也会自动保活/重连
+            // Simulate long-term idle time: calling again after a few hours will automatically keep alive/reconnect
             // Thread.sleep(TimeUnit.HOURS.toMillis(2));
             // System.out.println("GET again = " + RedisUtils.get("demo:key"));
         } finally {

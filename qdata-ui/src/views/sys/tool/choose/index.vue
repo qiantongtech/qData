@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -39,9 +40,9 @@
       </template>
     </el-input>
 
-    <!-- 单选  字典管理 -->
+    <!-- Single choice dictionary management -->
     <Current ref="dictRef1" @confirm="radioSubmit" />
-    <!-- 多选  字典管理 -->
+    <!-- Multiple selection dictionary management -->
     <Selection ref="dictRef2" @confirm="checkSubmit" />
   </div>
 </template>
@@ -57,7 +58,7 @@ const input2 = ref("");
 const radioVal = ref(null);
 const checkVal = ref([]);
 
-// 单选
+// Single choice
 function radioShow() {
   dictRef1.value.open(radioVal.value);
 }
@@ -67,7 +68,7 @@ function radioSubmit(val) {
   input1.value = val.dictName;
 }
 
-// 多选
+// Multiple choice
 function checkShow() {
   dictRef2.value.open(checkVal.value);
 }

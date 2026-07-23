@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl.utils.db.element;
@@ -56,7 +42,7 @@ public class DateDataColumn extends DataColumn {
     }
 
     /**
-     * 构建值为time(java.sql.Time)的DateColumn，使用Date子类型为TIME，只有时间，没有日期
+     * Construct a DateColumn with value time(java.sql.Time), using Date subtype as TIME, only time, no date
      */
     public DateDataColumn(Time time, int nanos, int jdbcPrecision) {
         this(time);
@@ -88,29 +74,29 @@ public class DateDataColumn extends DataColumn {
     }
 
     /**
-     * 构建值为null的DateColumn，使用Date子类型为DATETIME
+     * Construct a DateColumn with a null value, using the Date subtype DATETIME
      */
     public DateDataColumn() {
         this((Long) null);
     }
 
     /**
-     * 构建值为stamp(Unix时间戳)的DateColumn，使用Date子类型为DATETIME
-     * 实际存储有date改为long的ms，节省存储
+     * Construct a DateColumn whose value is stamp (Unix timestamp), using the Date subtype as DATETIME
+     * The actual stored date is changed to long ms, which saves storage.
      */
     public DateDataColumn(final Long stamp) {
         super(stamp, Type.DATE, (null == stamp ? 0 : 8));
     }
 
     /**
-     * 构建值为date(java.util.Date)的DateColumn，使用Date子类型为DATETIME
+     * Construct a DateColumn whose value is date(java.util.Date), using the Date subtype as DATETIME
      */
     public DateDataColumn(final Date date) {
         this(date == null ? null : date.getTime());
     }
 
     /**
-     * 构建值为date(java.sql.Date)的DateColumn，使用Date子类型为DATE，只有日期，没有时间
+     * Construct a DateColumn whose value is date(java.sql.Date), using the Date subtype as DATE, with only date and no time
      */
     public DateDataColumn(final java.sql.Date date) {
         this(date == null ? null : date.getTime());
@@ -118,7 +104,7 @@ public class DateDataColumn extends DataColumn {
     }
 
     /**
-     * 构建值为time(java.sql.Time)的DateColumn，使用Date子类型为TIME，只有时间，没有日期
+     * Construct a DateColumn with value time(java.sql.Time), using Date subtype as TIME, only time, no date
      */
     public DateDataColumn(final Time time) {
         this(time == null ? null : time.getTime());
@@ -126,7 +112,7 @@ public class DateDataColumn extends DataColumn {
     }
 
     /**
-     * 构建值为ts(java.sql.Timestamp)的DateColumn，使用Date子类型为DATETIME
+     * Construct a DateColumn with value ts(java.sql.Timestamp), using Date subtype as DATETIME
      */
     public DateDataColumn(final java.sql.Timestamp ts) {
         this(ts == null ? null : ts.getTime());
@@ -144,7 +130,7 @@ public class DateDataColumn extends DataColumn {
         try {
             return ColumnCast.date2String(this);
         } catch (Exception e) {
-            throw DBException.asDataXException(String.format("Date[%s]类型不能转为String .", this.toString()));
+            throw DBException.asDataXException(String.format("Date[%s] cannot be converted to String.", this.toString()));
         }
     }
 
@@ -164,27 +150,27 @@ public class DateDataColumn extends DataColumn {
 
     @Override
     public byte[] asBytes() {
-        throw DBException.asDataXException("Date类型不能转为Bytes .");
+        throw DBException.asDataXException("Date cannot be converted to Bytes.");
     }
 
     @Override
     public Boolean asBoolean() {
-        throw DBException.asDataXException("Date类型不能转为Boolean .");
+        throw DBException.asDataXException("Date cannot be converted to Boolean.");
     }
 
     @Override
     public Double asDouble() {
-        throw DBException.asDataXException("Date类型不能转为Double .");
+        throw DBException.asDataXException("Date cannot be converted to Double.");
     }
 
     @Override
     public BigInteger asBigInteger() {
-        throw DBException.asDataXException("Date类型不能转为BigInteger .");
+        throw DBException.asDataXException("Date cannot be converted to BigInteger.");
     }
 
     @Override
     public BigDecimal asBigDecimal() {
-        throw DBException.asDataXException("Date类型不能转为BigDecimal .");
+        throw DBException.asDataXException("Date cannot be converted to BigDecimal.");
     }
 
     public DateType getSubType() {

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
@@ -78,7 +64,7 @@ import tech.qiantong.qdata.module.dpp.service.qa.IDppQualityTaskObjService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 
 /**
- * 评测规则结果Service业务层处理
+ * Evaluation Rule Result Service business layer processing
  *
  * @author qdata
  * @date 2025-07-21
@@ -120,15 +106,15 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 
     @Override
     public int updateDppEvaluateLog(DppEvaluateLogSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
 
-        // 更新评测规则结果
+        // Update evaluation rule result
         DppEvaluateLogDO updateObj = BeanUtils.toBean(updateReqVO, DppEvaluateLogDO.class);
         return dppEvaluateLogMapper.updateById(updateObj);
     }
     @Override
     public int removeDppEvaluateLog(Collection<Long> idList) {
-        // 批量删除评测规则结果
+        // Batch delete evaluation rule result
         return dppEvaluateLogMapper.deleteBatchIds(idList);
     }
 
@@ -149,7 +135,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                 .collect(Collectors.toMap(
                         DppEvaluateLogDO::getId,
                         dppEvaluateLogDO -> dppEvaluateLogDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing
                 ));
     }
@@ -158,7 +144,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
     public Map<String, Object> sumTotalAndProblemTotalByTaskLogId(String taskLogId) {
         List<DppEvaluateLogDO> list = dppEvaluateLogMapper.selectList(new LambdaQueryWrapperX<DppEvaluateLogDO>()
                 .eq(DppEvaluateLogDO::getTaskLogId, taskLogId)
-                .eq(DppEvaluateLogDO::getValidFlag, "1")); // 如有需要加条件
+                .eq(DppEvaluateLogDO::getValidFlag, "1")); // Add conditions if needed
 
         Long total = list.stream()
                 .mapToLong(log -> log.getTotal() == null ? 0L : log.getTotal())
@@ -176,17 +162,17 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 
 
     /**
-     * 导入评测规则结果数据
+     * Import evaluation rule result data
      *
-     * @param importExcelList 评测规则结果数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList evaluation rule result data list
+     * @param isUpdateSupport whether to support update; if already exists, update the data
+     * @param operName operator user
+     * @return result
      */
     @Override
     public String importDppEvaluateLog(List<DppEvaluateLogRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dpp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dpp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -205,16 +191,16 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                             dppEvaluateLogMapper.updateById(dppEvaluateLogDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dpp.import.update.success",
-                                    "数据更新成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。", dppEvaluateLogId, "评测规则结果"));
+                                    "Data update successful, ID {0} {1} record.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.fail",
-                                    "数据更新失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录不存在。", dppEvaluateLogId, "评测规则结果"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DppEvaluateLogDO> queryWrapper = new QueryWrapper<>();
@@ -224,17 +210,17 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
                         dppEvaluateLogMapper.insert(dppEvaluateLogDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.success",
-                                "数据插入成功，ID为 " + dppEvaluateLogId + " 的评测规则结果记录。", dppEvaluateLogId, "评测规则结果"));
+                                "Data insert successful, ID {0} {1} record.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dpp.import.insert.fail",
-                                "数据插入失败，ID为 " + dppEvaluateLogId + " 的评测规则结果记录已存在。", dppEvaluateLogId, "评测规则结果"));
+                                "Data insert failed, ID {0} {1} record already exists.", dppEvaluateLogId, MessageUtils.messageWithFallback("dpp.entity.evaluation.rule.result", "Evaluation rule result")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dpp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -243,12 +229,12 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dpp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dpp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -274,7 +260,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
             return dppEvaluateDimStatVOS;
         }
 
-        // 4) 以维度为 Key 的上次“问题占比”基线
+        // 4) Previous “problem proportion” baseline keyed by dimension
         Map<String, BigDecimal> prevProportionMap = new HashMap<>(prevList.size() * 2);
         for (DppEvaluateLogStatisticsVO vo : prevList) {
             BigDecimal val = vo.getProportion() == null ? BigDecimal.ZERO : vo.getProportion();
@@ -318,7 +304,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 //                break;
 //            }
 //        }
-//        // 最新的
+//        // Latest
 //        Long problemTotalAll = 0L;
 //        List<DppEvaluateLogDO> taskLogId = dppEvaluateLogMapper.selectList("task_log_id", id);
 //        Map<String, List<DppEvaluateLogDO>> collect = taskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
@@ -326,7 +312,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 //            problemTotalAll += aDo.getProblemTotal();
 //        }
 //
-//        // 老的
+//        // Previous
 //        List<DppEvaluateLogDO> oldTaskLogId = dppEvaluateLogMapper.selectList("task_log_id", old.getId());
 //        Map<String, List<DppEvaluateLogDO>> oldCollect = oldTaskLogId.stream().collect(Collectors.groupingBy(s -> s.getDimensionType()));
 //        for (DppEvaluateLogDO aDo : oldTaskLogId) {
@@ -354,7 +340,7 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
 //                for (DppEvaluateLogDO dppEvaluateLogDO : dppEvaluateLogDOS) {
 //                    oldProblemTotal += dppEvaluateLogDO.getProblemTotal();
 //                }
-//                // 趋势 0：下降，1：上升
+//                // Trend: 0=down, 1=up
 //                if (problemTotal > oldProblemTotal) {
 //                    vo.setTrendType(0L);
 //                } else {
@@ -381,26 +367,26 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         switch (type) {
             case 0:
-                // 循环生成最近 7 天的日期
+                // Generate dates for the last 7 days
                 for (int i = 0; i < 7; i++) {
                     LocalDate date = today.minusDays(i);
-                    // 格式化日期并添加到列表中
+                    // Format date and add to list
                     lastSevenDays.add(date.format(formatter));
                 }
                 break;
             case 1:
-                // 循环生成最近 15 天的日期
+                // Generate dates for the last 15 days
                 for (int i = 0; i < 15; i++) {
                     LocalDate date = today.minusDays(i);
-                    // 格式化日期并添加到列表中
+                    // Format date and add to list
                     lastSevenDays.add(date.format(formatter));
                 }
                 break;
             case 2:
-                // 循环生成最近 30 天的日期
+                // Generate dates for the last 30 days
                 for (int i = 0; i < 30; i++) {
                     LocalDate date = today.minusDays(i);
-                    // 格式化日期并添加到列表中
+                    // Format date and add to list
                     lastSevenDays.add(date.format(formatter));
                 }
                 break;
@@ -514,11 +500,11 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
         HeaderEntity headerEntity = new HeaderEntity();
         headerEntity.setKey("Content-Type");
         headerEntity.setValue("application/json");
-        headers.add(headerEntity);  // 设置请求头
+        headers.add(headerEntity);  // Set request headers
         try {
             String fullUrl = url + "/pageErrorData";
 
-            // 将对象转为 JSON Map 发送 POST 请求（RequestBody）
+            // Convert object to JSON Map and send POST request (RequestBody)
             Map<String, Object> paramMap = JSONObject.parseObject(JSONObject.toJSONString(checkErrorDataReqDTO), Map.class);
 
             HttpUtils.ResponseObject responseObject = HttpUtils.sendPost(fullUrl, paramMap, headers);
@@ -545,12 +531,12 @@ public class DppEvaluateLogServiceImpl  extends ServiceImpl<DppEvaluateLogMapper
             String fullUrl = url + "/updateErrorData";
             Map<String, Object> paramMap = JSONObject.parseObject(JSONObject.toJSONString(checkErrorDataReqDTO), Map.class);
 
-            // 发送 POST 请求（带 JSON 请求体）
+            // Send POST request (with JSON request body)
             HttpUtils.ResponseObject responseObject = HttpUtils.sendPost(fullUrl, paramMap, headers);
-            System.out.println("修改响应：" + responseObject);
+            System.out.println("Update response: " + responseObject);
 
             JSONObject result = JSONObject.parseObject(String.valueOf(responseObject.getBody()));
-            return result.getBoolean("data"); // CommonResult.data 为 true/false
+            return result.getBoolean("data"); // CommonResult.data is true/false
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -5,7 +5,7 @@ import lombok.Data;
 import tech.qiantong.qdata.common.core.page.PageParam;
 
 /**
- * 业务域 Request VO 对象 MC_DOMAIN
+ * Business domain Request VO object MC_DOMAIN
  *
  * @author qdata
  * @date 2026-02-12

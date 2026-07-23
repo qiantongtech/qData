@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.sensitiveLevel;
@@ -43,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 敏感等级Service接口
+ * Sensitive Level Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -51,72 +37,72 @@ import java.util.Map;
 public interface IDaSensitiveLevelService extends IService<DaSensitiveLevelDO> {
 
     /**
-     * 获得敏感等级分页列表
+     * Get sensitive level page list
      *
-     * @param pageReqVO 分页请求
-     * @return 敏感等级分页列表
+     * @param pageReqVO page request
+     * @return sensitive level page list
      */
     PageResult<DaSensitiveLevelDO> getDaSensitiveLevelPage(DaSensitiveLevelPageReqVO pageReqVO);
 
     /**
-     * 创建敏感等级
+     * Create sensitive level
      *
-     * @param createReqVO 敏感等级信息
-     * @return 敏感等级编号
+     * @param createReqVO sensitive level info
+     * @return sensitive level ID
      */
     Long createDaSensitiveLevel(DaSensitiveLevelSaveReqVO createReqVO);
 
     /**
-     * 更新敏感等级
+     * Update sensitive level
      *
-     * @param updateReqVO 敏感等级信息
+     * @param updateReqVO sensitive level info
      */
     int updateDaSensitiveLevel(DaSensitiveLevelSaveReqVO updateReqVO);
 
     /**
-     * 删除敏感等级
+     * Delete sensitive level
      *
-     * @param idList 敏感等级编号
+     * @param idList sensitive level ID list
      */
     int removeDaSensitiveLevel(Collection<Long> idList);
 
     /**
-     * 获得敏感等级详情
+     * Get sensitive level details
      *
-     * @param id 敏感等级编号
-     * @return 敏感等级
+     * @param id sensitive level ID
+     * @return sensitive level
      */
     DaSensitiveLevelDO getDaSensitiveLevelById(Long id);
 
     /**
-     * 获得全部敏感等级列表
+     * Get all sensitive level list
      *
-     * @return 敏感等级列表
+     * @return sensitive level list
      */
     List<DaSensitiveLevelDO> getDaSensitiveLevelList();
 
     /**
-     * 获得全部敏感等级 Map
+     * Get all sensitive level Map
      *
-     * @return 敏感等级 Map
+     * @return sensitive level Map
      */
     Map<Long, DaSensitiveLevelDO> getDaSensitiveLevelMap();
 
 
     /**
-     * 导入敏感等级数据
+     * Import sensitive level data
      *
-     * @param importExcelList 敏感等级数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList sensitive level data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaSensitiveLevel(List<DaSensitiveLevelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 修改状态
-     * @param id 主键
-     * @param status 状态值
+     * Modify status
+     * @param id primary key
+     * @param status status value
      * @return
      */
     Boolean updateStatus(Long id, Long status);

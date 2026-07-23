@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.controller.admin.system;
@@ -64,7 +50,7 @@ import javax.annotation.Resource;
 import static tech.qiantong.qdata.common.utils.SecurityUtils.getLoginUser;
 
 /**
- * 公告 信息操作处理
+ * Notice message handler
  *
  * @author qdata
  */
@@ -80,7 +66,7 @@ public class SysNoticeController extends BaseController
     private IMessageService messageService;
 
     /**
-     * 获取通知公告列表
+     * Get notice list
      */
     @GetMapping("/list")
     public TableDataInfo list(SysNotice notice)
@@ -92,7 +78,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 获取通知公告列表(排序后)
+     * Get notice list (sorted)
      */
 //    @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/sortList")
@@ -110,7 +96,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 获取弹框公告
+     * Get popup notice
      * @return
      */
     @GetMapping("/alertNotice")
@@ -129,7 +115,7 @@ public class SysNoticeController extends BaseController
 
 
     /**
-     * 根据通知公告编号获取详细信息
+     * Get notice details by ID
      */
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/one")
@@ -138,14 +124,14 @@ public class SysNoticeController extends BaseController
         return success(noticeService.selectNoticeById(noticeId));
     }
     /**
-     * 新增通知公告
+     * Add notice
      */
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
-    @Log(title = "通知公告", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysNotice notice)
     {
-        //测试 消息通知
+        // Test message notification
         MessagePageReqVO messagePageReqVO = new MessagePageReqVO();
         messagePageReqVO.setContent(notice.getNoticeContent());
         messagePageReqVO.setTitle(notice.getNoticeTitle());
@@ -158,10 +144,10 @@ public class SysNoticeController extends BaseController
     }
 
     /**
-     * 修改通知公告
+     * Edit notice/announcement
      */
     @PreAuthorize("@ss.hasPermi('system:notice:edit')")
-    @Log(title = "通知公告", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysNotice notice)
     {
@@ -174,12 +160,12 @@ public class SysNoticeController extends BaseController
         webSocketMessageServer.broadcastMessage(messagePageReqVO);
 
         MessageDO messageDO = new MessageDO();
-        // 设置模版基本数据
+        // Set template basic data
         messageDO.setCategory(Integer.valueOf(0));
         messageDO.setMsgLevel(Integer.valueOf(0));
-        messageDO.setTitle("测试");
-        // 实际消息
-        messageDO.setContent("测试内容");
+        messageDO.setTitle("Test");
+        // Actual message
+        messageDO.setContent("Test content");
 
 //        messageDO.setCreatorId(getLoginUser().getUserId());
 //        messageDO.setCreateBy(getLoginUser().getUser().getNickName());
@@ -189,10 +175,10 @@ public class SysNoticeController extends BaseController
     }
 
     /**
-     * 删除通知公告
+     * Delete notice/announcement
      */
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
-    @Log(title = "通知公告", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.system.notice", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
     public AjaxResult remove(@PathVariable Long[] noticeIds)
     {

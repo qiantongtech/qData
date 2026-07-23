@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.file;
@@ -47,7 +33,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 文件处理工具类
+ * File processing tools
  *
  * @author qdata
  */
@@ -56,10 +42,10 @@ public class FileUtils
     public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
 
     /**
-     * 输出指定文件的byte数组
+     * Output the byte array of the specified file
      *
-     * @param filePath 文件路径
-     * @param os 输出流
+     * @param filePath file path
+     * @param os output stream
      * @return
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException
@@ -92,11 +78,11 @@ public class FileUtils
     }
 
     /**
-     * 写数据到文件中
+     * Write data to file
      *
-     * @param data 数据
-     * @return 目标文件
-     * @throws IOException IO异常
+     * @param data data
+     * @return target file
+     * @throws IOException IO exception
      */
     public static String writeImportBytes(byte[] data) throws IOException
     {
@@ -104,12 +90,12 @@ public class FileUtils
     }
 
     /**
-     * 写数据到文件中
+     * Write data to file
      *
-     * @param data 数据
-     * @param uploadDir 目标文件
-     * @return 目标文件
-     * @throws IOException IO异常
+     * @param data data
+     * @param uploadDir target file
+     * @return target file
+     * @throws IOException IO exception
      */
     public static String writeBytes(byte[] data, String uploadDir) throws IOException
     {
@@ -131,16 +117,16 @@ public class FileUtils
     }
 
     /**
-     * 删除文件
+     * Delete files
      *
-     * @param filePath 文件
+     * @param filePath file
      * @return
      */
     public static boolean deleteFile(String filePath)
     {
         boolean flag = false;
         File file = new File(filePath);
-        // 路径为文件且不为空则进行删除
+        // Delete if the path is a file and is not empty
         if (file.isFile() && file.exists())
         {
             flag = file.delete();
@@ -149,10 +135,10 @@ public class FileUtils
     }
 
     /**
-     * 文件名称验证
+     * File name verification
      *
-     * @param filename 文件名称
-     * @return true 正常 false 非法
+     * @param filename file name
+     * @return true normal false illegal
      */
     public static boolean isValidFilename(String filename)
     {
@@ -160,35 +146,35 @@ public class FileUtils
     }
 
     /**
-     * 检查文件是否可下载
+     * Check if the file is downloadable
      *
-     * @param resource 需要下载的文件
-     * @return true 正常 false 非法
+     * @param resource The file to be downloaded
+     * @return true normal false illegal
      */
     public static boolean checkAllowDownload(String resource)
     {
-        // 禁止目录上跳级别
+        // Disable directory level jumps
         if (StringUtils.contains(resource, ".."))
         {
             return false;
         }
 
-        // 检查允许下载的文件规则
+        // Check the rules for files allowed to download
         if (ArrayUtils.contains(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource)))
         {
             return true;
         }
 
-        // 不在允许下载的文件规则
+        // Rules for files that are no longer allowed to be downloaded
         return false;
     }
 
     /**
-     * 下载文件名重新编码
+     * Download file name re-encoding
      *
-     * @param request 请求对象
-     * @param fileName 文件名
-     * @return 编码后的文件名
+     * @param request request object
+     * @param fileName file name
+     * @return encoded file name
      */
     public static String setFileDownloadHeader(HttpServletRequest request, String fileName) throws UnsupportedEncodingException
     {
@@ -196,33 +182,33 @@ public class FileUtils
         String filename = fileName;
         if (agent.contains("MSIE"))
         {
-            // IE浏览器
+            // Internet Explorer
             filename = URLEncoder.encode(filename, "utf-8");
             filename = filename.replace("+", " ");
         }
         else if (agent.contains("Firefox"))
         {
-            // 火狐浏览器
+            // Firefox
             filename = new String(fileName.getBytes(), "ISO8859-1");
         }
         else if (agent.contains("Chrome"))
         {
-            // google浏览器
+            // google browser
             filename = URLEncoder.encode(filename, "utf-8");
         }
         else
         {
-            // 其它浏览器
+            // Other browsers
             filename = URLEncoder.encode(filename, "utf-8");
         }
         return filename;
     }
 
     /**
-     * 下载文件名重新编码
+     * Download file name re-encoding
      *
-     * @param response 响应对象
-     * @param realFileName 真实文件名
+     * @param response response object
+     * @param realFileName real file name
      */
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException
     {
@@ -242,10 +228,10 @@ public class FileUtils
     }
 
     /**
-     * 百分号编码工具方法
+     * Percent encoding tool method
      *
-     * @param s 需要百分号编码的字符串
-     * @return 百分号编码后的字符串
+     * @param s requires percent-encoded string
+     * @return percent-encoded string
      */
     public static String percentEncode(String s) throws UnsupportedEncodingException
     {
@@ -254,10 +240,10 @@ public class FileUtils
     }
 
     /**
-     * 获取图像后缀
+     * Get image suffix
      *
-     * @param photoByte 图像数据
-     * @return 后缀名
+     * @param photoByte image data
+     * @return suffix name
      */
     public static String getFileExtendName(byte[] photoByte)
     {
@@ -283,10 +269,10 @@ public class FileUtils
     }
 
     /**
-     * 获取文件名称 /profile/upload/2022/04/16/qdata.png -- qdata.png
+     * Get the file name /profile/upload/2022/04/16/qdata.png -- qdata.png
      *
-     * @param fileName 路径名称
-     * @return 没有文件路径的名称
+     * @param fileName path name
+     * @return name without file path
      */
     public static String getName(String fileName)
     {
@@ -301,10 +287,10 @@ public class FileUtils
     }
 
     /**
-     * 获取不带后缀文件名称 /profile/upload/2022/04/16/qdata.png -- qdata
+     * Get the file name without suffix /profile/upload/2022/04/16/qdata.png -- qdata
      *
-     * @param fileName 路径名称
-     * @return 没有文件路径和后缀的名称
+     * @param fileName path name
+     * @return name without file path and suffix
      */
     public static String getNameNotSuffix(String fileName)
     {

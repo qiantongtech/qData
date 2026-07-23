@@ -1,5 +1,5 @@
 <template>
-    <!-- 不带！的 -->
+    <!-- No! of -->
   <el-form-item v-bind="$attrs">
     <template #default="scope">
       <div class="default-wrap">

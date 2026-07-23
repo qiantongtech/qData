@@ -1,23 +1,24 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
     <div class="node-component">
-        <!-- 上半部分 -->
+        <!-- upper part -->
         <div class="node-top">
             <img :src="iconWhite" class="node-icon" alt="icon" />
             <div class="node-status-wrapper">
@@ -25,7 +26,7 @@
                 <div class="status-info">{{ statusTip }}</div>
             </div>
         </div>
-        <!-- 下半部分 -->
+        <!-- lower part -->
         <div class="node-bottom" @click.stop="emitClick">{{ nodeData.name }}</div>
     </div>
 </template>
@@ -42,16 +43,16 @@ let props = defineProps({
     styletype: Number,
 });
 if (!node) {
-    console.warn("NodeView: 没有获取到节点实例")
+    console.warn("NodeView: node instance not found")
 }
 
-// 响应式节点数据
+// Responsive node data
 const nodeData = ref(node ? node.getData() : {})
 
-// 监听数据变化
+// Monitor data changes
 const handleChangeData = ({ current }) => {
     nodeData.value = { ...current }
-    console.log("节点数据更新:", nodeData.value)
+    console.log("Node data updated:", nodeData.value)
 }
 
 if (node) {
@@ -62,7 +63,7 @@ onBeforeUnmount(() => {
     if (node) node.off("change:data", handleChangeData)
 })
 
-// 图标处理
+// Icon handling
 const icon = computed(() => nodeData.value.taskParams?.icon || nodeData.value.icon || "/img/icon-default.png")
 
 const iconWhite = computed(() => {
@@ -79,13 +80,13 @@ const iconWhite = computed(() => {
     return newIcon
 })
 
-// 状态配置
+// Status configuration
 const toolbar = [
-    { id: "1", icon: "zzzx", tip: td('dpp.node.statusExecuting', '正在执行') },
-    { id: "5", icon: "tz", tip: td('dpp.node.statusStopped', '停止') },
-    { id: "6", icon: "sb", tip: td('dpp.node.statusFailed', '失败') },
-    { id: "7", icon: "cg", tip: td('dpp.node.statusSuccess', '成功') },
-    { id: "14", icon: "dd", tip: td('dpp.node.statusWaiting', '等待') },
+    { id: "1", icon: "icon-zzzx", tip: td('dpp.node.statusExecuting', 'Executing') },
+    { id: "5", icon: "icon-tz", tip: td('dpp.node.statusStopped', 'Stopped') },
+    { id: "6", icon: "icon-status-sb", tip: td('dpp.node.statusFailed', 'Failed') },
+    { id: "7", icon: "icon-status-cg", tip: td('dpp.node.statusSuccess', 'Succeeded') },
+    { id: "14", icon: "icon-dd", tip: td('dpp.node.statusWaiting', 'Waiting') },
 ]
 
 const statusItem = computed(() => {
@@ -94,10 +95,10 @@ const statusItem = computed(() => {
 
 const statusIcon = computed(() => {
     const iconFile = statusItem.value ? statusItem.value.icon : "default"
-    return new URL(`/src/assets/dpp/etl/${iconFile}.svg`, import.meta.url).href
+    return new URL(`/src/assets/images/dpp/etl/${iconFile}.svg`, import.meta.url).href
 })
 
-const statusTip = computed(() => statusItem.value?.tip || td('dpp.node.unknownStatus', '未知状态'))
+const statusTip = computed(() => statusItem.value?.tip || td('dpp.node.unknownStatus', 'Unknown Status'))
 
 const emitClick = () => {
     emits("nodeClick", nodeData.value)

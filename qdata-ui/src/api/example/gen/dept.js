@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询示例部门列表
+// Query sample department list
 export function listDept(query) {
   return request({
     url: '/example/dept/list',
@@ -26,7 +27,7 @@ export function listDept(query) {
   })
 }
 
-// 查询示例部门详细
+// Query example department details
 export function getDept(id) {
   return request({
     url: '/example/dept/' + id,
@@ -34,7 +35,7 @@ export function getDept(id) {
   })
 }
 
-// 新增示例部门
+// Add example department
 export function addDept(data) {
   return request({
     url: '/example/dept',
@@ -43,7 +44,7 @@ export function addDept(data) {
   })
 }
 
-// 修改示例部门
+// Modify sample department
 export function updateDept(data) {
   return request({
     url: '/example/dept',
@@ -52,7 +53,7 @@ export function updateDept(data) {
   })
 }
 
-// 删除示例部门
+// Delete example department
 export function delDept(id) {
   return request({
     url: '/example/dept/' + id,

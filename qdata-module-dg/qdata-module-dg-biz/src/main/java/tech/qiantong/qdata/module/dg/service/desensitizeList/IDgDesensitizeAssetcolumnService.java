@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dg.service.desensitizeList;
@@ -42,7 +28,7 @@ import tech.qiantong.qdata.module.dg.controller.admin.desensitizeList.vo.DgDesen
 import tech.qiantong.qdata.module.dg.controller.admin.desensitizeList.vo.DgDesensitizeAssetcolumnPageReqVO;
 import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitizeAssetcolumnDO;
 /**
- * 脱敏清单关联关系Service接口
+ * Desensitize List Relationship Service Interface
  *
  * @author qdata
  * @date 2026-04-12
@@ -50,67 +36,67 @@ import tech.qiantong.qdata.module.dg.dal.dataobject.desensitizeList.DgDesensitiz
 public interface IDgDesensitizeAssetcolumnService extends IService<DgDesensitizeAssetcolumnDO> {
 
     /**
-     * 获得脱敏清单关联关系分页列表
+     * Get Desensitize List Relationship Page
      *
-     * @param pageReqVO 分页请求
-     * @return 脱敏清单关联关系分页列表
+     * @param pageReqVO Page request
+     * @return Desensitize List Relationship Page
      */
     PageResult<DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnPage(DgDesensitizeAssetcolumnPageReqVO pageReqVO);
 
     /**
-     * 创建脱敏清单关联关系
+     * Create Desensitize List Relationship
      *
-     * @param createReqVO 脱敏清单关联关系信息
-     * @return 脱敏清单关联关系编号
+     * @param createReqVO Desensitize List Relationship info
+     * @return Desensitize List Relationship ID
      */
     Long createDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO createReqVO);
 
     /**
-     * 更新脱敏清单关联关系
+     * Update Desensitize List Relationship
      *
-     * @param updateReqVO 脱敏清单关联关系信息
+     * @param updateReqVO Desensitize List Relationship info
      */
     int updateDgDesensitizeAssetcolumn(DgDesensitizeAssetcolumnSaveReqVO updateReqVO);
 
     /**
-     * 删除脱敏清单关联关系
+     * Delete Desensitize List Relationship
      *
-     * @param idList 脱敏清单关联关系编号
+     * @param idList Desensitize List Relationship IDs
      */
     int removeDgDesensitizeAssetcolumn(Collection<Long> idList);
 
     /**
-     * 获得脱敏清单关联关系详情
+     * Get Desensitize List Relationship Detail
      *
-     * @param id 脱敏清单关联关系编号
-     * @return 脱敏清单关联关系
+     * @param id Desensitize List Relationship ID
+     * @return Desensitize List Relationship
      */
     DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnById(Long id);
 
     DgDesensitizeAssetcolumnDO getDgDesensitizeAssetcolumnByAid(Long assetcolumnId);
 
     /**
-     * 获得全部脱敏清单关联关系列表
+     * Get All Desensitize List Relationship List
      *
-     * @return 脱敏清单关联关系列表
+     * @return Desensitize List Relationship list
      */
     List<DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnList();
 
     /**
-     * 获得全部脱敏清单关联关系 Map
+     * Get All Desensitize List Relationship Map
      *
-     * @return 脱敏清单关联关系 Map
+     * @return Desensitize List Relationship Map
      */
     Map<Long, DgDesensitizeAssetcolumnDO> getDgDesensitizeAssetcolumnMap();
 
 
     /**
-     * 导入脱敏清单关联关系数据
+     * Import Desensitize List Relationship Data
      *
-     * @param importExcelList 脱敏清单关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList Desensitize List Relationship data list
+     * @param isUpdateSupport Whether to support update, if already exists, update the data
+     * @param operName Operator name
+     * @return Result
      */
     String importDgDesensitizeAssetcolumn(List<DgDesensitizeAssetcolumnRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

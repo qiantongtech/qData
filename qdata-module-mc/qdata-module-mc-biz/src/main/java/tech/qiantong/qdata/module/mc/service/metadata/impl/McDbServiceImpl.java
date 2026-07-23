@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 数据库Service业务层处理
+ * Database Service business layer processing
  *
  * @author qdata
  * @date 2026-02-11
@@ -73,9 +73,9 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
 
     @Override
     public int updateMcDb(McDbSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据库
+        // Update database
         McDbDO updateDbDO = BeanUtils.toBean(updateReqVO, McDbDO.class);
         ForceUpdateHelper.updateById(updateDbDO, baseMapper,
                 Lists.newArrayList(McDbDO::getValidFlag, McDbDO::getAuditTime, McDbDO::getAuditStatus));
@@ -83,11 +83,11 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
     }
     @Override
     public int removeMcDb(Collection<Long> idList) {
-        // 批量删除数据库
+        // Delete databases in batches
         //return mcDbMapper.deleteBatchIds(idList);
-        // 批量删除库元数据
+        // Delete library metadata in batches
         if (tableMapper.existsByDbIds(idList)) {
-            throw new ServiceException("mc.error.ref.table", "被表元数据引用，不可删除");
+            throw new ServiceException("mc.error.ref.table", "Referenced by table metadata, cannot be deleted");
         }
         return mcDbMapper.delete(Wrappers.lambdaQuery(McDbDO.class)
                 .in(McDbDO::getId, idList)
@@ -116,7 +116,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
                 .leftJoin("ATT_SOURCE_SYSTEM t2 on t.SOURCE_SYSTEM_ID = t2.ID AND t2.DEL_FLAG = '0'")
                 .eq(McDbDO::getDelFlag, "0")
 
-                // ===== 以下都是“if 条件” =====
+                // ===== The following are all "if conditions" =====
                 .eq(mcDb.getId() != null, McDbDO::getId, mcDb.getId())
                 .eq(mcDb.getTaskId()!= null, McDbDO::getTaskId, mcDb.getTaskId())
                 .eq(mcDb.getDatasourceId() != null, McDbDO::getDatasourceId, mcDb.getDatasourceId())
@@ -129,7 +129,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
                 .eq(StringUtils.isNotBlank(mcDb.getAuditStatus()), McDbDO::getAuditStatus, mcDb.getAuditStatus())
                 .in(org.apache.commons.collections4.CollectionUtils.isNotEmpty(mcDb.getDatasourceIdList()), McDbDO::getDatasourceId, mcDb.getDatasourceIdList())
 
-                // like 查询
+                // like query
                 .like(StringUtils.isNotBlank(mcDb.getDbName()), McDbDO::getDbName, mcDb.getDbName())
                 .like(StringUtils.isNotBlank(mcDb.getIp()), McDbDO::getIp, mcDb.getIp())
                 .orderByStr(org.apache.commons.lang3.StringUtils.isNotBlank(mcDb.getOrderByColumn()), org.apache.commons.lang3.StringUtils.equals("asc", mcDb.getIsAsc()), org.apache.commons.lang3.StringUtils.isNotBlank(mcDb.getOrderByColumn()) ? Arrays.asList(mcDb.getOrderByColumn().split(",")) : null);
@@ -145,7 +145,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
                 .collect(Collectors.toMap(
                         McDbDO::getId,
                         mcDbDO -> mcDbDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
@@ -203,11 +203,11 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
         Integer offset = (req.getPageNum() - 1) * req.getPageSize();
         List<McMetaSearchRespDTO> list =
                 mcDbMapper.selectMetaSearchPage(
-                        req.getKeyword(),          // 关键字
-                        req.getTypes(),         // 元数据类型（多选）
-                        req.getDbTypes(),       // 数据源类型（多选）
-                        req.getStartTime(),     // 开始时间
-                        req.getEndTime(),       // 结束时间
+                        req.getKeyword(),          // Keywords
+                        req.getTypes(),         // Metadata type (multiple choices)
+                        req.getDbTypes(),       // Data source type (multiple choices)
+                        req.getStartTime(),     // Start time
+                        req.getEndTime(),       // End time
                         offset,
                         req.getPageSize()
                 );
@@ -227,7 +227,7 @@ public class McDbServiceImpl  extends ServiceImpl<McDbMapper,McDbDO> implements 
         }
         Long total =
                 mcDbMapper.selectMetaSearchCount(
-                        req.getKeyword(),          // 关键字
+                        req.getKeyword(),          // Keywords
                         req.getTypes(),
                         req.getDbTypes(),
                         req.getStartTime(),

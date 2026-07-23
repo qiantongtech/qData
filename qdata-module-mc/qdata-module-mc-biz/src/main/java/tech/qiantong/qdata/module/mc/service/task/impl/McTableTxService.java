@@ -10,12 +10,12 @@ import java.util.function.Supplier;
 public class McTableTxService {
 
     /**
-     * 单表事务：
-     * - 每次调用 = 一个新事务
-     * - 抛异常 = 只回滚当前表
+     * Single table transaction:
+     * - each call = a new transaction
+     * - Throw exception = rollback only current table
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public <T> T runInNewTx(Supplier<T> supplier) {
-        return supplier.get(); // 抛异常 = 回滚
+        return supplier.get(); // Throw exception = rollback
     }
 }

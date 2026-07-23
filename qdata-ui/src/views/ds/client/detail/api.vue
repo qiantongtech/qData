@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -106,7 +107,7 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
   </div>
 
-  <!-- 添加或修改应用API服务关联对话框 -->
+  <!-- Add or modify application API service association dialog box -->
   <el-dialog :title="title" v-model="open" class="dialog" :append-to="$refs['app-container']" draggable>
     <template #header>
       <span role="heading" aria-level="2" class="el-dialog__title">
@@ -153,12 +154,12 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
-        <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
+        <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{td('common.button.confirm')}}</el-button>
       </div>
     </template>
   </el-dialog>
 
-  <!-- 应用API服务关联详情对话框 -->
+  <!-- Application API service association details dialog box -->
   <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
     <template #header="{ close, titleId, titleClass }">
       <span role="heading" aria-level="2" class="el-dialog__title">
@@ -228,6 +229,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_is_or_not, ds_api_bas_info_api_method_type } = proxy.useDict("sys_is_or_not", "ds_api_bas_info_api_method_type");
 
 const props = defineProps({
@@ -281,7 +283,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询应用API服务关联列表 */
+/** Query application API service association list */
 function getList() {
   queryParams.value.clientId = clientId.value;
   loading.value = true;
@@ -295,16 +297,16 @@ function getList() {
     });
 }
 
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(id, row, e) {
   console.log(e);
   const text = row.status == "1" ? td('ds.client.details.authorize') : td('ds.client.details.deauthorize');
-  // 弹出确认框
+  // Confirmation box pops up
   proxy.$modal
     .confirm(td('ds.client.details.confirmStatusChange') + text + td('ds.client.details.confirmStatusSuffix') + row.apiName + td('ds.client.details.confirmStatusSuffix2'))
     .then(function () {
-      loading.value = true; // 开始加载
-      // 调用后台接口更新发布状态
+      loading.value = true; // Start loading
+      // Call the background interface to update the publishing status
       updateClientApiRel({ ...row })
         .then((res) => {
           if (res.code == 200) {
@@ -313,15 +315,15 @@ function handleStatusChange(id, row, e) {
         })
         .catch((error) => {
           console.log(error);
-          // 失败时恢复状态
+          // Restoring state on failure
           row.status = row.status === "1" ? "0" : "1";
         })
         .finally(() => {
-          loading.value = false; // 无论成功失败都停止加载
+          loading.value = false; // Stop loading regardless of success or failure
         });
     })
     .catch((error) => {
-      // 失败时恢复状态
+      // Restoring state on failure
       row.status = row.status === "1" ? "0" : "1";
     });
 }
@@ -359,14 +361,14 @@ const remoteMethod = (queryString, cb) => {
     });
 };
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -390,40 +392,40 @@ function reset() {
   proxy.resetForm("clientApiRelRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('ds.client.details.addApiAuth');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   form.value = JSON.parse(JSON.stringify(row));
@@ -432,7 +434,7 @@ function handleUpdate(row) {
   title.value = td('ds.client.details.editApiAuth');
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -443,8 +445,10 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["clientApiRelRef"].validate((valid) => {
     if (valid) {
       form.value.clientId = clientId.value;
@@ -456,22 +460,30 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       } else {
         addClientApiRel(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => {
+            submitLoading.value = false;
+          });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal

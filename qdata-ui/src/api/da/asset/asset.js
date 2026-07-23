@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询数据资产列表
+// Query data asset list
 export function listDaAsset(query) {
     return request({
         url: '/da/asset/list',
@@ -26,7 +27,7 @@ export function listDaAsset(query) {
     });
 }
 
-// 查询数据资产列表
+// Query data asset list
 export function listDppAsset(query) {
     return request({
         url: '/da/asset/dpp/list',
@@ -35,7 +36,7 @@ export function listDppAsset(query) {
     });
 }
 
-// 查询数据资产列表
+// Query data asset list
 export function dppNoPageList(query) {
     return request({
         url: '/da/asset/dpp/noPage/list',
@@ -51,7 +52,7 @@ export function pageListByIds(query) {
     });
 }
 
-// 查询数据资产详细
+// Query data asset details
 export function getDaAsset(id) {
     return request({
         url: '/da/asset/' + id,
@@ -59,7 +60,7 @@ export function getDaAsset(id) {
     });
 }
 
-// 新增数据资产
+// Add new data assets
 export function addDaAsset(data) {
     return request({
         url: '/da/asset',
@@ -68,7 +69,7 @@ export function addDaAsset(data) {
     });
 }
 
-// 新增数据资产
+// Add new data assets
 export function bindResources(data) {
     return request({
         url: '/da/asset/bindResources',
@@ -76,7 +77,7 @@ export function bindResources(data) {
         data: data
     });
 }
-// 修改数据资产
+// Modify data assets
 export function updateDaAsset(data) {
     return request({
         url: '/da/asset',
@@ -85,7 +86,7 @@ export function updateDaAsset(data) {
     });
 }
 
-// 删除数据资产
+// Delete data assets
 export function delDaAsset(id) {
     return request({
         url: '/da/asset/' + id,
@@ -93,7 +94,7 @@ export function delDaAsset(id) {
     });
 }
 
-// 更新数据接口
+// Update data interface
 export function startDaDiscoveryTask(data) {
     return request({
         url: `/da/asset/startDaDiscoveryTask`,
@@ -102,7 +103,7 @@ export function startDaDiscoveryTask(data) {
     });
 }
 
-// 文件列表
+// file list
 export function getFileList(query) {
     return request({
         url: '/da/dataSource/fileList',
@@ -111,7 +112,7 @@ export function getFileList(query) {
     });
 }
 
-// 文件列表
+// file list
 export function uploadFile(query) {
     return request({
         url: '/da/dataSource/file',
@@ -120,7 +121,7 @@ export function uploadFile(query) {
     });
 }
 
-// 数据血缘
+// Data lineage
 export function dataLineage(id) {
     return request({
         url: '/da/asset/dataLineage/' + id,
@@ -128,7 +129,7 @@ export function dataLineage(id) {
     });
 }
 
-// 获取树结构
+// Get tree structure
 export function getTreeData(query) {
     return request({
         url: '/da/asset/getTreeData',
@@ -137,7 +138,7 @@ export function getTreeData(query) {
     });
 }
 
-// 批量发布
+// Batch publishing
 export function batchPublish(data) {
     return request({
         url: '/da/asset/batchPublish',

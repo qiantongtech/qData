@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 元数据信息 - 日志Controller
+ * Metadata information - Log Controller
  *
  * @author qdata
  * @date 2026-03-10
@@ -48,13 +48,13 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "导出元数据信息 - 日志列表")
-    @Log(title = "元数据信息 - 日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.mc.table.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, McTableLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<McTableLogDO> list = (List<McTableLogDO>) mcTableLogService.getMcTableLogPage(exportReqVO).getRows();
         ExcelUtil<McTableLogRespVO> util = new ExcelUtil<>(McTableLogRespVO.class);
-        util.exportExcel(response, McTableLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, McTableLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "获取元数据信息 - 日志详细信息")
@@ -65,7 +65,7 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "新增元数据信息 - 日志")
-    @Log(title = "元数据信息 - 日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.mc.table.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody McTableLogSaveReqVO mcTableLog) {
         mcTableLog.setCreatorId(getUserId());
@@ -75,7 +75,7 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "修改元数据信息 - 日志")
-    @Log(title = "元数据信息 - 日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.mc.table.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody McTableLogSaveReqVO mcTableLog) {
         mcTableLog.setUpdatorId(getUserId());
@@ -85,7 +85,7 @@ public class McTableLogController extends BaseController {
     }
 
     @Operation(summary = "删除元数据信息 - 日志")
-    @Log(title = "元数据信息 - 日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.mc.table.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(mcTableLogService.removeMcTableLog(Arrays.asList(ids)));

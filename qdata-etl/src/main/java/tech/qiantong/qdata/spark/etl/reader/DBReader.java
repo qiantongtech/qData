@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl.reader;
@@ -41,6 +27,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.utils.LogUtils;
 import tech.qiantong.qdata.spark.etl.utils.RedisUtils;
 import tech.qiantong.qdata.spark.etl.utils.db.DBUtils;
@@ -56,7 +43,7 @@ import static org.apache.spark.sql.functions.desc;
 
 /**
  * <P>
- * 用途:数据库输入
+ * Purpose: database input
  * </p>
  *
  * @author: FXB
@@ -68,40 +55,40 @@ public class DBReader implements Reader {
     @Override
     public Dataset<Row> read(SparkSession spark, JSONObject reader, List<String> readerColumns, LogUtils.Params logParams) {
         LogUtils.writeLog(logParams, "*********************************  Initialize task context  ***********************************");
-        LogUtils.writeLog(logParams, "开始数据库输入节点");
-        LogUtils.writeLog(logParams, "开始任务时间: " + DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-        LogUtils.writeLog(logParams, "任务参数：" + reader.toJSONString(PrettyFormat));
-        //参数信息
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.reader.db.start"));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.start.time", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS")));
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.parameters", reader.toJSONString(PrettyFormat)));
+        //Parameter information
         JSONObject parameter = reader.getJSONObject("parameter");
-        //读取条件
+        //Read conditions
         String where = parameter.getString("where");
-        //读取方式 1:全量 2:id增量 3:时间范围增量 默认全量
+        //Reading method 1: full amount 2: id increment 3: time range increment Default full amount
         String readModeType = parameter.getString("readModeType");
-        //字段
+        //Field
         List<Object> column = parameter.getJSONArray("column");
-        //封装读取信息
+        //Encapsulate read information
         Map<String, String> readerOptions = DBUtils.getDbOptions(parameter);
-        //节点编码
+        //Node code
         String nodeCode = reader.getString("nodeCode");
 
         readerColumns.addAll(column.stream().map(c -> (String) c).collect(Collectors.toList()));
 
-        //读取数据
+        //Read data
         Dataset<Row> dataset = spark.read()
                 .format("jdbc")
                 .options(readerOptions)
                 .load();
         String where2 = "";
-        //需要存储最后数据的字段 map中key为字段名称 value为缓存key
+        //The field that needs to store the last data. The key in the map is the field name and the value is the cache key.
         Map<String, String> cacheColumnMap = new HashMap<>();
         Map<String, String> cacheDataMap = new HashMap<>();
-        //判断是否是id增量
+        //Determine whether it is an id increment
         if (StringUtils.equals("2", readModeType)) {
             JSONObject idIncrementConfig = parameter.getJSONObject("idIncrementConfig");
             String incrementColumn = idIncrementConfig.getString("incrementColumn");
             Integer incrementStart = idIncrementConfig.getInteger("incrementStart");
             String cacheKey = ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
-            //添加到cacheDataMap中
+            //Add to cacheDataMap
             cacheColumnMap.put(incrementColumn, cacheKey);
             if (RedisUtils.hasKey(cacheKey) && Integer.valueOf(RedisUtils.get(cacheKey)) > incrementStart) {
                 incrementStart = Integer.valueOf(RedisUtils.get(cacheKey));
@@ -119,15 +106,15 @@ public class DBReader implements Reader {
             }).collect(Collectors.toList());
             for (int i = 0; i < columnList.size(); i++) {
                 JSONObject jsonObject = columnList.get(i);
-                //类型  1:固定值 2:时间范围 3:SQL表达式
+                //Type 1: Fixed value 2: Time range 3: SQL expression
                 String type = jsonObject.getString("type");
-                //增量字段
+                //Increment field
                 String incrementColumn = jsonObject.getString("incrementColumn");
-                //时间 运算符 > 、=>、< 、<=
+                //Time operators >, =>, <, <=
                 String operator = jsonObject.getString("operator");
-                //固定值：为 2023-01-01  SQL表达式：为sql函数
+                //Fixed value: 2023-01-01 SQL expression: sql function
                 String data = jsonObject.getString("data");
-                //游标时间 只有类型为时间范围时该字段才会有值
+                //Cursor time This field will only have a value if the type is time range
                 String cursorTime = jsonObject.getString("cursorTime");
 
                 String cacheKey = ETL_READER_DATE_KEY + nodeCode + ":" + incrementColumn;
@@ -138,7 +125,7 @@ public class DBReader implements Reader {
                     where2 += incrementColumn + " " + operator + " " + data;
                 } else {
                     String now = DateUtil.format(new Date(), dateFormat);
-                    //判断缓存中是否存在数据，存在且大于页面填写的数据则使用缓存数据
+                    //Determine whether data exists in the cache. If the data exists and is larger than the data filled in the page, the cached data will be used.
                     if (RedisUtils.hasKey(cacheKey) && DateUtil.compare(DateUtil.parse(RedisUtils.get(cacheKey)), DateUtil.parse(cursorTime)) > 0) {
                         cursorTime = RedisUtils.get(cacheKey);
                     }
@@ -151,7 +138,7 @@ public class DBReader implements Reader {
                 }
             }
         }
-        //添加条件
+        //Add conditions
         if (StringUtils.isNotBlank(where)) {
             if (StringUtils.isNotBlank(where2)) {
                 where += " AND ( " + where2 + " )";
@@ -161,11 +148,11 @@ public class DBReader implements Reader {
             dataset = dataset.where(where2);
         }
         dataset = dataset.select(column.stream().map(c -> new Column((String) c)).toArray(Column[]::new));
-        LogUtils.writeLog(logParams, "输入数据量为：" + dataset.count());
-        log.info("部分数据如下>>>>>>>>>>>>>>");
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.input.data.count", dataset.count()));
+        log.info(MessageUtils.message("log.etl.sample.data"));
         dataset.na().fill("Unknown").show(10);
-        LogUtils.writeLog(logParams, "部分数据：\n" + dataset.na().fill("Unknown").showString(10, 0, false));
-        //判断是否需要存储最后的数据
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.sample.data", dataset.na().fill("Unknown").showString(10, 0, false)));
+        //Determine whether the last data needs to be stored
         if (cacheColumnMap.size() > 0) {
             for (Map.Entry<String, String> entry : cacheColumnMap.entrySet()) {
                 String cacheKey = entry.getValue();
@@ -173,7 +160,7 @@ public class DBReader implements Reader {
                 if (rowDataset.count() == 0) {
                     continue;
                 }
-                if (StringUtils.equals("2", readModeType)) {//id增量
+                if (StringUtils.equals("2", readModeType)) {//id increment
                     String cacheValue = String.valueOf(rowDataset.first().get(0));
                     cacheDataMap.put(cacheKey, String.valueOf(Integer.parseInt(cacheValue) + 1));
                 }

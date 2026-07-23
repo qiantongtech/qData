@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ds.utils;
@@ -45,7 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Json数据转换工具类
+ * JSON conversion utility.
  * @author chen
  */
 public class JsonUtil {
@@ -60,14 +46,14 @@ public class JsonUtil {
     public static final String TYPE_ArrayList = "ArrayList";
 
     /**
-     * 将Json字符串转成Map
+     * Converts a JSON string to a map.
      *
      * @param jsonString
      * @return map
      */
     public static Map<String,Object> parseJsonToMap(String jsonString) {
         Map<String,Object> map = JSON.parseObject(jsonString, Map.class);
-        System.err.println("Json转Map:");
+        System.err.println("JSON to Map:");
         for (Object obj : map.keySet()) {
             System.err.print(obj + "-" + map.get(obj));
         }
@@ -76,40 +62,40 @@ public class JsonUtil {
     }
 
     /**
-     * 将Json字符串转成List<Map<String, Object>>
+     * Converts a JSON string to List<Map<String, Object>>.
      *
-     * @param jsonString JSON字符串
-     * @return 转换后的List<Map<String, Object>>
+     * @param jsonString JSON string
+     * @return the converted List<Map<String, Object>>
      */
     public static List<Object>  parseJsonToListMap(String jsonString) {
         List<Object> list = JSON.parseObject(jsonString, new TypeReference<List<Object>>(){});
-        System.err.println("Json转List<Map>:");
+        System.err.println("JSON to List<Map>:");
         System.err.println("jsonString");
         return list;
     }
 
     /**
-     * 将Map转换成Json
+     * Converts a map to JSON.
      *
      * @param map
      * @return
      */
     public static String parseMapToJson(Map<String, Object> map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }
 
     /**
-     * 将Object转换成Json
+     * Converts an object to JSON.
      *
      * @param map
      * @return
      */
     public static String parseObjectToJson(Object map) {
         String json = JSON.toJSONString(map);
-        System.err.println("Map转Json:");
+        System.err.println("Map to JSON:");
         System.err.println(json);
         return json;
     }
@@ -117,32 +103,32 @@ public class JsonUtil {
 
 
     /**
-     * 参数打包过滤
+     * Packages and filters parameters.
      *
      * @param jsonToMap
      * @param api
      * @return
      */
     public static Map<String, Object> packFilterParameterOrMap(Map<String, Object> jsonToMap, DsApiDO api) {
-        //创建返回参数
+        //Create response parameters.
         Map<String,Object> parameter = new HashMap<>();
 
         try {
-            //获取设置的返回信息
+            //Get the configured response information.
             List<ResParam> resParams = api.getResParamsList();
-            //循环
+            //Iterate through the values.
             for (ResParam resParam : resParams) {
-                //字段名称
+                //Field name
                 String fieldName = resParam.getFieldName();
                 if(StringUtils.isBlank(fieldName)){
                     continue;
                 }
-                //获取信息
+                //Get information.
                 Object object = MapUtils.getObject(jsonToMap, fieldName, null);
-                //封装参数
+                //Build parameters.
                 JsonUtil.recursionPackFilterParameter(resParam, object,parameter);
             }
-            //返回
+            //Return the result.
             return parameter;
         }catch (Exception e){
             return jsonToMap;
@@ -151,20 +137,20 @@ public class JsonUtil {
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      * @param object
      * @param parameter
      * @return
      */
     public static void recursionPackFilterParameter(ResParam resParam, Object object, Map<String, Object> parameter) {
         String dataType = resParam.getDataType();
-        //字段名称
+        //Field name
         String fieldName = resParam.getFieldName();
         if(object == null){
             parameter.put(fieldName,object);
             return;
         }
-        //基本类型
+        //Primitive type.
         if(StringUtils.equals( TYPE_long ,dataType)
             || StringUtils.equals( TYPE_double ,dataType)
             || StringUtils.equals( TYPE_Boolean ,dataType)
@@ -186,19 +172,19 @@ public class JsonUtil {
             parameter.put(fieldName,objects);
             return;
         }
-        //默认
+        //Default handling.
         parameter.put(fieldName,object);
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      *  Map
      * @param object
      * @param parameter
      * @return
      */
     public static void recursionPackFilterMap(ResParam resParam, Object object, Map<String, Object> parameter) {
-        //字段名称
+        //Field name
         String fieldName = resParam.getFieldName();
         Map<Object, Object> objectmap = (Map<Object, Object>) object;
         if(MapUtils.isEmpty(objectmap)){
@@ -209,12 +195,12 @@ public class JsonUtil {
 
         Map<String, Object> paramMap = new HashMap<>();
         for (ResParam param : resParamList) {
-            //字段名称
+            //Field name
             String paramName = param.getFieldName();
             if(StringUtils.isBlank(paramName)){
                 continue;
             }
-            //获取信息
+            //Get information.
             Object objectparam = MapUtils.getObject(objectmap, paramName, null);
             recursionPackFilterParameter(param,objectparam,paramMap);
         }
@@ -222,7 +208,7 @@ public class JsonUtil {
     }
 
     /**
-     * 递归存储信息
+     * Stores information recursively.
      *  list
      * @param o
      * @param parameter
@@ -231,10 +217,10 @@ public class JsonUtil {
     public static void recursionPackFilterList(ResParam resParam, Object o, List<Map>  parameter) {
         List<Map> objectList = (List<Map>) o;
 
-        // 获取要返回的字段
+        // Get the fields to return.
         List<ResParam> resParamList = resParam.getResParamList();
         for (Map map : objectList) {
-            //创建返回参数
+            //Create response parameters.
             Map<String,Object> param = new HashMap<>();
             for (ResParam resMap : resParamList) {
                 recursionPackFilterMap(resMap,map,param);

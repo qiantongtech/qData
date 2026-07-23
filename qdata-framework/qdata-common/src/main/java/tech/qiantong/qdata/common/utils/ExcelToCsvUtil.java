@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -49,7 +35,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:
+ * Purpose:
  * </p>
  *
  * @author: FXB
@@ -58,12 +44,12 @@ import java.util.List;
 public class ExcelToCsvUtil {
 
     /**
-     * excel转csv并解析出字段
+     * Convert excel to csv and parse out the fields
      *
      * @param excelPath
      * @param csvPath
-     * @param startColumn 字段名行 （这里第一行就是1 不是0）
-     * @param startData   数据开始行
+     * @param startColumn field name line (the first line here is 1, not 0)
+     * @param startData data start row
      * @return
      * @throws IOException
      */
@@ -78,31 +64,32 @@ public class ExcelToCsvUtil {
                 workbook = new HSSFWorkbook(inputStream);
             }
 
-            Sheet sheet = workbook.getSheetAt(0); // 选择第一个工作表
+            Sheet sheet = workbook.getSheetAt(0); // Select the first worksheet
             List<String> csvLines = new ArrayList<>();
 
             if (startColumn > sheet.getLastRowNum() + 1) {
-                throw new ServiceException("startColumn大于最后一行的行号，请检查startColumn的值");
+                throw new ServiceException("sys.error.excel.start.column.invalid",
+                        "startColumn exceeds the last row index; check the startColumn value");
             }
 
-            //读取列
+            //Read columns
             Row columnRow = sheet.getRow(startColumn - 1);
             String columnStr = toStr(columnRow);
             csvLines.add(columnStr);
 
-            //读取数据
+            //Read data
             for (int i = startData - 1; i <= sheet.getLastRowNum(); i++) {
                 csvLines.add(toStr(sheet.getRow(i)));
             }
 
             File csvFile = new File(csvPath);
 
-            // 检查父目录是否存在，如果不存在则创建
+            // Check if the parent directory exists, if not create it
             if (!csvFile.getParentFile().exists()) {
-                csvFile.getParentFile().mkdirs(); // 创建所有必要的父目录
+                csvFile.getParentFile().mkdirs(); // Create all necessary parent directories
             }
 
-            // 写入CSV文件
+            // Write to CSV file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvPath))) {
                 for (String line : csvLines) {
                     writer.write(line);
@@ -110,17 +97,17 @@ public class ExcelToCsvUtil {
                 }
             }
 
-            //解析字段
+            //Parse fields
             columnList = Arrays.asList(columnStr.split(","));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServiceException("excel转csv失败");
+            throw new ServiceException("sys.error.excel.to.csv.fail", "Failed to convert Excel to CSV");
         }
         return columnList;
     }
 
     /**
-     * 读取一行数据
+     * Read a row of data
      *
      * @param row
      * @return
@@ -133,7 +120,7 @@ public class ExcelToCsvUtil {
             Cell cell = row.getCell(cellIdx, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
             String cellValue = dataFormatter.formatCellValue(cell);
 
-            // 处理包含逗号、换行或双引号的情况
+            // Handles cases containing commas, newlines, or double quotes
             if (cellValue.contains(",") || cellValue.contains("\"") || cellValue.contains("\n")) {
                 cellValue = "\"" + cellValue.replace("\"", "\"\"") + "\"";
             }
@@ -148,7 +135,7 @@ public class ExcelToCsvUtil {
 
 
     /**
-     * csv解析出字段
+     * csv parses out fields
      *
      * @param csvPath
      * @return
@@ -162,19 +149,19 @@ public class ExcelToCsvUtil {
                 .setHeaderLineNo(0L);
         CsvParser parser = new CsvParser(reader, csvReadConfig);
         if (!parser.hasNext()) {
-            throw new ServiceException("csv为空无法解析");
+            throw new ServiceException("sys.error.csv.empty", "CSV is empty and cannot be parsed");
         }
         try {
             parser.next();
             parser.getHeader();
         } catch (Exception e) {
-            throw new ServiceException("csv解析失败");
+            throw new ServiceException("sys.error.csv.parse.fail", "Failed to parse CSV");
         }
         return parser.getHeader();
     }
 
     /**
-     * 校验字段是否符合条件
+     * Check whether the field meets the conditions
      *
      * @param columnList
      * @return

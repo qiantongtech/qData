@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -87,28 +88,28 @@ const form = ref({
   userId: undefined,
 });
 
-/** 单击选中行数据 */
+/** Click to select row data */
 function clickRow(row) {
   proxy.$refs["roleRef"].toggleRowSelection(row);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
   roleIds.value = selection.map((item) => item.roleId);
 }
 
-/** 保存选中的数据编号 */
+/** Save selected data number */
 function getRowKey(row) {
   return row.roleId;
 }
 
-/** 关闭按钮 */
+/** close button */
 function close() {
   const obj = { path: "/system/user" };
   proxy.$tab.closeOpenPage(obj);
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   const userId = form.value.userId;
   const rIds = roleIds.value.join(",");

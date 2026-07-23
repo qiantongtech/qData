@@ -55,6 +55,7 @@ export default {
     nextStep: 'Next',
     previousStep: 'Previous',
     query: 'Search',
+    search: 'Search',
     refresh: 'Refresh',
     reset: 'Reset',
     return: 'Back',
@@ -155,6 +156,15 @@ export default {
   html: {
     appTitle: 'qData Open Source Data Platform'
   },
+  // Rules
+  rules: {
+    node: 'Node cannot be empty',
+    title: 'Title cannot be empty',
+    validFlag: 'Valid flag cannot be empty',
+    delFlag: 'Delete flag cannot be empty',
+    createTime: 'Create time cannot be empty',
+    updateTime: 'Update time cannot be empty'
+  },
   // Display
   display: {
     index: 'Index',
@@ -162,9 +172,32 @@ export default {
     createTime: 'Created Time',
     updateTime: 'Updated Time',
     startTime: 'Start Time',
-    endTime: 'End Time'
+    endTime: 'End Time',
+    info: 'Info',
+    context: 'Please enter content',
+    title: 'Title',
+    createBy: 'Created By',
+    content: 'Content',
+    remark: 'Remark',
+    importResult: 'Import Result',
+    noselectData: 'No data selected',
+    selectData: 'Please select data',
+    pleaseSelect: 'Please select',
+    componentOne: 'Component One',
+    componentTwo: 'Component Two'
   },
   qualityTrends: 'Quality Trends',
+  shortcut: {
+    title: 'Shortcuts',
+    save: 'Save',
+    check: 'Validate',
+    format: 'Format',
+    formatSelection: 'Format Selection',
+    notes: 'Comment/Uncomment',
+    upperCase: 'To Uppercase',
+    lowerCase: 'To Lowercase',
+    query: 'Search'
+  },
   noData: 'No data',
   noMessage: 'No messages',
   noHistory: 'No history',

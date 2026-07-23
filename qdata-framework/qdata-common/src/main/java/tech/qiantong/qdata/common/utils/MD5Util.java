@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -44,11 +30,11 @@ import java.util.Base64;
 
 public class MD5Util {
 
-    /** 向量(同时拥有向量和密匙才能解密)，此向量必须是8byte，多少都报错 */
+    /** Vector (you must have both the vector and the key to decrypt), this vector must be 8 bytes, any number will report an error */
     private final byte[] DESIV = new byte[] { 0x22, 0x54, 0x36, 110, 0x40, (byte) 0xac, (byte) 0xad, (byte) 0xdf };
-    /** 自定义密钥,个数不能太短，太短报错，过长，它默认只取前N位（N的具体值，大家另行查找资料） */
+    /** Custom key, the number cannot be too short. If it is too short, an error will be reported. If it is too long, it will only take the first N digits by default (for the specific value of N, you will find the information separately) */
     private final String deSkey = "cloud123456";
-    /** 加密算法的参数接口 */
+    /** Parameter interface of encryption algorithm */
     private AlgorithmParameterSpec iv = null;
     private Key key = null;
     private String charset = "UTF-8";
@@ -56,17 +42,17 @@ public class MD5Util {
     private static volatile MD5Util instance;
 
     /**
-     * 构造函数
+     * Constructor
      * @throws Exception
      */
     private MD5Util() throws Exception {
-        // 设置密钥参数
+        // Set key parameters
         DESKeySpec keySpec = new DESKeySpec(deSkey.getBytes(this.charset));
-        // 设置向量
+        // Set vector
         iv = new IvParameterSpec(DESIV);
-        // 获得密钥工厂
+        // Get key factory
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-        // 得到密钥对象
+        // Get key object
         key = keyFactory.generateSecret(keySpec);
     }
 
@@ -85,32 +71,32 @@ public class MD5Util {
         try {
             String value = "1246656415670484994";
             MD5Util mt = new MD5Util();
-            System.out.println("加密前的字符：" + value);
-            System.out.println("加密后的字符：" + mt.encode(value));
-            System.out.println("解密后的字符：" + mt.decode(mt.encode(value)));
-            System.out.println("字符串的MD5值："+ getMD5Value(value));
+            System.out.println("Text before encryption: " + value);
+            System.out.println("Text after encryption: " + mt.encode(value));
+            System.out.println("Text after decryption: " + mt.decode(mt.encode(value)));
+            System.out.println("MD5 value of the string: "+ getMD5Value(value));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 加密
+     * Encryption
      * @param data
      * @return
      * @throws Exception
      */
     public String encode(String data) throws Exception {
-        // 得到加密对象Cipher
+        // Get the encrypted object Cipher
         Cipher enCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-        // 设置工作模式为加密模式，给出密钥和向量
+        // Set the working mode to encryption mode, give the key and vector
         enCipher.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] pasByte = enCipher.doFinal(data.getBytes(this.charset));
         return Base64.getEncoder().encodeToString(pasByte);
     }
 
     /**
-     * 解密
+     * Decrypt
      * @param data
      * @return
      * @throws Exception
@@ -118,14 +104,14 @@ public class MD5Util {
     public String decode(String data) throws Exception {
         Cipher deCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
         deCipher.init(Cipher.DECRYPT_MODE, key, iv);
-        //此处注意doFinal()的参数的位数必须是8的倍数，否则会报错（通过encode加密的字符串读出来都是8的倍数位，但写入文件再读出来，就可能因为读取的方式的问题，导致最后此处的doFinal()的参数的位数不是8的倍数）
-        //此处必须用base64Decoder，若用data。getBytes()则获取的字符串的byte数组的个数极可能不是8的倍数，而且不与上面的BASE64Encoder对应（即使解密不报错也不会得到正确结果）
+        //Note here that the number of digits in the parameter of doFinal() must be a multiple of 8, otherwise an error will be reported (the string encrypted by encoding will be read out as a multiple of 8, but if it is written to the file and then read out, the number of digits in the parameter of doFinal() here may not be a multiple of 8 due to the reading method)
+        //Base64Decoder must be used here, if data is used. getBytes(), the number of byte arrays of the string obtained is most likely not a multiple of 8, and does not correspond to the above BASE64Encoder (even if the decryption does not report an error, the correct result will not be obtained)
         byte[] pasByte = deCipher.doFinal(Base64.getDecoder().decode(data));
         return new String(pasByte, this.charset);
     }
 
     /**
-     * 获取MD5的值，可用于对比校验
+     * Get the MD5 value, which can be used for comparison and verification
      * @param sourceStr
      * @return
      */

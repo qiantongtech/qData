@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -269,9 +270,12 @@ if (props.checkProjectParams) {
 
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
+  const impactText = row.validFlag === false
+    ? '停用父类目将同步影响子类目，且不能继续新增任务到该类目。'
+    : '';
   proxy.$modal
     .confirm(
-      td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
+      impactText + td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
     )
     .then(function () {
       props
@@ -368,9 +372,14 @@ function onDialogCancel() {}
 
 function handleDelete(row) {
   const id = row.id;
+  const childCount = Array.isArray(row.children) ? row.children.length : 0;
+  const confirmText = childCount > 0
+    ? `该类目包含${childCount}个子类目，不能直接删除。`
+    : td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id);
   proxy.$modal
-    .confirm(td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id))
+    .confirm(confirmText)
     .then(function () {
+      if (childCount > 0) return Promise.reject('hasChildren');
       return props.delFunc(id);
     })
     .then(() => {

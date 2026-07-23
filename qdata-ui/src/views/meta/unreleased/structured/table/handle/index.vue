@@ -99,11 +99,11 @@
           />
         </el-form-item>
 
-        <!-- <el-form-item label="安全等级" prop="safetyLevelId">
+        <!-- <el-form-item label="Safety Level" prop="safetyLevelId">
           <el-select
             clearable
             v-model="store.form.safetyLevelId"
-            placeholder="请选择安全等级"
+            placeholder="Please select security level"
           >
             <el-option
               v-for="item in store.sensitiveLevels"
@@ -232,11 +232,11 @@
           />
         </el-form-item>
 
-        <!-- <el-form-item label="存储大小" prop="storageSize">
+        <!-- <el-form-item label="Storage Size" prop="storageSize">
           <el-input-number
             :min="0"
             v-model="store.form.storageSize"
-            placeholder="请输入存储大小"
+            placeholder="Please enter storage size"
             :controls="false"
             class="number-input"
           />
@@ -361,7 +361,7 @@
         </el-form-item>
 
         <!-- <el-form-item
-          label="变更说明"
+          label="Change Description"
           prop="updateMsg"
           class="row-full"
           v-if="store.form.id"
@@ -369,7 +369,7 @@
           <el-input
             v-model="store.form.updateMsg"
             type="textarea"
-            placeholder="请输入变更说明"
+            placeholder="Please enter a change description"
             :min-height="192"
             show-word-limit
             maxlength="500"
@@ -379,7 +379,7 @@
     </el-form>
 
     <div class="button-style">
-      <el-button @click="handleDraftClick">{{
+      <el-button :loading="confirmLoading" @click="handleDraftClick">{{
         td("meta.unreleased.structured.table.handle.saveDraft")
       }}</el-button>
       <el-button
@@ -393,7 +393,7 @@
           td("meta.unreleased.structured.table.handle.backToList")
         }}
       </el-button>
-      <el-button type="primary" @click="handleConfirmClick">
+      <el-button type="primary" :loading="confirmLoading" @click="handleConfirmClick">
         {{ td("meta.unreleased.structured.table.handle.confirmAndExit") }}
       </el-button>
     </div>
@@ -416,6 +416,8 @@ import {
 import { useRoute, useRouter } from "vue-router";
 
 const { td } = useDefaultLang();
+const { proxy } = getCurrentInstance();
+const confirmLoading = ref(false);
 const DEFAULT_FORM = {
   status: "0",
   masterFlag: "1",
@@ -464,7 +466,7 @@ const rules = {
   ],
 };
 
-const { proxy } = getCurrentInstance();
+
 const dicts = proxy.useDict(
   "meta_task_status",
   "meta_dw_layers",
@@ -483,7 +485,7 @@ const store = reactive({
   loading: false,
 });
 
-// 获取库元素列表
+// Get a list of library elements
 function getMetaDatabases() {
   return listDb({ pageSize: 1000 }).then((res) => {
     store.metaDatabases = res.data.rows;
@@ -495,14 +497,14 @@ function getMetaDatabases() {
   });
 }
 
-// 获取安全等级
+// Get security level
 function getSensitiveLevel() {
   listDgSensitiveLevel({ pageSize: 1000 }).then((res) => {
     store.sensitiveLevels = res.data.rows;
   });
 }
 
-// 获取数据源列表
+// Get a list of data sources
 function getDatasources() {
   return listDaDatasource().then((res) => {
     res.data.rows.forEach((item) => {
@@ -515,7 +517,7 @@ function getDatasources() {
   });
 }
 
-// 获取用户列表
+// Get user list
 function getUserList() {
   return deptUserTree().then((res) => {
     store.userList = res.data;
@@ -523,7 +525,7 @@ function getUserList() {
   });
 }
 
-// 切换数据源
+// Switch data source
 function handleDatasourceChange(id) {
   const data = store.datasources?.find((item) => item.id === id);
   store.form.ip = data.ip;
@@ -532,13 +534,13 @@ function handleDatasourceChange(id) {
   store.form.dbType = data.datasourceType;
 }
 
-// 切换用户
+// Switch user
 function handleUserChange(id, key) {
   const data = store.userList.find((item) => item.userId === id);
   store.form[key] = data.phonenumber;
 }
 
-// 切换库元数据
+// Switch library metadata
 function handleMetaDBChange(id) {
   getDb(id).then((res) => {
     store.form.domainId = res.data.domainId;
@@ -551,20 +553,22 @@ function handleMetaDBChange(id) {
   });
 }
 
-// 确认新增/修改
+// Confirm addition/modification
 async function handleConfirmClick() {
-  store.loading = true;
+  if (confirmLoading.value) return;
+  confirmLoading.value = true;
   const valid = await formRef.value.validate();
-  store.loading = false;
-  if (!valid) return;
-  store.loading = true;
+  if (!valid) {
+    confirmLoading.value = false;
+    return;
+  }
   const func = route.query.id ? updateTable : addTable;
   if (store.form.safetyLevelId == undefined) {
     store.form.safetyLevelId = null;
     store.form.safetyLevelName = null;
   }
   await func(store.form);
-  store.loading = false;
+  confirmLoading.value = false;
   proxy.$modal.msgSuccess(
     `${
       route.query.id ? td("common.button.update") : td("common.button.add")
@@ -574,15 +578,16 @@ async function handleConfirmClick() {
 }
 
 async function handleDraftClick() {
-  store.loading = true;
+  if (confirmLoading.value) return;
+  confirmLoading.value = true;
   await draftTable(store.form);
-  store.loading = false;
+  confirmLoading.value = false;
   proxy.$modal.msgSuccess(
     td("meta.unreleased.structured.table.handle.draftSuccess")
   );
 }
 
-// 获取详情
+// Get details
 async function getDetail() {
   if (!route.query.id) return;
   getTable(route.query.id).then((res) => {

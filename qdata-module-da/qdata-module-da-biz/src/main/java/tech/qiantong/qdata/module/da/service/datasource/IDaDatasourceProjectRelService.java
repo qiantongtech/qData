@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.datasource;
@@ -43,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
- * 数据源与项目关联关系Service接口
+ * Datasource - Project Relation Service Interface
  *
  * @author qdata
  * @date 2025-03-13
@@ -51,79 +37,79 @@ import java.util.Map;
 public interface IDaDatasourceProjectRelService extends IService<DaDatasourceProjectRelDO> {
 
     /**
-     * 获得数据源与项目关联关系分页列表
+     * Get datasource-project relation page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据源与项目关联关系分页列表
+     * @param pageReqVO page request
+     * @return datasource-project relation page list
      */
     PageResult<DaDatasourceProjectRelDO> getDaDatasourceProjectRelPage(DaDatasourceProjectRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据源与项目关联关系
+     * Create datasource-project relation
      *
-     * @param createReqVO 数据源与项目关联关系信息
-     * @return 数据源与项目关联关系编号
+     * @param createReqVO datasource-project relation info
+     * @return datasource-project relation ID
      */
     Long createDaDatasourceProjectRel(DaDatasourceProjectRelSaveReqVO createReqVO);
 
     /**
-     * 更新数据源与项目关联关系
+     * Update datasource-project relation
      *
-     * @param updateReqVO 数据源与项目关联关系信息
+     * @param updateReqVO datasource-project relation info
      */
     int updateDaDatasourceProjectRel(DaDatasourceProjectRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据源与项目关联关系
+     * Delete datasource-project relation
      *
-     * @param idList 数据源与项目关联关系编号
+     * @param idList datasource-project relation ID list
      */
     int removeDaDatasourceProjectRel(Collection<Long> idList);
 
     /**
-     * 获得数据源与项目关联关系详情
+     * Get datasource-project relation details
      *
-     * @param id 数据源与项目关联关系编号
-     * @return 数据源与项目关联关系
+     * @param id datasource-project relation ID
+     * @return datasource-project relation
      */
     DaDatasourceProjectRelDO getDaDatasourceProjectRelById(Long id);
 
     /**
-     * 获得全部数据源与项目关联关系列表
+     * Get all datasource-project relation list
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getDaDatasourceProjectRelList();
 
     /**
-     * 获得全部数据源与项目关联关系列表
+     * Get all datasource-project relation list
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getDaDatasourceProjectRelList(DaDatasourceProjectRelDO daDatasourceProjectRelDO);
 
     /**
-     * 获得全部数据源与项目关联关系列表关联数据源表和项目表
+     * Get all datasource-project relation list joined with datasource table and project table
      *
-     * @return 数据源与项目关联关系列表
+     * @return datasource-project relation list
      */
     List<DaDatasourceProjectRelDO> getJoinProjectAndDatasource(DaDatasourceProjectRelDO daDatasourceProjectRelDO);
 
     /**
-     * 获得全部数据源与项目关联关系 Map
+     * Get all datasource-project relation Map
      *
-     * @return 数据源与项目关联关系 Map
+     * @return datasource-project relation Map
      */
     Map<Long, DaDatasourceProjectRelDO> getDaDatasourceProjectRelMap();
 
 
     /**
-     * 导入数据源与项目关联关系数据
+     * Import datasource-project relation data
      *
-     * @param importExcelList 数据源与项目关联关系数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
+     * @param importExcelList datasource-project relation data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName operator user
+     * @return result
      */
     String importDaDatasourceProjectRel(List<DaDatasourceProjectRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

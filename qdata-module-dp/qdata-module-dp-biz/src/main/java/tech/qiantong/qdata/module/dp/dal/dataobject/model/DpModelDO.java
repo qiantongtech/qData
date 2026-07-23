@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.dal.dataobject.model;
@@ -41,14 +27,14 @@ import lombok.*;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
 /**
- * 逻辑模型 DO 对象 DP_MODEL
+ * Logical Model DO - DP_MODEL
  *
  * @author qdata
  * @date 2025-01-21
  */
 @Data
 @TableName(value = "DP_MODEL")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Used for auto-increment primary keys in Oracle, PostgreSQL, Kingbase, DB2, H2 databases. Can be omitted for MySQL and similar databases.
 // @KeySequence("DP_MODEL_seq")
 @Builder
 @NoArgsConstructor
@@ -64,17 +50,17 @@ public class DpModelDO extends BaseEntity {
     private Long id;
 
     /**
-     * 模型编码
+     * Model Code
      */
     private String modelName;
 
     /**
-     * 模型名称
+     * Model Name
      */
     private String modelComment;
 
     /**
-     * 类目编码
+     * Category Code
      */
     private String catCode;
 
@@ -82,85 +68,85 @@ public class DpModelDO extends BaseEntity {
     private String catName;
 
     /**
-     * 表类型;1:明细表 2:汇总表 3:维度表 4:应用表
+     * Table Type; 1: Detail Table 2: Summary Table 3: Dimension Table 4: Application Table
      */
     @Schema(name = "表类型 1:明细表 2:汇总表 3:维度表 4:应用表")
     private String tableType;
     /**
-     * 数仓分层id
+     * Data Warehouse Layer ID
      */
     @Schema(name = "数仓分层id ")
     private Long dataLayerId;
     /**
-     * 业务分类id;只有表类型为非应用表是才有值
+     * Business Category ID; only has value when table type is non-application table
      */
     @Schema(name = "业务分类id 只有表类型为非应用表是才有值")
     private Long businessCategoryId;
     /**
-     * 业务分类层级编码
+     * Business Category Level Code
      */
     @Schema(name = "业务分类层级编码 ")
     private String businessCategoryCode;
     /**
-     * 数据分域id;只有表类型为非应用表是才有值
+     * Data Domain ID; only has value when table type is non-application table
      */
     @Schema(name = "数据分域id 只有表类型为非应用表是才有值")
     private Long dataDomainId;
     /**
-     * 所属主题id（主题规划）;只有表类型为应用表是才有值
+     * Theme Domain ID (Theme Planning); only has value when table type is application table
      */
     @Schema(name = "所属主题id（主题规划） 只有表类型为应用表是才有值")
     private Long themeDomainId;
     /**
-     * 所属主题层级编码
+     * Theme Domain Level Code
      */
     @Schema(name = "所属主题层级编码 ")
     private String themeDomainCode;
     /**
-     * 表名大小写;1：大写 2：小写
+     * Table Name Case; 1: Uppercase 2: Lowercase
      */
     @Schema(name = "表名大小写 1：大写 2：小写")
     private String tableCase;
 
     /**
-     * 状态
+     * Status
      */
     private String status;
 
     /**
-     * 创建方式
+     * Creation Method
      */
     private String createType;
 
     /**
-     * 数据源id
+     * Datasource ID
      */
     private Long datasourceId;
 
     private Long documentId;
 
     /**
-     * 联系人
+     * Contact Person
      */
     private String contact;
 
     /**
-     * 联系电话
+     * Contact Number
      */
     private String contactNumber;
 
     /**
-     * 描述
+     * Description
      */
     private String description;
 
     /**
-     * 是否有效
+     * Valid Flag
      */
     private Boolean validFlag;
 
     /**
-     * 删除标志
+     * Delete Flag
      */
     @TableLogic
     private Boolean delFlag;
@@ -169,19 +155,19 @@ public class DpModelDO extends BaseEntity {
     private long columnCount;
 
     /**
-     * 数据源名称
+     * Datasource Name
      */
     @TableField(exist = false)
     private String datasourceName;
 
     /**
-     * 数据源类型
+     * Datasource Type
      */
     @TableField(exist = false)
     private String datasourceType;
 
     /**
-     * 数据源配置(json字符串)
+     * Datasource Config (JSON String)
      */
     @TableField(exist = false)
     private String datasourceConfig;
@@ -193,25 +179,25 @@ public class DpModelDO extends BaseEntity {
     private String ip;
 
     /**
-     * 端口号
+     * Port
      */
     @TableField(exist = false)
     private Long port;
 
     /**
-     * 名称
+     * Name
      */
     @TableField(exist = false)
     private String documentName;
 
     /**
-     * 名称
+     * Name
      */
     @TableField(exist = false)
     private String documentCode;
 
     /**
-     * 文件标准类型字段，
+     * Document standard type field
      */
     @TableField(exist = false)
     private String documentType;
@@ -266,30 +252,30 @@ public class DpModelDO extends BaseEntity {
     private String updateUserPhoneNumber;
 
     /**
-     * 获取表名（拼接上表命名规范）
-     * 规则：
-     * 1. 数仓分层 + 业务分类 + 数据分域 + 模型编码（非应用表）
-     * 2. 数仓分层 + 所属主题 + 模型编码（应用表）
-     * 3. 根据 tableCase 转换为大写(1)或小写(2)
+     * Get table name (concatenated with table naming convention)
+     * Rules:
+     * 1. Data Warehouse Layer + Business Category + Data Domain + Model Code (non-application table)
+     * 2. Data Warehouse Layer + Theme Domain + Model Code (application table)
+     * 3. Convert to uppercase(1) or lowercase(2) based on tableCase
      *
-     * @return 拼接后的表名
+     * @return Concatenated table name
      */
     public String getTableName() {
         java.util.List<String> parts = new java.util.ArrayList<>();
 
-        // 1. 数仓分层
+        // 1. Data Warehouse Layer
         if (dataLayerEngName != null && !dataLayerEngName.isEmpty()) {
             parts.add(dataLayerEngName);
         }
 
-        // 2. 根据表类型添加不同的层级
+        // 2. Add different levels based on table type
         if ("4".equals(tableType)) {
-            // 应用表：添加所属主题
+            // Application table: add theme domain
             if (themeDomainEngName != null && !themeDomainEngName.isEmpty()) {
                 parts.add(themeDomainEngName);
             }
         } else {
-            // 非应用表：添加业务分类和数据分域
+            // Non-application table: add business category and data domain
             if (businessCategoryEngName != null && !businessCategoryEngName.isEmpty()) {
                 parts.add(businessCategoryEngName);
             }
@@ -298,15 +284,15 @@ public class DpModelDO extends BaseEntity {
             }
         }
 
-        // 3. 添加模型编码
+        // 3. Add model code
         if (modelName != null && !modelName.isEmpty()) {
             parts.add(modelName);
         }
 
-        // 4. 拼接并转换大小写
+        // 4. Concatenate and convert case
         String tableName = String.join("_", parts);
         if (tableName != null && !tableName.isEmpty()) {
-            // tableCase: 1-大写, 2-小写
+            // tableCase: 1-uppercase, 2-lowercase
             if ("2".equals(tableCase)) {
                 return tableName.toLowerCase();
             } else {

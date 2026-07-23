@@ -3,7 +3,7 @@ package tech.qiantong.qdata.module.mc.api.task.dto;
 import lombok.Data;
 
 /**
- * 采集范围 DTO 对象 MC_TASK_SCOPE
+ * Collection scope DTO object MC_TASK_SCOPE
  *
  * @author qdata
  * @date 2025-12-16
@@ -16,22 +16,22 @@ public class McTaskScopeRespDTO {
     /** ID */
     private Long id;
 
-    /** 任务id */
+    /** task id */
     private Long taskId;
 
-    /** 数据库名称 */
+    /** Database name */
     private String dbName;
 
-    /** 模式名 */
+    /** Pattern name */
     private String schemaName;
 
-    /** 是否有效 */
+    /** Is it valid */
     private Boolean validFlag;
 
-    /** 删除标志 */
+    /** Delete flag */
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
 

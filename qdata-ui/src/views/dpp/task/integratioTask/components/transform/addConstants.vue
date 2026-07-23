@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -36,14 +37,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.nodeName', '节点名称')"
+            :label="td('dpp.integration.nodeName', 'Node Name')"
             prop="name"
             :rules="[
               {
                 required: true,
                 message: td(
                   'dpp.integration.nodeNameRequired',
-                  '请输入节点名称'
+                  'Please enter node name'
                 ),
                 trigger: 'change',
               },
@@ -53,7 +54,7 @@
               v-if="!info"
               v-model="form.name"
               :placeholder="
-                td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')
+                td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')
               "
             />
             <div v-else class="form-readonly">{{ form.name }}</div>
@@ -61,14 +62,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.integration.type', '类型')"
+            :label="td('dpp.integration.type', 'Type')"
             prop="taskParams.typeName"
            :label-position="labelPosition">
             <template v-if="!info">
               <el-select
                 v-model="form.taskParams.typeName"
                 :placeholder="
-                  td('dpp.integration.typePlaceholder', '请输入类型')
+                  td('dpp.integration.typePlaceholder', 'Please enter type')
                 "
                 filterable
                 disabled
@@ -90,7 +91,7 @@
 
       <el-divider content-position="center">
         <span class="blue-text">{{
-          td("dpp.integration.constantFields", "常量字段")
+          td("dpp.integration.constantFields", "Constant Fields")
         }}</span>
       </el-divider>
       <div class="justify-between mb15">
@@ -110,28 +111,28 @@
         v-loading="loadingList"
       >
         <el-table-column
-          :label="td('common.display.index', '序号')"
+          :label="td('common.display.index', 'Index')"
           type="index"
           width="80"
           align="left"
         />
 
         <el-table-column
-          :label="td('dpp.integration.fieldName', '字段名称')"
+          :label="td('dpp.integration.fieldName', 'Field Name')"
           align="left"
           prop="columnName"
         >
           <template #default="scope">
             <el-input
               v-model="scope.row.columnName"
-              :placeholder="td('common.form.namePlaceholder', '请输入')"
+              :placeholder="td('common.form.namePlaceholder', 'Please enter name')"
               style="width: 100%"
             />
           </template>
         </el-table-column>
 
         <el-table-column
-          :label="td('dpp.integration.fieldType', '字段类型')"
+          :label="td('dpp.integration.fieldType', 'Field Type')"
           align="left"
           prop="type"
           width="150"
@@ -139,7 +140,7 @@
           <template #default="scope">
             <el-select
               v-model="scope.row.type"
-              :placeholder="td('common.form.statusPlaceholder', '请选择')"
+              :placeholder="td('common.form.statusPlaceholder', 'Please select status')"
               style="width: 100%"
             >
               <el-option
@@ -153,21 +154,21 @@
         </el-table-column>
 
         <el-table-column
-          :label="td('dpp.integration.defaultValueLabel', '默认值')"
+          :label="td('dpp.integration.defaultValueLabel', 'Default Value')"
           align="left"
           prop="defaultValue"
         >
           <template #default="scope">
             <el-input
               v-model="scope.row.defaultValue"
-              :placeholder="td('common.form.namePlaceholder', '请输入')"
+              :placeholder="td('common.form.namePlaceholder', 'Please enter name')"
               style="width: 100%"
             />
           </template>
         </el-table-column>
 
         <el-table-column
-          :label="td('dpp.integration.setEmptyString', '设为空串')"
+          :label="td('dpp.integration.setEmptyString', 'Set to Empty String')"
           align="left"
           prop="emptyString"
           width="150"
@@ -175,7 +176,7 @@
           <template #header>
             <div class="justify-center">
               <span>{{
-                td("dpp.integration.setEmptyString", "设为空串")
+                td("dpp.integration.setEmptyString", "Set to Empty String")
               }}</span>
               <el-tooltip
                 effect="dark"
@@ -191,15 +192,15 @@
           <template #default="scope">
             <el-select
               v-model="scope.row.emptyString"
-              :placeholder="td('common.form.statusPlaceholder', '请选择')"
+              :placeholder="td('common.form.statusPlaceholder', 'Please select status')"
               style="width: 100%"
             >
               <el-option
-                :label="td('dpp.integration.yes', '是')"
+                :label="td('dpp.integration.yes', 'Yes')"
                 :value="true"
               />
               <el-option
-                :label="td('dpp.integration.no', '否')"
+                :label="td('dpp.integration.no', 'No')"
                 :value="false"
               />
             </el-select>
@@ -295,22 +296,22 @@ const props = defineProps({
 });
 
 function handleAddField() {
-  // 如果有任意一个已有字段 columnName 为空，阻止新增
+  // If any existing field columnName is empty, prevent new additions
   const lastEmpty = tableFields.value.find((item) => !item.columnName);
   if (lastEmpty) {
     proxy.$message.warning(
       td(
         "dpp.integration.addFieldFailedFillCurrent",
-        "添加失败，请先填写当前字段名称"
+        "Add failed, please fill current field name first"
       )
     );
     return;
   }
-  // 最后一行名称
+  // last line name
   let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
   if (isRepeat) {
     proxy.$message.warning(
-      td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称")
+      td("dpp.integration.noRepeatFieldNames", "Please do not use duplicate field names")
     );
     return;
   }
@@ -330,10 +331,10 @@ function onResolveFields(payload) {
   if (!payload) return;
   switch (payload.action) {
     case "addNewOnly":
-      console.log("父组件：只增加新字段");
+      console.log("Parent component: add new fields only");
       break;
     case "addAll":
-      console.log("父组件：增加所有字段");
+      console.log("Parent component: add all fields");
       break;
     case "clearAndAddAll":
       tableFields.value = deepCopy(originalTableFieldsBackup.value);
@@ -341,10 +342,10 @@ function onResolveFields(payload) {
         "🚀 ~ onResolveFields ~  tableFields.value:",
         tableFields.value
       );
-      console.log("父组件：清空并增加所有字段");
+      console.log("Parent component: clear and add all fields");
       break;
     case "cancel":
-      console.log("父组件：取消操作");
+      console.log("Parent component: cancel operation");
       break;
   }
 }
@@ -371,7 +372,7 @@ let dpModelRefs = ref();
 let form = ref({});
 
 function handleDelete(row) {
-  // 从 tableFields 中删除对应字段
+  // Delete the corresponding field from tableFields
   const idxTable = tableFields.value.findIndex(
     (item) => item.columnName === row.columnName
   );
@@ -379,11 +380,11 @@ function handleDelete(row) {
     tableFields.value.splice(idxTable, 1);
   } else {
     proxy.$message.warning(
-      td("dpp.integration.deleteFailedFieldNotFound", "删除失败，字段未找到")
+      td("dpp.integration.deleteFailedFieldNotFound", "Delete failed, field not found")
     );
   }
 
-  // 恢复 inputFields 中被删除字段的原始状态（如果有）
+  // Restore the original state of deleted fields in inputFields (if any)
   const originalField = originalTableFieldsBackup.value.find(
     (item) => item.columnName === row.columnName
   );
@@ -399,7 +400,7 @@ function handleDelete(row) {
   }
 }
 
-// 提交弹窗规则数据
+// Submit pop-up rule data
 const submitForm = (value) => {
   if (!value || !Array.isArray(value)) return;
 
@@ -410,7 +411,7 @@ const submitForm = (value) => {
     try {
       parsedConfig = JSON.parse(ruleItem.ruleConfig);
     } catch (e) {
-      console.warn("无法解析 ruleConfig:", e, ruleItem.ruleConfig);
+      console.warn("Unable to parse ruleConfig:", e, ruleItem.ruleConfig);
       return;
     }
     const sourceField = parsedConfig?.fieldMerge?.sourceField;
@@ -453,10 +454,10 @@ const saveData = async () => {
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
 
-    // 校验 tableFields 不为空
+    // Verify tableFields is not empty
     if (!Array.isArray(tableFields.value) || tableFields.value.length === 0) {
       proxy.$message.warning(
-        td("dpp.integration.atLeastOneFieldValue", "请至少一个字段值")
+        td("dpp.integration.atLeastOneFieldValue", "At least one field value is required")
       );
       return;
     }
@@ -469,18 +470,18 @@ const saveData = async () => {
         proxy.$message.warning(
           td(
             "dpp.integration.fieldNameCannotBeEmpty",
-            "校验未通过，字段名称不能为空"
+            "Validation failed, field name is required"
           )
         );
         return;
       }
     }
 
-    // 最后一行名称
+    // last line name
     let isRepeat = hasDuplicateObjects(tableFields.value, "columnName");
     if (isRepeat) {
       proxy.$message.warning(
-        td("dpp.integration.noRepeatFieldNames", "请不要填写重复的字段名称")
+        td("dpp.integration.noRepeatFieldNames", "Please do not use duplicate field names")
       );
       return;
     }
@@ -510,11 +511,11 @@ const saveData = async () => {
     }));
     taskParams.mainArgs = taskParams.mainArgs || { cleanRuleList: [] };
     form.value.taskParams = taskParams;
-    console.log("保存数据 - outputFields:", taskParams.outputFields);
+    console.log("Save data - outputFields:", taskParams.outputFields);
     emit("confirm", form.value);
     // closeDialog();
   } catch (error) {
-    console.error("保存数据失败:", error);
+    console.error("Failed to save data:", error);
     loading.value = false;
   }
 };

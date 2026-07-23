@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -90,48 +91,48 @@ const open = ref(false);
 const visible = ref(false);
 const title = ref(td('sys.system.userAvatar.editAvatar'));
 
-//图片裁剪数据
+//Image cropping data
 const options = reactive({
-  img: userStore.avatar,     // 裁剪图片的地址
-  autoCrop: true,            // 是否默认生成截图框
-  autoCropWidth: 200,        // 默认生成截图框宽度
-  autoCropHeight: 200,       // 默认生成截图框高度
-  fixedBox: true,            // 固定截图框大小 不允许改变
-  outputType: "png",         // 默认生成截图为PNG格式
-  filename: 'avatar',        // 文件名称
-  previews: {}               //预览数据
+  img: userStore.avatar,     // The address of the cropped image
+  autoCrop: true,            // Whether to generate a screenshot box by default
+  autoCropWidth: 200,        // Default generated screenshot frame width
+  autoCropHeight: 200,       // Default generated screenshot frame height
+  fixedBox: true,            // Fixed screenshot frame size, no change allowed
+  outputType: "png",         // By default, screenshots are generated in PNG format.
+  filename: 'avatar',        // File name
+  previews: {}               //Preview data
 });
 
-/** 编辑头像 */
+/** Edit avatar */
 function editCropper() {
   open.value = true;
 }
 
-/** 打开弹出层结束时的回调 */
+/** Callback when opening popup layer ends */
 function modalOpened() {
   visible.value = true;
 }
 
-/** 覆盖默认上传行为 */
+/** Override default upload behavior */
 function requestUpload() {}
 
-/** 向左旋转 */
+/** Rotate left */
 function rotateLeft() {
   proxy.$refs.cropper.rotateLeft();
 }
 
-/** 向右旋转 */
+/** Rotate right */
 function rotateRight() {
   proxy.$refs.cropper.rotateRight();
 }
 
-/** 图片缩放 */
+/** Image zoom */
 function changeScale(num) {
   num = num || 1;
   proxy.$refs.cropper.changeScale(num);
 }
 
-/** 上传预处理 */
+/** Upload preprocessing */
 function beforeUpload(file) {
   if (file.type.indexOf("image/") == -1) {
     proxy.$modal.msgError(td('sys.system.userAvatar.fileFormatError'));
@@ -145,7 +146,7 @@ function beforeUpload(file) {
   }
 }
 
-/** 上传图片 */
+/** Upload pictures */
 function uploadImg() {
   proxy.$refs.cropper.getCropBlob(data => {
     let formData = new FormData();
@@ -160,12 +161,12 @@ function uploadImg() {
   });
 }
 
-/** 实时预览 */
+/** Live preview */
 function realTime(data) {
   options.previews = data;
 }
 
-/** 关闭窗口 */
+/** close window */
 function closeDialog() {
   options.img = userStore.avatar;
   options.visible = false;

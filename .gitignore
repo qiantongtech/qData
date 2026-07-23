@@ -56,27 +56,27 @@ nbdist/
 !*/build/*.xml
 
 ######################################################################
-# macOS 系统文件
+# macOS system files
 .DS_Store
 .AppleDouble
 .LSOverride
 
-# 缓存和缩略图
+# Caches and thumbnails
 Icon?
 ._*
 
-# Spotlight 搜索索引
+# Spotlight search index
 .Spotlight-V100
 
-# Time Machine 备份
+# Time Machine backups
 .TemporaryItems
 .Trashes
 
 ######################################################################
-### 组件库编译后的文件 ###
+### Compiled component library files ###
 storybook-static/
 
-### pdman 备份文件 ###
+### PDMan backup files ###
 /sql/pdman/.back_anivia/
 sql/pdman/.back_数据中台
 
@@ -111,4 +111,3 @@ qdata-server/docker/qdata-server.jar
 qdata-quality/docker/qdata-quality.jar
 **/.flattened-pom.xml
 **/dependency-reduced-pom.xml
-

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -118,7 +119,7 @@
          </el-table>
       </div>
 
-      <!-- 添加或修改菜单对话框 -->
+      <!-- Add or modify menu dialog box -->
       <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px" :label-position="labelPosition">
             <el-row :gutter="20">
@@ -318,7 +319,7 @@
          <template #footer>
             <div class="dialog-footer">
                <el-button @click="cancel">{{ td('common.button.cancel') }}</el-button>
-               <el-button type="primary" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
+               <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -333,6 +334,7 @@ import IconSelect from "@/components/IconSelect/index.vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
 const menuList = ref([]);
@@ -360,7 +362,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询菜单列表 */
+/** Query menu list */
 function getList() {
   loading.value = true;
   listMenu(queryParams.value).then(response => {
@@ -369,7 +371,7 @@ function getList() {
   });
 }
 
-/** 查询菜单下拉树结构 */
+/** Query menu drop-down tree structure */
 function getTreeselect() {
   menuOptions.value = [];
   listMenu().then(response => {
@@ -379,13 +381,13 @@ function getTreeselect() {
   });
 }
 
-/** 取消按钮 */
+/** Cancel button */
 function cancel() {
   open.value = false;
   reset();
 }
 
-/** 表单重置 */
+/** form reset */
 function reset() {
   form.value = {
     menuId: undefined,
@@ -402,28 +404,28 @@ function reset() {
   proxy.resetForm("menuRef");
 }
 
-/** 展示下拉图标 */
+/** Show dropdown icon */
 function showSelectIcon() {
   iconSelectRef.value.reset();
 }
 
-/** 选择图标 */
+/** Select icon */
 function selected(name) {
   form.value.icon = name;
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   getTreeselect();
@@ -436,7 +438,7 @@ function handleAdd(row) {
   title.value = td('sys.system.menu.addTitle');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -445,7 +447,7 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   await getTreeselect();
@@ -456,8 +458,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["menuRef"].validate(valid => {
     if (valid) {
       if (form.value.menuId != undefined) {
@@ -465,19 +469,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(td('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addMenu(form.value).then(response => {
           proxy.$modal.msgSuccess(td('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal.confirm(td('sys.system.menu.confirmDelete', { name: row.menuName })).then(function() {
     return delMenu(row.menuId);

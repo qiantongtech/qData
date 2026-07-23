@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -94,7 +95,7 @@
                 </el-option>
               </el-select>
               <!-- <el-select style="width: 150px" class="el-form-input-width" v-model="userStore.projectId"
-                                @change="projectIdChange" placeholder="请选择所属项目" clearable>
+                                @change="projectIdChange" placeholder="Please select the project" clearable>
                                 <el-option v-for="item in projectOptions" :key="item.id" :label="item.name"
                                     :value="item.id" />
                             </el-select> -->
@@ -134,7 +135,7 @@
         <div class="right-menu-item hover-effect" @click="openDocumentation">
           <svg-icon iconClass="bzzx" style="font-size: 18px" />
         </div>
-        <!-- ---------------------------- 报工 --------------------------------- -->
+        <!-- ------------------------------- Reporting for work ---------------------------------- -->
         <el-popover
           trigger="hover"
           popper-style="
@@ -263,7 +264,7 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="Layout size" effect="dark" placement="bottom">
                   <size-select id="size-select" class="right-menu-item hover-effect" />
                 </el-tooltip> -->
       </template>
@@ -274,7 +275,7 @@
           trigger="click"
         >
           <div class="avatar-wrapper">
-            <img :src="userStore.avatar" class="user-avatar" />
+            <img src="http://192.168.0.101/prod-api//profile/avatar/2025/09/18/68cb6865e4b0b6ef59810506.png" class="user-avatar" />
             <span class="nickName">{{ nickName }}</span>
           </div>
           <template #dropdown>
@@ -289,7 +290,7 @@
                 <span>{{ t('sys.dashboard.layoutSettings') }}</span>
               </el-dropdown-item>
               <!-- <el-dropdown-item command="about">
-                                <span>关于我们</span>
+                                <span>About us</span>
                             </el-dropdown-item> -->
               <el-dropdown-item divided command="logout">
                 <span>{{ t('sys.dashboard.logout') }}</span>
@@ -388,7 +389,7 @@ const localeStore = useLocaleStore();
 // import { getCurrentAppVersion } from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
-// 认证模式
+// Authentication mode
 const authType = import.meta.env.VITE_APP_AUTH_TYPE;
 
 const route = useRoute();
@@ -412,7 +413,7 @@ const nickName = computed(() => {
     return name;
 });
 let isFlag = ref(false);
-// 默认选择的消息类型
+// Message type selected by default
 const activeMsg = ref("first");
 const projectId = ref("");
 const permissionStore = usePermissionStore();
@@ -420,11 +421,11 @@ const permissionStore = usePermissionStore();
 const needUpdate = ref(false);
 const currentVersion = ref("");
 const latestVersion = ref("");
-// 所有的路由信息
+// All routing information
 const routers = computed(() => permissionStore.topbarRouters);
-//-----------------------以下报工内容-------------------------
+//-----------------------The following job application contents-------------------------
 const handleMessage = (msg) => {
-  console.log("接收到的消息:", msg);
+  console.log("Received message:", msg);
   router.push({
     path: "/sys/system/notice/detail",
     query: { id: msg.noticeId },
@@ -454,7 +455,7 @@ function resetFromWork() {
   form.value.reportExperience = null;
 }
 
-//请假了
+//Asking for leave
 function offFromWork() {
   proxy.$modal
     .confirm(t("sys.report.confirmLeave"))
@@ -467,7 +468,7 @@ function offFromWork() {
         reportTime: new Date(),
         detailRespVOList: tableData.value,
       };
-      console.log("---------提交-请假----req-------", req);
+      console.log("---------Submit leave request-------", req);
       addReport(req)
         .then((response) => {
           proxy.$modal.msgSuccess(t("sys.report.submitSuccess"));
@@ -477,7 +478,7 @@ function offFromWork() {
         .catch((error) => {});
     })
     .catch(() => {});
-  // form.value.reportExperience = '我请假了'
+  // form.value.reportExperience = 'I asked for leave'
 }
 
 function getRouter(data) {
@@ -488,14 +489,14 @@ function getRouter(data) {
   }
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
   if (form.value.reportExperience == null) {
     proxy.$modal.msgWarning(t("sys.report.experienceEmpty"));
     return;
   }
   proxy.$refs["reportRef"].validate((valid) => {
-    console.log("---------校验----", valid);
+    console.log("---------Validation-------", valid);
     if (valid) {
       const tempList = tableData.value;
       if (tempList.length == 0) {
@@ -520,10 +521,10 @@ function submitForm() {
         proxy.$modal.msgWarning(t("sys.report.durationEmpty"));
         return;
       }
-      // 提取所有非空的 projectId 并用逗号连接
+      // Extract all non-empty projectIds and concatenate with commas
       form.value.reportContent = tempList
         .map((item) => item.projectId)
-        .filter((id) => id != null) // 过滤掉 null 或 undefined 的值
+        .filter((id) => id != null) // Filter out null or undefined values
         .join(",");
 
       if (form.value.id != null) {
@@ -531,7 +532,7 @@ function submitForm() {
           const date = new Date(e.reportTime);
           return {
             ...e,
-            reportTime: isNaN(date.getTime()) ? null : date, // 如果无效，设置为 null
+            reportTime: isNaN(date.getTime()) ? null : date, // If invalid, set to null
           };
         });
         const req = {
@@ -556,7 +557,7 @@ function submitForm() {
           reportTime: new Date(),
           detailRespVOList: tableData.value,
         };
-        console.log("---------提交-----req-------", req);
+        console.log("---------Submit request-------", req);
         addReport(req)
           .then((response) => {
             proxy.$modal.msgSuccess(t("sys.report.submitSuccess"));
@@ -569,11 +570,11 @@ function submitForm() {
   });
 }
 
-// 删除操作
+// Delete operation
 const deleteItem = (index) => {
-  // 使用 splice 方法根据索引删除数据
+  // Use splice method to delete data based on index
   tableData.value.splice(index, 1);
-  console.log("删除了索引为", index, "的项");
+  console.log("Deleted item at index", index, "item");
 };
 
 const addItem = () => {
@@ -589,14 +590,14 @@ const handleBlur = () => {
   popoverVisible.value = false;
 };
 const handleSelectChange = (value) => {
-  console.log("选中的选项:", value);
+  console.log("Selected option:", value);
 };
 
 const handlePopoverClick = (value) => {
-  // 如果不想关闭 Popover，可以在这里处理额外的逻辑
+  // If you don't want to close Popover, you can handle additional logic here
 };
 
-//打开报工页面
+//Open the job reporting page
 function openForWork() {
   tableData.value = [{ projectId: null, duration: null }];
   form.value.reportExperience = null;
@@ -608,13 +609,13 @@ function cancel() {
   open.value = false;
 }
 
-//报工管理
+//Reporting management
 function reportingForWork() {
   router.push({ path: "/project/report" });
 }
 
 function projectIdChange(row, newValue) {
-  // 从projectOptions中获取项目code
+  // Get project code from projectOptions
   const project = projectOptions.value.find(
     (item) => item.id === userStore.projectId
   );
@@ -624,7 +625,7 @@ function projectIdChange(row, newValue) {
   if (userStore.projectId) {
     localStorage.setItem("qdataProjectId", userStore.projectId);
     getRoutersDpp(userStore.projectId).then((res) => {
-      // 更新store中的路由数据
+      // Update routing data in the store
       permissionStore.updateTopbarRoutes(res.data);
       let topMenus = [];
       routers.value.map((menu) => {
@@ -632,20 +633,20 @@ function projectIdChange(row, newValue) {
           topMenus = menu;
         }
       });
-      const currentPath = router.currentRoute.value.path.split("/"); // 获取当前路由地址
+      const currentPath = router.currentRoute.value.path.split("/"); // Get the current routing address
       const menuPaths = topMenus.children.flatMap((child) =>
         child.children
           ? child.children.map((subChild) => subChild.path)
           : child.path
-      ); // 获取菜单权限中的路径，如果有子节点就获取子节点的路径
+      ); // Get the path in the menu permissions. If there are sub-nodes, get the path of the sub-nodes.
       console.log("---------currentPath-------------", currentPath);
       console.log("---------menuPaths-------------", menuPaths);
 
       if (!menuPaths.includes(currentPath[currentPath.length - 1])) {
-        //清空选项卡
+        //Clear tab
         proxy.$tab.closeAllPage();
         console.log("1");
-        // 如果不存在，跳转到第一个菜单
+        // If it does not exist, jump to the first menu
         if (
           topMenus.children[0].children &&
           topMenus.children[0].children.length > 0
@@ -669,7 +670,7 @@ function projectIdChange(row, newValue) {
           proxy.$tab.refreshPage(topMenus.children[0]);
         }
       } else {
-        // 如果当前路由地址在菜单权限中存在，刷新页面
+        // If the current routing address exists in the menu permissions, refresh the page
         console.log("2");
 
         const currentPageData = {
@@ -684,39 +685,39 @@ function projectIdChange(row, newValue) {
           proxy.$tab.refreshPage(currentPageData);
         }
       }
-      // 刷新当前页面
+      // Refresh current page
       proxy.$refs["topNavRef"].handleSelect("/dpp", null, false);
     });
   }
 }
 
-// 判断项目是否被禁用
+// Determine whether an item is disabled
 const isProjectDisabled = (projectId, currentRow) => {
-  // 判断当前项目是否已被选中，并且不是当前行
+  // Determine whether the current item has been selected and is not the current row
   return tableData.value.some(
     (row) => row.projectId === projectId && row !== currentRow
   );
 };
-//-----------------------以上报工内容-------------------------
+//-----------------------The above job application content----------------------
 
-// 消息通知数量
+// Number of message notifications
 const msgCount = ref(0);
 const messages = ref([]);
 const noticeList = ref([]);
 const sessionValue = ref(null);
-getMessageNum(); // 第一次主要获取消息
+getMessageNum(); // Mainly get news for the first time
 
 const wsUri =
   import.meta.env.VITE_APP_WEBSOCKET_API +
   "/websocket/message/" +
   userStore.userId;
-// 建立socket连接
+// Establish socket connection
 const ws = new WebSocket(wsUri);
 
 const initWebSocket = () => {
   console.log("---------initWebSocket-------------");
 
-  //查询通知公告
+  //Inquiry notification announcement
   listNotice().then((response) => {
     console.log("---------- response.rows-------------", response);
     response.rows.forEach((item) => {
@@ -730,7 +731,7 @@ const initWebSocket = () => {
     noticeList.value = response.rows;
   });
 
-  //查询未读消息通知
+  //Query unread message notifications
   listMessage({
     receiverId: userStore.userId,
     hasRead: 0,
@@ -747,10 +748,10 @@ const initWebSocket = () => {
     console.log("------messages.value----", messages.value);
   });
   ws.onmessage = (event) => {
-    // 服务端推送数据
-    // console.log('===服务端推送数据=========>',event.data)
+    // Server push data
+    // console.log('====Server push data==========>',event.data)
     const messageData = JSON.parse(event.data);
-    console.log("===监测数据 messageData=========>", messageData);
+    console.log("===Monitored messageData=========>", messageData);
     if (messageData) {
       messageData.time =
         messageData.updateTime != undefined && messageData.updateTime != null
@@ -759,8 +760,8 @@ const initWebSocket = () => {
       // messages.value.push(messageData)
       messages.value = [messageData, ...messages.value];
     }
-    console.log("===存储的数据 messages=========>", messages.value);
-    // 消息数量更新
+    console.log("===Stored messages=========>", messages.value);
+    // Message count update
     msgCount.value = messages.value ? messages.value.length : 0;
   };
 };
@@ -789,7 +790,7 @@ const listProject = () => {
           userStore.projectCode = project.code;
         }
         getRoutersDpp(userStore.projectId).then((res) => {
-          // 更新store中的路由数据
+          // Update routing data in the store
           permissionStore.updateTopbarRoutes(res.data);
         });
       }
@@ -805,26 +806,26 @@ onMounted(() => {
 
   // getCurrentAppVersion().then((res) => {
   //   if (res.data != null) {
-  //     // 是否最新版本
+  //     // Is it the latest version?
   //     needUpdate.value = res.data.needUpdate;
-  //     // 本地版本号
+  //     //Local version number
   //     currentVersion.value = res.data.currentVersion;
-  //     // 最新版本号
+  //     //Latest version number
   //     latestVersion.value = res.data.latestVersion;
   //   }
   // });
 });
-// 页面注销
+// Page logout
 onBeforeUnmount(() => {
-  console.log("------页面注销----");
-  ws.close(); // 关闭socket
+  console.log("------Page logout----");
+  ws.close(); // close socket
 });
 
-// 格式化时间戳为 YYYY-MM-DD HH:mm:ss 格式
+// Format the timestamp in YYYY-MM-DD HH:mm:ss format
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份从0开始
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month starts from 0
   const day = String(date.getDate()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -833,20 +834,26 @@ function formatTimestamp(timestamp) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-// 消息查询
+// Message query
 function getMessageNum() {
   getNum();
 }
 
-// tab-click 事件处理函数
+// tab-click event handler
 const handleClick = (tab) => {
-  console.log("当前选中的 tab:", tab.props); // tab 是一个对象，包含当前被点击的 tab 的信息
+  console.log("Currently selected tab:", tab.props); // tab is an object containing information about the currently clicked tab
   const label = tab.props.label;
   activeMsg.value = tab.props.name;
 };
-// 帮助文档
+// Help documentation
 function openDocumentation() {
-  window.open("https://qdata.qiantong.tech/docs", "_blank");
+  const lang = localeStore.getCurrentLocale.lang || locale.value;
+  const localePathMap = {
+    "en-US": "/en",
+    "ja-JP": "/ja",
+  };
+  const localePath = localePathMap[lang] || "";
+  window.open(`https://community.qdata.tech${localePath}/docs/start/introduction.html`, "_blank");
 }
 function toggleSideBar() {
   appStore.toggleSideBar();
@@ -878,7 +885,7 @@ function handleCommand(command) {
       logout();
       break;
     case "about":
-      // 跳转到关于我们页面
+      // Jump to about us page
       // window.open('https://qiantong.tech/', '_blank');
       handleAboutUs();
       break;
@@ -896,7 +903,7 @@ function logout() {
     .then(() => {
       userStore.logOut().then(() => {
         if (authType === "sso") {
-          // 退出统一认证中心的登录状态
+          // Exit the login status of the Unified Certification Center
           loginOut(userStore.userId).then(() => {
             location.href = "/index";
           });
@@ -1154,21 +1161,21 @@ function clearNotification() {
     margin-right: 6px;
   }
 
-  /* 定义闪烁的动画 */
+  /* Define blinking animation */
   @keyframes twinkle {
     0% {
       opacity: 1;
-      /* 完全可见 */
+      /* fully visible */
     }
 
     50% {
       opacity: 0.3;
-      /* 半透明 */
+      /* translucent */
     }
 
     100% {
       opacity: 1;
-      /* 完全可见 */
+      /* fully visible */
     }
   }
 
@@ -1238,7 +1245,7 @@ function clearNotification() {
   height: 500px;
 }
 
-/* 确保样式生效，增加选择器的优先级 */
+/* Make sure the style is effective and increase the priority of the selector */
 .rounded-button,
 .rounded-button .el-button {
   border-radius: 2px !important;
@@ -1289,7 +1296,7 @@ function clearNotification() {
   justify-content: space-between;
   align-items: center;
   margin-top: 35px;
-  border-top: 1px solid var(--el-border-color-light); // 使用 Element Plus 主题变量
+  border-top: 1px solid var(--el-border-color-light); // Using Element Plus theme variables
 
   .status-text {
     font-family: PingFang SC;
@@ -1298,18 +1305,18 @@ function clearNotification() {
     color: #333333;
   }
   .update-link {
-    color: #126bed; // Element Plus 主色，也可以用 var(--el-color-primary)
+    color: #126bed; // Element Plus primary color, you can also use var(--el-color-primary)
     text-decoration: underline;
     cursor: pointer;
     font-size: 18px;
     transition: color 0.2s;
 
     &:hover {
-      color: #66b1ff; // 鼠标悬停时颜色变亮
+      color: #66b1ff; // Color brightens on mouseover
     }
 
     &:active {
-      color: #3a8ee6; // 点击时颜色更深一点
+      color: #3a8ee6; // The color becomes darker when clicked
     }
   }
   .head-btns {

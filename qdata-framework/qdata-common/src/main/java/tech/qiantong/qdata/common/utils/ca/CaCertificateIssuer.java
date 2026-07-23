@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.ca;
@@ -42,6 +28,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import sun.security.x509.*;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import javax.security.auth.x500.X500Principal;
 import javax.servlet.http.HttpServletRequest;
@@ -59,44 +46,44 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 证书颁发工具类，提供方法使用根证书和私钥签发用户证书。
- * 本工具类通过加载根证书和私钥，生成用户证书并返回MultipartFile列表。
+ * Certificate issuance tool class provides methods to use root certificates and private keys to issue user certificates.
+ * This tool class generates user certificates and returns the MultipartFile list by loading the root certificate and private key.
  * @author qdata
  */
 public class CaCertificateIssuer {
 
     /**
-     * 签发用户证书并返回证书和私钥的 MultipartFile 列表
+     * Issues a user certificate and returns a MultipartFile list of certificates and private keys
      *
-     * @param userName 包含用户的详细信息
-     * @param certUrl 根证书的 URL
-     * @param privateKeyUrl 私钥的 URL
-     * @param validity 证书的有效期（年）
-     * @return List<MultipartFile> 包含用户证书和私钥的 MultipartFile 列表
-     * @throws Exception 如果签发过程中发生错误
+     * @param userName contains the user’s details
+     * @param certUrl URL of the root certificate
+     * @param privateKeyUrl URL of the private key
+     * @param validity The validity period of the certificate (years)
+     * @return List<MultipartFile> List of MultipartFiles containing user certificates and private keys
+     * @throws Exception if an error occurs during the issuance process
      */
     public static List<MultipartFile> issueCertificate(String userName, String certUrl,
                                                        String privateKeyUrl, Long validity) throws Exception {
         X500Principal userDnName = new X500Principal(userName);
         List<MultipartFile> fileList = new ArrayList<>();
 
-        // 加载根证书和私钥
+        // Load root certificate and private key
         X509Certificate rootCertificate = loadRootCertificate(certUrl);
         PrivateKey rootPrivateKey = loadRootPrivateKey(privateKeyUrl);
 
-        // 获取根证书的主体信息，作为用户证书的颁发者信息
+        // Obtain the subject information of the root certificate as the issuer information of the user certificate
         X500Principal rootDnName = rootCertificate.getSubjectX500Principal();
         X500Name rootX500Name = new X500Name(rootDnName.getName());
 
-        // 生成用户的密钥对（公钥和私钥）
+        // Generate the user's key pair (public and private keys)
         KeyPair userKeyPair = generateUserKeyPair();
         PublicKey userPublicKey = userKeyPair.getPublic();
         PrivateKey userPrivateKey = userKeyPair.getPrivate();
 
-        // 定义用户证书的主体信息
+        // Define subject information for user certificates
         X500Name userX500Name = new X500Name(userDnName.getName());
 
-        // 创建 X.509 用户证书信息对象
+        // Create an X.509 user certificate information object
         X509CertInfo userCertInfo = new X509CertInfo();
         userCertInfo.set(X509CertInfo.VERSION, new CertificateVersion(CertificateVersion.V3));
         userCertInfo.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(BigInteger.valueOf(System.currentTimeMillis())));
@@ -106,48 +93,48 @@ public class CaCertificateIssuer {
         userCertInfo.set(X509CertInfo.KEY, new CertificateX509Key(userPublicKey));
         userCertInfo.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(AlgorithmId.get("SHA256withRSA")));
 
-        // 添加主题扩展字段 (SAN)，用于浏览器 https 验证
+        // Added subject extension fields (SAN) for browser https authentication
         String dnsName = ReUtil.get("CN=([^,]+)", userX500Name.getName(), 1);
-        // 判断是否是IP地址或域名
+        // Determine whether it is an IP address or domain name
         boolean isIpAddress = Validator.isIpv4(dnsName);
-        // 判断是否是域名
+        // Determine whether it is a domain name
         boolean isDomain = ReUtil.isMatch("^(\\*\\.)?([\\w-]+\\.)+[a-zA-Z]{2,}$", dnsName);
 
         CertificateExtensions extensions = new CertificateExtensions();
         GeneralNames san = new GeneralNames();
 
         if (isIpAddress) {
-            // 如果是IP地址，使用IPAddress类型添加到SAN
+            // If it is an IP address, add it to the SAN using the IPAddress type
             san.add(new GeneralName(new IPAddressName(dnsName)));
         } else if (isDomain) {
-            // 如果是域名，使用DNSName类型添加到SAN
+            // If it is a domain name, use the DNSName type to add it to the SAN
             san.add(new GeneralName(new DNSName(dnsName)));
         }
 
         if (isIpAddress || isDomain) {
             extensions.set(SubjectAlternativeNameExtension.NAME, new SubjectAlternativeNameExtension(san));
-            // 将扩展添加到证书信息中
+            // Add extension to certificate information
             userCertInfo.set(X509CertInfo.EXTENSIONS, extensions);
         }
 
-        // 使用根证书的私钥签署用户证书
+        // Sign the user certificate using the root certificate's private key
         X509CertImpl userCertificate = new X509CertImpl(userCertInfo);
         userCertificate.sign(rootPrivateKey, "SHA256withRSA");
 
-        // 将用户证书转换为 MultipartFile
+        // Convert user certificate to MultipartFile
         fileList.add(convertCertificateToMultipartFile(userCertificate, dnsName + "_certificate.cer"));
 
-        // 将用户私钥保存为 PEM 文件并转换为 MultipartFile
+        // Save user private key as PEM file and convert to MultipartFile
         fileList.add(convertPrivateKeyToMultipartFile(userPrivateKey, dnsName + "_privateKey.pem"));
 
         return fileList;
     }
 
     /**
-     * 生成 RSA 密钥对
+     * Generate RSA key pair
      *
-     * @return 生成的 RSA 密钥对
-     * @throws Exception 如果密钥对生成失败
+     * @return generated RSA key pair
+     * @throws Exception if key pair generation fails
      */
     private static KeyPair generateUserKeyPair() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -156,12 +143,12 @@ public class CaCertificateIssuer {
     }
 
     /**
-     * 将 X.509 证书对象转换为 MultipartFile
+     * Convert X.509 certificate object to MultipartFile
      *
-     * @param certificate X.509 证书对象
-     * @param fileName 文件名
-     * @return MultipartFile 形式的证书
-     * @throws Exception 如果转换过程中发生错误
+     * @param certificate X.509 certificate object
+     * @param fileName file name
+     * @return Certificate in the form of MultipartFile
+     * @throws Exception if an error occurs during conversion
      */
     private static MultipartFile convertCertificateToMultipartFile(X509CertImpl certificate, String fileName) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -174,12 +161,12 @@ public class CaCertificateIssuer {
     }
 
     /**
-     * 将私钥对象转换为 MultipartFile
+     * Convert private key object to MultipartFile
      *
-     * @param privateKey 私钥对象
-     * @param fileName 文件名
-     * @return MultipartFile 形式的私钥
-     * @throws Exception 如果转换过程中发生错误
+     * @param privateKey private key object
+     * @param fileName file name
+     * @return Private key in the form of MultipartFile
+     * @throws Exception if an error occurs during conversion
      */
     private static MultipartFile convertPrivateKeyToMultipartFile(PrivateKey privateKey, String fileName) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -191,16 +178,17 @@ public class CaCertificateIssuer {
     }
 
     /**
-     * 从指定的 URL 加载根证书
+     * Loads the root certificate from the specified URL
      *
-     * @param certUrl 根证书的 URL
-     * @return 加载的 X509Certificate 对象
-     * @throws Exception 如果加载过程中发生错误
+     * @param certUrl URL of the root certificate
+     * @return the loaded X509Certificate object
+     * @throws Exception if an error occurs during loading
      */
     public static X509Certificate loadRootCertificate(String certUrl) throws Exception {
         try (InputStream certStream = new URL(getServerIpAndPort() + certUrl).openStream()) {
             if (certStream == null) {
-                throw new IllegalArgumentException("根证书文件未找到！");
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "sys.error.ca.root.certificate.notfound", "Root certificate file was not found"));
             }
             CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(certStream);
@@ -208,16 +196,17 @@ public class CaCertificateIssuer {
     }
 
     /**
-     * 从指定的 URL 加载私钥
+     * Load private key from specified URL
      *
-     * @param privateKeyUrl 私钥的 URL
-     * @return 加载的 PrivateKey 对象
-     * @throws Exception 如果加载过程中发生错误
+     * @param privateKeyUrl URL of the private key
+     * @return loaded PrivateKey object
+     * @throws Exception if an error occurs during loading
      */
     public static PrivateKey loadRootPrivateKey(String privateKeyUrl) throws Exception {
         try (InputStream keyStream = new URL(getServerIpAndPort() + privateKeyUrl).openStream()) {
             if (keyStream == null) {
-                throw new IllegalArgumentException("私钥文件未找到！");
+                throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                        "sys.error.ca.private.key.notfound", "Private key file was not found"));
             }
             PemReader pemReader = new PemReader(new InputStreamReader(keyStream));
             byte[] keyBytes = pemReader.readPemObject().getContent();
@@ -229,14 +218,14 @@ public class CaCertificateIssuer {
 
 
     /**
-     * 获取当前后端服务器的 IP 和端口
+     * Get the IP and port of the current backend server
      *
-     * @return 服务器的 IP 和端口，格式为 "IP:端口"
+     * @return the IP and port of the server, in the format "IP:port"
      */
     public static String getServerIpAndPort() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        // 获取服务器的 IP 和端口
+        // Get the server's IP and port
         int serverPort = request.getLocalPort();
 
         return "http://127.0.0.1" + ":" + serverPort;
@@ -244,19 +233,19 @@ public class CaCertificateIssuer {
 
 
     public static void main(String[] args) throws Exception {
-        // 定义用户信息
+        // Define user information
         String userName = "CN=::www.wangming.xyz, OU=IT, O=盐城市国有资产投资集团有限公司, L=Yancheng, ST=Yancheng, C=CN";
 
-        // 定义根证书和私钥的 URL
+        // URL that defines the root certificate and private key
         String certUrl = "http://127.0.0.1:8000/local-plus/66c1f165146fbf2cdaf53f55.cer";
         String privateKeyUrl = "http://127.0.0.1:8000/local-plus/66c1f166146fbf2cdaf53f56.pem";
 
-        // 签发证书并获取 MultipartFile 列表
+        // Issue a certificate and get a list of MultipartFiles
         List<MultipartFile> files = issueCertificate(userName, certUrl, privateKeyUrl, 1L);
 
-        // 打印生成的文件名称
+        // Print the generated file name
         for (MultipartFile file : files) {
-            System.out.println("生成的文件: " + file.getOriginalFilename());
+            System.out.println("Generated file: " + file.getOriginalFilename());
         }
     }
 }

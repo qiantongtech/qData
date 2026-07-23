@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.file;
@@ -49,24 +35,24 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
- * 文件上传工具类
+ * File upload tool class
  *
  * @author qdata
  */
 public class FileUploadUtils
 {
     /**
-     * 默认大小 50M
+     * Default size 50M
      */
     public static final long DEFAULT_MAX_SIZE = 50 * 1024 * 1024L;
 
     /**
-     * 默认的文件名最大长度 100
+     * Default maximum file name length 100
      */
     public static final int DEFAULT_FILE_NAME_LENGTH = 100;
 
     /**
-     * 默认上传的地址
+     * Default upload address
      */
     private static String defaultBaseDir = AniviaConfig.getProfile();
 
@@ -81,10 +67,10 @@ public class FileUploadUtils
     }
 
     /**
-     * 以默认配置进行文件上传
+     * File upload with default configuration
      *
-     * @param file 上传的文件
-     * @return 文件名称
+     * @param file uploaded file
+     * @return file name
      * @throws Exception
      */
     public static final String upload(MultipartFile file) throws IOException
@@ -100,11 +86,11 @@ public class FileUploadUtils
     }
 
     /**
-     * 根据文件路径上传
+     * Upload based on file path
      *
-     * @param baseDir 相对应用的基目录
-     * @param file 上传的文件
-     * @return 文件名称
+     * @param baseDir relative to the base directory of the application
+     * @param file uploaded file
+     * @return file name
      * @throws IOException
      */
     public static final String upload(String baseDir, MultipartFile file) throws IOException
@@ -120,16 +106,16 @@ public class FileUploadUtils
     }
 
     /**
-     * 文件上传
+     * File upload
      *
-     * @param baseDir 相对应用的基目录
-     * @param file 上传的文件
-     * @param allowedExtension 上传文件类型
-     * @return 返回上传成功的文件名
-     * @throws FileSizeLimitExceededException 如果超出最大大小
-     * @throws FileNameLengthLimitExceededException 文件名太长
-     * @throws IOException 比如读写文件出错时
-     * @throws InvalidExtensionException 文件校验异常
+     * @param baseDir relative to the base directory of the application
+     * @param file uploaded file
+     * @param allowedExtension upload file type
+     * @return Returns the file name of successfully uploaded file
+     * @throws FileSizeLimitExceededException if maximum size is exceeded
+     * @throws FileNameLengthLimitExceededException File name is too long
+     * @throws IOException For example, when an error occurs while reading or writing a file
+     * @throws InvalidExtensionException File verification exception
      */
     public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension)
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
@@ -151,7 +137,7 @@ public class FileUploadUtils
     }
 
     /**
-     * 编码文件名
+     * Encoded file name
      */
     public static final String extractFilename(MultipartFile file)
     {
@@ -181,11 +167,11 @@ public class FileUploadUtils
     }
 
     /**
-     * 文件大小校验
+     * File size check
      *
-     * @param file 上传的文件
+     * @param file uploaded file
      * @return
-     * @throws FileSizeLimitExceededException 如果超出最大大小
+     * @throws FileSizeLimitExceededException if maximum size is exceeded
      * @throws InvalidExtensionException
      */
     public static final void assertAllowed(MultipartFile file, String[] allowedExtension)
@@ -229,7 +215,7 @@ public class FileUploadUtils
     }
 
     /**
-     * 判断MIME类型是否是允许的MIME类型
+     * Determine whether the MIME type is an allowed MIME type
      *
      * @param extension
      * @param allowedExtension
@@ -248,10 +234,10 @@ public class FileUploadUtils
     }
 
     /**
-     * 获取文件名的后缀
+     * Get the suffix of the file name
      *
-     * @param file 表单文件
-     * @return 后缀名
+     * @param file form file
+     * @return suffix name
      */
     public static final String getExtension(MultipartFile file)
     {

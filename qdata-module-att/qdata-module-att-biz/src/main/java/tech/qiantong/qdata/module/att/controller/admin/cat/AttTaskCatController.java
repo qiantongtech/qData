@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.controller.admin.cat;
@@ -60,7 +46,7 @@ import tech.qiantong.qdata.module.att.dal.dataobject.cat.AttTaskCatDO;
 import tech.qiantong.qdata.module.att.service.cat.IAttTaskCatService;
 
 /**
- * 数据集成任务类目管理Controller
+ * Data Integration Task Category Management Controller
  *
  * @author qdata
  * @date 2025-03-11
@@ -82,18 +68,18 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "导出数据集成任务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:taskCat:export')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AttTaskCatPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<AttTaskCatDO> list = (List<AttTaskCatDO>) attTaskCatService.getAttTaskCatPage(exportReqVO).getRows();
         ExcelUtil<AttTaskCatRespVO> util = new ExcelUtil<>(AttTaskCatRespVO.class);
-        util.exportExcel(response, AttTaskCatConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, AttTaskCatConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据集成任务类目管理列表")
     @PreAuthorize("@ss.hasPermi('att:taskCat:import')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AttTaskCatRespVO> util = new ExcelUtil<>(AttTaskCatRespVO.class);
@@ -111,9 +97,32 @@ public class AttTaskCatController extends BaseController {
         return CommonResult.success(BeanUtils.toBean(attTaskCatDO, AttTaskCatRespVO.class));
     }
 
+    @Operation(summary = "检查类目及其子类目下是否存在数据集成任务")
+    @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
+    @GetMapping("/hasIntegrationTask/{id}")
+    public CommonResult<Boolean> hasIntegrationTask(@PathVariable("id") Long id) {
+        return CommonResult.success(attTaskCatService.hasIntegrationTask(id));
+    }
+
+    @Operation(summary = "检查同一上级类目下名称是否已被使用")
+    @PreAuthorize("@ss.hasAnyPermi('att:taskCat:add,att:taskCat:edit')")
+    @GetMapping("/nameUsed")
+    public CommonResult<Boolean> isNameUsed(@RequestParam(required = false) Long id,
+                                            @RequestParam Long parentId,
+                                            @RequestParam String name) {
+        return CommonResult.success(attTaskCatService.isNameUsed(id, parentId, name));
+    }
+
+    @Operation(summary = "查询类目关联的数据集成任务数量")
+    @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
+    @GetMapping("/integrationTaskCount/{id}")
+    public CommonResult<Long> getIntegrationTaskCount(@PathVariable("id") Long id) {
+        return CommonResult.success(attTaskCatService.getIntegrationTaskCount(id));
+    }
+
     @Operation(summary = "新增数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:add')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody AttTaskCatSaveReqVO attTaskCat) {
         attTaskCat.setCreatorId(getUserId());
@@ -124,7 +133,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "修改数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:edit')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody AttTaskCatSaveReqVO attTaskCat) {
         attTaskCat.setUpdatorId(getUserId());
@@ -135,7 +144,7 @@ public class AttTaskCatController extends BaseController {
 
     @Operation(summary = "删除数据集成任务类目管理")
     @PreAuthorize("@ss.hasPermi('att:taskCat:remove')")
-    @Log(title = "数据集成任务类目管理", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.att.task.cat", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(attTaskCatService.removeAttTaskCat(Arrays.asList(ids)));

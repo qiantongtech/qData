@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -173,7 +174,7 @@
       </el-main>
     </el-container>
 
-    <!-- 添加或修改API服务对话框 -->
+    <!-- Add or modify API service dialog -->
     <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -281,12 +282,12 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm">{{td('common.button.confirm')}}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{td('common.button.confirm')}}</el-button>
         </div>
       </template>
     </el-dialog>
 
-    <!-- API服务详情对话框 -->
+    <!-- API service details dialog box -->
     <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
         <span role="heading" aria-level="2" class="el-dialog__title">
@@ -406,7 +407,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
       destroy-on-close>
       <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
@@ -428,7 +429,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -452,6 +453,7 @@ import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const {
   ds_api_log_status,
   ds_api_bas_info_api_service_type,
@@ -466,7 +468,7 @@ const {
 
 const dsApiList = ref([]);
 
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('ds.api.apiName'), visible: true },
@@ -485,16 +487,16 @@ const columns = ref([
 
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed // Initial left width
 const open = ref(false);
 const openDetail = ref(false);
 const loading = ref(true);
@@ -508,19 +510,19 @@ const daterangeCreateTime = ref([]);
 const defaultSort = ref({ prop: "create_time", order: "desc" });
 const router = useRouter();
 
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/ds/dsApi/importData",
 });
 
@@ -556,7 +558,7 @@ function getApiCatList() {
   });
 }
 
-/** 查询API服务列表 */
+/** Query API service list */
 function getList() {
   loading.value = true;
   queryParams.value.params = {};
@@ -586,15 +588,15 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => { });
   }
 };
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(row) {
   const text = row.status === "1" ? td('ds.api.online') : td('ds.api.offline');
   proxy.$modal
@@ -623,14 +625,14 @@ function handleStatusChange(row) {
     });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     ID: null,
@@ -660,14 +662,14 @@ function reset() {
   proxy.resetForm("dsApiRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -678,14 +680,14 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange({ column, prop, order }) {
   console.log(column, prop, order);
   console.log("column?.columnKey::" + column?.columnKey);
@@ -694,14 +696,14 @@ function handleSortChange({ column, prop, order }) {
   getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('ds.api.addApi');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
   reset();
   const _ID = row.ID || ids.value;
@@ -712,7 +714,7 @@ function handleUpdate(row) {
   });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _ID = row.id || ids.value;
@@ -723,8 +725,10 @@ function handleDetail(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["dsApiRef"].validate((valid) => {
     if (valid) {
       if (form.value.ID != null) {
@@ -733,22 +737,26 @@ function submitForm() {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => { submitLoading.value = false; });
       } else {
         addDsApi(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
             getList();
+            submitLoading.value = false;
           })
-          .catch((error) => { });
+          .catch((error) => { submitLoading.value = false; });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
@@ -763,7 +771,7 @@ function handleDelete(row) {
     .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "ds/dsApi/export",
@@ -774,14 +782,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('ds.api.importTitle');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -790,20 +798,23 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["uploadRef"].submit();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
+  submitLoading.value = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
@@ -876,7 +887,7 @@ getApiCatList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//上传附件样式调整
+//Upload attachment style adjustment
 ::v-deep {
 
   // .el-upload-list{

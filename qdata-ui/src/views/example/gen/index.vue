@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -23,7 +24,7 @@
         :model="queryParams"
         ref="queryRef"
         :inline="true"
-        
+
       >
         <el-form-item label="ID" prop="id">
           <el-input
@@ -190,7 +191,7 @@
       </el-table>
     </div>
 
-    <!-- 添加或修改示例部门对话框 -->
+    <!-- Add or modify the sample department dialog box -->
     <el-dialog
       :title="title"
       v-model="open"
@@ -276,7 +277,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitForm">{{ t('common.button.confirm') }}</el-button>
           <el-button @click="cancel">{{ t('common.button.cancel') }}</el-button>
         </div>
       </template>
@@ -296,6 +297,7 @@ import {
 
 const { t } = useI18n();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { sys_notice_status } = proxy.useDict("sys_notice_status");
 
 const deptList = ref([]);
@@ -337,7 +339,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询示例部门列表 */
+/** Query sample department list */
 function getList() {
   loading.value = true;
   queryParams.value.params = {};
@@ -355,7 +357,7 @@ function getList() {
   });
 }
 
-/** 查询示例部门下拉树结构 */
+/** Query example department drop-down tree structure */
 function getTreeselect() {
   listDept().then((response) => {
     deptOptions.value = [];
@@ -365,13 +367,13 @@ function getTreeselect() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -394,12 +396,12 @@ function reset() {
   proxy.resetForm("deptRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   daterangeCreateTime.value = [];
   daterangeUpdateTime.value = [];
@@ -407,7 +409,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   getTreeselect();
@@ -420,7 +422,7 @@ function handleAdd(row) {
   title.value = "新增示例部门";
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -429,7 +431,7 @@ function toggleExpandAll() {
   });
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 // async function handleUpdate(row) {
 //   reset();
 //   await getTreeselect();
@@ -439,7 +441,7 @@ function toggleExpandAll() {
 //   getDept(row.id).then(response => {
 //     form.value = response.data;
 //     open.value = true;
-//     title.value = "修改示例部门";
+//     title.value = "Modify the sample department";
 //   });
 // }
 
@@ -448,9 +450,9 @@ async function handleUpdate(row) {
   // await getTreeselect();
   const response = await listDept();
   deptOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return (
       d.id !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -469,8 +471,10 @@ async function handleUpdate(row) {
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["deptRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
@@ -478,19 +482,27 @@ function submitForm() {
           proxy.$modal.msgSuccess(t('common.message.editSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addDept(form.value).then((response) => {
           proxy.$modal.msgSuccess(t('common.message.addSuccess'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认删除示例部门编号为"' + row.id + '"的数据项？')

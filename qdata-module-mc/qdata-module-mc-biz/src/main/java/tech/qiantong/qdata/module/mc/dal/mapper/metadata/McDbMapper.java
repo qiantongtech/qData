@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据库Mapper接口
+ * Database Mapper interface
  *
  * @author qdata
  * @date 2026-02-11
@@ -28,7 +28,7 @@ public interface McDbMapper extends BaseMapperX<McDbDO> {
         if ("0".equals(reqVO.getSourceSystemName())) {
             reqVO.setSourceSystemName(null);
         }
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         boolean selfScopeWithUnassigned = BizDataScopeQueryHelper.useSelfScopeWithUnassigned(
                 reqVO.getBizScopeMode(), reqVO.getBizScopeIncludeUnassigned(), reqVO.getBusinessLeader());
         boolean deptScopeWithUnassigned = BizDataScopeQueryHelper.useDeptScopeWithUnassigned(
@@ -68,7 +68,7 @@ public interface McDbMapper extends BaseMapperX<McDbDO> {
         lambdaWrapperX.apply(deptScopeWithUnassigned, "(t.RESPONSIBLE_DEPT = {0} OR (t.BUSINESS_LEADER IS NULL AND t.RESPONSIBLE_DEPT IS NULL))", reqVO.getResponsibleDept());
         lambdaWrapperX.eq(!deptScopeWithUnassigned && reqVO.getResponsibleDept() != null, McDbDO::getResponsibleDept, reqVO.getResponsibleDept());
         lambdaWrapperX.likeRightIfExists(McDbDO::getSourceSystemName, reqVO.getSourceSystemName());
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, lambdaWrapperX);
     }
 
@@ -95,7 +95,7 @@ public interface McDbMapper extends BaseMapperX<McDbDO> {
 
 
     /**
-     * 元数据检索分页查询
+     * Metadata retrieval paging query
      */
     List<McMetaSearchRespDTO> selectMetaSearchPage(
             @Param("keyword") String keyword,
@@ -108,7 +108,7 @@ public interface McDbMapper extends BaseMapperX<McDbDO> {
     );
 
     /**
-     * 元数据检索总数
+     * Total number of metadata searches
      */
     Long selectMetaSearchCount(
             @Param("keyword") String keyword,
@@ -120,25 +120,25 @@ public interface McDbMapper extends BaseMapperX<McDbDO> {
 
 
     /**
-     * 更新数据库存储大小
-     * @param dbId 数据库ID
-     * @return 更新结果
+     * Update database storage size
+     * @param dbId database ID
+     * @return update result
      */
     @Update("UPDATE MC_DB a SET a.STORAGE_SIZE = (SELECT SUM(storage_size) FROM MC_TABLE b WHERE b.db_id = a.id AND b.del_flag = 0) WHERE a.id = #{dbId} AND a.del_flag = 0")
     int updateStorageSizeById(@Param("dbId") Long dbId);
 
     /**
-     * 更新元数据表的字段数
-     * @param dbId 数据库ID
-     * @return 更新结果
+     * Update the number of fields in the metadata table
+     * @param dbId database ID
+     * @return update result
      */
     @Update("UPDATE MC_TABLE a SET a.column_count = (SELECT COUNT(*) FROM MC_COLUMN b WHERE b.table_id = a.id AND a.db_id = b.db_id and b.del_flag=0) WHERE EXISTS (SELECT 1 FROM MC_COLUMN b WHERE b.table_id = a.id AND a.db_id = b.db_id and b.del_flag=0) AND a.db_id = #{dbId} and a.del_flag=0")
     int updateColumnCountByDbId(@Param("dbId") Long dbId);
 
     /**
-     * 更新数据库数据行数
-     * @param dbId 数据库ID
-     * @return 更新结果
+     * Update the number of database data rows
+     * @param dbId database ID
+     * @return update result
      */
     @Update("UPDATE MC_DB a SET a.data_row_count = (SELECT SUM(row_count) FROM MC_TABLE b WHERE b.db_id = a.id AND b.del_flag = 0) WHERE a.id = #{dbId} AND a.del_flag = 0")
     int updateDataRowCountById(@Param("dbId") Long dbId);

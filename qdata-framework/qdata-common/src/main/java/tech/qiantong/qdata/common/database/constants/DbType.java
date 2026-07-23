@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.constants;
@@ -35,7 +21,7 @@ package tech.qiantong.qdata.common.database.constants;
 import tech.qiantong.qdata.common.database.exception.DataQueryException;
 
 /**
- * 数据库类型
+ * Database type
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -88,7 +74,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
     /**
-     * SQLServer2008及以下数据库
+     * SQLServer 2008 and below
      */
     SQL_SERVER2008("SQL_Server2008",
             "SQLServer2008及以下数据库",
@@ -115,7 +101,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             ""),
     /**
-     * 达梦8
+     * DM8 (Dameng8)
      */
     DM8("DM8",
             "达梦8",
@@ -124,7 +110,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} LIMIT ({pageNo}-1)*{pageSize},{pageSize}"),
     /**
-     * 人大金仓数据库
+     * KingbaseES database
      */
     KINGBASE8("Kingbase8",
             "人大金仓数据库",
@@ -133,7 +119,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize} "),
     /**
-     * 人大金仓数据库
+     * KingbaseES database
      */
     HIVE("Hive",
             "Hive on HBase",
@@ -142,7 +128,7 @@ public enum DbType {
             null,
             null),
     /**
-     * 人大金仓数据库
+     * HDFS database
      */
     HDFS("HDFS",
             "HDFS数据库",
@@ -190,7 +176,7 @@ public enum DbType {
             "SELECT COUNT(1) FROM {tableName}",
             "SELECT {tableFieldName} FROM {tableName} ORDER BY {orderBy} DESC LIMIT {pageSize} OFFSET ({pageNo}-1)*{pageSize}"),
     /**
-     * MongoDB（官方 Java Driver）
+     * MongoDB (official Java Driver)
      */
     MONGODB("MongoDB",
             "MongoDB数据库",
@@ -200,7 +186,7 @@ public enum DbType {
             ""),
 
     /**
-     * 神通数据库（官方 Java Driver）
+     * OSCAR database (official Java Driver)
      */
     OSCAR("OSCAR",
             "神通数据库",
@@ -237,12 +223,12 @@ public enum DbType {
 
 
     /**
-     * 数据库名称
+     * Database name
      */
     private final String db;
 
     /**
-     * 描述
+     * Description
      */
     private final String desc;
 
@@ -257,12 +243,12 @@ public enum DbType {
     private final String lengthFun;
 
     /**
-     * 统计数量
+     * Count query
      */
     private String selectCount;
 
     /**
-     * 分页查询
+     * Pagination query
      */
     private String selectPage;
 
@@ -301,9 +287,9 @@ public enum DbType {
     }
 
     /**
-     * 获取数据库类型
+     * Get database type
      *
-     * @param dbType 数据库类型字符串
+     * @param dbType Database type string
      */
     public static DbType getDbType(String dbType) {
         for (DbType type : DbType.values()) {
@@ -311,6 +297,6 @@ public enum DbType {
                 return type;
             }
         }
-        throw new DataQueryException("db.error.unsupported.dbtype", "不支持的数据库类型");
+        throw new DataQueryException("db.error.unsupported.dbtype", "Unsupported database type");
     }
 }

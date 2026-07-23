@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据域管理列表
+// Query the data domain management list
 export function listDataDomain(query) {
   return request({
     url: '/dm/dataDomain/list',
@@ -26,7 +27,7 @@ export function listDataDomain(query) {
   })
 }
 
-// 查询数据域管理详细
+// Query data domain management details
 export function getDataDomain(id) {
   return request({
     url: '/dm/dataDomain/' + id,
@@ -34,7 +35,7 @@ export function getDataDomain(id) {
   })
 }
 
-// 新增数据域管理
+// Added data domain management
 export function addDataDomain(data) {
   return request({
     url: '/dm/dataDomain',
@@ -43,7 +44,7 @@ export function addDataDomain(data) {
   })
 }
 
-// 修改数据域管理
+// Modify data domain management
 export function updateDataDomain(data) {
   return request({
     url: '/dm/dataDomain',
@@ -52,7 +53,7 @@ export function updateDataDomain(data) {
   })
 }
 
-// 删除数据域管理
+// Delete data domain management
 export function delDataDomain(id) {
   return request({
     url: '/dm/dataDomain/' + id,
@@ -60,7 +61,7 @@ export function delDataDomain(id) {
   })
 }
 
-// 查询业务分类
+// Query business classification
 export function listDataDomainlist(query) {
   return request({
     url: '/dm/dataDomain/listByCategoryId',
@@ -69,7 +70,7 @@ export function listDataDomainlist(query) {
   })
 }
 
-// 批量删除数据域管理 业务分层绑定的
+// Batch deletion of data domain management and business hierarchical binding
 export function getDeletebyDomainId(query) {
   return request({
     url: '/dm/BusinessDomainRel/deletebyDomainId/' + query.domainId + '/' + query.businessCategoryId,

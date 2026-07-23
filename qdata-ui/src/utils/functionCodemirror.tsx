@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import { editor, KeyCode, KeyMod } from "monaco-editor";
@@ -32,7 +33,7 @@ const labels = {
 };
 
 /**
- * 获取标签值（调用函数获取翻译字符串）
+ * Get the tag value (call the function to get the translation string)
  */
 function getLabel(key) {
   const labelFunc = labels[key];
@@ -48,23 +49,23 @@ function getLabel(key) {
 }
 
 /**
- * 注册编辑器快捷键
+ * Register editor shortcut keys
  */
 function registerEditorKeyBinding(editorInstance) {
-  // 撤销
+  // Cancel
   editorInstance?.addCommand(KeyMod.CtrlCmd | KeyCode.KeyZ, () => {
     editorInstance?.trigger("anyString", "undo", "");
   });
-  // 恢复
+  // restore
   editorInstance?.addCommand(KeyMod.CtrlCmd | KeyCode.KeyY, () => {
     editorInstance?.trigger("anyString", "redo", "");
   });
-  // 格式化所有
+  // Format all
   editorInstance?.addCommand(KeyMod.Alt | KeyCode.Digit3, () => {
     editorInstance?.trigger("anyString", "editor.action.formatDocument", "");
     editorInstance?.setValue(format(editorInstance?.getValue()));
   });
-  // 格式化选中
+  // Format selected
   editorInstance?.addCommand(KeyMod.Alt | KeyCode.Digit4, () => {
     editorInstance?.trigger("anyString", "editor.action.formatSelection", "");
     editorInstance?.setValue(format(editorInstance?.getValue()));
@@ -72,10 +73,10 @@ function registerEditorKeyBinding(editorInstance) {
 }
 
 /**
- * 注册右键菜单 & 其他功能
+ * Register right-click menu & other functions
  */
 function registerEditorAction(editorInstance) {
-  // 格式化所有
+  // Format all
   editorInstance?.addAction({
     id: "format",
     label: getLabel("shortcut.key.format"),
@@ -88,7 +89,7 @@ function registerEditorAction(editorInstance) {
     },
   });
 
-  // 格式化选中
+  // Format selected
   editorInstance?.addAction({
     id: "formatSelection",
     label: getLabel("shortcut.key.formatSelection"),
@@ -101,7 +102,7 @@ function registerEditorAction(editorInstance) {
     },
   });
 
-  // 注释
+  // Comment
   editorInstance?.addAction({
     id: "commentLine",
     label: getLabel("shortcut.key.notes"),
@@ -113,7 +114,7 @@ function registerEditorAction(editorInstance) {
     },
   });
 
-  // 大写
+  // uppercase
   editorInstance?.addAction({
     id: "upperCase",
     label: getLabel("shortcut.key.upperCase"),
@@ -125,7 +126,7 @@ function registerEditorAction(editorInstance) {
     },
   });
 
-  // 小写
+  // lowercase
   editorInstance?.addAction({
     id: "lowerCase",
     label: getLabel("shortcut.key.lowerCase"),
@@ -137,7 +138,7 @@ function registerEditorAction(editorInstance) {
     },
   });
 
-  // 保留查询右键菜单（可点击触发），但不注册快捷键
+  // Keep the query right-click menu (can be triggered by clicking), but do not register the shortcut keys
   editorInstance?.addAction({
     id: "query",
     label: getLabel("shortcut.key.query"),
@@ -160,14 +161,14 @@ function registerEditorAction(editorInstance) {
         });
         domNode.dispatchEvent(event);
       } else {
-        console.warn("Monaco editor DOM 节点未找到，查询事件无法触发");
+        console.warn("Monaco editor DOM node not found; the query event cannot be triggered");
       }
     },
   });
 }
 
 /**
- * 注册快捷键和右键菜单
+ * Register shortcut keys and right-click menu
  */
 export function registerEditorKeyBindingAndAction(editorInstance) {
   registerEditorKeyBinding(editorInstance);

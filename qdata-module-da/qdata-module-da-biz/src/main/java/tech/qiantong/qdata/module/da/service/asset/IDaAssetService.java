@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.asset;
@@ -50,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据资产Service接口
+ * Data Asset Service Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -58,10 +44,10 @@ import java.util.Map;
 public interface IDaAssetService extends IService<DaAssetDO> {
 
     /**
-     * 获得数据资产分页列表
+     * Get data asset page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据资产分页列表
+     * @param pageReqVO page request
+     * @return data asset page list
      */
     PageResult<DaAssetDO> getDaAssetPage(DaAssetPageReqVO pageReqVO, String daAssetQueryType);
 
@@ -73,34 +59,34 @@ public interface IDaAssetService extends IService<DaAssetDO> {
 
 
     /**
-     * 创建数据资产
+     * Create data asset
      *
-     * @param createReqVO 数据资产信息
-     * @return 数据资产编号
+     * @param createReqVO data asset info
+     * @return data asset ID
      */
     Long createDaAsset(DaAssetSaveReqVO createReqVO);
 
     /**
-     * 更新数据资产
+     * Update data asset
      *
-     * @param updateReqVO 数据资产信息
+     * @param updateReqVO data asset info
      */
     int updateDaAsset(DaAssetSaveReqVO updateReqVO);
 
     /**
-     * 删除数据资产
+     * Delete data asset
      *
-     * @param idList 数据资产编号
+     * @param idList data asset ID list
      */
     int removeDaAsset(Collection<Long> idList);
 
     int removeDaAsset(Long id);
 
     /**
-     * 获得数据资产详情
+     * Get data asset details
      *
-     * @param id 数据资产编号
-     * @return 数据资产
+     * @param id data asset ID
+     * @return data asset
      */
     DaAssetRespVO getDaAssetById(Long id);
 
@@ -108,43 +94,43 @@ public interface IDaAssetService extends IService<DaAssetDO> {
 
 
     /**
-     * 获得全部数据资产列表
+     * Get all data asset list
      *
-     * @return 数据资产列表
+     * @return data asset list
      */
     List<DaAssetDO> getDaAssetList();
 
     /**
-     * 获得全部数据资产 Map
+     * Get all data asset Map
      *
-     * @return 数据资产 Map
+     * @return data asset Map
      */
     Map<Long, DaAssetDO> getDaAssetMap();
 
 
     /**
-     * 导入数据资产数据
+     * Import data asset data
      *
-     * @param importExcelList 数据资产数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList data asset data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName        operator user
+     * @return result
      */
     String importDaAsset(List<DaAssetRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 数据资产预览带有脱敏规则后的数据预览
+     * Data asset preview with masking rules applied
      *
-     * @param jsonObject 主键id和条件查询的内容
+     * @param jsonObject primary key id and condition query content
      * @return
      */
     Map<String, Object> getColumnData(JSONObject jsonObject);
 
     /**
-     * 对数据资产的数据进行脱敏
+     * Mask data asset data
      *
-     * @param id   数据资产id
-     * @param data 数据资产的数据
+     * @param id   data asset id
+     * @param data data asset data
      * @return
      */
     List<Map<String, Object>> dataMasking(Long id, List<Map<String, Object>> data);
@@ -160,7 +146,7 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     Long createDaAssetNew(DaAssetSaveReqVO daAsset);
 
     /**
-     * 绑定资源
+     * Bind resources
      */
     Long createDaAssetBindResources(DaAssetSaveReqVO daAsset);
 
@@ -177,7 +163,7 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     List<DaAssetColumnRelRuleVO> listRelRule(Long datasourceId, String tableName, String type);
 
     /**
-     * 通过资产id查询数据血缘关系
+     * Query data lineage by asset id
      *
      * @param id
      * @return
@@ -187,14 +173,14 @@ public interface IDaAssetService extends IService<DaAssetDO> {
     List<DaAssetDO> getDaAssetListAll(DaAssetPageReqVO daAsset, String number);
 
     /**
-     * 获取树类目数据（多个数据组合而来）
+     * Get tree category data (combined from multiple data sources)
      *
      * @return
      */
     List<TreeData> getTreeData();
 
     /**
-     * 批量创建数据资产
+     * Batch create data assets
      *
      * @param daAssetList
      * @return

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.ai.controller.admin.chat;
@@ -44,6 +30,7 @@ import tech.qiantong.qdata.ai.core.service.IChatConversationService;
 import tech.qiantong.qdata.ai.core.vo.AiChatConversationSaveRespVO;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.ai.controller.admin.chat.vo.AiChatConversationRespVO;
@@ -58,7 +45,7 @@ import java.util.Optional;
 
 /**
  * <P>
- * 用途:ai聊天对话
+ * Purpose: ai chat conversation
  * </p>
  *
  * @author: FXB
@@ -96,7 +83,8 @@ public class ChatConversationController extends BaseController {
         appChatConversation.setCreatorId(getUserId());
         appChatConversation.setCreateBy(getNickName());
         appChatConversation.setCreateTime(DateUtil.date());
-        appChatConversation.setTitle(Optional.ofNullable(appChatConversation.getTitle()).orElse("新对话"));
+        appChatConversation.setTitle(Optional.ofNullable(appChatConversation.getTitle()).orElseGet(() ->
+                MessageUtils.messageWithFallback("ai.chat.title.default", "New Conversation")));
         return CommonResult.success(chatConversationService.createAiChatConversation(appChatConversation));
     }
 
@@ -119,7 +107,7 @@ public class ChatConversationController extends BaseController {
     @PostMapping("/setAssociations")
     public CommonResult<Integer> associations(@RequestBody AiChatConversationSaveReqVO appChatConversation) {
         if (StringUtils.isBlank(appChatConversation.getAssociations())) {
-            throw new ServiceException("ai.error.relation.required", "请设置关联关系！");
+            throw new ServiceException("ai.error.relation.required", "Please configure the relationship.");
         }
         appChatConversation.setUpdatorId(getUserId());
         appChatConversation.setUpdateBy(getNickName());

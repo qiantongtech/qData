@@ -12,6 +12,7 @@ import tech.qiantong.qdata.common.core.domain.AjaxResult;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.dg.controller.admin.sensitiveLevel.vo.DgSensitiveLevelPageReqVO;
 import tech.qiantong.qdata.module.dg.controller.admin.sensitiveLevel.vo.DgSensitiveLevelRespVO;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 /**
- * 敏感等级Controller
+ * Sensitive Level Controller
  *
  * @author Chaos
  * @date 2025-01-21
@@ -55,7 +56,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "新增敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:add')")
-    @Log(title = "敏感等级", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DgSensitiveLevelSaveReqVO dgSensitiveLevel) {
         dgSensitiveLevel.setCreatorId(getUserId());
@@ -66,7 +67,7 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "修改敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:edit')")
-    @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DgSensitiveLevelSaveReqVO dgSensitiveLevel) {
         dgSensitiveLevel.setUpdatorId(getUserId());
@@ -77,18 +78,20 @@ public class DgSensitiveLevelController extends BaseController {
 
     @Operation(summary = "修改敏感等级状态")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:edit')")
-    @Log(title = "敏感等级", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.UPDATE)
     @PostMapping("/updateStatus/{id}/{status}")
     public AjaxResult updateStatus(@PathVariable Long id, @PathVariable Long status) {
         if (!service.updateStatus(id, status)) {
-            return AjaxResult.error("已被使用，不允许下线！");
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "dg.error.sensitive.level.in.use", "The sensitivity level is in use and cannot be disabled"));
         }
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.update.success", "Update successful"));
     }
 
     @Operation(summary = "删除敏感等级")
     @PreAuthorize("@ss.hasPermi('dg:sensitiveLevel:remove')")
-    @Log(title = "敏感等级", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dg.sensitive.level", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(service.removeDgSensitiveLevel(Arrays.asList(ids)));

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quality.utils.qualityDB.dialect;
@@ -55,7 +41,7 @@ public class SQLServerQuality implements ComponentItem {
     public String fragCharacter(QualityRuleEntity rule) {
         String column = rule.getRuleColumn();
         String pattern = (String) rule.getConfig().get("regex");
-        // SQL Server 用 PATINDEX，返回匹配位置，>0 表示匹配成功
+        // SQL Server uses PATINDEX to return the matching position, >0 indicates successful matching
         return String.format("PATINDEX('%s', %s) > 0", pattern, column);
     }
 
@@ -66,12 +52,12 @@ public class SQLServerQuality implements ComponentItem {
         boolean skipInteger = SqlBuilderUtils.parseBoolean(ruleConfig.get("skipInteger"));
         int scale = Integer.parseInt(String.valueOf(ruleConfig.get("scale")));
 
-        // 基础：四舍五入到 scale 位不改变值 => 小数位不超过 scale
+        // Basics: rounding to scale does not change the value => decimal places do not exceed scale
         String base = String.format("%s = ROUND(%s, %d)", column, column, scale);
 
-        // 若不允许整数（必须有小数），可加一个“有小数部分”的限制
+        // If integers are not allowed (must have decimals), you can add a restriction of "has a decimal part"
         if (!skipInteger) {
-            // 有小数部分：与取整后不同
+            // There is a decimal part: different from after rounding
             String hasFraction = String.format("%s <> FLOOR(%s)", column, column);
             base = String.format("(%s AND %s)", hasFraction, base);
         }
@@ -96,7 +82,7 @@ public class SQLServerQuality implements ComponentItem {
             sql.append(" AND (").append(whereClause).append(")");
         }
 
-        // SQL Server 分页：必须有 ORDER BY；无特定字段时用 ORDER BY (SELECT 1)
+        // SQL Server paging: ORDER BY is required; use ORDER BY (SELECT 1) when there is no specific field
         sql.append(" ORDER BY (SELECT 1)")
                 .append(" OFFSET ").append(offset).append(" ROWS")
                 .append(" FETCH NEXT ").append(limit).append(" ROWS ONLY");
@@ -123,7 +109,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "Combination uniqueness check requires at least one field");
         }
         String baseWhereClause = rule.getWhereClause();
 
@@ -156,7 +142,7 @@ public class SQLServerQuality implements ComponentItem {
         String table = rule.getTableName();
         List<String> columns = rule.getRuleColumns();
         if (columns == null || columns.isEmpty()) {
-            throw new ServiceException("quality.error.unique.fields", "组合唯一性校验需要至少一个字段");
+            throw new ServiceException("quality.error.unique.fields", "Combination uniqueness check requires at least one field");
         }
         String baseWhereClause = rule.getWhereClause();
 
@@ -197,16 +183,16 @@ public class SQLServerQuality implements ComponentItem {
 
 
     /**
-     * SQL Server 2008：生成“客户输入数据”的字符串校验 SQL
-     * 只用于客户输入数据，点击检测
-     * 返回 0 / 1
+     * SQL Server 2008: Generate string validation SQL for "Customer Input Data"
+     * Only used for customer input data, click detection
+     * Return 0 / 1
      */
     @Override
     public String generateValidDataCheckSql(QualityRuleEntity rule, String inputValue) {
 
         String regex = (String) rule.getConfig().get("regex");
 
-        // 与统计 SQL 保持一致：regex → LIKE 模式
+        // Consistent with statistical SQL: regex → LIKE mode
         regex = regex.replace("^[", "%[^")
                 .replace("]+$", "]%")
                 .replace("/s", " ")
@@ -216,10 +202,10 @@ public class SQLServerQuality implements ComponentItem {
 //                rule.getConfig().get("ignoreNullValue")
 //        );
 
-        // 输入值（转义单引号）
+        // Input value (escaped single quotes)
         String valueExpr = "'" + inputValue.replace("'", "''") + "'";
 
-        // 匹配条件（和表校验语义一致）
+        // Matching conditions (same semantics as table verification)
         String condition = String.format("%s LIKE '%s'", valueExpr, regex);
 
 //        if (ignoreNull) {
@@ -229,7 +215,7 @@ public class SQLServerQuality implements ComponentItem {
 //            );
 //        }
 
-        // 返回 0 / 1（SQL Server 不需要 FROM dual）
+        // Returns 0 / 1 (SQL Server does not require FROM dual)
         return String.format(
                 "SELECT CASE WHEN %s THEN 1 ELSE 0 END AS valid_flag",
                 condition

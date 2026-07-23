@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.quartz.domain;
@@ -47,7 +33,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 定时任务调度表 sys_job
+ * Scheduled task schedule sys_job
  *
  * @author qdata
  */
@@ -55,35 +41,36 @@ public class SysJob extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 任务ID */
+    /** Task ID */
     @Excel(name = "任务序号", cellType = ColumnType.NUMERIC)
     private Long jobId;
 
-    /** 任务名称 */
+    /** Task name */
     @Excel(name = "任务名称")
     private String jobName;
 
-    /** 任务组名 */
+    /** Task group name */
     @Excel(name = "任务组名")
     private String jobGroup;
 
-    /** 调用目标字符串 */
+    /** Call target string */
     @Excel(name = "调用目标字符串")
     private String invokeTarget;
 
-    /** cron执行表达式 */
+    /** cron execution expression */
     @Excel(name = "执行表达式 ")
     private String cronExpression;
 
-    /** cron计划策略 */
+    /** cron planning strategy */
     @Excel(name = "计划策略 ", readConverterExp = "0=默认,1=立即触发执行,2=触发一次执行,3=不触发立即执行")
     private String misfirePolicy = ScheduleConstants.MISFIRE_DEFAULT;
 
-    /** 是否并发执行（0允许 1禁止） */
+    /** Whether to execute concurrently (0 allows, 1 prohibits) */
     @Excel(name = "并发执行", readConverterExp = "0=允许,1=禁止")
     private String concurrent;
 
-    /** 任务状态（0正常 1暂停） */
+
+    /** Task status (0: active, 1: paused) */
     @Excel(name = "任务状态", readConverterExp = "0=正常,1=暂停")
     private String status;
 

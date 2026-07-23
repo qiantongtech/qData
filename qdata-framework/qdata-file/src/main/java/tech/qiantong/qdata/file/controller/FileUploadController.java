@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.file.controller;
@@ -46,10 +32,10 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 文件上传控制器
- * 提供一系列文件上传的 API 接口
- * 该控制器将调用静态工具类 FileUploadUtil 来实现文件上传功能
- * 使用 @RestController 注解以支持 RESTful API 形式
+ * File upload controller
+ * Provides a series of API interfaces for file uploading
+ * The controller will call the static tool class FileUploadUtil to implement the file upload function
+ * Use @RestController annotation to support RESTful API form
  *
  * @author qdata
  */
@@ -57,8 +43,8 @@ import javax.servlet.http.HttpServletRequest;
 public class FileUploadController {
 
     /**
-     * 文件存储服务
-     * 使用 Spring 的 @Autowired 注解自动注入 FileStorageService 实例
+     * File storage service
+     * Use Spring's @Autowired annotation to automatically inject FileStorageService instances
      */
     @Autowired
     private FileStorageService fileStorageService;
@@ -68,9 +54,9 @@ public class FileUploadController {
     private String storagePath;
 
     /**
-     * 初始化方法
-     * 使用 @PostConstruct 注解表示在依赖注入完成后会自动调用该方法
-     * 将注入的 FileStorageService 实例传递给静态工具类 FileUploadUtil
+     * Initialization method
+     * Use the @PostConstruct annotation to indicate that the method will be automatically called after dependency injection is completed.
+     * Pass the injected FileStorageService instance to the static utility class FileUploadUtil
      */
     @PostConstruct
     public void init() {
@@ -78,11 +64,11 @@ public class FileUploadController {
     }
 
     /**
-     * 上传文件接口 -可用
-     * 处理文件上传请求，将文件上传到默认存储平台
+     * Upload file interface - available
+     * Handle file upload requests and upload files to the default storage platform
      *
-     * @param file 要上传的文件，使用 MultipartFile 接收上传的文件
-     * @return 上传成功后返回文件信息（FileInfo 对象）
+     * @param file The file to be uploaded, use MultipartFile to receive the uploaded file
+     * @return Returns file information (FileInfo object) after successful upload
      */
     @PostMapping("/upload")
     public FileInfo upload(MultipartFile file, String platForm) {
@@ -90,11 +76,11 @@ public class FileUploadController {
     }
 
     /**
-     * 上传图片接口 -暂不可用
-     * 处理图片文件上传请求，同时生成缩略图
+     * Upload image interface - temporarily unavailable
+     * Process image file upload requests and generate thumbnails
      *
-     * @param file 要上传的图片文件，使用 MultipartFile 接收上传的图片文件
-     * @return 上传成功后返回图片文件的信息（FileInfo 对象）
+     * @param file The image file to be uploaded, use MultipartFile to receive the uploaded image file
+     * @return Returns image file information (FileInfo object) after successful upload
      */
     @PostMapping("/upload-image")
     public FileInfo uploadImage(MultipartFile file) {
@@ -102,11 +88,11 @@ public class FileUploadController {
     }
 
     /**
-     * 上传文件到指定存储平台的接口 -暂不可用
-     * 处理文件上传请求，将文件上传到指定的存储平台
+     * Interface for uploading files to the specified storage platform - not available yet
+     * Process file upload requests and upload files to the designated storage platform
      *
-     * @param file 要上传的文件，使用 MultipartFile 接收上传的文件
-     * @return 上传成功后返回文件信息（FileInfo 对象）
+     * @param file The file to be uploaded, use MultipartFile to receive the uploaded file
+     * @return Returns file information (FileInfo object) after successful upload
      */
     @PostMapping("/upload-platform")
     public FileInfo uploadPlatform(MultipartFile file) {
@@ -114,11 +100,11 @@ public class FileUploadController {
     }
 
     /**
-     * 通过 HttpServletRequest 直接上传文件的接口 -暂不可用
-     * 处理文件上传请求，直接从 HttpServletRequest 中读取文件进行上传
+     * Interface for directly uploading files through HttpServletRequest - not available yet
+     * Process file upload requests, read files directly from HttpServletRequest and upload them
      *
-     * @param request HttpServletRequest 对象，包含上传的文件数据
-     * @return 上传成功后返回文件信息（FileInfo 对象）
+     * @param request HttpServletRequest object, containing uploaded file data
+     * @return Returns file information (FileInfo object) after successful upload
      */
     @PostMapping("/upload-request")
     public FileInfo uploadPlatform(HttpServletRequest request) {

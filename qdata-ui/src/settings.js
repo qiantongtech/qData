@@ -1,62 +1,63 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 export default {
   /**
-   * 网页标题
+   * Web page title
    */
   title: import.meta.env.VITE_APP_TITLE,
   /**
-   * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
+   * Sidebar theme dark theme theme-dark, light theme theme-light
    */
   sideTheme: 'theme-dark',
   /**
-   * 是否系统布局配置
+   * Whether the system layout configuration
    */
   showSettings: true,
 
   /**
-   * 是否显示顶部导航
+   * Whether to display top navigation
    */
   topNav: false,
 
   /**
-   * 是否显示 tagsView
+   * Whether to display tagsView
    */
   tagsView: true,
 
   /**
-   * 是否固定头部
+   * Whether to fix the head
    */
   fixedHeader: true,
 
   /**
-   * 是否显示logo
+   * Whether to display logo
    */
   sidebarLogo: true,
 
   /**
-   * 是否显示动态标题
+   * Whether to display dynamic titles
    */
   dynamicTitle: true,
 
   /**
-   * 导航栏中需要显示 Logo 的路由路径
-   * 当访问这些路径时，会在导航栏左侧动态插入 Logo（占用 200px 宽度）
+   * The routing path of the logo needs to be displayed in the navigation bar
+   * When accessing these paths, the logo will be dynamically inserted on the left side of the navigation bar (occupying 200px width)
    */
   navbarLogoRoutes: ['/ai',],
 

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.dialect;
@@ -50,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 方言抽象类
+ * Dialect abstract class
  *
  * @author QianTongDC
  * @date 2022-11-14
@@ -94,7 +80,7 @@ public abstract class AbstractDbDialect implements DbDialect {
 
     @Override
     public String buildPaginationSql(String originalSql, long offset, long count) {
-        // 获取 分页实际条数
+        // Get the actual number of pagination items
         StringBuilder sqlBuilder = new StringBuilder(originalSql);
         sqlBuilder.append(" LIMIT ").append(offset).append(" , ").append(count);
         return sqlBuilder.toString();
@@ -107,7 +93,7 @@ public abstract class AbstractDbDialect implements DbDialect {
 
     @Override
     public String countNew(String tableName, Map<String, Object> params) {
-        // 动态构建 WHERE 子句
+        // Dynamically constructing WHERE clauses
         StringBuilder countSql = new StringBuilder("SELECT COUNT(*) FROM ").append(tableName);
         if (params != null && !params.isEmpty()) {
             countSql.append(buildWhereClause(params));
@@ -116,7 +102,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 验证连接
+     * Verify connection
      *
      * @param dataSource
      * @param dbQueryProperty
@@ -127,17 +113,17 @@ public abstract class AbstractDbDialect implements DbDialect {
         try (Connection conn = dataSource.getConnection()) {
             return conn.isValid(0);
         } catch (SQLException e) {
-            log.error("数据库连接失败,稍后重试", e);
-            throw new DataQueryException("db.error.connection.retry", "数据库连接失败，请稍后重试");
+            log.error("Database connection failed; retry later", e);
+            throw new DataQueryException("db.error.connection.retry", "Database connection failed, please try again later");
         }
     }
 
 
     /**
-     * 动态构建 WHERE 子句
+     * Dynamically constructing WHERE clauses
      *
-     * @param params 参数 Map
-     * @return WHERE 子句字符串
+     * @param params parameter Map
+     * @return WHERE clause string
      */
     private static String buildWhereClause(Map<String, Object> params) {
         StringBuilder whereClause = new StringBuilder(" WHERE 1=1");
@@ -151,7 +137,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     public String trainToJdbcUrl(DbQueryProperty property) {
         String url = DbType.getDbType(property.getDbType()).getUrl();
         if (StringUtils.isEmpty(url)) {
-            throw new DataQueryException("db.error.invalid.dbtype", "无效数据库类型");
+            throw new DataQueryException("db.error.invalid.dbtype", "Invalid database type");
         }
         url = url.replace("${host}", property.getHost());
         url = url.replace("${port}", String.valueOf(property.getPort()));
@@ -199,7 +185,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 检查是否使用SSL
+     * Check if SSL is used
      *
      * @param property
      * @return
@@ -215,7 +201,7 @@ public abstract class AbstractDbDialect implements DbDialect {
     }
 
     /**
-     * 检查是否使用Kerberos
+     * Check if Kerberos is used
      *
      * @param property
      * @return

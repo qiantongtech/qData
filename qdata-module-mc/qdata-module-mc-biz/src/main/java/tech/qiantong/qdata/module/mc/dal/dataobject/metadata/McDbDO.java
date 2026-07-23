@@ -9,14 +9,14 @@ import tech.qiantong.qdata.module.da.api.datasource.dto.DaDatasourceRespDTO;
 import java.util.Date;
 
 /**
- * 数据库 DO 对象 MC_DB
+ * Database DO object MC_DB
  *
  * @author qdata
  * @date 2026-02-11
  */
 @Data
 @TableName(value = "MC_DB")
-// 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+// Primary key auto-increment for Oracle, PostgreSQL, Kingbase, DB2, H2 databases. If it is a database such as MySQL, you do not need to write it.
 // @KeySequence("MC_DB_seq")
 @Builder
 @NoArgsConstructor
@@ -30,87 +30,87 @@ public class McDbDO extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 采集任务id;预留字段，暂时不用 */
+    /** Collection task id; reserved field, not used temporarily */
     private Long taskId;
 
-    /** 来源系统ID */
+    /** Source system ID */
     private Long sourceSystemId;
 
-    /** 来源系统名称 */
+    /** Source system name */
     private String sourceSystemName;
 
-    /** 版本 */
+    /** version */
     private Integer version;
 
-    /** 数据源id */
+    /** data source id */
     private Long datasourceId;
 
     /** IP */
     private String ip;
 
-    /** 端口号 */
+    /** Port number */
     private Integer port;
 
-    /** 数据源配置(json字符串) */
+    /** Data source configuration (json string) */
     private String datasourceConfig;
 
-    /** 数据库类型 */
+    /** Database type */
     private String dbType;
 
-    /** 数据库名称 */
+    /** Database name */
     private String dbName;
 
-    /** 模式名;可空 */
+    /** Pattern name; can be empty */
     private String schemaName;
 
-    /** 安全等级id */
+    /** Security level id */
     private Long safetyLevelId;
 
-    /** 所属分层;1:ODS 2:DWD 3:DWS  4:ADS 5:外部系统） */
+    /** The layer to which it belongs;1:ODS 2:DWD 3:DWS 4:ADS 5:External system) */
     private String belongingLayer;
 
-    /** 所属系统 */
+    /** Belonging system */
     private String belongingSystem;
 
-    /** 业务责任人 */
+    /** Business Responsible Person */
     private Long businessLeader;
 
-    /** 业务责任人电话 */
+    /** Phone number of business person in charge */
     private String businessLeaderPhone;
 
-    /** 技术责任人 */
+    /** Technical Responsible Person */
     private Long techLeader;
 
-    /** 技术责任人电话 */
+    /** Telephone number of technical person in charge */
     private String techLeaderPhone;
 
-    /** 存储大小 */
+    /** Storage size */
     private Integer storageSize;
 
-    /** 数据质量 */
+    /** Data quality */
     private Integer dataQuality;
 
-    /** 审核状态;1：审批中，2：审批通过，3：审批拒绝，4：审批撤回，5：审批异常 */
+    /** Review status; 1: Approval in progress, 2: Approval passed, 3: Approval rejected, 4: Approval withdrawn, 5: Approval abnormal */
     private String auditStatus;
 
-    /** 审核时间 */
+    /** Review time */
     private Date auditTime;
 
-    /** 状态;0：未发布，1：已发布 */
+    /** Status; 0: not released, 1: released */
     private String status;
 
-    /** 是否有效;0：无效，1：有效 */
+    /** Whether it is valid; 0: invalid, 1: valid */
     private Boolean validFlag;
 
-    /** 删除标志;1：已删除，0：未删除 */
+    /** Deletion flag; 1: deleted, 0: not deleted */
     @TableLogic
     private Boolean delFlag;
 
-    /** 描述 */
+    /** Description */
     private String description;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
@@ -122,42 +122,42 @@ public class McDbDO extends BaseEntity {
     private Integer tableCount;
 
     /**
-     * 字段数量
+     * Number of fields
      */
     @TableField(exist = false)
     private Integer columnCount;
 
     /**
-     * 业务责任人姓名
+     * Name of person responsible for business
      */
     @TableField(exist = false)
     private String businessLeaderName;
 
     /**
-     * 技术责任人姓名
+     * Name of technical person in charge
      */
     @TableField(exist = false)
     private String techLeaderName;
 
     /**
-     * 安全等级名称
+     * Security level name
      */
     @TableField(exist = false)
     private String safetyLevelName;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     private Long responsibleDept;
 
     /**
-     * 负责部门名称
+     * Responsible department name
      */
     @TableField(exist = false)
     private String responsibleDeptName;
 
     /**
-     * 数据行数
+     * Number of data rows
      */
     private Long dataRowCount;
 

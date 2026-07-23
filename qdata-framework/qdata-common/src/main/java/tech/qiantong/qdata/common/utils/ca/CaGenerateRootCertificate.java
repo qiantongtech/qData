@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils.ca;
@@ -54,36 +40,36 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 生成自签名CA根证书并保存私钥为PEM文件
+ * Generate a self-signed CA root certificate and save the private key as a PEM file
  * @author qdata
  */
 public class CaGenerateRootCertificate {
 
     /**
-     * 根据证书信息生成主体根证书
-     * @param dnNameStr 证书信息
-     * @return List<MultipartFile> 第一个是证书，第二个是私钥
+     * Generate subject root certificate based on certificate information
+     * @param dnNameStr certificate information
+     * @return List<MultipartFile> The first one is the certificate, the second one is the private key
      */
     public static List<MultipartFile> generateRootCertificate(String dnNameStr) {
         List<MultipartFile> files = new ArrayList<>();
         try {
-            // 生成RSA密钥对
+            // Generate RSA key pair
             KeyPair keyPair = SecureUtil.generateKeyPair("RSA", 2048);
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
-            // 设定证书的有效期
+            // Set the validity period of the certificate
             long currentTime = System.currentTimeMillis();
             Date startDate = new Date(currentTime);
-            // 有效期30年
+            // Valid for 30 years
             Date endDate = new Date(currentTime + 365L * 30L * 24L * 60L * 60L * 1000L);
 
-            // 设定证书信息
+            // Set certificate information
             X500Principal dnName = new X500Principal(dnNameStr);
-            // 使用当前时间作为序列号
+            // Use current time as sequence number
             BigInteger certSerialNumber = new BigInteger(Long.toString(currentTime));
 
-            // 创建 X.509 证书对象
+            // Create an X.509 certificate object
             X509CertInfo certInfo = new X509CertInfo();
             certInfo.set(X509CertInfo.VERSION, new CertificateVersion(CertificateVersion.V3));
             certInfo.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(certSerialNumber));
@@ -93,11 +79,11 @@ public class CaGenerateRootCertificate {
             certInfo.set(X509CertInfo.KEY, new CertificateX509Key(publicKey));
             certInfo.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(AlgorithmId.get("SHA256withRSA")));
 
-            // 创建证书
+            // Create certificate
             X509CertImpl certificate = new X509CertImpl(certInfo);
             certificate.sign(privateKey, "SHA256withRSA");
 
-            // 保存证书为 .cer 文件
+            // Save the certificate as a.cer file
             String certFilePath = "rootCA.cer";
             ByteArrayOutputStream certOutputStream = new ByteArrayOutputStream();
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(certOutputStream, StandardCharsets.US_ASCII))) {
@@ -107,7 +93,7 @@ public class CaGenerateRootCertificate {
             }
             Files.write(Paths.get(certFilePath), certOutputStream.toByteArray());
 
-            // 保存私钥为 PEM 文件
+            // Save private key as PEM file
             String privateKeyFilePath = "privateKey.pem";
             ByteArrayOutputStream pemOutputStream = new ByteArrayOutputStream();
             try (PemWriter pemWriter = new PemWriter(new OutputStreamWriter(pemOutputStream, StandardCharsets.US_ASCII))) {
@@ -115,15 +101,15 @@ public class CaGenerateRootCertificate {
                 pemWriter.writeObject(pemObject);
             }
 
-            // 将生成的文件转换为 MultipartFile
+            // Convert the generated file to MultipartFile
             files.add(convertFileToMultipartFile(certFilePath, "rootCA.cer"));
             files.add(new MockMultipartFile(privateKeyFilePath, privateKeyFilePath, "application/x-pem-file", pemOutputStream.toByteArray()));
 
-            // 删除原始文件
+            // Delete original files
             deleteFile(certFilePath);
             deleteFile(privateKeyFilePath);
 
-            System.out.println("根证书和私钥已生成、转换为 MultipartFile 对象并删除原始文件");
+            System.out.println("Generated the root certificate and private key, converted them to MultipartFile objects, and deleted the original files");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,21 +128,21 @@ public class CaGenerateRootCertificate {
     private static void deleteFile(String filePath) {
         try {
             Files.delete(Paths.get(filePath));
-            System.out.println("文件已删除: " + filePath);
+            System.out.println("File deleted: " + filePath);
         } catch (Exception e) {
-            System.out.println("文件删除失败: " + filePath);
+            System.out.println("Failed to delete file: " + filePath);
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        // 测试生成自签名证书
+        // Test generated self-signed certificate
         String dnNameStr = "CN=YcgtRootCA, OU=IT, O=盐城市国有资产投资集团有限公司, L=Yancheng, ST=Yancheng, C=CN";
         List<MultipartFile> files = generateRootCertificate(dnNameStr);
 
-        // 打印生成的文件名称
+        // Print the generated file name
         for (MultipartFile file : files) {
-            System.out.println("生成的文件: " + file.getOriginalFilename());
+            System.out.println("Generated file: " + file.getOriginalFilename());
         }
     }
 }

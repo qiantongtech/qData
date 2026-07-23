@@ -230,7 +230,7 @@ const tableStroe = reactive({
                 version: "1.0.0",
                 updateType: td("common.button.add"),
                 updateMsg:
-                  td('meta.unreleased.structured.table.detail.updateMsg1', '新增用户表字段，包括用户姓名、联系方式、注册时间等基础信息，优化数据结构设计'),
+                  td('meta.unreleased.structured.table.detail.updateMsg1', 'Added user table fields, including basic information such as user name, contact information, registration time, optimized data structure design'),
                 activeVersion: "N",
                 createBy: "admin",
                 createTime: "2021-09-01 10:00:00",
@@ -242,7 +242,7 @@ const tableStroe = reactive({
                 version: "1.0.1",
                 updateType: td("common.button.delete"),
                 updateMsg:
-                  td('meta.unreleased.structured.table.detail.updateMsg2', '删除冗余字段，移除不再使用的email_backup和phone_backup字段，精简表结构提高性能'),
+                  td('meta.unreleased.structured.table.detail.updateMsg2', 'Deleted redundant fields, removed unused email_backup and phone_backup fields, streamlined table structure to improve performance'),
                 activeVersion: "N",
                 createBy: "user001",
                 createTime: "2021-09-02 14:30:00",
@@ -254,7 +254,7 @@ const tableStroe = reactive({
                 version: "1.0.2",
                 updateType: td("common.button.add"),
                 updateMsg:
-                  td('meta.unreleased.structured.table.detail.updateMsg3', '添加索引优化，为user_name和create_time字段创建复合索引，提升查询效率约30%'),
+                  td('meta.unreleased.structured.table.detail.updateMsg3', 'Added index optimization, created composite index for user_name and create_time fields, improved query efficiency by about 30%'),
                 activeVersion: "N",
                 createBy: "admin",
                 createTime: "2021-09-03 09:15:00",
@@ -266,7 +266,7 @@ const tableStroe = reactive({
                 version: "1.0.3",
                 updateType: td("meta.unreleased.structured.table.detail.rollback"),
                 updateMsg:
-                  td('meta.unreleased.structured.table.detail.updateMsg4', '回滚至1.0.1版本，撤销1.0.2版本的索引变更，解决因索引导致的数据插入性能问题'),
+                  td('meta.unreleased.structured.table.detail.updateMsg4', 'Rolled back to version 1.0.1, undid the index changes in version 1.0.2, resolved data insertion performance issues caused by indexes'),
                 activeVersion: "N",
                 createBy: "dev001",
                 createTime: "2021-09-04 16:45:00",
@@ -278,7 +278,7 @@ const tableStroe = reactive({
                 version: "1.0.4",
                 updateType: td("common.button.add"),
                 updateMsg:
-                  td('meta.unreleased.structured.table.detail.updateMsg5', '增加用户权限字段，添加role_id和permission_level字段，支持多级权限管理功能'),
+                  td('meta.unreleased.structured.table.detail.updateMsg5', 'Added user permission fields, added role_id and permission_level fields to support multi-level permission management'),
                 activeVersion: "Y",
                 createBy: "admin",
                 createTime: "2021-09-05 11:20:00",

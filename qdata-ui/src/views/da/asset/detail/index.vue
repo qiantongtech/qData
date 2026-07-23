@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -246,7 +247,7 @@ const { proxy } = getCurrentInstance();
 const { da_assets_status, da_asset_gis_type, da_asset_api_method } = proxy.useDict("da_assets_status", "da_asset_gis_type", "da_asset_api_method");
 const activeName = ref("0");
 function handleClick(tab) {
-  // 可根据需要自定义逻辑
+  // Custom logic can be applied as needed
   console.log("Tab clicked:", tab);
 }
 
@@ -279,7 +280,7 @@ const descList = ref([
 
 ]);
 
-// 计算属性生成 tab pane 数组
+// Computed property to generate tab pane array
 const tabPanes = computed(() => {
   console.log("🚀 ~ tabPanes ~ daAssetDetail.value.type:", daAssetDetail.value.type);
   switch (daAssetDetail.value.type) {
@@ -288,7 +289,7 @@ const tabPanes = computed(() => {
         { label: td('da.assetDetail.detail.assetFields'), name: "0", component: ComponentOne },
         { label: td('da.assetDetail.detail.assetPreview'), name: "2", component: ComponentTwo },
         { label: td('da.assetDetail.detail.assetQuality'), name: '3', component: DataQualityControl },
-        // { label: '资产血缘', name: '4', component: lineage },
+        // { label: 'Asset Lineage', name: '4', component: lineage },
         { label: td('da.assetDetail.detail.assetOverview'), name: "5", component: info },
       ];
     case "2":
@@ -323,16 +324,16 @@ const tabPanes = computed(() => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || null;
-// 监听 id 变化
+// Watch id changes
 watch(
   () => route.query.id,
   (newId) => {
     if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/detail') {
-      id = newId || null; // 如果 id 为空，使用默认值 1
+      id = newId || null; // If ID is empty, use default value 1
       getDaAssetDetailById();
     }
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` for true means that when the page is loaded, watch
 );
 const data = reactive({
   daAssetDetail: {},
@@ -341,7 +342,7 @@ const data = reactive({
 
 const { daAssetDetail } = toRefs(data);
 
-/** 复杂详情页面上方表单查询 */
+/** Complex detail page top form query */
 function getDaAssetDetailById() {
   if (!id) {
     return;
@@ -364,10 +365,10 @@ onActivated(() => {
   // listDaAssetColumn();
 });
 onBeforeUnmount(() => {
-  // 清空参数或重置状态
+  // Clear parameters or reset state
   data.daAssetDetail = {};
   data.form = {};
-  activeName.value = "0"; // 重置tab页
+  activeName.value = "0"; // Reset tab page
 });
 // listDaAssetColumn();
 </script>

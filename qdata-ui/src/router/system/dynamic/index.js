@@ -1,24 +1,25 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 /* Layout */
 import Layout from '@/layout/index.vue'
 
-// 系统模块动态路由，基于用户权限动态去加载
+// System module dynamic routing, dynamic loading based on user permissions
 export default [
   {
     path: '/system/user-auth',
@@ -30,7 +31,7 @@ export default [
         path: 'role/:userId(\\d+)',
         component: () => import('@/views/sys/system/user/authRole.vue'),
         name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user', lang: 'public.assignRole' }
+        meta: { title: 'Assign Roles', activeMenu: '/system/user', lang: 'public.assignRole' }
       }
     ]
   },
@@ -44,7 +45,7 @@ export default [
         path: 'user/:roleId(\\d+)',
         component: () => import('@/views/sys/system/role/authUser.vue'),
         name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role', lang: 'public.assignUser' }
+        meta: { title: 'Assign Users', activeMenu: '/system/role', lang: 'public.assignUser' }
       }
     ]
   },
@@ -58,7 +59,7 @@ export default [
         path: 'index/:dictId(\\d+)',
         component: () => import('@/views/sys/system/dict/data.vue'),
         name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict', lang: 'public.dictionaryData' }
+        meta: { title: 'Dictionary Data', activeMenu: '/system/dict', lang: 'public.dictionaryData' }
       }
     ]
   },
@@ -72,7 +73,7 @@ export default [
         path: 'index/:jobId(\\d+)',
         component: () => import('@/views/sys/monitor/job/log.vue'),
         name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job', lang: 'public.scheduleLog' }
+        meta: { title: 'Schedule Log', activeMenu: '/monitor/job', lang: 'public.scheduleLog' }
       }
     ]
   },
@@ -86,7 +87,7 @@ export default [
         path: 'index/:tableId(\\d+)',
         component: () => import('@/views/sys/tool/gen/editTable.vue'),
         name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen', lang: 'public.editGenerationConfig' }
+        meta: { title: 'Edit Generation Configuration', activeMenu: '/tool/gen', lang: 'public.editGenerationConfig' }
       }
     ]
   }

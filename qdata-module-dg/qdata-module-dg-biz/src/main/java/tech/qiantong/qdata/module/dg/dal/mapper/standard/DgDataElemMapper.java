@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 数据元Mapper接口
+ * Standard Data Element Mapper Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -24,7 +24,7 @@ import java.util.Set;
 public interface DgDataElemMapper extends BaseMapperX<DgDataElemDO> {
 
     default PageResult<DgDataElemDO> selectPage(DgDataElemPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define allowed sort columns (prevent SQL injection, must match database field names)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
         MPJLambdaWrapperX<DgDataElemDO> lambdaWrapper = new MPJLambdaWrapperX<>();
@@ -56,15 +56,15 @@ public interface DgDataElemMapper extends BaseMapperX<DgDataElemDO> {
                 .eqIfPresent(DgDataElemDO::getDocumentId, reqVO.getDocumentId())
                 .eqIfPresent(DgDataElemDO::getDescription, reqVO.getDescription())
                 .eqIfPresent(DgDataElemDO::getCreateTime, reqVO.getCreateTime())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact match condition for name (name = '<name>')
                 // .likeIfPresent(DgDataElemDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns);
         return selectList(queryWrapper);
     }
 
     /**
-     * 判断当前元数据是否被模型及资产使用
+     * Check whether the current metadata is used by models and assets
      *
      * @param idList
      * @return
@@ -77,11 +77,11 @@ public interface DgDataElemMapper extends BaseMapperX<DgDataElemDO> {
     }
 
     /**
-     * 将老的 CAT_CODE 批量更新成新的 CAT_CODE
+     * Batch update old CAT_CODE to new CAT_CODE
      *
-     * @param oldCatCode 旧分类编码
-     * @param newCatCode 新分类编码
-     * @return 受影响行数
+     * @param oldCatCode old category code
+     * @param newCatCode new category code
+     * @return number of affected rows
      */
     default int updateCatCode(String oldCatCode, String newCatCode) {
         return this.update(

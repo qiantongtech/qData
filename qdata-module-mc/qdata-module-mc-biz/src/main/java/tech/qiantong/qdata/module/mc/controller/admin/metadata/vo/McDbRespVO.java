@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据库 Response VO 对象 MC_DB
+ * Database Response VO object MC_DB
  *
  * @author qdata
  * @date 2026-02-11
@@ -180,20 +180,20 @@ public class McDbRespVO implements Serializable {
     private String safetyLevelName;
 
     /**
-     * 是否在门户展示：0-不展示，1-展示
+     * Whether to display on the portal: 0-not displayed, 1-displayed
      */
     @Schema(description = "是否在门户展示：0-不展示，1-展示", example = "0")
     private String portalVisible;
 
     /**
-     * 负责部门
+     * Responsible department
      */
     @Schema(description = "负责部门", example = "")
     private Long responsibleDept;
     @Schema(description = "负责部门名称", example = "")
     private String responsibleDeptName;
     /**
-     * 数据行数
+     * Number of data rows
      */
     @Schema(description = "数据行数", example = "")
     private Long dataRowCount;

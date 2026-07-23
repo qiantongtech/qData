@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright (c) 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.service.etl;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据集成节点-日志Service接口
+ * Data Integration Node Log Service Interface
  *
  * @author qdata
  * @date 2025-02-13
@@ -52,20 +38,20 @@ import java.util.Map;
 public interface IDppEtlNodeLogService extends IService<DppEtlNodeLogDO> {
 
     /**
-     * 获得数据集成节点-日志分页列表
+     * Get data integration node log pagination list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据集成节点-日志分页列表
+     * @param pageReqVO Pagination request
+     * @return Data integration node log pagination list
      */
     PageResult<DppEtlNodeLogDO> getDppEtlNodeLogPage(DppEtlNodeLogPageReqVO pageReqVO);
 
     DppEtlNodeLogDO getDppEtlNodeLogRespVOByReqVO(DppEtlNodeLogPageReqVO reqVO);
 
     /**
-     * 创建数据集成节点-日志
+     * Create data integration node log
      *
-     * @param createReqVO 数据集成节点-日志信息
-     * @return 数据集成节点-日志编号
+     * @param createReqVO Data integration node log info
+     * @return Data integration node log ID
      */
     Long createDppEtlNodeLog(DppEtlNodeLogSaveReqVO createReqVO);
 
@@ -74,54 +60,54 @@ public interface IDppEtlNodeLogService extends IService<DppEtlNodeLogDO> {
     List<DppEtlNodeLogDO> createDppEtlNodeLogBatch(List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS);
 
     /**
-     * 更新数据集成节点-日志
+     * Update data integration node log
      *
-     * @param updateReqVO 数据集成节点-日志信息
+     * @param updateReqVO Data integration node log info
      */
     int updateDppEtlNodeLog(DppEtlNodeLogSaveReqVO updateReqVO);
 
     /**
-     * 删除数据集成节点-日志
+     * Delete data integration node log
      *
-     * @param idList 数据集成节点-日志编号
+     * @param idList Data integration node log ID list
      */
     int removeDppEtlNodeLog(Collection<Long> idList);
 
     /**
-     * 获得数据集成节点-日志详情
+     * Get data integration node log detail
      *
-     * @param id 数据集成节点-日志编号
-     * @return 数据集成节点-日志
+     * @param id Data integration node log ID
+     * @return Data integration node log
      */
     DppEtlNodeLogDO getDppEtlNodeLogById(Long id);
 
     /**
-     * 获得全部数据集成节点-日志列表
+     * Get all data integration node log list
      *
-     * @return 数据集成节点-日志列表
+     * @return Data integration node log list
      */
     List<DppEtlNodeLogDO> getDppEtlNodeLogList();
 
     /**
-     * 获得全部数据集成节点-日志 Map
+     * Get all data integration node log Map
      *
-     * @return 数据集成节点-日志 Map
+     * @return Data integration node log Map
      */
     Map<Long, DppEtlNodeLogDO> getDppEtlNodeLogMap();
 
 
     /**
-     * 导入数据集成节点-日志数据
+     * Import data integration node log data
      *
-     * @param importExcelList 数据集成节点-日志数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration node log data list
+     * @param isUpdateSupport Whether to support update. If already exists, update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDppEtlNodeLog(List<DppEtlNodeLogRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 根据编码和版本获取节点信息
+     * Get node info by code and version
      *
      * @param nodeCode
      * @param version
@@ -130,7 +116,7 @@ public interface IDppEtlNodeLogService extends IService<DppEtlNodeLogDO> {
     DppEtlNodeLogDO getByNodeCodeAndVersion(String nodeCode, Integer version);
 
     /**
-     * 通过节点编码获取最大版本号
+     * Get max version number by node code
      *
      * @param nodeCode
      * @return
@@ -139,7 +125,7 @@ public interface IDppEtlNodeLogService extends IService<DppEtlNodeLogDO> {
 
 
     /**
-     * 根据任务编码及任务版本获取节点信息
+     * Get node info by task code and version
      *
      * @param taskCode
      * @param version

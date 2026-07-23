@@ -1,18 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import { editor, KeyCode, KeyMod } from "monaco-editor";
@@ -31,7 +32,7 @@ const labels = {
 };
 
 /**
- * 获取标签值（调用函数获取翻译字符串）
+ * Get the tag value (call the function to get the translation string)
  */
 function getLabel(key) {
   const labelFunc = labels[key];
@@ -47,25 +48,25 @@ function getLabel(key) {
 }
 
 /**
- * register editor key binding | 注册编辑器快捷键
+ * register editor key binding | register editor shortcut key
  *
  * @param editorInstance
  */
 function registerEditorKeyBinding(editorInstance) {
-  // 添加 ctrl + z 撤销
+  // Add ctrl + z to undo
   editorInstance?.addCommand(KeyMod.CtrlCmd | KeyCode.KeyZ, () => {
     editorInstance?.trigger("anyString", "undo", "");
   });
-  // 添加 ctrl + y 恢复
+  // Add ctrl + y to restore
   editorInstance?.addCommand(KeyMod.CtrlCmd | KeyCode.KeyY, () => {
     editorInstance?.trigger("anyString", "redo", "");
   });
-  // 格式化所有代码
+  // Format all code
   editorInstance?.addCommand(KeyMod.Alt | KeyCode.Digit3, () => {
     editorInstance?.trigger("anyString", "editor.action.formatDocument", "");
     editorInstance?.setValue(format(editorInstance?.getValue()));
   });
-  // 格式化选定内容
+  // Format selection
   editorInstance?.addCommand(KeyMod.Alt | KeyCode.Digit4, () => {
     editorInstance?.trigger("anyString", "editor.action.formatSelection", "");
     editorInstance?.setValue(format(editorInstance?.getValue()));
@@ -73,26 +74,26 @@ function registerEditorKeyBinding(editorInstance) {
 }
 
 /**
- * <p> 如果使用了 sql-formatter , 可以使用以下参数 </p> <br/>
- * language: the SQL dialect to use (when using format()). | 要使用的SQL方言（当使用format（）时） <br/>
- * dialect: the SQL dialect to use (when using formatDialect() since version 12). | 要使用的SQL方言（自版本12起）<br/>
- * tabWidth: amount of indentation to use. | 要使用的缩进量<br/>
- * useTabs: to use tabs for indentation. | 要使用制表符进行缩进<br/>
- * keywordCase: uppercases or lowercases keywords. | 关键字大小写<br/>
- * identifierCase: uppercases or lowercases identifiers. (experimental!) | 标识符大小写<br/>
- * indentStyle: defines overall indentation style.| 总体缩进样式<br/>
- * logicalOperatorNewline: newline before or after boolean operator (AND, OR, XOR). | 布尔运算符（AND，OR，XOR）的换行位置<br/>
- * expressionWidth: maximum number of characters in parenthesized expressions to be kept on single line. | 带括号的表达式中保持在一行的最大字符数<br/>
- * linesBetweenQueries: how many newlines to insert between queries. | 在查询之间插入的换行数<br/>
- * denseOperators: packs operators densely without spaces. | 密集地封装运算符，没有空格<br/>
- * newlineBeforeSemicolon: places semicolon on separate line. | 将分号放在单独的行上 <br/>
- * params: collection of values for placeholder replacement. | 占位符替换的值的集合<br/>
- * paramTypes: specifies parameter placeholders types to support | 指定要支持的参数占位符类型 <br/>
+ * <p> If sql-formatter is used, the following parameters can be used </p> <br/>
+ * language: the SQL dialect to use (when using format()). | The SQL dialect to use (when using format()) <br/>
+ * dialect: the SQL dialect to use (when using formatDialect() since version 12).
+ * tabWidth: amount of indentation to use. | The amount of indentation to use<br/>
+ * useTabs: to use tabs for indentation. | To use tabs for indentation<br/>
+ * keywordCase: uppercases or lowercases keywords. | Keyword case<br/>
+ * identifierCase: uppercases or lowercases identifiers. (experimental!) | Identifier case<br/>
+ * indentStyle: defines overall indentation style.| Overall indentation style<br/>
+ * logicalOperatorNewline: newline before or after boolean operator (AND, OR, XOR). | Newline position of Boolean operator (AND, OR, XOR)<br/>
+ * expressionWidth: maximum number of characters in parenthesized expressions to be kept on single line. | Maximum number of characters kept on a line in parenthesized expressions<br/>
+ * linesBetweenQueries: how many newlines to insert between queries.
+ * denseOperators: packs operators densely without spaces. | Densely packs operators without spaces<br/>
+ * newlineBeforeSemicolon: places semicolon on separate line. | Place semicolon on separate line <br/>
+ * params: collection of values for placeholder replacement. | Collection of values for placeholder replacement<br/>
+ * paramTypes: specifies parameter placeholders types to support | Specifies parameter placeholder types to support <br/>
  * register editor action
  * @param editorInstance editor instance
  */
 function registerEditorAction(editorInstance) {
-  // 格式化所有代码 添加到 右键菜单 | format document
+  // Format all code Add to context menu | format document
   editorInstance?.addAction({
     id: "format",
     label: getLabel("shortcut.key.format"),
@@ -104,7 +105,7 @@ function registerEditorAction(editorInstance) {
       editorInstance?.setValue(format(editorInstance?.getValue(), { language: "spark" }));
     },
   });
-  // 格式化选定内容 添加到 右键菜单 | format selection
+  // Format selection Add to context menu | format selection
   editorInstance?.addAction({
     id: "formatSelection",
     label: getLabel("shortcut.key.formatSelection"),
@@ -116,7 +117,7 @@ function registerEditorAction(editorInstance) {
       editorInstance?.setValue(format(editorInstance?.getValue(), { language: "spark" }));
     },
   });
-  // 注释该行 添加到 右键菜单 | comment line
+  // Comment this line Add to context menu | comment line
   editorInstance?.addAction({
     id: "commentLine",
     label: getLabel("shortcut.key.notes"),
@@ -127,7 +128,7 @@ function registerEditorAction(editorInstance) {
       editorInstance?.trigger("anyString", "editor.action.commentLine", "");
     },
   });
-  // 转为 大写 添加到 右键菜单 | to uppercase
+  // to uppercase add to right-click menu | to uppercase
   editorInstance?.addAction({
     id: "upperCase",
     label: getLabel("shortcut.key.upperCase"),
@@ -138,7 +139,7 @@ function registerEditorAction(editorInstance) {
       editorInstance?.trigger("anyString", "editor.action.transformToUppercase", "");
     },
   });
-  // 转为 小写 添加到 右键菜单 | to lowercase
+  // To lowercase Add to right-click menu | to lowercase
   editorInstance?.addAction({
     id: "lowerCase",
     label: getLabel("shortcut.key.lowerCase"),
@@ -152,7 +153,7 @@ function registerEditorAction(editorInstance) {
 }
 
 /**
- * register editor key binding and action | 注册编辑器快捷键和右键菜单
+ * register editor key binding and action | Register editor shortcut keys and right-click menu
  * @param editorInstance
  */
 export function registerEditorKeyBindingAndAction(editorInstance) {

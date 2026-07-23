@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.generator.domain;
@@ -42,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
- * 业务表 gen_table
+ * Business table gen_table
  *
  * @author qdata
  */
@@ -50,85 +36,85 @@ public class GenTable extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 编号 */
+    /** number */
     private Long tableId;
 
-    /** 表名称 */
+    /** table name */
     @NotBlank(message = "表名称不能为空")
     private String tableName;
 
-    /** 表描述 */
+    /** Table description */
     @NotBlank(message = "表描述不能为空")
     private String tableComment;
 
-    /** 关联父表的表名 */
+    /** Table name of associated parent table */
     private String subTableName;
 
-    /** 本表关联父表的外键名 */
+    /** The foreign key name of the parent table associated with this table */
     private String subTableFkName;
 
-    /** 实体类名称(首字母大写) */
+    /** Entity class name (first letter capitalized) */
     @NotBlank(message = "实体类名称不能为空")
     private String className;
 
-    /** 使用的模板（crud单表操作 tree树表操作 sub主子表操作） */
+    /** Template used (crud single table operation tree tree table operation sub main sub-table operation) */
     private String tplCategory;
 
-    /** 前端类型（element-ui模版 element-plus模版） */
+    /** Front-end type (element-ui template element-plus template) */
     private String tplWebType;
 
-    /** 生成包路径 */
+    /** Generate package path */
     @NotBlank(message = "生成包路径不能为空")
     private String packageName;
 
-    /** 生成模块名 */
+    /** Generate module name */
     @NotBlank(message = "生成模块名不能为空")
     private String moduleName;
 
-    /** 生成业务名 */
+    /** Generate business name */
     @NotBlank(message = "生成业务名不能为空")
     private String businessName;
 
-    /** 生成功能名 */
+    /** Generate function name */
     @NotBlank(message = "生成功能名不能为空")
     private String functionName;
 
-    /** 生成作者 */
+    /** Generate author */
     @NotBlank(message = "作者不能为空")
     private String functionAuthor;
 
-    /** 生成代码方式（0zip压缩包 1自定义路径） */
+    /** Code generation method (0zip compressed package 1 custom path) */
     private String genType;
 
-    /** 生成路径（不填默认项目路径） */
+    /** Generate path (do not fill in the default project path) */
     private String genPath;
 
-    /** 主键信息 */
+    /** Primary key information */
     private GenTableColumn pkColumn;
 
-    /** 子表信息 */
+    /** Subtable information */
     private GenTable subTable;
 
-    /** 表列信息 */
+    /** List information */
     @Valid
     private List<GenTableColumn> columns;
 
-    /** 其它生成选项 */
+    /** Other generation options */
     private String options;
 
-    /** 树编码字段 */
+    /** Tree encoding field */
     private String treeCode;
 
-    /** 树父编码字段 */
+    /** Tree parent encoding field */
     private String treeParentCode;
 
-    /** 树名称字段 */
+    /** Tree name field */
     private String treeName;
 
-    /** 上级菜单ID字段 */
+    /** Upper level menu ID field */
     private String parentMenuId;
 
-    /** 上级菜单名称字段 */
+    /** Upper level menu name field */
     private String parentMenuName;
 
     public Long getTableId()

@@ -13,7 +13,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/handle/index.vue'),
                 name: 'UnreleasedStructuredTableAdd',
-                meta: { title: '新增表元数据', activeMenu: '/dg/meta/management', lang: 'public.addTableMetadata' }
+                meta: { title: 'Add Table Metadata', activeMenu: '/dg/meta/management', lang: 'public.addTableMetadata' }
             }
         ]
     },
@@ -28,7 +28,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/handle/index.vue'),
                 name: 'UnreleasedStructuredTableEdit',
-                meta: { title: '修改表元数据', activeMenu: '/dg/meta/management', lang: 'public.editTableMetadata' }
+                meta: { title: 'Edit Table Metadata', activeMenu: '/dg/meta/management', lang: 'public.editTableMetadata' }
             }
         ]
     },
@@ -44,7 +44,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/detail/index.vue'),
                 name: 'UnreleasedStructuredTableDetail',
-                meta: { title: '表元数据详情', activeMenu: '/dg/meta/management', lang: 'public.tableMetadataDetail' }
+                meta: { title: 'Table Metadata Details', activeMenu: '/dg/meta/management', lang: 'public.tableMetadataDetail' }
             }
         ]
     },
@@ -60,7 +60,7 @@ export default [
                 component: () =>
                     import('@/views/meta/unreleased/structured/table/detail/index.vue'),
                 name: 'ReleasedStructuredTableDetail',
-                meta: { title: '表元数据详情', activeMenu: '/dg/meta/comparison', lang: 'public.tableMetadataDetail' }
+                meta: { title: 'Table Metadata Details', activeMenu: '/dg/meta/comparison', lang: 'public.tableMetadataDetail' }
             }
         ]
     },

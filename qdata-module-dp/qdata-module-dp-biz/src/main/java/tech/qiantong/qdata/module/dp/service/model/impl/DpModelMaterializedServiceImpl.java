@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.service.model.impl;
@@ -69,7 +55,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 物化模型记录Service业务层处理
+ * Materialized Model Record Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -91,24 +77,27 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
     private DataSourceFactory dataSourceFactory;
 
     /**
-     * 物化建表
+     * Materialized table creation
      *
      * @param dpModelMaterialized
      * @return
      */
     @Override
     public Long createMaterializedTable(DpMaterializedMethodReqVO dpModelMaterialized) {
-        //取出模型id
+        // Get model IDs
         List<Long> modelIdList = dpModelMaterialized.getModelId();
         if (CollectionUtils.isEmpty(modelIdList)) {
-            throw new RuntimeException("获取信息失败,原因:发布信息为空");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "dp.error.model.release.info.empty",
+                    "Failed to get information because the release information is empty"));
         }
 
         DbQueryProperty dbQueryProperty = new DbQueryProperty(dpModelMaterialized.getDatasourceType(), dpModelMaterialized.getIp(), dpModelMaterialized.getPort(), dpModelMaterialized.getDatasourceConfig());
         DbQuery dbQuery = dataSourceFactory.createDbQuery(dbQueryProperty);
-        //测试链接
+        // Test connection
         if (!dbQuery.valid()) {
-            throw new RuntimeException("数据库连接失败！");
+            throw new RuntimeException(MessageUtils.messageWithFallback(
+                    "dp.error.database.connection.fail", "Database connection failed"));
         }
 
         for (Long modelId : modelIdList) {
@@ -121,14 +110,14 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
 
             String status = dpModelMaterializedDO.getStatus();
             if (StringUtils.equals("3", status)) {
-                //资产
+                // Asset
                 DaAssetReqDTO daAssetReqDTO = new DaAssetReqDTO();
                 daAssetReqDTO.setSource("2");
                 daAssetReqDTO.setModelId(modelId);
                 daAssetReqDTO.setDatasourceId(dpModelMaterialized.getDatasourceId());
                 daAssetReqDTO.setFieldCount(dpModelMaterializedDO.getFieldCount());
                 DaAssetRespDTO daAssetRespDTO = iDaAssetApiService.insertDaAsset(daAssetReqDTO);
-                Long id = daAssetRespDTO.getId();//资产id
+                Long id = daAssetRespDTO.getId();// Asset ID
                 dpModelMaterializedDO.setAssetId(id);
             }
             dpModelMaterializedMapper.insert(dpModelMaterializedDO);
@@ -146,31 +135,31 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
      */
     private DpModelMaterializedDO anotherAsyncTaskSingle(Long modelId, DpMaterializedMethodReqVO dpModelMaterialized, DbQuery dbQuery, DbQueryProperty dbQueryProperty) {
         DpModelReleaseMode releaseMode = DpModelReleaseMode.getByCode(dpModelMaterialized.getReleaseMode());
-        // 先创建一个日志对象，并设置一些基础信息；发生异常也能返回它
+        // First create a log object with basic info; return it even if an exception occurs
         DpModelMaterializedDO dpModelMaterializedDO = buildLogRecord(modelId, dpModelMaterialized);
 
-        // 默认先给它一个状态：2=创建中
+        // Default status: 2=Creating
         dpModelMaterializedDO.setStatus("2");
-        // 在往数据库插入前，建议先 setCreateTime / setCreateBy / setUpdateTime 等，根据需要
+        // Before inserting into DB, set CreateTime/CreateBy/UpdateTime etc. as needed
         try {
-            // 1. 查询模型/字段，若校验不通过则抛异常
+            // 1. Query model/columns, throw exception if validation fails
             DpModelDO dpModelDO = checkAndGetModel(modelId);
             dpModelMaterializedDO.setModelName(dpModelDO.getModelName());
             dpModelMaterializedDO.setModelAlias(dpModelDO.getModelComment());
 
 
             List<DpModelColumnDO> columnList = checkAndGetModelColumns(modelId);
-            //设置字段数据量
+            // Set field count
             dpModelMaterializedDO.setFieldCount(Long.valueOf(columnList.size()));
 
 
             String tableName = dpModelDO.getTableName();
             int tableStatus = dbQuery.generateCheckTableExistsSQL(dbQueryProperty, tableName);
 
-            //是创建表  true：直接创建表 false：需要做字段更新
+            // Is creating table true: create directly false: needs field update
             Boolean createTable = true;
             if (tableStatus > 0) {
-                //判断是否是删除重建
+                // Check if delete and rebuild
                 if (StringUtils.equals(DpModelReleaseMode.DELETE_REBUILD.getCode(), releaseMode.getCode())) {
                     dbQuery.deleteTable(dbQueryProperty, tableName);
                 } else if (StringUtils.equals(DpModelReleaseMode.INCREMENT_RELEASE.getCode(), releaseMode.getCode())) {
@@ -182,14 +171,14 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
             if (createTable) {
                 List<String> tableSQLList = dbQuery.generateCreateTableSQL(dbQueryProperty, tableName, dpModelDO.getModelComment(), dbColumns);
                 if (CollectionUtils.isNotEmpty(tableSQLList)) {
-                    dpModelMaterializedDO.setSqlCommand(tableSQLList.toString()); // 记录一下执行SQL
+                    dpModelMaterializedDO.setSqlCommand(tableSQLList.toString()); // Record the executed SQL
                 }
 
                 creatInt = dbQuery.createCollectionWithSchema(dbQueryProperty, tableName, dpModelDO.getModelComment(), dbColumns);
             } else {
                 List<String> updateTableSQLList = dbQuery.generateUpdateTableSQL(dbQueryProperty, tableName, dpModelDO.getModelComment(), dbColumns);
                 if (CollectionUtils.isNotEmpty(updateTableSQLList)) {
-                    dpModelMaterializedDO.setSqlCommand(updateTableSQLList.toString()); // 记录一下执行SQL
+                    dpModelMaterializedDO.setSqlCommand(updateTableSQLList.toString()); // Record the executed SQL
                 }
                 if (updateTableSQLList.size() == 0) {
                     creatInt = 1;
@@ -202,19 +191,19 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
                 }
             }
             if (creatInt > 0) {
-                // 若执行成功 -> 状态=3
+                // On success -> status=3
                 dpModelMaterializedDO.setStatus("3");
-                dpModelMaterializedDO.setMessage("建表成功");
+                dpModelMaterializedDO.setMessage("Table created successfully");
             } else {
-                // 不管任何异常都要记录到日志中
-                dpModelMaterializedDO.setStatus("4"); // 4=失败
-                dpModelMaterializedDO.setMessage("建表失败：请联系管理员");
+                // Log any exception
+                dpModelMaterializedDO.setStatus("4"); // 4=Failed
+                dpModelMaterializedDO.setMessage("Table creation failed: Please contact administrator");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            // 不管任何异常都要记录到日志中
-            dpModelMaterializedDO.setStatus("4"); // 4=失败
-            dpModelMaterializedDO.setMessage("建表失败：" + ex.getMessage());
+            // Log any exception
+            dpModelMaterializedDO.setStatus("4"); // 4=Failed
+            dpModelMaterializedDO.setMessage("Table creation failed: " + ex.getMessage());
         }
 
         return dpModelMaterializedDO;
@@ -222,9 +211,9 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
 
 
     /**
-     * 将 DpModelColumnDO 转换为 DbColumn，并赋值给 columnsList
+     * Convert DpModelColumnDO to DbColumn and assign to columnsList
      *
-     * @param columnList DpModelColumnDO 列表
+     * @param columnList DpModelColumnDO list
      */
     public List<DbColumn> setColumnsListFromDpModelColumns(List<DpModelColumnDO> columnList) {
         return columnList.stream()
@@ -237,14 +226,14 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
                         .nullable("0".equals(dpColumn.getNullableFlag()))
                         .colPosition(dpColumn.getSortOrder() == null ? 1 : dpColumn.getSortOrder().intValue())
                         .dataDefault(dpColumn.getDefaultValue())
-                        .colComment(dpColumn.getCnName())  // 或者使用其它字段填充
+                        .colComment(dpColumn.getCnName())  // Or fill with other fields
                         .build())
                 .collect(Collectors.toList());
     }
 
 
     /**
-     * 组装一个日志记录对象，填充基础字段
+     * Build a log record object with basic fields
      *
      * @param modelId
      * @param dpModelMaterialized
@@ -263,26 +252,26 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
     }
 
     /**
-     * 查询并校验 DpModelDO，不存在则抛异常
+     * Query and validate DpModelDO, throw exception if not exists
      */
     private DpModelDO checkAndGetModel(Long modelId) {
         DpModelDO dpModelDO = dpModelService.getDpModelById(modelId);
         if (dpModelDO == null) {
-            throw new RuntimeException("逻辑模型不存在, modelId=" + modelId);
+            throw new RuntimeException("Logical model does not exist, modelId=" + modelId);
         }
         return dpModelDO;
     }
 
 
     /**
-     * 查询并校验字段列表，不存在则抛异常
+     * Query and validate column list, throw exception if not exists
      */
     private List<DpModelColumnDO> checkAndGetModelColumns(Long modelId) {
         DpModelColumnSaveReqVO reqVO = new DpModelColumnSaveReqVO();
         reqVO.setModelId(modelId);
         List<DpModelColumnDO> columnList = dpModelColumnService.getDpModelColumnList(reqVO);
         if (CollectionUtils.isEmpty(columnList)) {
-            throw new RuntimeException("逻辑模型无字段，无法建表, modelId=" + modelId);
+            throw new RuntimeException("Logical model has no columns, cannot create table, modelId=" + modelId);
         }
         return columnList;
     }
@@ -302,16 +291,16 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
 
     @Override
     public int updateDpModelMaterialized(DpModelMaterializedSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新物化模型记录
+        // Update materialized model record
         DpModelMaterializedDO updateObj = BeanUtils.toBean(updateReqVO, DpModelMaterializedDO.class);
         return dpModelMaterializedMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpModelMaterialized(Collection<Long> idList) {
-        // 批量删除物化模型记录
+        // Batch delete materialized model record
         return dpModelMaterializedMapper.deleteBatchIds(idList);
     }
 
@@ -330,23 +319,23 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
         List<DpModelMaterializedDO> dpModelMaterializedList = dpModelMaterializedMapper.selectList();
         return dpModelMaterializedList.stream()
                 .collect(Collectors.toMap(DpModelMaterializedDO::getId, dpModelMaterializedDO -> dpModelMaterializedDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入物化模型记录数据
+     * Import materialized model record data
      *
-     * @param importExcelList 物化模型记录数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Materialized model record data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpModelMaterialized(List<DpModelMaterializedRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -365,16 +354,16 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
                             dpModelMaterializedMapper.updateById(dpModelMaterializedDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dp.import.update.success",
-                                    "数据更新成功，ID为 " + dpModelMaterializedId + " 的物化模型记录记录。", dpModelMaterializedId, "物化模型记录"));
+                                    "Data update successful, ID {0} {1} record.", dpModelMaterializedId, MessageUtils.messageWithFallback("dp.entity.materialized.model", "Materialized model record")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.fail",
-                                    "数据更新失败，ID为 " + dpModelMaterializedId + " 的物化模型记录记录不存在。", dpModelMaterializedId, "物化模型记录"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dpModelMaterializedId, MessageUtils.messageWithFallback("dp.entity.materialized.model", "Materialized model record")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DpModelMaterializedDO> queryWrapper = new QueryWrapper<>();
@@ -384,17 +373,17 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
                         dpModelMaterializedMapper.insert(dpModelMaterializedDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dp.import.insert.success",
-                                "数据插入成功，ID为 " + dpModelMaterializedId + " 的物化模型记录记录。", dpModelMaterializedId, "物化模型记录"));
+                                "Data insert successful, ID {0} {1} record.", dpModelMaterializedId, MessageUtils.messageWithFallback("dp.entity.materialized.model", "Materialized model record")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.insert.fail",
-                                "数据插入失败，ID为 " + dpModelMaterializedId + " 的物化模型记录记录已存在。", dpModelMaterializedId, "物化模型记录"));
+                                "Data insert failed, ID {0} {1} record already exists.", dpModelMaterializedId, MessageUtils.messageWithFallback("dp.entity.materialized.model", "Materialized model record")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -403,12 +392,12 @@ public class DpModelMaterializedServiceImpl extends ServiceImpl<DpModelMateriali
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

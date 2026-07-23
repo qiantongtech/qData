@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -33,17 +34,17 @@
       :data="uploadData"
       :drag="dragFlag"
     >
-      <!-- 上传按钮 -->
+      <!-- upload button -->
       <el-button type="primary" size="mini" icon="Upload" plain>{{ t('common.upload.uploadAttachment') }}</el-button>
     </el-upload>
-    <!-- 上传提示 -->
+    <!-- Upload tips -->
     <div class="el-upload__tip" v-if="showTip">
       {{ t('common.upload.pleaseUpload') }}
       <template v-if="fileSize"> {{ t('common.upload.fileSizeLimit') }} <b style="color: #f56c6c">{{ fileSize }}{{ t('common.upload.fileSizeMB') }}</b> </template>
       <template v-if="fileType"> {{ t('common.upload.fileFormatLabel') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
       {{ t('common.upload.fileTypes') }}
     </div>
-    <!-- 文件列表 -->
+    <!-- file list -->
     <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
       <!-- <li :key="file.uid" class="el-upload-list__item ele-upload-list__item-content" v-for="(file, index) in fileList">
         <el-link :href="`${baseUrl}${file.url}`" :underline="false" target="_blank">
@@ -73,32 +74,32 @@ import { getToken } from "@/utils/auth";
 const { t } = useI18n();
 const props = defineProps({
   modelValue: [String, Object, Array],
-  // 数量限制
+  // Quantity limit
   limit: {
     type: Number,
     default: 5,
   },
-  // 大小限制(MB)
+  // Size limit(MB)
   fileSize: {
     type: Number,
     default: 5,
   },
-  // 文件类型, 例如['png', 'jpg', 'jpeg']
+  // File types, such as ['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
     default: () => ["doc", "xls", "ppt", "txt", "pdf", "docx"],
   },
-  // 是否显示提示
+  // Whether to display prompts
   isShowTip: {
     type: Boolean,
     default: true
   },
-  // platform参数
+  // platform parameters
   platForm: {
     type: String,
     default: null
   },
-  // 是否支持拖拽上传
+  // Whether to support drag and drop upload
   dragFlag: {
     type: Boolean,
     default: false
@@ -110,7 +111,7 @@ const emit = defineEmits();
 const number = ref(0);
 const uploadList = ref([]);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
-const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // 上传文件服务器地址
+const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/upload"); // Upload file server address
 const headers = ref({ Authorization: "Bearer " + getToken() });
 const fileList = ref([]);
 const uploadData = ref({
@@ -123,9 +124,9 @@ const showTip = computed(
 watch(() => props.modelValue, val => {
   if (val) {
     let temp = 1;
-    // 首先将值转为数组
+    // First convert the value into an array
     const list = Array.isArray(val) ? val : props.modelValue.split(',');
-    // 然后将数组转为对象数组
+    // Then convert the array into an object array
     fileList.value = list.map(item => {
       if (typeof item === "string") {
         item = { name: item, url: item };
@@ -139,9 +140,9 @@ watch(() => props.modelValue, val => {
   }
 },{ deep: true, immediate: true });
 
-// 上传前校检格式和大小
+// Check format and size before uploading
 function handleBeforeUpload(file) {
-  // 校检文件类型
+  // Proof file type
   if (props.fileType.length) {
     const fileName = file.name.split('.');
     const fileExt = fileName[fileName.length - 1];
@@ -151,7 +152,7 @@ function handleBeforeUpload(file) {
       return false;
     }
   }
-  // 校检文件大小
+  // Proof file size
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
@@ -164,25 +165,25 @@ function handleBeforeUpload(file) {
   return true;
 }
 
-// 文件个数超出
+// The number of files exceeds
 function handleExceed() {
   proxy.$modal.msgError(t('components.fileUpload.exceedLimit', { limit: props.limit }));
 }
 
-// 上传失败
+// Upload failed
 function handleUploadError(err) {
   proxy.$modal.msgError(t('components.fileUpload.uploadError'));
 }
 
-// 上传成功回调
+// Upload success callback
 function handleUploadSuccess(res, file) {
   if (res.url) {
     uploadList.value.push({ name: '/profile/' + res.path + res.filename, url: res.url });
     if (res.size) {
-      emit("update:fileSize", res.size);  // 更新文件大小
+      emit("update:fileSize", res.size);  // Update file size
     }
     if (res.ext) {
-      emit("update:fileExt", res.ext);  // 更新文件后缀名
+      emit("update:fileExt", res.ext);  // Update file extension
     }
     uploadedSuccessfully();
   } else {
@@ -194,13 +195,13 @@ function handleUploadSuccess(res, file) {
   }
 }
 
-// 删除文件
+// Delete files
 function handleDelete(index) {
   fileList.value.splice(index, 1);
   emit("update:modelValue", listToString(fileList.value));
 }
 
-// 上传结束处理
+// Upload end processing
 function uploadedSuccessfully() {
   if (number.value > 0 && uploadList.value.length === number.value) {
     fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
@@ -211,9 +212,9 @@ function uploadedSuccessfully() {
   }
 }
 
-// 获取文件名称
+// Get file name
 function getFileName(name) {
-  // 如果是url那么取最后的名字 如果不是直接返回
+  // If it is a url, then take the last name. If it is not returned directly,
   if (name.lastIndexOf("/") > -1) {
     return name.slice(name.lastIndexOf("/") + 1);
   } else {
@@ -221,7 +222,7 @@ function getFileName(name) {
   }
 }
 
-// 对象转成指定字符串分隔
+// Convert the object to the specified string delimited
 function listToString(list, separator) {
   let strs = "";
   separator = separator || ",";

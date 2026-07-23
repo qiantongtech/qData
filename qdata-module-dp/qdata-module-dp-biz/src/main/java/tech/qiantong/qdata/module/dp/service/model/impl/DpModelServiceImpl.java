@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.service.model.impl;
@@ -80,7 +66,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 逻辑模型Service业务层处理
+ * Logical Model Service Business Layer Processing
  *
  * @author qdata
  * @date 2025-01-21
@@ -112,15 +98,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
 
     /**
-     * 根据资产id和代码表id查询数据元信息
+     * Query data element info by asset ID and code ID
      *
-     * @param assetId 资产id
-     * @param codeId  代码表id
+     * @param assetId Asset ID
+     * @param codeId  Code ID
      * @return
      */
     @Override
     public List<DpDataElemRespDTO> getDpDataElemListByAssetId(Long assetId, Set<Long> codeId) {
-        //查询和资产关联的数据元信息id
+        // Query IDs of data elements associated with the asset
         Set<Long> ids = new HashSet<>();
         List<DpDataElemAssetRelDO> list = iDpDataElemAssetRelService.lambdaQuery()
                 .eq(DpDataElemAssetRelDO::getAssetId, assetId)
@@ -149,9 +135,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 更具模型id查询模型下的字段集合
+     * Get column set under model by model ID
      *
-     * @param modelId 模型id
+     * @param modelId Model ID
      */
     @Override
     public List<DpModelColumnRespDTO> getModelIdColumnList(Long modelId) {
@@ -163,7 +149,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据字段id获取数据元id集合
+     * Get data element ID set by column ID
      *
      * @param columnId
      * @return
@@ -212,7 +198,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
 
     /**
-     * 更新数据元和资产关系数据
+     * Update data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -227,9 +213,9 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         if (CollectionUtils.isNotEmpty(elementIds)) {
             dpDataElemAssetRelDOList = elementIds.stream().map(item -> {
                 DpDataElemAssetRelDO dpDataElemAssetRelDO = new DpDataElemAssetRelDO();
-                dpDataElemAssetRelDO.setAssetId(String.valueOf(assetId));//资产id
-                dpDataElemAssetRelDO.setDataElemId(String.valueOf(item));//数据元id
-                dpDataElemAssetRelDO.setDataElemType("1");//是数据元
+                dpDataElemAssetRelDO.setAssetId(String.valueOf(assetId));// Asset ID
+                dpDataElemAssetRelDO.setDataElemId(String.valueOf(item));// Data Element ID
+                dpDataElemAssetRelDO.setDataElemType("1");// Is data element
                 dpDataElemAssetRelDO.setTableName(dpDataElemAssetRel.getTableName());
                 dpDataElemAssetRelDO.setColumnId(String.valueOf(dpDataElemAssetRel.getColumnId()));
                 dpDataElemAssetRelDO.setColumnName(dpDataElemAssetRel.getColumnName());
@@ -243,7 +229,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 插入数据元和资产关系数据
+     * Insert data element and asset relation data
      *
      * @param dpDataElemAssetRel
      * @return
@@ -252,7 +238,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public boolean insertElementAssetRelation(List<DpDataElemAssetRelReqDTO> dpDataElemAssetRel) {
         boolean result = false;
         if (CollectionUtils.isNotEmpty(dpDataElemAssetRel)) {
-            //DpDataElemAssetRelReqDTO 转换为 DpDataElemAssetRelDO
+            // DpDataElemAssetRelReqDTO Convert to DpDataElemAssetRelDO
             List<DpDataElemAssetRelDO> dpDataElemAssetRelDOList = dpDataElemAssetRel.stream().map(item -> {
                 DpDataElemAssetRelDO dpDataElemAssetRelDO = new DpDataElemAssetRelDO();
                 BeanUtil.copyProperties(item, dpDataElemAssetRelDO);
@@ -272,7 +258,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据数据元id查询数据元信息
+     * Query data element info by data element ID
      *
      * @param ids
      * @return
@@ -284,7 +270,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
                 .in(DpDataElemDO::getId, ids)
                 .eq(DpDataElemDO::getDelFlag, 0)
                 .list();
-        //将list的类型转换为DpDataElemRespDTO
+        // Convert list type to DpDataElemRespDTO
         return list.stream().map(item -> {
             DpDataElemRespDTO dpModelColumnRespDTO = new DpDataElemRespDTO();
             BeanUtil.copyProperties(item, dpModelColumnRespDTO);
@@ -293,17 +279,17 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据逻辑模型ID获取逻辑模型列信息
+     * Get logical model column info by logical model ID
      *
-     * @param modelId 逻辑模型ID
-     * @return 逻辑模型列信息
+     * @param modelId Logical Model ID
+     * @return Logical model column info
      */
     @Override
     public List<DpModelColumnRespDTO> getDpModelColumnListByModelIdApi(Long modelId) {
         List<DpModelColumnDO> list = iDpModelColumnService.lambdaQuery()
                 .eq(DpModelColumnDO::getModelId, modelId)
                 .list();
-        //将list的类型转换为DpModelColumnRespDTO
+        // Convert list type to DpModelColumnRespDTO
         return list.stream().map(item -> {
             DpModelColumnRespDTO dpModelColumnRespDTO = new DpModelColumnRespDTO();
             BeanUtil.copyProperties(item, dpModelColumnRespDTO);
@@ -319,13 +305,13 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 //            return dpModelDOPageResult;
 //        }
 //        for (DpModelDO row : rows) {
-//            //字段
+//            // Fields
 //            DpModelColumnSaveReqVO dpModelColumnSaveReqVO = new DpModelColumnSaveReqVO();
 //            dpModelColumnSaveReqVO.setModelId(row.getId());
 //            long count = iDpModelColumnService.countByDpModelColumn(dpModelColumnSaveReqVO);
 //            row.setColumnCount(count);
 //
-//            //资产
+//            // Asset
 //
 //        }
 //        dpModelDOPageResult.setRows(rows);
@@ -341,16 +327,16 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
 
     @Override
     public int updateDpModel(DpModelSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related validation
 
-        // 更新逻辑模型
+        // Update logical model
         DpModelDO updateObj = BeanUtils.toBean(updateReqVO, DpModelDO.class);
         return dpModelMapper.updateById(updateObj);
     }
 
     @Override
     public int removeDpModel(Collection<Long> idList) {
-        // 批量删除逻辑模型
+        // Batch delete logical model
         return dpModelMapper.deleteBatchIds(idList);
     }
 
@@ -403,7 +389,7 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     }
 
     /**
-     * 根据逻辑模型ID获取逻辑模型信息
+     * Get logical model info by logical model ID
      *
      * @param id
      * @return
@@ -426,23 +412,23 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
     public Map<Long, DpModelDO> getDpModelMap() {
         List<DpModelDO> dpModelList = dpModelMapper.selectList();
         return dpModelList.stream().collect(Collectors.toMap(DpModelDO::getId, dpModelDO -> dpModelDO,
-                // 保留已存在的值
+                // Keep existing value
                 (existing, replacement) -> existing));
     }
 
 
     /**
-     * 导入逻辑模型数据
+     * Import logical model data
      *
-     * @param importExcelList 逻辑模型数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Logical model data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     @Override
     public String importDpModel(List<DpModelRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("dp.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("dp.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -461,16 +447,16 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
                             dpModelMapper.updateById(dpModelDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("dp.import.update.success",
-                                    "数据更新成功，ID为 " + dpModelId + " 的逻辑模型记录。", dpModelId, "逻辑模型"));
+                                    "Data update successful, ID {0} {1} record.", dpModelId, MessageUtils.messageWithFallback("dp.entity.logical.model", "Logical model")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.fail",
-                                    "数据更新失败，ID为 " + dpModelId + " 的逻辑模型记录不存在。", dpModelId, "逻辑模型"));
+                                    "Data update failed, ID {0} {1} record does not exist.", dpModelId, MessageUtils.messageWithFallback("dp.entity.logical.model", "Logical model")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<DpModelDO> queryWrapper = new QueryWrapper<>();
@@ -480,17 +466,17 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
                         dpModelMapper.insert(dpModelDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("dp.import.insert.success",
-                                "数据插入成功，ID为 " + dpModelId + " 的逻辑模型记录。", dpModelId, "逻辑模型"));
+                                "Data insert successful, ID {0} {1} record.", dpModelId, MessageUtils.messageWithFallback("dp.entity.logical.model", "Logical model")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("dp.import.insert.fail",
-                                "数据插入失败，ID为 " + dpModelId + " 的逻辑模型记录已存在。", dpModelId, "逻辑模型"));
+                                "Data insert failed, ID {0} {1} record already exists.", dpModelId, MessageUtils.messageWithFallback("dp.entity.logical.model", "Logical model")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("dp.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -499,12 +485,12 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("dp.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("dp.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
@@ -528,15 +514,15 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("公共层")
+                .name("Public Layer")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向数据开发人员，作为应用层的数据地基，把杂乱的数据建成通用的明细模型，方便大家复用。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for data developers, as the data foundation of the application layer, build messy data into common detailed models for easy reuse.\"}"))
                 .children(dmBusinessCategoryApiService.getTreeData(null))
                 .build());
         treeData.add(TreeData.builder()
-                .name("应用层")
+                .name("Application Layer")
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"主要面向业务及分析人员，通过加工公共层的基础数据计算而来，直接用来做可视化大屏或业务报表。\"}"))
+                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for business and analysis personnel, computed by processing base data from the public layer, directly used for visualization dashboards or business reports.\"}"))
                 .children(dmThemeDomainApiService.getTreeData(null))
                 .build());
         return treeData;

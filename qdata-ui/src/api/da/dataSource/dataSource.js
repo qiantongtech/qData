@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询数据源列表
+// Query data source list
 export function listDaDatasource(query) {
     return request({
         url: '/da/dataSource/list',
@@ -33,7 +34,7 @@ export function daList(query) {
         params: query
     });
 }
-// 查询数据源列表
+// Query data source list
 export function sqlParse(data) {
     return request({
         url: '/da/dataSource/sqlParse',
@@ -42,7 +43,7 @@ export function sqlParse(data) {
     });
 }
 
-// 数据集成中排除Kafka并且是当前项目的数据源列表
+// Kafka is excluded from data integration and is the data source list of the current project
 export function listDaDatasourceNoKafkaByProjectCode(query) {
     return request({
         url: '/da/dataSource/dppNoKafka/list',
@@ -51,7 +52,7 @@ export function listDaDatasourceNoKafkaByProjectCode(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function listDaDatasourceByProjectCode(query) {
     return request({
         url: '/da/dataSource/dpp/list',
@@ -60,7 +61,7 @@ export function listDaDatasourceByProjectCode(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function noDppAdd(query) {
     return request({
         url: '/da/dataSource/noDppAdd/list',
@@ -69,7 +70,7 @@ export function noDppAdd(query) {
     });
 }
 
-// 查询数据源列表
+// Query data source list
 export function getDaDatasourceList(query) {
     return request({
         url: '/da/dataSource/getDataSourceByAsset',
@@ -78,7 +79,7 @@ export function getDaDatasourceList(query) {
     });
 }
 
-// 查询数据源详细
+// Query data source details
 export function getDaDatasource(id) {
     return request({
         url: '/da/dataSource/' + id,
@@ -86,15 +87,18 @@ export function getDaDatasource(id) {
     });
 }
 
-// 查询数据源详细
-export function clientsTest(id) {
+// Query data source details
+export function clientsTest(id, options = {}) {
     return request({
         url: '/da/dataSource/clientsTest/' + id,
-        method: 'get'
+        method: 'get',
+        headers: {
+            hideErrorMessage: options.hideErrorMessage === true
+        }
     });
 }
 
-// 新增数据源
+// Add new data source
 export function addDaDatasource(data) {
     return request({
         url: '/da/dataSource',
@@ -103,7 +107,16 @@ export function addDaDatasource(data) {
     });
 }
 
-// 修改数据源
+// Test datasource connection before creation
+export function testDatasourceConnection(data) {
+    return request({
+        url: '/da/dataSource/testConnection',
+        method: 'post',
+        data: data
+    });
+}
+
+// Modify data source
 export function updateDaDatasource(data) {
     return request({
         url: '/da/dataSource',
@@ -112,7 +125,7 @@ export function updateDaDatasource(data) {
     });
 }
 
-// 删除数据源
+// Delete data source
 export function delDaDatasource(id) {
     return request({
         url: '/da/dataSource/' + id,
@@ -120,7 +133,7 @@ export function delDaDatasource(id) {
     });
 }
 
-// 删除数据源
+// Delete data source
 export function removeDppOrDa(id, type) {
     return request({
         url: '/da/dataSource/' + id + '/' + type,
@@ -128,11 +141,14 @@ export function removeDppOrDa(id, type) {
     });
 }
 
-// 修改状态
-export function editDatasourceStatus(id, status) {
+// Modify status
+export function editDatasourceStatus(id, status, options = {}) {
     return request({
         url: `/da/dataSource/editDatasourceStatus/${id}/${status}`,
-        method: 'get'
+        method: 'get',
+        headers: {
+            hideErrorMessage: options.hideErrorMessage === true
+        }
     });
 }
 
@@ -143,7 +159,7 @@ export function tableList(id) {
     });
 }
 
-// 表字段
+// table fields
 export function columnsList(data) {
     return request({
         url: `/da/dataSource/columnsList`,
@@ -152,7 +168,7 @@ export function columnsList(data) {
     });
 }
 
-// 根据id获取表信息
+// Get table information based on id
 export function getTablesByDataSourceId(query) {
     return request({
         url: '/da/asset/getTablesByDataSourceId',
@@ -161,7 +177,7 @@ export function getTablesByDataSourceId(query) {
     });
 }
 
-// 根据id获取表信息
+// Get table information based on id
 export function getColumnByAssetId(query) {
     return request({
         url: '/da/assetColumn/getColumnByAssetId',
@@ -170,7 +186,7 @@ export function getColumnByAssetId(query) {
     });
 }
 
-// 查询研发模块的数据源列表
+// Query the data source list of the R&D module
 export function executeSqlQuery(query) {
     return request({
         url: '/da/dataSource/executeSqlQuery',
@@ -178,7 +194,7 @@ export function executeSqlQuery(query) {
         params: query
     });
 }
-// 数据资产资产申请列表
+// Data asset asset application list
 export function getDaAssetRespList(query) {
     return request({
         url: '/da/asset/getDaAssetRespList',

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.rule;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 稽查规则Service接口
+ * Audit Rule Service Interface
  *
  * @author qdata
  * @date 2025-01-20
@@ -52,71 +38,72 @@ import java.util.Map;
 public interface IAttAuditRuleService extends IService<AttAuditRuleDO> {
 
     /**
-     * 获得稽查规则分页列表
+     * Get audit rule paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 稽查规则分页列表
+     * @param pageReqVO Page request
+     *  Audit rule paginated list
      */
     PageResult<AttAuditRuleDO> getAttAuditRulePage(AttAuditRulePageReqVO pageReqVO);
 
     /**
-     * 创建稽查规则
+     * Create audit rule
      *
-     * @param createReqVO 稽查规则信息
-     * @return 稽查规则编号
+     * @param createReqVO Audit rule info
+     *  Audit rule ID
      */
     Long createAttAuditRule(AttAuditRuleSaveReqVO createReqVO);
 
     /**
-     * 更新稽查规则
+     * Update audit rule
      *
-     * @param updateReqVO 稽查规则信息
+     * @param updateReqVO Audit rule info
      */
     int updateAttAuditRule(AttAuditRuleSaveReqVO updateReqVO);
 
     /**
-     * 删除稽查规则
+     * Delete audit rule
      *
-     * @param idList 稽查规则编号
+     * @param idList Audit rule ID list
      */
     int removeAttAuditRule(Collection<Long> idList);
 
     /**
-     * 获得稽查规则详情
+     * Get audit rule details
      *
-     * @param id 稽查规则编号
-     * @return 稽查规则
+     * @param id Audit rule ID
+     * @return Audit rule
      */
     AttAuditRuleDO getAttAuditRuleById(Long id);
 
     /**
-     * 获得全部稽查规则列表
+     * Get all audit rule list
      *
-     * @return 稽查规则列表
+     * @return Audit rule list
      */
     List<AttAuditRuleDO> getAttAuditRuleList();
 
     /**
-     * 获得全部稽查规则 Map
+     * Get all audit rule Map
      *
-     * @return 稽查规则 Map
+     * @return Audit rule Map
      */
     Map<Long, AttAuditRuleDO> getAttAuditRuleMap();
 
     /**
-     * 导入稽查规则数据
+     * Import audit rule data
      *
-     * @param importExcelList 稽查规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Audit rule data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     * @param operName Operator
+     * @return Result
      */
     String importAttAuditRule(List<AttAuditRuleRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
     /**
-     * 获取稽查规则树形结构
+     * Get audit rule tree structure
      *
-     * @return 树形结构列表
+     * @param dataElemId Data element ID
+     * @return Tree structure list
      */
     List<AttAuditRuleRespVO> getAttAuditRuleTree(Long dataElemId);
 }

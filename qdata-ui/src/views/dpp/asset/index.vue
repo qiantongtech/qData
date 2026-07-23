@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -34,7 +35,7 @@
             :model="queryParams"
             ref="queryRef"
             :inline="true"
-            
+
             v-show="showSearch"
             @submit.prevent
           >
@@ -347,7 +348,7 @@
       </el-main>
     </el-container>
 
-    <!-- 数据资产详情对话框 -->
+    <!-- Data Asset Details Dialog -->
     <el-dialog
       :title="title"
       v-model="openDetail"
@@ -458,7 +459,7 @@
       </template>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- User import dialog -->
     <el-dialog
       :title="upload.title"
       v-model="upload.open"
@@ -517,7 +518,7 @@
       type="1"
     />
 
-    <!-- 申请数据资产对话框 -->
+    <!-- Apply for data assets dialog box -->
     <el-dialog
       :title="titleApply"
       v-model="openApply"
@@ -621,7 +622,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="openApply = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitApplyForm">{{ td('common.button.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -651,6 +652,7 @@ import useUserStore from "@/store/system/user";
 import { getThemeList } from "@/api/att/theme/theme.js";
 import OverflowTooltip from "@/components/OverflowTooltip";
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { da_assets_status, da_asset_source, da_asset_type } = proxy.useDict(
   "da_assets_status",
   "da_asset_source",
@@ -666,7 +668,7 @@ const isRegister = ref(false);
 const unregistered = (item) => {
   return item.createType == undefined || item.createType == 2;
 };
-// 列显隐信息
+// Show hidden information
 const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
   { key: 1, label: td('dpp.asset.assetName'), visible: true },
@@ -686,15 +688,15 @@ async function getAssetThemeList() {
 }
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
+const leftWidth = ref(300); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed // Initial left width
 const open = ref(false);
 const openDetail = ref(false);
 const openApply = ref(false);
@@ -712,7 +714,7 @@ const router = useRouter();
 const userStore = useUserStore();
 const route = useRoute();
 let type = route.query.type || null;
-// 图标
+// icon
 const getDatasourceIcon = (type) => {
   switch (type) {
     case "DM8":
@@ -747,19 +749,19 @@ const getDatasourceIcon = (type) => {
       return null;
   }
 };
-/*** 用户导入参数 */
+/*** User import parameters */
 const upload = reactive({
-  // 是否显示弹出层（用户导入）
+  // Whether to display the pop-up layer (user import)
   open: false,
-  // 弹出层标题（用户导入）
+  // Popup layer title (user imported)
   title: "",
-  // 是否禁用上传
+  // Whether to disable uploading
   isUploading: false,
-  // 是否更新已经存在的用户数据
+  // Whether to update existing user data
   updateSupport: 0,
-  // 设置上传的请求头部
+  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // 上传的地址
+  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/da/daAsset/importData",
 });
 const options = [
@@ -823,10 +825,12 @@ watch(
   (newCode) => {
     getList();
   },
-  { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 
 function submitApplyForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["daAssetApplyRef"].validate((valid) => {
     if (valid) {
       formApply.value.id = null;
@@ -839,7 +843,12 @@ function submitApplyForm() {
         proxy.$modal.msgSuccess(td('dpp.asset.applySuccess'));
         openApply.value = false;
         getList();
+        submitLoading.value = false;
+      }).catch(() => {
+        submitLoading.value = false;
       });
+    } else {
+      submitLoading.value = false;
     }
   });
 }
@@ -866,7 +875,7 @@ function handleSelectProject(value) {
   formApply.value.projectName = project.name;
 }
 
-/** 查询数据资产列表 */
+/** Query data asset list */
 function getList() {
   if (!queryParams.value?.orderByColumn) {
     queryParams.value.orderByColumn = defaultSort.value.prop;
@@ -892,14 +901,14 @@ function getList() {
   }
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -927,13 +936,13 @@ function reset() {
   proxy.resetForm("daAssetRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -948,7 +957,7 @@ function resetQuery() {
   handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
   ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
@@ -968,14 +977,14 @@ const stopResize = () => {
 };
 const updateResize = (event) => {
   if (isResizing.value) {
-    const delta = event.clientX - startX; // 计算鼠标移动距离
-    leftWidth.value += delta; // 修改左侧宽度
-    startX = event.clientX; // 更新起始位置
-    // 使用 requestAnimationFrame 来减少页面重绘频率
+    const delta = event.clientX - startX; // Calculate mouse movement distance
+    leftWidth.value += delta; // Modify left width
+    startX = event.clientX; // Update starting position
+    // Use requestAnimationFrame to reduce page redraw frequency
     requestAnimationFrame(() => {});
   }
-}; /** 查询部门下拉树结构 */
-/** 排序触发事件 */
+}; /** Query department drop-down tree structure */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
@@ -1002,7 +1011,7 @@ function getAssetCat() {
     ];
   });
 }
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   isRegister.value = false;
   reset();
@@ -1010,7 +1019,7 @@ function handleAdd() {
   title.value = td('dpp.asset.addDataAsset');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row, register) {
   if (register == "register") {
     isRegister.value = true;
@@ -1031,9 +1040,9 @@ function handleUpdate(row, register) {
     loading.value = false;
   });
 }
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
-  // proxy.$message.error("功能开发中....");
+  // proxy.$message.error("Function under development....");
   const _ids = row.id || ids.value;
   proxy.$modal
     .confirm(td('dpp.asset.confirmDeleteAsset') + _ids + td('dpp.asset.confirmDeleteAssetEnd'))
@@ -1050,7 +1059,7 @@ function handleView(row) {
   if (!unregistered(row)) {
     return proxy.$modal.msgWarning(td('dpp.asset.unregisteredWarning'));
   }
-  console.log("直接跳转数据资产的详情页面");
+  console.log("Navigate directly to the data asset details page");
   routeTo("/dpp/asset/detail", row);
 }
 function addAttTagData(row) {
@@ -1058,7 +1067,7 @@ function addAttTagData(row) {
   tagIds.value = row.tagIds;
   tagMultiple.value = true;
 }
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   reset();
   const _id = row.id || ids.value;
@@ -1101,7 +1110,7 @@ function handleRefresh(row) {
       loading.value = false;
     });
 }
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
   proxy.download(
     "da/asset/export",
@@ -1112,14 +1121,14 @@ function handleExport() {
   );
 }
 
-/** ---------------- 导入相关操作 -----------------**/
-/** 导入按钮操作 */
+/** ---------------- Import related operations ------------------**/
+/** Import button actions */
 function handleImport() {
   upload.title = td('dpp.asset.dataAssetImport');
   upload.open = true;
 }
 
-/** 下载模板操作 */
+/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -1128,7 +1137,7 @@ function importTemplate() {
   );
 }
 
-/** 提交上传文件 */
+/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
@@ -1143,12 +1152,12 @@ function handleNodeClick(data) {
   handleQuery();
 }
 
-/**文件上传中处理 */
+/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** 文件上传成功处理 */
+/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -1183,7 +1192,7 @@ function routeTo(link, row) {
   }
 }
 
-/** 启用禁用开关 */
+/** Enable disable switch */
 function handleStatusChange(row) {
   const text = row.status === "2" ? td('dpp.asset.unpublish') : td('dpp.asset.publish');
   const status = row.status === "2" ? "1" : "2";
@@ -1223,11 +1232,11 @@ getAssetThemeList();
   align-items: center;
   justify-content: center;
   gap: 4px;
-  /* 图标和文字间距 */
+  /* Icon and text spacing */
 }
 
 .fix-icon {
-  //width: 16px; /* 固定图标占位宽度，使图标文字对齐一致 */
+  //width: 16px; /* Fixed icon occupancy width to align icon text consistently */
   //text-align: center;
   margin-left: -10px;
 }
@@ -1249,7 +1258,7 @@ getAssetThemeList();
   // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//上传附件样式调整
+//Upload attachment style adjustment
 ::v-deep {
   // .el-upload-list{
   //    display: flex;
@@ -1281,11 +1290,11 @@ getAssetThemeList();
 .page-list {
   height: 69.6vh;
   height: auto;
-  /* 或者直接删掉这行 */
+  /* Or just delete this line */
   max-height: none;
-  /* 保证不被限制高度 */
+  /* Guaranteed not to be restricted in height */
   overflow: visible;
-  /* 不产生内部滚动条 */
+  /* Do not generate internal scroll bars */
 
   &::-webkit-scrollbar {
     width: 2px;

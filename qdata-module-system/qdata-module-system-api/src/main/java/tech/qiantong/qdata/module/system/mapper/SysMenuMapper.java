@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.mapper;
@@ -38,130 +24,130 @@ import tech.qiantong.qdata.common.core.domain.entity.SysMenu;
 import java.util.List;
 
 /**
- * 菜单表 数据层
+ * Menu table data layer
  *
  * @author qdata
  */
 public interface SysMenuMapper
 {
     /**
-     * 查询系统菜单列表
+     * Query system menu list
      *
-     * @param menu 菜单信息
-     * @return 菜单列表
+     * @param menu menu information
+     * @return menu list
      */
     public List<SysMenu> selectMenuList(SysMenu menu);
 
     /**
-     * 根据用户所有权限
+     * Query all menu permissions
      *
-     * @return 权限列表
+     * @return permission list
      */
     public List<String> selectMenuPerms();
 
     /**
-     * 根据用户查询系统菜单列表
+     * Query system menu list by user
      *
-     * @param menu 菜单信息
-     * @return 菜单列表
+     * @param menu menu information
+     * @return menu list
      */
     public List<SysMenu> selectMenuListByUserId(SysMenu menu);
 
     /**
-     * 根据角色ID查询权限
+     * Query permissions by role ID
      *
-     * @param roleId 角色ID
-     * @return 权限列表
+     * @param roleId role ID
+     * @return permission list
      */
     public List<String> selectMenuPermsByRoleId(Long roleId);
 
     /**
-     * 根据用户ID查询权限
+     * Query permissions by user ID
      *
-     * @param userId 用户ID
-     * @return 权限列表
+     * @param userId user ID
+     * @return permission list
      */
     public List<String> selectMenuPermsByUserId(Long userId);
 
     /**
-     * 根据用户ID查询菜单
+     * Query menu tree by user ID
      *
-     * @return 菜单列表
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeAll();
 
     /**
-     * 根据用户ID查询菜单
+     * Query menu tree by user ID
      *
-     * @param userId 用户ID
-     * @return 菜单列表
+     * @param userId user ID
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeByUserId(Long userId);
 
     /**
-     * 根据用户ID和项目id查询菜单
+     * Query menu tree by user ID and project ID
      *
-     * @param userId 用户ID
-     * @param projectId 项目ID
-     * @return 菜单列表
+     * @param userId user ID
+     * @param projectId project ID
+     * @return menu list
      */
     public List<SysMenu> selectMenuTreeByUserIdAndProjectId(@Param("userId") Long userId,@Param("projectId") Long projectId);
 
     /**
-     * 根据角色ID查询菜单树信息
+     * Query menu tree information by role ID
      *
-     * @param roleId 角色ID
-     * @param menuCheckStrictly 菜单树选择项是否关联显示
-     * @return 选中菜单列表
+     * @param roleId role ID
+     * @param menuCheckStrictly whether menu tree selection items are associatively displayed
+     * @return selected menu list
      */
     public List<Long> selectMenuListByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
 
     /**
-     * 根据菜单ID查询信息
+     * Query menu information by menu ID
      *
-     * @param menuId 菜单ID
-     * @return 菜单信息
+     * @param menuId menu ID
+     * @return menu information
      */
     public SysMenu selectMenuById(Long menuId);
 
     /**
-     * 是否存在菜单子节点
+     * Check if menu has child nodes
      *
-     * @param menuId 菜单ID
-     * @return 结果
+     * @param menuId menu ID
+     * @return result
      */
     public int hasChildByMenuId(Long menuId);
 
     /**
-     * 新增菜单信息
+     * Insert menu information
      *
-     * @param menu 菜单信息
-     * @return 结果
+     * @param menu menu information
+     * @return result
      */
     public int insertMenu(SysMenu menu);
 
     /**
-     * 修改菜单信息
+     * Update menu information
      *
-     * @param menu 菜单信息
-     * @return 结果
+     * @param menu menu information
+     * @return result
      */
     public int updateMenu(SysMenu menu);
 
     /**
-     * 删除菜单管理信息
+     * Delete menu management information
      *
-     * @param menuId 菜单ID
-     * @return 结果
+     * @param menuId menu ID
+     * @return result
      */
     public int deleteMenuById(Long menuId);
 
     /**
-     * 校验菜单名称是否唯一
+     * Validate whether menu name is unique
      *
-     * @param menuName 菜单名称
-     * @param parentId 父菜单ID
-     * @return 结果
+     * @param menuName menu name
+     * @param parentId parent menu ID
+     * @return result
      */
     public SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
 }

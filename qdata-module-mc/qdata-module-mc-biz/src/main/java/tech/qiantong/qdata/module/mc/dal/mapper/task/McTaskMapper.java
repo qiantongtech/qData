@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 采集任务Mapper接口
+ * Collection task Mapper interface
  *
  * @author qdata
  * @date 2025-12-16
@@ -77,11 +77,11 @@ public interface McTaskMapper extends BaseMapperX<McTaskDO> {
     }
 
     /**
-     * 检查是否存在指定数据源的任务(排除指定任务ID)
+     * Check whether there is a task for the specified data source (exclude the specified task ID)
      *
-     * @param datasourceId   数据源ID
-     * @param excludeTaskId  排除的任务ID(用于更新时排除自身)
-     * @return 是否存在
+     * @param datasourceId data source ID
+     * @param excludeTaskId Excluded task ID (used to exclude itself when updating)
+     * @return does it exist
      */
     default boolean existsByDatasourceId(Long datasourceId, Long excludeTaskId) {
         return exists(Wrappers.lambdaQuery(McTaskDO.class)
@@ -91,12 +91,12 @@ public interface McTaskMapper extends BaseMapperX<McTaskDO> {
     }
 
     /**
-     * 检查是否存在指定数据源和采集范围的任务(排除指定任务ID)
+     * Check whether there is a task with the specified data source and collection range (exclude the specified task ID)
      *
-     * @param datasourceId   数据源ID
-     * @param collectionScope 采集范围
-     * @param excludeTaskId  排除的任务ID(用于更新时排除自身)
-     * @return 是否存在
+     * @param datasourceId data source ID
+     * @param collectionScope collection range
+     * @param excludeTaskId Excluded task ID (used to exclude itself when updating)
+     * @return does it exist
      */
     default boolean existsByDatasourceAndScope(Long datasourceId, String collectionScope, Long excludeTaskId) {
         return exists(Wrappers.lambdaQuery(McTaskDO.class)
@@ -107,12 +107,12 @@ public interface McTaskMapper extends BaseMapperX<McTaskDO> {
     }
 
     /**
-     * 查询指定数据源和采集范围的任务列表(排除指定任务ID)
+     * Query the task list of the specified data source and collection range (exclude the specified task ID)
      *
-     * @param datasourceId   数据源ID
-     * @param collectionScope 采集范围
-     * @param excludeTaskId  排除的任务ID(用于更新时排除自身)
-     * @return 任务列表
+     * @param datasourceId data source ID
+     * @param collectionScope collection range
+     * @param excludeTaskId Excluded task ID (used to exclude itself when updating)
+     * @return task list
      */
     default List<McTaskDO> selectByDatasourceAndScope(Long datasourceId, String collectionScope, Long excludeTaskId) {
         return selectList(Wrappers.lambdaQuery(McTaskDO.class)

@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * <P>
- * 用途:元数据字段信息 - 日志 DTO 对象 MC_COLUMN
+ * Purpose: metadata field information - log DTO object MC_COLUMN
  * </p>
  *
  * @author: FXB
@@ -20,67 +20,67 @@ public class McColumnRespDTO {
     private Long id;
 
     /**
-     * 字段 id
+     * Field ID
      */
     private Long columnId;
 
     /**
-     * 版本
+     * Version
      */
     private Integer version;
 
     /**
-     * 表信息 id
+     * Table information ID
      */
     private Long tableId;
 
     /**
-     * 字段名称
+     * Field name
      */
     private String columnName;
 
     /**
-     * 字段注释
+     * Field comment
      */
     private String columnComment;
 
     /**
-     * 字段类型
+     * Field type
      */
     private String columnType;
 
     /**
-     * 数据长度
+     * Data length
      */
     private Integer columnLength;
 
     /**
-     * 数据精度
+     * Data precision
      */
     private Integer columnPrecision;
 
     /**
-     * 数据小数位
+     * Data scale
      */
     private Integer columnScale;
 
     /**
-     * 数据默认值
+     * Data default value
      */
     private String defaultValue;
 
     /**
-     * 是否主键;0:否 1:是
+     * Whether it is a primary key; 0: no, 1: yes
      */
     private String pkFlag;
 
     /**
-     * 是否外键;0:否 1:是
+     * Whether it is a foreign key; 0: no, 1: yes
      */
     private String fkFlag;
 
     /**
-     * 是否可空;0:否 1:是
+     * Whether it is nullable; 0: no, 1: yes
      */
     private String nullableFlag;
 }

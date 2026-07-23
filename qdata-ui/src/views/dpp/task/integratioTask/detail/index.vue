@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -25,12 +26,12 @@
             dpModelDetail.modelComment ||
             '' }}</div> -->
           <div class="task-item">
-            <!-- 正方形编号 -->
+            <!-- square number -->
             <div class="task-id">
               {{ dppEtlTaskDetail.id || '-' }}
             </div>
 
-            <!-- 名称 -->
+            <!-- Name -->
             <div class="task-name">
               {{ dppEtlTaskDetail.name || '' }}
             </div>
@@ -39,7 +40,7 @@
         <el-row :gutter="2">
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.responsiblePerson', '责任人') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.responsiblePerson', 'Responsible Person') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail?.personChargeName || '-' }}
               </div>
@@ -48,7 +49,7 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.contactNumber', '联系电话') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.contactNumber', 'Contact Phone') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.contactNumber || '-' }}
               </div>
@@ -57,10 +58,10 @@
 
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.taskStatus', '任务状态') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.taskStatus', 'Task Status') }}</div>
               <div class="infotop-row-value">
                 <el-tag :type="dppEtlTaskDetail.status == '1' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.status == '1' ? td('dpp.integratioTask.on', '开启') : td('dpp.integratioTask.off', '关闭') }}
+                  {{ dppEtlTaskDetail.status == '1' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
                 </el-tag>
               </div>
             </div>
@@ -68,7 +69,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.integratioTask.dataIntegrationCategory', 'Data Integration Category') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.catName || '-' }}
               </div>
@@ -77,10 +78,10 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.developTask.scheduleStatus', '调度状态') }}</div>
+              <div class="infotop-row-lable">{{ td('dpp.developTask.scheduleStatus', 'Schedule Status') }}</div>
               <div class="infotop-row-value">
                 <el-tag :type="dppEtlTaskDetail.schedulerState == '0' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.schedulerState == '0' ? td('dpp.integratioTask.on', '开启') : td('dpp.integratioTask.off', '关闭') }}
+                  {{ dppEtlTaskDetail.schedulerState == '0' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
                 </el-tag>
               </div>
             </div>
@@ -88,7 +89,7 @@
 
           <el-col :span="8" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime', '创建时间') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.createdTime', 'Created Time') }}</div>
               <div class="infotop-row-value">
                 {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
               </div>
@@ -97,7 +98,7 @@
 
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.description', '描述') }}</div>
+              <div class="infotop-row-lable">{{ td('common.texts.description', 'Description') }}</div>
               <div class="infotop-row-value">
                 {{ dppEtlTaskDetail.description || '-' }}
               </div>
@@ -109,10 +110,10 @@
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('dpp.integratioTask.taskFlow', '任务流程')" name="1" key="1">
+        <el-tab-pane :label="td('dpp.integratioTask.taskFlow', 'Task Flow')" name="1" key="1">
           <process ref="compRef" :dppEtlTaskDetail="dppEtlTaskDetail" />
         </el-tab-pane>
-        <el-tab-pane :label="td('dpp.integratioTask.detailInfo', '详细信息')" name="2" key="2">
+        <el-tab-pane :label="td('dpp.integratioTask.detailInfo', 'Detail Info')" name="2" key="2">
           <info :dppEtlTaskDetail="dppEtlTaskDetail" />
         </el-tab-pane>
       </el-tabs>

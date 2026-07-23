@@ -122,7 +122,7 @@ const rules = {
   ],
 };
 
-// 远程搜索资产
+// Search assets remotely
 const remoteMethod = (query) => {
   loadingAsset.value = true;
   listDaAsset({ name: query, pageNum: 1, pageSize: 50 })
@@ -135,7 +135,7 @@ const remoteMethod = (query) => {
     });
 };
 
-// 资产变更
+// Asset changes
 const handleAssetChange = (val) => {
   const selectedAsset = assetOptions.value.find((item) => item.id === val);
   if (selectedAsset) {
@@ -152,12 +152,12 @@ const handleAssetChange = (val) => {
   emitUpdate();
 };
 
-// 获取字段列表
+// Get field list
 const fetchColumns = (assetId) => {
   if (!assetId) return;
   listDaAssetColumn({ assetId, pageNum: 1, pageSize: 1000 }).then((res) => {
     columnOptions.value = res.data.rows;
-    // 如果已经有选中的字段ID，但没有加载字段列表，这里可以自动匹配
+    // If there is already a selected field ID but no field list is loaded, automatic matching can be performed here.
     if (internalValue.assetcolumnId) {
       const selectedColumn = columnOptions.value.find(
         (item) => item.id === internalValue.assetcolumnId
@@ -170,7 +170,7 @@ const fetchColumns = (assetId) => {
   });
 };
 
-// 字段变更
+// Field changes
 const handleColumnChange = (val) => {
   const selectedColumn = columnOptions.value.find((item) => item.id === val);
   if (selectedColumn) {
@@ -180,7 +180,7 @@ const handleColumnChange = (val) => {
   emitUpdate();
 };
 
-// 获取数据分类列表
+// Get the data classification list
 const fetchCategoryTree = () => {
   dataCategoryLoading.value = true;
   selectTreeDataCategory()
@@ -204,7 +204,7 @@ const fetchCategoryTree = () => {
     });
 };
 
-// 数据分类变更
+// Data classification changes
 const handleCategoryChange = (val) => {
   const findNode = (list, id) => {
     for (const item of list) {
@@ -245,7 +245,7 @@ watch(
 
 onMounted(() => {
   fetchCategoryTree();
-  // 初始加载前50条资产
+  // Initial loading of the first 50 assets
   remoteMethod("");
 });
 </script>

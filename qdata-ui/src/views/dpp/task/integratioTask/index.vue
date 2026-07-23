@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -24,11 +25,11 @@
         :editable="true"
         :leftWidth="leftWidth"
         :placeholder="
-          td('dpp.integratioTask.inputCategoryName', '请输入数据集成类目名称')
+          td('dpp.integratioTask.inputCategoryName', 'Please enter data integration category name')
         "
         ref="DeptTreeRef"
         :title="
-          td('dpp.integratioTask.dataIntegrationCategory', '数据集成类目')
+          td('dpp.integratioTask.dataIntegrationCategory', 'Data Integration Category')
         "
         @node-click="handleNodeClick"
         :extraParams="{
@@ -47,9 +48,21 @@
             />
           </template>
           <template #actions-data>
-            <el-button type="primary" plain @click="openTaskConfigDialog">
-              <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ td("common.button.add", "新增") }}
+            <el-button
+              type="primary"
+              plain
+              @click="openTaskConfigDialog('QUARTZ')"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i>
+              {{ td("dpp.integratioTask.dataxAdd", "新增DATAX任务") }}
+            </el-button>
+            <el-button
+              type="primary"
+              plain
+              @click="openTaskConfigDialog('DOLPHINSCHEDULER')"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i>
+              {{ td("dpp.integratioTask.sparkAdd", "新增SPARK任务") }}
             </el-button>
           </template>
 
@@ -98,7 +111,7 @@
                 <div class="flex-center">
                   <span class="black-label mr5"
                     >{{
-                      td("dpp.integratioTask.taskStatus", "任务状态")
+                      td("dpp.integratioTask.taskStatus", "Task Status")
                     }}:</span
                   >
                   <el-switch
@@ -114,7 +127,7 @@
                 <div class="flex-center">
                   <span class="black-label mr5"
                     >{{
-                      td("dpp.integratioTask.scheduleStatus", "调度状态")
+                      td("dpp.integratioTask.scheduleStatus", "Schedule Status")
                     }}:</span
                   >
                   <el-switch
@@ -149,6 +162,17 @@
                     :value="row.executionType"
                   />
                 </div>
+                <div class="flex-center mt5 scheduler-info-row">
+                  <span class="mr5 scheduler-info-label">{{
+                    td("dpp.integratioTask.scheduler", "Scheduler")
+                  }}:</span>
+                  <span
+                    class="text-ellipsis cron-text scheduler-info-value"
+                    :title="`${getSchedulerLabel(row.scheduler)}`"
+                  >
+                    {{ getSchedulerLabel(row.scheduler) }}
+                  </span>
+                </div>
               </div>
             </template>
             <template #lastExecute="{ row }">
@@ -173,7 +197,7 @@
                 <template v-else>
                   <div class="mb5">
                     <el-tag type="infos" class="not-executed-tag">{{
-                      td("dpp.integratioTask.notExecuted", "未执行")
+                      td("dpp.integratioTask.notExecuted", "Not Executed")
                     }}</el-tag>
                   </div>
                   <span>-</span>
@@ -214,7 +238,7 @@
                 :disabled="row.status == 1"
                 @click="routeTo('/dpp/task/integratioTask/edit', row)"
                 >{{
-                  td("dpp.integratioTask.configureTask", "配置任务")
+                  td("dpp.integratioTask.configureTask", "Configure Task")
                 }}</el-button
               >
               <el-button
@@ -227,12 +251,12 @@
                     info: true,
                   })
                 "
-                >{{ td("common.button.details", "详情") }}</el-button
+                >{{ td("common.button.details", "Details") }}</el-button
               >
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">{{
-                    td("common.button.more", "更多")
+                    td("common.button.more", "More")
                   }}</el-button>
                 </template>
                 <div style="width: 100px" class="butgdlist">
@@ -244,7 +268,7 @@
                     @click="handleJobLog(row)"
                     :disabled="row.schedulerState == '1'"
                     >{{
-                      td("dpp.integratioTask.scheduleCycle", "调度周期")
+                      td("dpp.integratioTask.scheduleCycle", "Schedule Cycle")
                     }}</el-button
                   >
                   <el-button
@@ -253,7 +277,7 @@
                     icon="Stopwatch"
                     @click="handleDataView(row)"
                     >{{
-                      td("dpp.integratioTask.runInstance", "运行实例")
+                      td("dpp.integratioTask.runInstance", "Run Instance")
                     }}</el-button
                   >
                   <el-button
@@ -261,9 +285,10 @@
                     type="primary"
                     icon="VideoPlay"
                     :disabled="row.status != 1"
+                    :loading="executeOnceLoading"
                     @click="handleExecuteOnce(row)"
                     >{{
-                      td("dpp.integratioTask.executeOnce", "执行一次")
+                      td("dpp.integratioTask.executeOnce", "Execute Once")
                     }}</el-button
                   >
                   <el-button
@@ -272,7 +297,7 @@
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >{{ td("common.button.delete", "删除") }}</el-button
+                    >{{ td("common.button.delete", "Delete") }}</el-button
                   >
                   <el-button
                     link
@@ -281,7 +306,7 @@
                     :disabled="row.status == 1"
                     @click="handleClone(row)"
                   >
-                    {{ td("dpp.cleanRule.clone", "克隆") }}
+                    {{ td("dpp.cleanRule.clone", "Clone") }}
                   </el-button>
                 </div>
               </el-popover>
@@ -296,10 +321,10 @@
       @update:visible="DataView = $event"
       @confirm="submitForm"
       :data="form"
-      :title="td('dpp.integratioTask.runInstance', '运行实例')"
+      :title="td('dpp.integratioTask.runInstance', 'Run Instance')"
     />
     <el-dialog
-      :title="td('dpp.integratioTask.scheduleCycle', '调度周期')"
+      :title="td('dpp.integratioTask.scheduleCycle', '调度信息')"
       v-model="openCron"
       :append-to="$refs['app-container']"
       destroy-on-close
@@ -313,10 +338,10 @@
       >
       </crontab>
     </el-dialog>
-    <!-- 新增 -->
+    <!-- New -->
     <add
       :visible="taskConfigDialogVisible"
-      :title="td('dpp.cleanRule.addTask', '新增任务')"
+      :title="td('dpp.cleanRule.addTask', 'Add Task')"
       @update:visible="taskConfigDialogVisible = $event"
       @save="handleSave"
       @confirm="handleConfirm"
@@ -325,6 +350,7 @@
       :info="route.query.info"
       :catCode="tableStore.params.catCode"
       :deptOptions="deptOptions"
+      :defaultScheduler="selectedScheduler"
     />
   </div>
 </template>
@@ -347,7 +373,6 @@ import { usePageRefresh } from "@/composables/usePageRefresh";
 import { cronToZh } from "@/utils/cronUtils";
 import Crontab from "@/components/Crontab/index.vue";
 import instance from "@/views/dpp/components/instance.vue";
-const userStore = useUserStore();
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/system/user";
 import {
@@ -362,8 +387,10 @@ import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { ref, reactive, getCurrentInstance, watch } from "vue";
 
+const userStore = useUserStore();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const executeOnceLoading = ref(false);
 
 const api = {
   list: listAttTaskCat,
@@ -375,12 +402,23 @@ const api = {
 const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
-  dpp_etl_task_instance,
+  dpp_etl_task_instance
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
   "dpp_etl_task_instance"
 );
+
+const scheduler_type = [
+  { label: "Quartz", value: "QUARTZ" },
+  { label: "DolphinScheduler", value: "DOLPHINSCHEDULER" },
+];
+
+// Get scheduler enum values.
+const getSchedulerLabel = (value) => {
+  // Convert scheduler enum values into user-friendly names in the list.
+  return scheduler_type.find((item) => item.value == value)?.label || value || "-";
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -398,54 +436,54 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: td("common.texts.number", "编号"),
+      label: td("common.texts.number", "No."),
       prop: "id",
       width: 60,
       sortable: true,
     },
     {
-      label: td("dpp.integratioTask.taskInfo", "任务信息"),
+      label: td("dpp.integratioTask.taskInfo", "Task Info"),
       prop: "name",
       align: "left",
       slot: "name",
       width: 300,
     },
     {
-      label: td("dpp.integratioTask.runControl", "运行控制"),
+      label: td("dpp.integratioTask.runControl", "Run Control"),
       prop: "status",
       width: 190,
       slot: "releaseState",
       align: "left",
     },
     {
-      label: td("dpp.integratioTask.scheduleCycle", "调度周期"),
+      label: td("dpp.integratioTask.dispatchInformation", "调度信息"),
       prop: "cronExpression",
-      width: 220,
+      width: 260,
       slot: "cronExpression",
       align: "left",
     },
     {
-      label: td("dpp.integratioTask.recentExecution", "最近执行"),
+      label: td("dpp.integratioTask.recentExecution", "Recent Execution"),
       width: 160,
       slot: "lastExecute",
       align: "left",
     },
 
     {
-      label: td("dpp.integratioTask.personCharge", "责任人"),
+      label: td("dpp.integratioTask.personCharge", "Responsible Person"),
       width: 120,
       slot: "personChargeName",
       align: "left",
     },
     {
-      label: td("common.texts.createdBy", "创建人"),
+      label: td("common.texts.createdBy", "Created By"),
       slot: "createBy",
       width: 120,
       align: "left",
       showOverflowTooltip: true,
     },
     {
-      label: td("common.texts.createdTime", "创建时间"),
+      label: td("common.texts.createdTime", "Created Time"),
       prop: "createTime",
       sortable: true,
       sortableKey: "create_time",
@@ -455,7 +493,7 @@ const tableStore = reactive({
     },
 
     {
-      label: td("common.texts.operation", "操作"),
+      label: td("common.texts.operation", "Operation"),
       align: "center",
       fixed: "right",
       slot: "action",
@@ -483,7 +521,7 @@ function getDeptTree() {
     var children = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td("dpp.integratioTask.dataIntegrationCategory", "数据集成类目"),
+        name: td("dpp.integratioTask.dataIntegrationCategory", "Data Integration Category"),
         value: "",
         id: 0,
         children: children,
@@ -498,28 +536,28 @@ function getDeptTree() {
 const searchStore = reactive({
   items: [
     {
-      label: td("dpp.integratioTask.taskName", "任务名称"),
+      label: td("dpp.integratioTask.taskName", "Task Name"),
       prop: "name",
       align: "left",
       component: {
         is: "input",
-        placeholder: td("dpp.integratioTask.inputTaskName", "请输入任务名称"),
+        placeholder: td("dpp.integratioTask.inputTaskName", "Please enter task name"),
       },
     },
     {
-      label: td("dpp.integratioTask.taskStatus", "任务状态"),
+      label: td("dpp.integratioTask.taskStatus", "Task Status"),
       prop: "status",
       component: {
         is: "select",
         placeholder: td(
           "dpp.integratioTask.selectTaskStatus",
-          "请选择任务状态"
+          "Please select task status"
         ),
         options: dpp_etl_task_status,
       },
     },
     {
-      label: td("dpp.integratioTask.personCharge", "责任人"),
+      label: td("dpp.integratioTask.personCharge", "Responsible Person"),
       prop: "personCharge",
       component: {
         is: "tree-select",
@@ -528,7 +566,7 @@ const searchStore = reactive({
         valueKey: "ID",
         placeholder: td(
           "dpp.integratioTask.selectPersonCharge",
-          "请选择责任人"
+          "Please select responsible person"
         ),
         checkStrictly: true,
       },
@@ -555,18 +593,20 @@ function resetQuery() {
   handleQuery();
 }
 
-// 部门树
+// department tree
 const leftWidth = ref(300);
 const DeptTreeRef = ref(null);
 function handleNodeClick(data) {
   tableStore.params.catCode = data.code;
   handleQuery();
 }
-// 任务配置
+// Task configuration
 const taskConfigDialogVisible = ref(false);
+const selectedScheduler = ref("");
 let nodeData = ref({ taskConfig: {}, name: null });
 
-const openTaskConfigDialog = () => {
+const openTaskConfigDialog = (scheduler) => {
+  selectedScheduler.value = scheduler || scheduler_type.value[0]?.value;
   nodeData.value = { taskConfig: {}, name: null };
   taskConfigDialogVisible.value = true;
 };
@@ -580,7 +620,7 @@ const handleSave = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "Operation successful"));
       handleQuery();
     }
   });
@@ -595,7 +635,7 @@ const handleConfirm = (form) => {
   };
   createEtlTaskFront(parms).then((res) => {
     if (res.code == 200) {
-      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
+      proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "Operation successful"));
       handleQuery();
       routeTo("/dpp/task/integratioTask/edit", res.data);
     }
@@ -606,13 +646,13 @@ const handleConfirm = (form) => {
 function handleStatusChange(id, row) {
   const text =
     row.status == "1"
-      ? td("dpp.integratioTask.online", "上线")
-      : td("dpp.integratioTask.offline", "下线");
+      ? td("dpp.integratioTask.online", "Online")
+      : td("dpp.integratioTask.offline", "Offline");
   proxy.$modal
     .confirm(
       td(
         "dpp.integratioTask.confirmTaskStatus",
-        '确认要"' + text + '","' + row.name + '"数据集成任务吗？',
+        'Are you sure to "{action}" data integration task "{name}"?',
         { action: text, name: row.name }
       )
     )
@@ -625,7 +665,7 @@ function handleStatusChange(id, row) {
       })
         .then((response) => {
           proxy.$modal.msgSuccess(
-            td("common.message.msgOpSuccess", "操作成功")
+            td("common.message.msgOpSuccess", "Operation successful")
           );
           handleQuery();
         })
@@ -641,13 +681,13 @@ function handleStatusChange(id, row) {
 function handleschedulerState(id, row) {
   const text =
     row.schedulerState == "1"
-      ? td("dpp.integratioTask.online", "上线")
-      : td("dpp.integratioTask.offline", "下线");
+      ? td("dpp.integratioTask.online", "Online")
+      : td("dpp.integratioTask.offline", "Offline");
   proxy.$modal
     .confirm(
       td(
         "dpp.integratioTask.confirmScheduleStatus",
-        '确认要"' + text + '","' + row.name + '"数据集成调度状态吗？',
+        'Are you sure to "{action}" data integration schedule status "{name}"?',
         { action: text, name: row.name }
       )
     )
@@ -660,7 +700,7 @@ function handleschedulerState(id, row) {
       })
         .then((response) => {
           proxy.$modal.msgSuccess(
-            td("common.message.msgOpSuccess", "操作成功")
+            td("common.message.msgOpSuccess", "Operation successful")
           );
           handleQuery();
         })
@@ -712,7 +752,7 @@ function crontabFill(value) {
     projectId: userStore.projectId,
     id: row.value.id,
   }).then((response) => {
-    proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "操作成功"));
+    proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "Operation successful"));
     handleQuery();
   });
 }
@@ -729,26 +769,30 @@ function submitForm() {
 }
 
 const handleExecuteOnce = async (row) => {
+  if (executeOnceLoading.value) return;
   if (!row?.id) {
     proxy.$modal.msgWarning(
-      td("dpp.integratioTask.invalidTaskId", "无效的任务id，请刷新后重试")
+      td("dpp.integratioTask.invalidTaskId", "Invalid task ID, please refresh and retry")
     );
     return;
   }
+  executeOnceLoading.value = true;
   try {
     const res = await startDppEtlTask(row.id);
     if (Number(res?.code) === 200) {
       proxy.$modal.msgSuccess(
-        td("dpp.integratioTask.executeSuccess", "执行成功")
+        td("dpp.integratioTask.executeSuccess", "Executed successfully")
       );
     } else {
       proxy.$modal.msgWarning(
         res?.msg ||
-          td("dpp.integratioTask.executeFailed", "执行失败，请联系管理员")
+          td("dpp.integratioTask.executeFailed", "Execution failed, please contact administrator")
       );
     }
   } catch (e) {
     //
+  } finally {
+    executeOnceLoading.value = false;
   }
 };
 
@@ -757,7 +801,7 @@ const handleClone = (row) => {
     .confirm(
       td(
         "dpp.integratioTask.confirmClone",
-        `确定要克隆任务【${row.name}】吗？`,
+        'Are you sure to clone task "{name}"?',
         { name: row.name }
       )
     )
@@ -780,7 +824,7 @@ function handleDelete(row) {
     .confirm(
       td(
         "dpp.integratioTask.confirmDelete",
-        '是否确认删除数据集成任务编号为"' + ids + '"的数据项？',
+        'Are you sure to delete data integration task with ID "{ids}"?',
         { ids }
       )
     )
@@ -789,7 +833,7 @@ function handleDelete(row) {
     })
     .then(() => {
       handleQuery();
-      proxy.$modal.msgSuccess(td("common.message.deleteSuccess", "删除成功"));
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess", "Deleted successfully"));
     })
     .catch(() => {});
 }
@@ -802,6 +846,8 @@ const getDatasourceIcon = (json) => {
       return new URL("@/assets/images/common/icon-flink-one.svg", import.meta.url).href;
     case "SPARK":
       return new URL("@/assets/images/common/icon-spark-one.svg", import.meta.url).href;
+    case "DATAX":
+      return new URL("@/assets/images/common/img-datax.png", import.meta.url).href;
     default:
       return null;
   }

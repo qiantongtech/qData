@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * <P>
- * 用途:主题域管理ApiService接口
+ * Purpose: Theme Domain ApiService Interface
  * </p>
  *
  * @author: FXB
@@ -14,9 +14,9 @@ import java.util.List;
  **/
 public interface IDmThemeDomainApiService {
     /**
-     * 获取树形数据
+     * Get tree data
      *
-     * @param type 统计类型 1：统计资产数量
+     * @param type Statistics type 1: count assets
      * @return
      */
     List<TreeData> getTreeData(String type);

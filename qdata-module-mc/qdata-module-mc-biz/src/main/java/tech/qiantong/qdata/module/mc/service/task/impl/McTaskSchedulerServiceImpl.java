@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 数据集成调度信息Service业务层处理
+ * Data integration scheduling information Service business layer processing
  *
  * @author qdata
  * @date 2025-12-16
@@ -57,16 +57,16 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
 
     @Override
     public int updateMcTaskScheduler(McTaskSchedulerSaveReqVO updateReqVO) {
-        // 相关校验
+        // Related verification
 
-        // 更新数据集成调度信息
+        // Update data integration scheduling information
         McTaskSchedulerDO updateObj = BeanUtils.toBean(updateReqVO, McTaskSchedulerDO.class);
         return mcTaskSchedulerMapper.updateById(updateObj);
     }
 
     @Override
     public int removeMcTaskScheduler(Collection<Long> idList) {
-        // 批量删除数据集成调度信息
+        // Deleting data integration scheduling information in batches
         return mcTaskSchedulerMapper.deleteBatchIds(idList);
     }
 
@@ -97,24 +97,24 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
                 .collect(Collectors.toMap(
                         McTaskSchedulerDO::getId,
                         mcTaskSchedulerDO -> mcTaskSchedulerDO,
-                        // 保留已存在的值
+                        // Keep existing values
                         (existing, replacement) -> existing
                 ));
     }
 
 
     /**
-     * 导入数据集成调度信息数据
+     * Import data integration scheduling information data
      *
-     * @param importExcelList 数据集成调度信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data integration scheduling information data list
+     * @param isUpdateSupport Whether to update support, if it already exists, update the data
+     * @param operName operating user
+     * @return result
      */
     @Override
     public String importMcTaskScheduler(List<McTaskSchedulerRespVO> importExcelList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("mc.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("mc.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -133,16 +133,16 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
                             mcTaskSchedulerMapper.updateById(mcTaskSchedulerDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("mc.import.update.success",
-                                    "数据更新成功，ID为 " + mcTaskSchedulerId + " 的数据集成调度信息记录。", mcTaskSchedulerId, "数据集成调度信息"));
+                                    "Data update successful, ID {0} {1} record.", mcTaskSchedulerId, MessageUtils.messageWithFallback("mc.entity.scheduler", "Data integration scheduler")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.fail",
-                                    "数据更新失败，ID为 " + mcTaskSchedulerId + " 的数据集成调度信息记录不存在。", mcTaskSchedulerId, "数据集成调度信息"));
+                                    "Data update failed, ID {0} {1} record does not exist.", mcTaskSchedulerId, MessageUtils.messageWithFallback("mc.entity.scheduler", "Data integration scheduler")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<McTaskSchedulerDO> queryWrapper = new QueryWrapper<>();
@@ -152,17 +152,17 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
                         mcTaskSchedulerMapper.insert(mcTaskSchedulerDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("mc.import.insert.success",
-                                "数据插入成功，ID为 " + mcTaskSchedulerId + " 的数据集成调度信息记录。", mcTaskSchedulerId, "数据集成调度信息"));
+                                "Data insert successful, ID {0} {1} record.", mcTaskSchedulerId, MessageUtils.messageWithFallback("mc.entity.scheduler", "Data integration scheduler")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("mc.import.insert.fail",
-                                "数据插入失败，ID为 " + mcTaskSchedulerId + " 的数据集成调度信息记录已存在。", mcTaskSchedulerId, "数据集成调度信息"));
+                                "Data insert failed, ID {0} {1} record already exists.", mcTaskSchedulerId, MessageUtils.messageWithFallback("mc.entity.scheduler", "Data integration scheduler")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("mc.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -171,12 +171,12 @@ public class McTaskSchedulerServiceImpl extends ServiceImpl<McTaskSchedulerMappe
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("mc.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("mc.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }

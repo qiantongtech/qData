@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.utils.ds.component;
@@ -44,29 +30,29 @@ import java.util.Map;
 
 /**
  * <P>
- * 用途:SQL-关系数据库 组件
+ * Purpose: SQL - relational database component
  * </p>
  **/
 public class SQLComponent implements ComponentItem {
 
     /**
-     * taskParams SQL (关系数据库)
+     * taskParams SQL (relational database)
      * {
-     * "localParams": [],//默认 []
-     * "resourceList": [],//默认 []
-     * "type":"MYSQL",//数据库类型 目前支持 MYSQL、ORACLE、DM8、KINGBASE
-     * "sql":"",//sql语句
+     * "localParams": [], // Default []
+     * "resourceList": [], // Default []
+     * "type":"MYSQL", // Database type; currently supports MYSQL, ORACLE, DM8, KINGBASE
+     * "sql":"", // SQL statement
      * "sqlType":"",
-     * "preStatements":[],//默认 []
-     * "postStatements":[],//默认 []
-     * "displayRows":10,//默认10
+     * "preStatements":[], // Default []
+     * "postStatements":[], // Default []
+     * "displayRows":10, // Default 10
      * "datasources":{
-     * "type":"MYSQL",//数据库类型 目前支持 MYSQL、ORACLE、DM8、KINGBASE
-     * "host":"",//ip
-     * "port":1521,//端口
-     * "userName":"",//账号
-     * "password":"",//密码
-     * "database":""//数据库名
+     * "type":"MYSQL", // Database type; currently supports MYSQL, ORACLE, DM8, KINGBASE
+     * "host":"", // IP
+     * "port":1521, // Port
+     * "userName":"", // Account
+     * "password":"", // Password
+     * "database":"" // Database name
      * }
      * }
      *
@@ -83,8 +69,8 @@ public class SQLComponent implements ComponentItem {
         taskParams.put("localParams", params.getOrDefault("localParams", new ArrayList<>()));
         taskParams.put("resourceList", params.getOrDefault("resourceList", new ArrayList<>()));
         taskParams.put("type", MD5Util.getNormalizedDbType(dbQueryProperty.getDbType()));
-        taskParams.put("sql", params.getOrDefault("sql", "")); // 默认空字符串
-        taskParams.put("sqlType", params.getOrDefault("sqlType", "")); // 默认空字符串
+        taskParams.put("sql", params.getOrDefault("sql", "")); // Default empty string
+        taskParams.put("sqlType", params.getOrDefault("sqlType", "")); // Default empty string
 
         taskParams.put("preStatements", params.getOrDefault("preStatements", new ArrayList<>()));
         taskParams.put("postStatements", params.getOrDefault("postStatements", new ArrayList<>()));

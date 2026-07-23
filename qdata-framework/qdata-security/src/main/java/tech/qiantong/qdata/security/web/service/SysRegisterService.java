@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.security.web.service;
@@ -51,7 +37,7 @@ import tech.qiantong.qdata.security.manager.AsyncManager;
 import tech.qiantong.qdata.security.manager.factory.AsyncFactory;
 
 /**
- * 注册校验方法
+ * Registration verification method
  *
  * @author qdata
  */
@@ -68,7 +54,7 @@ public class SysRegisterService
     private RedisCache redisCache;
 
     /**
-     * 注册
+     * Register
      */
     public String register(RegisterBody registerBody)
     {
@@ -76,7 +62,7 @@ public class SysRegisterService
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
 
-        // 验证码开关
+        // Verification code switch
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         if (captchaEnabled)
         {
@@ -85,25 +71,28 @@ public class SysRegisterService
 
         if (StringUtils.isEmpty(username))
         {
-            msg = "用户名不能为空";
+            msg = MessageUtils.messageWithFallback("user.register.username.empty", "Username cannot be empty");
         }
         else if (StringUtils.isEmpty(password))
         {
-            msg = "用户密码不能为空";
+            msg = MessageUtils.messageWithFallback("user.register.password.empty", "Password cannot be empty");
         }
         else if (username.length() < UserConstants.USERNAME_MIN_LENGTH
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH)
         {
-            msg = "账户长度必须在2到20个字符之间";
+            msg = MessageUtils.messageWithFallback("user.register.username.length",
+                    "Username length must be between 2 and 20 characters");
         }
         else if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
         {
-            msg = "密码长度必须在5到20个字符之间";
+            msg = MessageUtils.messageWithFallback("user.register.password.length",
+                    "Password length must be between 5 and 20 characters");
         }
         else if (!userService.checkUserNameUnique(sysUser))
         {
-            msg = "保存用户'" + username + "'失败，注册账号已存在";
+            msg = MessageUtils.messageWithFallback("user.register.username.duplicate",
+                    "Failed to save user ''{0}'': the account already exists", username);
         }
         else
         {
@@ -112,23 +101,24 @@ public class SysRegisterService
             boolean regFlag = userService.registerUser(sysUser);
             if (!regFlag)
             {
-                msg = "注册失败,请联系系统管理人员";
+                msg = MessageUtils.messageWithFallback("user.register.fail",
+                        "Registration failed; contact the administrator");
             }
             else
             {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.messageEn("user.register.success")));
             }
         }
         return msg;
     }
 
     /**
-     * 校验验证码
+     * Verify verification code
      *
-     * @param username 用户名
-     * @param code 验证码
-     * @param uuid 唯一标识
-     * @return 结果
+     * @param username username
+     * @param code verification code
+     * @param uuid unique identifier
+     * @return result
      */
     public void validateCaptcha(String username, String code, String uuid)
     {

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -160,7 +161,7 @@
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].exampleValue`"
                                         :rules="hasChildren(row) ? rules.fieldDefault : []">
-                                        <el-input v-model="row.fieldDefault" placeholder="请输入示例值"
+                                        <el-input v-model="row.fieldDefault" placeholder="Please enter a sample value"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item> -->
                                     {{ row.reqParams }}
@@ -173,7 +174,7 @@
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].defaultValue`"
                                         :rules="hasChildren(row) ? rules.defaultValue : []">
-                                        <el-input v-model="row.defaultValue" placeholder="请输入默认值"
+                                        <el-input v-model="row.defaultValue" placeholder="Please enter the default value"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item> -->
                                     {{ row.defaultValue }}
@@ -227,7 +228,7 @@
                                     <!-- <el-form-item
                                         :prop="`form2.reqParams[${findPosi(form2.reqParams, row.id)}].exampleValue`"
                                         :rules="hasChildren(row) ? rules.fieldDefault : []">
-                                        <el-input v-model="row.fieldDefault" placeholder="请输入示例值"
+                                        <el-input v-model="row.fieldDefault" placeholder="Please enter a sample value"
                                             :disabled="hasChildren(row)" />
                                     </el-form-item> -->
                                     {{ row.reqParams }}
@@ -298,7 +299,7 @@ const data = reactive({
 
 const { queryParams, form, dsApiDetail, rules } = toRefs(data);
 
-/** 查询API服务列表 */
+/** Query API service list */
 function getList() {
     loading.value = true;
     queryParams.value.params = {};
@@ -313,14 +314,14 @@ function getList() {
     });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
     open.value = false;
     openDetail.value = false;
     reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
     form.value = {
         ID: null,
@@ -350,41 +351,41 @@ function reset() {
     proxy.resetForm('dsApiRef');
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
     queryParams.value.pageNum = 1;
     getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
     daterangeCreateTime.value = [];
     proxy.resetForm('queryRef');
     handleQuery();
 }
 
-// 多选框选中数据
+// Multiple selection box selected data
 function handleSelectionChange(selection) {
     ids.value = selection.map((item) => item.ID);
     single.value = selection.length != 1;
     multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
     queryParams.value.orderByColumn = column.prop;
     queryParams.value.isAsc = column.order;
     getList();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
     reset();
     open.value = true;
     title.value = td('ds.api.addApi');
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 function handleUpdate(row) {
     reset();
     const _ID = row.ID || ids.value;
@@ -395,7 +396,7 @@ function handleUpdate(row) {
     });
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
     reset();
     const _ID = row.ID || ids.value;
@@ -406,7 +407,7 @@ function handleDetail(row) {
     });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
     proxy.$refs['dsApiRef'].validate((valid) => {
         if (valid) {
@@ -431,7 +432,7 @@ function submitForm() {
     });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
     const _IDs = row.ID || ids.value;
     proxy.$modal
@@ -446,7 +447,7 @@ function handleDelete(row) {
         .catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
     proxy.download(
         'ds/dsApi/export',

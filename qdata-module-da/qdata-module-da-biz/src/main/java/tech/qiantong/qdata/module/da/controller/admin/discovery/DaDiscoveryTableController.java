@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.controller.admin.discovery;
@@ -65,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据发现库信息Controller
+ * Data Discovery Database Table Controller
  *
  * @author qdata
  * @date 2025-02-11
@@ -97,18 +83,18 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "导出数据发现库信息列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:export')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DaDiscoveryTablePageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DaDiscoveryTableDO> list = (List<DaDiscoveryTableDO>) daDiscoveryTableService.getDaDiscoveryTablePage(exportReqVO).getRows();
         ExcelUtil<DaDiscoveryTableRespVO> util = new ExcelUtil<>(DaDiscoveryTableRespVO.class);
-        util.exportExcel(response, DaDiscoveryTableConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DaDiscoveryTableConvert.INSTANCE.convertToRespVOList(list), "Data");
     }
 
     @Operation(summary = "导入数据发现库信息列表")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:import')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DaDiscoveryTableRespVO> util = new ExcelUtil<>(DaDiscoveryTableRespVO.class);
@@ -128,7 +114,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "新增数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:add')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {
         daDiscoveryTable.setCreatorId(getUserId());
@@ -139,7 +125,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "修改数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:edit')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {
         daDiscoveryTable.setUpdatorId(getUserId());
@@ -150,7 +136,7 @@ public class DaDiscoveryTableController extends BaseController {
 
     @Operation(summary = "删除数据发现库信息")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:remove')")
-    @Log(title = "数据发现库信息", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.da.discovery.table", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(daDiscoveryTableService.removeDaDiscoveryTable(Arrays.asList(ids)));
@@ -161,16 +147,16 @@ public class DaDiscoveryTableController extends BaseController {
     @PostMapping(value = "/preview")
     public AjaxResult getPreview(@RequestBody JSONObject jsonObject) {
         if (jsonObject.getStr("taskId") == null){
-            return error("请携带数据发现任务id");
+            return error("taskId is required");
         }
         if (jsonObject.getStr("tableName") == null){
-            return error("请携带数据库表");
+            return error("tableName is required");
         }
         Map<String,Object> columnData = daAssetService.getColumnData(jsonObject);
         return success(columnData);
     }
 
-    @Operation(summary = "数据发现库信息进行提交撤回")
+    @Operation(summary = "Submit or revoke discovery database table info")
     @PreAuthorize("@ss.hasPermi('da:discoveryTable:edit')")
     @PostMapping(value = "/commitOrRevokeDiscoveryInfo")
     public CommonResult<Integer> commitOrRevokeDiscoveryInfo(@RequestBody DaDiscoveryTableSaveReqVO daDiscoveryTable) {

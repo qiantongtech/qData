@@ -1,22 +1,23 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
-  <!-- // 数据库表 -->
+  <!-- // database table -->
 
   <el-form-item :label="td('dpp.asset.add.table.tableName')" prop="tableName">
     <el-input v-model="localForm.tableName" :placeholder="td('dpp.asset.add.table.tableName')" disabled />
@@ -306,7 +307,7 @@ const { dpp_connection, table_type, table_name_case } = proxy.useDict(
 );
 
 const userStore = useUserStore();
-const createTypeList = ref([]); // 数据源列表
+const createTypeList = ref([]); // Data source list
 let loading = ref(false);
 const loadingList = ref(false);
 const dppAssetList = ref([]);
@@ -333,7 +334,7 @@ const localForm = ref({
 const formatTreeData = (list) => {
   return list.map((item) => {
     const newItem = { ...item };
-    newItem.id = Number(item.id); // 强制转换为数字以匹配回显
+    newItem.id = Number(item.id); // Cast to number to match echo
     const abbreviation = item.engName || item.shortName;
     newItem.displayName = abbreviation
         ? `${item.name} / ${abbreviation}`
@@ -347,7 +348,7 @@ const formatTreeData = (list) => {
 
 const fetchAllOptions = (currentType) => {
   const targetType = currentType || localForm.value.tableType;
-  // 数仓分层
+  // Data warehouse stratification
   layerLoading.value = true;
   const p1 = treeDataLayer()
       .then((res) => {
@@ -355,7 +356,7 @@ const fetchAllOptions = (currentType) => {
         const processTree = (list) => {
           return list.map((item) => {
             const newItem = { ...item };
-            newItem.id = Number(item.id); // 强制转换为数字以匹配回显
+            newItem.id = Number(item.id); // Cast to number to match echo
             const abbreviation = item.engName || item.shortName;
             newItem.displayName = abbreviation
                 ? `${item.name} / ${abbreviation}`
@@ -377,7 +378,7 @@ const fetchAllOptions = (currentType) => {
 
   let p2;
   if (targetType == "4") {
-    // 主题域
+    // subject area
     themeLoading.value = true;
     p2 = listThemeDomain({ pageNum: 1, pageSize: 1000, validFlag: true })
         .then((res) => {
@@ -392,7 +393,7 @@ const fetchAllOptions = (currentType) => {
           themeLoading.value = false;
         });
   } else {
-    // 业务分类
+    // Business classification
     businessLoading.value = true;
     p2 = listBusinessCategory({
       pageNum: 1,
@@ -462,7 +463,7 @@ const generateModelName = (initialData = null) => {
   };
 
   if (initialData) {
-    // 合并初始数据中的属性到 options 中，以防列表还没加载完
+    // Merge the properties in the initial data into options in case the list has not been loaded yet
     Object.assign(options, initialData);
   } else {
     if (isInitializing.value) return;
@@ -470,7 +471,7 @@ const generateModelName = (initialData = null) => {
 
   localForm.value.namingSpec = formatModelName(options);
 
-  // 同步业务/主题代码
+  // Sync business/topic codes
   if (localForm.value.tableType === "4") {
     const theme = findInTree(
         themeDomainList.value,
@@ -487,7 +488,7 @@ const generateModelName = (initialData = null) => {
   emit("update:form", localForm.value);
 };
 
-// 通用数据获取函数
+// General data acquisition function
 const fetchData = async (requestFn, params, loadingState) => {
   try {
     loadingState.value = true;
@@ -517,7 +518,7 @@ const handleTableSelectVisible = (visible) => {
   }
 };
 
-// 数据源变化时
+// When the data source changes
 const handleDatasourceChange = async (id, selected) => {
   if (!selected) return;
   const { datasourceType, datasourceName, datasourceConfig, ip, port } =
@@ -538,7 +539,7 @@ const handleDatasourceChange = async (id, selected) => {
   columnsByAssetTable.value = [];
 };
 
-// 表变化时
+// When the table changes
 const handleTableChange = (tableName) => {
   const selected = tablesByDataSource.value.find(
       (item) => item.tableName == tableName

@@ -1,107 +1,93 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.ehcache.org/v3"
         xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
-    <!-- 缓存持久化配置: 定义磁盘缓存位置 -->
+    <!-- Cache persistence configuration: Define disk cache location -->
 <!--    <persistence directory="D:/cache/system"/>-->
 
-    <!-- 缓存模板: 未填写缓存名时使用的默认缓存，同时也可被继承 -->
+    <!-- Cache template: The default cache used when the cache name is not filled in, and can also be inherited. -->
     <cache-template name="defaultCache">
         <expiry>
-            <ttl unit="seconds">300</ttl> <!-- 默认过期时间：5分钟 -->
+            <ttl unit="seconds">300</ttl> <!-- Default expiration time: 5 minutes -->
         </expiry>
         <resources>
-            <!-- 堆内存最大条目数 -->
+            <!-- Maximum number of entries in heap memory -->
             <heap unit="entries">1000</heap>
-            <!-- 堆外内存最大大小（MB） -->
+            <!-- Maximum size of off-heap memory (MB) -->
 <!--            <offheap unit="MB">200</offheap>-->
-            <!-- 可选：磁盘缓存大小 -->
+            <!-- Optional: disk cache size -->
 <!--            <disk unit="GB">1</disk>-->
         </resources>
     </cache-template>
 
-    <!-- 5分钟过期 -->
+    <!-- Expires in 5 minutes -->
     <cache alias="cache5Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">300</ttl>
         </expiry>
     </cache>
 
-    <!-- 10分钟过期 -->
+    <!-- Expires in 10 minutes -->
     <cache alias="cache10Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">600</ttl>
         </expiry>
     </cache>
 
-    <!-- 30分钟过期 -->
+    <!-- Expires in 30 minutes -->
     <cache alias="cache30Minutes" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">1800</ttl>
         </expiry>
     </cache>
 
-    <!-- 6小时过期 -->
+    <!-- Expires in 6 hours -->
     <cache alias="cache6Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">21600</ttl>
         </expiry>
     </cache>
 
-    <!-- 12小时过期 -->
+    <!-- Expires in 12 hours -->
     <cache alias="cache12Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">43200</ttl>
         </expiry>
     </cache>
 
-    <!-- 24小时过期 -->
+    <!-- Expires in 24 hours -->
     <cache alias="cache24Hours" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">86400</ttl>
         </expiry>
     </cache>
 
-    <!-- 7天过期 -->
+    <!-- Expires in 7 days -->
     <cache alias="cache7Days" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">604800</ttl>
         </expiry>
     </cache>
 
-    <!-- 30天过期 -->
+    <!-- Expires in 30 days -->
     <cache alias="cache30Days" uses-template="defaultCache">
         <expiry>
             <ttl unit="seconds">2592000</ttl>

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 元数据数据库与信息及字段信息关系-日志Mapper接口
+ * Metadata database and information and field information relationship - Log Mapper interface
  *
  * @author qdata
  * @date 2026-03-10
@@ -19,10 +19,10 @@ import java.util.Set;
 public interface McTableColumnRelLogMapper extends BaseMapperX<McTableColumnRelLogDO> {
 
     default PageResult<McTableColumnRelLogDO> selectPage(McTableColumnRelLogPageReqVO reqVO) {
-        // 定义排序的字段（防止 SQL 注入，与数据库字段名称一致）
+        // Define the sorting field (prevent SQL injection, consistent with the database field name)
         Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
 
-        // 构造动态查询条件
+        // Construct dynamic query conditions
         return selectPage(reqVO, new LambdaQueryWrapperX<McTableColumnRelLogDO>()
                 .eqIfPresent(McTableColumnRelLogDO::getDataType, reqVO.getDataType())
                 .eqIfPresent(McTableColumnRelLogDO::getTaskId, reqVO.getTaskId())
@@ -34,9 +34,9 @@ public interface McTableColumnRelLogMapper extends BaseMapperX<McTableColumnRelL
                 .eqIfPresent(McTableColumnRelLogDO::getColumnVersion, reqVO.getColumnVersion())
                 .eqIfPresent(McTableColumnRelLogDO::getCreateTime, reqVO.getCreateTime())
                 .eqIfPresent(McTableColumnRelLogDO::getDescription, reqVO.getDescription())
-                // 如果 reqVO.getName() 不为空，则添加 name 的精确匹配条件（name = '<name>'）
+                // If reqVO.getName() is not empty, add an exact matching condition for name (name = '<name>')
                 // .likeIfPresent(McTableColumnRelLogDO::getName, reqVO.getName())
-                // 按照 createTime 字段降序排序
+                // Sort by createTime field in descending order
                 .orderBy(reqVO.getOrderByColumn(), reqVO.getIsAsc(), allowedColumns));
     }
 }

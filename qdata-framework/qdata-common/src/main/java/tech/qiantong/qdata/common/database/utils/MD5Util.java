@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.database.utils;
@@ -36,6 +22,7 @@ import org.apache.commons.collections4.MapUtils;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
 import tech.qiantong.qdata.common.database.constants.DbType;
 import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -43,8 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MD5Util {
-    private static final String ORACLE_SERVICE_NAME = "ORACLE_SERVICE_NAME"; // 默认条件类型为 "NONE"
-    private static final String ORACLE_SID = "ORACLE_SID"; // 默认条件类型为 "NONE"
+    private static final String ORACLE_SERVICE_NAME = "ORACLE_SERVICE_NAME"; // The default condition type is "NONE"
+    private static final String ORACLE_SID = "ORACLE_SID"; // The default condition type is "NONE"
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -62,14 +49,14 @@ public class MD5Util {
     private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
-     * MD5加密
+     * MD5 encryption
      */
     public static String encrypt(String value) {
         return encrypt(value.getBytes());
     }
 
     /**
-     * MD5加密
+     * MD5 encryption
      */
     public static String encrypt(byte[] value) {
         try {
@@ -88,10 +75,10 @@ public class MD5Util {
 
 
     /**
-     * 将字符串转换为 Long 类型。如果字符串为空或无法转换，则返回 0L。
+     * Convert a string to type Long. If the string is empty or cannot be converted, 0L is returned.
      *
-     * @param dataLength 要转换的字符串
-     * @return 转换后的 Long 类型值
+     * @param dataLength The string to be converted
+     * @return converted Long type value
      */
     public static Long getStringToLong(String dataLength) {
         if (StringUtils.isEmpty(dataLength)) {
@@ -100,13 +87,13 @@ public class MD5Util {
         try {
             return Long.parseLong(dataLength);
         } catch (NumberFormatException e) {
-            // 如果转换失败，则返回 0L
+            // If the conversion fails, 0L is returned
             return 0L;
         }
     }
 
     /**
-     * 转义字符串中的单引号，避免拼接 SQL 时出错
+     * Escape single quotes in strings to avoid errors when splicing SQL
      */
     public static String escapeSingleQuotes(String input) {
         if (input == null) {
@@ -116,16 +103,16 @@ public class MD5Util {
     }
 
     /**
-     * 如果输入的字符串全部为小写，则转换为大写返回，否则直接返回原字符串。
+     * If the input string is all lowercase, it will be converted to uppercase and returned; otherwise, the original string will be returned directly.
      *
-     * @param input 输入字符串
-     * @return 如果是全小写，返回全大写字符串；否则返回原字符串
+     * @param input input string
+     * @return If it is all lowercase, return all uppercase string; otherwise return the original string
      */
     public static String convertIfLowercase(String input) {
         if (input == null) {
             return null;
         }
-        // 如果字符串与它的小写形式相同，说明全为小写
+        // If the string is the same as its lowercase counterpart, it means all lowercase
         if (input.equals(input.toLowerCase())) {
             return input.toUpperCase();
         }
@@ -133,15 +120,16 @@ public class MD5Util {
     }
 
     /**
-     * 规范化数据库类型
+     * Normalized database type
      *
-     * @param dbType 数据库类型，支持：MySql、Oracle11、Oracle、DM8、Kingbase8
-     * @return 规范化后的数据库类型，返回值为 MYSQL、ORACLE、DM8、KINGBASE，其中 Oracle11 也返回 ORACLE
-     * @throws IllegalArgumentException 当 dbType 为 null 或空字符串时抛出异常
+     * @param dbType database type, supports: MySql, Oracle11, Oracle, DM8, Kingbase8
+     * @return Standardized database type, return value is MYSQL, ORACLE, DM8, KINGBASE, Oracle11 also returns ORACLE
+     * @throws IllegalArgumentException thrown when dbType is null or empty string
      */
     public static String getNormalizedDbType(String dbType) {
         if (dbType == null || dbType.isEmpty()) {
-            throw new IllegalArgumentException("数据库类型不能为空");
+            throw new IllegalArgumentException(MessageUtils.messageWithFallback(
+                    "sys.error.database.type.empty", "Database type cannot be empty"));
         }
         if (DbType.MYSQL.getDb().equals(dbType)) {
             return "MYSQL";
@@ -152,13 +140,13 @@ public class MD5Util {
         } else if (DbType.KINGBASE8.getDb().equals(dbType)) {
             return "KINGBASE";
         }
-        // 默认返回原始类型的值
+        // Returns primitive type value by default
         return dbType;
     }
 
 
     /**
-     * 创建对象
+     * Create object
      *
      * @param datasource
      * @return

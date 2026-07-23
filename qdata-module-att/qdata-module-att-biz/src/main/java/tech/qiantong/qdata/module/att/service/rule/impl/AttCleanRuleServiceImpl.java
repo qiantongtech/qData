@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.att.service.rule.impl;
@@ -62,7 +48,7 @@ import tech.qiantong.qdata.module.att.service.cat.IAttCleanCatService;
 import tech.qiantong.qdata.module.att.service.rule.IAttCleanRuleService;
 
 /**
- * 清洗规则Service业务层处理
+ * Cleaning Rule Service business layer processing
  *
  * @author qdata
  * @date 2025-01-20
@@ -86,7 +72,7 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     public Long createAttCleanRule(AttCleanRuleSaveReqVO createReqVO) {
         List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", createReqVO.getCode());
         if (code.size() > 0) {
-            throw new ServiceException("att.error.rule.code.duplicate", "规则编码重复请重新输入");
+            throw new ServiceException("att.error.rule.code.duplicate", "The rule code already exists. Please enter a different code.");
         }
         AttCleanRuleDO dictType = BeanUtils.toBean(createReqVO, AttCleanRuleDO.class);
         attCleanRuleMapper.insert(dictType);
@@ -95,19 +81,19 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
 
     @Override
     public int updateAttCleanRule(AttCleanRuleSaveReqVO updateReqVO) {
-        // 相关校验
+        // Validate
         List<AttCleanRuleDO> code = attCleanRuleMapper.selectList("code", updateReqVO.getCode());
         if (code.size() > 0) {
-            throw new ServiceException("att.error.rule.code.duplicate", "规则编码重复请重新输入");
+            throw new ServiceException("att.error.rule.code.duplicate", "The rule code already exists. Please enter a different code.");
         }
-        // 更新清洗规则
+        // Update cleaning rule
         AttCleanRuleDO updateObj = BeanUtils.toBean(updateReqVO, AttCleanRuleDO.class);
         return attCleanRuleMapper.updateById(updateObj);
     }
 
     @Override
     public int removeAttCleanRule(Collection<Long> idList) {
-        // 批量删除清洗规则
+        // Batch delete cleaning rules
         return attCleanRuleMapper.deleteBatchIds(idList);
     }
 
@@ -149,23 +135,23 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
                 .collect(Collectors.toMap(
                         AttCleanRuleDO::getId,
                         attCleanRuleDO -> attCleanRuleDO,
-                        // 保留已存在的值
+                        // Keep existing value
                         (existing, replacement) -> existing));
     }
 
     /**
-     * 导入清洗规则数据
+     * Import cleaning rule data
      *
-     * @param importExcelList 清洗规则数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     *  importExcelList cleaning rule data list
+     * @param isUpdateSupport Whether to support update; if already exists, update the data
+     *  operName Operator
+     *  @return Result
      */
     @Override
     public String importAttCleanRule(List<AttCleanRuleRespVO> importExcelList, boolean isUpdateSupport,
                                      String operName) {
         if (StringUtils.isNull(importExcelList) || importExcelList.size() == 0) {
-            throw new ServiceException("att.error.import.empty", "导入数据不能为空！");
+            throw new ServiceException("att.error.import.empty", "Import data cannot be empty!");
         }
 
         int successNum = 0;
@@ -184,16 +170,16 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
                             attCleanRuleMapper.updateById(attCleanRuleDO);
                             successNum++;
                             successMessages.add(MessageUtils.messageWithFallback("att.import.update.success",
-                                    "数据更新成功，ID为 " + attCleanRuleId + " 的清洗规则记录。", attCleanRuleId, "清洗规则"));
+                                    "Data update successful, ID {0} {1} record.", attCleanRuleId, MessageUtils.messageWithFallback("att.entity.cleansing.rule", "Cleansing rule")));
                         } else {
                             failureNum++;
                             failureMessages.add(MessageUtils.messageWithFallback("att.import.update.fail",
-                                    "数据更新失败，ID为 " + attCleanRuleId + " 的清洗规则记录不存在。", attCleanRuleId, "清洗规则"));
+                                    "Data update failed, ID {0} {1} record does not exist.", attCleanRuleId, MessageUtils.messageWithFallback("att.entity.cleansing.rule", "Cleansing rule")));
                         }
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.update.id.missing",
-                                "数据更新失败，某条记录的ID不存在。"));
+                                "Data update failed, record ID does not exist."));
                     }
                 } else {
                     QueryWrapper<AttCleanRuleDO> queryWrapper = new QueryWrapper<>();
@@ -203,17 +189,17 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
                         attCleanRuleMapper.insert(attCleanRuleDO);
                         successNum++;
                         successMessages.add(MessageUtils.messageWithFallback("att.import.insert.success",
-                                "数据插入成功，ID为 " + attCleanRuleId + " 的清洗规则记录。", attCleanRuleId, "清洗规则"));
+                                "Data insert successful, ID {0} {1} record.", attCleanRuleId, MessageUtils.messageWithFallback("att.entity.cleansing.rule", "Cleansing rule")));
                     } else {
                         failureNum++;
                         failureMessages.add(MessageUtils.messageWithFallback("att.import.insert.fail",
-                                "数据插入失败，ID为 " + attCleanRuleId + " 的清洗规则记录已存在。", attCleanRuleId, "清洗规则"));
+                                "Data insert failed, ID {0} {1} record already exists.", attCleanRuleId, MessageUtils.messageWithFallback("att.entity.cleansing.rule", "Cleansing rule")));
                     }
                 }
             } catch (Exception e) {
                 failureNum++;
                 String errorMsg = MessageUtils.messageWithFallback("att.import.error.detail",
-                "数据导入失败，错误信息：" + e.getMessage(), e.getMessage());
+                "Data import failed, error: {0}", e.getMessage());
                 failureMessages.add(errorMsg);
                 log.error(errorMsg, e);
             }
@@ -222,23 +208,23 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
         if (failureNum > 0) {
             String failureDetails = String.join("<br/>", failureMessages);
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.fail",
-                    "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：<br/>" + failureDetails,
+                    "Import failed! {0} records have incorrect format, errors:<br/>{1}",
                     failureNum, failureDetails));
             throw new ServiceException("att.error.import.fail", resultMsg.toString(), resultMsg.toString());
         } else {
             resultMsg.append(MessageUtils.messageWithFallback("att.import.result.success",
-                    "恭喜您，数据已全部导入成功！共 " + successNum + " 条。", successNum));
+                    "Congratulations! All data imported successfully! Total: {0} records.", successNum));
         }
         return resultMsg.toString();
     }
 
     @Override
     public List<AttCleanRuleRespVO> getAttCleanRuleTree(Long dataElemId) {
-        // 1. 获取所有清洗规则列表
+        // 1. Get all cleaning rule list
         List<AttCleanRuleDO> list = attCleanRuleMapper.selectAttCleanRuleList(dataElemId);
-        // 2. 转换为VO对象
+        // 2. Convert to VO objects
         List<AttCleanRuleRespVO> voList = BeanUtils.toBean(list, AttCleanRuleRespVO.class);
-        // 3. 构建树形结构
+        // 3. Build tree structure
         return buildTreeByType(voList);
     }
 
@@ -246,14 +232,14 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     public List<AttCleanRuleRespVO> getCleaningRuleTree(Long[] dataElemId) {
         List<AttCleanRuleDO> list =null;
         if (dataElemId == null || dataElemId.length == 0) {
-            // 数组为空或未初始化
+            // Array is empty or not initialized
             list = attCleanRuleMapper.selectList();
         }else {
             list = attCleanRuleMapper.getCleaningRuleTreeIds(dataElemId);
         }
-        // 2. 转换为VO对象
+        // 2. Convert to VO objects
         List<AttCleanRuleRespVO> voList = BeanUtils.toBean(list, AttCleanRuleRespVO.class);
-        // 3. 构建树形结构
+        // 3. Build tree structure
         return buildTreeByType(voList);
     }
 
@@ -264,31 +250,31 @@ public class AttCleanRuleServiceImpl extends ServiceImpl<AttCleanRuleMapper, Att
     }
 
     /**
-     * 构建树形结构 - 以type字段作为父节点
+     * Build tree structure - use type field as parent node
      *
-     * @param list 规则列表
-     * @return 树形结构列表
+     * @param list Rule list
+     *  Tree structure list
      */
     private List<AttCleanRuleRespVO> buildTreeByType(List<AttCleanRuleRespVO> list) {
         List<AttCleanRuleRespVO> resultList = new ArrayList<>();
-        // 创建type映射，用于存储相同type的节点
+        // Create type mapping for storing nodes with same type
         Map<String, List<AttCleanRuleRespVO>> typeMap = list.stream()
                 .collect(Collectors.groupingBy(AttCleanRuleRespVO::getType));
 
-        // 遍历每个type分组
+        // Iterate each type group
         for (Map.Entry<String, List<AttCleanRuleRespVO>> entry : typeMap.entrySet()) {
             String type = entry.getKey();
             List<AttCleanRuleRespVO> typeNodes = entry.getValue();
             for (AttCleanRuleRespVO typeNode : typeNodes) {
                 typeNode.setDataType("2");
             }
-            // 创建父节点
+            // Create parent node
             AttCleanRuleRespVO parentNode = new AttCleanRuleRespVO();
-            parentNode.setId(0L); // 设置一个特殊的ID
+            parentNode.setId(0L); // Set a special ID
             parentNode.setType(type);
             parentNode.setDataType("1");
             String typeName = CleanRuleTypeEnum.getNameByType(type);
-            parentNode.setName(typeName); // 设置父节点名称
+            parentNode.setName(typeName); // Set parent node name
             parentNode.setChildren(new ArrayList<>(typeNodes));
 
             resultList.add(parentNode);

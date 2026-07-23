@@ -7,12 +7,12 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 数据元 创建/修改 Request VO DG_DATA_ELEM
+ * Data Element Create/Update Request VO DG_DATA_ELEM
  *
  * @author qdata
  * @date 2025-01-21
  */
-@Schema(description = "数据元 Response VO")
+@Schema(description = "Data Element Response VO")
 @Data
 public class DgDataElemSaveReqVO extends BaseEntity {
 
@@ -21,40 +21,40 @@ public class DgDataElemSaveReqVO extends BaseEntity {
     @Schema(description = "ID")
     private Long id;
 
-    @Schema(description = "名称", example = "")
-    @Size(max = 256, message = "名称长度不能超过256个字符")
+    @Schema(description = "Name", example = "")
+    @Size(max = 256, message = "Name length must not exceed 256 characters")
     private String name;
 
-    @Schema(description = "英文名称", example = "")
-    @Size(max = 256, message = "英文名称长度不能超过256个字符")
+    @Schema(description = "English name", example = "")
+    @Size(max = 256, message = "English name length must not exceed 256 characters")
     private String engName;
 
-    @Schema(description = "类目编码", example = "")
-    @Size(max = 256, message = "类目编码长度不能超过256个字符")
+    @Schema(description = "Category code", example = "")
+    @Size(max = 256, message = "Category code length must not exceed 256 characters")
     private String catCode;
 
-    @Schema(description = "类型", example = "")
-    @Size(max = 256, message = "类型长度不能超过256个字符")
+    @Schema(description = "Type", example = "")
+    @Size(max = 256, message = "Type length must not exceed 256 characters")
     private String type;
 
-    @Schema(description = "责任人", example = "")
-    @Size(max = 256, message = "责任人长度不能超过256个字符")
+    @Schema(description = "Person in charge", example = "")
+    @Size(max = 256, message = "Person in charge length must not exceed 256 characters")
     private String personCharge;
 
-    @Schema(description = "联系电话", example = "")
-    @Size(max = 256, message = "联系电话长度不能超过256个字符")
+    @Schema(description = "Contact number", example = "")
+    @Size(max = 256, message = "Contact number length must not exceed 256 characters")
     private String contactNumber;
 
-    @Schema(description = "字段类型", example = "")
-    @Size(max = 256, message = "字段类型长度不能超过256个字符")
+    @Schema(description = "Column type", example = "")
+    @Size(max = 256, message = "Column type length must not exceed 256 characters")
     private String columnType;
 
-    @Schema(description = "状态", example = "")
-    @Size(max = 256, message = "状态长度不能超过256个字符")
+    @Schema(description = "Status", example = "")
+    @Size(max = 256, message = "Status length must not exceed 256 characters")
     private String status;
 
-    @Schema(description = "描述", example = "")
-    @Size(max = 3000, message = "描述长度不能超过3000个字符")
+    @Schema(description = "Description", example = "")
+    @Size(max = 3000, message = "Description length must not exceed 3000 characters")
     private String description;
 
     private Long documentId;

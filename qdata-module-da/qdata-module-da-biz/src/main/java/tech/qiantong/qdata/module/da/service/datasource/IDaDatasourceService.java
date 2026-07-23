@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.da.service.datasource;
@@ -56,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据源Service接口
+ * Datasource Service Interface
  *
  * @author lhs
  * @date 2025-01-21
@@ -64,18 +50,18 @@ import java.util.Map;
 public interface IDaDatasourceService extends IService<DaDatasourceDO> {
 
     /**
-     * 获得数据源分页列表
+     * Get datasource page list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据源分页列表
+     * @param pageReqVO page request
+     * @return datasource page list
      */
     PageResult<DaDatasourceDO> getDaDatasourcePage(DaDatasourcePageReqVO pageReqVO);
 
     /**
-     * 数据研发中的查询数据源列表
+     * Query datasource list in data development
      *
-     * @param daDatasource 分页请求
-     * @return 数据源分页列表
+     * @param daDatasource page request
+     * @return datasource page list
      */
     PageResult<DaDatasourceDO> getDaDatasourceDppPage(DaDatasourcePageReqVO daDatasource);
 
@@ -83,7 +69,7 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
 
 
     /**
-     * 查询数据资产的数据源连接信息
+     * Query datasource connection info for data asset
      *
      * @param daAsset
      * @return
@@ -92,67 +78,72 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
 
 
     /**
-     * 创建数据源
+     * Create datasource
      *
-     * @param createReqVO 数据源信息
-     * @return 数据源编号
+     * @param createReqVO datasource info
+     * @return datasource ID
      */
     Long createDaDatasource(DaDatasourceSaveReqVO createReqVO);
 
     /**
-     * 更新数据源
+     * Update datasource
      *
-     * @param updateReqVO 数据源信息
+     * @param updateReqVO datasource info
      */
     int updateDaDatasource(DaDatasourceSaveReqVO updateReqVO);
 
     /**
-     * 删除数据源
+     * Test connection information before creating a datasource.
+     */
+    boolean testDatasourceConnection(DaDatasourceSaveReqVO datasource);
+
+    /**
+     * Delete datasource
      *
-     * @param idList 数据源编号
+     * @param idList datasource ID list
      */
     int removeDaDatasource(Collection<Long> idList);
 
 
     /**
-     * 删除数据源带类型判断是数据资产还是数据研发
-     * @param idList 删除id集合
-     * @param type 0:数据资产，1:数据研发
+     * Delete datasource with type check for data asset or data development
+     * @param idList delete ID list
+     * @param type 0: Data Asset, 1: Data Development
      * @return
      */
     int removeDaDatasourceDppOrDa(List<Long> idList, Long type);
 
     /**
-     * 获得数据源详情
+     * Get datasource details
      *
-     * @param id 数据源编号
-     * @return 数据源
+     * @param id datasource ID
+     * @return datasource
      */
     DaDatasourceDO getDaDatasourceById(Long id);
     DaDatasourceRespVO getDaDatasourceByIdSimple(Long id);
 
     /**
-     * 获得全部数据源列表
+     * Get all datasource list
      *
-     * @return 数据源列表
+     * @return datasource list
      */
     List<DaDatasourceDO> getDaDatasourceList();
 
     /**
-     * 获得全部数据源 Map
+     * Get all datasource Map
      *
-     * @return 数据源 Map
+     * @return datasource Map
      */
     Map<Long, DaDatasourceDO> getDaDatasourceMap();
 
 
     /**
-     * 导入数据源数据
+     * Import datasource data
      *
-     * @param importExcelList 数据源数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList datasource data list
+     * @param isUpdateSupport whether to support update; if exists, update the data
+     * @param operName        operator user
+     * @return result
      */
     String importDaDatasource(List<DaDatasourceRespVO> importExcelList, boolean isUpdateSupport, String operName);
 
@@ -160,27 +151,36 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     AjaxResult clientsTest(Long id);
 
     /**
-     * 获取数据库表信息
+     * Test a datasource connection using unsaved connection properties.
+     */
+    Boolean clientTest(DbQueryProperty dbQueryProperty);
+
+    /**
+     * Test a saved datasource connection.
+     */
+    Boolean clientTest(Long id);
+
+    /**
+     * Get database table info
      *
-     * @param id 数据源id
+     * @param id datasource ID
      * @return
      */
     List<DbTable> getDbTables(Long id);
 
     /**
-     * 获取数据库
-     * 表的字段信息
+     * Get database table column info
      *
-     * @param id        数据源id
-     * @param tableName 表名称
+     * @param id        datasource ID
+     * @param tableName table name
      * @return
      */
     List<DbColumn> getDbTableColumns(Long id, String tableName);
 
     /**
-     * 获取数据表里面的数据字段
+     * Get data columns in the data table
      *
-     * @param jsonObject 数据源id和数据表
+     * @param jsonObject datasource ID and data table
      * @return
      */
     List<DpModelColumnReqDTO> getColumnsList(JSONObject jsonObject);
@@ -192,9 +192,9 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
 
 
     /**
-     * 建表工具方法
+     * Table creation utility method
      *
-     * @param datasourceCreaTeTableReqDTO 单表
+     * @param datasourceCreaTeTableReqDTO single table
      * @return
      */
     boolean creaDatasourceTeTable(DatasourceCreaTeTableReqDTO datasourceCreaTeTableReqDTO);
@@ -203,7 +203,7 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
 
 
     /**
-     * 查询项目列表，让研发模块添加的数据不可选中
+     * Query project list, make data added by development module unselectable
      *
      * @param pageReqVO
      * @return
@@ -211,7 +211,7 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     PageResult<AttProjectRespDTO> getNoDppAddList(AttProjectReqDTO pageReqVO);
 
     /**
-     * 数据集成中排除Kafka并且是当前项目的数据源列表
+     * Exclude Kafka and list datasources for the current project in data integration
      * @param daDatasource
      * @return
      */
@@ -224,7 +224,7 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     List<DbColumn> sqlParse(String sourceId, String sqlText);
 
     /**
-     * 修改数据源状态
+     * Modify datasource status
      * @param datasourceId
      * @param status
      * @return
@@ -232,7 +232,7 @@ public interface IDaDatasourceService extends IService<DaDatasourceDO> {
     Boolean editDatasourceStatus(Long datasourceId, Long status);
 
     /**
-     * 定时任务方法
+     * Scheduled task method
      *
      * @param id
      */

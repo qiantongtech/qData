@@ -1,24 +1,25 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 import {parseStrEmpty} from "@/utils/anivia.js";
 
-// 查询服务资源门户用户列表
+// Query service resource portal user list
 export function listRpUser(query) {
   return request({
     url: '/rp/rpUser/list',
@@ -27,7 +28,7 @@ export function listRpUser(query) {
   })
 }
 
-// 查询服务资源门户用户详细
+// Query service resource portal user details
 export function getRpUser(userId) {
   return request({
     url: '/rp/rpUser/' + parseStrEmpty(userId),
@@ -35,7 +36,7 @@ export function getRpUser(userId) {
   })
 }
 
-// 新增服务资源门户用户
+// Add new service resource portal user
 export function addRpUser(data) {
   return request({
     url: '/rp/rpUser',
@@ -44,7 +45,7 @@ export function addRpUser(data) {
   })
 }
 
-// 修改服务资源门户用户
+// Modify Service Resource Portal User
 export function updateRpUser(data) {
   return request({
     url: '/rp/rpUser',
@@ -53,7 +54,7 @@ export function updateRpUser(data) {
   })
 }
 
-// 删除服务资源门户用户
+// Delete Service Resource Portal User
 export function delRpUser(userId) {
   return request({
     url: '/rp/rpUser/' + userId,
@@ -61,7 +62,7 @@ export function delRpUser(userId) {
   })
 }
 
-// 查询部门下拉树结构
+// Query department drop-down tree structure
 export function deptTreeSelect() {
   return request({
     url: '/rp/rpUser/deptTree',

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dp.service.dataElem;
@@ -44,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据元数据规则关联信息Service接口
+ * Data Element Rule Relation Information Service Interface
  *
  * @author qdata
  * @date 2025-01-21
@@ -52,65 +38,65 @@ import java.util.Map;
 public interface IDpDataElemRuleRelService extends IService<DpDataElemRuleRelDO> {
 
     /**
-     * 获得数据元数据规则关联信息分页列表
+     * Get data element rule relation information paginated list
      *
-     * @param pageReqVO 分页请求
-     * @return 数据元数据规则关联信息分页列表
+     * @param pageReqVO Pagination request
+     * @return Paginated list of data element rule relation information
      */
     PageResult<DpDataElemRuleRelDO> getDpDataElemRuleRelPage(DpDataElemRuleRelPageReqVO pageReqVO);
 
     /**
-     * 创建数据元数据规则关联信息
+     * Create data element rule relation information
      *
-     * @param createReqVO 数据元数据规则关联信息信息
-     * @return 数据元数据规则关联信息编号
+     * @param createReqVO Data element rule relation information
+     * @return Data element rule relation information ID
      */
     Long createDpDataElemRuleRel(DpDataElemRuleRelSaveReqVO createReqVO);
 
     /**
-     * 更新数据元数据规则关联信息
+     * Update data element rule relation information
      *
-     * @param updateReqVO 数据元数据规则关联信息信息
+     * @param updateReqVO Data element rule relation information
      */
     int updateDpDataElemRuleRel(DpDataElemRuleRelSaveReqVO updateReqVO);
 
     /**
-     * 删除数据元数据规则关联信息
+     * Delete data element rule relation information
      *
-     * @param idList 数据元数据规则关联信息编号
+     * @param idList Data element rule relation information ID list
      */
     int removeDpDataElemRuleRel(Collection<Long> idList);
 
     /**
-     * 获得数据元数据规则关联信息详情
+     * Get data element rule relation information details
      *
-     * @param id 数据元数据规则关联信息编号
-     * @return 数据元数据规则关联信息
+     * @param id Data element rule relation information ID
+     * @return Data element rule relation information
      */
     DpDataElemRuleRelDO getDpDataElemRuleRelById(Long id);
 
     /**
-     * 获得全部数据元数据规则关联信息列表
+     * Get all data element rule relation information list
      *
-     * @return 数据元数据规则关联信息列表
+     * @return Data element rule relation information list
      */
     List<DpDataElemRuleRelDO> getDpDataElemRuleRelList();
 
     /**
-     * 获得全部数据元数据规则关联信息 Map
+     * Get all data element rule relation information Map
      *
-     * @return 数据元数据规则关联信息 Map
+     * @return Data element rule relation information Map
      */
     Map<Long, DpDataElemRuleRelDO> getDpDataElemRuleRelMap();
 
 
     /**
-     * 导入数据元数据规则关联信息数据
+     * Import data element rule relation information data
      *
-     * @param importExcelList 数据元数据规则关联信息数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName        操作用户
-     * @return 结果
+     * @param importExcelList Data element rule relation information data list
+     * @param isUpdateSupport Whether to support update, if exists then update the data
+     * @param operName        Operator
+     * @return Result
      */
     String importDpDataElemRuleRel(List<DpDataElemRuleRelRespVO> importExcelList, boolean isUpdateSupport, String operName);
 

@@ -1,33 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -63,14 +49,14 @@
         <el-input
             style="width:240px"
             v-model="queryParams.${column.javaField}"
-            placeholder="请输入${comment}"
+            :placeholder="td('${moduleName}.input.${column.javaField}')"
             clearable
             @keyup.enter="handleQuery"
         />
       </el-form-item>
     #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select style="width:240px" v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+        <el-select style="width:240px" v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
           <el-option
               v-for="dict in ${dictType}"
               :key="dict.value"
@@ -81,8 +67,8 @@
       </el-form-item>
     #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
       <el-form-item style="width:240px" label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
-          <el-option label="请选择字典生成" value="" />
+        <el-select v-model="queryParams.${column.javaField}" :placeholder="td('${moduleName}.select.${column.javaField}')" clearable>
+          <el-option label="请选择" value="" />
         </el-select>
       </el-form-item>
     #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
@@ -92,7 +78,7 @@
                         v-model="queryParams.${column.javaField}"
                         type="date"
                         value-format="YYYY-MM-DD"
-                        placeholder="请选择${comment}">
+                        :placeholder="td('${moduleName}.select.${column.javaField}')">
         </el-date-picker>
       </el-form-item>
     #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
@@ -103,8 +89,8 @@
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-::placeholder="td('.pleaseSelect') + '开始日期'"
+            end-::placeholder="td('.pleaseSelect') + '结束日期'"
         ></el-date-picker>
       </el-form-item>
         #end
@@ -187,9 +173,9 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" @click="cancel">td('button.cancel')</el-button>
         <el-button type="primary" size="mini" @click="confirm">
-          确 定
+          td('button.confirm')
         </el-button>
       </div>
     </template>
@@ -197,6 +183,7 @@
 </template>
 
 <script setup name="${BusinessName}Single">
+import useDefaultLang from "@/composables/useDefaultLang";const { td } = useDefaultLang();
 import {list${BusinessName}} from "@/api/";
 import {ref} from "vue";
     #foreach ($column in $columns)
@@ -227,14 +214,14 @@ import {ref} from "vue";
 
   // -------------------------------------------
   const visible = ref(false);
-  // 定义单选数据
+  // Define radio data
   const single = ref();
-  // 当前界面table
+  // Current interface table
   const tableRef = ref();
 
   const emit = defineEmits(["open", "confirm", "cancel"]);
 
-  /** 单选选中事件 */
+  /** Radio selection event */
   function handleCurrentChange(selection) {
     if (selection) {
       single.value = selection;
@@ -242,9 +229,9 @@ import {ref} from "vue";
   }
 
   /**
-   * 设置当前行
-   * @param {Object} row 行对象
-   * @returns 更改选中对象
+   * Set current row
+   * @param {Object} row row object
+   * @returns changes the selected object
    */
   function setCurrentRow(row) {
     if (row) {
@@ -254,8 +241,8 @@ import {ref} from "vue";
   }
 
   /**
-   * 打开选择框
-   * @param {Array} val 选中的对象数组
+   * Open selection box
+   * @param {Array} val array of selected objects
    */
   function open(val) {
     visible.value = true;
@@ -265,8 +252,8 @@ import {ref} from "vue";
   }
 
   /**
-   * 取消按钮
-   * @description 取消按钮时，重置所有状态
+   * Cancel button
+   * @description When canceling the button, reset all states
    */
   function cancel() {
     queryParams.value.pageNum = 1;
@@ -275,8 +262,8 @@ import {ref} from "vue";
   }
 
   /**
-   * 确定按钮
-   * @description 确定按钮时，emit confirm 事件，以便父组件接收到选中的数据
+   * OK button
+   * @description When confirming the button, emit the confirm event so that the parent component receives the selected data
    */
   function confirm() {
     if (!single.value) {
@@ -287,7 +274,7 @@ import {ref} from "vue";
     visible.value = false;
   }
 
-  /** 查询字典类型列表 */
+  /** Query dictionary type list */
   function getList() {
     loading.value = true;
     list${BusinessName}(proxy.addDateRange(queryParams.value, daterangeCreateTime.value)).then(
@@ -295,19 +282,19 @@ import {ref} from "vue";
           dataList.value = response.data.rows;
           total.value = response.data.total;
           loading.value = false;
-          // 初始化及分页切换选中逻辑
+          // Initialization and paging switching selection logic
           await nextTick();
           setCurrentRow(single.value);
         }
     );
   }
 
-  /** 搜索按钮操作 */
+  /** Search button operation */
   function handleQuery() {
     getList();
   }
 
-  /** 重置按钮操作 */
+  /** Reset button operation */
   function resetQuery() {
     proxy.resetForm("queryRef");
     queryParams.value.pageNum = 1;

@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl;
@@ -55,6 +41,7 @@ import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.BusinessType;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.poi.ExcelUtil;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppQualityLogPageReqVO;
@@ -66,12 +53,12 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppQualityLogDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppQualityLogService;
 
 /**
- * 数据质量日志Controller
+ * Data Quality Log Controller
  *
  * @author qdata
  * @date 2025-07-19
  */
-@Tag(name = "数据质量日志")
+@Tag(name = "Data Quality Log")
 @RestController
 @RequestMapping("/dpp/qualityLog")
 @Validated
@@ -87,17 +74,17 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "导出数据质量日志列表")
-    @Log(title = "数据质量日志", businessType = BusinessType.EXPORT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DppQualityLogPageReqVO exportReqVO) {
         exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<DppQualityLogDO> list = (List<DppQualityLogDO>) dppQualityLogService.getDppQualityLogPage(exportReqVO).getRows();
         ExcelUtil<DppQualityLogRespVO> util = new ExcelUtil<>(DppQualityLogRespVO.class);
-        util.exportExcel(response, DppQualityLogConvert.INSTANCE.convertToRespVOList(list), "应用管理数据");
+        util.exportExcel(response, DppQualityLogConvert.INSTANCE.convertToRespVOList(list), "Application Management Data");
     }
 
     @Operation(summary = "导入数据质量日志列表")
-    @Log(title = "数据质量日志", businessType = BusinessType.IMPORT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.IMPORT)
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<DppQualityLogRespVO> util = new ExcelUtil<>(DppQualityLogRespVO.class);
@@ -115,7 +102,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "新增数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.INSERT)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult<Long> add(@Valid @RequestBody DppQualityLogSaveReqVO dppQualityLog) {
         dppQualityLog.setCreatorId(getUserId());
@@ -125,7 +112,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "修改数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.UPDATE)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult<Integer> edit(@Valid @RequestBody DppQualityLogSaveReqVO dppQualityLog) {
         dppQualityLog.setUpdatorId(getUserId());
@@ -135,7 +122,7 @@ public class DppQualityLogController extends BaseController {
     }
 
     @Operation(summary = "删除数据质量日志")
-    @Log(title = "数据质量日志", businessType = BusinessType.DELETE)
+    @Log(title = "log.op.title.dpp.quality.log", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public CommonResult<Integer> remove(@PathVariable Long[] ids) {
         return CommonResult.toAjax(dppQualityLogService.removeDppQualityLog(Arrays.asList(ids)));
@@ -145,7 +132,7 @@ public class DppQualityLogController extends BaseController {
     @RequestMapping(value = "/logDetailCat", method = RequestMethod.GET)
     @Operation(summary = "运行日志详情")
     public ReturnT<LogResult> logDetailCat(String handleMsg) {
-        // 添加日志审计功能
+        // Add log audit functionality
         try {
             InputStream in = new FileInputStream(handleMsg);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -161,14 +148,16 @@ public class DppQualityLogController extends BaseController {
             if (in != null) {
                 in.close();
             }
-            // @TODO 查看日志
-            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE, "查询日志成功");
+            // @TODO View log
+            ReturnT<LogResult> returnT = new ReturnT<>(ReturnT.SUCCESS_CODE,
+                    MessageUtils.messageWithFallback("dpp.log.query.success", "Log query succeeded"));
             LogResult logResult = new LogResult(0, 0, logContent, true);
             returnT.setContent(logResult);
             return returnT;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return new ReturnT<>(ReturnT.FAIL_CODE, "暂未找到日志文件信息");
+            return new ReturnT<>(ReturnT.FAIL_CODE, MessageUtils.messageWithFallback(
+                    "dpp.error.log.file.notfound", "No log file information is currently available"));
         }
     }
 

@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -91,7 +92,7 @@ const {
 );
 const activeName = ref("0");
 function handleClick(tab) {
-  // 可根据需要自定义逻辑
+  // Logic can be customized as needed
   console.log("Tab clicked:", tab);
 }
 
@@ -100,7 +101,7 @@ const detailItems = computed(() => {
   const type = String(data.type);
 
   if (type === "1") {
-    // 数据库表
+    // database table
     return [
       { label: td('dpp.asset.detail.index.tableName'), key: "tableName", ellipsisClass: "ellipsis" },
       {
@@ -131,7 +132,7 @@ const detailItems = computed(() => {
       },
     ];
   } else if (type === "7" || type === "4") {
-    // 文件
+    // File
     return [
       { label: td('dpp.asset.detail.index.fileName'), key: "name", ellipsisClass: "ellipsis" },
       { label: td('dpp.asset.detail.index.dataDomain'), key: "dataDomainName", ellipsisClass: "ellipsis" },
@@ -147,7 +148,7 @@ const detailItems = computed(() => {
     ];
   }
 
-  // 默认展示
+  // Default display
   return [
     { label: td('dpp.asset.detail.index.category'), key: "catName", ellipsisClass: "ellipsis" },
     {
@@ -168,7 +169,7 @@ const detailItems = computed(() => {
   ];
 });
 
-// 计算属性生成 tab pane 数组
+// Computed property generates tab pane array
 const tabPanes = computed(() => {
   console.log(
       "🚀 ~ tabPanes ~ daAssetDetail.value.type:",
@@ -183,35 +184,35 @@ const tabPanes = computed(() => {
           component: ComponentOne,
           // tip: {
           //   content:
-          //       "查看和编辑该资产的所有字段信息，包括中文名、英文名、类型、长度等",
+          //       "View and edit all field information of the asset, including Chinese name, English name, type, length, etc.",
           // },
         },
         {
           label: td('dpp.asset.detail.index.tabPreview'),
           name: "2",
           component: ComponentTwo,
-          // tip: { content: "查看该资产的实时数据样例，帮助理解数据内容" },
+          // tip: { content: "View real-time data samples of this asset to help understand the data content" },
         },
         {
           label: td('dpp.asset.detail.index.tabQuality'),
           name: "3",
           component: DataQualityControl,
           // tip: {
-          //   content: "查看该资产的数据质量指标，如完整性、准确性、一致性等",
+          //   content: "View the data quality indicators of this asset, such as completeness, accuracy, consistency, etc.",
           // },
         },
         // {
-        //   label: "资产血缘",
+        //   label: "Asset Lineage",
         //   name: "4",
         //   component: lineage,
-        //   // tip: { content: "查看该资产的数据来源与去向，了解其上下游依赖关系" },
+        //   // tip: { content: "View the data source and destination of the asset, and understand its upstream and downstream dependencies" },
         // },
         {
           label: td('dpp.asset.detail.index.tabOverview'),
           name: "5",
           component: info,
           // tip: {
-          //   content: "查看该资产的整体信息，如创建时间 、责任人、访问次数等",
+          //   content: "View the overall information of the asset, such as creation time, responsible person, number of visits, etc.",
           // },
         },
       ];
@@ -281,14 +282,14 @@ const tabPanes = computed(() => {
 const showSearch = ref(true);
 const route = useRoute();
 let id = route.query.id || null;
-// 监听 id 变化
+// Monitor id changes
 watch(
     () => route.query.id,
     (newId) => {
-      id = newId || null; // 如果 id 为空，使用默认值 1
+      id = newId || null; // If id is empty, the default value 1 is used
       getDaAssetDetailById();
     },
-    { immediate: true } // `immediate` 为 true 表示页面加载时也会立即执行一次 watch
+    { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
 );
 const data = reactive({
   daAssetDetail: {},
@@ -297,7 +298,7 @@ const data = reactive({
 
 const { daAssetDetail } = toRefs(data);
 
-/** 复杂详情页面上方表单查询 */
+/** Form query at the top of the complex details page */
 function getDaAssetDetailById() {
   if (!id) {
     return;
@@ -319,10 +320,10 @@ onActivated(() => {
   // listDaAssetColumn();
 });
 onBeforeUnmount(() => {
-  // 清空参数或重置状态
+  // Clear parameters or reset status
   data.daAssetDetail = {};
   data.form = {};
-  activeName.value = "0"; // 重置tab页
+  activeName.value = "0"; // Reset tab page
 });
 // listDaAssetColumn();
 </script>

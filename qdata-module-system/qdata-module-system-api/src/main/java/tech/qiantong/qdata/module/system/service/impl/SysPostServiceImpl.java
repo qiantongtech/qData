@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.impl;
@@ -45,7 +31,7 @@ import tech.qiantong.qdata.module.system.service.ISysPostService;
 import java.util.List;
 
 /**
- * 岗位信息 服务层处理
+ * Post Information Service Layer Processing
  *
  * @author qdata
  */
@@ -59,10 +45,10 @@ public class SysPostServiceImpl implements ISysPostService
     private SysUserPostMapper userPostMapper;
 
     /**
-     * 查询岗位信息集合
+     * Query post information collection
      *
-     * @param post 岗位信息
-     * @return 岗位信息集合
+     * @param post post information
+     * @return post information collection
      */
     @Override
     public List<SysPost> selectPostList(SysPost post)
@@ -71,9 +57,9 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 查询所有岗位
+     * Query all posts
      *
-     * @return 岗位列表
+     * @return post list
      */
     @Override
     public List<SysPost> selectPostAll()
@@ -82,10 +68,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 通过岗位ID查询岗位信息
+     * Query post information by post ID
      *
-     * @param postId 岗位ID
-     * @return 角色对象信息
+     * @param postId post ID
+     * @return role object information
      */
     @Override
     public SysPost selectPostById(Long postId)
@@ -94,10 +80,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 根据用户ID获取岗位选择框列表
+     * Get post selection box list by user ID
      *
-     * @param userId 用户ID
-     * @return 选中岗位ID列表
+     * @param userId user ID
+     * @return selected post ID list
      */
     @Override
     public List<Long> selectPostListByUserId(Long userId)
@@ -106,10 +92,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 校验岗位名称是否唯一
+     * Check if post name is unique
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public boolean checkPostNameUnique(SysPost post)
@@ -124,10 +110,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 校验岗位编码是否唯一
+     * Check if post code is unique
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public boolean checkPostCodeUnique(SysPost post)
@@ -142,10 +128,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 通过岗位ID查询岗位使用数量
+     * Query post usage count by post ID
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     @Override
     public int countUserPostById(Long postId)
@@ -154,10 +140,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 删除岗位信息
+     * Delete post information
      *
-     * @param postId 岗位ID
-     * @return 结果
+     * @param postId post ID
+     * @return result
      */
     @Override
     public int deletePostById(Long postId)
@@ -166,10 +152,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 批量删除岗位信息
+     * Batch delete post information
      *
-     * @param postIds 需要删除的岗位ID
-     * @return 结果
+     * @param postIds post IDs to delete
+     * @return result
      */
     @Override
     public int deletePostByIds(Long[] postIds)
@@ -179,17 +165,17 @@ public class SysPostServiceImpl implements ISysPostService
             SysPost post = selectPostById(postId);
             if (countUserPostById(postId) > 0)
             {
-                throw new ServiceException(String.format("%1$s已分配,不能删除", post.getPostName()));
+                throw new ServiceException(String.format("%1$s is already assigned, cannot be deleted", post.getPostName()));
             }
         }
         return postMapper.deletePostByIds(postIds);
     }
 
     /**
-     * 新增保存岗位信息
+     * Insert and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public int insertPost(SysPost post)
@@ -198,10 +184,10 @@ public class SysPostServiceImpl implements ISysPostService
     }
 
     /**
-     * 修改保存岗位信息
+     * Update and save post information
      *
-     * @param post 岗位信息
-     * @return 结果
+     * @param post post information
+     * @return result
      */
     @Override
     public int updatePost(SysPost post)

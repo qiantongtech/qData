@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -156,6 +157,7 @@ import { dpDocumentList } from "@/api/dp/document/search";
 import handleFilePreview from "@/utils/filePreview.js";
 // search
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const { dp_document_standard_type, dp_document_type, dp_document_status } =
   proxy.useDict(
     "dp_document_standard_type",
@@ -282,7 +284,7 @@ const getFileIcon = (fileUrl) => {
         .href;
   }
 };
-/** 查询应用API服务关联列表 */
+/** Query application API service association list */
 function getList() {
   loading.value = true;
   dpDocumentList(queryParams.value)
@@ -295,13 +297,13 @@ function getList() {
     });
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
@@ -489,12 +491,12 @@ getList();
 .page-list {
   height: 69.8vh;
   height: auto;
-  /* 或者直接删掉这行 */
+  /* Or just delete this line */
   max-height: none;
-  /* 保证不被限制高度 */
+  /* Guaranteed not to be restricted in height */
   overflow: visible;
 
-  /* 不产生内部滚动条 */
+  /* Do not generate internal scroll bars */
   &::-webkit-scrollbar {
     width: 2px;
   }

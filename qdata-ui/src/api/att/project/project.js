@@ -1,23 +1,28 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request';
 
-// 查询项目列表
+const buildHeaders = (options = {}) => ({
+    hideErrorMessage: options.hideErrorMessage === true
+});
+
+// Query project list
 export function listAttProject(query) {
     return request({
         url: '/att/project/list',
@@ -26,7 +31,7 @@ export function listAttProject(query) {
     });
 }
 
-// 查询当前用户所属的项目列表
+// Query the list of projects to which the current user belongs
 export function currentUser() {
     return request({
         url: '/att/project/currentUser/list',
@@ -34,16 +39,17 @@ export function currentUser() {
     });
 }
 
-// 查询当前用户所属的项目列表
-export function noProjectUser(query) {
+// Query the list of projects to which the current user belongs
+export function noProjectUser(query, options = {}) {
     return request({
         url: '/att/project/noProjectUser/list',
         method: 'post',
-        params: query
+        params: query,
+        headers: buildHeaders(options)
     });
 }
 
-// 查询项目详细
+// Query project details
 export function getAttProject(id) {
     return request({
         url: '/att/project/' + id,
@@ -51,15 +57,16 @@ export function getAttProject(id) {
     });
 }
 
-// 获取当前用户是非具备用户添加和项目管理员
-export function addUserAndProject(id) {
+// Get whether the current user has user addition and project administrator
+export function addUserAndProject(id, options = {}) {
     return request({
         url: '/att/project/addUserAndProject/' + id,
-        method: 'get'
+        method: 'get',
+        headers: buildHeaders(options)
     });
 }
 
-// 修改状态
+// Modify status
 export function editProjectStatus(id, status) {
     return request({
         url: `/att/project/editProjectStatus/${id}/${status}`,
@@ -67,7 +74,7 @@ export function editProjectStatus(id, status) {
     });
 }
 
-// 新增项目
+// Add new items
 export function addAttProject(data) {
     return request({
         url: '/att/project',
@@ -76,7 +83,7 @@ export function addAttProject(data) {
     });
 }
 
-// 修改项目
+// Modify project
 export function updateAttProject(data) {
     return request({
         url: '/att/project',
@@ -85,7 +92,7 @@ export function updateAttProject(data) {
     });
 }
 
-// 删除项目
+// Delete project
 export function delAttProject(id) {
     return request({
         url: '/att/project/' + id,

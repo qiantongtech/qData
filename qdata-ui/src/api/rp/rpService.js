@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/rpRequest';
 
-// 左侧树
+// tree on left
 export function catApiList(query) {
     return request({
         url: '/rp/attApi/catApi/list',
@@ -26,7 +27,7 @@ export function catApiList(query) {
     });
 }
 
-// 列表
+// list
 export function dsApiList(query) {
     return request({
         url: '/rp/dsApi/list',
@@ -35,7 +36,7 @@ export function dsApiList(query) {
     });
 }
 
-// 列表详情
+// List details
 export function dsApiView(id) {
     return request({
         url: '/rp/dsApi/' + id,
@@ -43,7 +44,7 @@ export function dsApiView(id) {
     });
 }
 
-// 查询个人中心我的申请统计项
+// Check my application statistics in Personal Center
 export function applyCount() {
     return request({
         url: '/rp/dsApi/applyCount',
@@ -51,7 +52,7 @@ export function applyCount() {
     });
 }
 
-// 可申请的API列表
+// List of APIs that can be applied for
 export function areaDict(data) {
     return request({
         url: '/rp/rpDict/areaDict',
@@ -76,7 +77,7 @@ export function applyEdit(data) {
     });
 }
 
-// 查询API申请服务详细
+// Query API application service details
 export function getDsApiApply(id) {
     return request({
         url: '/da/apply/' + id,
@@ -84,7 +85,7 @@ export function getDsApiApply(id) {
     });
 }
 
-// 删除API申请服务
+// Delete API application service
 export function applyDel(id) {
     return request({
         url: '/da/apply/' + id,

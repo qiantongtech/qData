@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -36,26 +22,26 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * 精确的浮点数运算
+ * Precise floating point arithmetic
  *
  * @author qdata
  */
 public class Arith
 {
 
-    /** 默认除法运算精度 */
+    /**Default division operation precision */
     private static final int DEF_DIV_SCALE = 10;
 
-    /** 这个类不能实例化 */
+    /** This class cannot be instantiated */
     private Arith()
     {
     }
 
     /**
-     * 提供精确的加法运算。
-     * @param v1 被加数
-     * @param v2 加数
-     * @return 两个参数的和
+     * Provides precise addition operations.
+     * @param v1 summand
+     * @param v2 addend
+     * @return the sum of the two parameters
      */
     public static double add(double v1, double v2)
     {
@@ -65,10 +51,10 @@ public class Arith
     }
 
     /**
-     * 提供精确的减法运算。
-     * @param v1 被减数
-     * @param v2 减数
-     * @return 两个参数的差
+     * Provides precise subtraction operations.
+     * @param v1 minuend
+     * @param v2 subtrahend
+     * @return the difference between the two parameters
      */
     public static double sub(double v1, double v2)
     {
@@ -78,10 +64,10 @@ public class Arith
     }
 
     /**
-     * 提供精确的乘法运算。
-     * @param v1 被乘数
-     * @param v2 乘数
-     * @return 两个参数的积
+     * Provides precise multiplication operations.
+     * @param v1 multiplicand
+     * @param v2 multiplier
+     * @return product of two parameters
      */
     public static double mul(double v1, double v2)
     {
@@ -91,11 +77,11 @@ public class Arith
     }
 
     /**
-     * 提供（相对）精确的除法运算，当发生除不尽的情况时，精确到
-     * 小数点以后10位，以后的数字四舍五入。
-     * @param v1 被除数
-     * @param v2 除数
-     * @return 两个参数的商
+     * Provides (relatively) accurate division operations. When the division cannot be completed, the division operation is accurate to
+     * There are 10 decimal places after the decimal point, and subsequent numbers are rounded off.
+     * @param v1 dividend
+     * @param v2 divisor
+     * @return the quotient of the two parameters
      */
     public static double div(double v1, double v2)
     {
@@ -103,12 +89,12 @@ public class Arith
     }
 
     /**
-     * 提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指
-     * 定精度，以后的数字四舍五入。
-     * @param v1 被除数
-     * @param v2 除数
-     * @param scale 表示表示需要精确到小数点以后几位。
-     * @return 两个参数的商
+     * Provides (relatively) accurate division operations. When inexhaustible division occurs, the scale parameter indicates
+     * To determine the precision, subsequent numbers will be rounded off.
+     * @param v1 dividend
+     * @param v2 divisor
+     * @param scale means that it needs to be accurate to several decimal places.
+     * @return the quotient of the two parameters
      */
     public static double div(double v1, double v2, int scale)
     {
@@ -127,10 +113,10 @@ public class Arith
     }
 
     /**
-     * 提供精确的小数位四舍五入处理。
-     * @param v 需要四舍五入的数字
-     * @param scale 小数点后保留几位
-     * @return 四舍五入后的结果
+     * Provides precise decimal rounding processing.
+     * @param v The number that needs to be rounded
+     * @param scale How many decimal places to keep after the decimal point?
+     * @return the rounded result
      */
     public static double round(double v, int scale)
     {

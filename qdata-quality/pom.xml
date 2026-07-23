@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
-   *
-  ============================================================================
-   *
-  版权所有 © 2025 江苏千桐科技有限公司
-  qData 数据中台（开源版）
-   *
-  许可协议：
-  本项目基于 Apache License 2.0 开源协议发布，
-  允许在遵守协议的前提下进行商用、修改和分发。
-   *
-  特别说明：
-  所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
-  如需定制品牌，请通过官方渠道申请品牌定制授权。
-   *
-  更多信息请访问：https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -44,10 +30,10 @@
     <artifactId>qdata-quality</artifactId>
 
     <description>
-        数据质量服务入口
+        Data quality service entry point
     </description>
 
-    <!-- 设置 jitpack.io 插件仓库 -->
+    <!-- Set up jitpack.io plug-in repository -->
     <pluginRepositories>
         <pluginRepository>
             <id>jitpack.io</id>
@@ -69,28 +55,28 @@
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 核心模块 config-->
+        <!-- Core module config-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-config</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 mybatis -->
+        <!-- System module mybatis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-mybatis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 系统模块 redis -->
+        <!-- System module redis -->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-redis</artifactId>
             <version>${qdata.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
+        <!-- General tools-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-common</artifactId>
@@ -107,7 +93,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!-- 文件上传-->
+        <!-- File upload-->
         <dependency>
             <groupId>tech.qiantong</groupId>
             <artifactId>qdata-file</artifactId>
@@ -119,7 +105,7 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Maven依赖 -->
+        <!-- Maven dependency -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -140,7 +126,7 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- 将所有的模块打包在一个jar中-->
+            <!-- Package all modules in a jar-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -151,10 +137,10 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <!-- 限制只处理 tech.qiantong 相关的依赖 -->
+                            <!-- Limit processing to tech.qiantong related dependencies only -->
                             <artifactSet>
                                 <includes>
-                                    <include>tech.qiantong:*:*</include> <!-- 只包括 tech.qiantong 开头的所有依赖 -->
+                                    <include>tech.qiantong:*:*</include> <!-- Only include all dependencies starting with tech.qiantong -->
                                 </includes>
                             </artifactSet>
 
@@ -162,7 +148,7 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
-                                        <!-- 排除 JAR 中的签名文件等不必要的文件 -->
+                                        <!-- Exclude unnecessary files such as signature files in JAR -->
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
@@ -174,7 +160,7 @@
                 </executions>
             </plugin>
 
-            <!-- maven-compiler-plugin 配置 -->
+            <!-- maven-compiler-plugin configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -183,13 +169,13 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <annotationProcessorPaths>
-                        <!-- 引入 mapstruct-processor -->
+                        <!-- Introduce mapstruct-processor -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>1.5.5.Final</version>
                         </path>
-                        <!-- 引入 lombok-processor -->
+                        <!-- Introduce lombok-processor -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -199,14 +185,14 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot Maven 插件配置 -->
+            <!-- Spring Boot Maven plugin configuration -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.5.15</version>
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
-                    <!-- 排除 `tech.qiantong` 下的所有模块 -->
+                    <fork>true</fork> <!-- Without this configuration, devtools will not take effect -->
+                    <!-- Exclude all modules under `tech.qiantong` -->
                     <excludeGroupIds>tech.qiantong</excludeGroupIds>
                 </configuration>
                 <executions>
@@ -218,7 +204,7 @@
                 </executions>
             </plugin>
 
-            <!-- 其他需要的插件配置，如 maven-war-plugin 等 -->
+            <!-- Other required plug-in configurations, such as maven-war-plugin, etc. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -229,14 +215,14 @@
                 </configuration>
             </plugin>
 
-            <!-- docker 镜像打包 -->
+            <!-- docker image packaging -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
 
                 <executions>
-                    <!-- 1. 只打印 build 命令 -->
+                    <!-- 1. Only print the build command -->
                     <execution>
                         <id>print-docker-build</id>
                         <phase>validate</phase>
@@ -256,7 +242,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- 2. 只打印 push 命令 -->
+                    <!-- 2. Only print push commands -->
                     <execution>
                         <id>print-docker-push</id>
                         <phase>validate</phase>
@@ -276,7 +262,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- 3. 真正执行 docker build（和 print-docker-build 完全一致） -->
+                    <!-- 3. Really execute docker build (exactly the same as print-docker-build) -->
                     <execution>
                         <id>docker-build</id>
                         <phase>package</phase>
@@ -300,7 +286,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- 4. 真正执行 docker push（和 print-docker-push 完全一致） -->
+                    <!-- 4. Really execute docker push (exactly the same as print-docker-push) -->
                     <execution>
                         <id>docker-push</id>
                         <phase>deploy</phase>

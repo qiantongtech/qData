@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -21,15 +22,15 @@
     <el-form ref="dpModelRefs" :model="form" label-width="110px" @submit.prevent v-loading="loading" :disabled="info" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.nodeName', '节点名称')" prop="name" :rules="[
-            { required: true, message: td('dpp.integration.nodeNameRequired', '请输入节点名称'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.nodeName', 'Node Name')" prop="name" :rules="[
+            { required: true, message: td('dpp.integration.nodeNameRequired', 'Please enter node name'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', '请输入节点名称')" />
+            <el-input v-model="form.name" :placeholder="td('dpp.integration.nodeNamePlaceholder', 'Please enter node name')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.type', '类型')" prop="typeName" :label-position="labelPosition">
-            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', '请输入类型')" filterable disabled>
+          <el-form-item :label="td('dpp.integration.type', 'Type')" prop="typeName" :label-position="labelPosition">
+            <el-select v-model="form.taskParams.typeName" :placeholder="td('dpp.integration.typePlaceholder', 'Please enter type')" filterable disabled>
               <el-option v-for="dict in typeList" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
             </el-select>
           </el-form-item>
@@ -44,8 +45,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.uploadAttachment', '上传附件')" prop="taskParams.excelFile" :rules="[
-            { required: true, message: td('dpp.integration.uploadAttachmentRequired', '请上传附件'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.uploadAttachment', 'Upload Attachment')" prop="taskParams.excelFile" :rules="[
+            { required: true, message: td('dpp.integration.uploadAttachmentRequired', 'Please upload attachment'), trigger: 'change' },
           ]" :label-position="labelPosition">
             <!-- <FileUploadbtn :limit="1" v-model="form.taskParams.excelFile" :dragFlag="false" :file-type="['xlsx', 'xls']"
               :fileSize="50" @handleRemove="handleRemove" /> -->
@@ -54,20 +55,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.startRow', '起始行')" prop="taskParams.startData" :rules="[
-            { required: true, message: td('dpp.integration.startRowRequired', '请输入起始行'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startRow', 'Start Row')" prop="taskParams.startData" :rules="[
+            { required: true, message: td('dpp.integration.startRowRequired', 'Please enter start row'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startRowPlaceholder', '请输入起始行')" v-model="form.taskParams.startData"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startRowPlaceholder', 'Please enter start row')" v-model="form.taskParams.startData"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="td('dpp.integration.startColumn', '起始列')" prop="taskParams.startColumn" :rules="[
-            { required: true, message: td('dpp.integration.startColumnRequired', '请输入起始列'), trigger: 'change' },
+          <el-form-item :label="td('dpp.integration.startColumn', 'Start Column')" prop="taskParams.startColumn" :rules="[
+            { required: true, message: td('dpp.integration.startColumnRequired', 'Please enter start column'), trigger: 'change' },
           ]" :label-position="labelPosition">
-            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startColumnPlaceholder', '请输入起始列')" v-model="form.taskParams.startColumn"
+            <el-input-number :step="1" step-strictly :placeholder="td('dpp.integration.startColumnPlaceholder', 'Please enter start column')" v-model="form.taskParams.startColumn"
               style="width: 100%" controls-position="right" :min="1" value-on-clear="min" />
           </el-form-item>
         </el-col>
@@ -78,25 +79,25 @@
         </el-col>
       </el-row>
       <el-divider content-position="center">
-        <span class="blue-text">{{ td('dpp.integration.attributeFields', '属性字段') }}</span>
+        <span class="blue-text">{{ td('dpp.integration.attributeFields', 'Attribute Fields') }}</span>
       </el-divider>
       <el-table stripe height="310px" v-loading="loadingList" :data="ColumnByAssettab">
-        <el-table-column :label="td('common.display.index', '序号')" type="index" width="80" align="left">
+        <el-table-column :label="td('common.display.index', 'Index')" type="index" width="80" align="left">
           <template #default="scope">
             <span>{{ scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldName', '字段名称')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('dpp.integration.fieldName', 'Field Name')" align="left" prop="columnName" :show-overflow-tooltip="{ effect: 'light' }">
           <template #default="scope">
             {{ scope.row.columnName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.fieldType', '字段类型')" align="left" prop="columnType">
+        <el-table-column :label="td('dpp.integration.fieldType', 'Field Type')" align="left" prop="columnType">
           <template #default="scope">
             {{ scope.row.columnType || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('dpp.integration.dateFormat', '日期格式')" align="left" prop="format">
+        <el-table-column :label="td('dpp.integration.dateFormat', 'Date Format')" align="left" prop="format">
           <template #default="scope">
             {{ scope.row.format || "-" }}
           </template>
@@ -115,7 +116,7 @@
       </div>
     </template>
   </el-dialog>
-  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', '属性字段编辑')" @update:visible="open = $event" @confirm="handletaskConfig"
+  <excelUploadDialog :visible="open" :title="td('dpp.integration.attributeFieldEdit', 'Attribute Field Edit')" @update:visible="open = $event" @confirm="handletaskConfig"
     :data="row" />
 </template>
 <script setup>
@@ -146,19 +147,19 @@ const visibleDialog = computed({
     emit("update", newValue);
   },
 });
-// 变量定义
+// variable definition
 let loading = ref(false);
 let loadingList = ref(false);
 let TablesByDataSource = ref([]);
 let ColumnByAssettab = ref();
-// 修改
+// Modify
 const open = ref(false);
 let row = ref({});
 const openDialog = (obj) => {
   row.value = obj;
   open.value = true;
 };
-// 属性字段修改新增
+// Attribute fields modified and added
 const handletaskConfig = (form) => {
   ColumnByAssettab.value = ColumnByAssettab.value.map((column) => {
     if (column.id == form.id) {
@@ -170,8 +171,8 @@ const handletaskConfig = (form) => {
 
 let dpModelRefs = ref();
 let form = ref({});
-const tableFields = ref([]); // 来源表格
-// 计算属性：判断按钮是否禁用
+const tableFields = ref([]); // Source form
+// Computed property: determine whether the button is disabled
 const isButtonDisabled = computed(() => {
   console.log(form.value.taskParams.excelFile);
   return (
@@ -180,18 +181,18 @@ const isButtonDisabled = computed(() => {
     !form.value.taskParams.excelFile
   );
 });
-// 获取列数据
+// Get column data
 const parseExcel = async (id) => {
   if (!form.value.taskParams.startData) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "解析失败，请添加起始行"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartRow", "Parse failed, please add start row"));
     return;
   }
   if (!form.value.taskParams.startColumn) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddStartColumn", "解析失败，请添加起始列"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddStartColumn", "Parse failed, please add start column"));
     return;
   }
   if (!form.value.taskParams.excelFile) {
-    ElMessage.warning(td("dpp.integration.parseFailedAddAttachment", "解析失败，请添加附件"));
+    ElMessage.warning(td("dpp.integration.parseFailedAddAttachment", "Parse failed, please add attachment"));
     return;
   }
   loadingList.value = true;
@@ -210,13 +211,13 @@ const parseExcel = async (id) => {
         columnType: "string",
       }));
 
-      ElMessage.success(td("dpp.integration.excelParseSuccess", "Excel解析成功，请确认属性字段类型！"));
+      ElMessage.success(td("dpp.integration.excelParseSuccess", "Excel parsed successfully, please confirm attribute field types!"));
     } else {
-      ElMessage.warning(td("dpp.integration.excelParseFailedNoData", "Excel解析失败，未获取到有效数据！"));
+      ElMessage.warning(td("dpp.integration.excelParseFailedNoData", "Excel parse failed, no valid data obtained!"));
     }
   } catch (error) {
     if (response.code == 200)
-      ElMessage.warning(td("dpp.integration.excelParseFailedCheckFile", "Excel解析失败，请检查文件格式或内容！"));
+      ElMessage.warning(td("dpp.integration.excelParseFailedCheckFile", "Excel parse failed, please check file format or content!"));
   } finally {
     loadingList.value = false;
   }
@@ -224,32 +225,32 @@ const parseExcel = async (id) => {
 
 const off = () => {
   proxy.resetForm("dpModelRefs");
-  // 清空表格字段数据
+  // Clear table field data
   ColumnByAssettab.value = [];
   TablesByDataSource.value = [];
   tableFields.value = [];
 };
-// 保存数据
+// save data
 const saveData = async () => {
   try {
-    // 异步验证表单
+    // Asynchronous validation form
     const valid = await dpModelRefs.value.validate();
     if (!valid) return;
     if (
       form.value?.taskParams.type == "1" &&
       (!ColumnByAssettab.value || ColumnByAssettab.value.length == 0)
     ) {
-      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "校验未通过，请选择属性字段"));
+      return proxy.$message.warning(td("dpp.integration.validateFailedSelectFields", "Validation failed, please select attribute fields"));
     }
-    // 如果没有 code，就调用接口获取唯一的 code
+    // If there is no code, call the interface to get the unique code
     if (!form.value.code) {
       loading.value = true;
       const response = await getNodeUniqueKey({
         projectCode: userStore.projectCode || "133545087166112",
         projectId: userStore.projectId,
       });
-      loading.value = false; // 结束加载状态
-      form.value.code = response.data; // 设置唯一的 code
+      loading.value = false; // end loading state
+      form.value.code = response.data; // Set unique code
     }
     const taskParams = form.value?.taskParams;
     taskParams.tableFields = ColumnByAssettab.value;
@@ -273,32 +274,32 @@ const saveData = async () => {
 };
 const closeDialog = () => {
   off();
-  // 关闭对话框
+  // Close dialog
   emit("update", false);
 };
 
-// 监听属性变化
+// Listen for property changes
 function deepCopy(data) {
   if (data === undefined || data === null) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (e) {
-    return {}; // 或者返回一个默认值
+    return {}; // Or return a default value
   }
 }
-// 监听属性变化
+// Listen for property changes
 watchEffect(() => {
   if (props.visible) {
-    // 数据源
+    // data source
     form.value = deepCopy(props.currentNode.data);
     ColumnByAssettab.value = props.currentNode?.data.taskParams.tableFields;
   } else {
     off();
   }
 });
-// 文件删除
+// File deletion
 function handleRemove() {
   ColumnByAssettab.value = [];
   form.value.taskParams.excelFile = undefined;

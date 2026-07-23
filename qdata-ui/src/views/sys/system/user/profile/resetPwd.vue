@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -47,16 +48,16 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       confirmPassword: undefined
    });
 
-   // 密码强度检测的正则表达式
+   // Regular expression for password strength detection
    const passwordStrengthRegex = {
-      minLength: /^.{8,}$/, // 最小 8 位
-      upperCase: /[A-Z]/,    // 至少一个大写字母
-      lowerCase: /[a-z]/,    // 至少一个小写字母
-      number: /\d/,          // 至少一个数字
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/, // 至少一个特殊字符
+      minLength: /^.{8,}$/, // Minimum 8 bits
+      upperCase: /[A-Z]/,    // at least one capital letter
+      lowerCase: /[a-z]/,    // at least one lowercase letter
+      number: /\d/,          // at least one number
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/, // at least one special character
    };
 
-   // 密码强度检测逻辑
+   // Password strength detection logic
    const checkPasswordStrength = (password) => {
       if (!password) return null;
 
@@ -83,7 +84,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       return strengthValid ? null : message;
    };
 
-   // 用于显示密码强度提示
+   // Used to display password strength prompts
    let passwordStrengthMessage = "";
 
    const equalToPassword = (rule, value, callback) => {
@@ -105,10 +106,10 @@ import { updateUserPwd } from "@/api/system/system/user.js";
                const strengthMessage = checkPasswordStrength(value);
                if (strengthMessage) {
                   passwordStrengthMessage = strengthMessage;
-                  callback(new Error(strengthMessage));  // 报告错误
+                  callback(new Error(strengthMessage));  // Report an error
                } else {
-                  passwordStrengthMessage = "";  // 清除密码强度提示
-                  callback();  // 密码强度符合要求
+                  passwordStrengthMessage = "";  // Clear password strength prompts
+                  callback();  // Password strength meets requirements
                }
             },
             trigger: "blur"
@@ -120,7 +121,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       ]
    });
 
-   /** 提交按钮 */
+   /** submit button */
    function submit() {
       proxy.$refs.pwdRef.validate(valid => {
          if (valid) {
@@ -131,7 +132,7 @@ import { updateUserPwd } from "@/api/system/system/user.js";
       });
    };
 
-   /** 关闭按钮 */
+   /** close button */
    function close() {
       proxy.$tab.closePage();
    };

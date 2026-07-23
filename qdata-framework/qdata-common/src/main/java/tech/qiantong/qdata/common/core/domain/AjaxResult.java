@@ -1,45 +1,32 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.core.domain;
 
 import tech.qiantong.qdata.common.constant.HttpStatus;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Objects;
 
 /**
- * 操作消息提醒
+ * Operation message reminder
  *
  * @author qdata
  */
@@ -47,27 +34,27 @@ public class AjaxResult extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;
 
-    /** 状态码 */
+    /** Status code */
     public static final String CODE_TAG = "code";
 
-    /** 返回内容 */
+    /** Return content */
     public static final String MSG_TAG = "msg";
 
-    /** 数据对象 */
+    /** data object */
     public static final String DATA_TAG = "data";
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
+     * Initializes a newly created AjaxResult object to represent an empty message.
      */
     public AjaxResult()
     {
     }
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象
+     * Initialize a newly created AjaxResult object
      *
-     * @param code 状态码
-     * @param msg 返回内容
+     * @param code status code
+     * @param msg return content
      */
     public AjaxResult(int code, String msg)
     {
@@ -76,11 +63,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 初始化一个新创建的 AjaxResult 对象
+     * Initialize a newly created AjaxResult object
      *
-     * @param code 状态码
-     * @param msg 返回内容
-     * @param data 数据对象
+     * @param code status code
+     * @param msg return content
+     * @param data data object
      */
     public AjaxResult(int code, String msg, Object data)
     {
@@ -93,30 +80,32 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回成功消息
+     * Return success message
      *
-     * @return 成功消息
+     * @return success message
      */
     public static AjaxResult success()
     {
-        return AjaxResult.success("操作成功");
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"));
     }
 
     /**
-     * 返回成功数据
+     * Return success data
      *
-     * @return 成功消息
+     * @return success message
      */
     public static AjaxResult success(Object data)
     {
-        return AjaxResult.success("操作成功", data);
+        return AjaxResult.success(MessageUtils.messageWithFallback(
+                "common.operation.success", "Operation successful"), data);
     }
 
     /**
-     * 返回成功消息
+     * Return success message
      *
-     * @param msg 返回内容
-     * @return 成功消息
+     * @param msg return content
+     * @return success message
      */
     public static AjaxResult success(String msg)
     {
@@ -124,11 +113,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回成功消息
+     * Return success message
      *
-     * @param msg 返回内容
-     * @param data 数据对象
-     * @return 成功消息
+     * @param msg return content
+     * @param data data object
+     * @return success message
      */
     public static AjaxResult success(String msg, Object data)
     {
@@ -136,10 +125,10 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回警告消息
+     * Return warning message
      *
-     * @param msg 返回内容
-     * @return 警告消息
+     * @param msg return content
+     * @return warning message
      */
     public static AjaxResult warn(String msg)
     {
@@ -147,11 +136,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回警告消息
+     * Return warning message
      *
-     * @param msg 返回内容
-     * @param data 数据对象
-     * @return 警告消息
+     * @param msg return content
+     * @param data data object
+     * @return warning message
      */
     public static AjaxResult warn(String msg, Object data)
     {
@@ -159,20 +148,21 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回错误消息
+     * Return error message
      *
-     * @return 错误消息
+     * @return error message
      */
     public static AjaxResult error()
     {
-        return AjaxResult.error("操作失败");
+        return AjaxResult.error(MessageUtils.messageWithFallback(
+                "common.operation.fail", "Operation failed"));
     }
 
     /**
-     * 返回错误消息
+     * Return error message
      *
-     * @param msg 返回内容
-     * @return 错误消息
+     * @param msg return content
+     * @return error message
      */
     public static AjaxResult error(String msg)
     {
@@ -180,11 +170,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回错误消息
+     * Return error message
      *
-     * @param msg 返回内容
-     * @param data 数据对象
-     * @return 错误消息
+     * @param msg return content
+     * @param data data object
+     * @return error message
      */
     public static AjaxResult error(String msg, Object data)
     {
@@ -192,11 +182,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 返回错误消息
+     * Return error message
      *
-     * @param code 状态码
-     * @param msg 返回内容
-     * @return 错误消息
+     * @param code status code
+     * @param msg return content
+     * @return error message
      */
     public static AjaxResult error(int code, String msg)
     {
@@ -204,9 +194,9 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 是否为成功消息
+     * Is it a success message?
      *
-     * @return 结果
+     * @return result
      */
     public boolean isSuccess()
     {
@@ -214,9 +204,9 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 是否为警告消息
+     * Is it a warning message?
      *
-     * @return 结果
+     * @return result
      */
     public boolean isWarn()
     {
@@ -224,9 +214,9 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 是否为错误消息
+     * Is it an error message?
      *
-     * @return 结果
+     * @return result
      */
     public boolean isError()
     {
@@ -234,11 +224,11 @@ public class AjaxResult extends HashMap<String, Object>
     }
 
     /**
-     * 方便链式调用
+     * Convenient chain call
      *
-     * @param key 键
-     * @param value 值
-     * @return 数据对象
+     * @param key key
+     * @param value value
+     * @return data object
      */
     @Override
     public AjaxResult put(String key, Object value)

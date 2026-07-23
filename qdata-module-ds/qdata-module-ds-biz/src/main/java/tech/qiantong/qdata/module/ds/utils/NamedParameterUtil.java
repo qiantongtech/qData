@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.ds.utils;
@@ -40,7 +26,7 @@ import tech.qiantong.qdata.common.utils.MessageUtils;
 import java.util.*;
 
 /**
- * 带参数sql处理工具类
+ * Utility for SQL with named parameters.
  */
 public class NamedParameterUtil {
 
@@ -70,13 +56,13 @@ public class NamedParameterUtil {
     private NamedParameterUtil() {}
 
     /**
-     * 定义特殊字符（增加最后的自定义的'}'）
+     * Defines special characters, including the custom trailing '}'.
      */
     private static final char[] PARAMETER_SEPARATORS =
             new char[] {'"', '\'', ':', '&', ',', ';', '(', ')', '|', '=', '+', '-', '*', '%', '/', '\\', '<', '>', '^', '}'};
 
     /**
-     * 对带参数sql的统计式封装，便于后续肢解拼装
+     * Encapsulates SQL statistics with parameters for subsequent decomposition and assembly.
      * @param originalSql
      * @return
      */
@@ -119,7 +105,7 @@ public class NamedParameterUtil {
     }
 
     /**
-     * 获得不带参数的sql，即替换参数为？
+     * Returns SQL without named parameters by replacing them with question marks.
      * @param parsedSql
      * @param params
      * @return
@@ -147,7 +133,7 @@ public class NamedParameterUtil {
     }
 
     /**
-     * 获得sql所需参数K,V
+     * Returns the parameter key-value pairs required by the SQL.
      * @param parsedSql
      * @param params
      * @return
@@ -156,7 +142,7 @@ public class NamedParameterUtil {
         List<String> paramNames = parsedSql.getParamNames();
         LinkedHashMap<String, Object> acceptedFilters = new LinkedHashMap<>(parsedSql.getTotalParamCount());
         if (parsedSql.getNamedParamCount() > 0 && parsedSql.getUnnamedParamCount() > 0) {
-            throw new ServiceException("ds.error.param.mixed", "parameter方式与？方式不能混合！");
+            throw new ServiceException("ds.error.param.mixed", "Named parameters and ? placeholders cannot be mixed!");
         }
         for (int i = 0; i < paramNames.size(); i++) {
             String keyName = paramNames.get(i);

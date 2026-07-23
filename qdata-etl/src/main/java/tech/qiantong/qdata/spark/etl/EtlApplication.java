@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.spark.etl;
@@ -44,6 +30,7 @@ import org.apache.spark.sql.SparkSession;
 import tech.qiantong.qdata.api.ds.api.etl.ds.ProcessInstance;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.enums.*;
+import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.spark.etl.reader.ReaderFactory;
 import tech.qiantong.qdata.spark.etl.transition.TransitionFactory;
 import tech.qiantong.qdata.spark.etl.utils.IDGeneratorUtils;
@@ -58,7 +45,7 @@ import java.util.*;
 
 /**
  * <P>
- * 用途:ETL程序入口
+ * Purpose: ETL program entry
  * </p>
  *
  * @author: FXB
@@ -80,80 +67,80 @@ public class EtlApplication {
         JSONObject redis = config.getJSONObject("redis");
         JSONObject taskInfo = config.getJSONObject("taskInfo");
 
-        // 初始化redis（兼容历史任务，RedisUtils 中配置默认值后重新打包）
+        // Initialize redis (compatible with historical tasks, repackage after configuring default values in RedisUtils)
         if (redis != null && redis.size() > 0) {
             RedisUtils.init(redis);
         }
 
-        //创建流程实例
+        //Create process instance
         ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);
 
-        //注册spark
+        //Register spark
         SparkConf conf = new SparkConf().setAppName("EtlApplication");
 
         SparkSession spark = SparkSession.builder()
                 .config(conf)
                 .getOrCreate();
 
-        //读取配置
+        //Read configuration
         JSONObject reader = taskParams.getJSONObject("reader");
-        //参数信息
+        //Parameter information
         JSONObject readParameter = reader.getJSONObject("parameter");
 
-        //输入类型
+        //Input type
         TaskComponentTypeEnum readerComponentType = TaskComponentTypeEnum.findEnumByType(reader.getString("componentType"));
 
-        //输入字段
+        //Input field
         List<String> readerColumns = new ArrayList<>();
 
-        //创建输入节点实例
+        //Create an input node instance
         TaskInstance readerTaskInstance = createTask(processInstance, reader, now, rabbitmq);
         LogUtils.Params readerLogParams = new LogUtils.Params(rabbitmq, readerTaskInstance.getProcessInstanceId(), readerTaskInstance.getId());
 
-        //读取数据集
+        //Read the data set
         Dataset<Row> data;
         try {
             data = ReaderFactory.getReader(readerComponentType.getCode())
                     .read(spark, reader, readerColumns, readerLogParams);
             if (data == null) {
-                LogUtils.writeLog(readerLogParams, "任务失败");
+                LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
                 updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-                //更新输入节点实例执行失败
+                //Update input node instance execution failed
                 updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                 spark.stop();
                 return;
             }
         } catch (Exception e) {
-            log.error("任务失败", e);
+            log.error(MessageUtils.message("etl.task.failed"), e);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            //更新输入节点实例执行失败
+            //Update input node instance execution failed
             updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(readerLogParams, "失败原因:" + e.getMessage());
-            LogUtils.writeLog(readerLogParams, "任务失败");
+            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
+            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
             LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
             spark.stop();
             return;
         }
 
-        //更新输入节点实例执行成功
+        //Update input node instance executed successfully
         updateTask(readerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-        LogUtils.writeLog(readerLogParams, "任务成功");
+        LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.success"));
         LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
 
 //        if (readParameter.containsKey("batchSize")) {
-//            //分批处理
+// //Batch processing
 //            data = data.repartition(readParameter.getInteger("batchSize"));
 //        }
 
         if (taskParams.getJSONArray("transition") != null && taskParams.getJSONArray("transition").size() > 0) {
-            //读取配置
+            //Read configuration
             JSONArray transitionArr = taskParams.getJSONArray("transition");
             for (int i = 0; i < transitionArr.size(); i++) {
                 JSONObject transition = (JSONObject) transitionArr.get(i);
-                //转换类型
+                //Conversion type
                 TaskComponentTypeEnum transitionComponentType = TaskComponentTypeEnum.findEnumByType(transition.getString("componentType"));
 
-                //创建转换节点实例
+                //Create a transformation node instance
                 TaskInstance transitionTaskInstance = createTask(processInstance, transition, now, rabbitmq);
                 LogUtils.Params transitionLogParams = new LogUtils.Params(rabbitmq, transitionTaskInstance.getProcessInstanceId(), transitionTaskInstance.getId());
 
@@ -161,29 +148,29 @@ public class EtlApplication {
                     data = TransitionFactory.getTransition(transitionComponentType.getCode())
                             .transition(spark, data, transition, transitionLogParams);
                 } catch (Exception e) {
-                    //更新清洗节点实例执行失败
+                    //Update cleaning node instance execution failed
                     updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
                     updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
                     spark.stop();
-                    LogUtils.writeLog(transitionLogParams, "失败原因:" + e.getMessage());
-                    LogUtils.writeLog(transitionLogParams, "任务失败");
+                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
+                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.failed"));
                     LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
                     spark.stop();
                     return;
                 }
-                //更新输入节点实例执行成功
+                //Update input node instance executed successfully
                 updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-                LogUtils.writeLog(transitionLogParams, "任务成功");
+                LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.success"));
                 LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
         }
-        //写入配置
+        //Write configuration
         JSONObject writer = taskParams.getJSONObject("writer");
-        //输出类型
+        //Output type
         TaskComponentTypeEnum writerComponentType = TaskComponentTypeEnum.findEnumByType(writer.getString("componentType"));
 
 
-        //创建输出节点实例
+        //Create an output node instance
         TaskInstance writerTaskInstance = createTask(processInstance, writer, now, rabbitmq);
 
         LogUtils.Params writerLogParams = new LogUtils.Params(rabbitmq, writerTaskInstance.getProcessInstanceId(), writerTaskInstance.getId());
@@ -193,16 +180,16 @@ public class EtlApplication {
             flag = WriterFactory.getWriter(writerComponentType.getCode())
                     .writer(config, data, writer, writerLogParams);
         } catch (Exception e) {
-            log.error("任务失败", e);
-            LogUtils.writeLog(writerLogParams, "失败原因:" + e.getMessage());
+            log.error(MessageUtils.message("etl.task.failed"), e);
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
         }
 
         if (flag) {
             updateTask(writerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务成功");
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.success"));
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
-            //判断是否存在数据缓存
+            //Determine whether there is data cache
             if (reader.containsKey("cacheDataMap")) {
                 Map<String, String> cacheDataMap = (Map<String, String>) reader.get("cacheDataMap");
                 cacheDataMap.forEach((key, value) -> {
@@ -212,7 +199,7 @@ public class EtlApplication {
         } else {
             updateTask(writerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
             updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(writerLogParams, "任务失败");
+            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.failed"));
             LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
         }
         spark.stop();

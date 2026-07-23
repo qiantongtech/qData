@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.message.impl;
@@ -59,7 +45,7 @@ import java.util.Map;
 import static tech.qiantong.qdata.common.utils.SecurityUtils.getLoginUser;
 
 /**
- * 消息Service业务层处理
+ * Message Service business layer handler
  *
  * @author qdata
  * @date 2024-10-31
@@ -74,33 +60,33 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
     private MessageTemplateMapper messageTemplateMapper;
 
     /**
-     * 通过模版向某一个用户发送消息
-     * @param templateId 模版id
-     * @param messageSaveReqVO 消息创建
-     * @param entity 实体对象
-     * @return 是否发送成功
+     * Send a message to a specific user via template
+     * @param templateId template id
+     * @param messageSaveReqVO message creation request
+     * @param entity entity object
+     * @return whether send succeeded
      */
     @Override
     public Boolean send(Long templateId, MessageSaveReqVO messageSaveReqVO, Object entity) {
-        MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // 获取对应的模版
+        MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // get the corresponding template
         if (messageTemplateDO == null) {
-            throw new BaseException("system-messages", "system.error.template.notfound", null, "消息模版不存在");
+            throw new BaseException("system-messages", "system.error.template.notfound", null, "Message template not found");
         }
-        Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // 将实体转换为键值对
-        // 消息模版更新数值
+        Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // convert entity to key-value pairs
+        // update template values
         String message = messageTemplateDO.getContent();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             message = message.replace("${" + entry.getKey().toString() + "}", entry.getValue().toString());
         }
         MessageDO messageDO = BeanUtils.toBean(messageSaveReqVO, MessageDO.class);
-        // 设置模版基本数据
+        // set template basic data
         messageDO.setCategory(messageTemplateDO.getCategory());
         messageDO.setMsgLevel(messageTemplateDO.getMsgLevel());
         messageDO.setTitle(messageTemplateDO.getTitle());
-        // 实际消息
+        // actual message
         messageDO.setContent(message);
 
-        //兼容定时任务触发，指定为超级管理员
+        // compatible with scheduled task triggers, default to super admin
         if(messageSaveReqVO.getCreateBy() == null || messageSaveReqVO.getCreatorId() == null){
             messageDO.setCreatorId(getLoginUser().getUserId());
             messageDO.setCreateBy(getLoginUser().getUser().getNickName());
@@ -109,19 +95,19 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
             messageDO.setCreateBy(messageSaveReqVO.getCreateBy());
         }
         boolean save = this.save(messageDO);
-        // 更新消息
+        // update message
         this.getReceiverWDNum(messageSaveReqVO.getReceiverId());
         return save;
     }
 
     @Override
     public Boolean send(Long templateId, MessageSaveReqDTO messageSaveReqDTO, Object entity) {
-        MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // 获取对应的模版
+        MessageTemplateDO messageTemplateDO = messageTemplateMapper.selectById(templateId); // get the corresponding template
         if (messageTemplateDO == null) {
-            throw new BaseException("system-messages", "system.error.template.notfound", null, "消息模版不存在");
+            throw new BaseException("system-messages", "system.error.template.notfound", null, "Message template not found");
         }
-        Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // 将实体转换为键值对
-        // 消息模版更新数值
+        Map<?, ?> map = BeanUtils.toBean(entity, Map.class); // convert entity to key-value pairs
+        // update template values
         String message = messageTemplateDO.getContent();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             String key = entry.getKey().toString();
@@ -129,14 +115,14 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
             message = message.replace("${" + key + "}", value);
         }
         MessageDO messageDO = BeanUtils.toBean(messageSaveReqDTO, MessageDO.class);
-        // 设置模版基本数据
+        // set template basic data
         messageDO.setCategory(messageTemplateDO.getCategory());
         messageDO.setMsgLevel(messageTemplateDO.getMsgLevel());
         messageDO.setTitle(messageTemplateDO.getTitle());
-        // 实际消息
+        // actual message
         messageDO.setContent(message);
 
-        //兼容定时任务触发，指定为超级管理员
+        // compatible with scheduled task triggers, default to super admin
         if(messageSaveReqDTO.getCreateBy() == null || messageSaveReqDTO.getCreatorId() == null){
             messageDO.setCreatorId(getLoginUser().getUserId());
             messageDO.setCreateBy(getLoginUser().getUser().getNickName());
@@ -145,7 +131,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
             messageDO.setCreateBy(messageSaveReqDTO.getCreateBy());
         }
         boolean save = this.save(messageDO);
-        // 更新消息
+        // update message
         this.getReceiverWDNum(messageSaveReqDTO.getReceiverId());
         return save;
     }
@@ -155,7 +141,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
         MessageSaveReqDTO messageSaveReqDTO = new MessageSaveReqDTO();
         messageSaveReqDTO.setSenderId(1L);
         messageSaveReqDTO.setCreatorId(1L);
-        messageSaveReqDTO.setCreateBy("超级管理员");
+        messageSaveReqDTO.setCreateBy("Super Admin");
         messageSaveReqDTO.setReceiverId(receiverId);
         try {
             return this.send(3L,messageSaveReqDTO,entity);
@@ -172,40 +158,40 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
     }
 
     /**
-     * 查询消息数量
-     * @param message 查询条件
-     * @return 数量
+     * Query message count
+     * @param message query criteria
+     * @return count
      */
     @Override
     public Long getNum(MessagePageReqVO message) {
         message.setDelFlag(1);
         QueryWrapper<MessageDO> queryWrapper = new QueryWrapper<>(MessageConvert.INSTANCE.convertToDO(message));
         Long count = this.count(queryWrapper);
-        WebSocketMessageServer.sendMessage(message.getReceiverId().toString(), count.toString()); // 消息更新
+        WebSocketMessageServer.sendMessage(message.getReceiverId().toString(), count.toString()); // message update
         return count;
     }
 
     /**
-     * 设置已读
-     * @param id 消息id
-     * @return 是否成功
+     * Mark as read
+     * @param id message id
+     * @return whether succeeded
      */
     public Boolean read(Long id) {
         MessageDO messageDO = new MessageDO();
         messageDO.setId(id);
         messageDO.setHasRead(MessageHasReadEnums.YD.code);
         boolean b = this.updateById(messageDO);
-        // 更新消息
+        // update message
         this.getReceiverWDNum(getLoginUser().getUserId());
         return b;
     }
 
     /**
-     * 全部已读
-     * @param receiverId 接收人id
-     * @param category 消息类型
-     * @param module 消息模块
-     * @return 是否成功
+     * Mark all as read
+     * @param receiverId receiver id
+     * @param category message type
+     * @param module message module
+     * @return whether succeeded
      */
     public Boolean readAll(Long receiverId, Integer category, Integer module) {
         LambdaUpdateWrapper<MessageDO> updateWrapper = new LambdaUpdateWrapper<>();
@@ -218,15 +204,15 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
         }
         updateWrapper.set(MessageDO::getHasRead, MessageHasReadEnums.YD.code);
         this.update(updateWrapper);
-        // 更新消息
+        // update message
         this.getReceiverWDNum(getLoginUser().getUserId());
         return true;
     }
 
     /**
-     * 更新接收人未读消息
+     * Update receiver's unread message count
      *
-     * @param receiverId 接收人id
+     * @param receiverId receiver id
      */
     public void getReceiverWDNum(Long receiverId) {
         MessagePageReqVO messagePageReqVO = new MessagePageReqVO();

@@ -1,21 +1,22 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
-// 处理主题样式
+// Handling theme styles
 export function handleThemeStyle(theme) {
 	document.documentElement.style.setProperty('--el-color-primary', theme)
 	for (let i = 1; i <= 9; i++) {
@@ -26,7 +27,7 @@ export function handleThemeStyle(theme) {
 	}
 }
 
-// hex颜色转rgb颜色
+// hex color to rgb color
 export function hexToRgb(str) {
 	str = str.replace('#', '')
 	let hexs = str.match(/../g)
@@ -36,7 +37,7 @@ export function hexToRgb(str) {
 	return hexs
 }
 
-// rgb颜色转Hex颜色
+// rgb color to hex color
 export function rgbToHex(r, g, b) {
 	let hexs = [r.toString(16), g.toString(16), b.toString(16)]
 	for (let i = 0; i < 3; i++) {
@@ -47,7 +48,7 @@ export function rgbToHex(r, g, b) {
 	return `#${hexs.join('')}`
 }
 
-// 变浅颜色值
+// Lighten color value
 export function getLightColor(color, level) {
 	let rgb = hexToRgb(color)
 	for (let i = 0; i < 3; i++) {
@@ -56,7 +57,7 @@ export function getLightColor(color, level) {
 	return rgbToHex(rgb[0], rgb[1], rgb[2])
 }
 
-// 变深颜色值
+// Darken color value
 export function getDarkColor(color, level) {
 	let rgb = hexToRgb(color)
 	for (let i = 0; i < 3; i++) {

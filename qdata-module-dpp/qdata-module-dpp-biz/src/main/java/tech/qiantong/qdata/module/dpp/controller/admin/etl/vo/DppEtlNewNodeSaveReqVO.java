@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
@@ -46,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 新的数据集成请求 VO
+ * New Data Integration Request VO
  *
  * @author qdata
  * @date 2025-02-19
@@ -57,16 +43,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class DppEtlNewNodeSaveReqVO extends BaseEntity {
 
-    /** 类目编码 */
+    /** Category Code */
     @Parameter(name = "catCode", description = "类目编码")
     private String catCode;
     private Long catId;
 
-    /** 责任人 */
+    /** Person in Charge */
     @Parameter(name = "catCode", description = "责任人")
     private String personCharge;
 
-    /** 联系电话 */
+    /** Contact Number */
     @Parameter(name = "catCode", description = "联系电话")
     private String contactNumber;
 
@@ -89,13 +75,13 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     private String description;
 
     @Parameter(name = "globalParams", description = "全局参数", required = false)
-    private String globalParams = "[]";  // 默认值
+    private String globalParams = "[]";  // Default value
 
     @Parameter(name = "locations", description = "位置参数", required = false)
     private List<Map<String,Object>> locations;
 
     @Parameter(name = "timeout", description = "超时时间", required = false)
-    private Long timeout = 0L;  // 默认值
+    private Long timeout = 0L;  // Default value
 
     @Parameter(name = "taskRelationJson", description = "任务关系的 JSON", required = true)
     private String taskRelationJson;
@@ -109,40 +95,47 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
     @Parameter(name = "executionType", description = "执行类型", required = false)
     private String executionType;
 
-    //上下限  0:未上线，1:已上线
+    // Online status 0:Offline, 1:Online
     private String releaseState;
-    //上下限  0:未上线，1:已上线
+    // Online status 0:Offline, 1:Online
     private String schedulerState;
     private String status;
     private String code;
     private String crontab;
     private String id;
+    private Integer version;
+
+    @Schema(description = "调度器", example = "DOLPHINSCHEDULER")
+    private String scheduler;
+
+    @Schema(description = "执行器", example = "SPARK")
+    private String actuator;
 
     /**
-     * taskType（SPARK、FINK）
-     * taskPriority任务优先级
-     * workerGroup分组
-     * failRetryTimes失败重试次数
-     * delayTime延时执行时间
-     * failRetryInterval失败重试间隔
+     * taskType (SPARK, FINK)
+     * taskPriority - Task Priority
+     * workerGroup - Group
+     * failRetryTimes - Fail Retry Count
+     * delayTime - Delay Execution Time
+     * failRetryInterval - Fail Retry Interval
      *
      *
-     * SPARK如下：
-     * driverCores驱动核心数
-     * driverMemory驱动内存
-     * numExecutors执行器数量
-     * executorMemory执行器内存数
-     * executorCores执行器核心数
-     * yarnQueue    -----yarm队列
+     * SPARK:
+     * driverCores - Driver Cores
+     * driverMemory - Driver Memory
+     * numExecutors - Number of Executors
+     * executorMemory - Executor Memory
+     * executorCores - Executor Cores
+     * yarnQueue    -----Yarn Queue
      *
      *
-     * FINK如下：
-     * jobManagerMemory----JobManager内存数
-     * taskManagerMemory------TaskManager内存数
-     * slot-----Slot数量
-     * taskManager-----TaskManager数量
-     * parallelism并行度
-     * yarnQueue    -----yarm队列
+     * FINK:
+     * jobManagerMemory----JobManager Memory
+     * taskManagerMemory------TaskManager Memory
+     * slot-----Slot Count
+     * taskManager-----TaskManager Count
+     * parallelism - Parallelism
+     * yarnQueue    -----Yarn Queue
      */
     @Schema(description = "草稿任务配置信息", example = "")
     private String draftJson;
@@ -167,7 +160,7 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
         this.crontab = src.getCrontab();
         this.draftJson = src.getDraftJson();
 
-        // 需要转 JSON 的字段
+        // Fields that need JSON conversion
         if (src.getTaskRelationJson() != null) {
             this.taskRelationJson = JSONUtils.toJson(src.getTaskRelationJson());
         }
@@ -175,7 +168,7 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
             this.taskDefinitionList = JSONUtils.toJson(src.getTaskDefinitionList());
         }
 
-        // 全部固定为未上线
+        // Fixed to offline
         this.releaseState = "0";
         this.schedulerState = "0";
         this.status = "0";

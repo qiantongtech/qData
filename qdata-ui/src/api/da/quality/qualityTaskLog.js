@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据质量日志列表
+// Query the data quality log list
 export function listDppQualityLog(query) {
   return request({
     url: '/dpp/qualityLog/list',
@@ -26,7 +27,7 @@ export function listDppQualityLog(query) {
   })
 }
 
-// 查询数据质量日志详细
+// Query data quality log details
 export function getDppQualityLog(id) {
   return request({
     url: '/dpp/qualityLog/' + id,
@@ -34,7 +35,7 @@ export function getDppQualityLog(id) {
   })
 }
 
-// 新增数据质量日志
+// Added data quality log
 export function addDppQualityLog(data) {
   return request({
     url: '/dpp/qualityTask',
@@ -43,7 +44,7 @@ export function addDppQualityLog(data) {
   })
 }
 
-// 修改数据质量日志
+// Modify data quality log
 export function updateDppQualityLog(data) {
   return request({
     url: '/dpp/qualityLog',
@@ -52,14 +53,14 @@ export function updateDppQualityLog(data) {
   })
 }
 
-// 删除数据质量日志
+// Delete data quality logs
 export function delDppQualityLog(id) {
   return request({
     url: '/dpp/qualityLog/' + id,
     method: 'delete'
   })
 }
-//发送消息
+//Send message
 export function doSendMessage(id) {
   return request({
     url: '/dpp/qualityLog/sendMessage',
@@ -67,14 +68,14 @@ export function doSendMessage(id) {
     params: {id}
   })
 }
-// 日志数据质量维度统计
+// Log data quality dimension statistics
 export function statisticsEvaluateOne(id) {
   return request({
     url: '/dpp/evaluateLog/statisticsEvaluateOne/' + id,
     method: 'get',
   })
 }
-// 日志详情   治理数据量变化趋势
+// Log details Change trend of governance data volume
 export function statisticsEvaluateTow(query) {
   console.log("🚀 ~ statisticsEvaluateTow ~ query:", query)
   return request({
@@ -83,14 +84,14 @@ export function statisticsEvaluateTow(query) {
     params: query
   })
 }
-//日志 规则列表
+//Log rule list
 export function statisticsEvaluateTable(id) {
   return request({
     url: '/dpp/evaluateLog/statisticsEvaluateTable/' + id,
     method: 'get',
   })
 }
-//  错误数据
+//  Wrong data
 export function pageErrorData(query) {
   return request({
     url: '/dpp/evaluateLog/pageErrorData',
@@ -98,7 +99,7 @@ export function pageErrorData(query) {
     params: query
   })
 }
-// 修改接口 数据、状态，都是这个接口
+// Modify interface data and status, all are this interface
 export function updateErrorData(data) {
   return request({
     url: 'dpp/evaluateLog/updateErrorData',

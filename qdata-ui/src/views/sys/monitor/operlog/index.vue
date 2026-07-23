@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -84,7 +85,7 @@
             <el-table-column :label="td('sys.monitor.operlog.systemModule')" align="center" prop="title" :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column :label="td('sys.monitor.operlog.operType')" align="center" prop="businessType">
                <template #default="scope">
-                  <dict-tag :options="sys_oper_type" :value="scope.row.businessType" />
+                  <dict-tag :options="enSysOperType" :value="scope.row.businessType" />
                </template>
             </el-table-column>
             <el-table-column :label="td('sys.monitor.operlog.operPerson')" align="center" width="110" prop="operName"
@@ -94,7 +95,7 @@
                :show-overflow-tooltip="{ effect: 'light' }" />
             <el-table-column :label="td('sys.monitor.operlog.operStatus')" align="center" prop="status">
                <template #default="scope">
-                  <dict-tag :options="sys_common_status" :value="scope.row.status" />
+                  <dict-tag :options="enSysCommonStatus" :value="scope.row.status" />
                </template>
             </el-table-column>
             <el-table-column :label="td('sys.monitor.operlog.operDate')" align="center" prop="operTime" width="180" sortable="custom"
@@ -209,10 +210,26 @@
 <script setup name="Operlog">
 import { list, delOperlog, cleanOperlog } from "@/api/system/monitor/operlog.js";
 import useDefaultLang from "@/composables/useDefaultLang";
+import enDict from "@/locales/en-US/dict/index.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status");
+
+/** Always use the English dict tag option */
+const enSysOperType = computed(() => {
+  return (sys_oper_type.value || []).map(item => ({
+    ...item,
+    label: enDict.sys_oper_type?.[item.value] ?? item.label
+  }));
+});
+
+const enSysCommonStatus = computed(() => {
+  return (sys_common_status.value || []).map(item => ({
+    ...item,
+    label: enDict.sys_common_status?.[item.value] ?? item.label
+  }));
+});
 
 const operlogList = ref([]);
 const open = ref(false);
@@ -241,7 +258,7 @@ const data = reactive({
 
 const { queryParams, form } = toRefs(data);
 
-/** 查询登录日志 */
+/** Query login log */
 function getList() {
    loading.value = true;
    list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
@@ -251,18 +268,18 @@ function getList() {
    });
 }
 
-/** 操作日志类型字典翻译 */
+/** Operation log type dictionary translation */
 function typeFormat(row, column) {
    return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
    queryParams.value.pageNum = 1;
    getList();
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
    dateRange.value = [];
    proxy.resetForm("queryRef");
@@ -270,26 +287,26 @@ function resetQuery() {
    proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
 }
 
-/** 多选框选中数据 */
+/** Multiple selection box selected data */
 function handleSelectionChange(selection) {
    ids.value = selection.map(item => item.operId);
    multiple.value = !selection.length;
 }
 
-/** 排序触发事件 */
+/** Sorting trigger events */
 function handleSortChange(column, prop, order) {
    queryParams.value.orderByColumn = column.prop;
    queryParams.value.isAsc = column.order;
    getList();
 }
 
-/** 详细按钮操作 */
+/** Detailed button operations */
 function handleView(row) {
    open.value = true;
    form.value = row;
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
    const operIds = row.operId || ids.value;
    proxy.$modal.confirm(td('sys.monitor.operlog.confirmDelete', { ids: operIds })).then(function () {
@@ -300,7 +317,7 @@ function handleDelete(row) {
    }).catch(() => { });
 }
 
-/** 清空按钮操作 */
+/** Clear button action */
 function handleClean() {
    proxy.$modal.confirm(td('sys.monitor.operlog.confirmClearAll')).then(function () {
       return cleanOperlog();
@@ -310,7 +327,7 @@ function handleClean() {
    }).catch(() => { });
 }
 
-/** 导出按钮操作 */
+/** Export button action */
 function handleExport() {
    proxy.download("monitor/operlog/export", {
       ...queryParams.value,

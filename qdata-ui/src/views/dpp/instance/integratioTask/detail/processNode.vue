@@ -1,24 +1,25 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
   <div class="app-containers" ref="app-container">
     <div class="flex-container">
-      <!-- 右侧主内容 -->
+      <!-- Main content on the right -->
       <div class="right-pane" v-loading="loading">
         <!-- <el-empty :description="td('common.noTaskProcess')" v-if="!nodeData?.locations || nodeData.locations.length === 0">
         </el-empty> -->
@@ -28,7 +29,7 @@
           ref="graphContainer"
         ></div>
         <TeleportContainer />
-        <!-- 工具栏 -->
+        <!-- Toolbar -->
         <div class="toolbar" v-if="nodeData?.locations">
           <template v-for="item in toolbar" :key="item.id">
             <el-tooltip
@@ -37,8 +38,8 @@
               :content="item.tip"
               placement="bottom"
               v-if="
-                item.tip !== td('common.button.reset', '重置') &&
-                item.tip !== td('common.button.export', '导出')
+                item.tip !== td('common.button.reset', 'Reset') &&
+                item.tip !== td('common.button.export', 'Export')
               "
             >
               <div class="toolbar-item" @click="toolbarClick(item)">
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-    <!-- 动态表单 -->
+    <!-- dynamic form -->
     <component
       :is="currentFormComponent"
       :visible="drawer"
@@ -60,7 +61,7 @@
       :info="route.query.info"
       :graph="graph"
     />
-    <!-- 字段预览弹窗 -->
+    <!-- Field preview pop-up window -->
     <FieldPreviewDialog ref="fieldPreviewDialog" />
   </div>
 </template>
@@ -71,18 +72,18 @@ import { Graph } from "@antv/x6";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-/// 输入组件
+/// input component
 import InputForm from "@/views/dpp/task/integratioTask/components/input/tableForm.vue";
 import excelInputForm from "@/views/dpp/task/integratioTask/components/input/excelForm.vue";
 import csvForm from "@/views/dpp/task/integratioTask/components/input/csvForm.vue";
-// 转换组件
-// 清洗组件
+// Transform component
+// Clean components
 import TransformForm from "@/views/dpp/task/integratioTask/components/clean/cleanForm.vue";
-// 排序组件
+// sorting component
 import OrderConfig from "@/views/dpp/task/integratioTask/components/transform/orderConfig.vue";
-// 字段派生期
+// Field derivation period
 import FieldBuilder from "@/views/dpp/task/integratioTask/components/transform/fieldBuilder.vue";
-// 输出表组件
+// Output table component
 import OutputForm from "@/views/dpp/task/integratioTask/components/output/tableForm.vue";
 import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 // import taskConfigDialog from "@/views/dpp/etl/components//task.vue";
@@ -223,7 +224,7 @@ const updateGraphNode = (nodeInstanceList) => {
   });
 };
 /**
- * 组件右键删除
+ * Right click on component to delete
  * @param {*}
  */
 let selectedEdge = ref();
@@ -252,13 +253,13 @@ function initializeGraph() {
       maxScale: 3,
     },
   });
-  // 禁用 Dnd
+  // Disable Dnd
   dnd = new Dnd({
     target: graph,
     scaled: false,
     validateNode: () => false,
   });
-  // Selection 插件
+  // Selection plugin
   graph.use(
     new Selection({
       enabled: true,
@@ -271,14 +272,14 @@ function initializeGraph() {
   graph.use(new Export());
   usePlugins(graph);
 }
-// 保存 没有code
+// Save without code
 const closeDialog = () => {
   if (!currentNode.value.data.code) {
-    graph.removeNode(currentNode.value.id); // 根据组件 ID 删除组件
+    graph.removeNode(currentNode.value.id); // Remove component based on component ID
   }
   drawer.value = false;
 };
-// 绑定事件
+// Binding events
 function bindGraphEvents() {
   graph.on("node:added", handleNodeAdded);
 
@@ -288,7 +289,7 @@ function bindGraphEvents() {
   }
 }
 
-// / 处理节点添加事件
+// / Handle node addition event
 async function handleNodeAdded({ node }) {
   if (!node.data.code) {
     node.data.code = await fetchNodeUniqueKey();
@@ -314,7 +315,7 @@ async function handleNodeAdded({ node }) {
   }
 }
 
-// 处理已有节点的情况
+// Handle the situation of existing nodes
 function handleExistingNode(node) {
   if (node.data.taskParams.type == 2) {
     proxy.$message.warning(td('dpp.instance.integratioTask.onlyOneOutput'));
@@ -323,7 +324,7 @@ function handleExistingNode(node) {
   }
   graph.removeNode(node.id);
 }
-// 处理非输入节点
+// Handle non-input nodes
 function handleNonInputNode(node) {
   const edges = graph.getEdges();
   edges.forEach((edge) => {
@@ -331,7 +332,7 @@ function handleNonInputNode(node) {
       sourceNode.value = edge.getSourceNode();
     }
   });
-  // drawer.value = true; // 控制抽屉显示
+  // drawer.value = true; //Control drawer display
 }
 function handleNodeDblClick({ node }, type = "edit") {
   graph.cleanSelection();
@@ -339,17 +340,17 @@ function handleNodeDblClick({ node }, type = "edit") {
   currentNode.value = node;
   drawer.value = true;
 }
-// 重置操作逻辑
+// Reset operation logic
 const handleCancel = () => {
   proxy.$modal
     .confirm(
       td(
         "dpp.instance.integratioTask.resetConfirm",
-        "点击重置将清除所有未保存的更改，您确定要继续吗？"
+        "Clicking reset will clear all unsaved changes. Are you sure to continue?"
       )
     )
     .then(() => {
-      // 刷新当前页签
+      // Refresh the current tab
       proxy.$tab.refreshPage(route);
     });
 };
@@ -397,7 +398,7 @@ onMounted(() => {
 });
 
 const getAssetsFile = (url) => {
-  return new URL(`/src/assets/dpp/etl/${url}`, import.meta.url).href;
+  return new URL(`/src/assets/images/dpp/etl/${url}`, import.meta.url).href;
 };
 defineExpose({ updateFlow, updateGraphNode });
 </script>
@@ -454,7 +455,7 @@ defineExpose({ updateFlow, updateGraphNode });
   }
 }
 
-/* X6 图画布样式 */
+/* X6 chart canvas style */
 :deep(.x6-widget-selection-box) {
   fill: rgba(0, 123, 255, 0.3);
   stroke: #007bff;

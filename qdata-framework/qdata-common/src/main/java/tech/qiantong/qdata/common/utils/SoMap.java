@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.common.utils;
@@ -45,9 +31,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Map< String, Object> 是最常用的一种Map类型，但是它写着麻烦
- * <p>所以特封装此类，继承Map，进行一些扩展，可以让Map更灵活使用
- * <p>最新：2020-12-10 新增部分构造方法
+ * Map<String, Object> is the most commonly used Map type, but it is troublesome to write
+ * <p>So this class is specially encapsulated, inherited from Map, and made some extensions to make Map more flexible to use.
+ * <p>Latest: 2020-12-10 Added some new construction methods
  * @author kong
  */
 public class SoMap extends LinkedHashMap<String, Object> {
@@ -57,7 +43,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	public SoMap() {
 	}
 
-	/** 以下元素会在isNull函数中被判定为Null， */
+	/** The following elements will be determined as Null in the isNull function, */
 	public static final Object[] NULL_ELEMENT_ARRAY = {null, ""};
 	public static final List<Object> NULL_ELEMENT_LIST;
 
@@ -65,9 +51,9 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		NULL_ELEMENT_LIST = Arrays.asList(NULL_ELEMENT_ARRAY);
 	}
 
-	// ============================= 读值 =============================
+	// ============================= Reading value ===============================
 
-	/** 获取一个值 */
+	/** Get a value */
 	@Override
 	public Object get(Object key) {
 		if("this".equals(key)) {
@@ -76,7 +62,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return super.get(key);
 	}
 
-	/** 如果为空，则返回默认值 */
+	/** If empty, return the default value */
 	public Object get(Object key, Object defaultValue) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -85,7 +71,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return value;
 	}
 
-	/** 转为String并返回 */
+	/** Convert to String and return */
 	public String getString(String key) {
 		Object value = get(key);
 		if(value == null) {
@@ -94,7 +80,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return String.valueOf(value);
 	}
 
-	/** 如果为空，则返回默认值 */
+	/** If empty, return the default value */
 	public String getString(String key, String defaultValue) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -103,7 +89,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return String.valueOf(value);
 	}
 
-	/** 转为int并返回 */
+	/** Convert to int and return */
 	public int getInt(String key) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -111,7 +97,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return Integer.valueOf(String.valueOf(value));
 	}
-	/** 转为int并返回，同时指定默认值 */
+	/** Convert to int and return, specifying the default value */
 	public int getInt(String key, int defaultValue) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -120,7 +106,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return Integer.valueOf(String.valueOf(value));
 	}
 
-	/** 转为long并返回 */
+	/** Convert to long and return */
 	public long getLong(String key) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -129,7 +115,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return Long.valueOf(String.valueOf(value));
 	}
 
-	/** 转为double并返回 */
+	/** Convert to double and return */
 	public double getDouble(String key) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -138,7 +124,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return Double.valueOf(String.valueOf(value));
 	}
 
-	/** 转为boolean并返回 */
+	/** Convert to boolean and return */
 	public boolean getBoolean(String key) {
 		Object value = get(key);
 		if(valueIsNull(value)) {
@@ -147,7 +133,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return Boolean.valueOf(String.valueOf(value));
 	}
 
-	/** 转为Date并返回，根据自定义格式 */
+	/** Convert to Date and return, according to custom format */
 	public Date getDateByFormat(String key, String format) {
 		try {
 			return new SimpleDateFormat(format).parse(getString(key));
@@ -156,17 +142,17 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 	}
 
-	/** 转为Date并返回，根据格式： yyyy-MM-dd */
+	/** Convert to Date and return, according to the format: yyyy-MM-dd */
 	public Date getDate(String key) {
 		return getDateByFormat(key, "yyyy-MM-dd");
 	}
 
-	/** 转为Date并返回，根据格式： yyyy-MM-dd HH:mm:ss */
+	/** Convert to Date and return, according to the format: yyyy-MM-dd HH:mm:ss */
 	public Date getDateTime(String key) {
 		return getDateByFormat(key, "yyyy-MM-dd HH:mm:ss");
 	}
 
-	/** 转为Map并返回 */
+	/** Convert to Map and return */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public SoMap getMap(String key) {
 		Object value = get(key);
@@ -179,10 +165,11 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		if(value instanceof String) {
 			return SoMap.getSoMap().setJsonString((String)value);
 		}
-		throw new RuntimeException("值无法转化为SoMap: " + value);
+		throw new RuntimeException(MessageUtils.messageWithFallback(
+				"sys.error.somap.convert.fail", "Value cannot be converted to SoMap: {0}", value));
 	}
 
-	/** 获取集合(必须原先就是个集合，否则会创建个新集合并返回) */
+	/** Get the collection (it must originally be a collection, otherwise a new collection will be created and returned) */
 	@SuppressWarnings("unchecked")
 	public List<Object> getList(String key) {
 		Object value = get(key);
@@ -199,7 +186,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return list;
 	}
 
-	/** 获取集合 (指定泛型类型) */
+	/** Get the collection (specify the generic type) */
 	public <T> List<T> getList(String key, Class<T> cs) {
 		List<Object> list = getList(key);
 		List<T> list2 = new ArrayList<T>();
@@ -210,13 +197,13 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return list2;
 	}
 
-	/** 获取集合(逗号分隔式)，(指定类型) */
+	/** Get the collection (comma separated), (specified type) */
 	public <T> List<T> getListByComma(String key, Class<T> cs) {
 		String listStr = getString(key);
 		if(listStr == null || listStr.equals("")) {
 			return new ArrayList<>();
 		}
-		// 开始转化
+		// Start converting
 		String [] arr = listStr.split(",");
 		List<T> list = new ArrayList<T>();
 		for (String str : arr) {
@@ -230,7 +217,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	}
 
 
-	/** 根据指定类型从map中取值，返回实体对象 */
+	/** Get the value from the map according to the specified type and return the entity object */
 	public <T> T getModel(Class<T> cs) {
 		try {
 			return getModelByObject(cs.newInstance());
@@ -239,14 +226,14 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 	}
 
-	/** 从map中取值，塞到一个对象中 */
+	/** Get the value from the map and stuff it into an object */
 	public <T> T getModelByObject(T obj) {
-		// 获取类型
+		// Get type
 		Class<?> cs = obj.getClass();
-		// 循环复制
+		// Circular copy
 		for (Field field : cs.getDeclaredFields()) {
 			try {
-				// 获取对象
+				// Get object
 				Object value = this.get(field.getName());
 				if(value == null) {
 					continue;
@@ -255,7 +242,8 @@ public class SoMap extends LinkedHashMap<String, Object> {
 				Object valueConvert = getValueByClass(value, field.getType());
 				field.set(obj, valueConvert);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new RuntimeException("属性取值出错：" + field.getName(), e);
+				throw new RuntimeException(MessageUtils.messageWithFallback(
+						"sys.error.somap.property.read.fail", "Failed to read property: {0}", field.getName()), e);
 			}
 		}
 		return obj;
@@ -264,7 +252,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 	/**
-	 * 将指定值转化为指定类型并返回
+	 * Convert the specified value to the specified type and return
 	 * @param obj
 	 * @param cs
 	 * @param <T>
@@ -297,10 +285,10 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	}
 
 
-	// ============================= 写值 =============================
+	// ============================= Write value ===============================
 
 	/**
-	 * 给指定key添加一个默认值（只有在这个key原来无值的情况先才会set进去）
+	 * Add a default value to the specified key (it will only be set if the key originally has no value)
 	 */
 	public void setDefaultValue(String key, Object defaultValue) {
 		if(isNull(key)) {
@@ -308,9 +296,9 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 	}
 
-	/** set一个值，连缀风格 */
+	/** set a value, concatenated style */
 	public SoMap set(String key, Object value) {
-		// 防止敏感key
+		// Prevent sensitive keys
 		if(key.toLowerCase().equals("this")) {
 			return this;
 		}
@@ -318,7 +306,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return this;
 	}
 
-	/** 将一个Map塞进SoMap */
+	/** Insert a Map into SoMap */
 	public SoMap setMap(Map<String, ?> map) {
 		if(map != null) {
 			for (String key : map.keySet()) {
@@ -328,7 +316,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return this;
 	}
 
-	/** 将一个对象解析塞进SoMap */
+	/** Insert an object parse into SoMap */
 	public SoMap setModel(Object model) {
 		if(model == null) {
 			return this;
@@ -348,7 +336,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return this;
 	}
 
-	/** 将json字符串解析后塞进SoMap */
+	/** Parse the json string and insert it into SoMap */
 	public SoMap setJsonString(String jsonString) {
 		try {
 			@SuppressWarnings("unchecked")
@@ -360,15 +348,15 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	}
 
 
-	// ============================= 删值 =============================
+	// ============================= Delete value ===============================
 
-	/** delete一个值，连缀风格 */
+	/** delete a value, concatenated style */
 	public SoMap delete(String key) {
 		remove(key);
 		return this;
 	}
 
-	/** 清理所有value为null的字段 */
+	/** Clear all fields with null value */
 	public SoMap clearNull() {
 		Iterator<String> iterator = this.keySet().iterator();
 		while(iterator.hasNext()) {
@@ -381,7 +369,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return this;
 	}
-	/** 清理指定key */
+	/** Clean up the specified key */
 	public SoMap clearIn(String ...keys) {
 		List<String> keys2 = Arrays.asList(keys);
 		Iterator<String> iterator = this.keySet().iterator();
@@ -394,7 +382,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return this;
 	}
-	/** 清理掉不在列表中的key */
+	/** Clear out keys that are not in the list */
 	public SoMap clearNotIn(String ...keys) {
 		List<String> keys2 = Arrays.asList(keys);
 		Iterator<String> iterator = this.keySet().iterator();
@@ -408,34 +396,34 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return this;
 	}
-	/** 清理掉所有key */
+	/** Clear all keys */
 	public SoMap clearAll() {
 		clear();
 		return this;
 	}
 
 
-	// ============================= 快速构建 =============================
+	// ============================= Quick Build ===============================
 
-	/** 构建一个SoMap并返回 */
+	/** Build a SoMap and return */
 	public static SoMap getSoMap() {
 		return new SoMap();
 	}
-	/** 构建一个SoMap并返回 */
+	/** Build a SoMap and return */
 	public static SoMap getSoMap(String key, Object value) {
 		return new SoMap().set(key, value);
 	}
-	/** 构建一个SoMap并返回 */
+	/** Build a SoMap and return */
 	public static SoMap getSoMap(Map<String, ?> map) {
 		return new SoMap().setMap(map);
 	}
 
-	/** 将一个对象集合解析成为SoMap */
+	/** Parse a collection of objects into SoMap */
 	public static SoMap getSoMapByModel(Object model) {
 		return SoMap.getSoMap().setModel(model);
 	}
 
-	/** 将一个对象集合解析成为SoMap集合 */
+	/** Parse an object collection into a SoMap collection */
 	public static List<SoMap> getSoMapByList(List<?> list) {
 		List<SoMap> listMap = new ArrayList<SoMap>();
 		for (Object model : list) {
@@ -444,7 +432,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return listMap;
 	}
 
-	/** 克隆指定key，返回一个新的SoMap */
+	/** Clone the specified key and return a new SoMap */
 	public SoMap cloneKeys(String... keys) {
 		SoMap so = new SoMap();
 		for (String key : keys) {
@@ -452,7 +440,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return so;
 	}
-	/** 克隆所有key，返回一个新的SoMap */
+	/** Clone all keys and return a new SoMap */
 	public SoMap cloneSoMap() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -461,7 +449,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return so;
 	}
 
-	/** 将所有key转为大写 */
+	/** Convert all keys to uppercase */
 	public SoMap toUpperCase() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -470,7 +458,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		this.clearAll().setMap(so);
 		return this;
 	}
-	/** 将所有key转为小写 */
+	/** Convert all keys to lowercase */
 	public SoMap toLowerCase() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -479,7 +467,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		this.clearAll().setMap(so);
 		return this;
 	}
-	/** 将所有key中下划线转为中划线模式 (kebab-case风格) */
+	/** Convert the underscores in all keys to underscore mode (kebab-case style) */
 	public SoMap toKebabCase() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -488,7 +476,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		this.clearAll().setMap(so);
 		return this;
 	}
-	/** 将所有key中下划线转为小驼峰模式 */
+	/** Convert the underscores in all keys to camel case mode */
 	public SoMap toHumpCase() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -497,7 +485,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		this.clearAll().setMap(so);
 		return this;
 	}
-	/** 将所有key中小驼峰转为下划线模式 */
+	/** Convert the camel case in all keys to underline mode */
 	public SoMap humpToLineCase() {
 		SoMap so = new SoMap();
 		for (String key : this.keySet()) {
@@ -510,15 +498,15 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 
-	// ============================= 辅助方法 =============================
+	// ============================= Helper methods ===============================
 
 
-	/** 指定key是否为null，判定标准为 NULL_ELEMENT_ARRAY 中的元素  */
+	/** Specify whether the key is null, the criterion is the element in NULL_ELEMENT_ARRAY */
 	public boolean isNull(String key) {
 		return valueIsNull(get(key));
 	}
 
-	/** 指定key列表中是否包含value为null的元素，只要有一个为null，就会返回true */
+	/** Specifies whether the key list contains elements with a null value. As long as one of them is null, true will be returned */
 	public boolean isContainNull(String ...keys) {
 		for (String key : keys) {
 			if(this.isNull(key)) {
@@ -528,32 +516,33 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return false;
 	}
 
-	/** 与isNull()相反 */
+	/** Opposite of isNull() */
 	public boolean isNotNull(String key) {
 		return !isNull(key);
 	}
-	/** 指定key的value是否为null，作用同isNotNull() */
+	/** Specify whether the value of the key is null, the function is the same as isNotNull() */
 	public boolean has(String key) {
 		return !isNull(key);
 	}
 
-	/** 指定value在此SoMap的判断标准中是否为null */
+	/** Specify whether value is null in the judgment criteria of this SoMap */
 	public boolean valueIsNull(Object value) {
 		return NULL_ELEMENT_LIST.contains(value);
 	}
 
-	/** 验证指定key不为空，为空则抛出异常 */
+	/** Verify that the specified key is not empty, if it is empty, an exception will be thrown */
 	public SoMap checkNull(String ...keys) {
 		for (String key : keys) {
 			if(this.isNull(key)) {
-				throw new RuntimeException("参数" + key + "不能为空");
+				throw new RuntimeException(MessageUtils.messageWithFallback(
+						"sys.error.somap.param.empty", "Parameter {0} cannot be empty", key));
 			}
 		}
 		return this;
 	}
 
 	static Pattern patternNumber = Pattern.compile("[0-9]*");
-	/** 指定key是否为数字 */
+	/** Specify whether the key is a number */
 	public boolean isNumber(String key) {
 		String value = getString(key);
 		if(value == null) {
@@ -566,7 +555,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 	/**
-	 * 转为JSON字符串
+	 * Convert to JSON string
 	 */
 	public String toJsonString() {
 		try {
@@ -578,7 +567,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	}
 
 //	/**
-//	 * 转为JSON字符串, 带格式的
+//	* Convert to JSON string, formatted
 //	 */
 //	public String toJsonFormatString() {
 //		try {
@@ -588,20 +577,21 @@ public class SoMap extends LinkedHashMap<String, Object> {
 //		}
 //	}
 
-	// ============================= web辅助 =============================
+	// ============================= web assistance =============================
 
 
 	/**
-	 * 返回当前request请求的的所有参数
+	 * Returns all parameters of the current request
 	 * @return
 	 */
 	public static SoMap getRequestSoMap() {
-		// 大善人SpringMVC提供的封装
+		// Encapsulation provided by Dashanren SpringMVC
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if(servletRequestAttributes == null) {
-			throw new RuntimeException("当前线程非JavaWeb环境");
+			throw new RuntimeException(MessageUtils.messageWithFallback(
+					"sys.error.web.context.unavailable", "The current thread is not in a Java Web environment"));
 		}
-		// 当前request
+		// Current request
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		if (request.getAttribute("currentSoMap") == null || request.getAttribute("currentSoMap") instanceof SoMap == false ) {
 			initRequestSoMap(request);
@@ -609,13 +599,13 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return (SoMap)request.getAttribute("currentSoMap");
 	}
 
-	/** 初始化当前request的 SoMap */
+	/** Initialize the SoMap of the current request */
 	private static void initRequestSoMap(HttpServletRequest request) {
 		SoMap soMap = new SoMap();
-		Map<String, String[]> parameterMap = request.getParameterMap();	// 获取所有参数
+		Map<String, String[]> parameterMap = request.getParameterMap();	// Get all parameters
 		for (String key : parameterMap.keySet()) {
 			try {
-				String[] values = parameterMap.get(key); // 获得values
+				String[] values = parameterMap.get(key); // Get values
 				if(values.length == 1) {
 					soMap.set(key, values[0]);
 				} else {
@@ -633,11 +623,11 @@ public class SoMap extends LinkedHashMap<String, Object> {
 	}
 
 	/**
-	 * 验证返回当前线程是否为JavaWeb环境
+	 * Verify whether the current thread returned is a JavaWeb environment
 	 * @return
 	 */
 	public static boolean isJavaWeb() {
-		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();// 大善人SpringMVC提供的封装
+		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();// Encapsulation provided by Dashanren SpringMVC
 		if(servletRequestAttributes == null) {
 			return false;
 		}
@@ -646,9 +636,9 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 
-	// ============================= 常见key （以下key经常用，所以封装以下，方便写代码） =============================
+	// ============================= Common keys (the following keys are often used, so they are encapsulated below to facilitate writing code) ===============================
 
-	/** get 当前页  */
+	/** get current page */
 	public int getKeyPageNo() {
 		int pageNo = getInt("pageNo", 1);
 		if(pageNo <= 0) {
@@ -656,7 +646,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return pageNo;
 	}
-	/** get 页大小  */
+	/** get page size */
 	public int getKeyPageSize() {
 		int pageSize = getInt("pageSize", 10);
 		if(pageSize <= 0 || pageSize > 1000) {
@@ -665,7 +655,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		return pageSize;
 	}
 
-	/** get 排序方式 */
+	/** get sorting method */
 	public int getKeySortType() {
 		return getInt("sortType");
 	}
@@ -675,36 +665,36 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 
-	// ============================= 工具方法 =============================
+	// ============================= Tool methods ===============================
 
 
 	/**
-	 * 将一个一维集合转换为树形集合
-	 * @param list         集合
-	 * @param idKey        id标识key
-	 * @param parentIdKey  父id标识key
-	 * @param childListKey 子节点标识key
-	 * @return 转换后的tree集合
+	 * Convert a one-dimensional collection to a tree collection
+	 * @param list collection
+	 * @param idKey id identification key
+	 * @param parentIdKey parent id identification key
+	 * @param childListKey child node identification key
+	 * @return converted tree collection
 	 */
 	public static List<SoMap> listToTree(List<SoMap> list, String idKey, String parentIdKey, String childListKey) {
-		// 声明新的集合，存储tree形数据
+		// Declare a new collection to store tree-shaped data
 		List<SoMap> newTreeList = new ArrayList<SoMap>();
-		// 声明hash-Map，方便查找数据
+		// Declare hash-Map to facilitate data search
 		SoMap hash = new SoMap();
-		// 将数组转为Object的形式，key为数组中的id
+		// Convert the array to the form of Object, the key is the id in the array
 		for (int i = 0; i < list.size(); i++) {
 			SoMap json = (SoMap) list.get(i);
 			hash.put(json.getString(idKey), json);
 		}
-		// 遍历结果集
+		// Traverse the result set
 		for (int j = 0; j < list.size(); j++) {
-			// 单条记录
+			// Single record
 			SoMap aVal = (SoMap) list.get(j);
-			// 在hash中取出key为单条记录中pid的值
+			// The key taken out from the hash is the value of pid in a single record.
 			SoMap hashVp = (SoMap) hash.get(aVal.get(parentIdKey, "").toString());
-			// 如果记录的pid存在，则说明它有父节点，将她添加到孩子节点的集合中
+			// If the recorded pid exists, it means that it has a parent node and adds it to the collection of child nodes.
 			if (hashVp != null) {
-				// 检查是否有child属性，有则添加，没有则新建
+				// Check if there is a child attribute, add it if it exists, create a new one if not
 				if (hashVp.get(childListKey) != null) {
 					@SuppressWarnings("unchecked")
 					List<SoMap> ch = (List<SoMap>) hashVp.get(childListKey);
@@ -724,7 +714,7 @@ public class SoMap extends LinkedHashMap<String, Object> {
 
 
 
-	/** 指定字符串的字符串下划线转大写模式 */
+	/** Convert the string underline of the specified string to uppercase mode */
 	private static String wordEachBig(String str){
 		String newStr = "";
 		for (String s : str.split("_")) {
@@ -732,27 +722,27 @@ public class SoMap extends LinkedHashMap<String, Object> {
 		}
 		return newStr;
 	}
-	/** 返回下划线转小驼峰形式 */
+	/** Return underscore to camel case */
 	private static String wordEachBigFs(String str){
 		return wordFirstSmall(wordEachBig(str));
 	}
 
-	/** 将指定单词首字母大写 */
+	/** Capitalize the first letter of the specified word */
 	private static String wordFirstBig(String str) {
 		return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
 	}
 
-	/** 将指定单词首字母小写 */
+	/** Lowercase the first letter of the specified word */
 	private static String wordFirstSmall(String str) {
 		return str.substring(0, 1).toLowerCase() + str.substring(1, str.length());
 	}
 
-	/** 下划线转中划线 */
+	/** Convert underline to underline */
 	private static String wordEachKebabCase(String str) {
 		return str.replaceAll("_", "-");
 	}
 
-	/** 驼峰转下划线  */
+	/** Convert camel case to underline */
 	private static String wordHumpToLine(String str) {
 		return str.replaceAll("[A-Z]", "_$0").toLowerCase();
 	}

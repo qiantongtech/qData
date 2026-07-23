@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -34,7 +35,7 @@
           @click="handleAdd"
           v-hasPermi="['dm:themeDomain:add']"
         >
-          {{ td('common.button.add', '新增') }}
+          {{ td('common.button.add', 'Add') }}
         </el-button>
         <el-button
           class="extend-btn"
@@ -44,7 +45,7 @@
         >
           <svg-icon v-if="defaultExpandAll" icon-class="toggle" />
           <svg-icon v-else icon-class="expand" />
-          <span>{{ defaultExpandAll ? td('common.button.fold', '折叠') : td('common.button.expand', '展开') }}</span>
+          <span>{{ defaultExpandAll ? td('common.button.fold', 'Collapse') : td('common.button.expand', 'Expand') }}</span>
         </el-button>
       </template>
 
@@ -57,7 +58,7 @@
             @click="handleUpdate(row)"
             v-hasPermi="['dm:themeDomain:edit']"
           >
-            {{ td('common.button.update', '修改') }}
+            {{ td('common.button.update', 'Edit') }}
           </el-button>
           <el-button
             link
@@ -66,7 +67,7 @@
             @click="handleAdd(row)"
             v-hasPermi="['dm:themeDomain:add']"
           >
-            {{ td('common.button.add', '新增') }}
+            {{ td('common.button.add', 'Add') }}
           </el-button>
           <el-button
             link
@@ -75,7 +76,7 @@
             @click="handleDelete(row)"
             v-hasPermi="['dm:themeDomain:remove']"
           >
-            {{ td('common.button.delete', '删除') }}
+            {{ td('common.button.delete', 'Delete') }}
           </el-button>
         </template>
 
@@ -111,19 +112,19 @@
        :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.name', '主题域名称')" prop="name" :label-position="labelPosition">
-              <el-input v-model="form.name" :placeholder="td('dm.themeDomain.namePlaceholder', '请输入主题域名称')" />
+            <el-form-item :label="td('dm.themeDomain.name', 'Theme Domain Name')" prop="name" :label-position="labelPosition">
+              <el-input v-model="form.name" :placeholder="td('dm.themeDomain.namePlaceholder', 'Please enter theme domain name')" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.parentId', '上级主题域')" prop="parentId" :label-position="labelPosition">
+            <el-form-item :label="td('dm.themeDomain.parentId', 'Parent Theme Domain')" prop="parentId" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 v-model="form.parentId"
                 :data="attDataElemCatOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                :placeholder="td('dm.themeDomain.parentIdPlaceholder', '请选择上级主题域')"
+                :placeholder="td('dm.themeDomain.parentIdPlaceholder', 'Please select parent theme domain')"
                 check-strictly
               />
             </el-form-item>
@@ -131,7 +132,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.dataLayerId', '数仓分层')" prop="dataLayerId" :label-position="labelPosition">
+            <el-form-item :label="td('dm.themeDomain.dataLayerId', 'Data Layer')" prop="dataLayerId" :label-position="labelPosition">
               <el-tree-select
                 filterable
                 default-expand-all
@@ -139,24 +140,24 @@
                 :data="dataLayerOptions"
                 :props="{ value: 'id', label: 'name', children: 'children' }"
                 value-key="id"
-                :placeholder="td('dm.themeDomain.dataLayerIdPlaceholder', '请选择数仓分层')"
+                :placeholder="td('dm.themeDomain.dataLayerIdPlaceholder', 'Please select data layer')"
                 check-strictly
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.engName', '英文缩写')" prop="engName" :label-position="labelPosition">
-              <el-input v-model="form.engName" :placeholder="td('dm.themeDomain.engNamePlaceholder', '请输入英文缩写')" />
+            <el-form-item :label="td('dm.themeDomain.engName', 'English Abbreviation')" prop="engName" :label-position="labelPosition">
+              <el-input v-model="form.engName" :placeholder="td('dm.themeDomain.engNamePlaceholder', 'Please enter English abbreviation')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.ownerId', '负责人')" prop="ownerUserId" :label-position="labelPosition">
+            <el-form-item :label="td('dm.themeDomain.ownerId', 'Responsible Person')" prop="ownerUserId" :label-position="labelPosition">
               <el-select
                 v-model="form.ownerUserId"
                 filterable
-                :placeholder="td('dm.themeDomain.ownerIdPlaceholder', '请选择负责人')"
+                :placeholder="td('dm.themeDomain.ownerIdPlaceholder', 'Please select responsible person')"
                 @change="handleOwnerChange"
               >
                 <el-option
@@ -169,10 +170,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('dm.themeDomain.ownerPhone', '负责人电话')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
+            <el-form-item :label="td('dm.themeDomain.ownerPhone', 'Responsible Person Phone')" prop="ownerUserPhoneNumber" :label-position="labelPosition">
               <el-input
                 v-model="form.ownerUserPhoneNumber"
-                :placeholder="td('dm.themeDomain.ownerPhonePlaceholder', '请输入负责人电话')"
+                :placeholder="td('dm.themeDomain.ownerPhonePlaceholder', 'Please enter responsible person phone')"
                 disabled
               />
             </el-form-item>
@@ -180,25 +181,25 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description', '描述')" prop="description" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.description', 'Description')" prop="description" :label-position="labelPosition">
               <el-input
                 v-model="form.description"
                 type="textarea"
                 maxlength="256"
                 :min-height="256"
                 show-word-limit
-                :placeholder="td('common.form.descriptionPlaceholder', '请输入描述')"
+                :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark', '备注')" prop="remark" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
               <el-input
                 v-model="form.remark"
                 type="textarea"
                 maxlength="500"
                 show-word-limit
-                :placeholder="td('common.form.remarkPlaceholder', '请输入备注')"
+                :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
               />
             </el-form-item>
           </el-col>
@@ -206,9 +207,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ td('common.button.cancel', '取消') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitForm"
-            >{{ td('common.button.confirm', '确定') }}</el-button
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm"
+            >{{ td('common.button.confirm', 'Confirm') }}</el-button
           >
         </div>
       </template>
@@ -233,6 +234,7 @@ import QtSearchBar from "@/components/QtSearchBar";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const submitLoading = ref(false);
 const attDataElemCatOptions = ref([]);
 const managerOptions = ref([]);
 const dataLayerOptions = ref([]);
@@ -240,7 +242,7 @@ const open = ref(false);
 const title = ref("");
 const tableRef = ref(null);
 
-// 添加计算属性用于控制展开/折叠
+// Add computed properties to control expand/collapse
 const defaultExpandAll = computed({
   get() {
     return tableStore.config.table.defaultExpandAll;
@@ -259,19 +261,19 @@ const data = reactive({
     ownerUserId: null,
   },
   rules: {
-    name: [{ required: true, message: td('dm.themeDomain.nameRequired', '主题域名称不能为空'), trigger: "blur" }],
+    name: [{ required: true, message: td('dm.themeDomain.nameRequired', 'Theme domain name cannot be empty'), trigger: "blur" }],
     parentId: [
-      { required: true, message: td('dm.themeDomain.parentIdRequired', '上级主题域不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.parentIdRequired', 'Parent theme domain cannot be empty'), trigger: "blur" },
     ],
     engName: [
-      { required: true, message: td('dm.themeDomain.engNameRequired', '英文缩写不能为空'), trigger: "blur" },
-      { pattern: /^[a-zA-Z]+$/, message: td('dm.themeDomain.englishOnly', '只能输入英文字符'), trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.engNameRequired', 'English abbreviation cannot be empty'), trigger: "blur" },
+      { pattern: /^[a-zA-Z]+$/, message: td('dm.themeDomain.englishOnly', 'Only English characters are allowed'), trigger: "blur" },
     ],
     ownerUserId: [
-      { required: true, message: td('dm.themeDomain.ownerRequired', '负责人不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.ownerRequired', 'Responsible person cannot be empty'), trigger: "blur" },
     ],
     dataLayerId: [
-      { required: true, message: td('dm.themeDomain.dataLayerIdRequired', '数仓分层不能为空'), trigger: "blur" },
+      { required: true, message: td('dm.themeDomain.dataLayerIdRequired', 'Data layer cannot be empty'), trigger: "blur" },
     ],
   },
 });
@@ -294,46 +296,46 @@ const tableStore = reactive({
   },
   columns: [
     {
-      label: td('dm.themeDomain.name', '主题域名称'),
+      label: td('dm.themeDomain.name', 'Theme Domain Name'),
       prop: "name",
       width: 200,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('common.texts.description', '描述'),
+      label: td('common.texts.description', 'Description'),
       prop: "description",
       width: 250,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
     {
-      label: td('dm.themeDomain.engName', '英文缩写'),
+      label: td('dm.themeDomain.engName', 'English Abbreviation'),
       prop: "engName",
       width: 200,
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
-    { label: td('dm.themeDomain.dataLayerId', '数仓分层'), prop: "dataLayerName", align: "left", width: 140 },
-    { label: td('dm.themeDomain.ownerId', '负责人'), prop: "ownerUserName", align: "left" },
+    { label: td('dm.themeDomain.dataLayerId', 'Data Layer'), prop: "dataLayerName", align: "left", width: 140 },
+    { label: td('dm.themeDomain.ownerId', 'Responsible Person'), prop: "ownerUserName", align: "left" },
     {
-      label: td('dm.themeDomain.ownerPhone', '负责人电话'),
+      label: td('dm.themeDomain.ownerPhone', 'Responsible Person Phone'),
       prop: "ownerUserPhoneNumber",
       width: 140,
       align: "left",
     },
-    { label: td('common.texts.status', '状态'), prop: "validFlag", slot: "validFlag", width: 100 },
-    { label: td('common.texts.remark', '备注'), prop: "remark", align: "left" },
+    { label: td('common.texts.status', 'Status'), prop: "validFlag", slot: "validFlag", width: 100 },
+    { label: td('common.texts.remark', 'Remark'), prop: "remark", align: "left" },
 
-    { label: td('common.texts.createdBy', '创建人'), prop: "createBy", align: "left" },
+    { label: td('common.texts.createdBy', 'Created By'), prop: "createBy", align: "left" },
     {
-      label: td('common.texts.createdTime', '创建时间'),
+      label: td('common.texts.createdTime', 'Created Time'),
       prop: "createTime",
       sortable: true,
       date: true,
       width: 180,
     },
-    { label: td('common.texts.operation', '操作'), width: 220, slot: "action", fixed: "right" },
+    { label: td('common.texts.operation', 'Operation'), width: 220, slot: "action", fixed: "right" },
   ],
   func: listThemeDomain,
   params: queryParams,
@@ -345,36 +347,36 @@ const tableStore = reactive({
 const searchStore = reactive({
   items: [
     {
-      label: td('dm.themeDomain.name', '主题域名称'),
+      label: td('dm.themeDomain.name', 'Theme Domain Name'),
       prop: "name",
-      component: { is: "input", placeholder: td('dm.themeDomain.namePlaceholder', '请输入主题域名称') },
+      component: { is: "input", placeholder: td('dm.themeDomain.namePlaceholder', 'Please enter theme domain name') },
     },
     {
-      label: td('dm.themeDomain.parentId', '上级主题域'),
+      label: td('dm.themeDomain.parentId', 'Parent Theme Domain'),
       prop: "code",
       component: {
         is: "tree-select",
         data: attDataElemCatOptions,
         props: { value: "code", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: td('dm.themeDomain.parentIdPlaceholder', '请选择上级主题域'),
+        placeholder: td('dm.themeDomain.parentIdPlaceholder', 'Please select parent theme domain'),
         checkStrictly: true,
       },
     },
     {
-      label: td('dm.themeDomain.dataLayerId', '数仓分层'),
+      label: td('dm.themeDomain.dataLayerId', 'Data Layer'),
       prop: "dataLayerId",
       component: {
         is: "tree-select",
         data: dataLayerOptions,
         props: { value: "id", label: "name", children: "children" },
         valueKey: "id",
-        placeholder: td('dm.themeDomain.dataLayerIdPlaceholder', '请选择数仓分层'),
+        placeholder: td('dm.themeDomain.dataLayerIdPlaceholder', 'Please select data layer'),
         checkStrictly: true,
       },
     },
     {
-      label: td('dm.themeDomain.ownerId', '负责人'),
+      label: td('dm.themeDomain.ownerId', 'Responsible Person'),
       prop: "ownerUserId",
       component: {
         is: "select",
@@ -384,13 +386,13 @@ const searchStore = reactive({
             value: item.userId,
           }))
         ),
-        placeholder: td('dm.themeDomain.ownerIdPlaceholder', '请选择负责人'),
+        placeholder: td('dm.themeDomain.ownerIdPlaceholder', 'Please select responsible person'),
       },
     },
   ],
 });
 
-/** 查询主题域管理列表 */
+/** Query the subject domain management list */
 function getList() {
   tableRef.value?.getList();
 }
@@ -428,13 +430,13 @@ function getDataLayerTree() {
   });
 }
 
-// 取消按钮
+// Cancel button
 function cancel() {
   open.value = false;
   reset();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -459,15 +461,15 @@ function reset() {
   proxy.resetForm("themeDomainRef");
 }
 
-/** 搜索按钮操作 */
+/** Search button action */
 function handleQuery() {
   getList();
 }
-/** 改变启用状态值 */
+/** Change enabled status value */
 function handleStatusChange(row) {
-  const text = row.validFlag === true ? td('dm.themeDomain.enableText', '启用') : td('dm.themeDomain.disableText', '禁用');
+  const text = row.validFlag === true ? td('dm.themeDomain.enableText', 'Enable') : td('dm.themeDomain.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmStatusChange', '确认要"<text>","<name>"主题域吗？').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dm.themeDomain.confirmStatusChange', 'Are you sure to "<text>" theme domain "<name>"?').replace('<text>', text).replace('<name>', row.name))
     .then(() => {
       updateThemeDomain({
         id: row.id,
@@ -475,7 +477,7 @@ function handleStatusChange(row) {
         validFlag: row.validFlag,
       })
         .then((response) => {
-          proxy.$modal.msgSuccess(td('common.message.operationSuccess', '操作成功'));
+          proxy.$modal.msgSuccess(td('common.message.operationSuccess', 'Operation successful'));
           getList();
         })
         .catch((err) => {
@@ -487,7 +489,7 @@ function handleStatusChange(row) {
     });
 }
 
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   Object.keys(queryParams.value).forEach((key) => {
     queryParams.value[key] = null;
@@ -495,7 +497,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 当负责人改变时，更新电话号码 */
+/** Update phone number when person in charge changes */
 const handleOwnerChange = (selectedValue) => {
   const selectedUser = managerOptions.value.find(
     (user) => user.userId == selectedValue
@@ -503,7 +505,7 @@ const handleOwnerChange = (selectedValue) => {
   form.value.ownerUserPhoneNumber = selectedUser?.phonenumber || "";
 };
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd(row) {
   reset();
   // getTreeselect();
@@ -519,24 +521,24 @@ function handleAdd(row) {
     form.value.parentId = 0;
   }
   open.value = true;
-  title.value = td('dm.themeDomain.addTitle', '新增主题域');
+  title.value = td('dm.themeDomain.addTitle', 'Add Theme Domain');
 }
 
-/** 展开/折叠操作 */
+/** Expand/collapse operations */
 function toggleExpandAll() {
   defaultExpandAll.value = !defaultExpandAll.value;
   tableRef.value.reload();
 }
 
-/** 修改按钮操作 */
+/** Modify button actions */
 async function handleUpdate(row) {
   reset();
   // await getTreeselect();
   const response = await listThemeDomain();
   attDataElemCatOptions.value = [];
-  // 过滤节点的计算属性
+  // Filter computed properties of nodes
   const filteredDepts = response.data.filter((d) => {
-    // 过滤条件：去掉目标部门ID或者祖先中包含目标部门ID的项
+    // Filter condition: Remove the target department ID or items whose ancestors contain the target department ID.
     return (
       d.ID !== row.id &&
       !d.parentId.toString().split(",").includes(row.id.toString())
@@ -549,52 +551,62 @@ async function handleUpdate(row) {
     form.value.parentId = row.parentId;
   }
   getThemeDomain(row.id).then((response) => {
-    //把createTime过滤掉
+    //Filter out createTime
     delete response.data.createTime;
     delete response.data.updateTime;
     form.value = response.data;
 
     open.value = true;
-    title.value = td('dm.themeDomain.editTitle', '修改主题域');
+    title.value = td('dm.themeDomain.editTitle', 'Edit Theme Domain');
   });
 }
 
-/** 提交按钮 */
+/** submit button */
 function submitForm() {
+  if (submitLoading.value) return;
+  submitLoading.value = true;
   proxy.$refs["themeDomainRef"].validate((valid) => {
     if (valid) {
       if (form.value.id != null) {
         updateThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess(td('common.message.editSuccess', '修改成功'));
+          proxy.$modal.msgSuccess(td('common.message.editSuccess', 'Updated successfully'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       } else {
         addThemeDomain(form.value).then((response) => {
-          proxy.$modal.msgSuccess(td('common.message.addSuccess', '新增成功'));
+          proxy.$modal.msgSuccess(td('common.message.addSuccess', 'Added successfully'));
           open.value = false;
           getList();
+          submitLoading.value = false;
+        }).catch(() => {
+          submitLoading.value = false;
         });
       }
+    } else {
+      submitLoading.value = false;
     }
   });
 }
 
-/** 删除按钮操作 */
+/** Delete button action */
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmDelete', '是否确认删除主题域管理编号为"<name>"的数据项？').replace('<name>', row.name))
+    .confirm(td('dm.themeDomain.confirmDelete', 'Are you sure to delete theme domain "<name>"?').replace('<name>', row.name))
     .then(function () {
       return delThemeDomain(row.id);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', '删除成功'));
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess', 'Deleted successfully'));
     })
     .catch(() => {});
 }
 
-// 初始化数据
+// initialization data
 onMounted(() => {
   getDataTree();
   getManagerOptions();

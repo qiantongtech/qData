@@ -1,33 +1,19 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
- *  *
- * ============================================================================
- *  *
- * 版权所有 © 2025 江苏千桐科技有限公司
- * qData 数据中台（开源版）
- *  *
- * 许可协议：
- * 本项目基于 Apache License 2.0 开源协议发布，
- * 允许在遵守协议的前提下进行商用、修改和分发。
- *  *
- * 特别说明：
- * 所有衍生版本不得修改或移除系统默认的 LOGO 和版权信息；
- * 如需定制品牌，请通过官方渠道申请品牌定制授权。
- *  *
- * 更多信息请访问：https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 package tech.qiantong.qdata.module.system.service.impl;
@@ -42,7 +28,7 @@ import tech.qiantong.qdata.module.system.service.ISysDictDataService;
 import java.util.List;
 
 /**
- * 字典 业务层处理
+ * Dictionary Business Layer Processing
  *
  * @author qdata
  */
@@ -53,10 +39,10 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     private SysDictDataMapper dictDataMapper;
 
     /**
-     * 根据条件分页查询字典数据
+     * Query dictionary data list by conditions
      *
-     * @param dictData 字典数据信息
-     * @return 字典数据集合信息
+     * @param dictData Dictionary data information
+     * @return Dictionary data collection information
      */
     @Override
     public List<SysDictData> selectDictDataList(SysDictData dictData)
@@ -65,11 +51,11 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     }
 
     /**
-     * 根据字典类型和字典键值查询字典数据信息
+     * Query dictionary data information by dictionary type and dictionary value
      *
-     * @param dictType 字典类型
-     * @param dictValue 字典键值
-     * @return 字典标签
+     * @param dictType Dictionary type
+     * @param dictValue Dictionary value
+     * @return Dictionary label
      */
     @Override
     public String selectDictLabel(String dictType, String dictValue)
@@ -78,10 +64,10 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     }
 
     /**
-     * 根据字典数据ID查询信息
+     * Query dictionary data information by dictionary data ID
      *
-     * @param dictCode 字典数据ID
-     * @return 字典数据
+     * @param dictCode Dictionary data ID
+     * @return Dictionary data
      */
     @Override
     public SysDictData selectDictDataById(Long dictCode)
@@ -90,9 +76,9 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     }
 
     /**
-     * 批量删除字典数据信息
+     * Batch delete dictionary data information
      *
-     * @param dictCodes 需要删除的字典数据ID
+     * @param dictCodes Dictionary data IDs to be deleted
      */
     @Override
     public void deleteDictDataByIds(Long[] dictCodes)
@@ -107,10 +93,10 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     }
 
     /**
-     * 新增保存字典数据信息
+     * Insert and save dictionary data information
      *
-     * @param data 字典数据信息
-     * @return 结果
+     * @param data Dictionary data information
+     * @return Result
      */
     @Override
     public int insertDictData(SysDictData data)
@@ -125,10 +111,10 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     }
 
     /**
-     * 修改保存字典数据信息
+     * Update and save dictionary data information
      *
-     * @param data 字典数据信息
-     * @return 结果
+     * @param data Dictionary data information
+     * @return Result
      */
     @Override
     public int updateDictData(SysDictData data)

@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据分类列表
+// Query data classification list
 export function listDataCategory(query) {
   return request({
     url: '/dg/dataCategory/list',
@@ -35,7 +36,7 @@ export function listDataCategoryAll(query) {
 }
 
 
-// 查询数据分类详细
+// Query data classification details
 export function getDataCategory(id) {
   return request({
     url: '/dg/dataCategory/' + id,
@@ -43,7 +44,7 @@ export function getDataCategory(id) {
   })
 }
 
-// 查询数据分类树
+// Query data classification tree
 export function selectTreeDataCategory(query) {
   return request({
     url: '/dg/dataCategory/selectTree',
@@ -52,7 +53,7 @@ export function selectTreeDataCategory(query) {
   })
 }
 
-// 新增数据分类
+// Add new data classification
 export function addDataCategory(data) {
   return request({
     url: '/dg/dataCategory',
@@ -61,7 +62,7 @@ export function addDataCategory(data) {
   })
 }
 
-// 修改数据分类
+// Modify data classification
 export function updateDataCategory(data) {
   return request({
     url: '/dg/dataCategory',
@@ -70,7 +71,7 @@ export function updateDataCategory(data) {
   })
 }
 
-// 删除数据分类
+// Delete data classification
 export function delDataCategory(id) {
   return request({
     url: '/dg/dataCategory/' + id,
@@ -78,7 +79,7 @@ export function delDataCategory(id) {
   })
 }
 
-// 批量定级
+// Batch grading
 export function batchDataLevel(data) {
   return request({
     url: '/dg/dataCategory/batchDataLevel',

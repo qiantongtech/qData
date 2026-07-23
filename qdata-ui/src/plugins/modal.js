@@ -1,18 +1,19 @@
 ﻿/*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import { ElMessage, ElMessageBox, ElNotification, ElLoading } from 'element-plus'
@@ -20,55 +21,55 @@ import { i18n } from '@/plugins/vueI18n'
 let loadingInstance;
 
 export default {
-  // 消息提示
+  // Message prompt
   msg(content) {
     ElMessage.info(content)
   },
-  // 错误消息
+  // error message
   msgError(content) {
     ElMessage.error(content)
   },
-  // 成功消息
+  // success message
   msgSuccess(content) {
     ElMessage.success(content)
   },
-  // 警告消息
+  // warning message
   msgWarning(content) {
     ElMessage.warning(content)
   },
-  // 弹出提示
+  // Pop up prompt
   alert(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'))
   },
-  // 错误提示
+  // Error message
   alertError(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'error' })
   },
-  // 成功提示
+  // Tips for success
   alertSuccess(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'success' })
   },
-  // 警告提示
+  // Warning
   alertWarning(content) {
     ElMessageBox.alert(content, i18n.global.t('common.message.systemPrompt'), { type: 'warning' })
   },
-  // 通知提示
+  // Notification tips
   notify(content) {
     ElNotification.info(content)
   },
-  // 错误通知
+  // Error notification
   notifyError(content) {
     ElNotification.error(content);
   },
-  // 成功通知
+  // Success notification
   notifySuccess(content) {
     ElNotification.success(content)
   },
-  // 警告通知
+  // warning notification
   notifyWarning(content) {
     ElNotification.warning(content)
   },
-  // 确认窗体
+  // Confirmation form
   confirm(content) {
     return ElMessageBox.confirm(content, i18n.global.t('common.message.systemPrompt'), {
       confirmButtonText: i18n.global.t('common.button.confirm'),
@@ -76,7 +77,7 @@ export default {
       type: "warning",
     })
   },
-  // 提交内容
+  // Submit content
   prompt(content) {
     return ElMessageBox.prompt(content, i18n.global.t('common.message.systemPrompt'), {
       confirmButtonText: i18n.global.t('common.button.confirm'),
@@ -84,7 +85,7 @@ export default {
       type: "warning",
     })
   },
-  // 打开遮罩层
+  // Open mask layer
   loading(content) {
     loadingInstance = ElLoading.service({
       lock: true,
@@ -92,7 +93,7 @@ export default {
       background: "rgba(0, 0, 0, 0.7)",
     })
   },
-  // 关闭遮罩层
+  // Turn off mask layer
   closeLoading() {
     loadingInstance.close();
   }

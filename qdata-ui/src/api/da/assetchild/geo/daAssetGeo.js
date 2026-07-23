@@ -1,23 +1,24 @@
 /*
- * Copyright © 2025 Qiantong Technology Co., Ltd.
- * qData Data Middle Platform (Open Source Edition)
- *  *
- * License:
- * Released under the Apache License, Version 2.0.
- * You may use, modify, and distribute this software for commercial purposes
- * under the terms of the License.
- *  *
- * Special Notice:
- * All derivative versions are strictly prohibited from modifying or removing
- * the default system logo and copyright information.
- * For brand customization, please apply for brand customization authorization via official channels.
- *  *
- * More information: https://qdata.qiantong.tech/business.html
+ * Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * This file is part of qData Data Middle Platform (Open Source Edition).
+ *
+ * qData is licensed under Apache License 2.0 with additional qData terms.
+ * You may use qData for commercial purposes, but you may not remove, hide,
+ * modify, or replace the qData logo, copyright notices, license notices,
+ * or attribution information without a separate commercial license.
+ *
+ * White-label use, OEM distribution, rebranding, or presenting qData as
+ * another product requires separate commercial authorization from
+ * Jiangsu Qiantong Technology Co., Ltd.
+ *
+ * Business License: https://community.qdata.tech/business/policy.html
+ * See the LICENSE file in the project root for full license information.
  */
 
 import request from '@/utils/request'
 
-// 查询数据资产-矢量列表
+// Query data assets - vector list
 export function listDaAssetGeo(query) {
   return request({
     url: '/da/daAssetGeo/list',
@@ -26,7 +27,7 @@ export function listDaAssetGeo(query) {
   })
 }
 
-// 查询数据资产-矢量详细
+// Query data assets - vector detailed
 export function getDaAssetGeo(id) {
   return request({
     url: '/da/daAssetGeo/' + id,
@@ -34,7 +35,7 @@ export function getDaAssetGeo(id) {
   })
 }
 
-// 新增数据资产-矢量
+// New data asset-vector
 export function addDaAssetGeo(data) {
   return request({
     url: '/da/daAssetGeo',
@@ -43,7 +44,7 @@ export function addDaAssetGeo(data) {
   })
 }
 
-// 修改数据资产-矢量
+// Modify data assets - vector
 export function updateDaAssetGeo(data) {
   return request({
     url: '/da/daAssetGeo',
@@ -52,7 +53,7 @@ export function updateDaAssetGeo(data) {
   })
 }
 
-// 删除数据资产-矢量
+// Delete data assets - vector
 export function delDaAssetGeo(id) {
   return request({
     url: '/da/daAssetGeo/' + id,

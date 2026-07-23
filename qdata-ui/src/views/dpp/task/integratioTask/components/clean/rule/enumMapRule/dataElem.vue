@@ -1,18 +1,19 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
@@ -24,12 +25,12 @@
     width="90%"
   >
     <div class="flex-row">
-      <!-- 左侧树 -->
+      <!-- tree on left -->
       <div class="left-col">
         <DeptTree
           :deptOptions="deptOptions"
           :leftWidth="leftWidth"
-          :placeholder="td('dpp.cleanRule.inputStandardDataElemCat', '请输入标准数据元类目')"
+          :placeholder="td('dpp.cleanRule.inputStandardDataElemCat', 'Please enter standard data element category')"
           @node-click="handleNodeClick"
           ref="DeptTreeRef"
           :showFilter="false"
@@ -38,12 +39,12 @@
         />
       </div>
 
-      <!-- 分隔线 -->
+      <!-- divider -->
       <div class="divider"></div>
 
-      <!-- 右侧表格 + 分页 -->
+      <!-- Right table + pagination -->
       <div class="content-col" v-loading="loading">
-        <!-- 表格 -->
+        <!-- table -->
         <el-table
           :data="dpDataElemList"
           stripe
@@ -55,14 +56,14 @@
         >
           <el-table-column
             v-if="getColumnVisibility(0)"
-            :label="td('common.texts.number', '编号')"
+            :label="td('common.texts.number', 'No.')"
             align="left"
             prop="id"
             width="80"
           />
           <el-table-column
             v-if="getColumnVisibility(1)"
-            :label="td('dpp.cleanRule.chineseName', '中文名称')"
+            :label="td('dpp.cleanRule.chineseName', 'Chinese Name')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -72,7 +73,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(2)"
-            :label="td('dpp.cleanRule.englishName', '英文名称')"
+            :label="td('dpp.cleanRule.englishName', 'English Name')"
             :show-overflow-tooltip="{ effect: 'light' }"
             width="80"
             align="left"
@@ -82,7 +83,7 @@
           </el-table-column>
           <el-table-column
             v-if="getColumnVisibility(3)"
-            :label="td('dpp.cleanRule.type', '类型')"
+            :label="td('dpp.cleanRule.type', 'Type')"
             align="left"
             prop="type"
           >
@@ -91,7 +92,7 @@
           <el-table-column
             v-if="getColumnVisibility(6)"
             width="140"
-            :label="td('dpp.cleanRule.metaDescription', '元描述')"
+            :label="td('dpp.cleanRule.metaDescription', 'Meta Description')"
             align="left"
             prop="description"
             :show-overflow-tooltip="{ effect: 'light' }"
@@ -101,7 +102,7 @@
             }}</template>
           </el-table-column>
           <el-table-column
-            :label="td('common.texts.operation', '操作')"
+            :label="td('common.texts.operation', 'Operation')"
             align="center"
             class-name="small-padding fixed-width"
             fixed="right"
@@ -114,7 +115,7 @@
                 icon="view"
                 @click="showDialog(scope.row)"
                 v-hasPermi="['dp:dataElem:dataelem:edit']"
-                >{{ td('dpp.cleanRule.view', '查看') }}
+                >{{ td('dpp.cleanRule.view', 'View') }}
               </el-button>
             </template>
           </el-table-column>
@@ -124,11 +125,11 @@
                 src="../../../../../../../../assets/images/system/no_data/empty-nodata.png"
                 alt=""
               />
-              <p>{{ td('dpp.cleanRule.noData', '无数据') }}</p>
+              <p>{{ td('dpp.cleanRule.noData', 'No Data') }}</p>
             </div>
           </template>
         </el-table>
-        <!-- 分页 -->
+        <!-- Pagination -->
         <div
           class="pagination-wrapper"
           style="margin-top: 10px; text-align: right"
@@ -143,17 +144,17 @@
       </div>
     </div>
 
-    <!-- 底部按钮 -->
+    <!-- bottom button -->
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleCancel">{{ td('common.button.cancel', '取消') }}</el-button>
+        <el-button @click="handleCancel">{{ td('common.button.cancel', 'Cancel') }}</el-button>
         <el-button
           type="primary"
           @click="handleConfirm"
           :disabled="!selectedRow"
           :loading="loading"
         >
-          {{ td('common.button.save', '保存') }}
+          {{ td('common.button.save', 'Save') }}
         </el-button>
       </div>
     </template>
@@ -176,10 +177,10 @@ import CodeValueInput from "./dataElemDetail.vue";
 
 const { td } = useDefaultLang();
 const deptOptions = ref(undefined);
-const leftWidth = ref(240); // 初始左侧宽度
-const isResizing = ref(false); // 判断是否正在拖拽
-let startX = 0; // 鼠标按下时的初始位置// 初始左侧宽度
-/** 类型字典翻译 */
+const leftWidth = ref(240); // Initial left width
+const isResizing = ref(false); // Determine whether dragging is in progress
+let startX = 0; // Initial position when mouse is pressed // Initial left width
+/** type dictionary translation */
 function typeFormat(row) {
   return proxy.selectDictLabel(dp_data_elem_code_type.value, row.type);
 }
@@ -187,14 +188,14 @@ function typeFormat(row) {
 const dpDataElemList = ref([]);
 const dpDataElemRuleRelList = ref([]);
 
-// 列显隐信息
+// Show hidden information
 const columns = ref([
-  { key: 1, label: td('dpp.cleanRule.chineseName', '中文名称'), visible: true },
-  { key: 2, label: td('dpp.cleanRule.englishName', '英文名称'), visible: true },
-  { key: 3, label: td('dpp.cleanRule.type', '类型'), visible: true },
-  { key: 4, label: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'), visible: true },
-  { key: 5, label: td('common.texts.status', '状态'), visible: true },
-  { key: 6, label: td('dpp.cleanRule.metaDescription', '元描述'), visible: true },
+  { key: 1, label: td('dpp.cleanRule.chineseName', 'Chinese Name'), visible: true },
+  { key: 2, label: td('dpp.cleanRule.englishName', 'English Name'), visible: true },
+  { key: 3, label: td('dpp.cleanRule.type', 'Type'), visible: true },
+  { key: 4, label: td('dpp.cleanRule.standardDataElemCat', 'Standard Data Element Category'), visible: true },
+  { key: 5, label: td('common.texts.status', 'Status'), visible: true },
+  { key: 6, label: td('dpp.cleanRule.metaDescription', 'Meta Description'), visible: true },
 ]);
 const dialogRef = ref();
 function handleQuery() {
@@ -206,9 +207,9 @@ function showDialog(row) {
 }
 const getColumnVisibility = (key) => {
   const column = columns.value.find((col) => col.key === key);
-  // 如果没有找到对应列配置，默认显示
+  // If the corresponding column configuration is not found, it will be displayed by default.
   if (!column) return true;
-  // 如果找到对应列配置，根据visible属性来控制显示
+  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
   return column.visible;
 };
 
@@ -234,7 +235,7 @@ const data = reactive({
 
 const { queryParams, form } = toRefs(data);
 const managerOptions = ref([]);
-/** 查询数据元列表 */
+/** Query data element list */
 function getList() {
   loading.value = true;
   listDpDataElem(queryParams.value).then((response) => {
@@ -246,13 +247,13 @@ function getList() {
     managerOptions.value = response.data;
   });
 }
-// 树组件 传值
+// tree component pass value
 function handleNodeClick(data) {
   queryParams.value.catCode = data.code;
   handleQuery();
 }
 
-// 表单重置
+// form reset
 function reset() {
   form.value = {
     id: null,
@@ -281,7 +282,7 @@ function reset() {
 }
 
 const DeptTreeRef = ref(null);
-/** 重置按钮操作 */
+/** reset button action */
 function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
@@ -298,7 +299,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td('dpp.cleanRule.standardDataElemCat', '标准数据元类目'),
+        name: td('dpp.cleanRule.standardDataElemCat', 'Standard Data Element Category'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -309,10 +310,10 @@ function getDeptTree() {
 
 const visible = ref(false);
 /**
- * 打开弹窗
- * @param {String} dialogTitle 弹窗标题
+ * Open pop-up window
+ * @param {String} dialogTitle pop-up window title
  */
-function openDialog(dialogTitle = td('dpp.cleanRule.selectData', '选择数据')) {
+function openDialog(dialogTitle = td('dpp.cleanRule.selectData', 'Select Data')) {
   title.value = dialogTitle;
   visible.value = true;
   getDeptTree();
@@ -323,17 +324,17 @@ const tableRef = ref(null);
 function handleRowClick(row) {
   selectedRow.value = row;
   if (tableRef.value) {
-    tableRef.value.setCurrentRow(row); // 高亮选中
+    tableRef.value.setCurrentRow(row); // Highlight
   }
-  console.log("选中行数据:", row);
+  console.log("Selected row data:", row);
 }
 /**
- * 取消
+ * Cancel
  */
 function handleCancel() {
   visible.value = false;
   if (tableRef.value) {
-    tableRef.value.setCurrentRow(null); // 清除表格选中行高亮
+    tableRef.value.setCurrentRow(null); // Clear selected row highlighting in table
   }
   resetQuery();
 }
@@ -350,7 +351,7 @@ async function ElemCode(id) {
     });
     return response.data.rows || [];
   } catch (error) {
-    console.error("请求失败", error);
+    console.error("Request failed", error);
     return [];
   } finally {
     loading.value = false;
@@ -358,11 +359,11 @@ async function ElemCode(id) {
 }
 
 /**
- * 保存
+ * save
  */
 async function handleConfirm() {
   if (!selectedRow.value) {
-    proxy.$modal.msgWarning(td('dpp.cleanRule.selectRecord', '请选择一条记录'));
+    proxy.$modal.msgWarning(td('dpp.cleanRule.selectRecord', 'Please select a record'));
     return;
   }
   // const list = await ElemCode(selectedRow.value.id);
@@ -401,7 +402,7 @@ defineExpose({ openDialog });
 
 .el-table {
   flex: none;
-  /* 不占满父容器 */
+  /* Do not occupy the parent container */
 }
 
 .pagination-wrapper {

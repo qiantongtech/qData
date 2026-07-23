@@ -1,28 +1,29 @@
 <!--
-  Copyright © 2025 Qiantong Technology Co., Ltd.
-  qData Data Middle Platform (Open Source Edition)
-   *
-  License:
-  Released under the Apache License, Version 2.0.
-  You may use, modify, and distribute this software for commercial purposes
-  under the terms of the License.
-   *
-  Special Notice:
-  All derivative versions are strictly prohibited from modifying or removing
-  the default system logo and copyright information.
-  For brand customization, please apply for brand customization authorization via official channels.
-   *
-  More information: https://qdata.qiantong.tech/business.html
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
 -->
 
 <template>
     <el-form ref="form1" :model="form1" :rules="rules1" label-width="170px" :label-position="labelPosition">
         <!--        <el-row :gutter="20">-->
         <!--            <el-col :span="12">-->
-        <!--                <el-form-item label="数据所属目录" prop="typeId" v-if="isChange">-->
+        <!--                <el-form-item label="Directory where the data belongs" prop="typeId" v-if="isChange">-->
         <!--                    <el-tree-select filterable v-model="form1.catCode"  :data="deptOptions"-->
         <!--                                    :props="{ value: 'code', label: 'name', children: 'children' }"   value-key="ID"-->
-        <!--                                    placeholder="请选择所属类目" check-strictly/>-->
+        <!--                                    placeholder="Please select the category" check-strictly/>-->
         <!--                </el-form-item>-->
         <!--            </el-col>-->
         <!--        </el-row>-->
@@ -78,13 +79,13 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <!--        <el-form-item label="是否开启缓存：" prop="cacheSwitch">-->
+        <!--        <el-form-item label="Whether to enable caching:" prop="cacheSwitch">-->
         <!--            <el-radio-group v-model="form1.cacheSwitch">-->
         <!--                <el-radio v-for="dict in whetherOptions" :key="dict.id" :label="dict.itemText">{{ dict.itemValue-->
         <!--                    }}</el-radio>-->
         <!--            </el-radio-group>-->
         <!--        </el-form-item>-->
-        <!--        <el-form-item label="是否显示JSON样例" prop="sortColumn">-->
+        <!--        <el-form-item label="Whether to display JSON samples" prop="sortColumn">-->
         <!--            <el-radio-group v-model="form1.sortColumn">-->
         <!--                <el-radio v-for="dict in cacheOptions" :key="dict.id" :label="dict.itemValue">-->
         <!--                    {{ dict.itemText }}-->
@@ -211,13 +212,13 @@ const props = defineProps({
 });
 
 const data = reactive({
-    // 定义一个 data 用来存储 props 中的值
-    localForm: { ...props.form1 }, // 用于管理表单数据
-    typeName: props.typeNames, // 用于存储目录名称
+    // Define a data to store the value in props
+    localForm: { ...props.form1 }, // Used to manage form data
+    typeName: props.typeNames, // Used to store directory names
     defaultProps: {
         children: 'children',
         label: 'name',
-        isLeaf: 'isLeaf' // 指定是否是叶子节点的字段名
+        isLeaf: 'isLeaf' // Specifies whether it is the field name of a leaf node
     },
     cacheOptions: [
         { id: 1, itemText: td('ds.apiEdit.base.cacheYes'), itemValue: 0 },
@@ -231,7 +232,7 @@ const { localForm, typeName, defaultProps, cacheOptions, deptOptions } = toRefs(
 watch(
     () => props.form1,
     (newValue, oldValue) => {
-        // 当 props 中的 form1 发生变化时，更新 localForm
+        // When form1 in props changes, update localForm
         localForm.value = { ...newValue };
     }
 );
@@ -250,10 +251,10 @@ function getApiCatList() {
         ];
     });
 }
-// 树形选项数据的规范化
+// Normalization of tree options data
 function normalizeOptions(node) {
     if (node.children && !node.children.length) {
-        delete node.children; // 去除没有子节点的空children属性
+        delete node.children; // Remove the empty children attribute of nodes that have no children
     }
     return {
         id: node.id,
@@ -275,21 +276,21 @@ defineExpose({
     validateFormBase
 });
 
-// 处理API地址输入，过滤非法字符
+// Process API address input and filter illegal characters
 const handleApiUrlInput = (value) => {
     console.log('value', value);
 
     if (value) {
-        // 只保留字母、数字、下划线、中划线和斜杠
+        // Only letters, numbers, underscores, dashes, and slashes are retained
         const filteredValue = value.replace(/[^\w\-\/]/g, '');
-        // 直接更新表单值
+        // Update form values directly
         props.form1.apiUrl = filteredValue;
     }
 };
 
-// 处理类目选择
+// Handle category selection
 const handleCatSelect = (value) => {
-    // 在所有选项中查找匹配的类目
+    // Find matching categories across all options
     const findCategory = (options, code) => {
         for (const option of options) {
             if (option.code === code) {
@@ -307,7 +308,7 @@ const handleCatSelect = (value) => {
     console.log('selectedCat', selectedCat);
 
     if (selectedCat) {
-        // 同时设置 catCode 和 catId
+        // Set both catCode and catId
         props.form1.catCode = selectedCat.code;
         props.form1.catId = selectedCat.id;
     }

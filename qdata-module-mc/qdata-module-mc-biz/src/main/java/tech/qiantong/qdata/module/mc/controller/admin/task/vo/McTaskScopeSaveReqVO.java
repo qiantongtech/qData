@@ -7,7 +7,7 @@ import tech.qiantong.qdata.common.core.domain.BaseEntity;
 import javax.validation.constraints.Size;
 
 /**
- * 采集范围 创建/修改 Request VO MC_TASK_SCOPE
+ * Collection Scope Create/Modify Request VO MC_TASK_SCOPE
  *
  * @author qdata
  * @date 2025-12-16

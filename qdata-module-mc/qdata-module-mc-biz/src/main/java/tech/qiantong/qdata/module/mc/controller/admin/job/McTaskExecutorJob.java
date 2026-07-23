@@ -46,9 +46,9 @@ public class McTaskExecutorJob {
             mcTaskService.runDaDiscoveryTask(id);
             CommonResult.success("任务id:" + id + "执行成功");
         } catch (NumberFormatException e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务ID格式错误：" + id);
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "Invalid task ID format: " + id);
         } catch (Exception e) {
-            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "任务执行失败：" + e.getMessage());
+            CommonResult.error(GlobalErrorCodeConstants.ERROR.getCode(), "Task execution failed: " + e.getMessage());
         }
     }
 }

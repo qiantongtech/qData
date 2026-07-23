@@ -19,7 +19,7 @@ version: "3.8"
 services:
   redis:
     image: redis:6-alpine
-    profiles: ["all", "local"]
+    profiles: ["all", "light", "local"]
     env_file: .env
     restart: always
     environment:
@@ -48,7 +48,7 @@ services:
       timeout: 5s        # Fail after 5 seconds
       retries: 10        # Mark unhealthy after 10 consecutive failures
       start_period: 1200s # Allow failures during the first 20 minutes
-    profiles: ["all", "local"]
+    profiles: ["all", "light", "local"]
     env_file: .env
     environment:
 #      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
@@ -63,7 +63,7 @@ services:
   nginx:
     image: nginx:1.24.0
     restart: always
-    profiles: [ "all" ]
+    profiles: [ "all", "light" ]
     env_file: .env
     ports:
       - '${EXPOSE_NGINX_PORT:-80}:${NGINX_PORT:-80}'
@@ -79,7 +79,7 @@ services:
     privileged: true
     image: mysql:8.0
     restart: always
-    profiles: [ "all", "schema", "local", "qdata-mysql" ]
+    profiles: [ "all", "light", "schema", "local", "qdata-mysql" ]
     env_file: .env
     environment:
       TZ: ${TZ}
@@ -108,7 +108,7 @@ services:
 
   mongodb:
     restart: always
-    profiles: [ "all", "schema", "local"  ]
+    profiles: [ "all", "light", "schema", "local"  ]
     env_file: .env
     image: mongo:4.4
     ports:
@@ -130,7 +130,7 @@ services:
   neo4j:
     privileged: true
     image: neo4j:4.4.40
-    profiles: [ "all", "neo4j" ]
+    profiles: [ "all", "light", "neo4j" ]
     restart: always
     ports:
       - "7474:7474"

@@ -25,6 +25,8 @@ export default {
       leaderPlaceholder: '責任者を選択してください',
       leaderPhone: '責任者電話番号',
       leaderPhonePlaceholder: '責任者電話番号を入力してください',
+      leaderInfo: '責任者の連絡先電話番号。責任者に自動で表示されます',
+      contactPhoneInfo: '作業のメンテナンス責任者。異常のフォローアップおよび追跡に使用されます',
       collectionMode: '収集モード',
       collectionScope: '収集範囲',
       selectSourceDb: 'ソースDB',

@@ -181,9 +181,6 @@
                   @change="handleDomainChange"
                   default-expand-all
               />
-              <p class="form-item-description">
-                {{ td("mc.task.structured.sourceSystemDescription", "指定采集任务所属的源系统，便于归类管理") }}
-              </p>
             </el-form-item>
 
             <el-form-item :label="td('mc.task.structured.taskName')" prop="name" :label-position="labelPosition">
@@ -191,9 +188,6 @@
                   v-model="dialog.form.name"
                   :placeholder="td('mc.task.structured.taskNamePlaceholder')"
               />
-              <p class="form-item-description">
-                {{ td("mc.task.structured.taskNameDescription", "任务唯一标识，用于检索和区分采集任务") }}
-              </p>
             </el-form-item>
 
         <el-form-item
@@ -218,9 +212,6 @@
             >
             </el-option>
           </el-select>
-          <p class="form-item-description">
-            {{ td("mc.task.structured.datasourceDescription", "选择待采集元数据的数据库连接") }}
-          </p>
         </el-form-item>
 
         <el-form-item :label="td('mc.task.structured.dbType')" prop="dbType" :label-position="labelPosition">
@@ -229,9 +220,6 @@
               disabled
               :placeholder="td('mc.task.structured.dbTypePlaceholder')"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.dbTypeDescription", "数据库类型，随所选数据源自动带出") }}
-          </p>
         </el-form-item>
         <el-form-item :label="td('mc.task.structured.ip')" prop="ip" :label-position="labelPosition">
           <el-input
@@ -239,9 +227,6 @@
               disabled
               :placeholder="td('mc.task.structured.ipPlaceholder')"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.ipDescription", "数据库服务器地址，随所选数据源自动带出") }}
-          </p>
         </el-form-item>
 
         <el-form-item :label="td('mc.task.structured.port')" prop="port" :label-position="labelPosition">
@@ -250,9 +235,6 @@
               disabled
               :placeholder="td('mc.task.structured.portPlaceholder')"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.portDescription", "数据库服务端口，随所选数据源自动带出") }}
-          </p>
         </el-form-item>
         <el-form-item
             :label="td('mc.task.structured.username')"
@@ -263,9 +245,6 @@
               disabled
               :placeholder="td('mc.task.structured.usernamePlaceholder')"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.usernameDescription", "数据库连接账号，随所选数据源自动带出") }}
-          </p>
         </el-form-item>
 
 
@@ -280,13 +259,10 @@
               children: 'children',
             }"
               value-key="userId"
-              :placeholder="td('mc.task.structured.leaderPlaceholder')"
+              :placeholder="td('mc.task.structured.leaderInfo')"
               check-strictly
               @change="handleUserChange"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.leaderDescription", "任务维护负责人，用于异常跟进和责任追溯") }}
-          </p>
         </el-form-item>
         <el-form-item
             :label="td('mc.task.structured.leaderPhone')"
@@ -295,11 +271,8 @@
           <el-input
               v-model="dialog.form.leaderPhone"
               disabled
-              :placeholder="td('mc.task.structured.leaderPhonePlaceholder')"
+              :placeholder="td('mc.task.structured.contactPhoneInfo')"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.leaderPhoneDescription", "负责人联系电话，随负责人自动带出") }}
-          </p>
         </el-form-item>
 
         <el-form-item
@@ -317,9 +290,6 @@
               {{ dict.label }}
             </el-radio>
           </el-radio-group>
-          <p class="form-item-description">
-            {{ td("mc.task.structured.collectionModeDescription", "定义任务采集元数据的方式") }}
-          </p>
         </el-form-item>
 
         <el-form-item
@@ -358,18 +328,9 @@
             </el-form-item>
 
         <el-form-item
+          class="cron-expression-form-item"
           :label="td('mc.task.structured.cronExpression')"
           prop="cronExpression"
-          :rules="[
-            {
-              required: true,
-                message: td(
-                  'dpp.developTask.selectScheduleCycle',
-                  '请选择调度周期'
-                ),
-              trigger: 'blur',
-            },
-          ]"
           :tip="{
             content: td('mc.task.structured.cronTip'),
           }"
@@ -389,7 +350,10 @@
               </el-button>
             </template>
           </el-input>
-          <p class="form-item-description">
+          <p
+            v-if="showCronExpressionDescription"
+            class="form-item-description cron-expression-description"
+          >
             {{ td("mc.task.structured.cronExpressionDescription", "定义任务自动采集的时间和执行频率") }}
           </p>
         </el-form-item>
@@ -430,9 +394,6 @@
                 style="--el-transfer-panel-width: 320px"
               />
             </el-form-item>
-            <p class="form-item-description">
-              {{ td("mc.task.structured.collectionScopeDescription", "设置采集全部数据库或仅采集指定数据库") }}
-            </p>
           </div>
         </el-form-item>
 
@@ -449,9 +410,6 @@
             show-word-limit
             :maxlength="500"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.descriptionDescription", "记录任务目标、采集内容和业务用途") }}
-          </p>
         </el-form-item>
 
         <el-form-item
@@ -467,9 +425,6 @@
             show-word-limit
             :maxlength="500"
           />
-          <p class="form-item-description">
-            {{ td("mc.task.structured.remarkDescription", "补充记录其他需要说明的信息") }}
-          </p>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -551,6 +506,18 @@ const schedulerMeta = {
 const getSchedulerMeta = (value) =>
   schedulerMeta[value] || schedulerMeta.QUARTZ;
 
+const showCronExpressionDescription = ref(true);
+const validateCronExpression = (_rule, value, callback) => {
+  showCronExpressionDescription.value = Boolean(value);
+  if (!value) {
+    callback(
+      new Error(td("mc.task.structured.cronRequired", "请配置调度周期"))
+    );
+    return;
+  }
+  callback();
+};
+
 const rules = {
   sourceSystemId: [
     {
@@ -610,8 +577,8 @@ const rules = {
   cronExpression: [
     {
       required: true,
-      message: td("mc.task.structured.cronRequired"),
-      trigger: "change",
+      validator: validateCronExpression,
+      trigger: "blur",
     },
   ],
   scheduler: [
@@ -1030,6 +997,7 @@ function handleCloseCronClick() {
 // Confirm scheduling cycle pop-up window
 function handleConfirmCronClick(data) {
   dialog.form.cronExpression = data;
+  formRef.value?.validateField("cronExpression");
   cronDialog.open = false;
 }
 
@@ -1055,6 +1023,7 @@ function handleAddClick() {
 // Cancel addition/modification
 function handleCancelClick() {
   formRef.value.resetFields();
+  showCronExpressionDescription.value = true;
   dialog.form = {
     ...DEFAULT_FORM,
   };
@@ -1300,12 +1269,28 @@ getAllSourceSystems();
 .form-item-description {
   display: flex;
   align-items: center;
-  margin-top: 10px;
   color: #888;
   font-size: 12px;
-  line-height: 1;
-  margin-bottom: 0;
+  line-height: 1.5;
+  margin: 0;
 }
+
+.cron-expression-form-item :deep(.el-form-item__content) {
+  padding-bottom: 18px;
+}
+
+.cron-expression-description,
+.cron-expression-form-item :deep(.el-form-item__error) {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: 18px;
+  padding-top: 0;
+  line-height: 18px;
+}
+
 .scheduler-section-title {
   display: flex;
   align-items: center;

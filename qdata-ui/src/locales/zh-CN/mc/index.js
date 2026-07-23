@@ -25,6 +25,8 @@ export default {
       leaderPlaceholder: '请选择责任人',
       leaderPhone: '责任人电话',
       leaderPhonePlaceholder: '请输入责任人电话',
+      leaderInfo: '责任人联系电话，随责任人自动带出',
+      contactPhoneInfo: '任务维护责任人，用于异常跟进和追溯',
       collectionMode: '采集模式',
       collectionScope: '采集范围',
       selectSourceDb: '来源库',

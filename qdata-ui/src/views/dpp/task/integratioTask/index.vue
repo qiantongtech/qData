@@ -54,7 +54,7 @@
               @click="openTaskConfigDialog('QUARTZ')"
             >
               <i class="iconfont-mini icon-xinzeng mr5"></i>
-              {{ td("dpp.integratioTask.dataxAdd", "新增DATAX") }}
+              {{ td("dpp.integratioTask.dataxAdd", "新增DATAX任务") }}
             </el-button>
             <el-button
               type="primary"
@@ -62,7 +62,7 @@
               @click="openTaskConfigDialog('DOLPHINSCHEDULER')"
             >
               <i class="iconfont-mini icon-xinzeng mr5"></i>
-              {{ td("dpp.integratioTask.sparkAdd", "新增SPARK") }}
+              {{ td("dpp.integratioTask.sparkAdd", "新增SPARK任务") }}
             </el-button>
           </template>
 
@@ -324,7 +324,7 @@
       :title="td('dpp.integratioTask.runInstance', '运行实例')"
     />
     <el-dialog
-      :title="td('dpp.integratioTask.scheduleCycle', '调度周期')"
+      :title="td('dpp.integratioTask.scheduleCycle', '调度信息')"
       v-model="openCron"
       :append-to="$refs['app-container']"
       destroy-on-close
@@ -456,7 +456,7 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: td("dpp.integratioTask.scheduleCycle", "调度周期"),
+      label: td("dpp.integratioTask.dispatchInformation", "调度信息"),
       prop: "cronExpression",
       width: 260,
       slot: "cronExpression",

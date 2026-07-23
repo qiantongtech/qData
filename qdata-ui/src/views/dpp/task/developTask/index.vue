@@ -778,7 +778,7 @@ const tableStore = reactive({
       align: "left",
     },
     {
-      label: td("dpp.developTask.scheduleCycle", "调度周期"),
+      label: td("dpp.developTask.dispatchInformation", "调度信息"),
       prop: "cronExpression",
       width: 260,
       slot: "cronExpression",

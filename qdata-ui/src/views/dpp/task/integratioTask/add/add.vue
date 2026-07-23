@@ -53,9 +53,6 @@
               "
             />
             <div class="form-readonly" v-else>{{ form.name }}</div>
-            <p class="form-item-description">
-              {{ td("dpp.integratioTask.taskNameDescription", "任务唯一标识，用于检索和区分任务") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -76,9 +73,6 @@
                 check-strictly
                 @node-click="handleNodeClick"
             />
-            <p class="form-item-description">
-              {{ td("dpp.integratioTask.taskCategoryDescription", "任务所属分类，用于分类管理") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -97,14 +91,11 @@
               }"
                 value-key="ID"
                 :placeholder="
-                td('dpp.integratioTask.selectResponsiblePerson', '请选择责任人')
+                td('dpp.integratioTask.selectResponsiblePersonInfo', '任务维护责任人，用于异常跟进和追溯')
               "
                 check-strictly
                 @change="handleContactChange"
             />
-            <p class="form-item-description">
-              {{ td("dpp.integratioTask.responsiblePersonDescription", "任务维护责任人，用于异常跟进和追溯") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -116,15 +107,12 @@
                 v-if="title != td('dpp.integratioTask.taskDetail')"
                 v-model="form.contactNumber"
                 :placeholder="
-                td('dpp.integratioTask.inputContactNumber', '请输入联系电话')
+                td('dpp.integratioTask.inputContactNumberInfo', '责任人联系电话，随责任人自动带出')
               "
                 disabled
             >
             </el-input>
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
-            <p class="form-item-description">
-              {{ td("dpp.integratioTask.contactNumberDescription", "责任人联系电话，随责任人自动带出") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -153,9 +141,6 @@
                 )?.label || "-"
               }}
             </div>
-            <p class="form-item-description mt5">
-              {{ td("dpp.integratioTask.taskStatusDescription", "控制任务是否处于可运行状态") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -174,16 +159,13 @@
             <div class="form-readonly" v-else>
               {{ form.description || "-" }}
             </div>
-            <p class="form-item-description">
-              {{ td("dpp.integratioTask.descriptionDescription", "记录任务目标、数据来源和业务用途") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
 
       <div class="h2-title execution-section-title">
         {{ td("dpp.integratioTask.executionEngineSetting", "执行设置") }}
-        <p class="form-item-description ml20">
+        <p class="form-item-description" style="margin-left: 20px;">
           {{ td("dpp.integratioTask.executionEngineDescription", "选择任务运行的引擎，不同引擎适用于不同的计算场景与技术栈。") }}
         </p>
       </div>
@@ -521,7 +503,7 @@
 
       <div class="h2-title scheduler-section-title">
         {{ td("dpp.integratioTask.schedulerSetting", "调度设置") }}
-        <p class="form-item-description ml20">
+        <p class="form-item-description" style="margin-left: 20px;">
           {{ td("dpp.integratioTask.schedulerDescription", "设置任务的调度周期及调度系统。") }}
         </p>
       </div>
@@ -592,7 +574,10 @@
               </template>
             </el-input>
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
-            <p class="form-item-description">
+            <p
+                v-if="showCrontabDescription"
+                class="form-item-description"
+            >
               {{ td("dpp.integratioTask.scheduleCycleDescription", "定义任务自动触发的时间和频率") }}
             </p>
           </el-form-item>
@@ -622,7 +607,7 @@
 
       <div class="h2-title">
         {{ td("dpp.integratioTask.attributeInfo", "运行策略") }}
-        <p class="form-item-description ml20">
+        <p class="form-item-description" style="margin-left: 20px;">
           {{ td("dpp.integratioTask.attributeDescription", "配置任务运行时的容错策略。") }}
         </p>
       </div>
@@ -961,6 +946,20 @@ const formatDataXMemoryMb = (value) => {
   return memoryMb ? `${memoryMb} MB` : "-";
 };
 
+const showCrontabDescription = ref(true);
+const validateCrontab = (_rule, value, callback) => {
+  showCrontabDescription.value = Boolean(value);
+  if (!value) {
+    callback(
+      new Error(
+        td("dpp.integratioTask.selectScheduleCycle", "调度周期不能为空")
+      )
+    );
+    return;
+  }
+  callback();
+};
+
 // Define form validation rules
 const rules = {
   name: [
@@ -997,8 +996,8 @@ const rules = {
   crontab: [
     {
       required: true,
-      message: td("dpp.integratioTask.selectScheduleCycle", "调度周期不能为空"),
-      trigger: "change",
+      validator: validateCrontab,
+      trigger: "blur",
     },
   ],
 
@@ -1071,6 +1070,7 @@ const dataXJvmXmxInput = createDataXMemoryMbModel("dataXJvmXmx");
 
 const reset = () => {
   proxy.resetForm("daDiscoveryTaskRef");
+  showCrontabDescription.value = true;
   form.value = {
     name: "",
     catId: "",
@@ -1164,14 +1164,14 @@ const handleSchedulerChange = async (value) => {
       taskType: "DATAX",
       message: td(
         "dpp.integratioTask.switchQuartzEngineConfirm",
-        "切换为 Quartz 调度器后，执行引擎将同步切换为 DataX，是否继续？"
+        "当前版本 Quartz 仅适配 DataX 执行引擎，切换后执行引擎将同步调整为 DataX，是否继续？"
       ),
     },
     DOLPHINSCHEDULER: {
       taskType: "SPARK",
       message: td(
         "dpp.integratioTask.switchDolphinSchedulerEngineConfirm",
-        "切换为 DolphinScheduler 调度器后，执行引擎将同步切换为 Spark，是否继续？"
+        "当前版本 DolphinScheduler 仅适配 Spark 执行引擎，切换后执行引擎将同步调整为 Spark，是否继续？"
       ),
     },
   };
@@ -1199,14 +1199,14 @@ const handleExecutionEngineChange = async (value) => {
       scheduler: "DOLPHINSCHEDULER",
       message: td(
         "dpp.integratioTask.switchSparkSchedulerConfirm",
-        "切换为 Spark 执行引擎后，调度器将同步切换为 DolphinScheduler，是否继续？"
+        "当前版本 Spark 仅适配 DolphinScheduler 调度器，切换后调度器将同步调整为 DolphinScheduler，是否继续？"
       ),
     },
     DATAX: {
       scheduler: "QUARTZ",
       message: td(
         "dpp.integratioTask.switchDataXSchedulerConfirm",
-        "切换为 DataX 执行引擎后，调度器将同步切换为 Quartz，是否继续？"
+        "当前版本 DataX 仅适配 Quartz 调度器，切换后调度器将同步调整为 Quartz，是否继续？"
       ),
     },
   };
@@ -1302,6 +1302,7 @@ function handleShowCron() {
 /** Return value after confirmation */
 function crontabFill(value) {
   form.value.crontab = value;
+  daDiscoveryTaskRef.value?.validateField("crontab");
 }
 const handleContactChange = (selectedValue) => {
   const selectedUser = props.userList.find(
@@ -1324,7 +1325,8 @@ const defaultExpandedCats = computed(() => {
   align-items: center;
   color: #888;
   font-size: 12px;
-  line-height: 1;
+  line-height: 1.5;
+  margin: 0;
 }
 
 :deep(.el-form-item__content .form-item-description){
@@ -1346,10 +1348,13 @@ const defaultExpandedCats = computed(() => {
   margin: 8px 0 12px;
 }
 
-.execution-section-title,
-.scheduler-section-title {
+.h2-title {
   display: flex;
   align-items: center;
+}
+
+.h2-title > .form-item-description {
+  align-self: center;
 }
 
 .scheduler-section-title {

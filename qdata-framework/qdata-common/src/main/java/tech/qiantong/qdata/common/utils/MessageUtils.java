@@ -23,8 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -49,7 +52,7 @@ public class MessageUtils
     public static String message(String code, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+        return messageSource.getMessage(code, args, getCurrentLocaleOrEnglishDefault());
     }
 
     /**
@@ -77,7 +80,7 @@ public class MessageUtils
     public static String messageWithFallback(String code, String defaultMessage, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
-        Locale currentLocale = LocaleContextHolder.getLocale();
+        Locale currentLocale = getCurrentLocaleOrEnglishDefault();
 
         // 1. Try current request locale
         String msg = resolveMessage(messageSource, code, args, currentLocale);
@@ -171,5 +174,25 @@ public class MessageUtils
         {
             return null;
         }
+    }
+
+    /**
+     * Use the request locale only when the browser provides Accept-Language.
+     * If there is no web request or the header is missing, default to English.
+     */
+    private static Locale getCurrentLocaleOrEnglishDefault()
+    {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null)
+        {
+            return Locale.US;
+        }
+
+        HttpServletRequest request = attributes.getRequest();
+        if (request == null || StringUtils.isEmpty(request.getHeader("Accept-Language")))
+        {
+            return Locale.US;
+        }
+        return LocaleContextHolder.getLocale();
     }
 }

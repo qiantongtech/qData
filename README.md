@@ -33,8 +33,10 @@ The qData open-source edition is suitable for enterprises, government agencies, 
 
 | Scenario | Description | Typical Customer Type |
 | --- | --- | --- |
-| **ETL Data Integration** | Configure data access, cleansing, transformation, and output workflows visually to support business data aggregation and processing. | Data development teams, software companies |
+| **ETL Data Integration** | Configure data access, cleansing, transformation, and output workflows visually. Tasks can choose DataX or Spark execution engines by scenario, supporting lightweight synchronization, related data acquisition, data import, and large-scale offline processing. | Data development teams, software companies |
+| **Data Development Scheduling** | Supports SQL data processing task development. New tasks can choose Quartz or DolphinScheduler, balancing lightweight periodic scheduling and visual task orchestration. | Data development teams, platform operations teams |
 | **Data Governance Construction** | Centrally manage data standards, data models, metadata, data quality, and data assets to establish a basic governance system. | Government agencies, group enterprises, research institutes and universities |
+| **Metadata Collection Management** | Supports metadata collection tasks choosing Quartz or DolphinScheduler according to the deployment model, making collection execution strategies more flexible. | Data governance teams, data management departments |
 | **Data Asset Management** | Catalog data tables, fields, tags, categories, and other assets in a unified way to improve data discovery and reuse efficiency. | Data management departments, public service organizations |
 | **API Data Services** | Encapsulate data tables or SQL query results as API services to support data interface publishing and system integration. | Platform development teams, integration service providers |
 | **Intelligent Data Q&A Analysis** | Support natural-language data questions, Text2SQL queries, and result analysis to lower the barrier for business users. | Business analysis teams, operations teams |
@@ -45,7 +47,9 @@ The qData open-source edition is suitable for enterprises, government agencies, 
 | Advantage | Description |
 | --- | --- |
 | **Open Source and Extensible** | Provides foundational open-source data middle platform capabilities, suitable for enterprises, developers, and project teams to customize and extend according to business needs. |
-| **Visual ETL** | Supports visual configuration of data access, cleansing, transformation, and output workflows, lowering the development threshold for data integration tasks. |
+| **Visual ETL** | Supports visual configuration of data access, cleansing, transformation, and output workflows, with optional DataX or Spark execution engines to lower the development threshold for data integration tasks of different scales. |
+| **Flexible Execution Engines** | DataX is suitable for single-node lightweight data synchronization, related data acquisition, and data import scenarios, while Spark is suitable for large-scale offline processing and complex computing tasks. |
+| **Optional Scheduling Methods** | Data development tasks and metadata collection tasks can choose Quartz or DolphinScheduler, supporting both lightweight local scheduling and centralized task orchestration, dependency management, and scheduling governance. |
 | **Complete Governance Capabilities** | Covers core governance capabilities including data standards, data modeling, metadata management, data quality, and data assets, helping enterprises build a basic data governance system. |
 | **Multi-Source Data Access** | The open-source edition supports access to common databases such as MySQL, Oracle, and DM8, meeting common business system data management requirements. |
 | **Open Data Services** | Supports encapsulating data tables or SQL query results as API services, with online testing, call logs, and application management capabilities. |
@@ -57,10 +61,10 @@ The qData open-source edition is suitable for enterprises, government agencies, 
 
 | Module | Description |
 | --- | --- |
-| **Data Integration (ETL)** | Supports visual configuration of data access, cleansing, transformation, and output workflows for common business data aggregation, processing, and synchronization scenarios. |
-| **Data Development** | Supports data processing task development through SQL scripts, suitable for data processing, statistical analysis, scheduled processing, and similar scenarios. |
+| **Data Integration (ETL)** | Supports visual configuration of data access, cleansing, transformation, and output workflows. New tasks can choose DataX or Spark execution engines, suitable for lightweight data synchronization, related data acquisition, data import, large-scale offline processing, and complex computing scenarios. |
+| **Data Development** | Supports data processing task development through SQL scripts. New tasks can choose Quartz or DolphinScheduler schedulers, suitable for data processing, statistical analysis, periodic scheduling, and task orchestration scenarios. |
 | **Data Modeling** | Supports data standards, warehouse layering, data domains, subject planning, logical models, standard data elements, and other capabilities to help enterprises build a foundational data model system. |
-| **Metadata Management** | Supports metadata viewing, field structure viewing, version management, and metadata comparison, making it easier to understand table structures, field information, and version changes. |
+| **Metadata Management** | Supports metadata viewing, field structure viewing, version management, metadata comparison, and metadata collection task management. New collection tasks can choose Quartz or DolphinScheduler schedulers, making collection execution strategies more flexible. |
 | **Data Quality** | Supports data quality inspection and processing based on audit rules, helping identify issues such as completeness, uniqueness, and validity. |
 | **Data Assets** | Supports data asset cataloging, asset tags, asset details, asset search, and other capabilities to help users manage and retrieve data resources in a unified way. |
 | **Data Query** | Supports online SQL queries against data sources for temporary queries, data validation, and result export. |
@@ -131,10 +135,16 @@ qData adopts a frontend-backend separated architecture. The backend is based on 
   </tr>
 
   <tr>
-    <td rowspan="4">Third-Party Dependencies</td><td>DolphinScheduler</td><td>Provides visual task orchestration, dependency management, and scheduling capabilities</td>
+    <td rowspan="6">Third-Party Dependencies</td><td>DolphinScheduler</td><td>Provides visual task orchestration, dependency management, and scheduling capabilities, and can be used for data development task and metadata collection task scheduling</td>
   </tr>
   <tr>
-    <td>Spark</td><td>Unified batch and streaming processing, supporting ETL data processing</td>
+    <td>Quartz</td><td>Provides lightweight task scheduling capabilities, can be used for data development task and metadata collection task scheduling, and is suitable for single-node deployment and simple periodic task scenarios</td>
+  </tr>
+  <tr>
+    <td>DataX</td><td>Lightweight data synchronization execution engine that runs on a single node, is simple to deploy, and is suitable for related data acquisition and data import scenarios</td>
+  </tr>
+  <tr>
+    <td>Spark</td><td>Distributed computing execution engine suitable for large-scale offline processing and complex computing tasks</td>
   </tr>
   <tr>
     <td>Hive</td><td>Supports data modeling, partition management, and metadata maintenance</td>
@@ -216,12 +226,16 @@ Welcome to join the official qData QQ community to get the latest updates, techn
         <td><img src="images/en-US/system/2-home.png" alt="Home page" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/en-US/system/4-data-integration.png" alt="Data integration" width="400"/></td>
-        <td><img src="images/en-US/system/6-data-integration-configuration.png" alt="Data integration configuration" width="400"/></td>
+        <td><img src="images/en-US/system/22-data-integration.png" alt="Data integration" width="400"/></td>
+        <td><img src="images/en-US/system/23-add-data-integration-task.png" alt="Add data integration task" width="400"/></td>
     </tr>
     <tr>
         <td><img src="images/en-US/system/12-data-development.png" alt="Data development" width="400"/></td>
-        <td><img src="images/en-US/system/7-data-development-configuration.png" alt="Data development configuration" width="400"/></td>
+        <td><img src="images/en-US/system/24-add-data-development-task.png" alt="Add data development task" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/en-US/system/20-data-collection.png" alt="Data collection" width="400"/></td>
+        <td><img src="images/en-US/system/21-add-collection-task.png" alt="Add collection task" width="400"/></td>
     </tr>
     <tr>
         <td><img src="images/en-US/system/10-asset-management.png" alt="Asset management" width="400"/></td>

@@ -1066,15 +1066,18 @@ function handleCancelClick() {
 // Confirm addition/modification
 async function handleConfirmClick() {
   if (dialog.loading) return;
-  dialog.loading = true;
-  if(!await handleSchedulerChange()){
+
+  let valid = false;
+  try {
+    valid = await formRef.value.validate();
+  } catch (err) {
     return;
   }
-  const valid = await formRef.value.validate();
   if (!valid) {
-    dialog.loading = false;
     return;
   }
+
+  dialog.loading = true;
   const { tables, ...params } = dialog.form;
   if (params.collectionScope == "1") {
     params.scopeSaveReqVOS = dialog.tableList.filter((item) =>
@@ -1082,6 +1085,9 @@ async function handleConfirmClick() {
     );
   }
   try {
+    if (!await handleSchedulerChange()) {
+      return;
+    }
     await dialog.func(params);
     handleCancelClick();
     tableRef.value.getList();

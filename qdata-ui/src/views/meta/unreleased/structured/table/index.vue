@@ -25,6 +25,7 @@
               icon="Delete"
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
+              v-hasPermi="['mc:metadata:table:remove']"
             >
               {{ td("common.button.delete") }}
             </el-button>
@@ -50,6 +51,7 @@
                 type="primary"
                 icon="view"
                 @click="handleDetailClick(row)"
+                v-hasPermi="['mc:metadata:table:detail']"
               >
                 {{ td("common.button.details") }}
               </el-button>
@@ -59,6 +61,7 @@
                 icon="Edit"
                 :disabled="row.status == 1"
                 @click="handleEditClick(row)"
+                v-hasPermi="['mc:metadata:table:edit']"
               >
                 {{ td("common.button.update") }}
               </el-button>
@@ -79,6 +82,7 @@
                   icon="Delete"
                   :disabled="row.status == 1"
                   @click="handleDeleteClick(row)"
+                  v-hasPermi="['mc:metadata:table:remove']"
                 >
                   {{ td("common.button.delete") }}
                 </el-button>

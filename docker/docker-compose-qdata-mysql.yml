@@ -21,7 +21,7 @@ services:
   qdata-api:
     image: ${QDATA_HUB}/qdata-server-ce:${QDATA_TAG}
     restart: always
-    profiles: [ "all" ]
+    profiles: [ "all", "light" ]
     env_file: .env
     environment:
       - TZ=Asia/Shanghai
@@ -47,7 +47,7 @@ services:
   qdata-quality:
     image: ${QDATA_HUB}/qdata-quality-ce:${QDATA_TAG}
     restart: always
-    profiles: [ "all" ]
+    profiles: [ "all", "light" ]
     env_file: .env
     environment:
       - TZ=Asia/Shanghai
@@ -75,7 +75,7 @@ services:
     privileged: true
     image: ${QDATA_HUB}/qdata-ai-ce:${QDATA_TAG}
     restart: always
-    profiles: [ "all" ]
+    profiles: [ "all", "light" ]
     env_file: .env
     environment:
       - TZ=Asia/Shanghai

@@ -54,9 +54,6 @@
               "
             />
             <div class="form-readonly" v-else>{{ form.name }}</div>
-            <p class="form-item-description">
-              {{ td("dpp.developTask.taskNameDescription", "任务唯一标识，用于检索和区分任务") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -85,9 +82,6 @@
               "
               check-strictly
             />
-            <p class="form-item-description">
-              {{ td("dpp.developTask.taskCategoryDescription", "任务所属开发类目，用于分类管理") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -116,14 +110,11 @@
               }"
               value-key="ID"
               :placeholder="
-                td('dpp.developTask.selectResponsiblePerson', 'Please select responsible person')
+                td('dpp.developTask.selectResponsiblePersonInfo', 'Please select responsible person')
               "
               check-strictly
               @change="handleContactChange"
             />
-            <p class="form-item-description">
-              {{ td("dpp.developTask.responsiblePersonDescription", "任务维护责任人，用于异常跟进和追溯") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -135,14 +126,11 @@
                 v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
                 v-model="form.contactNumber"
                 :placeholder="
-                td('dpp.developTask.inputContactNumber', 'Please enter contact phone')
+                td('dpp.developTask.inputContactNumberInfo', 'Please enter contact phone')
               "
                 disabled
             />
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
-            <p class="form-item-description">
-              {{ td("dpp.developTask.contactNumberDescription", "责任人联系电话，随责任人自动带出") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -173,9 +161,6 @@
                 check-strictly
                 @change="getDaDatasource(true)"
             />
-            <p class="form-item-description">
-              {{ td("dpp.developTask.executionEngineDescription", "指定开发任务使用的数据库类型") }}
-            </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -204,9 +189,6 @@
                 )?.label || "-"
               }}
             </div>
-            <p class="form-item-description">
-              {{ td("dpp.developTask.taskStatusDescription", "控制任务是否处于可运行状态") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -228,9 +210,6 @@
             <div class="form-readonly" v-else>
               {{ form.description || "-" }}
             </div>
-            <p class="form-item-description">
-              {{ td("dpp.developTask.descriptionDescription", "记录任务用途和业务说明") }}
-            </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -290,16 +269,14 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
+              class="schedule-cycle-form-item"
               :label="td('dpp.developTask.scheduleCycle', '调度周期')"
               prop="crontab"
               :rules="[
               {
                 required: title != td('dpp.developTask.taskDetail', '任务详情'),
-                message: td(
-                  'dpp.developTask.selectScheduleCycle',
-                  '请选择调度周期'
-                ),
-                trigger: 'change',
+                validator: validateCrontab,
+                trigger: 'blur',
               },
             ]"
               :label-position="labelPosition">
@@ -323,7 +300,10 @@
               </template>
             </el-input>
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
-            <p class="form-item-description">
+            <p
+                v-if="showCrontabDescription"
+                class="form-item-description schedule-cycle-description"
+            >
               {{ td("dpp.developTask.scheduleCycleDescription", "定义任务自动触发的时间和频率") }}
             </p>
           </el-form-item>
@@ -485,6 +465,22 @@ const props = defineProps({
 });
 const effectiveTitle = computed(() => props.title || td('dpp.developTask.formTitle'));
 
+const showCrontabDescription = ref(true);
+const validateCrontab = (_rule, value, callback) => {
+  const isRequired =
+    props.title != td("dpp.developTask.taskDetail", "任务详情");
+  showCrontabDescription.value = !isRequired || Boolean(value);
+  if (isRequired && !value) {
+    callback(
+      new Error(
+        td("dpp.developTask.selectScheduleCycle", "请选择调度周期")
+      )
+    );
+    return;
+  }
+  callback();
+};
+
 const emit = defineEmits(["update:visible", "confirm", "save"]);
 
 const getOptionLabel = (value) => {
@@ -599,6 +595,7 @@ watch(
       }
     } else {
       proxy.resetForm("daDiscoveryTaskRef");
+      showCrontabDescription.value = true;
     }
   }
 );
@@ -719,6 +716,7 @@ function handleShowCron() {
 /** Return value after confirmation */
 function crontabFill(value) {
   form.value.crontab = value;
+  daDiscoveryTaskRef.value?.validateField("crontab");
 }
 
 const handleContactChange = (selectedValue) => {
@@ -741,8 +739,24 @@ const handleContactChange = (selectedValue) => {
   margin-top: 10px;
   color: #888;
   font-size: 12px;
-  line-height: 1;
-  margin-bottom: 0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.schedule-cycle-form-item :deep(.el-form-item__content) {
+  padding-bottom: 18px;
+}
+
+.schedule-cycle-description,
+.schedule-cycle-form-item :deep(.el-form-item__error) {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: 18px;
+  padding-top: 0;
+  line-height: 18px;
 }
 
 :deep(.el-select) {

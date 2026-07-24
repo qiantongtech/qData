@@ -30,6 +30,12 @@
             </div>
         </div>
         <div v-if="config.content" class="tip-content" v-html="config.content" @click="handleClick"></div>
+        <div v-if="config.extensionContent" class="tip-extension" @click="handleClick">
+            <div class="tip-extension-header">
+                <span v-if="config.extensionLabel" class="tip-extension-label">{{ config.extensionLabel }}</span>
+            </div>
+            <div class="tip-extension-content" :title="extensionPlainText" v-html="config.extensionContent"></div>
+        </div>
     </div>
 </template>
 
@@ -40,7 +46,7 @@ import { guideTipConfig } from './guideTipConfig'
 import { useRouter } from 'vue-router'
 import useUserStore from "@/store/system/user";
 
-const { t } = useI18n();
+const { t, te } = useI18n();
 const userStore = useUserStore()
 const STORAGE_KEY = 'guide_tip_status'
 
@@ -88,17 +94,24 @@ const config = computed(() => {
   if (i18nKey) {
     const titleKey = `guide.${i18nKey}.title`;
     const contentKey = `guide.${i18nKey}.content`;
+    const extensionLabelKey = `guide.${i18nKey}.extensionLabel`;
+    const extensionContentKey = `guide.${i18nKey}.extensionContent`;
     const title = t(titleKey);
     const content = t(contentKey);
+    const extensionLabel = te(extensionLabelKey) ? t(extensionLabelKey) : original.extensionLabel;
+    const extensionContent = te(extensionContentKey) ? t(extensionContentKey) : original.extensionContent;
     return {
       title: title !== titleKey ? title : original.title,
       content: content !== contentKey ? content : original.content,
+      extensionLabel,
+      extensionContent,
       type: original.type,
       version: original.version
     };
   }
   return original;
 })
+const extensionPlainText = computed(() => (config.value.extensionContent || '').replace(/<[^>]*>/g, ''))
 
 // Get storage object
 function getGuideTipStorage() {
@@ -294,11 +307,101 @@ const methods = {
         padding-left: 23px;
         cursor: default;
     }
+
+    .tip-extension {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 6px;
+        padding-left: 0;
+        padding-top: 6px;
+        box-sizing: border-box;
+        border-top: 1px dashed rgba(254, 79, 79, 0.28);
+        font-family: @font-content;
+        font-size: 13px;
+        line-height: 20px;
+        color: #555;
+
+        .tip-extension-header {
+            display: flex;
+            flex: none;
+            align-items: center;
+            min-height: 20px;
+
+            &::after {
+                width: 1px;
+                height: 12px;
+                margin: 0 10px;
+                background: rgba(217, 54, 62, 0.25);
+                content: '';
+            }
+
+            .tip-extension-label {
+                padding-bottom: 1px;
+                border-bottom: 2px solid #d9363e;
+                color: #d9363e;
+                font-weight: 600;
+            }
+        }
+
+        .tip-extension-content {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+    }
+
 }
 </style>
 <style>
-.tip-content a {
+.tip-content a,
+.tip-extension-content a {
     color: var(--el-color-primary);
+}
+.guide-tip .guide-tip-announcement-brand {
+    display: inline-block;
+    background: linear-gradient(90deg, #1677ff 0%, #7c3aed 45%, #1677ff 100%);
+    background-size: 200% auto;
+    color: transparent;
+    font-weight: 700;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: guide-tip-announcement-shine 3s linear infinite;
+}
+.guide-tip .guide-tip-announcement-dict-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    margin: 0 2px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 2px;
+    background: rgba(19, 90, 251, 0.06);
+    color: #0f62ff;
+    font-size: 12px;
+    line-height: 22px;
+    vertical-align: 1px;
+    white-space: nowrap;
+}
+.guide-tip .guide-tip-announcement-keyword {
+    background: linear-gradient(transparent 68%, rgba(255, 193, 7, 0.38) 0);
+    color: #3f3f46;
+    font-weight: 600;
+}
+@keyframes guide-tip-announcement-shine {
+    to {
+        background-position: -200% center;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .guide-tip .guide-tip-announcement-brand {
+        animation: none;
+    }
 }
 .clickable {
     color: var(--el-color-primary);

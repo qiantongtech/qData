@@ -25,6 +25,8 @@ export default {
       leaderPlaceholder: 'Please select responsible person',
       leaderPhone: 'Responsible Person Phone',
       leaderPhonePlaceholder: 'Please enter responsible person phone',
+      leaderInfo: 'Contact number of the responsible person, automatically displayed along with the responsible person',
+      contactPhoneInfo: 'The person in charge for task maintenance, used for abnormal follow-up and traceability',
       collectionMode: 'Collection Mode',
       collectionScope: 'Collection Scope',
       selectSourceDb: 'Source DB',

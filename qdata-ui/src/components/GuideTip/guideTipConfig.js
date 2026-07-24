@@ -28,6 +28,8 @@ export const guideTipConfig = {
     'Prompt ID': {
         title: 'Prompt box title, may contain HTML', // Prompt box title, displayed in the header
         content: 'Prompt content, which can include HTML or custom tags. If not set, the corresponding content will not be displayed', // Supports <span>, <a> tags and custom attributes (such as data-func, data-link)
+        extensionLabel: 'Extension content label', // Optional label displayed before extension content, such as "Announcement"
+        extensionContent: 'Extension content', // Optional extension area for announcements and other additional information; supports HTML
         type: 'prompt type', // Prompt type, used for style distinction, optional values: 'remind' (reminder), 'warning' (warning), 'danger' (danger), of which the 'danger' type cannot be set to "no more display"
         version: 'Configuration version number' // The currently configured version number, used for management and updates
     }
@@ -37,6 +39,8 @@ export const guideTipConfig = {
  *
  * title string prompt box title, displayed in the header
  * content string prompt content, which can contain plain text or HTML tags, such as <span>, <a>
+ * extensionLabel string optional label displayed before extension content
+ * extensionContent string optional extension content for announcements and other additional information; supports HTML tags
  * type string prompt type, used for style distinction, optional values: 'remind', 'warning', 'danger'
  * version string current configuration version number, used for management and updates
  *
@@ -77,6 +81,8 @@ export const guideTipConfig = {
     'index': {
         title: '重要提醒：本系统为演示站点，<u>每日凌晨 02:30 清除所有用户数据</u>，以保障系统整洁与稳定运行。',
         content: `如需体验完整功能，请下载开源代码自行部署。如需 <u>开源版品牌授权</u> 或 <u>咨询商业版</u>，请点击查看详情： 👉  <a href="${DOCS_BASE_URL}/business.html" target="_blank">了解授权详情</a>`,
+        extensionLabel: '公告',
+        extensionContent: '<span class="guide-tip-announcement-brand">DataX来袭</span>，qData开源版 <span class="guide-tip-announcement-dict-tag">v1.6.0</span> 轻量发布！本次版本全新集成 DataX 数据同步能力，进一步<span class="guide-tip-announcement-keyword">精简部署架构与运行依赖</span>，<span class="guide-tip-announcement-keyword">降低资源占用和运维成本</span>，让数据接入、同步与任务管理更加简单、高效。',
         type: 'danger', version: '1.0'
     },
 
@@ -283,7 +289,6 @@ export const guideTipConfig = {
     `,
         type: 'remind', version: '1.0'
     },
-
 
     // Data modeling
     'dm/dataLayer.list': {

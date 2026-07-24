@@ -5,6 +5,8 @@ export default {
   index: {
     title: '重要提醒：本系统为演示站点，<u>每日凌晨 02:30 清除所有用户数据</u>，以保障系统整洁与稳定运行。',
     content: `如需体验完整功能，请下载开源代码自行部署。如需 <u>开源版品牌授权</u> 或 <u>咨询商业版</u>，请点击查看详情： 👉  <a href="${QDATA_COMMUNITY_URL}/business/policy.html" target="_blank">了解授权详情</a>`,
+    extensionLabel: '公告',
+    extensionContent: '<span class="guide-tip-announcement-brand">DataX来袭</span>，qData开源版 <span class="guide-tip-announcement-dict-tag">v1.6.0</span> 轻量发布！本次版本全新集成 DataX 数据同步能力，进一步<span class="guide-tip-announcement-keyword">精简部署架构与运行依赖</span>，<span class="guide-tip-announcement-keyword">降低资源占用和运维成本</span>，让数据接入、同步与任务管理更加简单、高效。',
     type: 'danger',
     version: '1.0'
   },

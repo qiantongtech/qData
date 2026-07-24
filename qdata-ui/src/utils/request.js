@@ -149,7 +149,7 @@ service.interceptors.response.use(res => {
     return Promise.reject(new Error(msg))
   } else if (code !== 200) {
     if (!hideErrorMessage) {
-      ElNotification.warning({ title: msg })
+      ElMessage({ message: msg, type: 'warning' })
     }
     return Promise.reject('error')
   } else {

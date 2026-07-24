@@ -21,7 +21,7 @@ services:
     image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: namenode
     restart: always
-    profiles: [ "all" , "hadoop" , "local" ]
+    profiles: [ "all", "light", "hadoop", "local" ]
 #    ports:
 #      - "9870:9870"       # NameNode Web UI
 #      - "8020:8020"       # HDFS RPC
@@ -37,7 +37,7 @@ services:
     image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: datanode
     restart: always
-    profiles: [ "all" , "hadoop" , "local" ]
+    profiles: [ "all", "light", "hadoop", "local" ]
 #    ports:
 #      - "9864:9864"
 #      - "9866:9866"
@@ -61,7 +61,7 @@ services:
     image: ${QDATA_HUB}/hadoop:3.3.6
     hostname: resourcemanager
     restart: always
-    profiles: [ "all" , "hadoop" , "local" ]
+    profiles: [ "all", "light", "hadoop", "local" ]
 #    ports:
 #      - "8088:8088"       # YARN Web UI
     env_file: .env
@@ -74,7 +74,7 @@ services:
     hostname: nodemanager
     env_file: .env
     restart: always
-    profiles: [ "all" , "hadoop" , "local" ]
+    profiles: [ "all", "light", "hadoop", "local" ]
     command: [ "yarn", "nodemanager" ]
     networks:
       - qdatanet

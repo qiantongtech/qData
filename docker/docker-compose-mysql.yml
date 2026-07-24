@@ -14,6 +14,9 @@
 # Business License: https://community.qdata.tech/business/policy.html
 # See the LICENSE file in the project root for full license information.
 
+# Full startup: docker compose -f docker-compose-mysql.yml --profile all up -d
+# Lightweight startup (without DolphinScheduler and Spark):
+# docker compose -f docker-compose-mysql.yml --profile light up -d
 include:
   - path: ./docker-compose-base-mysql.yml
   - path: ./docker-compose-dolphinscheduler.yml

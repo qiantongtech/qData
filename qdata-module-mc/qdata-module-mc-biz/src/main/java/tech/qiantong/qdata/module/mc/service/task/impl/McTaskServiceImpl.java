@@ -1906,7 +1906,7 @@ public class McTaskServiceImpl extends ServiceImpl<McTaskMapper, McTaskDO> imple
             // Check if there are any tasks already for this data source
             boolean exists = mcTaskMapper.existsByDatasourceId(datasourceId, excludeTaskId);
             if (exists) {
-                throw new ServiceException(MessageUtils.messageEn("mc.error.datasource.conflict"), HttpStatus.CONFLICT);
+                throw new ServiceException(MessageUtils.message("mc.error.datasource.conflict"), HttpStatus.CONFLICT);
             }
         }
         // Custom Library (1-Custom Library)

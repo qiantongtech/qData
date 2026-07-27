@@ -74,29 +74,3 @@ services:
       start_period: 20s
     networks:
       - qdatanet
-
-  kingbase:
-    image: kingbase_v009r001c002b0014_single_x86:v1
-    profiles: [ "demo", "kingbase" ]
-    env_file: .env
-    restart: always
-    privileged: true
-    user: kingbase
-    working_dir: /home/kingbase
-    entrypoint: ["/bin/bash", "/home/kingbase/docker-entrypoint.sh"]
-    environment:
-      NEED_START: "yes"
-      ENABLE_CI: "yes"
-      DB_USER: "qdata_dev"
-      DB_MODE: "mysql"
-      PATH: "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/kingbase/install/kingbase/bin:"
-      USER: "kingbase"
-      PASSWORD: "qdata_dev"
-#    ports:
-#      - "54321:54321"
-    # volumes:
-    #   - /data/kingbase:/home/kingbase/userdata:rw
-    networks:
-      - qdatanet
-    security_opt:
-      - label=disable

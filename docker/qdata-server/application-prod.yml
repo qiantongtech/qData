@@ -188,6 +188,15 @@ ds:
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   hdfs:
     url: hdfs://namenode:8020
+  redis:
+    # Address
+    host: redis
+    # Port, defaults to 6379
+    port: 6379
+    # Database index
+    database: 0
+    # Password
+    password: J98%FHF#9h@e88h9fre9
 
 path:
   quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor

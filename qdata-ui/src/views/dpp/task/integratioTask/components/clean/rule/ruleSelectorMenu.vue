@@ -112,8 +112,6 @@ const props = defineProps({
     default: "",
   },
 });
-const integratioTaskType = inject("integratioTaskType", ref(""));
-const dataxEnabledRuleIds = new Set(["1", "7", "8", "9"]);
 let queryParams = ref({
   type: "",
   // validFlag: '1'
@@ -140,12 +138,7 @@ async function fetchRulesByDimension() {
   const list = res.data || [];
   console.log("🚀 ~ fetchRulesByDimension ~ list:", list);
 
-  if (String(integratioTaskType.value || "").toUpperCase() == "DATAX") {
-    attCleanRuleList.value = list.map((item) => ({
-      ...item,
-      validFlag: dataxEnabledRuleIds.has(String(item.id)),
-    }));
-  } else if (props.type == "3") {
+  if (props.type == "3") {
     const disabledCodes = ["029", "039"];
     attCleanRuleList.value = list.map((item) => {
       if (disabledCodes.includes(item.code)) {

@@ -19,8 +19,12 @@
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import tech.qiantong.qdata.common.core.page.PageParam;
+
+import java.util.Date;
 
 /**
  * Data Integration Task Request VO Object DPP_ETL_TASK
@@ -83,6 +87,19 @@ public class DppEtlTaskPageReqVO extends PageParam {
 
     @Schema(description = "Task Status", example = "")
     private String status;
+
+    @Schema(description = "Current execution status: running, success, failed or idle", example = "running")
+    private String currentStatus;
+
+    @Schema(description = "Last execution start time", example = "2026-07-04 00:00:00")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+
+    @Schema(description = "Last execution end time", example = "2026-07-10 23:59:59")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
 
     @Schema(description = "DolphinScheduler ID", example = "")
     private Long dsId;

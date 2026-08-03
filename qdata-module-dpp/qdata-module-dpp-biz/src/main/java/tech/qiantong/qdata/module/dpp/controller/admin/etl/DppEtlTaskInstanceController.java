@@ -69,7 +69,7 @@ public class DppEtlTaskInstanceController extends BaseController {
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTaskInstance:list')")
     @GetMapping("/list")
     public CommonResult<PageResult<DppEtlTaskInstanceRespVO>> list(DppEtlTaskInstancePageReqVO dppEtlTaskInstance) {
-        if (StringUtils.isNotBlank(dppEtlTaskInstance.getTaskType())) {
+        if (StringUtils.isBlank(dppEtlTaskInstance.getTaskType())) {
             dppEtlTaskInstance.setTaskType("1");// Default offline data integration
         }
         PageResult<DppEtlTaskInstanceDO> page = dppEtlTaskInstanceService.getDppEtlTaskInstancePage(dppEtlTaskInstance);
@@ -157,8 +157,8 @@ public class DppEtlTaskInstanceController extends BaseController {
 
     @Operation(summary = "通过实例id获取日志")
     @GetMapping("/getLogByTaskInstanceId")
-    public CommonResult<DppEtlTaskInstanceLogStatusRespDTO> getLogByTaskInstanceId(@RequestParam Long taskInstanceId) {
-        return CommonResult.success(dppEtlTaskInstanceService.getLogByTaskInstanceId(taskInstanceId));
+    public CommonResult<DppEtlTaskInstanceLogDetailRespVO> getLogByTaskInstanceId(@RequestParam Long taskInstanceId) {
+        return CommonResult.success(dppEtlTaskInstanceService.getLogDetailByTaskInstanceId(taskInstanceId));
     }
 
     @RequestMapping(value = "/downloadLog", method = RequestMethod.POST)
@@ -199,6 +199,17 @@ public class DppEtlTaskInstanceController extends BaseController {
     @GetMapping(value = "/getTaskInfo/{id}")
     public CommonResult<DppEtlTaskUpdateQueryRespVO> getTaskInfo(@PathVariable("id") Long id) {
         return CommonResult.success(dppEtlTaskInstanceService.getTaskInfo(id));
+    }
+
+    @Operation(summary = "Get data integration task instance statistics")
+    @GetMapping("/statistics")
+    public CommonResult<DppEtlTaskInstanceStatisticsRespVO> statistics(
+            @RequestParam(required = false) Long projectId,
+            @RequestParam(required = false) String projectCode,
+            @RequestParam(required = false) Long taskId,
+            @RequestParam(required = false, defaultValue = "1") String taskType) {
+        return CommonResult.success(
+                dppEtlTaskInstanceService.getStatistics(projectId, projectCode, taskId, taskType));
     }
 
 }

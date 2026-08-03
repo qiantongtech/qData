@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>今日执行</title>
+    <g id="后台管理系统" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="今日执行">
+            <rect id="矩形-5备份-9" fill-opacity="0.1" fill="#2666FB" x="0" y="0" width="50" height="50" rx="4"></rect>
+            <path d="M13,38 L35,38 C35.5522847,38 36,37.6418278 36,37.2 L36,36.4 C36,35.9581722 35.5522847,35.6 35,35.6 L13,35.6 L13,34.8 L35,34.8 C36.1045695,34.8 37,35.5163444 37,36.4 L37,37.2 C37,38.0836556 36.1045695,38.8 35,38.8 L14,38.8 C13.4477153,38.8 13,38.4418278 13,38 Z M13,38 L35,38 C35.5522847,38 36,37.6418278 36,37.2 L36,36.4 C36,35.9581722 35.5522847,35.6 35,35.6 L13,35.6 L13,34.8 L35,34.8 C36.1045695,34.8 37,35.5163444 37,36.4 L37,37.2 C37,38.0836556 36.1045695,38.8 35,38.8 L14,38.8 C13.4477153,38.8 13,38.4418278 13,38 Z" id="Rectangle-10" fill="#2666FB" fill-rule="nonzero"></path>
+            <path d="M13,36 L36,36 L36,37 C36,37.5522847 35.5522847,38 35,38 L13,38 L13,38 L13,36 Z" id="Rectangle-11" fill="#FFFFFF" opacity="0.678515625"></path>
+            <path d="M15,12 L35,12 C36.1045695,12 37,12.8954305 37,14 L37,36 L37,36 L13,36 L13,14 C13,12.8954305 13.8954305,12 15,12 Z" id="Rectangle-9" fill="#2666FB"></path>
+            <rect id="Rectangle-71" fill="#FFFFFF" opacity="0.9" x="20" y="18" width="10" height="2" rx="1"></rect>
+            <rect id="Rectangle-71-Copy" fill="#FFFFFF" opacity="0.5" x="18" y="27" width="14" height="2" rx="1"></rect>
+            <rect id="Rectangle-71-Copy-2" fill="#FFFFFF" opacity="0.5" x="18" y="23" width="14" height="2" rx="1"></rect>
+        </g>
+    </g>
+</svg>

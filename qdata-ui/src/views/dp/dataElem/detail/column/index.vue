@@ -48,14 +48,6 @@
               </div>
             </div>
           </el-col> -->
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.type') }}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="dp_data_elem_code_type" :value="form.type" />
-              </div>
-            </div>
-          </el-col>
           <el-col :span="24" style="margin: 2px 0;">
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>

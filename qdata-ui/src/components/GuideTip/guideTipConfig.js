@@ -179,14 +179,6 @@ export const guideTipConfig = {
     `,
         type: 'remind', version: '1.0'
     },
-    // Asset review
-    'da/daAssetApply.list': {
-        title: '资产审核 — 跨项目数据使用的审批控制',
-        content: `管理项目对全局数据资产的使用申请，由资产管理员进行审批。通过后资产方可纳入 <u>项目资产</u> 列表，用于 <u>数据研发任务</u>，确保数据使用合规、权限可控，实现资产共享与安全的平衡。
-        <a href="${DOCS_BASE_URL}/docs/user/data-assets/asset-audit.html" target="_blank">查看帮助文档</a>
-    `,
-        type: 'remind', version: '1.0'
-    },
     // Data query
     'da/executeSqlQuery': {
         title: '数据查询 — 自助式多源数据探索与分析',
@@ -215,14 +207,6 @@ export const guideTipConfig = {
     /* Data research and development */
     // data connection project
 
-    // project assets
-    'dpp/dppAsset.list': {
-        title: '项目资产 — 项目内数据资产的隔离与使用',
-        content: `集中管理当前项目可用的数据资产，支持从全局资产申请或自主创建。项目成员可在权限范围内进行字段查看、血缘分析、质量与清洗配置，并用于数据研发任务，实现安全隔离与合规使用。
-        <a href="${DOCS_BASE_URL}/docs/user/data-development/project-assets.html" target="_blank">查看帮助文档</a>
-    `,
-        type: 'remind', version: '1.0'
-    },
     // data integration
     'dpp/tasker/dppEtlTask.list': {
         title: '数据集成任务 — 多源数据同步与转换的统一通道',

@@ -51,6 +51,7 @@ import dpPublicRouter from './dp/model/index.js';
 import dsCatRouter from './ds/client/index.js';
 /* Data planning dynamic routing */
 import dpDataElemRouter from './dp/dataElem/index.js';
+import dpDataCodeTableRouter from './dp/dataCodeTable/index.js';
 
 // // R&D routing
 import dppRouter from './dpp/index.js';
@@ -96,7 +97,7 @@ import attTag from './att/tag/index.js';
  */
 
 // public route
-export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...dpDataCodeTableRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
 
 // Dynamic routing, dynamic loading based on user permissions
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];

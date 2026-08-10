@@ -238,7 +238,7 @@ const updateDialogRef = ref(null); // ref reference to the component
 watch(
   () => route.query.id,
   (newId) => {
-    if (route.path == "/da/asset/detail" || route.path == "/dpp/asset/detail") {
+    if (route.path == "/da/asset/detail") {
       assetId = newId || 1;
       tableRef.value?.getList();
     }

@@ -76,12 +76,6 @@ export default {
     type: 'remind',
     version: '1.0'
   },
-  daAssetApply: {
-    title: '资产审核 — 跨项目数据使用的审批控制',
-    content: `管理项目对全局数据资产的使用申请，由资产管理员进行审批。通过后资产方可纳入 <u>项目资产</u> 列表，用于 <u>数据研发任务</u>，确保数据使用合规、权限可控，实现资产共享与安全的平衡。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/asset-audit.html" target="_blank">查看帮助文档</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
   executeSqlQuery: {
     title: '数据查询 — 自助式多源数据探索与分析',
     content: `提供可视化SQL查询界面，支持对关系型数据库和大数据平台的便捷访问。集成目录导航、语法补全与结果导出功能，帮助用户快速获取数据，满足分析验证、问题排查等场景需求，提升数据使用效率。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-query.html" target="_blank">查看帮助文档</a>`,
@@ -97,12 +91,6 @@ export default {
   daSensitiveLevel: {
     title: '敏感等级 — 数据分级与安全管控的基础',
     content: `定义数据敏感级别，为字段和资产提供分类依据，并与脱敏规则自动关联。在数据预览、查询和输出等场景中，基于等级实施动态脱敏，保障敏感信息的安全与合规使用。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-security/sensitivity-level.html" target="_blank">查看帮助文档</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
-  dppAsset: {
-    title: '项目资产 — 项目内数据资产的隔离与使用',
-    content: `集中管理当前项目可用的数据资产，支持从全局资产申请或自主创建。项目成员可在权限范围内进行字段查看、血缘分析、质量与清洗配置，并用于数据研发任务，实现安全隔离与合规使用。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/project-assets.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },

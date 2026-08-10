@@ -232,15 +232,15 @@
 import useDefaultLang from "@/composables/useDefaultLang"
 import { getDaAsset } from "@/api/da/asset/asset";
 import { useRoute } from "vue-router";
-import ComponentOne from "@/views/dpp/asset/detail/table/column.vue";
-import DataQualityControl from "@/views/dpp/asset/detail/table/quality.vue";
-import ComponentTwo from "@/views/dpp/asset/detail/table/preview.vue";
-import ComponentThree from "@/views/dpp/asset/detail/api/simulation.vue";
-import authParams from "@/views/dpp/asset/detail/api/authParams";
-import RequestParamsForm from "@/views/dpp/asset/detail/api/requestParamsForm";
-import ResponseFormatConfig from "@/views/dpp/asset/detail/api/responseFormatConfig";
-import lineage from "@/views/dpp/asset/detail/table/lineage.vue";
-import info from "@/views/dpp/asset/detail/info.vue";
+import ComponentOne from "./table/column.vue";
+import DataQualityControl from "./table/quality.vue";
+import ComponentTwo from "./table/preview.vue";
+import ComponentThree from "./api/simulation.vue";
+import authParams from "./api/authParams";
+import RequestParamsForm from "./api/requestParamsForm";
+import ResponseFormatConfig from "./api/responseFormatConfig";
+import lineage from "./table/lineage.vue";
+import info from "./info.vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -328,7 +328,7 @@ let id = route.query.id || null;
 watch(
   () => route.query.id,
   (newId) => {
-    if (route.path == '/da/asset/detail' || route.path == '/dpp/asset/detail') {
+    if (route.path == '/da/asset/detail') {
       id = newId || null; // If ID is empty, use default value 1
       getDaAssetDetailById();
     }

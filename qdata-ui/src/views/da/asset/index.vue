@@ -157,7 +157,7 @@
                     class="item-title-name ellipsis"
                     @click="
                       routeTo(
-                        type == 1 ? '/dpp/asset/detail' : '/da/asset/detail',
+                        '/da/asset/detail',
                         item
                       )
                     "
@@ -780,8 +780,8 @@ import {
   startDaDiscoveryTask,
   getTreeData,
 } from "@/api/da/asset/asset";
-import CreateEditModal from "@/views/dpp/asset/add/index.vue";
-import tagForm from "@/views/dpp/asset/add/tagForm.vue";
+import CreateEditModal from "./add/index.vue";
+import tagForm from "./add/tagForm.vue";
 import OverflowTooltip from "@/components/OverflowTooltip";
 import { currentUser } from "@/api/att/project/project.js";
 import DeptTree from "@/components/DeptTree/index1.vue";
@@ -1011,7 +1011,7 @@ function handleView(row) {
   if (!unregistered(row)) {
     return proxy.$modal.msgWarning(td('da.asset.unregisteredTip'));
   }
-  routeTo(type == 1 ? "/dpp/asset/detail" : "/da/asset/detail", row);
+  routeTo("/da/asset/detail", row);
 }
 
 /** Query data asset list */

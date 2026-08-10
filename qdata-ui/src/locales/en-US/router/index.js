@@ -30,6 +30,7 @@ export default {
     "dmDocumentProvincial": "Local Standard",
     "dmDocumentGroup": "Group Standard",
     "dmDataElem": "Data Element",
+    "dmDataCodeTable": "Standard Code Table",
     "dpp": "Data Development",
     "dppDppDataSource": "Data Connection",
     "dppTask": "Task Management",

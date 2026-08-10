@@ -30,6 +30,7 @@ export default {
     "dmDocumentProvincial": "地方标准",
     "dmDocumentGroup": "团体标准",
     "dmDataElem": "标准数据元",
+    "dmDataCodeTable": "标准代码表",
     "dpp": "数据研发",
     "dppDppDataSource": "数据连接",
     "dppTask": "任务管理",

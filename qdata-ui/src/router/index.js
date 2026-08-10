@@ -17,7 +17,10 @@
  */
 
 import { createWebHistory, createRouter } from 'vue-router';
+import { clearCancelTokens } from '@/utils/request'; // Make sure the import path is correct
 
+/* Layout */
+import Layout from '@/layout';
 /* System module public routing */
 import systemPublicRouter from './system/public/index.js';
 /* System module dynamic routing */
@@ -107,6 +110,14 @@ const router = createRouter({
             return { top: 0 };
         }
     }
+});
+
+// Add cancellation request logic in route guard
+router.beforeEach((to, from, next) => {
+    if (to.path !== from.path) {
+        clearCancelTokens(); // Cancel all outstanding requests before routing switch
+    }
+    next();
 });
 
 /**

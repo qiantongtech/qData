@@ -105,7 +105,11 @@ public class DppEtlTaskDataIntegrationRunner {
             }
 
             // The input node provides reader parameters, and the output node provides writer parameters.
-            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
+            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.DB_READER.getCode());
+                add(TaskComponentTypeEnum.EXCEL_READER.getCode());
+                add(TaskComponentTypeEnum.CSV_READER.getCode());
+            }}).stream().findFirst().orElse(null);;
             List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
                 add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
                 add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
@@ -133,17 +137,12 @@ public class DppEtlTaskDataIntegrationRunner {
                         "The local DataX task has no input or output node; save the task first");
             }
 
-            Map<String, Object> readerNodeJsonMap = Collections.emptyMap();
-            // Parse input parameters only when the reader node exists to avoid null values during JSON construction.
-            if (ObjectUtils.isNotEmpty(readerNode)) {
-                readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
-            }
-            Map<String, Object> writerNodeJsonMap = Collections.emptyMap();
-            // Parse output parameters only when the writer node exists to avoid null values during JSON construction.
-            if (ObjectUtils.isNotEmpty(writerNode)) {
-                writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
-            }
+            Map<String, Object> readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
+            readerNodeJsonMap.put("componentType", readerNode.getComponentType());
+
+            Map<String, Object> writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
+
             for (DppEtlNodeRespVO processorNode : processorNodes) {
                 Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(processorNode.getParameters());
                 definitionJsonMap.put("componentType", processorNode.getComponentType());

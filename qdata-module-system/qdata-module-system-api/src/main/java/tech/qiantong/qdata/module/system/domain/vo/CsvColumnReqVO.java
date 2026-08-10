@@ -37,4 +37,7 @@ public class CsvColumnReqVO implements Serializable {
 
     @Schema(description = "CSV File Path")
     private String file;
+
+    @Schema(description = "Task Type")
+    private String taskType;
 }

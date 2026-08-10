@@ -49,7 +49,7 @@ export const treeData = [
                 level: 2,
                 componentType: '2',
                 taskType: 'DATAX',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-wxl.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-excel.png'
             },
@@ -60,7 +60,7 @@ export const treeData = [
                 level: 2,
                 componentType: '4',
                 taskType: 'DATAX',
-                engine: ['SPARK'],
+                engine: ['SPARK', 'DATAX'],
                 icon: new URL('@/assets/images/common/dpp/icon-scv.svg', import.meta.url).href, // Dynamically obtain path
                 icons: '@/assets/images/common/dpp/file-csv.png'
             },
@@ -173,24 +173,24 @@ export const treeData = [
     }
 ];
 
-const DATAX_ENABLED_COMPONENT_TYPES = new Set(['1', '22', '31', '34', '39', '40', '47', '48', '91']);
-const DATAX_HIDDEN_COMPONENT_TYPES = new Set(['2', '4']);
-
 // Return known data
 export const getTreeData = (taskType) => {
-    return treeData.map(item => {
-        const children = item.children
-            ?.filter(child => taskType !== 'DATAX' || !DATAX_HIDDEN_COMPONENT_TYPES.has(child.componentType))
-            .map(child => ({
-                ...child,
-                disabled: !child.engine.includes(taskType)
-                    || (taskType === 'DATAX' && !DATAX_ENABLED_COMPONENT_TYPES.has(child.componentType)),
-            }));
-
-        return {
-            ...item,
-            children,
-            disabled: !item.engine.includes(taskType),
-        };
-    });
+    var data = [...treeData];
+    data.map(item => {
+        if (item.children) {
+            item.children.map(child => {
+                if (!child.engine.includes(taskType)) {
+                    child.disabled = true;
+                } else {
+                    child.disabled = false;
+                }
+            })
+        }
+        if (!item.engine.includes(taskType)) {
+            item.disabled = true;
+        } else {
+            item.disabled = false;
+        }
+    })
+    return data;
 }

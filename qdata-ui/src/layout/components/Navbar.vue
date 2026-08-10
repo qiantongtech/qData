@@ -275,7 +275,7 @@
           trigger="click"
         >
           <div class="avatar-wrapper">
-            <img src="http://192.168.0.101/prod-api//profile/avatar/2025/09/18/68cb6865e4b0b6ef59810506.png" class="user-avatar" />
+            <img :src="userStore.avatar" class="user-avatar" />
             <span class="nickName">{{ nickName }}</span>
           </div>
           <template #dropdown>

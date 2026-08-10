@@ -104,7 +104,11 @@ public class DppEtlTaskDataIntegrationRunner {
             }
 
             // 输入节点负责 reader 参数，输出节点负责 writer 参数。
-            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
+            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.DB_READER.getCode());
+                add(TaskComponentTypeEnum.EXCEL_READER.getCode());
+                add(TaskComponentTypeEnum.CSV_READER.getCode());
+            }}).stream().findFirst().orElse(null);;
             List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
                 add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
                 add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
@@ -131,16 +135,12 @@ public class DppEtlTaskDataIntegrationRunner {
                 throw new ServiceException("本地DataX任务没有配置输入节点或输出节点，请先保存任务！");
             }
 
-            Map<String, Object> readerNodeJsonMap = Collections.emptyMap();
-            // reader 节点存在时解析输入端参数，避免空参数影响 JSON 构建。
-            if (ObjectUtils.isNotEmpty(readerNode)) {
-                readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
-            }
-            Map<String, Object> writerNodeJsonMap = Collections.emptyMap();
-            // writer 节点存在时解析输出端参数，避免空参数影响 JSON 构建。
-            if (ObjectUtils.isNotEmpty(writerNode)) {
-                writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
-            }
+            Map<String, Object> readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
+                    // 处理参数本身不包含组件编码，补充 componentType 供 DataX 区分不同处理组件。
+            readerNodeJsonMap.put("componentType", readerNode.getComponentType());
+
+            Map<String, Object> writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
+
             List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
             // 处理节点为可选节点，存在多个时按节点顺序全部参与 DataX JSON 构建。
             for (DppEtlNodeRespVO processorNode : processorNodes) {

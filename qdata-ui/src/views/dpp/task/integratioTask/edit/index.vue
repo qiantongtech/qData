@@ -207,6 +207,7 @@
       :currentNode="currentNode"
       :info="route.query.info"
       :graph="graph"
+      :task-type="taskType"
     />
     <add
       :visible="taskConfigDialogVisible"
@@ -294,21 +295,23 @@ const router = useRouter();
 let id = route.query.id || 1;
 // "edit": edit, "input": only look at input fields, "output": only look at output fields
 // tooltip display content
-const taskType = ref("");
+const taskType = ref("SPARK");
 
 //Get execution engine
-const getTaskType = (json) => {
-  if (!json) {
-    return "SPARK";
+const getTaskType = (json, fallback = "SPARK") => {
+  if (!json) return fallback;
+
+  try {
+    const config = typeof json === "string" ? JSON.parse(json) : json;
+    return config?.taskType ?? fallback;
+  } catch {
+    return fallback;
   }
-  let type = json && JSON.parse(json).taskType;
-  return type;
 };
 
 // icon
 const getDatasourceIcon = (json) => {
-  let type = json && JSON.parse(json).taskType;
-  taskType.value = type;
+  const type = getTaskType(json, taskType.value);
   switch (type) {
     case "FLINK":
       return new URL("@/assets/images/common/dpp/icon-flink.svg", import.meta.url)
@@ -429,7 +432,10 @@ function getList() {
       draftJson: nodeData.value.draftJson,
     };
     renderGraph(graph, nodeData.value);
-    const currentTaskType = getTaskType(nodeData.value.draftJson);
+    const currentTaskType = getTaskType(
+      nodeData.value.draftJson,
+      nodeData.value.taskType ?? "SPARK"
+    );
     taskType.value = currentTaskType;
     treeData.value = [...getTreeData(currentTaskType)];
     loading.value = false;

@@ -136,7 +136,8 @@ const props = defineProps({
   title: { type: String, default: '' },
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
-  graph: {}
+  graph: {},
+  taskType: { type: String, default: "" },
 });
 const emit = defineEmits(["update", "confirm"]);
 const visibleDialog = computed({
@@ -201,6 +202,7 @@ const parseExcel = async (id) => {
       startData: form.value.taskParams.startData,
       startColumn: form.value.taskParams.startColumn,
       excelFile: form.value.taskParams.excelFile,
+      taskType: props.taskType,
     });
 
     if (res?.data?.csvFile) {

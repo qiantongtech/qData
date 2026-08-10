@@ -199,7 +199,7 @@ ds:
 
 datax:
   # DataX root directory, can be overridden by QDATA_DATAX_HOME
-  home: ${user.dir}/datax
+  home: ${user.dir}/datax/
   # Python command
   python-command: python3
   # Path to the datax.py invocation file

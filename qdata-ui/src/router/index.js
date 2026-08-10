@@ -17,10 +17,7 @@
  */
 
 import { createWebHistory, createRouter } from 'vue-router';
-import { clearCancelTokens } from '@/utils/request'; // Make sure the import path is correct
 
-/* Layout */
-import Layout from '@/layout';
 /* System module public routing */
 import systemPublicRouter from './system/public/index.js';
 /* System module dynamic routing */
@@ -39,8 +36,6 @@ import daDynamicRouter from './da/dynamic/index.js';
 import daAssetRouter from './da/asset/index.js';
 /* Data quality */
 import daQualityRouter from './da/quality/index.js';
-
-
 import dsPublicRouter from './ds/public/index.js';
 /* api service */
 import dsDynamicRouter from './ds/dynamic/index.js';
@@ -111,12 +106,6 @@ const router = createRouter({
             return { top: 0 };
         }
     }
-});
-
-// Add cancellation request logic in route guard
-router.beforeEach((to, from, next) => {
-    clearCancelTokens(); // Cancel all outstanding requests before routing switch
-    next();
 });
 
 /**

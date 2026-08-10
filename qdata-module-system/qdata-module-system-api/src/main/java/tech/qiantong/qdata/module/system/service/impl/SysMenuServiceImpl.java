@@ -243,7 +243,8 @@ public class SysMenuServiceImpl implements ISysMenuService
                 childrenList.add(children);
                 router.setChildren(childrenList);
             }
-            routers.add(router);
+            if ((menu.getChildren() != null && !menu.getChildren().isEmpty()) || StringUtils.isNotEmpty(menu.getComponent()))
+                routers.add(router);
         }
         return routers;
     }

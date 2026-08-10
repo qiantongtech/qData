@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * DataX 本地进程执行器。
@@ -66,6 +67,19 @@ public class DataXExecutor {
      * @throws InterruptedException 等待 DataX 进程结束时被中断
      */
     public DataXResult run(String dataJson) throws IOException, InterruptedException {
+        return run(dataJson, null);
+    }
+
+    /**
+     * 执行 DataX 任务，并在读取到进程输出时逐行通知调用方。
+     *
+     * @param dataJson     DataX job.json 内容，或已经存在的 job.json 文件路径
+     * @param lineConsumer DataX 输出行回调；为 null 时仅收集最终输出
+     * @return DataX 进程退出码、任务文件路径和进程输出
+     * @throws IOException 准备任务文件、启动进程或清理临时目录失败
+     * @throws InterruptedException 等待 DataX 进程结束时被中断
+     */
+    public DataXResult run(String dataJson, Consumer<String> lineConsumer) throws IOException, InterruptedException {
         checkConfig();
         Path jobFile = prepareJobFile(dataJson);
         List<String> command = properties.buildCommand(jobFile);
@@ -84,6 +98,9 @@ public class DataXExecutor {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append(System.lineSeparator());
+                    if (lineConsumer != null) {
+                        lineConsumer.accept(line);
+                    }
                 }
             }
 

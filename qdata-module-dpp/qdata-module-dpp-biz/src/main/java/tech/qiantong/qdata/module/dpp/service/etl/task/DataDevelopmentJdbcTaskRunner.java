@@ -79,6 +79,9 @@ public class DataDevelopmentJdbcTaskRunner {
     @Resource
     private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
+    /** 当前线程正在执行的节点日志上下文，防止并发任务串写。 */
+    private final ThreadLocal<DataDevelopmentLogContext> realtimeLogContext = new ThreadLocal<>();
+
     /**
      * 执行数据开发任务中的 JDBC 节点。
      *
@@ -86,7 +89,7 @@ public class DataDevelopmentJdbcTaskRunner {
      * @param instance 当前任务实例
      * @param taskLog 任务运行日志缓冲区
      */
-    @Transactional
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void run(DppEtlTaskDO task, DppEtlTaskInstanceDO instance, StringBuilder taskLog) {
         // 同一个任务同一时间只允许一个执行实例，避免重复点击或调度重入。
         Date startTime = new Date();
@@ -99,11 +102,11 @@ public class DataDevelopmentJdbcTaskRunner {
 
         int totalUpdateCount = 0;
         int totalResultCount = 0;
-        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
-        LogUtils.appendLocalLogLine(taskLog, "********************************* Load task instance plugin *********************************");
-        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
-        LogUtils.appendLocalLogLine(taskLog, "Send task status RUNNING_EXECUTION");
-        LogUtils.appendLocalLogLine(taskLog, "Create TaskChannel: qData DataDevelopmentJdbcTaskRunner successfully");
+        appendDataDevelopmentLog(taskLog, "***********************************************************************************************");
+        appendDataDevelopmentLog(taskLog, "********************************* Load task instance plugin *********************************");
+        appendDataDevelopmentLog(taskLog, "***********************************************************************************************");
+        appendDataDevelopmentLog(taskLog, "Send task status RUNNING_EXECUTION");
+        appendDataDevelopmentLog(taskLog, "Create TaskChannel: qData DataDevelopmentJdbcTaskRunner successfully");
 
         // 只执行 SQL 开发和存储过程开发节点，其它清洗、输入、输出节点不属于本地 JDBC 执行范围。
         List<DppEtlNodeRespVO> sqlNodes = getDataDevelopmentSqlNodes(task);
@@ -112,38 +115,42 @@ public class DataDevelopmentJdbcTaskRunner {
             throw new ServiceException("数据开发任务未找到SQL或存储过程节点");
         }
 
-        LogUtils.appendLocalLogLine(taskLog, "********************************* Execute task instance *************************************");
+        appendDataDevelopmentLog(taskLog, "********************************* Execute task instance *************************************");
         // 汇总所有节点的影响行数和结果行数，方便实例日志里快速判断执行规模。
         for (DppEtlNodeRespVO node : sqlNodes) {
             // 创建节点实例
             Long nodeInstanceId = createNodeInstance(task, node, instance);
+            realtimeLogContext.set(new DataDevelopmentLogContext(nodeInstanceId, instance.getId(), task));
             try {
-                LogUtils.appendLocalLogLine(taskLog, "Start executing node: " + node.getName());
+                appendDataDevelopmentLog(taskLog, "Start executing node: " + node.getName());
 
                 JdbcExecuteResult result = executeDataDevelopmentNodeSql(node, taskLog);
                 totalUpdateCount += result.getUpdateCount();
                 totalResultCount += result.getResultCount();
-                LogUtils.appendLocalLogLine(taskLog, String.format("Node execution completed: %s, affected rows=%d, result rows=%d",
+                appendDataDevelopmentLog(taskLog, String.format("Node execution completed: %s, affected rows=%d, result rows=%d",
                         node.getName(), result.getUpdateCount(), result.getResultCount()));
                 // 更新节点实例状态为成功
                 updateNodeInstance(nodeInstanceId, TaskExecutionStatus.SUCCESS);
                 // 更新任务实例状态为成功
                 markDataDevelopmentSuccess(instance);
-                LogUtils.appendLocalLogLine(taskLog, String.format("Data development task executed successfully: node count=%d, affected rows=%d, result rows=%d",
+                appendDataDevelopmentLog(taskLog, String.format("Data development task executed successfully: node count=%d, affected rows=%d, result rows=%d",
                         sqlNodes.size(), totalUpdateCount, totalResultCount));
             } catch (Exception e) {
-                // 业务异常和 JDBC 异常统一记录到实例状态与实例日志中，方便页面查看失败原因。
+                // 更新节点实例状态为失败
+                updateNodeInstance(nodeInstanceId, TaskExecutionStatus.FAILURE);
+                // 更新任务实例状态为失败
                 markDataDevelopmentFail(instance, e);
-                LogUtils.appendLocalLogLine(taskLog, "Data development task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
+                appendDataDevelopmentLog(taskLog, "Data development task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
             } finally {
-                // 无论成功失败都释放锁，并在方法结尾一次性写入本次执行的完整日志。
-                redisService.delete(redisKey);
-                // 异常路径尚未设置结束时间时，在最终清理阶段补齐。
-                if (instance.getEndTime() == null) {
-                    instance.setEndTime(new Date());
+                try {
+                    redisService.delete(redisKey);
+                    if (instance.getEndTime() == null) {
+                        instance.setEndTime(new Date());
+                    }
+                    appendDataDevelopmentLog(taskLog, "Data development task execution finished, duration: " + calcDurationSeconds(startTime) + " seconds");
+                } finally {
+                    realtimeLogContext.remove();
                 }
-                LogUtils.appendLocalLogLine(taskLog, "Data development task execution finished, duration: " + calcDurationSeconds(startTime) + " seconds");
-                safeDataDevelopmentLog(nodeInstanceId, instance.getId(), task, taskLog.toString());
             }
         }
     }
@@ -319,15 +326,15 @@ public class DataDevelopmentJdbcTaskRunner {
         // 将节点内的数据源 JSON 转成项目通用 DbQueryProperty，复用已有 JDBC URL 生成逻辑。
         DbQueryProperty dbQueryProperty = buildNodeDbQueryProperty(params);
 
-        LogUtils.appendLocalLogLine(taskLog, "Initialize sql task parameter " + JSONUtils.formatJson(params.toJSONString()));
-        LogUtils.appendLocalLogLine(taskLog, "Database type: " + dbQueryProperty.getDbType());
-        LogUtils.appendLocalLogLine(taskLog, "SQL type: " + sqlType);
+        appendDataDevelopmentLog(taskLog, "Initialize sql task parameter " + JSONUtils.formatJson(params.toJSONString()));
+        appendDataDevelopmentLog(taskLog, "Database type: " + dbQueryProperty.getDbType());
+        appendDataDevelopmentLog(taskLog, "SQL type: " + sqlType);
         // 只有用户显式配置分隔符时才输出，便于判断复杂过程脚本是否会按预期拆分。
         if (StringUtils.isNotEmpty(sqlSegmentDelimiter)) {
-            LogUtils.appendLocalLogLine(taskLog, "SQL segment delimiter: " + sqlSegmentDelimiter);
+            appendDataDevelopmentLog(taskLog, "SQL segment delimiter: " + sqlSegmentDelimiter);
         }
-        LogUtils.appendLocalLogLine(taskLog, "Full sql parameters: " + sql);
-        LogUtils.appendLocalLogLine(taskLog, "Prepare to create JDBC connection");
+        appendDataDevelopmentLog(taskLog, "Full sql parameters: " + sql);
+        appendDataDevelopmentLog(taskLog, "Prepare to create JDBC connection");
 
         Class.forName(getDriverClassName(dbQueryProperty.getDbType()));
 
@@ -336,14 +343,14 @@ public class DataDevelopmentJdbcTaskRunner {
         Long delayTime = params.getLong("delayTime");//'延迟执行时间:'，单位：分钟
         SqlExecutionTiming timing = buildSqlExecutionTiming(failRetryTimes, failRetryInterval, delayTime);
 
-        LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
+        appendDataDevelopmentLog(taskLog, String.format("SQL execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
                 normalizeNonNegative(delayTime), normalizeNonNegative(failRetryTimes), normalizeNonNegative(failRetryInterval)));
         sleepBeforeSqlExecution(timing.getDelayMillis(), taskLog, "Delay before SQL execution");
 
         Exception lastException = null;
         // maxAttempts 已包含首次执行，因此 failRetryTimes=0 时循环只执行一次。
         for (int attempt = 1; attempt <= timing.getMaxAttempts(); attempt++) {
-            LogUtils.appendLocalLogLine(taskLog, String.format("Start SQL execution attempt %d/%d", attempt, timing.getMaxAttempts()));
+            appendDataDevelopmentLog(taskLog, String.format("Start SQL execution attempt %d/%d", attempt, timing.getMaxAttempts()));
             try {
 
                 try (Connection connection = DriverManager.getConnection(
@@ -359,13 +366,13 @@ public class DataDevelopmentJdbcTaskRunner {
 
                         // 仅重试成功时额外记录恢复信息，首次成功无需重复输出。
                         if (attempt > 1) {
-                            LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution retry succeeded on attempt %d/%d", attempt, timing.getMaxAttempts()));
+                            appendDataDevelopmentLog(taskLog, String.format("SQL execution retry succeeded on attempt %d/%d", attempt, timing.getMaxAttempts()));
                         }
                         return result;
                     } catch (Exception e) {
                         // 任意阶段失败都回滚本次连接中尚未提交的 SQL。
                         connection.rollback();
-                        LogUtils.appendLocalLogLine(taskLog, "SQL execution failed, transaction rolled back: "
+                        appendDataDevelopmentLog(taskLog, "SQL execution failed, transaction rolled back: "
                                 + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
                         throw e;
                     }
@@ -375,10 +382,10 @@ public class DataDevelopmentJdbcTaskRunner {
                 lastException = e;
                 // 已达到最大尝试次数时直接向上抛出，不再进入等待流程。
                 if (attempt >= timing.getMaxAttempts()) {
-                    LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution failed after %d attempt(s)", timing.getMaxAttempts()));
+                    appendDataDevelopmentLog(taskLog, String.format("SQL execution failed after %d attempt(s)", timing.getMaxAttempts()));
                     throw e;
                 }
-                LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution attempt %d/%d failed, will retry after %d minutes: %s",
+                appendDataDevelopmentLog(taskLog, String.format("SQL execution attempt %d/%d failed, will retry after %d minutes: %s",
                         attempt, timing.getMaxAttempts(), TimeUnit.MILLISECONDS.toMinutes(timing.getRetryIntervalMillis()),
                         JSONUtils.formatJson(JSONUtils.toJson(e.getMessage()))));
                 sleepBeforeSqlExecution(timing.getRetryIntervalMillis(), taskLog, "Wait before SQL retry");
@@ -436,13 +443,13 @@ public class DataDevelopmentJdbcTaskRunner {
         if (millis <= 0) {
             return;
         }
-        LogUtils.appendLocalLogLine(taskLog, String.format("%s, wait %d minutes", action, TimeUnit.MILLISECONDS.toMinutes(millis)));
+        appendDataDevelopmentLog(taskLog, String.format("%s, wait %d minutes", action, TimeUnit.MILLISECONDS.toMinutes(millis)));
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             // 恢复中断标记，使上层调度器能够感知任务已被取消或中断。
             Thread.currentThread().interrupt();
-            LogUtils.appendLocalLogLine(taskLog, action + " interrupted");
+            appendDataDevelopmentLog(taskLog, action + " interrupted");
             throw e;
         }
     }
@@ -699,7 +706,7 @@ public class DataDevelopmentJdbcTaskRunner {
         for (String script : scripts) {
             // 单个 pre/post 配置项本身也可能包含多条 SQL，因此仍需经过统一拆分器。
             for (String statement : splitJdbcSqlScript(script, dbType, sqlSegmentDelimiter)) {
-                LogUtils.appendLocalLogLine(taskLog, "Execute " + handlerType + " sql: " + statement);
+                appendDataDevelopmentLog(taskLog, "Execute " + handlerType + " sql: " + statement);
                 JdbcExecuteResult result = executeStatement(connection, buildSqlBind(statement, localParams), queryLimit, taskLog);
                 updateCount += result.getUpdateCount();
             }
@@ -716,7 +723,7 @@ public class DataDevelopmentJdbcTaskRunner {
                                                 StringBuilder taskLog) throws SQLException {
         int updateCount = 0;
         int resultCount = 0;
-        LogUtils.appendLocalLogLine(taskLog, "Execute sql: " + sqlBind.sql);
+        appendDataDevelopmentLog(taskLog, "Execute sql: " + sqlBind.sql);
         try (PreparedStatement statement = prepareStatement(connection, sqlBind, queryLimit)) {
             boolean hasResultSet = statement.execute();
             while (true) {
@@ -747,7 +754,7 @@ public class DataDevelopmentJdbcTaskRunner {
      */
     private int executeQueryStatement(Connection connection, SqlBind sqlBind, int queryLimit, int displayRows,
                                       StringBuilder taskLog) throws SQLException {
-        LogUtils.appendLocalLogLine(taskLog, "Execute query sql: " + sqlBind.sql);
+        appendDataDevelopmentLog(taskLog, "Execute query sql: " + sqlBind.sql);
         try (PreparedStatement statement = prepareStatement(connection, sqlBind, queryLimit);
              ResultSet resultSet = statement.executeQuery()) {
             return countResultSetRows(resultSet, displayRows, taskLog);
@@ -794,7 +801,7 @@ public class DataDevelopmentJdbcTaskRunner {
             }
             count++;
             if (row != null) {
-                LogUtils.appendLocalLogLine(taskLog, "Query result row " + count + ": " + JSONUtils.toJson(row));
+                appendDataDevelopmentLog(taskLog, "Query result row " + count + ": " + JSONUtils.toJson(row));
             }
         }
         return count;
@@ -975,8 +982,7 @@ public class DataDevelopmentJdbcTaskRunner {
      */
     private void safeDataDevelopmentLog(Long nodeInstanceId, Long instanceId, DppEtlTaskDO task, String msg) {
         try {
-            // run 方法会在结尾一次性传入完整日志，这里直接保存原文，避免重复追加或重复加日志前缀。
-            dppEtlNodeInstanceLogService.save(DppEtlNodeInstanceLogDO.builder()
+            dppEtlNodeInstanceLogService.saveOrUpdateRealtime(DppEtlNodeInstanceLogDO.builder()
                     .nodeId(task.getId())
                     .nodeCode(task.getCode())
                     .nodeInstanceId(nodeInstanceId)
@@ -990,6 +996,27 @@ public class DataDevelopmentJdbcTaskRunner {
         } catch (Exception e) {
             // 日志失败不能覆盖真正的 SQL 执行异常，只记录本地错误日志。
             log.error("数据开发任务实例日志写入失败 instanceId={}, msg={}", instanceId, msg, e);
+        }
+    }
+
+    /** 追加一行日志并立即刷新当前节点的完整日志内容。 */
+    private void appendDataDevelopmentLog(StringBuilder taskLog, String msg) {
+        LogUtils.appendLocalLogLine(taskLog, msg);
+        DataDevelopmentLogContext context = realtimeLogContext.get();
+        if (context != null) {
+            safeDataDevelopmentLog(context.nodeInstanceId, context.instanceId, context.task, taskLog.toString());
+        }
+    }
+
+    private static class DataDevelopmentLogContext {
+        private final Long nodeInstanceId;
+        private final Long instanceId;
+        private final DppEtlTaskDO task;
+
+        private DataDevelopmentLogContext(Long nodeInstanceId, Long instanceId, DppEtlTaskDO task) {
+            this.nodeInstanceId = nodeInstanceId;
+            this.instanceId = instanceId;
+            this.task = task;
         }
     }
 }

@@ -25,6 +25,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.core.page.PageResult;
@@ -244,6 +245,15 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
                 .logPath(taskInstance.getLogPath())
                 .build();
         return this.save(dppEtlTaskInstanceDO);
+    }
+
+    /**
+     * 独立提交本地 DataX 节点实例，避免被 DataX 执行长事务延迟到任务结束。
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public Boolean createLocalDataXNodeInstance(DppEtlNodeInstanceDO nodeInstance) {
+        return this.save(nodeInstance);
     }
 
     @Override

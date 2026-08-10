@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceLogDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeInstanceLogMapper;
@@ -41,6 +42,21 @@ import javax.annotation.Resource;
 public class DppEtlNodeInstanceLogServiceImpl extends ServiceImpl<DppEtlNodeInstanceLogMapper, DppEtlNodeInstanceLogDO> implements IDppEtlNodeInstanceLogService {
     @Resource
     private DppEtlNodeInstanceLogMapper dppEtlNodeInstanceLogMapper;
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public boolean saveOrUpdateRealtime(DppEtlNodeInstanceLogDO entity) {
+        DppEtlNodeInstanceLogDO old = this.getOne(Wrappers.lambdaQuery(DppEtlNodeInstanceLogDO.class)
+                .eq(DppEtlNodeInstanceLogDO::getNodeInstanceId, entity.getNodeInstanceId()));
+        if (old == null) {
+            return this.save(entity);
+        }
+        old.setTm(entity.getTm());
+        old.setLogContent(entity.getLogContent());
+        // 当前 Mapper 未注册 updateById，按节点实例 ID 条件更新。
+        return this.update(old, Wrappers.lambdaUpdate(DppEtlNodeInstanceLogDO.class)
+                .eq(DppEtlNodeInstanceLogDO::getNodeInstanceId, entity.getNodeInstanceId()));
+    }
 
     @Override
     public String getLog(Long nodeInstanceId) {

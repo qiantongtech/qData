@@ -353,7 +353,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         ,TRIM(BOTH '"' FROM SUBSTR(t.DRAFT_JSON, INSTR(t.DRAFT_JSON, '"typaCode"') + 12, 50)) AS datasourceType
                     </otherwise>
                 </choose>
-                ,(SELECT t4.ID FROM DPP_ETL_TASK_INSTANCE t4 WHERE t4.TASK_CODE = t.CODE AND t4.DEL_FLAG = '0' AND t4.STATUS IN ('0','1') ORDER BY t4.CREATE_TIME DESC LIMIT 1) AS taskInstanceId
             </if>
         FROM
             DPP_ETL_TASK t

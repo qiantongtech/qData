@@ -768,6 +768,9 @@ export default {
       inputCategoryName: 'Please enter data integration category name',
       dataIntegrationCategory: 'Data Integration Category',
       executionTime: 'Execution Time',
+      recentExecutionTime: 'Recent Execution Time',
+      runDuration: 'Duration',
+      viewLog: 'View Log',
       resetConfirm: 'Clicking reset will clear all unsaved changes. Are you sure to continue?',
       confirmDeleteLog: 'Are you sure to delete the data integration task log with ID "{id}"?',
 
@@ -871,9 +874,6 @@ export default {
   integratioTask: {
     taskName: 'Task Name',
     inputTaskName: 'Please enter task name',
-    taskDetail: 'Task Details',
-    scheduler: 'Scheduler',
-    selectScheduler: 'Scheduler is required',
     schedulerEngine: 'Scheduler',
     taskCategory: 'Task Category',
     selectTaskCategory: 'Please select task category',
@@ -1012,7 +1012,6 @@ export default {
     executeSuccess: 'Executed successfully',
     executeFailed: 'Execution failed, please contact administrator',
     confirmClone: 'Are you sure to clone task "{name}"?',
-    confirmDelete: 'Are you sure to delete data integration task with ID "{ids}"?',
     unsupportedEngineSwitch: 'Currently, switching is not supported！',
     upDs: 'Please start the DolphinScheduler scheduler！',
     viewDeployDocs: "Review the deployment document",

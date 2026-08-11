@@ -100,5 +100,8 @@ public class DppEtlTaskInstancePageReqVO extends PageParam {
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
 
+    @Schema(description = "Category code; child categories are included by prefix matching", example = "001001")
+    private String catCode;
+
 
 }

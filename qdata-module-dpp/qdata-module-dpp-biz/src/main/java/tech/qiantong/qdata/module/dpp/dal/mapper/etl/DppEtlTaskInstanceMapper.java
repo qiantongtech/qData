@@ -56,6 +56,7 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
                 .select("t3.NICK_NAME AS personChargeName")
                 .leftJoin("SYSTEM_USER t3 ON t.PERSON_CHARGE = t3.USER_ID AND t3.DEL_FLAG = '0'")
                 .like(StringUtils.isNotBlank(reqVO.getName()),DppEtlTaskInstanceDO::getName, reqVO.getName())
+                .likeRight(StringUtils.isNotBlank(reqVO.getCatCode()), DppEtlTaskInstanceDO::getCatCode, reqVO.getCatCode())
                 .eq(StringUtils.isNotBlank(reqVO.getTaskType()),DppEtlTaskInstanceDO::getTaskType, reqVO.getTaskType())
                 .eq(reqVO.getTaskId() !=null,DppEtlTaskInstanceDO::getTaskId, reqVO.getTaskId())
                 .eq(StringUtils.isNotBlank(reqVO.getTaskCode()),DppEtlTaskInstanceDO::getTaskCode, reqVO.getTaskCode())

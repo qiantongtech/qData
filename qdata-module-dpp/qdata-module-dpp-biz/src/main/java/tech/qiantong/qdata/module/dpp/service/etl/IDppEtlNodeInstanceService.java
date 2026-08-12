@@ -22,8 +22,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstancePageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceLogDetailRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceStatisticsRespVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
 
 import java.util.Collection;
@@ -135,4 +137,8 @@ public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceD
     void taskInstanceLogInsert(String taskInstanceId, String processInstanceId, String logStr);
 
     String getLogByNodeInstanceId(Long nodeInstanceId);
+
+    DppEtlNodeInstanceLogDetailRespVO getLogDetailByNodeInstanceId(Long nodeInstanceId);
+
+    DppEtlNodeInstanceStatisticsRespVO getStatistics(Long projectId, String projectCode, String taskType);
 }

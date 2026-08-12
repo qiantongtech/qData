@@ -96,7 +96,15 @@ import { Search, Download } from "@element-plus/icons-vue";
 import DetailInfo from "@/components/DetailInfo/index.vue";
 import StatusTag from "./StatusTag.vue";
 import { getLogByTaskInstanceId } from "@/api/dpp/task/etlTask";
+import { getLogByNodeInstanceId } from "@/api/dpp/instance/integratio";
 import useDefaultLang from "@/composables/useDefaultLang";
+
+const props = defineProps({
+  instanceType: {
+    type: String,
+    default: "task",
+  },
+});
 
 const { proxy } = getCurrentInstance();
 const { td, locale } = useDefaultLang();
@@ -130,6 +138,11 @@ const polling = ref(false);
 /** 自动刷新时是否跟随日志滚动到底部 */
 const shouldAutoScroll = ref(true);
 const BOTTOM_DISTANCE_THRESHOLD = 20;
+
+const getLogDetail = (instanceId) =>
+  props.instanceType === "node"
+    ? getLogByNodeInstanceId({ nodeInstanceId: instanceId })
+    : getLogByTaskInstanceId({ taskInstanceId: instanceId });
 
 /**
  * 更新任务状态
@@ -302,7 +315,7 @@ const fetchLog = async (taskId) => {
   if (!polling.value) return;
   try {
     const needScrollToBottom = shouldAutoScroll.value || isLogNearBottom();
-    const res = await getLogByTaskInstanceId({ taskInstanceId: taskId });
+    const res = await getLogDetail(taskId);
     const {
       status,
       currentStatus,
@@ -326,7 +339,7 @@ const fetchLog = async (taskId) => {
     updateTaskStatus(status);
     const taskStatus = Number(status);
 
-    isRunning.value = taskStatus === 1;
+    isRunning.value = currentStatus === "running";
 
     if (isRunning.value) {
       if (logList && logList.length > rawLogList.value.length) {
@@ -374,7 +387,7 @@ const open = async (taskId) => {
 
   await nextTick();
 
-  const res = await getLogByTaskInstanceId({ taskInstanceId: taskId });
+  const res = await getLogDetail(taskId);
   const {
     status,
     log,
@@ -396,11 +409,9 @@ const open = async (taskId) => {
     statusName: statusName,
   };
   updateTaskStatus(status);
-  const taskStatus = Number(status);
-
   rawLogContent.value = log || "";
   rawLogList.value = logList || []; // Populate rawLogList
-  isRunning.value = taskStatus === 1;
+  isRunning.value = currentStatus === "running";
   loading.value = false;
   scrollToBottom();
 
@@ -423,9 +434,14 @@ const handleClose = () => {
 
 /** 下载日志文件 */
 const handleDownload = () => {
+  const isNodeInstance = props.instanceType === "node";
   proxy.download(
-    "/dpp/etlTaskInstance/downloadLog",
-    { taskInstanceId: taskInstanceId.value },
+    isNodeInstance
+      ? "/dpp/etlNodeInstance/downloadLog"
+      : "/dpp/etlTaskInstance/downloadLog",
+    isNodeInstance
+      ? { nodeInstanceId: taskInstanceId.value }
+      : { taskInstanceId: taskInstanceId.value },
     `${taskInfo.value.name || "task"}.log`
   );
 };

@@ -1788,21 +1788,21 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("By Business Category")
+                .name("按业务分类")
                 .type("0")
                 .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for business and analytics personnel. Categorized by actual business lines or departmental functions, facilitating quick identification of data for specific business scenarios.\"}"))
                 .children(dmBusinessCategoryApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("By Theme Domain")
+                .name("按主题域")
                 .type("0")
                 .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for architects and data developers. Divides global data by core business entities, suitable for cross-departmental data exploration and model design.\"}"))
                 .children(dmThemeDomainApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("By Data Warehouse Layer")
+                .name("按数仓分层")
                 .type("0")
                 .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for underlying data developers. Divided by data processing depth and flow architecture, facilitating lineage tracing and technical troubleshooting.\"}"))
                 .children(dmDataLayerApiService.getTreeData("1"))

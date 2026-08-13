@@ -16,28 +16,38 @@
  * See the LICENSE file in the project root for full license information.
  */
 
-import request from '@/utils/request.js'
-import packageInfo from '../../../../package.json'
+package tech.qiantong.qdata.module.system.api.updater.dto;
 
-const { name, version, description, author } = packageInfo
+import lombok.*;
 
-export function getCurrentAppVersion() {
-    return request({
-        url: '/updater/getCurrentAppVersion',
-        method: 'get',
-        params: {
-            name,
-            version,
-            description,
-            author
-        }
-    })
-}
+/**
+ * 版本跟踪 DTO object SYSTEM_VERSION_TRACK
+ *
+ * @author qdata
+ * @date 2026-08-12
+ */
+@Data
+public class SystemVersionTrackRespDTO {
 
-export function addVersionTrack(data) {
-    return request({
-        url: '/system/VersionTrack',
-        method: 'post',
-        data: data
-    })
+    private static final long serialVersionUID = 1L;
+
+    /** ID */
+    private Long id;
+
+    /** 项目名称 */
+    private String name;
+
+    /** 项目版本号 */
+    private String currVersion;
+
+    /** 描述 */
+    private String description;
+
+    /** 作者 */
+    private String author;
+
+    /** 删除标志 */
+    private Boolean delFlag;
+
+
 }

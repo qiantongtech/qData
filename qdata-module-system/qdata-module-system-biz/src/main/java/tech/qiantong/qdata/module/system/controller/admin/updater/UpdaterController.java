@@ -3,12 +3,16 @@ package tech.qiantong.qdata.module.system.controller.admin.updater;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.core.domain.CommonResult;
 import tech.qiantong.qdata.common.httpClient.HttpUtils;
+import tech.qiantong.qdata.module.system.controller.admin.updater.vo.CurrentAppVersionReqVO;
+import tech.qiantong.qdata.module.system.controller.admin.updater.vo.SystemVersionTrackSaveReqVO;
 import tech.qiantong.qdata.module.system.controller.admin.updater.vo.VersionInfo;
 
 import java.util.HashMap;
@@ -42,11 +46,11 @@ public class UpdaterController extends BaseController {
      * Check if current instance is the latest version
      */
     @GetMapping("/getCurrentAppVersion")
-    public CommonResult<VersionInfo> getCurrentAppVersion() {
+    public CommonResult<VersionInfo> getCurrentAppVersion(CurrentAppVersionReqVO reqVO) {
         // Get local version info
-        String currentVersion = qdataConfig.getVersion();
+        String currentVersion = reqVO.getVersion();
         // Initial latest version
-        String latestVersion = "3.8.9";
+        String latestVersion = "";
         // Whether update is needed
         boolean needUpdate = true;
         try {
@@ -78,6 +82,30 @@ public class UpdaterController extends BaseController {
         versionInfo.setLatestVersion(latestVersion);
         versionInfo.setNeedUpdate(needUpdate);
         return CommonResult.success(versionInfo);
+    }
+
+    @PostMapping("/tractlatestAppVersion")
+    public void tractlatestAppVersion(@RequestBody SystemVersionTrackSaveReqVO reqVO) {
+        try {
+            String remoteUrl = "https://qdata-pro.qiantong.tech/prod-api/system/VersionTrack";
+            HttpUtils.sendPost(remoteUrl, buildVersionTrackParams(reqVO), null);
+        } catch (Exception e) {
+            logger.error("Version track forwarding failed", e);
+        }
+    }
+
+    /**
+     * Build version track forwarding parameters.
+     */
+    private Map<String, Object> buildVersionTrackParams(SystemVersionTrackSaveReqVO reqVO) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", reqVO.getId());
+        params.put("name", reqVO.getName());
+        params.put("currVersion", reqVO.getCurrVersion());
+        params.put("description", reqVO.getDescription());
+        params.put("author", reqVO.getAuthor());
+        params.put("remark", reqVO.getRemark());
+        return params;
     }
 
     /**

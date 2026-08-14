@@ -183,6 +183,22 @@ public class DppEtlTaskInstanceDO extends BaseEntity {
      */
     private Boolean validFlag;
 
+    /** Execution duration. */
+    @TableField(exist = false)
+    private String duration;
+
+    /** Current status display name. */
+    @TableField(exist = false)
+    private String currentStatusName;
+
+    /** Current semantic status. */
+    @TableField(exist = false)
+    private String currentStatus;
+
+    /** Current executing node. */
+    @TableField(exist = false)
+    private String currentNode;
+
     /**
      * Delete flag
      */

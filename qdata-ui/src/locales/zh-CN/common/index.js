@@ -101,6 +101,10 @@ export default {
     startDatePlaceholder: '开始日期',
     endDatePlaceholder: '结束日期'
   },
+  date: {
+    startDate: '开始日期',
+    endDate: '结束日期'
+  },
   texts: {
     action: '操作',
     createdBy: '创建人',

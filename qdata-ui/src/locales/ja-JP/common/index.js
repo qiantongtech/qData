@@ -99,6 +99,10 @@ export default {
     startDatePlaceholder: '開始日',
     endDatePlaceholder: '終了日'
   },
+  date: {
+    startDate: '開始日',
+    endDate: '終了日'
+  },
   texts: {
     action: '操作',
     createdBy: '作成者',

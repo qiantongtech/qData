@@ -298,8 +298,6 @@ export function getLogByTaskInstanceId(query) {
     })
 }
 
-
-
 // api input component - automatic parsing from resulting JSON
 export function getResponseColumnReqVO(data) {
     return request({
@@ -328,5 +326,32 @@ export function execute(taskInstanceId, executeType) {
     return request({
         url: `/dpp/etlExecutors/execute/${taskInstanceId}/${executeType}`,
         method: 'post'
+    })
+}
+
+// Get data integration task statistics
+export function getEtlTaskStatistics(query) {
+    return request({
+        url: '/dpp/etlTask/statistics',
+        method: 'get',
+        params: query
+    })
+}
+
+// Get data integration task instance statistics
+export function getEtlTaskInstanceStatistics(query) {
+    return request({
+        url: '/dpp/etlTaskInstance/statistics',
+        method: 'get',
+        params: query
+    })
+}
+
+// Get data integration task instance list
+export function getEtlTaskInstanceList(query) {
+    return request({
+        url: '/dpp/etlTaskInstance/list',
+        method: 'get',
+        params: query
     })
 }

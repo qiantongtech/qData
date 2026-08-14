@@ -49,6 +49,7 @@ import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
+import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -78,6 +79,8 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -157,7 +160,54 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     @Override
     public PageResult<DppEtlTaskRespVO> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask) {
         IPage<DppEtlTaskRespVO> mpPage = dppEtlTaskMapper.getDppEtlTaskPage(MyBatisUtils.buildPage(dppEtlTask), dppEtlTask);//BeanUtils.toBean(dppEtlTaskDOPageResult, DppEtlTaskRespVO.class);
+        mpPage.getRecords().forEach(this::fillCurrentStatusAndDuration);
         return new PageResult(mpPage.getRecords(), mpPage.getTotal());
+    }
+
+    @Override
+    public DppEtlTaskStatisticsRespVO getStatistics(Long projectId, String projectCode) {
+        Date beginOfDay = DateUtil.beginOfDay(new Date());
+        Date endOfDay = DateUtil.endOfDay(new Date());
+        DppEtlTaskStatisticsRespVO result = dppEtlTaskMapper.getDppEtlTaskStatistics(
+                projectId, projectCode, "1", beginOfDay, endOfDay);
+        if (result == null) {
+            result = new DppEtlTaskStatisticsRespVO();
+            result.setRunningCount(0L);
+            result.setTodayErrorCount(0L);
+            result.setTodayExecuteCount(0L);
+            result.setTodaySuccessRate(BigDecimal.ZERO);
+        } else if (result.getTodaySuccessRate() == null) {
+            result.setTodaySuccessRate(BigDecimal.ZERO);
+        } else {
+            result.setTodaySuccessRate(result.getTodaySuccessRate().setScale(2, RoundingMode.HALF_UP));
+        }
+        result.setStatisticsTime(new Date());
+        return result;
+    }
+
+    private void fillCurrentStatusAndDuration(DppEtlTaskRespVO task) {
+        String status = task.getLastExecuteStatus();
+        boolean running = "0".equals(status) || "1".equals(status) || "12".equals(status);
+        if (running) {
+            task.setCurrentStatus("running");
+            task.setCurrentStatusName("Running");
+        } else if ("7".equals(status)) {
+            task.setCurrentStatus("success");
+            task.setCurrentStatusName("Success");
+        } else if ("6".equals(status)) {
+            task.setCurrentStatus("failed");
+            task.setCurrentStatusName("Failed");
+        } else {
+            task.setCurrentStatus("idle");
+            task.setCurrentStatusName("Idle");
+        }
+        if (task.getLastExecuteTime() != null) {
+            Date endTime = running ? new Date() : task.getLastExecuteEndTime();
+            if (endTime != null) {
+                task.setDuration(DateUtils.format2Duration(
+                        Math.max(0L, endTime.getTime() - task.getLastExecuteTime().getTime())));
+            }
+        }
     }
 
     @Override

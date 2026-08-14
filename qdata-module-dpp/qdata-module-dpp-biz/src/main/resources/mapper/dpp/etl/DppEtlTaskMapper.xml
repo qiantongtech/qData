@@ -51,6 +51,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="REMARK"    />
     </resultMap>
 
+    <resultMap type="tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskStatisticsRespVO"
+               id="DppEtlTaskStatisticsResult">
+        <result property="runningCount" column="RUNNING_COUNT"/>
+        <result property="todayErrorCount" column="RECENT_FAILED_COUNT"/>
+        <result property="todayExecuteCount" column="TODAY_EXECUTE_COUNT"/>
+        <result property="todaySuccessRate" column="TODAY_SUCCESS_RATE"/>
+    </resultMap>
+
     <sql id="selectDppEtlTaskVo">
         select ID, TYPE, NAME, CODE, VERSION, PROJECT_ID,EXECUTION_TYPE, PROJECT_CODE, PERSON_CHARGE, LOCATIONS, DESCRIPTION, TIMEOUT, EXTRACTION_COUNT, WRITE_COUNT, STATUS, DS_ID, QUARTZ_ID, VALID_FLAG, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from DPP_ETL_TASK
     </sql>
@@ -329,7 +337,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             t3.CRON_EXPRESSION AS cronExpression,
             t3.STATUS AS schedulerState,
             ti.CREATE_TIME AS lastExecuteTime,
-            ti.STATUS AS lastExecuteStatus
+            ti.END_TIME AS lastExecuteEndTime,
+            ti.STATUS AS lastExecuteStatus,
+            ti.ID AS taskInstanceId
             <if test="params.type == '3'.toString()">
                 <choose>
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
@@ -338,8 +348,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
                         ,JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') AS datasourceType
                     </when>
+
+                    <otherwise>
+                        ,TRIM(BOTH '"' FROM SUBSTR(t.DRAFT_JSON, INSTR(t.DRAFT_JSON, '"typaCode"') + 12, 50)) AS datasourceType
+                    </otherwise>
                 </choose>
-                ,(SELECT t4.ID FROM DPP_ETL_TASK_INSTANCE t4 WHERE t4.TASK_CODE = t.CODE AND t4.DEL_FLAG = '0' AND t4.STATUS IN ('0','1') ORDER BY t4.CREATE_TIME DESC LIMIT 1) AS taskInstanceId
             </if>
         FROM
             DPP_ETL_TASK t
@@ -360,18 +373,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- Key modification: subquery joining the latest instance of each task -->
         LEFT JOIN (
             SELECT
-                ti1.TASK_CODE, ti1.CREATE_TIME, ti1.STATUS
+                ti1.ID, ti1.TASK_CODE, ti1.CREATE_TIME, ti1.END_TIME, ti1.STATUS
             FROM
                 DPP_ETL_TASK_INSTANCE ti1
                 JOIN (
                     SELECT
-                        ti2.TASK_CODE,MAX(ti2.CREATE_TIME) AS CREATE_TIME
+                        ti2.TASK_CODE, MAX(ti2.ID) AS ID
                     FROM
                         DPP_ETL_TASK_INSTANCE ti2
                     WHERE
                         ti2.DEL_FLAG = '0'
                     GROUP BY ti2.TASK_CODE
-                ) maxData ON maxData.TASK_CODE = ti1.TASK_CODE AND maxData.CREATE_TIME = ti1.CREATE_TIME
+                ) maxData ON maxData.TASK_CODE = ti1.TASK_CODE AND maxData.ID = ti1.ID
             WHERE
                 ti1.DEL_FLAG = '0'
         ) ti ON ti.TASK_CODE = t.CODE
@@ -399,6 +412,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="params.status != null and params.status != ''">
                 AND t.STATUS = #{params.status}
+            </if>
+            <if test="params.currentStatus != null and params.currentStatus != '' and params.currentStatus == 'idle'.toString()">
+                AND (ti.STATUS IS NULL OR ti.STATUS NOT IN ('0', '1', '12', '7', '6'))
+            </if>
+            <if test="(params.currentStatus != null and params.currentStatus != '' and params.currentStatus != 'idle'.toString()) or params.startTime != null or params.endTime != null">
+                    <if test="params.currentStatus != null and params.currentStatus != '' and params.currentStatus != 'idle'.toString()">
+                        <choose>
+                            <when test="params.currentStatus == 'running'.toString()">
+                                AND ti.STATUS IN ('0', '1', '12')
+                            </when>
+                            <when test="params.currentStatus == 'success'.toString()">
+                                AND ti.STATUS = '7'
+                            </when>
+                            <when test="params.currentStatus == 'failed'.toString()">
+                                AND ti.STATUS = '6'
+                            </when>
+                        </choose>
+                    </if>
+                    <if test="params.startTime != null">
+                        AND ti.CREATE_TIME &gt;= #{params.startTime}
+                    </if>
+                    <if test="params.endTime != null">
+                        AND ti.END_TIME &lt;= #{params.endTime}
+                    </if>
             </if>
             <if test="params.type == '3'.toString() and params.processType != null and params.processType != ''">
                 <choose>
@@ -440,5 +477,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ${params.isAsc}
             </if>
         </if>
+    </select>
+
+    <select id="getDppEtlTaskStatistics" resultMap="DppEtlTaskStatisticsResult">
+        SELECT
+            COUNT(DISTINCT CASE WHEN ti.STATUS IN ('0', '1', '12') THEN t.ID END) AS RUNNING_COUNT,
+            COUNT(DISTINCT CASE WHEN latestTi.STATUS = '6'  THEN t.ID END) AS RECENT_FAILED_COUNT,
+            COALESCE(SUM(CASE WHEN ti.CREATE_TIME &gt;= #{beginOfDay} AND ti.CREATE_TIME &lt;= #{endOfDay} THEN 1 ELSE 0 END), 0) AS TODAY_EXECUTE_COUNT,
+            CASE
+                WHEN COALESCE(SUM(CASE WHEN ti.STATUS IN ('6', '7') AND ti.CREATE_TIME &gt;= #{beginOfDay} AND ti.CREATE_TIME &lt;= #{endOfDay} THEN 1 ELSE 0 END), 0) = 0 THEN 0
+                ELSE SUM(CASE WHEN ti.STATUS = '7' AND ti.CREATE_TIME &gt;= #{beginOfDay} AND ti.CREATE_TIME &lt;= #{endOfDay} THEN 1 ELSE 0 END) * 100.0
+                    / SUM(CASE WHEN ti.STATUS IN ('6', '7') AND ti.CREATE_TIME &gt;= #{beginOfDay} AND ti.CREATE_TIME &lt;= #{endOfDay} THEN 1 ELSE 0 END)
+            END AS TODAY_SUCCESS_RATE
+        FROM DPP_ETL_TASK t
+        LEFT JOIN DPP_ETL_TASK_INSTANCE ti
+            ON ti.TASK_ID = t.ID
+            AND ti.TASK_TYPE = #{taskType}
+            AND ti.DEL_FLAG = '0'
+        LEFT JOIN (
+            SELECT ti1.TASK_ID, ti1.STATUS
+            FROM DPP_ETL_TASK_INSTANCE ti1
+            JOIN (
+                SELECT TASK_ID, MAX(ID) AS ID
+                FROM DPP_ETL_TASK_INSTANCE
+                WHERE DEL_FLAG = '0' AND TASK_TYPE = #{taskType}
+                GROUP BY TASK_ID
+            ) maxData ON maxData.ID = ti1.ID
+            WHERE ti1.DEL_FLAG = '0' AND ti1.TASK_TYPE = #{taskType} AND ti1.CREATE_TIME &gt;= #{beginOfDay} AND ti1.CREATE_TIME &lt;= #{endOfDay}
+        ) latestTi ON latestTi.TASK_ID = t.ID
+        WHERE t.DEL_FLAG = '0'
+            AND t.STATUS NOT IN ('-2', '-3')
+            AND t.TYPE = #{taskType}
+            AND t.PROJECT_ID = #{projectId}
+            AND t.PROJECT_CODE = #{projectCode}
     </select>
 </mapper>

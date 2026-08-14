@@ -142,4 +142,16 @@ public class DppEtlNodeInstanceDO extends BaseEntity {
      */
     @TableField(exist = false)
     private String commandType;
+
+    /** Semantic execution status used by the instance page. */
+    @TableField(exist = false)
+    private String currentStatus;
+
+    /** Human-readable execution status name. */
+    @TableField(exist = false)
+    private String currentStatusName;
+
+    /** Formatted running duration. */
+    @TableField(exist = false)
+    private String duration;
 }

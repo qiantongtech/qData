@@ -17,12 +17,12 @@
 -->
 
 <template>
-  <div class="app-container" ref="app-container">
-    <el-container style="90%">
+  <div ref="appContainerRef" class="app-container">
+    <el-container>
       <DeptTree
-        ref="DeptTreeRef"
-        :deptOptions="deptOptions"
-        :leftWidth="leftWidth"
+        ref="deptTreeRef"
+        :dept-options="deptOptions"
+        :left-width="leftWidth"
         :placeholder="
           td(
             'dpp.instance.integratioTask.inputCategoryName',
@@ -31,311 +31,84 @@
         "
         @node-click="handleNodeClick"
       />
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form
-            class="btn-style"
-            :model="queryParams"
-            ref="queryRef"
-            :inline="true"
 
-            v-show="showSearch"
-            @submit.prevent
-          >
-            <el-form-item
-              :label="
-                td(
-                  'dpp.instance.integratioTask.taskInstanceName',
-                  'Task Instance Name'
-                )
-              "
-              prop="name"
-            >
-              <el-input
-                class="el-form-input-width"
-                v-model="queryParams.name"
-                :placeholder="
-                  td(
-                    'dpp.instance.integratioTask.inputTaskInstanceName',
-                    'Please enter task instance name'
-                  )
-                "
-                clearable
-                @keyup.enter="handleQuery"
-              />
-            </el-form-item>
-            <el-form-item
-              :label="
-                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
-              "
-              prop="status"
-            >
-              <el-select
-                v-model="queryParams.status"
-                :placeholder="
-                  td(
-                    'dpp.instance.integratioTask.selectExecutionStatus',
-                    'Please select execution status'
-                  )
-                "
-                clearable
-                class="el-form-input-width"
-              >
-                <el-option
-                  v-for="dict in dpp_etl_node_instance"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              :label="td('dpp.instance.integratioTask.executionTime')"
-              prop="time"
-            >
-              <el-date-picker
-                class="el-form-input-width"
-                v-model="queryParams.time"
-                @change="handleTimeChange"
-                value-format="YYYY-MM-DD"
-                type="daterange"
-                range-separator="-"
-                :start-placeholder="td('common.form.startDatePlaceholder')"
-                :end-placeholder="td('common.form.endDatePlaceholder')"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item>
-              <el-button
-                plain
-                type="primary"
-                @click="handleQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i
-                >{{ td("common.button.search", "Search") }}
-              </el-button>
-              <el-button
-                @click="resetQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i
-                >{{ td("common.button.reset", "Reset") }}
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
-            <div class="justify-end top-right-btn">
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-                :columns="columns"
-              ></right-toolbar>
-            </div>
-          </div>
-          <el-table
-            stripe
-            v-loading="loading"
-            :data="dppEtlTaskLogList"
-            @selection-change="handleSelectionChange"
-            :default-sort="defaultSort"
-            @sort-change="handleSortChange"
-          >
-            <el-table-column
-              v-if="getColumnVisibility(0)"
-              width="150"
-              :label="td('dpp.instance.integratioTask.id', 'No.')"
-              align="left"
-              prop="id"
+      <el-main class="main-content">
+        <StatsCardContainer
+          :cards="statsCards"
+          :selected-index="selectedStatsIndex"
+          :show-panel="false"
+          :stats-time="statsTime"
+          :loading="statisticsLoading"
+          @card-click="handleStatsCardClick"
+          @refresh="loadStatistics"
+        />
+
+        <qt-wrap :columns="tableStore.columns" :table-ref="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
             />
-            <el-table-column
-              v-if="getColumnVisibility(1)"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              :label="
-                td(
-                  'dpp.instance.integratioTask.taskInstanceName',
-                  'Task Instance Name'
-                )
-              "
-              align="left"
-              prop="name"
-              width="400"
-            >
-              <template #default="scope">
-                {{ scope.row.name || "-" }}
-              </template>
-            </el-table-column>
+          </template>
 
-            <el-table-column
-              v-if="getColumnVisibility(3)"
-              :label="
-                td('dpp.instance.integratioTask.executionType', 'Execution Type')
-              "
-              width="140"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              align="left"
-              prop="commandType"
-            >
-              <template #default="scope">
-                <dict-tag
-                  :options="dpp_etl_task_instance_command_type"
-                  :value="scope.row.commandType"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(4)"
-              width="140"
-              :label="
-                td('dpp.instance.integratioTask.executionStatus', 'Execution Status')
-              "
-              align="left"
-              prop="status"
-            >
-              <template #default="scope">
-                <dict-tag
-                  :options="dpp_etl_node_instance"
-                  :value="scope.row.status.trim()"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(5)"
-              width="160"
-              :label="td('dpp.instance.integratioTask.startTime', 'Start Time')"
-              align="left"
-              prop="startTime"
-              :show-overflow-tooltip="{ effect: 'light' }"
-            >
-              <template #default="scope">
-                {{ scope.row.startTime || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(6)"
-              width="160"
-              :label="td('dpp.instance.integratioTask.endTime', 'End Time')"
-              align="left"
-              prop="endTime"
-              :show-overflow-tooltip="{ effect: 'light' }"
-            >
-              <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.endTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                }}</span>
-              </template>
-            </el-table-column>
+          <qt-table v-bind="tableStore" ref="tableRef">
+            <template #status="{ row }">
+              <StatusTag
+                class="log-status"
+                :status="row.currentStatus"
+                @click="openTaskLog(row)"
+              />
+            </template>
 
-            <el-table-column
-              v-if="getColumnVisibility(9)"
-              width="160"
-              :label="
-                td('dpp.instance.integratioTask.responsiblePerson', 'Responsible Person')
-              "
-              align="left"
-              prop="createBy"
-            >
-              <template #default="scope">
-                {{ scope.row.personChargeName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(10)"
-              :label="td('dpp.instance.integratioTask.createBy', 'Created By')"
-              :show-overflow-tooltip="true"
-              align="left"
-              prop="createBy"
-              width="120"
-            >
-              <template #default="scope">
-                {{ scope.row.createBy || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(11)"
-              :label="td('dpp.instance.integratioTask.createTime', 'Created Time')"
-              align="left"
-              prop="create_time"
-              width="150"
-              sortable="custom"
-              column-key="create_time"
-              :sort-orders="['descending', 'ascending']"
-            >
-              <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :label="td('dpp.instance.integratioTask.operation', 'Operation')"
-              align="center"
-              class-name="small-padding fixed-width"
-              fixed="right"
-              width="240"
-            >
-              <template #default="scope">
-                <el-button
-                  link
-                  type="primary"
-                  icon="view"
-                  @click="
-                    routeTo('/dpp/instance/integratio/detail', {
-                      ...scope.row,
-                      info: true,
-                    })
-                  "
-                  >{{
-                    td("dpp.instance.integratioTask.detail", "Detail")
-                  }}</el-button
-                >
-                <el-button
-                  link
-                  type="warning"
-                  icon="Download"
-                  @click="handleExport(scope.row)"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  {{
-                    td("dpp.instance.integratioTask.downloadLog", "Download Log")
-                  }}
-                </el-button>
-              </template>
-            </el-table-column>
-
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-                <p>{{ td("common.noData") }}</p>
+            <template #executeTime="{ row }">
+              <div class="execute-time-range">
+                <span>{{ formatDateTime(row.startTime) }}</span>
+                <span class="execute-time-range__separator">-</span>
+                <span>{{ formatDateTime(row.endTime) }}</span>
               </div>
             </template>
-          </el-table>
 
-          <pagination
-            v-show="total > 0"
-            :total="total"
-            v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize"
-            @pagination="getList"
-          />
-
-          <el-dialog
-            :title="td('dpp.instance.integratioTask.viewLog')"
-            v-model="open"
-            width="1200px"
-            :append-to="$refs['app-container']"
-            draggable
-            destroy-on-close
-          >
-            <div v-html="formattedText"></div>
-            <template #footer>
-              <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">{{ td('dpp.instance.integratioTask.close') }}</el-button>
-              </div>
+            <template #duration="{ row }">
+              <span>{{ row.duration || "-" }}</span>
             </template>
-          </el-dialog>
-        </div>
+
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="View"
+                @click="openDetail(row)"
+              >
+                {{ td("dpp.instance.integratioTask.detail", "Detail") }}
+              </el-button>
+              <el-button
+                v-show="showLogButton"
+                link
+                type="primary"
+                icon="Document"
+                @click="openTaskLog(row)"
+              >
+                {{ td("dpp.instance.integratioTask.viewLog", "View Log") }}
+              </el-button>
+              <el-button
+                link
+                type="warning"
+                icon="Download"
+                @click="downloadLog(row)"
+                @mousedown="(event) => event.preventDefault()"
+              >
+                {{
+                  td(
+                    "dpp.instance.integratioTask.downloadLog",
+                    "Download Log"
+                  )
+                }}
+              </el-button>
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
 
@@ -344,451 +117,411 @@
 </template>
 
 <script setup name="Integratio">
-import {
-  defineEmits,
-  defineProps,
-  ref,
-  computed,
-  watch,
-  getCurrentInstance,
-} from "vue";
+import { computed, getCurrentInstance, reactive, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();
-import TaskLogDialog from "@/views/dpp/components/taskLog.vue";
-import {
-  getDppEtlNodeInstance,
-  delDppEtlNodeInstance,
-  addDppEtlNodeInstance,
-  updateDppEtlNodeInstance,
-} from "@/api/dpp/instance/integratio";
-import { listDppEtlTaskInstance } from "@/api/dpp/instance/job";
-import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
 import { listAttTaskCat } from "@/api/att/cat/taskCat/taskCat";
-const { proxy } = getCurrentInstance();
+import {
+  getEtlTaskInstanceStatistics,
+  listDppEtlTaskInstance,
+} from "@/api/dpp/instance/job";
 import DeptTree from "@/components/DeptTree/index.vue";
-let activeName = ref("first");
-const { dpp_etl_node_instance } = proxy.useDict("dpp_etl_node_instance");
-const { dpp_etl_node_type, dpp_etl_task_instance_command_type } = proxy.useDict(
-  "dpp_etl_node_type",
-  "dpp_etl_task_instance_command_type"
-);
-const dppEtlTaskLogList = ref([]);
+import StatsCardContainer from "@/views/dpp/components/logs/StatsCardContainer.vue";
+import StatusTag from "@/views/dpp/components/logs/StatusTag.vue";
+import TaskLogDialog from "@/views/dpp/components/logs/taskLog.vue";
+import runningTaskIcon from "@/assets/dpp/etl/instance/running-task.svg";
+import todayErrorTaskIcon from "@/assets/dpp/etl/instance/today-error-task.svg";
+import todayExecutionIcon from "@/assets/dpp/etl/instance/today-execution.svg";
+import todaySuccessRateIcon from "@/assets/dpp/etl/instance/today-success-rate.svg";
 
-// Show hidden status
-const columnVisible = ref({
-  0: true,
-  1: true,
-  3: true,
-  4: true,
-  5: true,
-  6: true,
-  9: true,
-  10: true,
-  11: true,
+const { proxy } = getCurrentInstance();
+const { td, locale } = useDefaultLang();
+const userStore = useUserStore();
+const router = useRouter();
+const { dpp_task_current_status } = proxy.useDict("dpp_task_current_status");
+
+const appContainerRef = ref(null);
+const deptTreeRef = ref(null);
+const tableRef = ref(null);
+const logDialogRef = ref(null);
+const deptOptions = ref([]);
+const leftWidth = ref(300);
+const selectedStatsIndex = ref(-1);
+const statsTime = ref("");
+const statisticsLoading = ref(false);
+const showLogButton = ref(false);
+
+const statistics = reactive({
+  runningCount: 0,
+  todayErrorCount: 0,
+  todayExecuteCount: 0,
+  todaySuccessRate: 0,
 });
 
-// Column configuration (use computed properties to ensure internationalized text responds to language switches)
-const columns = computed(() => [
+const statsCards = computed(() => [
   {
-    key: 0,
-    label: td("dpp.instance.integratioTask.id", "No."),
-    visible: columnVisible.value[0],
+    name: td("dpp.integratioTask.runningTasks", "Running Tasks"),
+    value: statistics.runningCount,
+    unit: td("dpp.integratioTask.taskUnit", "times"),
+    iconSrc: runningTaskIcon,
+    status: "running",
+    todayOnly: false,
+    tip: td(
+      "dpp.integratioTask.runningTasksTip",
+      "Number of tasks with at least one running instance"
+    ),
   },
   {
-    key: 1,
-    label: td("dpp.instance.integratioTask.taskInstanceName", "Task Instance Name"),
-    visible: columnVisible.value[1],
+    name: td("dpp.integratioTask.todayErrorTasks", "Today's Failed Tasks"),
+    value: statistics.todayErrorCount,
+    unit: td("dpp.integratioTask.taskUnit", "times"),
+    iconSrc: todayErrorTaskIcon,
+    status: "failed",
+    todayOnly: true,
+    tip: td(
+      "dpp.integratioTask.todayErrorTasksTip",
+      "Number of tasks whose latest execution failed"
+    ),
   },
   {
-    key: 3,
-    label: td("dpp.instance.integratioTask.executionType", "Execution Type"),
-    visible: columnVisible.value[3],
+    name: td("dpp.integratioTask.todayExecutions", "Today's Executions"),
+    value: statistics.todayExecuteCount,
+    unit: td("dpp.integratioTask.taskUnit", "times"),
+    iconSrc: todayExecutionIcon,
+    status: null,
+    todayOnly: true,
+    tip: td(
+      "dpp.integratioTask.todayExecutionsTip",
+      "Number of execution instances created today"
+    ),
   },
   {
-    key: 4,
-    label: td("dpp.instance.integratioTask.executionStatus", "Execution Status"),
-    visible: columnVisible.value[4],
-  },
-  {
-    key: 5,
-    label: td("dpp.instance.integratioTask.startTime", "Start Time"),
-    visible: columnVisible.value[5],
-  },
-  {
-    key: 6,
-    label: td("dpp.instance.integratioTask.endTime", "End Time"),
-    visible: columnVisible.value[6],
-  },
-  {
-    key: 9,
-    label: td("dpp.instance.integratioTask.responsiblePerson", "Responsible Person"),
-    visible: columnVisible.value[9],
-  },
-  {
-    key: 10,
-    label: td("dpp.instance.integratioTask.createBy", "Created By"),
-    visible: columnVisible.value[10],
-  },
-  {
-    key: 11,
-    label: td("dpp.instance.integratioTask.createTime", "Created Time"),
-    visible: columnVisible.value[11],
+    name: td("dpp.integratioTask.todaySuccessRate", "Today's Success Rate"),
+    value: statistics.todaySuccessRate,
+    unit: "%",
+    iconSrc: todaySuccessRateIcon,
+    status: "success",
+    todayOnly: true,
+    tip: td(
+      "dpp.integratioTask.todaySuccessRateTip",
+      "Successful completed instances divided by all completed instances today"
+    ),
   },
 ]);
 
-// Monitor the modification of columns by RightToolbar and synchronize to columnVisible
-watch(
-  columns,
-  (newColumns) => {
-    newColumns.forEach((col) => {
-      if (columnVisible.value[col.key] !== undefined) {
-        columnVisible.value[col.key] = col.visible;
-      }
-    });
+const tableColumns = computed(() => [
+  {
+    label: td("dpp.instance.integratioTask.id", "No."),
+    prop: "id",
+    sortable: true,
+    width: 150,
   },
-  { deep: true }
-);
+  {
+    label: td(
+      "dpp.instance.integratioTask.taskInstanceName",
+      "Task Instance Name"
+    ),
+    prop: "name",
+    align: "left",
+    minWidth: 280,
+    showOverflowTooltip: { effect: "light" },
+  },
+  {
+    label: td("dpp.instance.integratioTask.executionType", "Execution Type"),
+    prop: "commandType",
+    width: 130,
+    dict: "dpp_etl_task_instance_command_type",
+  },
+  {
+    label: td(
+      "dpp.instance.integratioTask.executionStatus",
+      "Execution Status"
+    ),
+    prop: "currentStatus",
+    width: 120,
+    slot: "status",
+  },
+  {
+    label: td(
+      "dpp.instance.integratioTask.recentExecutionTime",
+      "Recent Execution Time"
+    ),
+    prop: "startTime",
+    width: 330,
+    sortable: true,
+    sortableKey: "start_time",
+    slot: "executeTime",
+  },
+  {
+    label: td("dpp.instance.integratioTask.runDuration", "Duration"),
+    prop: "duration",
+    width: 130,
+    slot: "duration",
+  },
+  {
+    label: td(
+      "dpp.instance.integratioTask.responsiblePerson",
+      "Responsible Person"
+    ),
+    prop: "personChargeName",
+    width: 130,
+  },
+  {
+    label: td("dpp.instance.integratioTask.createBy", "Created By"),
+    prop: "createBy",
+    width: 120,
+    showOverflowTooltip: true,
+  },
+  {
+    label: td("dpp.instance.integratioTask.createTime", "Created Time"),
+    prop: "createTime",
+    sortable: true,
+    sortableKey: "create_time",
+    date: true,
+    width: 160,
+  },
+  {
+    label: td("dpp.instance.integratioTask.operation", "Operation"),
+    width: 200,
+    align: "center",
+    fixed: "right",
+    slot: "action",
+  },
+]);
 
-const getColumnVisibility = (key) => {
-  return columnVisible.value[key] !== undefined
-    ? columnVisible.value[key]
-    : true;
-};
-const userStore = useUserStore();
-const open = ref(false);
-const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
-const router = useRouter();
-const emit = defineEmits(["resetCat"]);
-
-/*** User import parameters */
-const upload = reactive({
-  // Whether to display the pop-up layer (user import)
-  open: false,
-  // Popup layer title (user imported)
-  title: "",
-  // Whether to disable uploading
-  isUploading: false,
-  // Whether to update existing user data
-  updateSupport: 0,
-  // Set upload request headers
-  headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
-  url: import.meta.env.VITE_APP_BASE_API + "/dpp/dppEtlTaskLog/importData",
-});
-
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    type: null,
-    name: null,
-    code: null,
-    version: null,
-    projectId: null,
-    projectCode: null,
-    personCharge: null,
-    locations: null,
-    description: null,
-    timeout: null,
-    extractionCount: null,
-    writeCount: null,
-    status: null,
-    dsId: null,
-    createTime: null,
-    startTime: null,
-    endTime: null,
-    time: [],
-    taskType: "1",
+const tableStore = reactive({
+  config: {
+    sort: true,
+    table: {
+      stripe: true,
+      rowKey: "id",
+      defaultSort: { prop: "start_time", order: "descending" },
+    },
+  },
+  columns: tableColumns,
+  func: listDppEtlTaskInstance,
+  params: {
+    projectId: userStore.projectId,
+    projectCode: userStore.projectCode,
     catCode: null,
-    orderByColumn: "start_time",
+    taskType: "1",
+    name: null,
+    status: null,
+    time: [],
   },
-  rules: {},
+  events: {
+    formatParams(params) {
+      const { time, ...query } = { ...params };
+      if (Array.isArray(time) && time.length === 2) {
+        query.startTime = `${time[0]} 00:00:00`;
+        query.endTime = `${time[1]} 23:59:59`;
+      }
+      return query;
+    },
+  },
 });
 
-const { queryParams, form, rules } = toRefs(data);
-
-function handleTimeChange(value) {
-  if (!value) {
-    handleTimeClear();
-    return;
-  }
-  queryParams.value.startTime = value[0] + " 00:00:00";
-  queryParams.value.endTime = value[1] + " 23:59:59";
-}
-function handleTimeClear() {
-  queryParams.value.startTime = null;
-  queryParams.value.endTime = null;
-}
-/** Query data integration tasks-log list */
-function getList() {
-  loading.value = true;
-  queryParams.value.projectCode = userStore.projectCode;
-  listDppEtlTaskInstance(queryParams.value).then((response) => {
-    dppEtlTaskLogList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
-}
-// let msg = ref();
-// async function logDetailCatList(row) {
-//     msg.value = {};
-//     const response = await logDetailCat(row.id);
-//     if (response && response) {
-//         msg.value = response.msg;
-//         open.value = true;
-//     }
-// }
-const logDialogRef = ref(null);
-
-// Open the log pop-up window
-const logDetailCatList = (row) => {
-  logDialogRef.value.open(row.id);
-};
-
-const formattedText = computed(() => {
-  console.log("msg.value", msg.value);
-
-  return msg.value.replace(/\n/g, "<br>"); // Replace newlines with <br> tags
+const searchStore = reactive({
+  items: [
+    {
+      label: computed(() =>
+        td(
+          "dpp.instance.integratioTask.taskInstanceName",
+          "Task Instance Name"
+        )
+      ),
+      prop: "name",
+      component: {
+        is: "input",
+        placeholder: computed(() =>
+          td(
+            "dpp.instance.integratioTask.inputTaskInstanceName",
+            "Please enter task instance name"
+          )
+        ),
+      },
+    },
+    {
+      label: computed(() =>
+        td(
+          "dpp.instance.integratioTask.executionStatus",
+          "Execution Status"
+        )
+      ),
+      prop: "status",
+      component: {
+        is: "select",
+        options: dpp_task_current_status,
+        placeholder: computed(() =>
+          td(
+            "dpp.instance.integratioTask.selectExecutionStatus",
+            "Please select execution status"
+          )
+        ),
+      },
+    },
+    {
+      label: computed(() =>
+        td("dpp.instance.integratioTask.executionTime", "Execution Time")
+      ),
+      prop: "time",
+      style: { width: "320px" },
+      component: {
+        is: "date-picker",
+        type: "daterange",
+        startPlaceholder: computed(() =>
+          td("common.form.startDatePlaceholder", "Start date")
+        ),
+        endPlaceholder: computed(() =>
+          td("common.form.endDatePlaceholder", "End date")
+        ),
+      },
+    },
+  ],
 });
-function handleNodeClick(data) {
-  queryParams.value.catCode = data.code;
-  queryParams.value.pageNum = 1;
+
+function formatDateTime(value) {
+  return value ? proxy.parseTime(value, "{y}-{m}-{d} {h}:{i}:{s}") : "-";
+}
+
+function handleQuery() {
+  tableRef.value?.getList();
+}
+
+function resetQuery() {
+  deptTreeRef.value?.resetTree?.();
+  tableStore.params.catCode = null;
+  tableStore.params.name = null;
+  tableStore.params.status = null;
+  tableStore.params.time = [];
+  selectedStatsIndex.value = -1;
   handleQuery();
 }
-/** Export button action */
-async function handleExport(row) {
-  proxy.download(
-    "/dpp/etlTaskInstance/downloadLog",
-    {
-      taskInstanceId: row.id,
-    },
-    `${row.name}.log`
-  );
+
+function handleNodeClick(data) {
+  tableStore.params.catCode = data.code;
+  handleQuery();
 }
 
-// Cancel button
-function cancel() {
-  open.value = false;
-  openDetail.value = false;
-  reset();
+function handleStatsCardClick(index) {
+  selectedStatsIndex.value = index;
+  const card = statsCards.value[index];
+  tableStore.params.status = card.status;
+  if (card.todayOnly) {
+    const today = proxy.parseTime(new Date(), "{y}-{m}-{d}");
+    tableStore.params.time = [today, today];
+  } else {
+    tableStore.params.time = [];
+  }
+  handleQuery();
 }
 
-// form reset
-function reset() {
-  form.value = {
-    id: null,
-    type: null,
-    name: null,
-    code: null,
-    version: null,
-    projectId: null,
-    projectCode: null,
-    personCharge: null,
-    locations: null,
-    description: null,
-    timeout: null,
-    extractionCount: null,
-    writeCount: null,
-    status: null,
-    dsId: null,
-    validFlag: null,
-    delFlag: null,
-    createBy: null,
-    creatorId: null,
-    createTime: null,
-    updateBy: null,
-    updaterId: null,
-    updateTime: null,
-    remark: null,
-  };
-  proxy.resetForm("dppEtlTaskLogRef");
+async function loadStatistics() {
+  statisticsLoading.value = true;
+  try {
+    const response = await getEtlTaskInstanceStatistics({
+      projectId: userStore.projectId,
+      projectCode: userStore.projectCode,
+      taskType: "1",
+    });
+    if (Number(response?.code) === 200) {
+      const data = response.data || {};
+      statistics.runningCount = data.runningCount || 0;
+      statistics.todayErrorCount = data.todayErrorCount || 0;
+      statistics.todayExecuteCount = data.todayExecuteCount || 0;
+      statistics.todaySuccessRate = data.todaySuccessRate || 0;
+      statsTime.value = proxy.parseTime(
+        data.refreshTime || new Date(),
+        "{y}-{m}-{d} {h}:{i}:{s}"
+      );
+    }
+  } finally {
+    statisticsLoading.value = false;
+  }
 }
-let deptOptions = ref([]);
-/** Drop down tree structure */
-function getDeptTree() {
-  listAttTaskCat({
+
+async function loadCategoryTree() {
+  const response = await listAttTaskCat({
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
     validFlag: true,
-  }).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
-    deptOptions.value = [
-      {
-        name: td(
-          "dpp.instance.integratioTask.dataIntegrationCategory",
-          "Data Integration Category"
-        ),
-        value: "",
-        id: 0,
-        children: deptOptions.value,
-      },
-    ];
   });
-}
-/** Search button action */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-const DeptTreeRef = ref(null); /** reset button action */
-function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
-  handleTimeClear();
-  proxy.resetForm("queryRef");
-  queryParams.value.catCode = null;
-  emit("resetCat");
-  handleQuery();
+  const children = proxy.handleTree(response.data || [], "id", "parentId");
+  deptOptions.value = [
+    {
+      name: td(
+        "dpp.instance.integratioTask.dataIntegrationCategory",
+        "Data Integration Category"
+      ),
+      value: "",
+      id: 0,
+      children,
+    },
+  ];
 }
 
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
+function openTaskLog(row) {
+  logDialogRef.value?.open(row.id);
 }
 
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
-/** Add button operation */
-function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = td('dpp.instance.integratioTask.addLogTitle');
-}
-
-/** Modify button actions */
-function handleUpdate(row) {
-  reset();
-  const _id = row.id || ids.value;
-  getDppEtlNodeInstance(_id).then((response) => {
-    form.value = response.data;
-    open.value = true;
-    title.value = td('dpp.instance.integratioTask.editLogTitle');
+function openDetail(row) {
+  router.push({
+    path: "/dpp/instance/integratio/detail",
+    query: { id: row.id, info: true },
   });
 }
 
-/** Detail button operation */
-function handleDetail(row) {
-  reset();
-  const _id = row.id || ids.value;
-  getDppEtlNodeInstance(_id).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td('dpp.instance.integratioTask.logDetailTitle');
-  });
+function downloadLog(row) {
+  proxy.download(
+    "/dpp/etlTaskInstance/downloadLog",
+    { taskInstanceId: row.id },
+    `${row.name || "task"}.log`
+  );
 }
 
-/** submit button */
-function submitForm() {
-  proxy.$refs["dppEtlTaskLogRef"].validate((valid) => {
-    if (valid) {
-      if (form.value.id != null) {
-        updateDppEtlNodeInstance(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
-            open.value = false;
-            getList();
-          })
-          .catch((error) => {});
-      } else {
-        addDppEtlNodeInstance(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
-            open.value = false;
-            getList();
-          })
-          .catch((error) => {});
-      }
-    }
-  });
-}
-
-/** Delete button action */
-function handleDelete(row) {
-  const _ids = row.id || ids.value;
-  proxy.$modal
-    .confirm(td('dpp.instance.integratioTask.confirmDeleteLog', 'Are you sure to delete the data integration task log with ID "{id}"?', { id: _ids }))
-    .then(function () {
-      return delDppEtlNodeInstance(_ids);
-    })
-    .then(() => {
-      getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
-    })
-    .catch(() => {});
-}
-
-function routeTo(link, row) {
-  if (link !== "" && link.indexOf("http") !== -1) {
-    window.location.href = link;
-    return;
-  }
-  if (link !== "") {
-    if (link === router.currentRoute.value.path) {
-      window.location.reload();
-    } else {
-      router.push({
-        path: link,
-        query: {
-          id: row.id,
-          info: row.info,
-        },
-      });
-    }
-  }
-}
-
-// Monitor projectCode data changes
 watch(
-  () => userStore.projectCode,
-  (projectCode) => {
-    if (projectCode) {
-      getList();
-    }
+  () => [userStore.projectId, userStore.projectCode],
+  ([projectId, projectCode]) => {
+    tableStore.params.projectId = projectId;
+    tableStore.params.projectCode = projectCode;
+    if (!projectCode) return;
+    loadCategoryTree();
+    loadStatistics();
+    tableRef.value?.getList();
   },
-  { immediate: true } // Trigger immediately to prevent data already existing
+  { immediate: true }
 );
-getDeptTree();
-getList();
-</script>
-<style scoped lang="scss">
-::v-deep {
-  .selectlist .el-tag.el-tag--info {
-    background: #f3f8ff !important;
-    border: 0px solid #6ba7ff !important;
-    color: #2666fb !important;
+
+watch(locale, () => {
+  if (deptOptions.value[0]) {
+    deptOptions.value[0].name = td(
+      "dpp.instance.integratioTask.dataIntegrationCategory",
+      "Data Integration Category"
+    );
   }
+});
+</script>
+
+<style scoped lang="scss">
+.main-content {
+  min-width: 0;
+  padding: 0 0 0 12px;
 }
 
-.app-container {
-  // margin: 13px 15px;
+.log-status {
+  cursor: pointer;
 }
 
-.el-main {
-  padding: 2px 0px;
-  // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
-}
-
-.ellipsis-container {
+.execute-time-range {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+  &__separator {
+    color: var(--el-text-color-secondary);
+  }
 }
 </style>

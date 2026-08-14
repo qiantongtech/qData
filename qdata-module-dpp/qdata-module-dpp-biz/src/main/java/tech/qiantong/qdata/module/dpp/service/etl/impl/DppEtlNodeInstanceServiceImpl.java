@@ -20,10 +20,12 @@ package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +33,16 @@ import tech.qiantong.qdata.api.ds.api.etl.ds.TaskInstance;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.MessageUtils;
+import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.module.att.api.project.IAttProjectApi;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstancePageReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceLogDetailRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceStatisticsRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskInstanceLogLineRespVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.*;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlNodeInstanceMapper;
 import tech.qiantong.qdata.module.dpp.service.etl.*;
@@ -45,6 +51,8 @@ import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.stream.Collectors;
 
 /**
@@ -83,7 +91,11 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
 
     @Override
     public PageResult<DppEtlNodeInstanceDO> getDppEtlNodeInstancePage(DppEtlNodeInstancePageReqVO pageReqVO) {
-        return dppEtlNodeInstanceMapper.selectPage(pageReqVO);
+        PageResult<DppEtlNodeInstanceDO> page = dppEtlNodeInstanceMapper.selectPage(pageReqVO);
+        if (page != null && page.getRows() != null) {
+            page.getRows().forEach(this::fillInstanceDisplayFields);
+        }
+        return page;
     }
 
     @Override
@@ -344,10 +356,13 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
     @Override
     public String getLogByNodeInstanceId(Long nodeInstanceId) {
         DppEtlNodeInstanceDO dppEtlNodeInstanceDO = this.getDppEtlNodeInstanceById(nodeInstanceId);
+        if (dppEtlNodeInstanceDO == null) {
+            throw new ServiceException("Node instance does not exist");
+        }
         String content = "";
-        String processInstanceLogKey = TaskConverter.PROCESS_INSTANCE_LOG_KEY + dppEtlNodeInstanceDO.getId();
-        if (redisService.hasKey(processInstanceLogKey)) {
-            content += redisService.get(processInstanceLogKey) + "\n";
+        String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + dppEtlNodeInstanceDO.getId();
+        if (redisService.hasKey(taskInstanceLogKey)) {
+            content += redisService.get(taskInstanceLogKey) + "\n";
         } else {
             // Get logs from the table
             String logContent = dppEtlNodeInstanceLogService.getLog(dppEtlNodeInstanceDO.getId());
@@ -356,5 +371,124 @@ public class DppEtlNodeInstanceServiceImpl extends ServiceImpl<DppEtlNodeInstanc
             }
         }
         return content;
+    }
+
+    @Override
+    public DppEtlNodeInstanceLogDetailRespVO getLogDetailByNodeInstanceId(Long nodeInstanceId) {
+        DppEtlNodeInstanceDO nodeInstance = this.getById(nodeInstanceId);
+        if (nodeInstance == null) {
+            throw new ServiceException("Node instance does not exist");
+        }
+        String logContent = getLogByNodeInstanceId(nodeInstanceId);
+        List<DppEtlTaskInstanceLogLineRespVO> logLines = new ArrayList<>();
+        for (String line : logContent.split("\\r?\\n")) {
+            if (StringUtils.isBlank(line)) continue;
+            DppEtlTaskInstanceLogLineRespVO item = new DppEtlTaskInstanceLogLineRespVO();
+            item.setLineNo(logLines.size() + 1);
+            item.setLevel(guessLogLevel(line));
+            item.setContent(line);
+            item.setDetailContent(line);
+            logLines.add(item);
+        }
+        DppEtlNodeInstanceLogDetailRespVO result = new DppEtlNodeInstanceLogDetailRespVO();
+        result.setNodeInstanceId(nodeInstanceId);
+        result.setTaskName(nodeInstance.getName());
+        result.setStatus(nodeInstance.getStatus());
+        result.setStatusName(getInstanceStatusName(nodeInstance.getStatus()));
+        result.setCurrentStatus(getInstanceCurrentStatus(nodeInstance.getStatus()));
+        result.setStartTime(nodeInstance.getStartTime());
+        result.setRefreshTime(new Date());
+        result.setDuration(getNodeInstanceDuration(nodeInstance));
+        result.setLogList(logLines);
+        result.setLog(logContent);
+        return result;
+    }
+
+    @Override
+    public DppEtlNodeInstanceStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, String taskType) {
+        Date now = new Date();
+        Date beginOfDay = DateUtil.beginOfDay(now);
+        Date endOfDay = DateUtil.endOfDay(now);
+        long allCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType));
+        long runningCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .in(DppEtlNodeInstanceDO::getStatus, "0", "1", "12"));
+        long successCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .eq(DppEtlNodeInstanceDO::getStatus, "7"));
+        long failCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .eq(DppEtlNodeInstanceDO::getStatus, "6"));
+        long todayExecuteCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .ge(DppEtlNodeInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlNodeInstanceDO::getStartTime, endOfDay));
+        long todayErrorCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .eq(DppEtlNodeInstanceDO::getStatus, "6")
+                .ge(DppEtlNodeInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlNodeInstanceDO::getStartTime, endOfDay));
+        long todaySuccessCount = this.count(buildStatisticsQuery(projectId, projectCode, taskType)
+                .eq(DppEtlNodeInstanceDO::getStatus, "7")
+                .ge(DppEtlNodeInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlNodeInstanceDO::getStartTime, endOfDay));
+        long todayCompletedCount = todaySuccessCount + todayErrorCount;
+        BigDecimal successRate = todayCompletedCount == 0
+                ? BigDecimal.ZERO
+                : BigDecimal.valueOf(todaySuccessCount).multiply(BigDecimal.valueOf(100))
+                .divide(BigDecimal.valueOf(todayCompletedCount), 2, RoundingMode.HALF_UP);
+        DppEtlNodeInstanceStatisticsRespVO result = new DppEtlNodeInstanceStatisticsRespVO();
+        result.setAllCount(allCount);
+        result.setRunningCount(runningCount);
+        result.setSuccessCount(successCount);
+        result.setFailCount(failCount);
+        result.setTodayErrorCount(todayErrorCount);
+        result.setTodayExecuteCount(todayExecuteCount);
+        result.setTodaySuccessRate(successRate);
+        result.setRefreshTime(now);
+        return result;
+    }
+
+    private LambdaQueryWrapper<DppEtlNodeInstanceDO> buildStatisticsQuery(
+            Long projectId, String projectCode, String taskType) {
+        return Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
+                .eq(projectId != null, DppEtlNodeInstanceDO::getProjectId, projectId)
+                .eq(StringUtils.isNotBlank(projectCode), DppEtlNodeInstanceDO::getProjectCode, projectCode)
+                .eq(StringUtils.isNotBlank(taskType), DppEtlNodeInstanceDO::getTaskType, taskType);
+    }
+
+    private void fillInstanceDisplayFields(DppEtlNodeInstanceDO instance) {
+        instance.setCurrentStatus(getInstanceCurrentStatus(instance.getStatus()));
+        instance.setCurrentStatusName(getInstanceStatusName(instance.getStatus()));
+        instance.setDuration(getNodeInstanceDuration(instance));
+    }
+
+    private String getNodeInstanceDuration(DppEtlNodeInstanceDO instance) {
+        if (instance == null || instance.getStartTime() == null) return null;
+        Date endTime = isRunningInstanceStatus(instance.getStatus()) ? new Date() : instance.getEndTime();
+        if (endTime == null) return null;
+        return DateUtils.format2Duration(Math.max(0L, endTime.getTime() - instance.getStartTime().getTime()));
+    }
+
+    private boolean isRunningInstanceStatus(String status) {
+        return "0".equals(status) || "1".equals(status) || "12".equals(status);
+    }
+
+    private String getInstanceCurrentStatus(String status) {
+        if (isRunningInstanceStatus(status)) return "running";
+        if ("7".equals(status)) return "success";
+        if ("6".equals(status)) return "failed";
+        return "idle";
+    }
+
+    private String getInstanceStatusName(String status) {
+        if (isRunningInstanceStatus(status)) return "Running";
+        if ("7".equals(status)) return "Success";
+        if ("6".equals(status)) return "Failed";
+        if ("5".equals(status)) return "Stopped";
+        return "Idle";
+    }
+
+    private String guessLogLevel(String content) {
+        if (StringUtils.containsIgnoreCase(content, "ERROR")) return "ERROR";
+        if (StringUtils.containsIgnoreCase(content, "WARN")) return "WARN";
+        if (StringUtils.containsIgnoreCase(content, "DEBUG")) return "DEBUG";
+        return "INFO";
     }
 }

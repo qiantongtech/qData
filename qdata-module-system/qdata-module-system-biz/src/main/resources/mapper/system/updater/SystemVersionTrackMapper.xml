@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+
+  This file is part of qData Data Middle Platform (Open Source Edition).
+
+  qData is licensed under Apache License 2.0 with additional qData terms.
+  You may use qData for commercial purposes, but you may not remove, hide,
+  modify, or replace the qData logo, copyright notices, license notices,
+  or attribution information without a separate commercial license.
+
+  White-label use, OEM distribution, rebranding, or presenting qData as
+  another product requires separate commercial authorization from
+  Jiangsu Qiantong Technology Co., Ltd.
+
+  Business License: https://community.qdata.tech/business/policy.html
+  See the LICENSE file in the project root for full license information.
+-->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.qiantong.qdata.module.system.dal.mapper.updater.SystemVersionTrackMapper">
+
+    <resultMap type="SystemVersionTrackDO" id="SystemVersionTrackResult">
+        <result property="id"    column="ID"    />
+        <result property="name"    column="NAME"    />
+        <result property="currVersion"    column="CURR_VERSION"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="author"    column="AUTHOR"    />
+        <result property="delFlag"    column="DEL_FLAG"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="creatorId"    column="CREATOR_ID"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updaterId"    column="UPDATER_ID"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <result property="remark"    column="REMARK"    />
+    </resultMap>
+
+    <sql id="selectSystemVersionTrackVo">
+        select ID, NAME, CURR_VERSION, DESCRIPTION, AUTHOR, DEL_FLAG, CREATE_BY, CREATOR_ID, CREATE_TIME, UPDATE_BY, UPDATER_ID, UPDATE_TIME, REMARK from SYSTEM_VERSION_TRACK
+    </sql>
+
+    <select id="selectSystemVersionTrackList" parameterType="SystemVersionTrackDO" resultMap="SystemVersionTrackResult">
+        <include refid="selectSystemVersionTrackVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+            <if test="currVersion != null  and currVersion != ''"> and CURR_VERSION = #{currVersion}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="author != null  and author != ''"> and AUTHOR = #{author}</if>
+            <if test="createBy != null  and createBy != ''"> and CREATE_BY = #{createBy}</if>
+            <if test="creatorId != null "> and CREATOR_ID = #{creatorId}</if>
+            <if test="createTime != null "> and CREATE_TIME = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSystemVersionTrackById" parameterType="Long" resultMap="SystemVersionTrackResult">
+        <include refid="selectSystemVersionTrackVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertSystemVersionTrack" parameterType="SystemVersionTrackDO">
+        insert into SYSTEM_VERSION_TRACK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="name != null">NAME,</if>
+            <if test="currVersion != null">CURR_VERSION,</if>
+            <if test="description != null">DESCRIPTION,</if>
+            <if test="author != null">AUTHOR,</if>
+            <if test="delFlag != null">DEL_FLAG,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="creatorId != null">CREATOR_ID,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updaterId != null">UPDATER_ID,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="remark != null">REMARK,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="currVersion != null">#{currVersion},</if>
+            <if test="description != null">#{description},</if>
+            <if test="author != null">#{author},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updaterId != null">#{updaterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSystemVersionTrack" parameterType="SystemVersionTrackDO">
+        update SYSTEM_VERSION_TRACK
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">NAME = #{name},</if>
+            <if test="currVersion != null">CURR_VERSION = #{currVersion},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="author != null">AUTHOR = #{author},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteSystemVersionTrackById" parameterType="Long">
+        delete from SYSTEM_VERSION_TRACK where ID = #{id}
+    </delete>
+
+    <delete id="deleteSystemVersionTrackByIds" parameterType="String">
+        delete from SYSTEM_VERSION_TRACK where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -27,10 +27,128 @@
                     <!--              <div :class="'swiper-slide swiper-slide-'+item.id"></div>-->
                     <!--            </el-carousel-item>-->
                     <!--          </el-carousel>-->
+                  <el-carousel class="login-carousel" arrow="never" autoplay indicator-position="none">
+                    <el-carousel-item v-for="(item, index) in loginimglist" :key="index">
+                      <div v-if="item.animated" class="swiper-slide qdata-scene">
+                        <svg
+                            class="qdata-scene__canvas"
+                            viewBox="0 0 1305 1206"
+                            preserveAspectRatio="xMidYMid slice"
+                            aria-hidden="true"
+                        >
+                          <defs>
+                            <clipPath id="left-node-only" clipPathUnits="userSpaceOnUse">
+                              <rect x="135" y="620" width="56" height="72"/>
+                            </clipPath>
+                            <radialGradient id="cloud-route-orb" cx="50%" cy="50%" r="50%">
+                              <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                              <stop offset="35%" stop-color="#bff4ff" stop-opacity="0.95"/>
+                              <stop offset="100%" stop-color="#25b9ff" stop-opacity="0"/>
+                            </radialGradient>
+                            <path
+                                id="cloud-route-path"
+                                d="M 1060 545 L 1108 573 Q 1120 580 1108 588 L 879 750 Q 865 760 852 751 L 750 682"
+                            />
+                            <path
+                                id="left-route-upper-path"
+                                d="M 212 650 L 350 568"
+                            />
+                            <path
+                                id="left-route-lower-path"
+                                d="M 232 670 L 329 737 Q 340 745 351 738 L 365 730 L 400 708"
+                            />
+                            <path
+                                id="left-route-orb-path"
+                                d="M 400 708 L 365 730 L 351 738 Q 340 745 329 737 L 232 670 L 212 650 L 350 568"
+                            />
+                            <path
+                                id="bottom-chip-route-path"
+                                d="M 440 724 L 397 749 Q 385 755 398 762 L 605 885"
+                            />
+                            <path
+                                id="bottom-chip-orb-path"
+                                d="M 625 885 L 398 762 Q 385 755 397 749 L 445 724"
+                            />
+                          </defs>
+                          <image :href="item.image" x="0" y="0" width="1305" height="1206"/>
 
-                    <el-carousel style="width: 100%; heght: 100%" arrow="never" autoplay indicator-position="none">
-                        <el-carousel-item v-for="(item, index) in loginimglist" :key="index">
-                            <div class="swiper-slide" :style="getBackgroundStyle(item)"></div>
+                          <g class="qdata-scene__left-routes">
+                            <use href="#left-route-upper-path"/>
+                            <use href="#left-route-lower-path"/>
+                            <use href="#bottom-chip-route-path"/>
+                          </g>
+
+                          <use
+                              class="qdata-scene__cloud-route"
+                              href="#cloud-route-path"
+                          />
+
+                          <g class="qdata-scene__route-orb">
+                            <circle class="qdata-scene__route-orb-halo" r="9"/>
+                            <circle class="qdata-scene__route-orb-core" r="3"/>
+                            <animateMotion
+                                dur="4.8s"
+                                repeatCount="indefinite"
+                            >
+                              <mpath href="#cloud-route-path"/>
+                            </animateMotion>
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;1;0"
+                                keyTimes="0;0.08;0.9;1"
+                                dur="4.8s"
+                                repeatCount="indefinite"
+                            />
+                          </g>
+
+                          <g class="qdata-scene__route-orb qdata-scene__left-route-orb">
+                            <circle class="qdata-scene__route-orb-halo" r="9"/>
+                            <circle class="qdata-scene__route-orb-core" r="3"/>
+                            <animateMotion dur="5.2s" repeatCount="indefinite">
+                              <mpath href="#left-route-orb-path"/>
+                            </animateMotion>
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;1;0"
+                                keyTimes="0;0.08;0.9;1"
+                                dur="5.2s"
+                                repeatCount="indefinite"
+                            />
+                          </g>
+
+                          <g class="qdata-scene__route-orb qdata-scene__bottom-route-orb">
+                            <circle class="qdata-scene__route-orb-halo" r="9"/>
+                            <circle class="qdata-scene__route-orb-core" r="3"/>
+                            <animateMotion dur="4s" repeatCount="indefinite">
+                              <mpath href="#bottom-chip-orb-path"/>
+                            </animateMotion>
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;1;0"
+                                keyTimes="0;0.08;0.9;1"
+                                dur="4.6s"
+                                repeatCount="indefinite"
+                            />
+                          </g>
+
+                          <image
+                              v-for="sceneItem in sceneItems"
+                              :key="sceneItem.name"
+                              :href="sceneItem.src"
+                              :x="sceneItem.x"
+                              :y="sceneItem.y"
+                              :width="sceneItem.width"
+                              :height="sceneItem.height"
+                              :clip-path="sceneItem.clipPath"
+                              :class="['qdata-scene__item', `qdata-scene__item--${sceneItem.motion}`]"
+                              :style="{
+                                            '--float-duration': sceneItem.duration,
+                                            '--float-delay': sceneItem.delay
+                                        }"
+                          />
+                        </svg>
+                      </div>
+                      <div v-else class="swiper-slide" :style="getBackgroundStyle(item)"></div>
                         </el-carousel-item>
                     </el-carousel>
                 </div>
@@ -256,6 +374,19 @@ import { useLocaleImage } from '@/composables/useLocaleImage';
 import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/images/system/login/logo-qdata.png';
+import analyticsCard from '@/assets/images/system/login/qdata-scene/analytics-card.png';
+import skylineCard from '@/assets/images/system/login/qdata-scene/data-skyline-card.png';
+import codeCard from '@/assets/images/system/login/qdata-scene/code-card.png';
+import cloudCard from '@/assets/images/system/login/qdata-scene/cloud-card.png';
+import largeCloud from '@/assets/images/system/login/qdata-scene/large-cloud.png';
+import topChip from '@/assets/images/system/login/qdata-scene/chip-bottom.png';
+import bottomChip from '@/assets/images/system/login/qdata-scene/chip-bottom.png';
+import leftNode from '@/assets/images/system/login/qdata-scene/network-node-left.png';
+import lowerLeftNode from '@/assets/images/system/login/qdata-scene/network-node-lower-left.png';
+import rightNode from '@/assets/images/system/login/qdata-scene/network-node-right.png';
+import opennessIcon from '@/assets/images/system/login/qdata-scene/openness-shield-no-border.png';
+import governanceIcon from '@/assets/images/system/login/qdata-scene/governance-network-no-border.png';
+import valueIcon from '@/assets/images/system/login/qdata-scene/value-bars-no-border.png';
 
 const { td } = useDefaultLang();
 const { changeLocale } = useLocale();
@@ -291,8 +422,24 @@ const fpForm = ref({
     password2: '',
     code: ''
 });
+const sceneItems = [
+    { name: 'analytics', src: analyticsCard, x: 240, y: 462, width: 132, height: 177, motion: 'a', duration: '7.9s', delay: '-2.4s' },
+    { name: 'skyline', src: skylineCard, x: 355, y: 345, width: 93, height: 216, motion: 'b', duration: '9.7s', delay: '-5.1s' },
+    { name: 'top-chip', src: topChip, x: 760, y: 345, width: 179, height: 135, motion: 'f', duration: '8.9s', delay: '-4.6s' },
+    { name: 'code', src: codeCard, x: 701, y: 385, width: 102, height: 145, motion: 'c', duration: '8.6s', delay: '-1.3s' },
+    { name: 'cloud-card', src: cloudCard, x: 805, y: 455, width: 117, height: 162, motion: 'd', duration: '10.8s', delay: '-6.7s' },
+    { name: 'large-cloud', src: largeCloud, x: 909, y: 365, width: 226, height: 243, motion: 'e', duration: '11.9s', delay: '-3.8s' },
+    { name: 'bottom-chip', src: bottomChip, x: 454, y: 775, width: 215, height: 181, motion: 'c', duration: '12.7s', delay: '-8.2s' },
+    { name: 'left-node', src: leftNode, x: 180, y: 600, width: 94, height: 113, motion: 'static', duration: '0s', delay: '0s' },
+    { name: 'lower-left-node', src: lowerLeftNode, x: 285, y: 620, width: 91, height: 131, motion: 'static', duration: '0s', delay: '0s' },
+    { name: 'right-node', src: rightNode, x: 800, y: 684, width: 131, height: 148, motion: 'static', duration: '0s', delay: '0s' },
+    { name: 'openness', src: opennessIcon, x: 138, y: 992, width: 90, height: 93, motion: 'vertical-a', duration: '9.8s', delay: '-3.3s' },
+    { name: 'governance', src: governanceIcon, x: 505, y: 989, width: 90, height: 100, motion: 'vertical-b', duration: '11.4s', delay: '-6.1s' },
+    { name: 'value', src: valueIcon, x: 852, y: 984, width: 120, height: 100, motion: 'vertical-c', duration: '6.3s', delay: '-10.2s' }
+];
+
 const defaltImglist = ref([
-    { id: 1, image: getImage('login/banner-zt.png') },
+    { id: 1, image: getImage('login/banner-zt.png'), animated: true },
 ]);
 const loginimglist = ref([]);
 
@@ -326,7 +473,7 @@ const fetchContent = async () => {
             contentDetail.value = data;
             const sysLogo = data.loginLogo;
             logo.value = sysLogo ? sysLogo : defaultLogo;
-            const carouselImageList = data.carouselImage.splitd(',');
+            const carouselImageList = data.carouselImage ? data.carouselImage.split(',') : [];
             const carouselImgList = [];
             for (let i = 0; i <= carouselImageList.length; i++) {
                 let item = carouselImageList[i];
@@ -661,6 +808,87 @@ function goKtPage() {
             width: 100%;
             height: 100%;
 
+            .swiper-wrapper,
+            .login-carousel,
+            .swiper-slide {
+                width: 100%;
+                height: 100%;
+            }
+
+            ::v-deep(.el-carousel__container),
+            ::v-deep(.el-carousel__item) {
+                height: 100%;
+            }
+
+            .qdata-scene {
+                position: relative;
+                overflow: hidden;
+                background: #eaf3ff;
+            }
+
+            .qdata-scene__canvas {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .qdata-scene__cloud-route {
+                fill: none;
+                stroke: rgba(70, 196, 255, 0.68);
+                stroke-width: 2.2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 1 5;
+                filter: drop-shadow(0 0 1px rgba(60, 190, 255, 0.2));
+            }
+
+            .qdata-scene__left-routes {
+                fill: none;
+                stroke: rgba(70, 196, 255, 0.68);
+                stroke-width: 2.2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 1 5;
+                filter: drop-shadow(0 0 1px rgba(60, 190, 255, 0.2));
+            }
+
+            .qdata-scene__route-orb {
+                pointer-events: none;
+                filter: drop-shadow(0 0 5px rgba(65, 205, 255, 0.95));
+            }
+
+            .qdata-scene__route-orb-halo {
+                fill: url(#cloud-route-orb);
+            }
+
+            .qdata-scene__route-orb-core {
+                fill: #ffffff;
+                stroke: rgba(151, 235, 255, 0.95);
+                stroke-width: 1.5;
+            }
+
+            .qdata-scene__item {
+                pointer-events: none;
+                transform-box: fill-box;
+                transform-origin: center;
+                will-change: transform;
+                animation-duration: var(--float-duration);
+                animation-delay: var(--float-delay);
+                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+                animation-iteration-count: infinite;
+                animation-direction: alternate;
+            }
+
+            .qdata-scene__item--a { animation-name: qdata-float-a; }
+            .qdata-scene__item--b { animation-name: qdata-float-b; }
+            .qdata-scene__item--c { animation-name: qdata-float-c; }
+            .qdata-scene__item--d { animation-name: qdata-float-d; }
+            .qdata-scene__item--e { animation-name: qdata-float-e; }
+            .qdata-scene__item--f { animation-name: qdata-float-f; }
+            .qdata-scene__item--vertical-a { animation-name: qdata-float-vertical-a; }
+            .qdata-scene__item--vertical-b { animation-name: qdata-float-vertical-b; }
+            .qdata-scene__item--vertical-c { animation-name: qdata-float-vertical-c; }
+
             .swiper-imagesize {
                 width: 100%;
                 height: 100%;
@@ -831,6 +1059,90 @@ function goKtPage() {
                 align-items: center;
             }
         }
+    }
+}
+
+@keyframes qdata-float-a {
+    0% { transform: translateY(0); }
+    19% { transform: translateY(-7px); }
+    47% { transform: translateY(-2px); }
+    73% { transform: translateY(5px); }
+    100% { transform: translateY(-5px); }
+}
+
+@keyframes qdata-float-b {
+    0% { transform: translateY(0); }
+    23% { transform: translateY(3px); }
+    51% { transform: translateY(-6px); }
+    78% { transform: translateY(2px); }
+    100% { transform: translateY(6px); }
+}
+
+@keyframes qdata-float-c {
+    0% { transform: translateY(0); }
+    17% { transform: translateY(6px); }
+    42% { transform: translateY(-3px); }
+    69% { transform: translateY(-7px); }
+    100% { transform: translateY(3px); }
+}
+
+@keyframes qdata-float-d {
+    0% { transform: translateY(0); }
+    28% { transform: translateY(-5px); }
+    55% { transform: translateY(-1px); }
+    81% { transform: translateY(6px); }
+    100% { transform: translateY(2px); }
+}
+
+@keyframes qdata-float-e {
+    0% { transform: translateY(0); }
+    21% { transform: translateY(4px); }
+    49% { transform: translateY(7px); }
+    76% { transform: translateY(-4px); }
+    100% { transform: translateY(-6px); }
+}
+
+@keyframes qdata-float-f {
+    0% { transform: translateY(0); }
+    16% { transform: translateY(5px); }
+    38% { transform: translateY(-2px); }
+    67% { transform: translateY(-6px); }
+    86% { transform: translateY(3px); }
+    100% { transform: translateY(6px); }
+}
+
+@keyframes qdata-float-vertical-a {
+    0% { transform: translateY(0); }
+    18% { transform: translateY(-3px); }
+    43% { transform: translateY(2px); }
+    71% { transform: translateY(-4px); }
+    100% { transform: translateY(1px); }
+}
+
+@keyframes qdata-float-vertical-b {
+    0% { transform: translateY(0); }
+    24% { transform: translateY(3px); }
+    52% { transform: translateY(-4px); }
+    79% { transform: translateY(1px); }
+    100% { transform: translateY(-4px); }
+}
+
+@keyframes qdata-float-vertical-c {
+    0% { transform: translateY(0); }
+    16% { transform: translateY(-1px); }
+    39% { transform: translateY(3px); }
+    68% { transform: translateY(-4px); }
+    87% { transform: translateY(1px); }
+    100% { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-two .qdata-scene__item {
+        animation: none;
+    }
+
+    .login-two .qdata-scene__route-orb {
+        display: none;
     }
 }
 </style>

@@ -36,10 +36,16 @@ echo [错误] qData 完整模式启动失败。
 docker compose --env-file "%QDATA_ENV%" -p "%QDATA_PROJECT%" -f "%QDATA_COMPOSE%" --profile "%QDATA_MODE%" ps
 echo.
 echo [成功] qData 完整模式已启动。
+echo.
+echo qData 数据中台
 echo qData 地址：http://localhost
-echo DolphinScheduler 地址：http://localhost:12345/dolphinscheduler/ui/home
-echo 用户名：admin
+echo 账号：admin
 echo 密码：qData123
+echo.
+echo 调度器 DolphinScheduler
+echo 访问地址：http://localhost:12345/dolphinscheduler/ui/home
+echo 账号：admin
+echo 密码：dolphinscheduler123
 goto :finished
 
 :prepare
@@ -118,8 +124,27 @@ echo [信息] Compose 文件：%QDATA_COMPOSE%
 exit /b 0
 
 :check_network_subnet
-powershell -NoProfile -Command "$ErrorActionPreference='Stop'; $target='172.28.0.0/16'; function Get-Range([string]$cidr) { if([string]::IsNullOrWhiteSpace($cidr)){ return $null }; $p=$cidr.Split('/'); if($p.Count -ne 2 -or $p[0] -notmatch '^[0-9.]+$'){ return $null }; $prefix=[int]$p[1]; if($prefix -lt 0 -or $prefix -gt 32){ return $null }; try { $bytes=[Net.IPAddress]::Parse($p[0]).GetAddressBytes() } catch { return $null }; if($bytes.Count -ne 4){ return $null }; [Array]::Reverse($bytes); $ip=[BitConverter]::ToUInt32($bytes,0); [double]$size=[Math]::Pow(2,32-$prefix); [double]$start=[Math]::Floor(([double]$ip)/$size)*$size; return [PSCustomObject]@{ Start=$start; End=($start+$size-1) } }; try { $wanted=Get-Range $target; if($null -eq $wanted){ throw 'qData 网段配置无效。' }; $ids=@(& docker network ls -q); if($LASTEXITCODE -ne 0){ throw '无法获取 Docker 网络列表。' }; foreach($id in $ids){ $json=@(& docker network inspect $id); if($LASTEXITCODE -ne 0){ throw ('无法检查 Docker 网络 '+$id+'。') }; $network=ConvertFrom-Json -InputObject ($json -join [Environment]::NewLine); if($network.Labels.'com.docker.compose.project' -eq '%QDATA_PROJECT%'){ continue }; foreach($config in @($network.IPAM.Config)){ $current=Get-Range $config.Subnet; if($null -ne $current -and $wanted.Start -le $current.End -and $current.Start -le $wanted.End){ Write-Host ('[错误] qData 网段 '+$target+' 与已有 Docker 网络 '+$network.Name+'（'+$config.Subnet+'）冲突。请删除不再使用的冲突网络，或修改 docker-compose.yml 和 docker-compose-mysql.yml 中的 qdatanet 网段后重试。'); exit 1 } } }; Write-Host ('[信息] Docker 网段检查通过：'+$target); exit 0 } catch { Write-Host ('[错误] Docker 网段检查失败：'+$_.Exception.Message); exit 1 }"
-if errorlevel 1 exit /b 1
+docker network inspect "%QDATA_PROJECT%_qdatanet" >nul 2>&1
+if not errorlevel 1 (
+    echo [信息] Docker 网段检查通过：已存在 %QDATA_PROJECT%_qdatanet 网络。
+    exit /b 0
+)
+
+set "QDATA_NETWORK_CHECK=%QDATA_PROJECT%_subnet_check_%RANDOM%"
+docker network create --driver bridge --subnet 172.28.0.0/16 "%QDATA_NETWORK_CHECK%" >nul 2>&1
+if errorlevel 1 (
+    echo [错误] qData 网段 172.28.0.0/16 与已有 Docker 网络冲突。
+    echo 请删除不再使用的冲突网络，或修改 Compose 中的 qdatanet 网段后重试。
+    exit /b 1
+)
+
+docker network rm "%QDATA_NETWORK_CHECK%" >nul 2>&1
+if errorlevel 1 (
+    echo [错误] Docker 网段预检网络清理失败：%QDATA_NETWORK_CHECK%
+    exit /b 1
+)
+
+echo [信息] Docker 网段检查通过：172.28.0.0/16
 exit /b 0
 
 :check_resources
@@ -140,13 +165,18 @@ echo [错误] 无法读取 Docker 内存资源。
     exit /b 1
 )
 
-if %QDATA_CPU% LSS %QDATA_MIN_CPU% (
-echo [错误] Docker 可用资源不足：当前 %QDATA_CPU%CPU/%QDATA_MEMORY_GB%GB，完整模式最低需要 %QDATA_MIN_CPU%CPU/%QDATA_MIN_MEMORY_GB%GB。
-    exit /b 1
-)
-if %QDATA_MEMORY_GB% LSS %QDATA_MIN_MEMORY_GB% (
-    echo [错误] Docker 可用资源不足：当前 %QDATA_CPU%CPU/%QDATA_MEMORY_GB%GB，完整模式最低需要 %QDATA_MIN_CPU%CPU/%QDATA_MIN_MEMORY_GB%GB。
-    exit /b 1
+set "QDATA_RESOURCE_INSUFFICIENT=0"
+if %QDATA_CPU% LSS %QDATA_MIN_CPU% set "QDATA_RESOURCE_INSUFFICIENT=1"
+if %QDATA_MEMORY_GB% LSS %QDATA_MIN_MEMORY_GB% set "QDATA_RESOURCE_INSUFFICIENT=1"
+
+if "%QDATA_RESOURCE_INSUFFICIENT%"=="1" (
+    echo [警告] Docker 可用资源不足：当前 %QDATA_CPU%CPU/%QDATA_MEMORY_GB%GB，完整模式最低建议 %QDATA_MIN_CPU%CPU/%QDATA_MIN_MEMORY_GB%GB。
+    choice /C YN /N /M "是否仍要强制启动？[Y/N] "
+    if errorlevel 2 (
+        echo [信息] 已取消启动。
+        exit /b 1
+    )
+    echo [警告] 已选择强制启动，请自行承担资源不足导致的运行风险。
 )
 
 echo [信息] Docker 可用资源：%QDATA_CPU%CPU/%QDATA_MEMORY_GB%GB

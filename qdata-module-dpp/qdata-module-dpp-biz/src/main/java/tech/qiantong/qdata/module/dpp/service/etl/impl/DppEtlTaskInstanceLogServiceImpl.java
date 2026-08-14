@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceLogDO;
 import tech.qiantong.qdata.module.dpp.dal.mapper.etl.DppEtlTaskInstanceLogMapper;
@@ -54,6 +55,12 @@ public class DppEtlTaskInstanceLogServiceImpl extends ServiceImpl<DppEtlTaskInst
         } else {
             return this.save(entity);
         }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public boolean saveOrUpdateRealtime(DppEtlTaskInstanceLogDO entity) {
+        return saveOrUpdate(entity);
     }
 
     @Override

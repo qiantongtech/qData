@@ -37,12 +37,6 @@
               <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.type')" prop="type" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('dp.dataElem.typePlaceholder')">
-                <el-option v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}
@@ -88,11 +82,6 @@
                 {{ scope.row.description || "-" }}
               </template>
             </el-table-column>
-<!--            <el-table-column v-if="getColumnVisibility(3)" width="100" :label="td('dp.dataElem.type')" align="center" prop="type">
-              <template #default="scope">
-                <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
-              </template>
-            </el-table-column>-->
             <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="180"
               :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
               <template #default="scope">
@@ -238,14 +227,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-<!--          <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.type')" prop="type">
-              <el-radio-group v-model="form.type" :disabled="form.id">
-                <el-radio v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.value">{{ dict.label }}
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="12">
             <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
@@ -304,7 +285,7 @@
   </div>
 </template>
 
-<script setup name="DpDataElem">
+<script setup name="DpDataCodeTable">
 import DeptTree from "@/components/DeptTree";
 import {
   listDpDataElem,
@@ -322,10 +303,9 @@ import useDefaultLang from "@/composables/useDefaultLang";
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const submitLoading = ref(false);
-const { column_type, sys_disable, dp_data_elem_code_type, dp_document_type } = proxy.useDict(
+const { column_type, sys_disable, dp_document_type } = proxy.useDict(
   "column_type",
   "sys_disable",
-  "dp_data_elem_code_type",
   "dp_document_type"
 ); import {
   listDpDocument,
@@ -344,7 +324,6 @@ const columns = ref([
   { key: 1, label: td('dp.dataElem.nameZh'), visible: true },
   { key: 2, label: td('dp.dataElem.nameEn'), visible: true },
   { key: 7, label: td('common.texts.description'), visible: true },
-  { key: 3, label: td('dp.dataElem.type'), visible: true },
   { key: 4, label: td('dp.dataElem.catCode'), visible: true },
   { key: 10, label: td('common.texts.createdBy'), visible: true },
   { key: 11, label: td('common.texts.createdTime'), visible: true },
@@ -430,7 +409,7 @@ const data = reactive({
     name: null,
     engName: null,
     catCode: null,
-    type: "1",
+    type: "2",
     description: "",
   },
   rules: {
@@ -507,7 +486,7 @@ function reset() {
     name: null,
     engName: null,
     catCode: null,
-    type: "1",
+    type: "2",
     personCharge: null,
     contactNumber: null,
     columnType: null,
@@ -603,9 +582,9 @@ function handleUpdate(row) {
 /** Detail button operation */
 function handleDetail(row) {
   if (row.type == 1) {
-    routeTo("/dp/dataElem/column/detail", row);
+    routeTo("/dp/dataCodeTable/column/detail", row);
   } else {
-    routeTo("/dp/dataElem/dict/detail", row);
+    routeTo("/dp/dataCodeTable/dict/detail", row);
   }
 }
 

@@ -76,12 +76,6 @@ export default {
     type: 'remind',
     version: '1.0'
   },
-  daAssetApply: {
-    title: '資産レビュー — クロスプロジェクトデータ利用の承認制御',
-    content: `グローバルデータ資産のプロジェクト利用申請を管理し、資産管理者がレビューします。承認後、資産は<u>プロジェクト資産</u>リストに追加され、<u>データ開発タスク</u>で使用できます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-assets/asset-audit.html" target="_blank">ヘルプドキュメント</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
   executeSqlQuery: {
     title: 'データクエリ — セルフサービス型多ソースデータ探索と分析',
     content: `可視化SQLクエリインターフェースを提供し、リレーショナルデータベースとビッグデータプラットフォームへの便利なアクセスをサポートします。ディレクトリナビゲーション、構文補完、結果エクスポート機能を統合しています。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-assets/data-query.html" target="_blank">ヘルプドキュメント</a>`,
@@ -97,12 +91,6 @@ export default {
   daSensitiveLevel: {
     title: '機密レベル — データ分類とセキュリティ管理の基盤',
     content: `データ機密レベルを定義し、フィールドと資産に分類根拠を提供し、マスキングルールと自動的に連携します。データプレビュー、クエリ、エクスポートなどの場面でレベルに基づく動的マスキングを実施します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-assets/data-security/sensitivity-level.html" target="_blank">ヘルプドキュメント</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
-  dppAsset: {
-    title: 'プロジェクト資産 — プロジェクト内のデータ資産の分離と利用',
-    content: `現在のプロジェクトで利用可能なデータ資産を集中的に管理し、グローバル資産からの申請または自主作成をサポートします。プロジェクトメンバーは権限範囲内でフィールド表示、リネージ分析、品質・クレンジング設定を行えます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/project-assets.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },

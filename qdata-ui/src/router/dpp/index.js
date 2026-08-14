@@ -19,14 +19,12 @@
 import integratio from './integratio/integratio'
 import developTask from './task/developTask'
 import integratioTask from './task/integratioTask'
-import asset from './asset/asset'
 
 // Merge routes under all dpp modules
 const dppRouter = [
     ...integratio,
     ...developTask,
-    ...integratioTask,
-    ...asset
+    ...integratioTask
 ]
 
 export default dppRouter

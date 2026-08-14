@@ -18,23 +18,6 @@
 
 import request from '@/utils/request'
 
-// Query data asset application list
-export function listDaAssetApply(query) {
-  return request({
-    url: '/da/assetApply/list',
-    method: 'get',
-    params: query
-  })
-}
-
-// Query data asset application details
-export function getDaAssetApply(id) {
-  return request({
-    url: '/da/assetApply/' + id,
-    method: 'get'
-  })
-}
-
 // New data asset application
 export function addDaAssetApply(data) {
   return request({
@@ -44,22 +27,6 @@ export function addDaAssetApply(data) {
   })
 }
 
-// Modify data asset application
-export function updateDaAssetApply(data) {
-  return request({
-    url: '/da/assetApply',
-    method: 'put',
-    data: data
-  })
-}
-
-// Delete data asset request
-export function delDaAssetApply(id) {
-  return request({
-    url: '/da/assetApply/' + id,
-    method: 'delete'
-  })
-}
 // Request
 export function queryServiceForwarding(data) {
   return request({

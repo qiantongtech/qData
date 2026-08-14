@@ -113,17 +113,16 @@ const { proxy } = getCurrentInstance();
 
 import { getDpDataElem } from "@/api/dp/dataElem/dataElem";
 
-import cleanRule from "@/views/dp/dataElem/detail/column/cleanRule";
-import auditRule from "@/views/dp/dataElem/detail/column/auditRule";
-import asset from "@/views/dp/dataElem/detail/components/asset.vue";
-import info from "@/views/dp/dataElem/detail/column/info.vue";
+import cleanRule from "@/views/dp/dataCodeTable/detail/column/cleanRule";
+import auditRule from "@/views/dp/dataCodeTable/detail/column/auditRule";
+import asset from "@/views/dp/dataCodeTable/detail/components/asset.vue";
+import info from "@/views/dp/dataCodeTable/detail/column/info.vue";
 import { useRoute } from "vue-router";
 
 const { td } = useDefaultLang();
-const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
+const { column_type, sys_disable } = proxy.useDict(
   "column_type",
-  "sys_disable",
-  "dp_data_elem_code_type"
+  "sys_disable"
 );
 
 const dpDataElemRuleRelList = ref([]);

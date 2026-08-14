@@ -76,12 +76,6 @@ export default {
     type: 'remind',
     version: '1.0'
   },
-  daAssetApply: {
-    title: 'Asset Review — Approval control for cross-project data usage',
-    content: `Manages project usage requests for global data assets, reviewed by asset administrators. Once approved, assets can be included in the <u>project asset</u> list for <u>data development tasks</u>, ensuring compliant data usage and controlled permissions. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-assets/asset-audit.html" target="_blank">View documentation</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
   executeSqlQuery: {
     title: 'Data Query — Self-service multi-source data exploration and analysis',
     content: `Provides a visual SQL query interface with convenient access to relational databases and big data platforms. Integrates directory navigation, syntax completion, and result export to help users quickly obtain data for analysis, verification, and troubleshooting scenarios. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-assets/data-query.html" target="_blank">View documentation</a>`,
@@ -97,12 +91,6 @@ export default {
   daSensitiveLevel: {
     title: 'Sensitivity Level — Foundation for data classification and security control',
     content: `Defines data sensitivity levels, providing classification basis for fields and assets, automatically linked with desensitization rules. Implements dynamic masking based on levels during data preview, query, and export scenarios. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-assets/data-security/sensitivity-level.html" target="_blank">View documentation</a>`,
-    type: 'remind',
-    version: '1.0'
-  },
-  dppAsset: {
-    title: 'Project Assets — Isolated data asset usage within projects',
-    content: `Centrally manages data assets available to the current project, supporting application from global assets or self-creation. Project members can view fields, analyze lineage, configure quality and cleaning within their permissions. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/project-assets.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },

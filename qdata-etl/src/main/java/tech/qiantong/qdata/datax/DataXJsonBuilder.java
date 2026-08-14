@@ -8,7 +8,6 @@ import tech.qiantong.qdata.common.utils.JSONUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -100,14 +99,20 @@ public final class DataXJsonBuilder {
             }
         }
         parameter.put("batchSize", nodeJsonMap.get("batchSize"));
-        Object description = nodeJsonMap.get("description");
-        if (description != null) {
-            parameter.put("batchSize", description);
+        Object componentType = nodeJsonMap.get("componentType");
+        if (componentType == null || TaskComponentTypeEnum.DB_READER.getCode().equals(componentType)) {
+            parameter.put("username", datasourceConfig.get("username"));
+            parameter.put("password", decryptPassword(datasourceConfig));
+            parameter.put("connection", buildConnection(nodeJsonMap.get(tableKey).toString(), datasource, reader));
+
+        } else if (TaskComponentTypeEnum.CSV_READER.getCode().equals(componentType) || TaskComponentTypeEnum.EXCEL_READER.getCode().equals(componentType)) {
+            parameter.put("csvFile", nodeJsonMap.get("csvFile"));
+            if(TaskComponentTypeEnum.EXCEL_READER.getCode().equals(componentType)){
+                parameter.put("startData", nodeJsonMap.get("startData"));
+                parameter.put("startColumn", nodeJsonMap.get("startColumn"));
+            }
         }
-        parameter.put("batchSize", nodeJsonMap.get("description"));
-        parameter.put("username", datasourceConfig.get("username"));
-        parameter.put("password", decryptPassword(datasourceConfig));
-        parameter.put("connection", buildConnection(nodeJsonMap.get(tableKey).toString(), datasource, reader));
+        parameter.put("componentType", componentType);
         return parameter;
     }
 
@@ -184,7 +189,8 @@ public final class DataXJsonBuilder {
                 continue;
             }
             String componentType = definitionJsonMap.get("componentType").toString();
-            if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType) || TaskComponentTypeEnum.ADD_CONSTANT.getCode().equals(componentType) || TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType) || TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
+            if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType) || TaskComponentTypeEnum.ADD_CONSTANT.getCode().equals(componentType)
+                    || TaskComponentTypeEnum.SELECT_FIELDS.getCode().equals(componentType) || TaskComponentTypeEnum.FIELD_DERIVATION.getCode().equals(componentType)) {
                 nodes.add(new HashMap<Object, Object>() {{
                     if (TaskComponentTypeEnum.VALUE_MAP.getCode().equals(componentType)) {
                         put("inputField", definitionJsonMap.get("inputField"));
@@ -239,11 +245,12 @@ public final class DataXJsonBuilder {
     private static String buildJdbcUrl(Map<String, Object> datasource) {
         String datasourceType = String.valueOf(datasource.get("datasourceType"));
         String urlTemplate = DbType.getDbType(datasourceType).getUrl();
+        Map<String, Object> datasourceConfig = JSONUtils.convertTaskDefinitionJsonMap(String.valueOf(datasource.get("datasourceConfig")));
         return urlTemplate
                 .replace("${host}", valueOf(datasource.get("ip")))
                 .replace("${port}", valueOf(datasource.get("port")))
                 .replace("${dbName}", valueOf(datasource.get("dbname")))
-                .replace("${sid}", valueOf(datasource.get("sid")));
+                .replace("${sid}", valueOf(datasourceConfig.get("sid")));
     }
 
     private static String valueOf(Object value) {

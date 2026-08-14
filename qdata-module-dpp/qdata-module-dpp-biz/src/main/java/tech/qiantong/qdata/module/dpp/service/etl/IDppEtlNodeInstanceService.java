@@ -112,6 +112,14 @@ public interface IDppEtlNodeInstanceService extends IService<DppEtlNodeInstanceD
     Boolean createNodeInstance(TaskInstance taskInstance);
 
     /**
+     * 使用独立事务直接创建本地 DataX 节点实例。
+     *
+     * @param nodeInstance 节点实例
+     * @return 是否创建成功
+     */
+    Boolean createLocalDataXNodeInstance(DppEtlNodeInstanceDO nodeInstance);
+
+    /**
      * Update task node instance
      *
      * @param taskInstance

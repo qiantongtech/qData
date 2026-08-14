@@ -41,6 +41,7 @@ import tech.qiantong.qdata.datax.DataXResult;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskNodeRelPageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskNodeRelRespVO;
+import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceDO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceLogDO;
@@ -91,6 +92,8 @@ public class DppEtlTaskDataIntegrationRunner {
         Date startTime = new Date();
         List<Long> nodeInstanceIds = new ArrayList<>();
 
+        // DataX 启动前先创建日志记录，页面可立即查询到初始化日志。
+        saveLocalDataXTaskInstanceLogSafely(instance, dppEtlTaskDO, taskLog.toString());
         try {
             // Load the saved node configuration containing DataX parameters such as data sources, tables, and columns.
             List<DppEtlNodeRespVO> nodeList = iDppEtlNodeService.listNodeByTaskId(dppEtlTaskDO.getId());
@@ -105,7 +108,11 @@ public class DppEtlTaskDataIntegrationRunner {
             }
 
             // The input node provides reader parameters, and the output node provides writer parameters.
-            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, TaskComponentTypeEnum.DB_READER.getCode());
+            DppEtlNodeRespVO readerNode = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
+                add(TaskComponentTypeEnum.DB_READER.getCode());
+                add(TaskComponentTypeEnum.EXCEL_READER.getCode());
+                add(TaskComponentTypeEnum.CSV_READER.getCode());
+            }}).stream().findFirst().orElse(null);;
             List<DppEtlNodeRespVO> processorNodes = FlinkxJson.findLocalDataXNode(nodeList, new ArrayList<String>() {{
                 add(TaskComponentTypeEnum.SELECT_FIELDS.getCode());
                 add(TaskComponentTypeEnum.SPARK_CLEAN.getCode());
@@ -133,17 +140,12 @@ public class DppEtlTaskDataIntegrationRunner {
                         "The local DataX task has no input or output node; save the task first");
             }
 
-            Map<String, Object> readerNodeJsonMap = Collections.emptyMap();
-            // Parse input parameters only when the reader node exists to avoid null values during JSON construction.
-            if (ObjectUtils.isNotEmpty(readerNode)) {
-                readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
-            }
-            Map<String, Object> writerNodeJsonMap = Collections.emptyMap();
-            // Parse output parameters only when the writer node exists to avoid null values during JSON construction.
-            if (ObjectUtils.isNotEmpty(writerNode)) {
-                writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
-            }
+            Map<String, Object> readerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(readerNode.getParameters());
+            readerNodeJsonMap.put("componentType", readerNode.getComponentType());
+
+            Map<String, Object> writerNodeJsonMap = JSONUtils.convertTaskDefinitionJsonMap(writerNode.getParameters());
             List<Map<String, Object>> definitionJsonMaps = new ArrayList<>();
+
             for (DppEtlNodeRespVO processorNode : processorNodes) {
                 Map<String, Object> definitionJsonMap = JSONUtils.convertTaskDefinitionJsonMap(processorNode.getParameters());
                 definitionJsonMap.put("componentType", processorNode.getComponentType());
@@ -154,16 +156,15 @@ public class DppEtlTaskDataIntegrationRunner {
             String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
 
-            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********* ***********************");
+            LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********************************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 
             DataXExecutionTiming timing = buildDataXExecutionTiming(dppEtlTaskDO.getDraftJson());
             LogUtils.appendLocalLogLine(taskLog, String.format("DataX execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
                     timing.getDelayMinutes(), timing.getRetryTimes(), timing.getRetryIntervalMinutes()));
 
-            DataXResult run = executeDataXJobWithRetry(json, timing, taskLog);
+            DataXResult run = executeDataXJobWithRetry(json, timing, taskLog, instance, dppEtlTaskDO);
             LogUtils.appendLocalLogLine(taskLog, "DataX exitCode: " + run.getExitCode());
-            LogUtils.appendLocalLogLine(taskLog, "DataX output:" + run.getOutput());
             LogUtils.appendLocalLogLine(taskLog, "*********************************** Execute DataX task end *************************************");
             // Throw a common exception for unsuccessful DataX results so the failure branch updates the instance status.
             if (!run.isSuccess()) {
@@ -198,22 +199,43 @@ public class DppEtlTaskDataIntegrationRunner {
         long id = IdUtils.generateArtificialId();
         try {
             JSONObject params = JSONObject.parseObject(node.getParameters());
-            dppEtlNodeInstanceService.createNodeInstance(TaskInstance.builder()
+            if (params == null) {
+                throw new ServiceException("节点参数为空：" + node.getName());
+            }
+            // 直接使用当前节点配置创建运行中实例，不依赖节点历史版本表。
+            boolean created = dppEtlNodeInstanceService.createLocalDataXNodeInstance(DppEtlNodeInstanceDO.builder()
                     .id(id)
+                    .taskType(node.getTaskType() == null ? task.getType() : node.getTaskType())
                     .name(node.getName())
-                    .taskCode(node.getCode())
-                    .taskDefinitionVersion(node.getVersion() == null ? 0 : node.getVersion().intValue())
-                    .taskType(String.valueOf(params.get("taskType")))
-                    .processInstanceId(instance.getId())
-                    .processInstanceName(instance.getName())
+                    .nodeType(params.getString("taskType"))
+                    .nodeId(node.getId())
+                    .nodeCode(node.getCode())
+                    .nodeVersion(node.getVersion() == null ? 0 : node.getVersion().intValue())
+                    .taskInstanceId(instance.getId())
+                    .taskInstanceName(instance.getName())
+                    .projectId(task.getProjectId())
                     .projectCode(task.getProjectCode())
-                    .taskInstancePriority(Priority.MEDIUM)
+                    .submitTime(new Date())
                     .startTime(new Date())
-                    .state(TaskExecutionStatus.RUNNING_EXECUTION)
+                    .parameters(node.getParameters())
+                    .priority(String.valueOf(Priority.MEDIUM.getCode()))
+                    .retryTimes(node.getFailRetryTimes() == null ? 0 : node.getFailRetryTimes().intValue())
+                    .delayTime(node.getDelayTime() == null ? 0 : node.getDelayTime().intValue())
+                    .cpuQuota(node.getCpuQuota() == null ? null : node.getCpuQuota().intValue())
+                    .memoryMax(node.getMemoryMax() == null ? null : node.getMemoryMax().intValue())
+                    .status(String.valueOf(TaskExecutionStatus.RUNNING_EXECUTION.getCode()))
+                    .componentType(node.getComponentType())
+                    .dsId(id)
+                    .dsTaskInstanceId(instance.getId())
+                    .validFlag(Boolean.TRUE)
+                    .delFlag(Boolean.FALSE)
                     .build());
+            if (!created) {
+                throw new ServiceException("节点实例保存失败：" + node.getName());
+            }
         } catch (Exception e) {
-            // 节点实例创建失败不阻断任务主流程，避免实例服务异常覆盖 DataX 的真实执行结果。
             log.error("创建本地DataX节点实例异常，nodeCode={}", node.getCode(), e);
+            throw new ServiceException("创建本地DataX节点实例失败：" + node.getName() + "，" + e.getMessage());
         }
         return id;
     }
@@ -327,15 +349,21 @@ public class DppEtlTaskDataIntegrationRunner {
      * @return the DataX execution result
      * @throws Exception if DataX execution fails or the wait is interrupted
      */
-    private DataXResult executeDataXJobWithRetry(String json, DataXExecutionTiming timing, StringBuilder taskLog) throws Exception {
+    private DataXResult executeDataXJobWithRetry(String json, DataXExecutionTiming timing, StringBuilder taskLog,
+                                                 DppEtlTaskInstanceDO instance, DppEtlTaskDO task) throws Exception {
         sleepBeforeDataXExecution(timing.getDelayMillis(), taskLog, "Delay before DataX execution");
 
         Exception lastException = null;
         // Maximum attempts equal the initial execution plus the configured retries.
         for (int attempt = 1; attempt <= timing.getMaxAttempts(); attempt++) {
             LogUtils.appendLocalLogLine(taskLog, String.format("Start DataX execution attempt %d/%d", attempt, timing.getMaxAttempts()));
+            LogUtils.appendLocalLogLine(taskLog, "DataX output:");
+            saveLocalDataXTaskInstanceLogSafely(instance, task, taskLog.toString());
             try {
-                DataXResult result = dataXExecutor.run(json);
+                DataXResult result = dataXExecutor.run(json, line -> {
+                    LogUtils.appendLocalLogLine(taskLog, line);
+                    saveLocalDataXTaskInstanceLogSafely(instance, task, taskLog.toString());
+                });
                 // Return immediately after success to avoid entering the remaining retry flow.
                 if (result.isSuccess()) {
                     // A success after the first attempt indicates a retry, so append a retry success log.
@@ -348,7 +376,6 @@ public class DppEtlTaskDataIntegrationRunner {
                 lastException = new ServiceException("dpp.error.datax.execution.exit.code",
                         "DataX task execution failed with exit code {0}", result.getExitCode());
                 LogUtils.appendLocalLogLine(taskLog, "DataX exitCode: " + result.getExitCode());
-                LogUtils.appendLocalLogLine(taskLog, "DataX output:" + result.getOutput());
             } catch (Exception e) {
                 lastException = e;
                 LogUtils.appendLocalLogLine(taskLog, "DataX execution attempt exception: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
@@ -362,6 +389,7 @@ public class DppEtlTaskDataIntegrationRunner {
             // Wait for the configured retry interval before the next attempt when attempts remain.
             LogUtils.appendLocalLogLine(taskLog, String.format("DataX execution attempt %d/%d failed, will retry after %d minutes",
                     attempt, timing.getMaxAttempts(), timing.getRetryIntervalMinutes()));
+            saveLocalDataXTaskInstanceLogSafely(instance, task, taskLog.toString());
             sleepBeforeDataXExecution(timing.getRetryIntervalMillis(), taskLog, "Wait before DataX retry");
         }
 
@@ -541,7 +569,17 @@ public class DppEtlTaskDataIntegrationRunner {
                 .validFlag(Boolean.TRUE)
                 .delFlag(Boolean.FALSE)
                 .build();
-        iDppEtlTaskInstanceLogService.saveOrUpdate(taskInstanceLog);
+        iDppEtlTaskInstanceLogService.saveOrUpdateRealtime(taskInstanceLog);
+    }
+
+    /** 实时日志保存失败不应中断正在运行的 DataX 进程。 */
+    private void saveLocalDataXTaskInstanceLogSafely(DppEtlTaskInstanceDO instance, DppEtlTaskDO task,
+                                                     String logContent) {
+        try {
+            saveLocalDataXTaskInstanceLog(instance, task, logContent);
+        } catch (Exception e) {
+            log.error("实时保存本地DataX任务日志失败，taskInstanceId={}", instance.getId(), e);
+        }
     }
 
     /**

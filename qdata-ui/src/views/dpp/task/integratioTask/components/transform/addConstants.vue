@@ -126,6 +126,8 @@
             <el-input
               v-model="scope.row.columnName"
               :placeholder="td('common.form.namePlaceholder', 'Please enter name')"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'columnName') }"
+              :title="getFieldError(scope.$index, 'columnName')"
               style="width: 100%"
             />
           </template>
@@ -142,6 +144,7 @@
               v-model="scope.row.type"
               :placeholder="td('common.form.statusPlaceholder', 'Please select status')"
               style="width: 100%"
+              @change="validateConstantFields"
             >
               <el-option
                 v-for="dict in columntype"
@@ -162,7 +165,10 @@
             <el-input
               v-model="scope.row.defaultValue"
               :placeholder="td('common.form.namePlaceholder', 'Please enter name')"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'defaultValue') }"
+              :title="getFieldError(scope.$index, 'defaultValue')"
               style="width: 100%"
+              @input="validateConstantFields"
             />
           </template>
         </el-table-column>
@@ -194,6 +200,7 @@
               v-model="scope.row.emptyString"
               :placeholder="td('common.form.statusPlaceholder', 'Please select status')"
               style="width: 100%"
+              @change="handleEmptyStringChange(scope.row)"
             >
               <el-option
                 :label="td('dpp.integration.yes', 'Yes')"
@@ -264,11 +271,12 @@ import {
   defineEmits,
   ref,
   computed,
-  watchEffect,
+  watch,
   getCurrentInstance,
 } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
+import { typeList } from "@/utils/graph.js";
 import useUserStore from "@/store/system/user.js";
 import { createNodeSelect } from "@/views/dpp/utils/opBase.js";
 import { hasDuplicateObjects } from "@/utils/index.js";
@@ -293,6 +301,7 @@ const props = defineProps({
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
+  taskType: { type: String, default: "" },
 });
 
 function handleAddField() {
@@ -323,6 +332,7 @@ function handleAddField() {
     emptyString: false,
     source: form.value.name,
   });
+  validateConstantFields();
 }
 
 const showConflictDialog = ref(false);
@@ -370,6 +380,101 @@ let opens = ref(false);
 let row = ref();
 let dpModelRefs = ref();
 let form = ref({});
+let fieldErrors = ref([]);
+let showFieldErrors = ref(false);
+
+function isValidDateValue(value, includeTime = false) {
+  const pattern = includeTime
+    ? /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2})(?:\.\d{1,3})?)?$/
+    : /^\d{4}-\d{2}-\d{2}$/;
+  const match = value.match(pattern);
+  if (!match) return false;
+  const dateParts = value.slice(0, 10).split("-").map(Number);
+  const [year, month, day] = dateParts;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const validDate = date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+  if (!validDate || !includeTime) return validDate;
+  const [, , , , hour, minute, second = "0"] = match;
+  return Number(hour) <= 23 && Number(minute) <= 59 && Number(second) <= 59;
+}
+
+function isValidInternetAddress(value) {
+  const ipv4 = /^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)$/;
+  const ipv6 = /^(?:[\da-f]{1,4}:){2,7}[\da-f]{0,4}$/i;
+  return ipv4.test(value) || ipv6.test(value);
+}
+
+function isDefaultValueCompatible(item) {
+  const value = String(item.defaultValue ?? "").trim();
+  if (item.emptyString) return item.type === "String";
+  if (item.type === "String") return true;
+  if (!value) return true;
+  switch (item.type) {
+    case "Integer":
+      return /^[+-]?\d+$/.test(value);
+    case "BigNumber":
+      return /^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(value);
+    case "Number":
+      return Number.isFinite(Number(value));
+    case "Boolean":
+      return /^(true|false|0|1)$/i.test(value);
+    case "Date":
+      return isValidDateValue(value);
+    case "Timestamp":
+      return isValidDateValue(value, true);
+    case "InternetAddress":
+      return isValidInternetAddress(value);
+    case "Binary":
+      return /^(?:[A-Za-z\d+/]{4})*(?:[A-Za-z\d+/]{2}==|[A-Za-z\d+/]{3}=)?$/.test(value);
+    default:
+      return false;
+  }
+}
+
+function validateConstantFields() {
+  const upstreamNames = new Set(
+    inputFields.value
+      .map((item) => String(item.columnName ?? "").trim().toLowerCase())
+      .filter(Boolean)
+  );
+  fieldErrors.value = tableFields.value.map((item) => {
+    const errors = {};
+    const fieldName = String(item.columnName ?? "").trim();
+    if (fieldName && upstreamNames.has(fieldName.toLowerCase())) {
+      errors.columnName = td(
+        "dpp.integration.constantFieldNameConflictsUpstream",
+        "The constant field name duplicates an upstream field name."
+      );
+    }
+    if (item.type && !isDefaultValueCompatible(item)) {
+      const message = td(
+        "dpp.integration.constantDefaultValueTypeMismatch",
+        "Default value does not match the field type. Please modify it."
+      );
+      errors.defaultValue = message;
+    }
+    return errors;
+  });
+  return fieldErrors.value.every((errors) => Object.keys(errors).length === 0);
+}
+
+const getFieldError = (index, field) =>
+  showFieldErrors.value ? fieldErrors.value[index]?.[field] || "" : "";
+
+function getConstantValidationMessage() {
+  for (const errors of fieldErrors.value) {
+    if (errors.columnName) return errors.columnName;
+  }
+  for (const errors of fieldErrors.value) {
+    if (errors.defaultValue) return errors.defaultValue;
+  }
+  return "";
+}
+
+function handleEmptyStringChange() {
+  validateConstantFields();
+}
 
 function handleDelete(row) {
   // Delete the corresponding field from tableFields
@@ -398,6 +503,7 @@ function handleDelete(row) {
       inputFields.value.push(deepCopy(originalField));
     }
   }
+  validateConstantFields();
 }
 
 // Submit pop-up rule data
@@ -447,6 +553,8 @@ const off = () => {
   originalTableFieldsBackup.value = [];
   form.value = {};
   row.value = {};
+  fieldErrors.value = [];
+  showFieldErrors.value = false;
 };
 
 const saveData = async () => {
@@ -482,6 +590,14 @@ const saveData = async () => {
     if (isRepeat) {
       proxy.$message.warning(
         td("dpp.integration.noRepeatFieldNames", "Please do not use duplicate field names")
+      );
+      return;
+    }
+
+    showFieldErrors.value = true;
+    if (!validateConstantFields()) {
+      proxy.$message.warning(
+        getConstantValidationMessage()
       );
       return;
     }
@@ -538,24 +654,37 @@ function deepCopy(data) {
 }
 
 let nodeOptions = ref([]);
-watchEffect(() => {
-  if (!props.visible) {
-    off();
-    return;
-  }
-  form.value = deepCopy(props.currentNode?.data || {});
-  nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  let taskParams = deepCopy(props.currentNode?.data?.taskParams || {});
-  originalTableFieldsBackup.value = deepCopy(
-    props.currentNode?.data?.taskParams?.tableFields || []
-  );
-  inputFields.value = taskParams?.inputFields || [];
-  tableFields.value = taskParams?.tableFields || [];
-});
+watch(
+  // Dialog state is initialized only when it opens or switches to another node.
+  // Watching currentNode.data here would overwrite rows added by the user when
+  // X6 refreshes the node data object during editing.
+  () => [props.visible, props.currentNode?.id],
+  ([visible]) => {
+    if (!visible) {
+      off();
+      return;
+    }
+    form.value = deepCopy(props.currentNode?.data || {});
+    nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
+    const taskParams = deepCopy(props.currentNode?.data?.taskParams || {});
+    originalTableFieldsBackup.value = deepCopy(
+      props.currentNode?.data?.taskParams?.tableFields || []
+    );
+    inputFields.value = taskParams?.inputFields || [];
+    tableFields.value = taskParams?.tableFields || [];
+    validateConstantFields();
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="less">
 .blue-text {
   color: #2666fb;
+}
+
+:deep(.field-input-error .el-input__wrapper),
+:deep(.field-input-error .el-select__wrapper) {
+  box-shadow: 0 0 0 1px var(--el-color-danger) inset;
 }
 </style>

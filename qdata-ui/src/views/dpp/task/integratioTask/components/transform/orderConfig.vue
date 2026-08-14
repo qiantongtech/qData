@@ -158,6 +158,7 @@ const props = defineProps({
     currentNode: { type: Object, default: () => ({}) },
     info: { type: Boolean, default: false },
     graph: { type: Object, default: () => ({}) },
+    taskType: { type: String, default: '' },
 });
 
 let dragTable = ref(null);

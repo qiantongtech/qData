@@ -18,7 +18,7 @@ version: "3.8"
 
 services:
   mysql57:
-    image: mysql:5.7
+    image: mysql:8.0
     profiles: [ "demo", "mysql" ]
     restart: always
     environment:

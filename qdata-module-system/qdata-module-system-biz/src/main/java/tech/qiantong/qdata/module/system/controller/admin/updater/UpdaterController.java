@@ -100,7 +100,7 @@ public class UpdaterController extends BaseController {
 //        return CommonResult.success(versionInfo);
 //    }
 
-    @GetMapping("/getCurrentAppVersion")
+    /*@GetMapping("/getCurrentAppVersion")
     public void getCurrentAppVersion(CurrentAppVersionReqVO reqVO) {
         try {
             String remoteUrl = "https://demo.qdata.tech/prod-api/updater/getLocalVersion";
@@ -121,7 +121,7 @@ public class UpdaterController extends BaseController {
         } catch (Exception e) {
             logger.error("Version check failed", e);
         }
-    }
+    }*/
 
    /* @PostMapping("/tractlatestAppVersion")
     public void tractlatestAppVersion(@RequestBody SystemVersionTrackSaveReqVO reqVO) {

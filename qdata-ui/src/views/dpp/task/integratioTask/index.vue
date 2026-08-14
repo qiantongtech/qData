@@ -629,7 +629,13 @@ function listWrapper(params) {
 }
 
 function handleQuery() {
-  tableRef.value.getList();
+  if (!userStore.projectId) {
+    proxy.$modal.msgWarning(
+      td("dpp.integratioTask.projectRequired", "所属项目不能为空")
+    );
+    return;
+  }
+  tableRef.value?.getList();
   loadStatistics();
 }
 

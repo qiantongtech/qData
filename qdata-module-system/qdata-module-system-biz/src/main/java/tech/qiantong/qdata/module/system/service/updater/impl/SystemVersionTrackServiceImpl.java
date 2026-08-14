@@ -18,15 +18,18 @@
 
 package tech.qiantong.qdata.module.system.service.updater.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.exception.ServiceException;
+import tech.qiantong.qdata.common.httpClient.HeaderEntity;
+import tech.qiantong.qdata.common.httpClient.HttpUtils;
 import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -52,6 +55,9 @@ import tech.qiantong.qdata.module.system.service.updater.ISystemVersionTrackServ
 public class SystemVersionTrackServiceImpl  extends ServiceImpl<SystemVersionTrackMapper,SystemVersionTrackDO> implements ISystemVersionTrackService {
     @Resource
     private SystemVersionTrackMapper systemVersionTrackMapper;
+
+    @Autowired
+    private AniviaConfig qdataConfig;
 
     @Override
     public PageResult<SystemVersionTrackDO> getSystemVersionTrackPage(SystemVersionTrackPageReqVO pageReqVO) {
@@ -179,4 +185,31 @@ public class SystemVersionTrackServiceImpl  extends ServiceImpl<SystemVersionTra
             }
             return resultMsg.toString();
         }
+
+
+
+        /*
+         * Send current version to demo site regularly
+        * */
+       @Scheduled(cron = "0 0 1 ? * MON")
+        public void SendCurrentAppVersionToDemo() {
+            try {
+                String remoteUrl = "https://demo.qdata.tech/prod-api/updater/getLocalVersion";
+                //String remoteUrl = "http://localhost:8080/updater/getLocalVersion";
+                Map<String,Object> mp=  new HashMap<String,Object>();
+                mp.put("name",qdataConfig.getName());
+                mp.put("version",qdataConfig.getVersion());
+                mp.put("author",qdataConfig.getAuthor());
+                mp.put("description",qdataConfig.getDescription());
+                List<HeaderEntity> headers = new ArrayList<>();
+                HeaderEntity contentType = new HeaderEntity();
+                contentType.setKey("Content-Type");
+                contentType.setValue("application/json;charset=UTF-8");
+                headers.add(contentType);
+                HttpUtils.sendPost(remoteUrl, mp, headers);
+            } catch (Exception e) {
+                log.warn("Version to demo site failed to send", e);
+            }
+       }
+
 }

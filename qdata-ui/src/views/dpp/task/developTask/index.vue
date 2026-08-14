@@ -1073,6 +1073,12 @@ function getList() {
 
 /** Search button action */
 function handleQuery() {
+  if (!userStore.projectId) {
+    proxy.$modal.msgWarning(
+      td("dpp.developTask.projectRequired", "所属项目不能为空")
+    );
+    return;
+  }
   getList();
   loadStatistics();
 }

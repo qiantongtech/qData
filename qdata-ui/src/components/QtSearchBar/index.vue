@@ -138,14 +138,14 @@ function getFormItemProps(item) {
 // Query
 function handleQueryClick() {
   emits("query");
-  props.tableRef?.getList();
+  props.tableRef?.getList?.();
 }
 
 // reset
 function handleResetClick() {
   formRef.value.resetFields();
   emits("reset");
-  props.tableRef?.resetQuery();
+  props.tableRef?.resetQuery?.();
 }
 </script>
 

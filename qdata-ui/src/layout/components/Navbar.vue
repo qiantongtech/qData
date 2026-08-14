@@ -803,16 +803,16 @@ onMounted(() => {
   initWebSocket();
   console.log(userStore);
   listProject();
-  // getCurrentAppVersion().then((res) => {
-  //   if (res.data != null) {
-  //     // Is it the latest version?
-  //     needUpdate.value = res.data.needUpdate;
-  //     //Local version number
-  //     currentVersion.value = res.data.currentVersion;
-  //     //Latest version number
-  //     latestVersion.value = res.data.latestVersion;
-  //   }
-  // });
+  getCurrentAppVersion().then((res) => {
+    if (res.data != null) {
+      // Is it the latest version?
+      needUpdate.value = res.data.needUpdate;
+      //Local version number
+      currentVersion.value = res.data.currentVersion;
+      //Latest version number
+      latestVersion.value = res.data.latestVersion;
+    }
+  });
 });
 // Page logout
 onBeforeUnmount(() => {

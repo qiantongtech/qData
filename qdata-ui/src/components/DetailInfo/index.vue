@@ -24,7 +24,7 @@
       <div class="infotop-title mb15" :class="headerClasses">
         <!-- Default title (displayed when no header is passed) -->
         <template v-if="!header">
-          {{ title || "-" }}
+          {{ title }}
         </template>
         <!-- Fixed header: numbered square + name + status dictionary + right button/slot -->
         <template v-else>
@@ -169,7 +169,7 @@ const { proxy } = getCurrentInstance();
 
 const props = defineProps({
   // title text
-  title: { type: String, default: "-" },
+  title: { type: String, default: "" },
   // Whether to display
   show: { type: Boolean, default: true },
   // Header configuration (can display: number, name, status, return button)

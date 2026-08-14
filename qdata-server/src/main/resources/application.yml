@@ -19,13 +19,13 @@ qdata:
   # Name
   name: qData
   # Version
-  version: 3.8.8
+  version: 1.6.0
   # author
-  author: 千桐科技
+  author: Jiangsu Qiantong
   # description
   description: qData Open-Source Data Platform
   # Copyright year
-  copyrightYear: 2024
+  copyrightYear: 2025
   # File path example (Windows configuration D:/qdata/uploadPath, Linux configuration /home/qdata/uploadPath) -- needs to be consistent with the file module
   profile: ${user.dir}/upload/
   # Get ip address switch

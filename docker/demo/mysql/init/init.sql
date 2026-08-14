@@ -1,4 +1,4 @@
--- Hydrology schema (MySQL 5.7 safe; no FKs/PKs/UNIQUE/indexes/partitions/views; no init)
+-- Hydrology demo schema (compatible with MySQL 8.0; no FKs/PKs/UNIQUE/indexes/partitions/views; no init)
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -7,7 +7,7 @@ CREATE DATABASE IF NOT EXISTS hydrology
   DEFAULT COLLATE utf8mb4_unicode_ci;
 USE hydrology;
 
--- Hydrology schema (MySQL 5.7 safe; add AUTO_INCREMENT IDs)
+-- Hydrology demo schema (compatible with MySQL 8.0; add AUTO_INCREMENT IDs)
 
 CREATE DATABASE IF NOT EXISTS hydrology
   DEFAULT CHARACTER SET utf8mb4

@@ -60,7 +60,8 @@
                 </el-col>
                 <el-col :span="12" v-if="form.taskParams.fieldDerivationType == 'FIELD_DERIVE_CONCAT'">
                     <el-form-item :label="td('dpp.integration.newFieldName', 'New Field Name')" prop="taskParams.fieldDerivationName" :rules="[
-                        { required: true, message: td('dpp.integration.newFieldNameRequired', 'Please enter new field name'), trigger: 'change' }]" :label-position="labelPosition">
+                        { required: true, message: td('dpp.integration.newFieldNameRequired', 'Please enter new field name'), trigger: 'change' },
+                        { validator: validateDerivedFieldName, trigger: ['change', 'blur'] }]" :label-position="labelPosition">
                         <template #label>
                             <div class="justify-center">
                                 <span>{{ td('dpp.integration.newFieldName', 'New Field Name') }}</span>
@@ -182,6 +183,24 @@ import Sortable from "sortablejs";
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const userStore = useUserStore();
+function validateDerivedFieldName(rule, value, callback) {
+    const fieldName = String(value ?? '').trim();
+    if (!fieldName) {
+        callback();
+        return;
+    }
+    const upstreamNames = new Set(
+        (inputFields.value || []).map(item => String(item.columnName ?? '').trim().toLowerCase()).filter(Boolean)
+    );
+    if (upstreamNames.has(fieldName.toLowerCase())) {
+        callback(new Error(td(
+            'dpp.integration.derivedFieldNameDuplicate',
+            'The new field name already exists. Please use another name.'
+        )));
+        return;
+    }
+    callback();
+}
 const expressionPreviewHtml = computed(() => {
     const prefix = form.value?.taskParams?.fieldDerivationPrefix || '';
     const suffix = form.value?.taskParams?.fieldDerivationSuffix || '';
@@ -221,6 +240,7 @@ const props = defineProps({
     currentNode: { type: Object, default: () => ({}) },
     info: { type: Boolean, default: false },
     graph: { type: Object, default: () => ({}) },
+    taskType: { type: String, default: '' },
 });
 const deriveFieldTypes = [
     { value: 'FIELD_DERIVE_CONCAT', label: td('dpp.integration.concat', 'Concatenate') },
@@ -462,6 +482,9 @@ const saveData = async () => {
             proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
             return;
         }
+        form.value.taskParams.fieldDerivationName = String(
+            form.value.taskParams.fieldDerivationName ?? ''
+        ).trim();
         if (!form.value.code) {
             loading.value = true;
             const response = await getNodeUniqueKey({

@@ -238,6 +238,7 @@ import {
 } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
+import { typeList } from "@/utils/graph.js";
 import useUserStore from "@/store/system/user.js";
 import { createNodeSelect, getParentNode } from "@/views/dpp/utils/opBase.js";
 import draggable from "vuedraggable";
@@ -253,6 +254,7 @@ const props = defineProps({
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
+  taskType: { type: String, default: "" },
 });
 
 let dragTable = ref(null);
@@ -511,6 +513,22 @@ const saveData = async () => {
     if (!tableFields.value || tableFields.value.length === 0) {
       proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
       return;
+    }
+    const sensitiveFields = tableFields.value.filter(
+      (item) => item.ignoreCase === 0 && /(id|code|key|token)/i.test(String(item.columnName || ""))
+    );
+    if (sensitiveFields.length > 0) {
+      const fieldNames = sensitiveFields.map((item) => item.columnName).join(", ");
+      try {
+        await proxy.$modal.confirm(
+          `${td(
+            "dpp.integration.ignoreCaseSensitiveFieldWarning",
+            "This field may be case-sensitive. Ignoring case may delete records by mistake."
+          )} (${fieldNames})`
+        );
+      } catch (error) {
+        return;
+      }
     }
     if (!form.value.code) {
       loading.value = true;

@@ -78,6 +78,7 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -873,16 +874,21 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 newTaskDefinitionLogs.add(createReqVO);
                 continue;
             } else {
-                // Check if it is an input component with ID increment
+                // Apply Redis cursor reconciliation only to DB readers in ID incremental mode.
                 if (StringUtils.equals(TaskComponentTypeEnum.DB_READER.getCode(), String.valueOf(createReqVO.getTaskParams().get("type"))) &&
                         StringUtils.equals("2", String.valueOf(createReqVO.getTaskParams().get("readModeType")))) {
                     JSONObject idIncrementConfig = JSONObject.parseObject(String.valueOf(createReqVO.getTaskParams().get("idIncrementConfig")));
                     String incrementColumn = idIncrementConfig.getString("incrementColumn");
-                    Integer incrementStart = idIncrementConfig.getInteger("incrementStart");
+                    String incrementStart = idIncrementConfig.getString("incrementStart");
                     String cacheKey = TaskConverter.ETL_READER_ID_KEY + createReqVO.getCode() + ":" + incrementColumn;
-                    // Check if cache exists and cache value does not equal current value, delete cache if so
-                    if (redisService.hasKey(cacheKey) && Integer.parseInt(redisService.get(cacheKey)) != incrementStart) {
-                        redisService.delete(cacheKey);
+                    // Delete a stale cursor when the user explicitly changes the configured start ID.
+                    if (redisService.hasKey(cacheKey)) {
+                        String cachedIncrementId = redisService.get(cacheKey);
+                        // BigInteger prevents overflow for IDs beyond the Java integer/long range.
+                        if (incrementStart == null || cachedIncrementId == null
+                                || !new BigInteger(cachedIncrementId).equals(new BigInteger(incrementStart))) {
+                            redisService.delete(cacheKey);
+                        }
                     }
                 }
                 createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assume project ID as updater ID (adjust as needed)
@@ -1615,7 +1621,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                         String incrementColumn = idIncrementConfig.getString("incrementColumn");
                         String cacheKey = TaskConverter.ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
                         if (redisService.hasKey(cacheKey)) {
-                            idIncrementConfig.put("incrementStart", redisService.get(cacheKey));
+                            // Redis stores the greatest completed ID; the next inclusive start is cursor + 1.
+                            BigInteger completedCursor = new BigInteger(redisService.get(cacheKey));
+                            idIncrementConfig.put("incrementStart",
+                                    completedCursor.add(BigInteger.ONE).toString());
                         }
                     } else if (StringUtils.equals("3", readModeType)) {
                         JSONObject dateIncrementConfig = taskParams.getJSONObject("dateIncrementConfig");

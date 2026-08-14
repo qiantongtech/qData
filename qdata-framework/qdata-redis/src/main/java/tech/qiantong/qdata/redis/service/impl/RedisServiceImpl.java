@@ -22,10 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +41,41 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class RedisServiceImpl implements IRedisService {
+    /**
+     * Atomically compares non-negative decimal strings by normalized length and
+     * lexicographical order, avoiding precision loss in the Redis Lua number type.
+     */
+    private static final DefaultRedisScript<Long> SET_IF_GREATER_SCRIPT =
+            new DefaultRedisScript<Long>(
+                    "local old = redis.call('get', KEYS[1]); "
+                            + "local new = ARGV[1]; "
+                            + "if (not old) or (not string.match(old, '^%d+$')) then "
+                            + "redis.call('set', KEYS[1], new); return 1; end; "
+                            + "old = string.gsub(old, '^0+', ''); if old == '' then old = '0'; end; "
+                            + "if (#new > #old) or (#new == #old and new > old) then "
+                            + "redis.call('set', KEYS[1], new); return 1; end; return 0;",
+                    Long.class);
+    /**
+     * Compares all time cursors first and then applies the eligible updates in one Lua call.
+     * ARGV contains value, candidate epoch and legacy epoch for each pair of Redis keys.
+     */
+    private static final DefaultRedisScript<Long> SET_DATES_IF_LATER_SCRIPT =
+            new DefaultRedisScript<Long>(
+                    "local updates = {}; local changed = 0; "
+                            + "for i = 1, #KEYS, 2 do "
+                            + "local arg = ((i - 1) / 2) * 3; "
+                            + "local oldEpoch = redis.call('get', KEYS[i + 1]); "
+                            + "if not oldEpoch then oldEpoch = ARGV[arg + 3]; end; "
+                            + "local newEpoch = ARGV[arg + 2]; "
+                            + "if (not oldEpoch) or (#newEpoch > #oldEpoch) "
+                            + "or (#newEpoch == #oldEpoch and newEpoch > oldEpoch) then "
+                            + "table.insert(updates, {KEYS[i], KEYS[i + 1], ARGV[arg + 1], newEpoch}); "
+                            + "end; end; "
+                            + "for _, update in ipairs(updates) do "
+                            + "redis.call('set', update[1], update[3]); "
+                            + "redis.call('set', update[2], update[4]); changed = changed + 1; end; "
+                            + "return changed;",
+                    Long.class);
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -50,6 +89,49 @@ public class RedisServiceImpl implements IRedisService {
     @Override
     public void set(String key, String value, long timeout) {
         stringRedisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+    }
+
+    /** Validates and atomically advances a non-negative integer cursor. */
+    @Override
+    public boolean setIfGreater(String key, String value) {
+        // Normalize the input before Lua compares it with the stored decimal string.
+        BigInteger integerValue = new BigInteger(value);
+        // ID cursors are non-negative; reject invalid callers before touching Redis.
+        if (integerValue.signum() < 0) {
+            throw new IllegalArgumentException("value must be a non-negative integer");
+        }
+        Long result = stringRedisTemplate.execute(
+                SET_IF_GREATER_SCRIPT, Collections.singletonList(key), integerValue.toString());
+        return Long.valueOf(1L).equals(result);
+    }
+
+    /** Validates all candidates and submits one atomic multi-cursor comparison to Redis. */
+    @Override
+    public boolean setDatesIfLater(Map<String, String> values, Map<String, Long> epochMillis,
+                                   Map<String, Long> legacyEpochMillis) {
+        // An empty candidate set requires no Redis call and cannot advance a cursor.
+        if (values.isEmpty()) {
+            return false;
+        }
+        List<String> keys = new ArrayList<>();
+        List<String> arguments = new ArrayList<>();
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            Long candidateEpoch = epochMillis.get(entry.getKey());
+            // Every formatted value must have a valid numeric comparison value.
+            if (candidateEpoch == null || candidateEpoch < 0) {
+                throw new IllegalArgumentException("epochMillis must contain a non-negative value for every key");
+            }
+            keys.add(entry.getKey());
+            keys.add(entry.getKey() + ":epoch");
+            arguments.add(entry.getValue());
+            arguments.add(String.valueOf(candidateEpoch));
+            Long legacyEpoch = legacyEpochMillis.get(entry.getKey());
+            // An empty legacy epoch tells Lua that no pre-migration cursor exists.
+            arguments.add(legacyEpoch == null ? "" : String.valueOf(legacyEpoch));
+        }
+        Long result = stringRedisTemplate.execute(SET_DATES_IF_LATER_SCRIPT, keys,
+                arguments.toArray(new String[0]));
+        return result != null && result > 0;
     }
 
     @Override

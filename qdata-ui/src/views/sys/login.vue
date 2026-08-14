@@ -70,7 +70,7 @@
                                 d="M 625 885 L 398 762 Q 385 755 397 749 L 445 724"
                             />
                           </defs>
-                          <image :href="item.image" x="0" y="0" width="1305" height="1206"/>
+                          <image :href="item.image" x="0" y="0" width="1305" height="1206" decoding="async" fetchpriority="high" />
 
                           <g class="qdata-scene__left-routes">
                             <use href="#left-route-upper-path"/>
@@ -141,6 +141,7 @@
                               :height="sceneItem.height"
                               :clip-path="sceneItem.clipPath"
                               :class="['qdata-scene__item', `qdata-scene__item--${sceneItem.motion}`]"
+                              decoding="async"
                               :style="{
                                             '--float-duration': sceneItem.duration,
                                             '--float-delay': sceneItem.delay
@@ -157,7 +158,7 @@
         </div>
         <div class="right-content">
             <div class="logo">
-              <img :src="logo" />
+              <img :src="logo" decoding="async" fetchpriority="high" />
               <div ref="target" :class="['language', langOpen ? 'language-open' : 'language-close']"
                    @click="langOpen = !langOpen"
               >
@@ -365,8 +366,6 @@ import useDefaultLang from "@/composables/useDefaultLang";
 import { getCodeImg } from '@/api/system/login';
 import Cookies from 'js-cookie';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
-import Swiper from 'swiper';
-import 'swiper/swiper-bundle.min.css';
 import useUserStore from '@/store/system/user.js';
 import useLocaleStore from '@/store/system/locale.js';
 import { useLocale } from '@/composables/useLocale';
@@ -391,10 +390,9 @@ import valueIcon from '@/assets/images/system/login/qdata-scene/value-bars-no-bo
 const { td } = useDefaultLang();
 const { changeLocale } = useLocale();
 const { getImage } = useLocaleImage();
-const { greeting, message } = useTimeGreeting();
+const { greeting } = useTimeGreeting();
 const userStore = useUserStore();
 const localeStore = useLocaleStore();
-const router = useRouter();
 const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();
 const loading = ref(false);
@@ -441,16 +439,13 @@ const sceneItems = [
 const defaltImglist = ref([
     { id: 1, image: getImage('login/banner-zt.png'), animated: true },
 ]);
-const loginimglist = ref([]);
+// Render the bundled scene immediately. Remote carousel configuration is loaded in the background.
+const loginimglist = ref(defaltImglist.value);
 
 const getBackgroundStyle = (item) => {
     return {
         background: `url(${item.image}) center center / cover no-repeat`,
     };
-};
-
-const getAssetsFile = (url) => {
-    return new URL(`@/assets/images/system/login/${url}`, import.meta.url).href;
 };
 
 const loginRules = computed(() => ({
@@ -459,8 +454,15 @@ const loginRules = computed(() => ({
     code: [{ required: true, trigger: 'change', message: td('login.codeRequired') }]
 }));
 
-const logo = ref(null);
+const logo = ref(defaultLogo);
 const contentDetail = ref(null);
+
+const preloadImage = (src) => new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(src);
+    image.onerror = reject;
+    image.src = src;
+});
 
 onMounted(() => {
     fetchContent();
@@ -472,29 +474,25 @@ const fetchContent = async () => {
             const data = res.data;
             contentDetail.value = data;
             const sysLogo = data.loginLogo;
-            logo.value = sysLogo ? sysLogo : defaultLogo;
+            if (sysLogo) {
+                preloadImage(sysLogo)
+                    .then(() => {
+                        logo.value = sysLogo;
+                    })
+                    .catch(() => {});
+            }
             const carouselImageList = data.carouselImage ? data.carouselImage.split(',') : [];
-            const carouselImgList = [];
-            for (let i = 0; i <= carouselImageList.length; i++) {
-                let item = carouselImageList[i];
-                if (item) {
-                    carouselImgList.push({
-                        id: i + 1,
-                        image: item
-                    });
-                }
-            }
+            const carouselImgList = carouselImageList
+                .filter(Boolean)
+                .map((image, index) => ({ id: index + 1, image }));
             if (carouselImgList.length > 0) {
+                // Keep the default scene visible until every remote slide can be painted.
+                await Promise.all(carouselImgList.map((item) => preloadImage(item.image)));
                 loginimglist.value = carouselImgList;
-            } else {
-                loginimglist.value = defaltImglist.value;
             }
-        } else {
-            loginimglist.value = defaltImglist.value;
         }
-    } catch (error) {
-        logo.value = defaultLogo;
-        loginimglist.value = defaltImglist.value;
+    } catch {
+        // The bundled logo and scene are already visible, so failed configuration is non-blocking.
     }
 };
 

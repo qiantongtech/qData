@@ -440,17 +440,9 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
         String log = "";
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
-        // Get task info
-        DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
-                .code(dppEtlTaskInstanceDO.getTaskCode())
-                .version(dppEtlTaskInstanceDO.getTaskVersion())
-                .build());
-        if (dppEtlTaskLogRespVO == null) {
-            throw new RuntimeException(MessageUtils.messageWithFallback(
-                    "dpp.error.task.notfound", "Task does not exist"));
+        if (dppEtlTaskInstanceDO == null) {
+            throw new ServiceException("Task instance does not exist");
         }
-        // Get node relation data
-        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
         // Get node data
         List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
                 .select(DppEtlNodeInstanceDO::getId,
@@ -470,7 +462,32 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                     log = logContent;
                 }
             }
+        } else if (StringUtils.equals("3", dppEtlTaskInstanceDO.getTaskType())) {
+            // Data-development JDBC tasks persist their realtime output as node logs and
+            // do not have a DolphinScheduler task-log locations payload. Aggregate the
+            // node logs directly, matching the data-development instance log dialog.
+            for (DppEtlNodeInstanceDO nodeInstance : dppEtlNodeInstanceDOList) {
+                String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + nodeInstance.getId();
+                if (redisService.hasKey(taskInstanceLogKey)) {
+                    log += redisService.get(taskInstanceLogKey) + "\n";
+                } else {
+                    String logContent = dppEtlNodeInstanceLogService.getLog(nodeInstance.getId());
+                    if (logContent != null) {
+                        log += logContent + "\n";
+                    }
+                }
+            }
         } else {
+            // Integration tasks use the saved task definition to keep node logs ordered.
+            DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
+                    .code(dppEtlTaskInstanceDO.getTaskCode())
+                    .version(dppEtlTaskInstanceDO.getTaskVersion())
+                    .build());
+            if (dppEtlTaskLogRespVO == null || StringUtils.isBlank(dppEtlTaskLogRespVO.getLocations())) {
+                throw new RuntimeException(MessageUtils.messageWithFallback(
+                        "dpp.error.task.notfound", "Task does not exist"));
+            }
+            JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
             Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
 
             for (int i = 0; i < locations.size(); i++) {

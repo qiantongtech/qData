@@ -82,8 +82,10 @@ public class DppEtlTaskController extends BaseController {
     @GetMapping("/statistics")
     public CommonResult<DppEtlTaskStatisticsRespVO> statistics(
             @RequestParam Long projectId,
-            @RequestParam String projectCode) {
-        return CommonResult.success(dppEtlTaskService.getStatistics(projectId, projectCode));
+            @RequestParam String projectCode,
+            @RequestParam(defaultValue = "1") String taskType) {
+        return CommonResult.success(
+                dppEtlTaskService.getStatistics(projectId, projectCode, taskType));
     }
 
 

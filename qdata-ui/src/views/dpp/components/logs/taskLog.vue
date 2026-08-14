@@ -135,6 +135,8 @@ const taskInstanceId = ref(null);
 const isRunning = ref(false);
 /** 轮询控制标志 */
 const polling = ref(false);
+/** 当前轮询定时器，关闭或重新打开弹窗时需要清理 */
+const pollingTimer = ref(null);
 /** 自动刷新时是否跟随日志滚动到底部 */
 const shouldAutoScroll = ref(true);
 const BOTTOM_DISTANCE_THRESHOLD = 20;
@@ -144,16 +146,27 @@ const getLogDetail = (instanceId) =>
     ? getLogByNodeInstanceId({ nodeInstanceId: instanceId })
     : getLogByTaskInstanceId({ taskInstanceId: instanceId });
 
-/**
- * 更新任务状态
- * @param {string} status - 任务状态
- */
-const updateTaskStatus = (status) => {
-  if (!taskInfo.value.taskInstance) {
-    taskInfo.value.taskInstance = {};
+const clearPollingTimer = () => {
+  if (pollingTimer.value) {
+    clearTimeout(pollingTimer.value);
+    pollingTimer.value = null;
   }
-  taskInfo.value.taskInstance.status = status;
 };
+
+const schedulePolling = (taskId) => {
+  clearPollingTimer();
+  if (polling.value) {
+    pollingTimer.value = setTimeout(() => fetchLog(taskId), 3000);
+  }
+};
+
+const normalizeLogList = (logList) =>
+  (Array.isArray(logList) ? logList : []).map((item) => ({
+    ...item,
+    level: String(item?.level || "INFO"),
+    content: String(item?.content || ""),
+    detailContent: String(item?.detailContent || item?.content || ""),
+  }));
 
 /** 详情展示项 */
 const detailItems = computed(() => [
@@ -304,6 +317,8 @@ const handleAutoRefreshChange = (val) => {
   polling.value = val;
   if (val && taskInstanceId.value) {
     fetchLog(taskInstanceId.value);
+  } else {
+    clearPollingTimer();
   }
 };
 
@@ -316,6 +331,7 @@ const fetchLog = async (taskId) => {
   try {
     const needScrollToBottom = shouldAutoScroll.value || isLogNearBottom();
     const res = await getLogDetail(taskId);
+    const data = res?.data || {};
     const {
       status,
       currentStatus,
@@ -324,10 +340,11 @@ const fetchLog = async (taskId) => {
       startTime,
       duration,
       statusName,
-    } = res.data;
+    } = data;
+    const normalizedLogList = normalizeLogList(logList);
 
     taskInfo.value = {
-      ...res.data,
+      ...data,
       name: taskName,
       id: taskId,
       startTime: startTime,
@@ -336,17 +353,16 @@ const fetchLog = async (taskId) => {
       currentStatus: currentStatus,
       statusName: statusName,
     };
-    updateTaskStatus(status);
     const taskStatus = Number(status);
 
     isRunning.value = currentStatus === "running";
 
     if (isRunning.value) {
-      if (logList && logList.length > rawLogList.value.length) {
-        rawLogList.value = logList;
+      if (normalizedLogList.length > rawLogList.value.length) {
+        rawLogList.value = normalizedLogList;
       }
     } else {
-      rawLogList.value = logList || [];
+      rawLogList.value = normalizedLogList;
     }
 
     if (needScrollToBottom) {
@@ -363,9 +379,7 @@ const fetchLog = async (taskId) => {
     console.error("获取日志失败", error);
   }
 
-  if (polling.value) {
-    setTimeout(() => fetchLog(taskId), 3000);
-  }
+  schedulePolling(taskId);
 };
 
 /**
@@ -373,6 +387,8 @@ const fetchLog = async (taskId) => {
  * @param {string} taskId - 任务实例ID
  */
 const open = async (taskId) => {
+  clearPollingTimer();
+  polling.value = false;
   dialogKey.value += 1;
   loading.value = true;
   taskInstanceId.value = taskId;
@@ -385,40 +401,48 @@ const open = async (taskId) => {
   logRowRefs.value = []; // Clear refs when opening dialog
   isRunning.value = false;
 
-  await nextTick();
+  try {
+    await nextTick();
+    const res = await getLogDetail(taskId);
+    const data = res?.data || {};
+    const {
+      status,
+      log,
+      logList,
+      taskName,
+      startTime,
+      duration,
+      statusName,
+      currentStatus,
+    } = data;
 
-  const res = await getLogDetail(taskId);
-  const {
-    status,
-    log,
-    logList,
-    taskName,
-    startTime,
-    duration,
-    statusName,
-    currentStatus,
-  } = res.data;
+    taskInfo.value = {
+      ...data,
+      name: taskName,
+      id: taskId,
+      startTime,
+      runDuration: duration,
+      status,
+      currentStatus,
+      statusName,
+    };
+    rawLogContent.value = typeof log === "string" ? log : "";
+    rawLogList.value = normalizeLogList(logList);
+    isRunning.value = currentStatus === "running";
+    scrollToBottom();
 
-  taskInfo.value = {
-    name: taskName,
-    id: taskId,
-    startTime: startTime,
-    runDuration: duration,
-    status: status,
-    currentStatus: currentStatus,
-    statusName: statusName,
-  };
-  updateTaskStatus(status);
-  rawLogContent.value = log || "";
-  rawLogList.value = logList || []; // Populate rawLogList
-  isRunning.value = currentStatus === "running";
-  loading.value = false;
-  scrollToBottom();
-
-  if (isRunning.value) {
-    autoRefresh.value = true;
-    polling.value = true;
-    setTimeout(() => fetchLog(taskId), 3000);
+    if (isRunning.value) {
+      autoRefresh.value = true;
+      polling.value = true;
+      schedulePolling(taskId);
+    }
+  } catch (error) {
+    console.error("获取日志失败", error);
+    proxy.$modal.msgError(
+      td("dpp.integratioTask.loadLogFailed", "日志加载失败，请稍后重试")
+    );
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -426,6 +450,7 @@ const open = async (taskId) => {
 const handleClose = () => {
   visible.value = false;
   polling.value = false;
+  clearPollingTimer();
   autoRefresh.value = false;
   shouldAutoScroll.value = true;
   rawLogContent.value = "";
@@ -449,6 +474,7 @@ const handleDownload = () => {
 /** 组件卸载前停止轮询 */
 onBeforeUnmount(() => {
   polling.value = false;
+  clearPollingTimer();
 });
 
 /** 暴露 open 方法供父组件调用 */

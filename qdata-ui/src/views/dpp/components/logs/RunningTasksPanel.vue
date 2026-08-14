@@ -20,11 +20,12 @@
     </div>
 
     <div class="panel-subtitle">
-      <span>{{
+      <span v-if="status === 'running'">{{
         td("dpp.integratioTask.currentRunningTasks", "当前运行中 {count} 个任务", {
           count: total,
         })
       }}</span>
+      <span v-else>{{ title }}: {{ total }}</span>
       <el-button link type="primary" @click="refresh" class="subtitle-refresh">
         <el-icon><Refresh /></el-icon>
       </el-button>
@@ -42,7 +43,7 @@
             <img :src="getDatasourceIcon(task.draftJson)" :alt="task.name" />
           </div>
           <div class="task-name">{{ task.name }}</div>
-          <StatusTag status="running" />
+          <StatusTag :status="task.currentStatus || status || 'idle'" />
         </div>
 
         <div class="task-info">
@@ -164,6 +165,10 @@ const props = defineProps({
   total: {
     type: Number,
     default: 0,
+  },
+  status: {
+    type: String,
+    default: "running",
   },
 });
 

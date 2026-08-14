@@ -102,7 +102,8 @@ public interface IDppEtlTaskService extends IService<DppEtlTaskDO> {
 
     PageResult<DppEtlTaskRespVO> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask);
 
-    DppEtlTaskStatisticsRespVO getStatistics(Long projectId, String projectCode);
+    DppEtlTaskStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, String taskType);
 
     DppEtlTaskSaveReqVO createProcessDefinition(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO);
 

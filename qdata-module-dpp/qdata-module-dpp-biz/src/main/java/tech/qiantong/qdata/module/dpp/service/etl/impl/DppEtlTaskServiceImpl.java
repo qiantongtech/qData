@@ -166,11 +166,12 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     }
 
     @Override
-    public DppEtlTaskStatisticsRespVO getStatistics(Long projectId, String projectCode) {
+    public DppEtlTaskStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, String taskType) {
         Date beginOfDay = DateUtil.beginOfDay(new Date());
         Date endOfDay = DateUtil.endOfDay(new Date());
         DppEtlTaskStatisticsRespVO result = dppEtlTaskMapper.getDppEtlTaskStatistics(
-                projectId, projectCode, "1", beginOfDay, endOfDay);
+                projectId, projectCode, taskType, beginOfDay, endOfDay);
         if (result == null) {
             result = new DppEtlTaskStatisticsRespVO();
             result.setRunningCount(0L);

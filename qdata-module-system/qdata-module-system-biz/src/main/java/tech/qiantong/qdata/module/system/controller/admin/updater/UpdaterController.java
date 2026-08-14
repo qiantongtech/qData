@@ -1,10 +1,12 @@
 package tech.qiantong.qdata.module.system.controller.admin.updater;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tech.qiantong.qdata.common.config.AniviaConfig;
 import tech.qiantong.qdata.common.core.controller.BaseController;
 import tech.qiantong.qdata.common.httpClient.HeaderEntity;
 import tech.qiantong.qdata.common.httpClient.HttpUtils;
@@ -30,6 +32,8 @@ public class UpdaterController extends BaseController {
     @Resource
     private ISystemVersionTrackService systemVersionTrackService;
 
+    @Autowired
+    private AniviaConfig qdataConfig;
 
     /**
      * Get current deployment instance version
@@ -103,10 +107,10 @@ public class UpdaterController extends BaseController {
             //String remoteUrl = "http://localhost:8080/updater/getLocalVersion";
             Map<String,Object> mp=  new HashMap<String,Object>();
             if (reqVO != null) {
-                mp.put("name",reqVO.getName());
-                mp.put("version",reqVO.getVersion());
-                mp.put("author",reqVO.getAuthor());
-                mp.put("description",reqVO.getDescription());
+                mp.put("name",qdataConfig.getName());
+                mp.put("version",qdataConfig.getVersion());
+                mp.put("author",qdataConfig.getAuthor());
+                mp.put("description",qdataConfig.getDescription());
             }
             List<HeaderEntity> headers = new ArrayList<>();
             HeaderEntity contentType = new HeaderEntity();

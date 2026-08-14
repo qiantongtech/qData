@@ -34,21 +34,32 @@
         ref="DeptTreeRef"
         @node-click="handleNodeClick"
         :title="td('dpp.developTask.dataDevCategory', 'Data Development Category')"
+        :headerOffset="statsCardHeight"
       />
       <el-main class="main-content">
+        <StatsCardContainer
+          ref="statsCardContainerRef"
+          :cards="statsCards"
+          :selectedIndex="selectedStatsIndex"
+          :showPanel="showRunningTasks"
+          :statsTime="statsTime"
+          @cardClick="toggleRunningTasks"
+          @refresh="loadStatistics"
+        />
+
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
           <template #search>
             <qt-search-bar
               v-bind="searchStore"
               :params="tableStore.params"
+              :visible-count="3"
               @query="handleQuery"
               @reset="resetQuery"
             />
           </template>
           <template #actions-data>
             <el-button type="primary" plain @click="handleAdd">
-              <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ td("common.button.add", "Add") }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td("common.button.add", "Add") }}
             </el-button>
           </template>
 
@@ -58,7 +69,7 @@
                 <div
                   class="justify task-title-row"
                   @click="
-                    routeTo('/dpp/task/integratioTask/detail', {
+                    routeTo('/dpp/task/developTask/detail', {
                       ...row,
                       info: true,
                     })
@@ -95,9 +106,7 @@
             <template #releaseState="{ row }">
               <div class="flex-column fz12">
                 <div class="flex-center">
-                  <span class="black-label mr5"
-                    >{{ td("dpp.developTask.taskStatus", "Task Status") }}:</span
-                  >
+                  <span class="black-label mr5">{{ td("dpp.developTask.taskStatus", "Task Status") }}:</span>
                   <el-switch
                     v-model="row.status"
                     active-color="#13ce66"
@@ -109,11 +118,9 @@
                   />
                 </div>
                 <div class="flex-center">
-                  <span class="black-label mr5"
-                    >{{
+                  <span class="black-label mr5">{{
                       td("dpp.developTask.scheduleStatus", "Schedule Status")
-                    }}:</span
-                  >
+                    }}:</span>
                   <el-switch
                     v-model="row.schedulerState"
                     active-color="#13ce66"
@@ -138,11 +145,9 @@
                   </span>
                 </div>
                 <div class="flex-center">
-                  <span class="mr5"
-                    >{{
+                  <span class="mr5">{{
                       td("dpp.developTask.executeStrategy", "Execution Strategy")
-                    }}:</span
-                  >
+                    }}:</span>
                   <dict-tag
                     :options="dpp_etl_task_execution_type"
                     :value="row.executionType"
@@ -162,32 +167,20 @@
               </div>
             </template>
             <template #lastExecute="{ row }">
-              <div class="flex-column fz14 last-execute-col">
-                <template v-if="row.lastExecuteTime">
-                  <div class="mb5">
-                    <dict-tag
-                      v-if="
-                        row.lastExecuteStatus !== null &&
-                        row.lastExecuteStatus !== undefined &&
-                        row.lastExecuteStatus !== ''
-                      "
-                      :options="dpp_etl_task_instance"
-                      :value="row.lastExecuteStatus"
-                    />
-                    <span v-else>-</span>
-                  </div>
-                  <span>
-                    {{ parseTime(row.lastExecuteTime, "{y}-{m}-{d} {h}:{i}") }}
+              <StatusTag
+                size="small"
+                :status="row.currentStatus"
+                @click="openTaskLogDialog(row)"
+              />
+              <div class="last-execute-info">
+                <div class="last-execute-info__row">
+                  <span class="last-execute-info__value">
+                    {{ row.lastExecuteTime ? timeAgo(row.lastExecuteTime) : "-" }}
                   </span>
-                </template>
-                <template v-else>
-                  <div class="mb5">
-                    <el-tag type="infos">{{
-                      td("dpp.developTask.notExecuted", "Not Executed")
-                    }}</el-tag>
-                  </div>
-                  <span>-</span>
-                </template>
+                  <span class="ml10 last-execute-info__value">
+                    {{ row.duration || "-" }}
+                  </span>
+                </div>
               </div>
             </template>
             <template #personChargeName="{ row }">
@@ -195,8 +188,7 @@
                 <span
                   class="text-ellipsis person-charge-ellipsis"
                   :title="row.personCharge"
-                  >{{ row.personChargeName || "-" }}</span
-                >
+                  >{{ row.personChargeName || "-" }}</span>
                 <span>{{ row.contactNumber || "-" }}</span>
               </div>
             </template>
@@ -205,8 +197,7 @@
                 <span
                   class="text-ellipsis person-charge-ellipsis"
                   :title="row.personCharge"
-                  >{{ row.createBy || "-" }}</span
-                >
+                  >{{ row.createBy || "-" }}</span>
                 <span>{{ row.createUserContactNumber || "-" }}</span>
               </div>
             </template>
@@ -225,8 +216,7 @@
                 @click="routeTo('/dpp/task/developTask/edit', row)"
                 >{{
                   td("dpp.developTask.configureTask", "Configure Task")
-                }}</el-button
-              >
+                }}</el-button>
               <el-button
                 link
                 type="primary"
@@ -237,8 +227,7 @@
                     info: true,
                   })
                 "
-                >{{ td("common.button.details", "Details") }}</el-button
-              >
+                >{{ td("common.button.details", "Details") }}</el-button>
 
               <el-popover placement="bottom" :width="150" trigger="click">
                 <template #reference>
@@ -257,26 +246,15 @@
                     v-if="row.processType != 1"
                     >{{
                       td("dpp.developTask.schedulePeriod", "Schedule Period")
-                    }}</el-button
-                  >
+                    }}</el-button>
                   <el-button
                     link
                     type="primary"
                     icon="Stopwatch"
                     @click="handleDataView(row)"
-                    v-if="row.processType == 1 && row.status == 1"
-                    >{{ td("dpp.developTask.stopTask", "Stop Task") }}</el-button
-                  >
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Stopwatch"
-                    @click="handleDataView(row)"
-                    v-if="row.processType == 1 && row.status != 1"
                     >{{
                       td("dpp.developTask.runInstance", "Run Instance")
-                    }}</el-button
-                  >
+                    }}</el-button>
                   <el-button
                     link
                     type="primary"
@@ -286,8 +264,7 @@
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.developTask.executeOnce", "Execute Once")
-                    }}</el-button
-                  >
+                    }}</el-button>
                   <el-button
                     link
                     type="primary"
@@ -296,16 +273,14 @@
                       row.datasourceType === 'FlinkStream' && row.taskInstanceId
                     "
                     @click="handleExecuteStop(row)"
-                    >{{ td("dpp.developTask.stop", "Stop") }}</el-button
-                  >
+                    >{{ td("dpp.developTask.stop", "Stop") }}</el-button>
                   <el-button
                     link
                     type="danger"
                     icon="Delete"
                     :disabled="row.status == 1"
                     @click="handleDelete(row)"
-                    >{{ td("common.button.delete", "Delete") }}</el-button
-                  >
+                    >{{ td("common.button.delete", "Delete") }}</el-button>
                 </div>
               </el-popover>
             </template>
@@ -313,14 +288,29 @@
         </qt-wrap>
       </el-main>
     </el-container>
+    <RunningTasksPanel
+      :visible="showRunningTasks"
+      :title="currentPanelTitle"
+      :tasks="runningTasks"
+      :loading="runningTasksQuery.loading"
+      :total="runningTasksQuery.total"
+      :status="runningTasksQuery.status"
+      @update:visible="showRunningTasks = $event"
+      @viewRealTimeLog="viewRealTimeLog"
+      @viewInstance="viewInstance"
+      @taskClick="openTaskDetail"
+      @loadMore="loadMoreTasks"
+      @refresh="refreshRunningTasks"
+    />
     <instance
       :visible="DataView"
       :taskType="3"
       @update:visible="DataView = $event"
       @confirm="submitForm"
       :data="form"
-      :title="td('dpp.developTask.runningInstance', 'Running Instance')"
+      :title="td('dpp.developTask.runInstance', 'Run Instance')"
     />
+    <TaskLogDialog ref="taskLogDialogRef" />
     <el-dialog
       :title="td('dpp.developTask.schedulePeriod', 'Schedule Period')"
       v-model="openCron"
@@ -364,18 +354,19 @@ import { treeData } from "@/views/dpp/task/developTask/data";
 import {
   listDppEtlTask,
   delDppEtlTask,
-  addDppEtlTask,
-  updateDppEtlTask,
   updateReleaseSchedule,
   updateReleaseJobTask,
   releaseTaskCrontab,
   startDppEtlTask,
   createEtlTaskFront,
+  getEtlTaskStatistics,
+  getEtlTaskInstanceList,
 } from "@/api/dpp/task/index.js";
 import { usePageRefresh } from "@/composables/usePageRefresh";
 import { getDatasourceIcon } from "@/utils/datasource";
 import { execute } from "@/api/dpp/task";
 import { cronToZh } from "@/utils/cronUtils";
+import { timeAgo } from "@/utils/time";
 import {
   listAttDataDevCat,
   getAttDataDevCat,
@@ -384,7 +375,15 @@ import {
   delAttDataDevCat,
 } from "@/api/att/cat/dataDevCat/dataDevCat";
 import Crontab from "@/components/Crontab/index.vue";
-import instance from "@/views/dpp/components/instance.vue";
+import instance from "@/views/dpp/components/logs/instance.vue";
+import TaskLogDialog from "@/views/dpp/components/logs/taskLog.vue";
+import RunningTasksPanel from "@/views/dpp/components/logs/RunningTasksPanel.vue";
+import StatsCardContainer from "@/views/dpp/components/logs/StatsCardContainer.vue";
+import StatusTag from "@/views/dpp/components/logs/StatusTag.vue";
+import runningTaskIcon from "@/assets/dpp/etl/instance/running-task.svg";
+import todayErrorTaskIcon from "@/assets/dpp/etl/instance/today-error-task.svg";
+import todayExecutionIcon from "@/assets/dpp/etl/instance/today-execution.svg";
+import todaySuccessRateIcon from "@/assets/dpp/etl/instance/today-success-rate.svg";
 import useUserStore from "@/store/system/user";
 
 const userStore = useUserStore();
@@ -392,11 +391,21 @@ import { useRoute, useRouter } from "vue-router";
 import DeptTree from "@/components/DeptTree";
 import add from "./add/add.vue";
 import { deptUserTree } from "@/api/system/system/user.js";
-import { ref, reactive, getCurrentInstance, watch, toRefs } from "vue";
-import {checkApi} from "@/api/ds/api/api.js";
+import {
+  ref,
+  reactive,
+  computed,
+  getCurrentInstance,
+  watch,
+  onMounted,
+  onUnmounted,
+  nextTick,
+} from "vue";
 
-const { td } = useDefaultLang();
+const { td, locale } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const statsCardContainerRef = ref(null);
+const statsCardHeight = ref(0);
 const executeOnceLoading = ref(false);
 
 const api = {
@@ -409,15 +418,11 @@ const api = {
 const {
   dpp_etl_task_status,
   dpp_etl_task_execution_type,
-  dpp_etl_task_instance,
-  datasource_type,
-  dpp_etl_task_process_type,
+  dpp_task_current_status,
 } = proxy.useDict(
   "dpp_etl_task_status",
   "dpp_etl_task_execution_type",
-  "dpp_etl_task_instance",
-  "datasource_type",
-  "dpp_etl_task_process_type"
+  "dpp_task_current_status"
 );
 const typaOptions = treeData.map((item) => {
   return {
@@ -433,18 +438,6 @@ const schedulerOptions = [
 const getSchedulerLabel = (value) => {
   return schedulerOptions.find((item) => item.value == value)?.label || value || "-";
 };
-const getExecutionType = (executionType) => {
-  if (!executionType) return null;
-  const item = typaOptions.find(
-    (i) => String(i.value).toLowerCase() === String(executionType).toLowerCase()
-  );
-  if (!item) return null;
-  return {
-    ...item,
-    elTagType: item.elTagType, // Default info
-  };
-};
-
 const getStatus = (status) => {
   if (status == "-1") {
     return "-1";
@@ -495,29 +488,6 @@ const handleConfirm = (form) => {
 };
 
 const leftWidth = ref(300); // Initial left width
-const isResizing = ref(false); // Determine whether dragging is in progress
-
-let startX = 0; // Initial position when mouse is pressed // Initial left width
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // Calculate mouse movement distance
-    leftWidth.value += delta; // Modify left width
-    startX = event.clientX; // Update starting position
-    // Use requestAnimationFrame to reduce page redraw frequency
-    requestAnimationFrame(() => {});
-  }
-};
 /** Drop down tree structure */
 function getDeptTree() {
   api
@@ -537,6 +507,192 @@ function handleNodeClick(data) {
   tableStore.params.catCode = data.code;
   handleQuery();
 }
+
+const statistics = reactive({
+  runningCount: 0,
+  todayErrorCount: 0,
+  todayExecuteCount: 0,
+  todaySuccessRate: 0,
+});
+const statsTime = ref("");
+const showRunningTasks = ref(false);
+const selectedStatsIndex = ref(-1);
+const runningTasks = ref([]);
+const runningTasksQuery = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  total: 0,
+  status: "running",
+  loading: false,
+});
+
+const statsCards = computed(() => [
+  {
+    name: td("dpp.developTask.runningTasks", "Running Tasks"),
+    value: statistics.runningCount,
+    unit: td("dpp.developTask.taskUnit", "times"),
+    iconClass: "icon-blue",
+    iconSrc: runningTaskIcon,
+    type: "running",
+    tip: td(
+      "dpp.developTask.runningTasksTip",
+      "Number of tasks with at least one running instance"
+    ),
+  },
+  {
+    name: td("dpp.developTask.todayErrorTasks", "Today's Failed Tasks"),
+    value: statistics.todayErrorCount,
+    unit: td("dpp.developTask.taskUnit", "times"),
+    iconClass: "icon-orange",
+    iconSrc: todayErrorTaskIcon,
+    type: "failed",
+    tip: td(
+      "dpp.developTask.todayErrorTasksTip",
+      "Number of tasks whose latest execution failed today"
+    ),
+  },
+  {
+    name: td("dpp.developTask.todayExecutions", "Today's Executions"),
+    value: statistics.todayExecuteCount,
+    unit: td("dpp.developTask.taskUnit", "times"),
+    iconClass: "icon-blue",
+    iconSrc: todayExecutionIcon,
+    type: "",
+    tip: td(
+      "dpp.developTask.todayExecutionsTip",
+      "Number of execution instances created today"
+    ),
+  },
+  {
+    name: td("dpp.developTask.todaySuccessRate", "Today's Success Rate"),
+    value: statistics.todaySuccessRate,
+    unit: "%",
+    iconClass: "icon-green",
+    iconSrc: todaySuccessRateIcon,
+    type: "success",
+    tip: td(
+      "dpp.developTask.todaySuccessRateTip",
+      "Successful completed instances divided by all completed instances today"
+    ),
+  },
+]);
+
+const currentPanelTitle = computed(() => {
+  if (!showRunningTasks.value || selectedStatsIndex.value < 0) return "";
+  return statsCards.value[selectedStatsIndex.value]?.name || "";
+});
+
+const noMoreTasks = computed(
+  () =>
+    runningTasks.value.length >= runningTasksQuery.total &&
+    runningTasksQuery.total > 0
+);
+
+async function toggleRunningTasks(index) {
+  selectedStatsIndex.value = index;
+  showRunningTasks.value = false;
+  const status = statsCards.value[index].type;
+  tableStore.params.currentStatus = status;
+  if (status === "running") {
+    tableStore.params.executeTime = [];
+  } else {
+    const today = proxy.parseTime(new Date(), "{y}-{m}-{d}");
+    tableStore.params.executeTime = [today, today];
+  }
+  handleQuery();
+  await loadRunningTasks(index);
+}
+
+async function loadStatistics() {
+  try {
+    const res = await getEtlTaskStatistics({
+      projectId: userStore.projectId,
+      projectCode: userStore.projectCode,
+      taskType: "3",
+    });
+    if (Number(res?.code) === 200) {
+      const data = res.data || {};
+      statistics.runningCount = data.runningCount || 0;
+      statistics.todayErrorCount = data.todayErrorCount || 0;
+      statistics.todayExecuteCount = data.todayExecuteCount || 0;
+      statistics.todaySuccessRate = data.todaySuccessRate || 0;
+      statsTime.value = proxy.parseTime(
+        data.statisticsTime || new Date(),
+        "{y}-{m}-{d} {h}:{i}:{s}"
+      );
+    }
+  } catch (error) {
+    console.error("Failed to load data development task statistics", error);
+  }
+}
+
+async function loadRunningTasks(index = 0, isLoadMore = false) {
+  if (runningTasksQuery.loading) return;
+  runningTasksQuery.loading = true;
+  if (!isLoadMore) {
+    runningTasksQuery.pageNum = 1;
+    runningTasks.value = [];
+    runningTasksQuery.total = 0;
+    runningTasksQuery.status =
+      index === 0 ? "running" : index === 1 ? "failed" : index === 3 ? "success" : null;
+  } else {
+    runningTasksQuery.pageNum += 1;
+  }
+  const today = proxy.parseTime(new Date(), "{y}-{m}-{d}");
+  try {
+    const res = await getEtlTaskInstanceList({
+      pageNum: runningTasksQuery.pageNum,
+      pageSize: runningTasksQuery.pageSize,
+      taskType: "3",
+      status: runningTasksQuery.status,
+      projectId: userStore.projectId,
+      projectCode: userStore.projectCode,
+      startTime: index === 0 ? undefined : `${today} 00:00:00`,
+      endTime: index === 0 ? undefined : `${today} 23:59:59`,
+    });
+    if (Number(res?.code) === 200) {
+      const newTasks = res.data?.rows || [];
+      runningTasks.value = isLoadMore
+        ? [...runningTasks.value, ...newTasks]
+        : newTasks;
+      runningTasksQuery.total = res.data?.total || 0;
+      showRunningTasks.value = false;
+    }
+  } catch (error) {
+    if (isLoadMore) runningTasksQuery.pageNum -= 1;
+    console.error("Failed to load data development task instances", error);
+  } finally {
+    runningTasksQuery.loading = false;
+  }
+}
+
+function loadMoreTasks() {
+  if (noMoreTasks.value || runningTasksQuery.loading) return;
+  loadRunningTasks(selectedStatsIndex.value, true);
+}
+
+function refreshRunningTasks() {
+  loadRunningTasks(selectedStatsIndex.value);
+}
+
+function viewRealTimeLog(task) {
+  taskLogDialogRef.value?.open(task.id);
+}
+
+function viewInstance(task) {
+  handleDataView({
+    ...task,
+    id: task.taskId || task.id,
+  });
+}
+
+function openTaskDetail(task) {
+  routeTo("/dpp/task/developTask/detail", {
+    ...task,
+    id: task.taskId || task.id,
+    info: true,
+  });
+}
 const route = useRoute();
 let openCron = ref(false);
 let row = ref();
@@ -549,7 +705,7 @@ function handleJobLog(data) {
   expression.value = data.cronExpression || "";
   console.log("🚀 ~ handleJobLog ~ expression.value:", expression.value);
 }
-function handleschedulerState(id, row, e) {
+function handleschedulerState(id, row) {
   const text =
     row.schedulerState == "1"
       ? td("dpp.developTask.online", "Online")
@@ -574,12 +730,12 @@ function handleschedulerState(id, row, e) {
         projectCode: userStore.projectCode,
         projectId: userStore.projectId,
       })
-        .then((response) => {
+        .then(() => {
           proxy.$modal.msgSuccess(
             td("common.message.msgOpSuccess", "Operation successful")
           );
         })
-        .catch((error) => {
+        .catch(() => {
           // Recovery operations in case of processing failure
           row.schedulerState = row.schedulerState === "1" ? "0" : "1"; // Restore previous state
         })
@@ -587,14 +743,14 @@ function handleschedulerState(id, row, e) {
           loading.value = false; // Stop loading regardless of success or failure
         });
     })
-    .catch((error) => {
+    .catch(() => {
       // Restoring state on failure
       row.schedulerState = row.schedulerState == "1" ? "0" : "1";
     });
 }
 
 /** Change enabled status value */
-function handleStatusChange(id, row, e) {
+function handleStatusChange(id, row) {
   const text =
     row.status == "1"
       ? td("dpp.developTask.online", "Online")
@@ -619,13 +775,13 @@ function handleStatusChange(id, row, e) {
         projectCode: userStore.projectCode,
         projectId: userStore.projectId,
       })
-        .then((response) => {
+        .then(() => {
           proxy.$modal.msgSuccess(
             td("common.message.msgOpSuccess", "Operation successful")
           );
           handleQuery();
         })
-        .catch((error) => {
+        .catch(() => {
           // Restoring state on failure
           row.status = row.status === "1" ? "0" : "1";
         })
@@ -633,7 +789,7 @@ function handleStatusChange(id, row, e) {
           loading.value = false; // Stop loading regardless of success or failure
         });
     })
-    .catch((error) => {
+    .catch(() => {
       // Restoring state on failure
       row.status = row.status === "1" ? "0" : "1";
     });
@@ -646,7 +802,7 @@ function crontabFill(value) {
     projectCode: userStore.projectCode,
     projectId: userStore.projectId,
     id: row.value.id,
-  }).then((response) => {
+  }).then(() => {
     proxy.$modal.msgSuccess(td("common.message.msgOpSuccess", "Operation successful"));
     handleQuery();
   });
@@ -704,13 +860,13 @@ const handleExecuteStop = async (row) => {
 };
 
 let DataView = ref(false);
+const taskLogDialogRef = ref(null);
 /** Run instance interface */
 function handleDataView(row) {
   form.value = row;
   DataView.value = true;
 }
 
-const open = ref(false);
 const loading = ref(false);
 const ids = ref([]);
 const router = useRouter();
@@ -744,8 +900,6 @@ const form = ref({
     },
   },
 });
-const rules = ref({});
-
 const tableRef = ref(null);
 const tableStore = reactive({
   config: {
@@ -827,6 +981,8 @@ const tableStore = reactive({
     catCode: null,
     projectId: userStore.projectId,
     projectCode: userStore.projectCode,
+    currentStatus: null,
+    executeTime: [],
   },
 });
 
@@ -851,6 +1007,18 @@ const searchStore = reactive({
       },
     },
     {
+      label: td("dpp.developTask.executeStatus", "Execution Status"),
+      prop: "currentStatus",
+      component: {
+        is: "select",
+        options: dpp_task_current_status,
+        placeholder: td(
+          "dpp.developTask.selectExecuteStatus",
+          "Please select execution status"
+        ),
+      },
+    },
+    {
       label: td("dpp.developTask.datasourceType", "Data Connection Type"),
       prop: "datasourceType",
       component: {
@@ -863,15 +1031,14 @@ const searchStore = reactive({
       },
     },
     {
-      label: td("dpp.developTask.processType", "Process Type"),
-      prop: "processType",
+      label: td("dpp.developTask.executeTime", "Execution Time"),
+      prop: "executeTime",
+      style: { width: "320px" },
       component: {
-        is: "select",
-        placeholder: td("dpp.developTask.selectProcessType", "Please select process type"),
-        options: [
-          { label: td("dpp.developTask.streamProcess", "Stream Processing"), value: "1" },
-          { label: td("dpp.developTask.batchProcess", "Batch Processing"), value: "2" },
-        ],
+        is: "date-picker",
+        type: "daterange",
+        startPlaceholder: td("common.date.startDate", "Start date"),
+        endPlaceholder: td("common.date.endDate", "End date"),
       },
     },
   ],
@@ -882,37 +1049,32 @@ function listWrapper(params) {
   p.projectId = userStore.projectId;
   p.projectCode = userStore.projectCode;
   p.type = "3";
+  if (p.executeTime && p.executeTime.length === 2) {
+    p.startTime = `${p.executeTime[0]} 00:00:00`;
+    p.endTime = `${p.executeTime[1]} 23:59:59`;
+  }
+  delete p.executeTime;
   return listDppEtlTask(p);
 }
 
-// Monitor id changes
-watch(
-  () => userStore.projectCode,
-  (newId) => {
-    handleQuery();
-    getDeptTree();
-  },
-  { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
-);
+function openTaskLogDialog(row) {
+  if (!row?.taskInstanceId) {
+    proxy.$modal.msgWarning(
+      td("dpp.developTask.noExecutionLog", "No recent execution log")
+    );
+    return;
+  }
+  taskLogDialogRef.value?.open(row.taskInstanceId);
+}
 
 function getList() {
   tableRef.value?.getList();
 }
 
-// form reset
-function reset() {
-  form.value = {
-    id: null,
-    type: null,
-    name: null,
-    status: null,
-  };
-  proxy.resetForm("dppEtlTaskRef");
-}
-
 /** Search button action */
 function handleQuery() {
   getList();
+  loadStatistics();
 }
 const DeptTreeRef = ref(null);
 /** reset button action */
@@ -921,35 +1083,13 @@ function resetQuery() {
     DeptTreeRef.value.resetTree();
   }
   tableStore.params.catCode = "";
+  tableStore.params.currentStatus = null;
+  tableStore.params.executeTime = [];
   getList();
 }
 /** submit button */
 function submitForm() {
-  proxy.$refs["dppEtlTaskRef"].validate((valid) => {
-    if (valid) {
-      if (form.value.id != null) {
-        updateDppEtlTask(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(
-              td("common.message.editSuccess", "Updated successfully")
-            );
-            open.value = false;
-            getList();
-          })
-          .catch((error) => {});
-      } else {
-        addDppEtlTask(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(
-              td("common.message.addSuccess", "Added successfully")
-            );
-            open.value = false;
-            getList();
-          })
-          .catch((error) => {});
-      }
-    }
-  });
+  handleQuery();
 }
 
 /** Delete button action */
@@ -991,7 +1131,128 @@ function routeTo(link, row) {
     }
   }
 }
-usePageRefresh("developTask", () => getList());
-getDeptTree();
+
+function syncPageI18n() {
+  const columnLabels = [
+    td("common.texts.number", "No."),
+    td("dpp.developTask.taskInfo", "Task Info"),
+    td("dpp.developTask.runControl", "Run Control"),
+    td("dpp.developTask.dispatchInformation", "Scheduling Information"),
+    td("dpp.developTask.recentExecution", "Recent Execution"),
+    td("dpp.developTask.responsiblePerson", "Responsible Person"),
+    td("common.texts.createdBy", "Created By"),
+    td("common.texts.createdTime", "Created Time"),
+    td("common.texts.operation", "Operation"),
+  ];
+  tableStore.columns.forEach((column, index) => {
+    column.label = columnLabels[index];
+  });
+
+  searchStore.items[0].label = td("dpp.developTask.taskName", "Task Name");
+  searchStore.items[0].component.placeholder = td(
+    "dpp.developTask.inputTaskName",
+    "Please enter task name"
+  );
+  searchStore.items[1].label = td("dpp.developTask.taskStatus", "Task Status");
+  searchStore.items[1].component.placeholder = td(
+    "dpp.developTask.selectTaskStatus",
+    "Please select task status"
+  );
+  searchStore.items[2].label = td(
+    "dpp.developTask.executeStatus",
+    "Execution Status"
+  );
+  searchStore.items[2].component.placeholder = td(
+    "dpp.developTask.selectExecuteStatus",
+    "Please select execution status"
+  );
+  searchStore.items[3].label = td(
+    "dpp.developTask.datasourceType",
+    "Data Connection Type"
+  );
+  searchStore.items[3].component.placeholder = td(
+    "dpp.developTask.selectDatasourceType",
+    "Please select data connection type"
+  );
+  searchStore.items[4].label = td("dpp.developTask.executeTime", "Execution Time");
+  searchStore.items[4].component.startPlaceholder = td(
+    "common.date.startDate",
+    "Start date"
+  );
+  searchStore.items[4].component.endPlaceholder = td(
+    "common.date.endDate",
+    "End date"
+  );
+}
+
+watch(locale, syncPageI18n);
+
+const updateStatsCardHeight = () => {
+  const element = statsCardContainerRef.value?.$el;
+  statsCardHeight.value = element ? element.offsetHeight + 20 : 0;
+};
+
+let resizeObserver = null;
+
+async function initializePageData() {
+  if (!userStore.projectCode) return;
+  getDeptTree();
+  handleQuery();
+}
+
+onMounted(async () => {
+  await initializePageData();
+  await nextTick();
+  const element = statsCardContainerRef.value?.$el;
+  if (element && typeof ResizeObserver !== "undefined") {
+    resizeObserver = new ResizeObserver(updateStatsCardHeight);
+    resizeObserver.observe(element);
+  }
+  updateStatsCardHeight();
+});
+
+onUnmounted(() => {
+  resizeObserver?.disconnect();
+});
+
+watch(
+  () => [userStore.projectId, userStore.projectCode],
+  async ([projectId, projectCode], [oldProjectId, oldProjectCode] = []) => {
+    if (
+      projectCode &&
+      (projectId !== oldProjectId || projectCode !== oldProjectCode)
+    ) {
+      showRunningTasks.value = false;
+      selectedStatsIndex.value = -1;
+      await initializePageData();
+    }
+  }
+);
+
+usePageRefresh("developTask", initializePageData);
 </script>
 <style lang="scss" src="@/assets/styles/system/table-style-optimized.scss"></style>
+
+<style scoped lang="scss">
+.last-execute-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.last-execute-info__row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.last-execute-info__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

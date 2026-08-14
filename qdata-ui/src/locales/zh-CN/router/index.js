@@ -37,7 +37,7 @@ export default {
     "dppTaskDppIntegratioTask": "数据集成",
     "dppDppIntegratioTask":"数据集成",
     "dppTaskDppDevelopTask": "数据开发",
-    "dppDppDevelopTask":"数据集成",
+    "dppDppDevelopTask":"数据开发",
     "dppInstance": "运维管理",
     "dppInstanceIntegratioTask": "数据集成实例",
     "dppInstanceDevelopTask": "数据开发实例",

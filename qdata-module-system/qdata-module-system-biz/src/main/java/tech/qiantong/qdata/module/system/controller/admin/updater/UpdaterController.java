@@ -35,7 +35,7 @@ public class UpdaterController extends BaseController {
      * Get current deployment instance version
      */
     @GetMapping("/getLocalVersion")
-    public CommonResult<Map<String, Object>> getLocalVersion() {
+    public CommonResult<Map<String, Object>> getLocalVersion(CurrentAppVersionReqVO reqVO) {
         String currentVersion = qdataConfig.getVersion();
         Map<String, Object> result = new HashMap<>();
         result.put("latestVersion", currentVersion);
@@ -45,7 +45,7 @@ public class UpdaterController extends BaseController {
     /**
      * Check if current instance is the latest version
      */
-    @GetMapping("/getCurrentAppVersion")
+    @PostMapping("/getCurrentAppVersion")
     public CommonResult<VersionInfo> getCurrentAppVersion(CurrentAppVersionReqVO reqVO) {
         // Get local version info
         String currentVersion = reqVO.getVersion();
@@ -84,7 +84,7 @@ public class UpdaterController extends BaseController {
         return CommonResult.success(versionInfo);
     }
 
-    @PostMapping("/tractlatestAppVersion")
+   /* @PostMapping("/tractlatestAppVersion")
     public void tractlatestAppVersion(@RequestBody SystemVersionTrackSaveReqVO reqVO) {
         try {
             String remoteUrl = "https://qdata-pro.qiantong.tech/prod-api/system/VersionTrack";
@@ -93,20 +93,20 @@ public class UpdaterController extends BaseController {
             logger.error("Version track forwarding failed", e);
         }
     }
-
+*/
     /**
      * Build version track forwarding parameters.
      */
-    private Map<String, Object> buildVersionTrackParams(SystemVersionTrackSaveReqVO reqVO) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", reqVO.getId());
-        params.put("name", reqVO.getName());
-        params.put("currVersion", reqVO.getCurrVersion());
-        params.put("description", reqVO.getDescription());
-        params.put("author", reqVO.getAuthor());
-        params.put("remark", reqVO.getRemark());
-        return params;
-    }
+//    private Map<String, Object> buildVersionTrackParams(SystemVersionTrackSaveReqVO reqVO) {
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("id", reqVO.getId());
+//        params.put("name", reqVO.getName());
+//        params.put("currVersion", reqVO.getCurrVersion());
+//        params.put("description", reqVO.getDescription());
+//        params.put("author", reqVO.getAuthor());
+//        params.put("remark", reqVO.getRemark());
+//        return params;
+//    }
 
     /**
      * Parse response body to Map

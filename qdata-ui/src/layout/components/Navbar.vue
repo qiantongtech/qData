@@ -289,9 +289,9 @@
               >
                 <span>{{ t('sys.dashboard.layoutSettings') }}</span>
               </el-dropdown-item>
-               <el-dropdown-item command="about">
-                                <span>{{ t('sys.dashboard.aboutUs') }}</span>
-                            </el-dropdown-item>
+<!--               <el-dropdown-item command="about">-->
+<!--                                <span>{{ t('sys.dashboard.aboutUs') }}</span>-->
+<!--                            </el-dropdown-item>-->
               <el-dropdown-item divided command="logout">
                 <span>{{ t('sys.dashboard.logout') }}</span>
               </el-dropdown-item>
@@ -802,19 +802,17 @@ const listProject = () => {
 onMounted(() => {
   initWebSocket();
   console.log(userStore);
-
   listProject();
-
-  getCurrentAppVersion().then((res) => {
-    if (res.data != null) {
-      // Is it the latest version?
-      needUpdate.value = res.data.needUpdate;
-      //Local version number
-      currentVersion.value = res.data.currentVersion;
-      //Latest version number
-      latestVersion.value = res.data.latestVersion;
-    }
-  });
+  // getCurrentAppVersion().then((res) => {
+  //   if (res.data != null) {
+  //     // Is it the latest version?
+  //     needUpdate.value = res.data.needUpdate;
+  //     //Local version number
+  //     currentVersion.value = res.data.currentVersion;
+  //     //Latest version number
+  //     latestVersion.value = res.data.latestVersion;
+  //   }
+  // });
 });
 // Page logout
 onBeforeUnmount(() => {

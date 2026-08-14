@@ -99,12 +99,21 @@ public final class DataXJsonBuilder {
             }
         }
         parameter.put("batchSize", nodeJsonMap.get("batchSize"));
+        Object description = nodeJsonMap.get("description");
+        if (description != null) {
+            parameter.put("batchSize", description);
+        }
+        parameter.put("batchSize", nodeJsonMap.get("description"));
         Object componentType = nodeJsonMap.get("componentType");
         if (componentType == null || TaskComponentTypeEnum.DB_READER.getCode().equals(componentType)) {
             parameter.put("username", datasourceConfig.get("username"));
             parameter.put("password", decryptPassword(datasourceConfig));
             parameter.put("connection", buildConnection(nodeJsonMap.get(tableKey).toString(), datasource, reader));
-
+            if(TaskComponentTypeEnum.DB_READER.getCode().equals(componentType)){
+                parameter.put("readModeType", nodeJsonMap.get("readModeType"));
+                parameter.put("dateIncrementConfig", nodeJsonMap.get("dateIncrementConfig"));
+                parameter.put("idIncrementConfig", nodeJsonMap.get("idIncrementConfig"));
+            }
         } else if (TaskComponentTypeEnum.CSV_READER.getCode().equals(componentType) || TaskComponentTypeEnum.EXCEL_READER.getCode().equals(componentType)) {
             parameter.put("csvFile", nodeJsonMap.get("csvFile"));
             if(TaskComponentTypeEnum.EXCEL_READER.getCode().equals(componentType)){

@@ -20,6 +20,10 @@ qdata:
   name: qData
   # Version
   version: 3.8.8
+  # author
+  author: 千桐科技
+  # description
+  description: qData Open-Source Data Platform
   # Copyright year
   copyrightYear: 2024
   # File path example (Windows configuration D:/qdata/uploadPath, Linux configuration /home/qdata/uploadPath) -- needs to be consistent with the file module

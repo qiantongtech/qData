@@ -27,10 +27,12 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskPageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskStatisticsRespVO;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskDO;
 import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +46,13 @@ import java.util.Set;
 public interface DppEtlTaskMapper extends BaseMapperX<DppEtlTaskDO> {
 
     IPage<DppEtlTaskRespVO> getDppEtlTaskPage(Page page, @Param("params") DppEtlTaskPageReqVO reqVO);
+
+    DppEtlTaskStatisticsRespVO getDppEtlTaskStatistics(
+            @Param("projectId") Long projectId,
+            @Param("projectCode") String projectCode,
+            @Param("taskType") String taskType,
+            @Param("beginOfDay") Date beginOfDay,
+            @Param("endOfDay") Date endOfDay);
 
     default PageResult<DppEtlTaskDO> selectPage(DppEtlTaskPageReqVO reqVO) {
         // Define sortable fields (prevent SQL injection, must match database column names)

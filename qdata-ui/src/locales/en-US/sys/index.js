@@ -16,7 +16,7 @@ export default {
     isLatestVersion: 'Already the latest version.',
     latestVersion: 'Latest Version',
     update: 'Update',
-    updateLog: 'Update Log',
+    updateLog: 'Get Latest version',
     weekOverWeek: 'Week-over-Week:',
     apiCallTrend: 'API Data Call Volume Trend',
     governanceDataTrend: 'Governance Data Volume Trend',

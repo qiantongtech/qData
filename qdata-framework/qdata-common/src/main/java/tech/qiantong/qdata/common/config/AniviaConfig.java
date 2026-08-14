@@ -39,6 +39,11 @@ public class AniviaConfig
     /** Copyright year */
     private String copyrightYear;
 
+    private String author;
+
+    private String description;
+
+
     /** Upload path */
     private static String profile;
 
@@ -66,6 +71,23 @@ public class AniviaConfig
     public void setVersion(String version)
     {
         this.version = version;
+    }
+
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCopyrightYear()

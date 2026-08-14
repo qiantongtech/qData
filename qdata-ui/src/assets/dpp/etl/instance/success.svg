@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  data-system-id="U2FsdGVkX1/xl3MKZaqW7TSzjniDziTKVTvxBWPR/LE=" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>成功</title>
+    <g id="后台管理系统" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组">
+            <polygon id="路径" points="0 0 24 0 24 24 0 24"></polygon>
+            <path d="M4,12 C4,7.58172 7.58172,4 12,4 C16.4183,4 20,7.58172 20,12 C20,16.4183 16.4183,20 12,20 C7.58172,20 4,16.4183 4,12 Z M12,2 C6.47715,2 2,6.47715 2,12 C2,17.5228 6.47715,22 12,22 C17.5228,22 22,17.5228 22,12 C22,6.47715 17.5228,2 12,2 Z M17.4571,9.45711 L16.0429,8.04289 L11,13.0858 L8.20711,10.2929 L6.79289,11.7071 L11,15.9142 L17.4571,9.45711 Z" id="形状" fill="#009E26" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

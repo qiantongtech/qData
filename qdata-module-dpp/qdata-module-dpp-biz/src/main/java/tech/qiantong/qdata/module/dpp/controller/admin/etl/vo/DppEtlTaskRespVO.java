@@ -18,6 +18,7 @@
 
 package tech.qiantong.qdata.module.dpp.controller.admin.etl.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -183,6 +184,25 @@ public class DppEtlTaskRespVO implements Serializable {
     @TableField(exist = false)
     private String lastExecuteStatus;
 
+    @Excel(name = "Last Execution End Time", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Last Execution End Time", example = "")
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastExecuteEndTime;
+
+    @Schema(description = "Current status: running, idle, success or failed")
+    @TableField(exist = false)
+    private String currentStatus;
+
+    @Schema(description = "Current status name")
+    @TableField(exist = false)
+    private String currentStatusName;
+
+    @Excel(name = "Duration")
+    @Schema(description = "Execution duration", example = "")
+    @TableField(exist = false)
+    private String duration;
+
 
     @Schema(description = "Draft Task Config", example = "")
     private String draftJson;
@@ -201,6 +221,10 @@ public class DppEtlTaskRespVO implements Serializable {
 
     @TableField(exist = false)
     List<DppEtlTaskNodeRelRespVO> taskRelationJson;
+
+    @Schema(description = "Latest task instance ID used to view execution logs")
+    @TableField(exist = false)
+    private Long taskInstanceId;
 
     @JsonProperty("label")
     public String getLabel() {

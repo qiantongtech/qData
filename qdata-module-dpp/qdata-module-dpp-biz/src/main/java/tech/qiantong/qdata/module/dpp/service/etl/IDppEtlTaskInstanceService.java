@@ -162,6 +162,11 @@ public interface IDppEtlTaskInstanceService extends IService<DppEtlTaskInstanceD
      */
     DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId);
 
+    DppEtlTaskInstanceLogDetailRespVO getLogDetailByTaskInstanceId(Long taskInstanceId);
+
+    DppEtlTaskInstanceStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, Long taskId, String taskType);
+
     /**
      * Get running task instance
      * @param taskId

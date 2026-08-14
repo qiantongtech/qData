@@ -57,14 +57,21 @@ public interface DppEtlNodeInstanceMapper extends BaseMapperX<DppEtlNodeInstance
                 .like(StringUtils.isNotBlank(reqVO.getJobName()), DppEtlNodeInstanceDO::getTaskInstanceName, reqVO.getJobName())
                 .eq(reqVO.getProjectId() != null, DppEtlNodeInstanceDO::getProjectId, reqVO.getProjectId())
                 .eq(StringUtils.isNotBlank(reqVO.getProjectCode()), DppEtlNodeInstanceDO::getProjectCode, reqVO.getProjectCode())
-                .gt(reqVO.getStartTime() != null, DppEtlNodeInstanceDO::getStartTime, reqVO.getStartTime())
-                .le(reqVO.getEndTime() != null, DppEtlNodeInstanceDO::getEndTime, reqVO.getEndTime())
+                .ge(reqVO.getStartTime() != null, DppEtlNodeInstanceDO::getStartTime, reqVO.getStartTime())
+                .le(reqVO.getEndTime() != null, DppEtlNodeInstanceDO::getStartTime, reqVO.getEndTime())
                 .eq(StringUtils.isNotBlank(reqVO.getPriority()), DppEtlNodeInstanceDO::getPriority, reqVO.getPriority())
-                .eq(StringUtils.isNotBlank(reqVO.getStatus()), DppEtlNodeInstanceDO::getStatus, reqVO.getStatus())
+                .in(StringUtils.equals(reqVO.getStatus(), "running"), DppEtlNodeInstanceDO::getStatus, "0", "1", "12")
+                .eq(StringUtils.equals(reqVO.getStatus(), "success"), DppEtlNodeInstanceDO::getStatus, "7")
+                .eq(StringUtils.equals(reqVO.getStatus(), "failed"), DppEtlNodeInstanceDO::getStatus, "6")
+                .eq(StringUtils.isNotBlank(reqVO.getStatus())
+                                && !StringUtils.equals(reqVO.getStatus(), "running")
+                                && !StringUtils.equals(reqVO.getStatus(), "success")
+                                && !StringUtils.equals(reqVO.getStatus(), "failed"),
+                        DppEtlNodeInstanceDO::getStatus, reqVO.getStatus())
                 .eq(reqVO.getDsId() != null, DppEtlNodeInstanceDO::getDsId, reqVO.getDsId())
                 .eq(reqVO.getDsTaskInstanceId() != null, DppEtlNodeInstanceDO::getDsTaskInstanceId, reqVO.getDsTaskInstanceId())
                 .eq(reqVO.getCreateTime() != null, DppEtlNodeInstanceDO::getCreateTime, reqVO.getCreateTime())
-                .in(DppEtlNodeInstanceDO::getStatus, "1", "6", "7")
+                .in(DppEtlNodeInstanceDO::getStatus, "0", "1", "5", "6", "7", "12")
                 .orderByDesc(DppEtlNodeInstanceDO::getStartTime);
 
         // Build dynamic query conditions

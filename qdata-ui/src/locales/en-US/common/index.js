@@ -99,6 +99,10 @@ export default {
     startDatePlaceholder: 'Start Date',
     endDatePlaceholder: 'End Date'
   },
+  date: {
+    startDate: 'Start Date',
+    endDate: 'End Date'
+  },
   texts: {
     action: 'Action',
     createdBy: 'Created By',

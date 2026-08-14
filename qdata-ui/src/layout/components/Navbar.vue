@@ -289,9 +289,9 @@
               >
                 <span>{{ t('sys.dashboard.layoutSettings') }}</span>
               </el-dropdown-item>
-              <!-- <el-dropdown-item command="about">
-                                <span>About us</span>
-                            </el-dropdown-item> -->
+<!--               <el-dropdown-item command="about">-->
+<!--                                <span>{{ t('sys.dashboard.aboutUs') }}</span>-->
+<!--                            </el-dropdown-item>-->
               <el-dropdown-item divided command="logout">
                 <span>{{ t('sys.dashboard.logout') }}</span>
               </el-dropdown-item>
@@ -315,7 +315,7 @@
           class="logo"
         />
         <div class="about-title">
-          {{ t('sys.dashboard.version') }}{{ currentVersion }}
+          {{ t('sys.dashboard.version') }}:v{{ version }}
           <!-- <span class="version-badge"></span> -->
         </div>
         <div class="copyright">©{{ year }}{{ td('login.info.companyName') }}{{ td('login.info.copyrightOwner') }}</div>
@@ -324,23 +324,22 @@
       <template #footer>
         <div class="about-footer">
           <div v-if="!needUpdate" class="status-text">
-            {{ t('sys.dashboard.version') }}{{ currentVersion }}{{ t('sys.dashboard.isLatestVersion') }}
+            {{ t('sys.dashboard.version') }}{{ version }}{{ t('sys.dashboard.isLatestVersion') }}
           </div>
           <div v-else class="status-text">
-            {{ t('sys.dashboard.latestVersion') }}{{ latestVersion }}
+            {{ t('sys.dashboard.latestVersion') }}:
             <a
-              href="https://gitee.com/qiantongtech/qData"
-              target="_blank"
+              href="javascript:void(0)"
+              @click.prevent="openUpdateLog"
               rel="noopener noreferrer"
               class="update-link"
             >
-              {{ t('sys.dashboard.update') }}
+              v{{ latestVersion }}
             </a>
           </div>
           <div class="head-btns">
-            <el-button type="primary" @click="openUpdateLog"
-              >{{ t('sys.dashboard.updateLog') }}</el-button
-            >
+            <el-button type="primary" @click="openUpdateLog">
+              {{ t('sys.dashboard.updateLog') }}</el-button>
           </div>
         </div>
       </template>
@@ -382,11 +381,12 @@ import usePermissionStore from "@/store/system/permission";
 import { getRoutersDpp } from "@/api/system/menu";
 import { useLocale } from "@/composables/useLocale";
 import useLocaleStore from "@/store/system/locale.js";
+import packageInfo from "../../../package.json";
 
 const { t, locale } = useI18n();
 const { changeLocale } = useLocale();
 const localeStore = useLocaleStore();
-// import { getCurrentAppVersion } from "@/api/system/update/update.js";
+import { getCurrentAppVersion,addVersionTrack } from "@/api/system/update/update.js";
 // import {listProject, getProject} from "@/api/project/projectBase/project";
 // import {listReport, getReport, delReport, addReport, updateReport} from "@/api/project/report/report";
 // Authentication mode
@@ -421,6 +421,7 @@ const permissionStore = usePermissionStore();
 const needUpdate = ref(false);
 const currentVersion = ref("");
 const latestVersion = ref("");
+const { name, version, description, author } = packageInfo;
 // All routing information
 const routers = computed(() => permissionStore.topbarRouters);
 //-----------------------The following job application contents-------------------------
@@ -801,9 +802,7 @@ const listProject = () => {
 onMounted(() => {
   initWebSocket();
   console.log(userStore);
-
   listProject();
-
   // getCurrentAppVersion().then((res) => {
   //   if (res.data != null) {
   //     // Is it the latest version?
@@ -873,6 +872,14 @@ function handleAboutUs() {
 }
 
 function openUpdateLog() {
+  addVersionTrack({
+    name,
+    currVersion: version,
+    description,
+    author,
+  }).catch((error) => {
+    console.error("Add version track failed:", error);
+  });
   window.open("https://gitee.com/qiantongtech/qData/releases", "_blank");
 }
 

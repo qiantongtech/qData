@@ -56,6 +56,7 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
                 .select("t3.NICK_NAME AS personChargeName")
                 .leftJoin("SYSTEM_USER t3 ON t.PERSON_CHARGE = t3.USER_ID AND t3.DEL_FLAG = '0'")
                 .like(StringUtils.isNotBlank(reqVO.getName()),DppEtlTaskInstanceDO::getName, reqVO.getName())
+                .likeRight(StringUtils.isNotBlank(reqVO.getCatCode()), DppEtlTaskInstanceDO::getCatCode, reqVO.getCatCode())
                 .eq(StringUtils.isNotBlank(reqVO.getTaskType()),DppEtlTaskInstanceDO::getTaskType, reqVO.getTaskType())
                 .eq(reqVO.getTaskId() !=null,DppEtlTaskInstanceDO::getTaskId, reqVO.getTaskId())
                 .eq(StringUtils.isNotBlank(reqVO.getTaskCode()),DppEtlTaskInstanceDO::getTaskCode, reqVO.getTaskCode())
@@ -63,17 +64,24 @@ public interface DppEtlTaskInstanceMapper extends BaseMapperX<DppEtlTaskInstance
                 .eq(StringUtils.isNotBlank(reqVO.getPersonCharge()),DppEtlTaskInstanceDO::getPersonCharge, reqVO.getPersonCharge())
                 .eq(reqVO.getProjectId() !=null,DppEtlTaskInstanceDO::getProjectId, reqVO.getProjectId())
                 .eq(StringUtils.isNotBlank(reqVO.getProjectCode()),DppEtlTaskInstanceDO::getProjectCode, reqVO.getProjectCode())
-                .eq(reqVO.getStartTime() !=null,DppEtlTaskInstanceDO::getStartTime, reqVO.getStartTime())
-                .eq(reqVO.getEndTime() !=null,DppEtlTaskInstanceDO::getEndTime, reqVO.getEndTime())
+                .ge(reqVO.getStartTime() != null,DppEtlTaskInstanceDO::getStartTime, reqVO.getStartTime())
+                .le(reqVO.getEndTime() != null,DppEtlTaskInstanceDO::getStartTime, reqVO.getEndTime())
                 .eq(StringUtils.isNotBlank(reqVO.getCommandType()),DppEtlTaskInstanceDO::getCommandType, reqVO.getCommandType())
                 .eq(reqVO.getMaxTryTimes() !=null,DppEtlTaskInstanceDO::getMaxTryTimes, reqVO.getMaxTryTimes())
                 .eq(StringUtils.isNotBlank(reqVO.getFailureStrategy()),DppEtlTaskInstanceDO::getFailureStrategy, reqVO.getFailureStrategy())
                 .eq(StringUtils.isNotBlank(reqVO.getSubTaskFlag()),DppEtlTaskInstanceDO::getSubTaskFlag, reqVO.getSubTaskFlag())
-                .eq(StringUtils.isNotBlank(reqVO.getStatus()),DppEtlTaskInstanceDO::getStatus, reqVO.getStatus())
+                .in(StringUtils.equals(reqVO.getStatus(), "running"), DppEtlTaskInstanceDO::getStatus, "0", "1", "12")
+                .eq(StringUtils.equals(reqVO.getStatus(), "success"), DppEtlTaskInstanceDO::getStatus, "7")
+                .eq(StringUtils.equals(reqVO.getStatus(), "failed"), DppEtlTaskInstanceDO::getStatus, "6")
+                .eq(StringUtils.isNotBlank(reqVO.getStatus())
+                                && !StringUtils.equals(reqVO.getStatus(), "running")
+                                && !StringUtils.equals(reqVO.getStatus(), "success")
+                                && !StringUtils.equals(reqVO.getStatus(), "failed"),
+                        DppEtlTaskInstanceDO::getStatus, reqVO.getStatus())
                 .eq(reqVO.getDsId() !=null,DppEtlTaskInstanceDO::getDsId, reqVO.getDsId())
                 .eq(reqVO.getCreateTime() !=null,DppEtlTaskInstanceDO::getCreateTime, reqVO.getCreateTime())
 
-                .in(DppEtlNodeInstanceDO::getStatus, "1","5", "6", "7")
+                .in(DppEtlTaskInstanceDO::getStatus, "0", "1", "5", "6", "7", "12")
                 .orderByDesc(DppEtlNodeInstanceDO::getStartTime);
 
 

@@ -78,6 +78,14 @@ public class DppEtlTaskController extends BaseController {
         return CommonResult.success(dppEtlTaskService.getDppEtlTaskPageList(dppEtlTask));
     }
 
+    @Operation(summary = "Get data integration task statistics")
+    @GetMapping("/statistics")
+    public CommonResult<DppEtlTaskStatisticsRespVO> statistics(
+            @RequestParam Long projectId,
+            @RequestParam String projectCode) {
+        return CommonResult.success(dppEtlTaskService.getStatistics(projectId, projectCode));
+    }
+
 
     @Operation(summary = "删除数据集成任务")
 //    @PreAuthorize("@ss.hasPermi('dpp:etlTask:remove')")

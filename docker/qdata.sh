@@ -592,7 +592,7 @@ start_qdata() {
         printf '\nqData访问地址：http://localhost:%s\n账号：admin\n密码：qData123\n' "$port"
     fi
     if [ "$MODE" = all ]; then
-        printf 'DolphinScheduler：http://localhost:12345/dolphinscheduler/ui/home\n'
+        printf '\nDolphinScheduler：http://localhost:12345/dolphinscheduler/ui/home\n账号：admin\n密码：dolphinscheduler123\n'
     fi
     printf '状态查看：sh qdata.sh status\n日志查看：sh qdata.sh logs\n'
 }

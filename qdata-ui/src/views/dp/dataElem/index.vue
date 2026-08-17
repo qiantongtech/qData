@@ -37,12 +37,6 @@
               <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.type')" prop="type" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('dp.dataElem.typePlaceholder')">
-                <el-option v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}

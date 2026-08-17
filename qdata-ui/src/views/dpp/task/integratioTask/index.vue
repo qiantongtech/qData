@@ -285,6 +285,11 @@
                     link
                     type="primary"
                     icon="View"
+                    :disabled="
+                      !['running', 'success', 'failed'].includes(
+                        row.currentStatus
+                      )
+                    "
                     @click="openTaskLogDialog(row)"
                     >{{
                       td(

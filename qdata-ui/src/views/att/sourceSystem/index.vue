@@ -482,11 +482,11 @@ function handleResetQueryClick() {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.sourceSystem.form.enable') : td('att.sourceSystem.form.disable');
   proxy.$modal
-    .confirm(td('att.sourceSystem.message.confirmStatus').replace("<status>", text).replace("<name>", row.name))
+    .confirm(td('att.sourceSystem.message.confirmStatus', '', { status: text, name: row.name }))
     .then(function () {
       updateSourceSystem({ id: row.id, validFlag: row.validFlag }).then(
         (response) => {
-          proxy.$modal.msgSuccess(td('att.sourceSystem.message.statusSuccess').replace("<status>", text));
+          proxy.$modal.msgSuccess(td('att.sourceSystem.message.statusSuccess', '', { status: text }));
           tableRef.value.getList();
         }
       );
@@ -609,7 +609,7 @@ function handleDelete(row) {
   }
   proxy.$modal
     .confirm(
-      td('att.sourceSystem.message.deleteConfirm').replace("<deletable>", invalidIds.length).replace("<undeletable>", store.rows.length - invalidIds.length)
+      td('att.sourceSystem.message.deleteConfirm', '', { deletable: invalidIds.length, undeletable: store.rows.length - invalidIds.length })
     )
     .then(function () {
       return delSourceSystem(invalidIds);

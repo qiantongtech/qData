@@ -276,7 +276,7 @@ function handleQuery() {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
-    .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: td('att.common.documentCatName') }).replace('<name>', row.name))
+    .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: td('att.common.documentCatName'), name: row.name }))
     .then(function () {
       updateAttDocumentCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
         proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
@@ -384,7 +384,7 @@ function submitForm() {
 
 /** Remove button operation */
 function handleDelete(row) {
-  proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete').replace('<ids>', row.id))
+  proxy.$modal.confirm(td('att.documentCat.messages.confirmDelete', '', { ids: row.id }))
     .then(function () {
       return delAttDocumentCat(row.id);
     })

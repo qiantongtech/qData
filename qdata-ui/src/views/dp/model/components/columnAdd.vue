@@ -351,7 +351,7 @@ const rules = ref({
             return;
           }
           if (actualValue.length > form.value.columnLength) {
-            callback(new Error(td('dp.modelForm.defaultLengthError').replace('<length>', form.value.columnLength)));
+            callback(new Error(td('dp.modelForm.defaultLengthError', '', { length: form.value.columnLength })));
             return;
           }
         // Decimal Type
@@ -365,17 +365,17 @@ const rules = ref({
           const decPart = parts[1] || '';
           const intLimit = form.value.columnLength - (form.value.columnScale || 0);
           if (intPart.length > intLimit) {
-            callback(new Error(td('dp.modelForm.defaultValueIntPartError').replace('<int>', intLimit)));
+            callback(new Error(td('dp.modelForm.defaultValueIntPartError', '', { int: intLimit })));
             return;
           }
           if (decPart.length > (form.value.columnScale || 0)) {
-            callback(new Error(td('dp.modelForm.defaultValueDecPartError').replace('<scale>', form.value.columnScale || 0)));
+            callback(new Error(td('dp.modelForm.defaultValueDecPartError', '', { scale: form.value.columnScale || 0 })));
             return;
           }
         // String Type
         } else if (stringTypes.includes(form.value.columnType)) {
           if (actualValue.length > form.value.columnLength) {
-            callback(new Error(td('dp.modelForm.defaultStringMaxLengthError').replace('<length>', form.value.columnLength)));
+            callback(new Error(td('dp.modelForm.defaultStringMaxLengthError', '', { length: form.value.columnLength })));
             return;
           }
         // DATE Type

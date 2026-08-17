@@ -594,7 +594,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('att.auditRule.deleteConfirm').replace('<ids>', _ids))
+    .confirm(td('att.auditRule.deleteConfirm', '', { ids: _ids }))
     .then(function () {
       return delAttAuditRule(_ids);
     })

@@ -258,7 +258,7 @@ function handleDetail(row) {
 
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.dataDomain.confirmDeleteByName', 'Are you sure to delete data domain "<name>"?').replace('<name>', row.name))
+    .confirm(td('dm.dataDomain.confirmDeleteByName', 'Are you sure to delete data domain "{name}"?', { name: row.name }))
     .then(function () {
       return getDeletebyDomainId({
         businessCategoryId: props.businessLayerDetail.id,

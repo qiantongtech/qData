@@ -978,10 +978,7 @@ function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
     .confirm(
-      td(
-        "dpp.setting.dataDevCat.confirmDelete",
-        '是否确认删除数据开发类目管理编号为"{id}"的数据项？'
-      ).replace("{id}", _ids)
+      td("dpp.setting.dataDevCat.confirmDelete", '是否确认删除数据开发类目管理编号为"{id}"的数据项？', { id: _ids })
     )
     .then(function () {
       return delAttDataDevCat(_ids, warningRequestOptions);

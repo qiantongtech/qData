@@ -24,41 +24,41 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpDataElemAssetRelList"
         @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column :label="td('dp.dataElem.asset.id')" align="left" prop="id" width="50" />
-        <el-table-column :label="td('dp.dataElem.asset.assetName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
+        <el-table-column :label="td('dp.dataCode.asset.id')" align="left" prop="id" width="50" />
+        <el-table-column :label="td('dp.dataCode.asset.assetName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
             width="300">
             <template #default="scope">
                 {{ scope.row.assetName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.description')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
+        <el-table-column :label="td('dp.dataCode.asset.description')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
             width="380">
             <template #default="scope">
                 {{ scope.row.description || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.tableName')" align="left" prop="tableName" width="290">
+        <el-table-column :label="td('dp.dataCode.asset.tableName')" align="left" prop="tableName" width="290">
             <template #default="scope">
                 {{ scope.row.tableName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.columnName')" align="left" prop="columnName" width="300">
+        <el-table-column :label="td('dp.dataCode.asset.columnName')" align="left" prop="columnName" width="300">
             <template #default="scope">
                 {{ scope.row.columnName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.createBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
+        <el-table-column :label="td('dp.dataCode.asset.createBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
             prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || "-" }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.createTime')" align="left" prop="createTime" width="150">
+        <el-table-column :label="td('dp.dataCode.asset.createTime')" align="left" prop="createTime" width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
             }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.asset.updateTime')" align="left" prop="updateTime" width="300">
+        <el-table-column :label="td('dp.dataCode.asset.updateTime')" align="left" prop="updateTime" width="300">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
             </template>
@@ -202,7 +202,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = td('dp.dataElem.asset.addTitle');
+    title.value = td('dp.dataCode.asset.addTitle');
 }
 
 /** Modify button actions */
@@ -212,7 +212,7 @@ function handleUpdate(row) {
     getDpDataElemAssetRel(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = td('dp.dataElem.asset.editTitle');
+        title.value = td('dp.dataCode.asset.editTitle');
     });
 }
 
@@ -223,7 +223,7 @@ function handleDetail(row) {
     getDpDataElemAssetRel(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = td('dp.dataElem.asset.detailTitle');
+        title.value = td('dp.dataCode.asset.detailTitle');
     });
 }
 
@@ -234,7 +234,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.asset.updateSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.asset.updateSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -242,7 +242,7 @@ function submitForm() {
             } else {
                 addDpDataElemAssetRel(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.asset.addSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.asset.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -256,7 +256,7 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('dp.dataElem.confirmDeleteAsset', 'Are you sure to delete the data element-asset relation with ID "{id}"?', { id: _ids }))
+        .confirm(td('dp.dataCode.confirmDeleteAsset', 'Are you sure to delete the data element-asset relation with ID "{id}"?', { id: _ids }))
         .then(function () {
             return delDpDataElemAssetRel(_ids);
         })

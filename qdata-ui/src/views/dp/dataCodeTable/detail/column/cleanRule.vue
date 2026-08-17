@@ -21,7 +21,7 @@
         <el-row :gutter="15" class="btn-style">
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="openRuleSelector" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataElem.detail.relate') }}
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataCode.detail.relate') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -38,12 +38,12 @@
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.cleanName')" prop="name" align="left" width="200">
+        <el-table-column :label="td('dp.dataCode.detail.cleanName')" prop="name" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.name || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.cleanRuleName')" align="left" prop="ruleName" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('dp.dataCode.detail.cleanRuleName')" align="left" prop="ruleName" :show-overflow-tooltip="{ effect: 'light' }"
             width="200">
             <template #default="scope">
                 {{ scope.row.ruleName || '-' }}
@@ -54,7 +54,7 @@
                 {{ scope.row.ruleDescription || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.dimension')" align="left" prop="dimensionTypeension" :show-overflow-tooltip="{ effect: 'light' }"
+        <el-table-column :label="td('dp.dataCode.detail.dimension')" align="left" prop="dimensionTypeension" :show-overflow-tooltip="{ effect: 'light' }"
             width="150">
             <template #default="scope">
                 {{ scope.row.dimensionType || '-' }}
@@ -62,7 +62,7 @@
         </el-table-column>
         <el-table-column :label="td('common.texts.status')" align="left" prop="status">
             <template #default="scope">
-                {{ scope.row.status == '1' ? td('dp.dataElem.detail.online') : td('dp.dataElem.detail.offline') }}
+                {{ scope.row.status == '1' ? td('dp.dataCode.detail.online') : td('dp.dataCode.detail.offline') }}
             </template>
         </el-table-column>
         <!-- <el-table-column label="Rule level" prop="level" align="left" width="100">
@@ -158,7 +158,7 @@ queryParams.value.dataElemId = props.dataElemId;
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
-        .confirm(td('dp.dataElem.detail.confirmDeleteClean'))
+        .confirm(td('dp.dataCode.detail.confirmDeleteClean'))
         .then(function () {
             return DlEPutDpDataElemRuleRel(_ids);
         })

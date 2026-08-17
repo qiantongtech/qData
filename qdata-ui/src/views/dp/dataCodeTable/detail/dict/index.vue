@@ -43,7 +43,7 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataElem.nameEn') }}</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataCode.nameEn') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.engName || '-' }}
                             </div>
@@ -51,7 +51,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataElem.catCode') }}</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataCode.catCode') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.catName || '-' }}
                             </div>
@@ -59,7 +59,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataElem.personCharge') }}</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataCode.personCharge') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.personCharge || '-' }}
                             </div>
@@ -67,7 +67,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataElem.contactNumber') }}</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataCode.contactNumber') }}</div>
                             <div class="infotop-row-value">
                                 {{ dpDataElemDetail.contactNumber || '-' }}
                             </div>
@@ -75,7 +75,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataElem.columnType') }}</div>
+                            <div class="infotop-row-lable">{{ td('dp.dataCode.columnType') }}</div>
                             <div class="infotop-row-value">
                                 <dict-tag :options="column_type" :value="dpDataElemDetail.columnType" />
                             </div>
@@ -119,13 +119,13 @@
 
         <div class="pagecont-bottom">
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-                <el-tab-pane :label="td('dp.dataElem.detail.codeDict')" name="1">
+                <el-tab-pane :label="td('dp.dataCode.detail.codeDict')" name="1">
                     <codeDict />
                 </el-tab-pane>
-                <el-tab-pane :label="td('dp.dataElem.detail.codeMap')" name="2">
+                <el-tab-pane :label="td('dp.dataCode.detail.codeMap')" name="2">
                     <codeMap />
                 </el-tab-pane>
-                <el-tab-pane :label="td('dp.dataElem.detail.relationInfo')" name="3">
+                <el-tab-pane :label="td('dp.dataCode.detail.relationInfo')" name="3">
                     <asset />
                 </el-tab-pane>
             </el-tabs>

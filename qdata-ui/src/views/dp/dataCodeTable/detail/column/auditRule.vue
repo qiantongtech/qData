@@ -22,7 +22,7 @@
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="openRuleSelector(undefined)"
                     @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataElem.detail.relate') }}
+                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.dataCode.detail.relate') }}
                 </el-button>
             </el-col>
         </el-row>
@@ -38,12 +38,12 @@
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.auditName')" prop="name" align="left" width="200">
+        <el-table-column :label="td('dp.dataCode.detail.auditName')" prop="name" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.name || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.auditRuleName')" prop="ruleName" align="left" width="200">
+        <el-table-column :label="td('dp.dataCode.detail.auditRuleName')" prop="ruleName" align="left" width="200">
             <template #default="scope">
                 {{ scope.row.ruleName || '-' }}
             </template>
@@ -53,7 +53,7 @@
                 {{ scope.row.ruleDescription || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.detail.qualityDimension')" prop="qualityDim" align="left" width="100">
+        <el-table-column :label="td('dp.dataCode.detail.qualityDimension')" prop="qualityDim" align="left" width="100">
             <template #default="scope">
                 <dict-tag :options="att_rule_audit_q_dimension" :value="scope.row.dimensionType" />
             </template>
@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column :label="td('common.texts.status')" align="left" prop="status">
             <template #default="scope">
-                {{ scope.row.status == '1' ? td('dp.dataElem.detail.online') : td('dp.dataElem.detail.offline') }}
+                {{ scope.row.status == '1' ? td('dp.dataCode.detail.online') : td('dp.dataCode.detail.offline') }}
             </template>
         </el-table-column>
         <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="180">
@@ -204,7 +204,7 @@ function getList() {
 function handleRuleDelete(row) {
     const _ids = row.id;
     proxy.$modal
-        .confirm(td('dp.dataElem.detail.confirmDeleteAudit'))
+        .confirm(td('dp.dataCode.detail.confirmDeleteAudit'))
         .then(function () {
             return DlEPutDpDataElemRuleRel(_ids);
         })

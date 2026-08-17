@@ -992,10 +992,7 @@ function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
     .confirm(
-      td(
-        "dpp.setting.taskCat.confirmDelete",
-        '是否确认删除数据集成类目管理编号为"{id}"的数据项？'
-      ).replace("{id}", _ids)
+      td("dpp.setting.taskCat.confirmDelete", '是否确认删除数据集成类目管理编号为"{id}"的数据项？', { id: _ids })
     )
     .then(function () {
       return delAttTaskCat(_ids, warningRequestOptions);

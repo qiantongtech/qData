@@ -929,10 +929,7 @@ function handleDelete(row) {
     ? '确认移除自己的项目权限吗？操作后可能无法继续管理项目。'
     : selectedRows.length > 1
       ? `本次将移除${selectedRows.length}名成员，请确认。`
-      : td(
-          "dpp.setting.projectUserRel.confirmDelete",
-          '是否确认移除编号为"{id}"的数据项？'
-        ).replace("{id}", selectedUserIds[0]);
+      : td("dpp.setting.projectUserRel.confirmDelete", '是否确认移除编号为"{id}"的数据项？', { id: selectedUserIds[0] });
   proxy.$modal
     .confirm(confirmText)
     .then(function () {

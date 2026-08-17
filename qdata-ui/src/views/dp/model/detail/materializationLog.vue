@@ -556,7 +556,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.materializedModel.confirmDeleteRecord').replace('<id>', _ids))
+    .confirm(td('dp.materializedModel.confirmDeleteRecord', '', { id: _ids }))
     .then(function () {
       return delDpModelMaterialized(_ids);
     })

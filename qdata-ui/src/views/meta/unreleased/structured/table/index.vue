@@ -395,12 +395,7 @@ function handleDeleteColumnClick() {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     store.loading = false;
     ElMessageBox.confirm(
-      td(
-        "meta.unreleased.structured.table.list.confirmBatchDelete",
-        "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?"
-      )
-        .replace("{canDelete}", canDeleteCount)
-        .replace("{cannotDelete}", cannotDeleteCount),
+      td("meta.unreleased.structured.table.list.confirmBatchDelete", "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?", { canDelete: canDeleteCount, cannotDelete: cannotDeleteCount }),
       td("common.message.systemPrompt", "System Prompt"),
       {
         confirmButtonText: td("common.button.confirm", "Confirm"),
@@ -481,12 +476,7 @@ function handleStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        td(
-          "meta.unreleased.structured.table.list.statusChangeSuccess",
-          "Table metadata with ID {id} {action} successful!"
-        )
-          .replace("{id}", row.id)
-          .replace("{action}", action)
+        td("meta.unreleased.structured.table.list.statusChangeSuccess", "Table metadata with ID {id} {action} successful!", { id: row.id, action })
       );
       row.status = status;
     })

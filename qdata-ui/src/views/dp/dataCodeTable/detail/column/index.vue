@@ -34,7 +34,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.nameEn') }}</div>
+              <div class="infotop-row-lable">{{ td('dp.dataCode.nameEn') }}</div>
               <div class="infotop-row-value">
                 {{ form.engName || "-" }}
               </div>
@@ -58,7 +58,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.catCode') }}</div>
+              <div class="infotop-row-lable">{{ td('dp.dataCode.catCode') }}</div>
               <div class="infotop-row-value">
                 {{ form.catName || "-" }}
               </div>
@@ -66,7 +66,7 @@
           </el-col>
           <el-col :span="8">
             <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.columnType') }}</div>
+              <div class="infotop-row-lable">{{ td('dp.dataCode.columnType') }}</div>
               <div class="infotop-row-value">
                 <dict-tag :options="column_type" :value="form.columnType" />
               </div>
@@ -87,16 +87,16 @@
     <!-- Tab section -->
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane :label="td('dp.dataElem.detail.cleanRule')" name="1" lazy>
+        <el-tab-pane :label="td('dp.dataCode.detail.cleanRule')" name="1" lazy>
           <cleanRule :dataElemId="dataElemId" dataType="2" />
         </el-tab-pane>
-        <el-tab-pane :label="td('dp.dataElem.detail.auditRule')" name="2" lazy>
+        <el-tab-pane :label="td('dp.dataCode.detail.auditRule')" name="2" lazy>
           <auditRule :dataElemId="dataElemId" dataType="1" />
         </el-tab-pane>
-        <el-tab-pane :label="td('dp.dataElem.detail.relationInfo')" name="3" lazy>
+        <el-tab-pane :label="td('dp.dataCode.detail.relationInfo')" name="3" lazy>
           <asset />
         </el-tab-pane>
-        <el-tab-pane :label="td('dp.dataElem.detail.detailInfo')" name="5" lazy>
+        <el-tab-pane :label="td('dp.dataCode.detail.detailInfo')" name="5" lazy>
           <info :daDiscoveryTaskDetail="form" />
 
         </el-tab-pane>

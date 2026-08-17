@@ -181,11 +181,15 @@
               </div>
             </template>
             <template #lastExecute="{ row }">
-              <StatusTag
-                size="small"
-                :status="row.currentStatus"
+              <div
+                class="last-execute-status"
                 @click="openTaskLogDialog(row)"
-              />
+              >
+                <StatusTag
+                  size="small"
+                  :status="row.currentStatus"
+                />
+              </div>
               <div class="last-execute-info">
                 <div class="last-execute-info__row">
                   <span class="last-execute-info__value">
@@ -242,13 +246,13 @@
                   })
                 "
                 >{{ td("common.button.details", "Details") }}</el-button>
-              <el-popover placement="bottom" :width="150" trigger="click">
+              <el-popover placement="bottom" :width="170" trigger="click">
                 <template #reference>
                   <el-button link type="primary" icon="ArrowDown">{{
                     td("common.button.more", "More")
                   }}</el-button>
                 </template>
-                <div style="width: 100px" class="butgdlist">
+                <div style="width: 120px" class="butgdlist">
                   <el-button
                     link
                     style="padding-left: 14px"
@@ -276,6 +280,17 @@
                     @click="handleExecuteOnce(row)"
                     >{{
                       td("dpp.integratioTask.executeOnce", "Execute Once")
+                    }}</el-button>
+                  <el-button
+                    link
+                    type="primary"
+                    icon="View"
+                    @click="openTaskLogDialog(row)"
+                    >{{
+                      td(
+                        "dpp.integratioTask.realTimeLog",
+                        "Real-time Log"
+                      )
                     }}</el-button>
                   <el-button
                     link
@@ -1223,6 +1238,11 @@ usePageRefresh("integratioTask", initializePageData);
   margin-top: 6px;
   font-size: 14px;
   color: #1e293b;
+}
+
+.last-execute-status {
+  display: inline-flex;
+  cursor: pointer;
 }
 
 .last-execute-info__row {

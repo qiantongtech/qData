@@ -817,6 +817,7 @@ export default {
     stopTask: 'タスク停止',
     runInstance: '実行インスタンス',
     executeOnce: '1回実行',
+    realTimeLog: 'リアルタイムログ',
     stop: '停止',
     taskName: 'タスク名',
     inputTaskName: 'タスク名を入力してください',

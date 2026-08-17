@@ -820,6 +820,7 @@ export default {
     stopTask: 'Stop Task',
     runInstance: 'Run Instance',
     executeOnce: 'Execute Once',
+    realTimeLog: 'Live Log',
     stop: 'Stop',
     taskName: 'Task Name',
     inputTaskName: 'Please enter task name',

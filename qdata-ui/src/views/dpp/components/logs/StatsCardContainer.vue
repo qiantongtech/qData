@@ -6,7 +6,7 @@
         <div
           v-for="(item, index) in cards"
           :key="index"
-          class="stats-card-item"
+          class="stats-card-item-wrapper"
         >
           <el-tooltip
             :disabled="!item.tip"
@@ -35,7 +35,7 @@
                 :src="item.iconSrc || getIconPath(item.icon)"
                 :alt="item.name"
               />
-              <div class="stats-content">
+
                 <div class="stats-name">{{ item.name }}</div>
                 <div class="stats-value">
                   {{ item.value
@@ -43,15 +43,15 @@
                     item.unit
                   }}</span>
                 </div>
-              </div>
-              <div v-if="index < cards.length - 1" class="stats-divider"></div>
             </div>
           </el-tooltip>
+          <div v-if="index < cards.length - 1" class="stats-divider"></div>
         </div>
       </div>
-      <div class="stats-time">
-        {{ td("dpp.integratioTask.statsDeadline", "数据统计截止") }}:
+      <div class="stats-time-wrapper">
+         <span class="stats-time">{{ td("dpp.integratioTask.statsDeadline", "数据统计截止") }}:
         {{ statsTime }}
+           </span>
         <el-button
           link
           type="primary"
@@ -148,223 +148,148 @@ function handleRefresh() {
 
 .stats-card-layout {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(200px, 300px);
-  grid-template-areas: "cards time";
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
-  padding: 0px 20px;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 16px;
+}
 
-  .stats-card-list {
-    grid-area: cards;
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
-    align-items: center;
+.stats-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px 0;
+  flex: 1;
+}
+
+.stats-card-item-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 280px;
+}
+
+.stats-card {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+
+  &:hover {
+    opacity: 0.8;
   }
 
-  .stats-card-item {
-    min-width: 0;
+  &.active {
+    opacity: 1;
   }
 
-  .stats-card {
+  .stats-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
+
+  .stats-name {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+    line-height: 24px;
+    font-family: PingFang SC, PingFangSC-Regular, sans-serif;
+  }
+
+  .stats-value {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    height: 62px;
-    padding: 12px 16px;
-    background: transparent;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    position: relative;
+    align-items: baseline;
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 24px;
+    font-family: PingFangSC-Medium, PingFang SC, Microsoft YaHei, sans-serif;
+    margin-left: 4px;
 
-    &:hover {
-      background: transparent;
-    }
-
-    &.active {
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .stats-icon {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-    }
-
-    .stats-content {
-      min-width: 0;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-
-      .stats-name {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.45);
-        font-weight: 400;
-        font-family: PingFang SC;
-      }
-
-      .stats-value {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 20px;
-        font-weight: bold;
-        color: #262626;
-
-        .stats-unit {
-          font-size: 14px;
-          font-weight: 500;
-          color: rgba(0, 0, 0, 0.65);
-          margin-left: 2px;
-          font-family: PingFang SC;
-        }
-      }
-    }
-
-    &.is-loading {
-      pointer-events: none;
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-    .stats-divider {
-      width: 1px;
-      height: 40px;
-      background: #e2e8f0;
-      margin-left: auto;
-      flex-shrink: 0;
+    .stats-unit {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+      margin-left: 2px;
+      font-family: PingFangSC-Medium, PingFang SC, Microsoft YaHei, sans-serif;
     }
   }
+
+  &.is-loading {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.stats-divider {
+  width: 1px;
+  height: 16px;
+  background: #e2e8f0;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.stats-time-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
 
   .stats-time {
-    grid-area: time;
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 8px;
-    row-gap: 2px;
-    width: 100%;
-    padding-left: 16px;
-    border-left: 1px solid #e2e8f0;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: right;
     color: rgba(0, 0, 0, 0.45);
-    font-family: PingFang SC;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+    line-height: 24px;
+    font-family: PingFang SC, PingFangSC-Regular, sans-serif;
+    margin-right: 8px;
   }
 }
 
 @container (max-width: 1080px) {
   .stats-card-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(170px, 220px);
-    grid-template-areas: "cards time";
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px 16px;
-
-    .stats-card-list {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stats-time {
-      padding-left: 12px;
-      font-size: 13px;
-    }
+    padding: 10px 16px;
   }
 }
 
 @container (max-width: 700px) {
   .stats-card-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(136px, 160px);
-    gap: 10px;
-    padding: 12px 16px;
-
-    .stats-card-list {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
+    padding: 10px 16px;
+  }
+  .stats-card-list {
+    gap: 12px 16px;
+  }
+  .stats-divider {
+    display: none;
+  }
+  .stats-card {
+    .stats-icon {
+      width: 14px;
+      height: 14px;
     }
-
-    .stats-card {
-      gap: 8px;
-      padding: 10px 8px;
-
-      .stats-icon {
-        width: 32px;
-        height: 32px;
-      }
-
-      .stats-content {
-        .stats-value {
-          font-size: 18px;
-
-          .stats-unit {
-            font-size: 13px;
-          }
-        }
-      }
-
-      .stats-divider {
-        display: none;
-      }
-    }
-
-    .stats-time {
-      font-size: 13px;
-      padding-left: 10px;
+    .stats-value {
+      font-size: 14px;
     }
   }
 }
 
 @container (max-width: 560px) {
   .stats-card-layout {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "time"
-      "cards";
-    align-items: stretch;
-
-    .stats-card-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .stats-time {
-      justify-self: start;
-      justify-content: flex-start;
-      width: auto;
-      max-width: 100%;
-      padding-left: 0;
-      border-left: none;
-      text-align: left;
-    }
+    flex-direction: column;
+    align-items: flex-start;
   }
-}
-
-@container (max-width: 420px) {
-  .stats-card-layout {
-    .stats-card-list {
-      grid-template-columns: 1fr;
-    }
-
-    .stats-card {
-      .stats-icon {
-        width: 32px;
-        height: 32px;
-      }
-    }
+  .stats-time-wrapper {
+    margin-left: 0;
+    margin-top: 8px;
   }
 }
 </style>

@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg  data-v="U2FsdGVkX195jzccRw/LFxM+FBMn9faOIq421ZBoSH0=" width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>今日成功率</title>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>成功率</title>
     <defs>
-        <ellipse id="path-1" cx="13" cy="12.8029605" rx="13" ry="12.8029605"></ellipse>
-        <ellipse id="path-3" cx="13" cy="12.8029605" rx="10.4" ry="10.2423684"></ellipse>
+        <ellipse id="path-1" cx="8" cy="7.43397708" rx="8" ry="7.43397708"></ellipse>
+        <ellipse id="path-3" cx="8" cy="7.43397708" rx="6.4" ry="5.94718166"></ellipse>
     </defs>
     <g id="后台管理系统" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="今日成功率">
-            <rect id="矩形-5备份-10" fill-opacity="0.1" fill="#009E26" x="0" y="0" width="50" height="50" rx="4"></rect>
-            <g id="编组-12" transform="translate(12, 10)">
-                <path d="M7.2,20.6312061 L18.8,20.6312061 C19.9045695,20.6312061 20.8,21.5266366 20.8,22.6312061 L20.8,28.5623815 C20.8,29.666951 19.9045695,30.5623815 18.8,30.5623815 C18.5930978,30.5623815 18.3874485,30.5302763 18.1903917,30.4672116 L13.8011145,29.0624985 C13.4144325,28.9387476 12.9992449,28.9356119 12.6107379,29.0535083 L7.78076825,30.5192118 C6.72379447,30.8399612 5.60692912,30.2431335 5.28617967,29.1861597 C5.22903939,28.9978639 5.2,28.8021662 5.2,28.6053914 L5.2,22.6312061 C5.2,21.5266366 6.0954305,20.6312061 7.2,20.6312061 Z" id="Rectangle-94备份" fill="#009E26" opacity="0.401674107"></path>
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
-                <mask id="mask-4" fill="white">
-                    <use xlink:href="#path-3"></use>
-                </mask>
-                <use id="Mask" fill-opacity="0.950195312" fill="#009E26" xlink:href="#path-3"></use>
-                <path d="M16.2898667,17.0053889 L10.2232001,17.0053889 L10.2232001,15.2983275 L14.5562001,15.2974898 L14.5565334,5.90948976 L16.2898667,5.90948976 L16.2898667,17.0053889 Z" id="形状结合" fill="#FFFFFF" mask="url(#mask-4)" transform="translate(13.2565, 11.4574) rotate(-315) translate(-13.2565, -11.4574)"></path>
+        <g id="qData基础管理文件管理" transform="translate(-970, -98)">
+            <g id="成功率" transform="translate(970, 98)">
+                <g id="画框-4"></g>
+                <g id="编组-12" transform="translate(2, 1)">
+                    <path d="M5.2,11.97941 L10.8,11.97941 C11.9045695,11.97941 12.8,12.8748405 12.8,13.97941 L12.8,15.7351752 C12.8,16.7360882 11.9885997,17.5474885 10.9876867,17.5474885 C10.810209,17.5474885 10.6336937,17.5214189 10.4637931,17.4701146 L8.69073397,16.9347101 C8.3230887,16.8236936 7.9312542,16.8208739 7.56204934,16.9265881 L5.66379306,17.4701146 C4.63801035,17.7638263 3.56834878,17.1703655 3.27463707,16.1445828 C3.22512166,15.9716512 3.2,15.7926516 3.2,15.6127707 L3.2,13.97941 C3.2,12.8748405 4.0954305,11.97941 5.2,11.97941 Z" id="Rectangle-94备份" fill="#009E26" opacity="0.401674107"></path>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
+                    <mask id="mask-4" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <use id="Mask" fill-opacity="0.950195312" fill="#009E26" xlink:href="#path-3"></use>
+                    <path d="M10.0245334,9.87409677 L6.29120003,9.87409677 L6.29120003,8.88289983 L8.95720003,8.88231664 L8.9578667,3.43131664 L10.0245334,3.43131664 L10.0245334,9.87409677 Z" id="形状结合" fill="#FFFFFF" mask="url(#mask-4)" transform="translate(8.1579, 6.6527) rotate(-315) translate(-8.1579, -6.6527)"></path>
+                </g>
             </g>
         </g>
     </g>

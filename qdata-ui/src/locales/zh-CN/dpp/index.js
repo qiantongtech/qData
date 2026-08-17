@@ -849,6 +849,7 @@ export default {
     stopTask: '停止任务',
     runInstance: '运行实例',
     executeOnce: '执行一次',
+    realTimeLog: '实时日志',
     stop: '停止',
     taskName: '任务名称',
     inputTaskName: '请输入任务名称',

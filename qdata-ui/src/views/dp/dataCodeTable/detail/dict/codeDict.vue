@@ -31,36 +31,36 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpDataElemCodeList"
         @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column :label="td('dp.dataElem.codeDict.serialNumber')" align="left" prop="id" width="50" />
-        <el-table-column :label="td('dp.dataElem.codeValue')" align="left" prop="codeValue" width="160">
+        <el-table-column :label="td('dp.dataCode.codeDict.serialNumber')" align="left" prop="id" width="50" />
+        <el-table-column :label="td('dp.dataCode.codeValue')" align="left" prop="codeValue" width="160">
             <template #default="scope">
                 {{ scope.row.codeValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeName')" align="left" prop="codeName" width="220">
+        <el-table-column :label="td('dp.dataCode.codeName')" align="left" prop="codeName" width="220">
             <template #default="scope">
                 {{ scope.row.codeName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeDict.createBy')" align="left" prop="createBy" width="160">
+        <el-table-column :label="td('dp.dataCode.codeDict.createBy')" align="left" prop="createBy" width="160">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeDict.createTime')" align="left" prop="createTime" width="220">
+        <el-table-column :label="td('dp.dataCode.codeDict.createTime')" align="left" prop="createTime" width="220">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeDict.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
+        <el-table-column :label="td('dp.dataCode.codeDict.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.remark || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeDict.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
+        <el-table-column :label="td('dp.dataCode.codeDict.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
             <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataElem.codeDict.modify') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataElem.codeDict.delete') }}</el-button>
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataCode.codeDict.modify') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataCode.codeDict.delete') }}</el-button>
             </template>
         </el-table-column>
 
@@ -80,19 +80,19 @@
         <el-form ref="dpDataElemCodeRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeValue')" prop="codeValue" :label-position="labelPosition">
-                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataElem.codeValuePlaceholder')" />
+                    <el-form-item :label="td('dp.dataCode.codeValue')" prop="codeValue" :label-position="labelPosition">
+                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataCode.codeValuePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeName')" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName" :label-position="labelPosition">
-                        <el-input v-model="form.codeName" :placeholder="td('dp.dataElem.codeNamePlaceholder')" />
+                    <el-form-item :label="td('dp.dataCode.codeName')" :show-overflow-tooltip="{ effect: 'light' }" prop="codeName" :label-position="labelPosition">
+                        <el-input v-model="form.codeName" :placeholder="td('dp.dataCode.codeNamePlaceholder')" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dp.dataElem.codeDict.remark')" :show-overflow-tooltip="{ effect: 'light' }" prop="remark" :label-position="labelPosition">
+                    <el-form-item :label="td('dp.dataCode.codeDict.remark')" :show-overflow-tooltip="{ effect: 'light' }" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -148,10 +148,10 @@ const data = reactive({
     },
     rules: {
         codeValue: [
-            { required: true, message: td('dp.dataElem.codeValueRequired'), trigger: 'blur' },
+            { required: true, message: td('dp.dataCode.codeValueRequired'), trigger: 'blur' },
             { validator: validatorCodeValue, trigger: 'blur' }
         ],
-        codeName: [{ required: true, message: td('dp.dataElem.codeNameRequired'), trigger: 'blur' }]
+        codeName: [{ required: true, message: td('dp.dataCode.codeNameRequired'), trigger: 'blur' }]
     }
 });
 
@@ -177,7 +177,7 @@ function validatorCodeValue(rule, value, callback) {
         };
         validateCodeValue(params).then((res) => {
             if (res.data == 0) {
-                callback(new Error(td('dp.dataElem.codeValueDuplicate')));
+                callback(new Error(td('dp.dataCode.codeValueDuplicate')));
             } else {
                 callback();
             }
@@ -258,7 +258,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = td('dp.dataElem.addCodeTitle');
+    title.value = td('dp.dataCode.addCodeTitle');
 }
 
 /** Modify button actions */
@@ -268,7 +268,7 @@ function handleUpdate(row) {
     getDpDataElemCode(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = td('dp.dataElem.editCodeTitle');
+        title.value = td('dp.dataCode.editCodeTitle');
     });
 }
 
@@ -281,7 +281,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpDataElemCode(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.updateSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.codeDict.updateSuccess'));
                         open.value = false;
                         getList();
                         //event push
@@ -291,7 +291,7 @@ function submitForm() {
             } else {
                 addDpDataElemCode(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.addSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.codeDict.addSuccess'));
                         open.value = false;
                         getList();
                         //event push
@@ -307,7 +307,7 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('dp.dataElem.confirmDeleteCode', '', { id: _ids }))
+        .confirm(td('dp.dataCode.confirmDeleteCode', '', { id: _ids }))
         .then(function () {
             return delDpDataElemCode(_ids);
         })
@@ -315,7 +315,7 @@ function handleDelete(row) {
             getList();
             //event push
             proxy.$bus.emit('data_elem_code_change');
-            proxy.$modal.msgSuccess(td('dp.dataElem.codeDict.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('dp.dataCode.codeDict.deleteSuccess'));
         })
         .catch(() => { });
 }

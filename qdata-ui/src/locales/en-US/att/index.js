@@ -101,20 +101,20 @@ export default {
     assetCountTip: 'Total data assets currently associated with this tag',
     statusTip: 'Enabled status means the tag can be used for tagging data assets; once disabled, it cannot be used, but existing tags are retained.',
     createdByPlaceholder: 'Please enter creator',
-    confirmStatusChange: 'Are you sure to "{status}" the tag "<name>"?',
-    confirmDeleteTag: 'Are you sure to delete the tag with code "<ids>"?',
+    confirmStatusChange: 'Are you sure to "{status}" the tag "{name}"?',
+    confirmDeleteTag: 'Are you sure to delete the tag with code "{ids}"?',
     tagCatRequired: 'Tag management category is required',
     addTag: 'Add Tag',
     editTag: 'Edit Tag',
     tagDetail: 'Tag Detail',
     ruleCategoryPlaceholder: 'Please enter audit rule category',
-    confirmDeleteCat: 'Are you sure to delete the <titleBase> with code "<id>"?',
+    confirmDeleteCat: 'Are you sure to delete the {titleBase} with code "{id}"?',
     deleteConfirmCount: '{canDeleteCount} can be deleted, {cannotDeleteCount} cannot be deleted. Delete the deletable ones?',
     addTitle: 'Add {title}',
     editTitle: 'Edit {title}',
     detailTitle: '{title} Detail',
     importTitle: '{title} Import',
-    confirmStatusChangeGeneric: 'Are you sure to "<status>" "<name>" <type>?',
+    confirmStatusChangeGeneric: 'Are you sure to "{status}" "{name}" {type}?',
     statusSuccess: '{status} successful',
     contactWayPlaceholder: 'Please enter contact information'
   },
@@ -128,7 +128,7 @@ export default {
       parentIdRequired: 'Parent category is required'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the data asset category with code "<name>"?'
+      confirmDelete: 'Are you sure to delete the data asset category with code "{name}"?'
     },
     title: {
       add: 'Add Data Asset Category',
@@ -145,7 +145,7 @@ export default {
       edit: 'Edit Data Document Category'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the data document with code "<name>"?'
+      confirmDelete: 'Are you sure to delete the data document with code "{name}"?'
     }
   },
   auditRule: {
@@ -174,7 +174,7 @@ export default {
       detail: 'Audit Rule Detail'
     },
     importTitle: 'Audit Rule Import',
-    deleteConfirm: 'Are you sure to delete the audit rule with code "<ids>"?',
+    deleteConfirm: 'Are you sure to delete the audit rule with code "{ids}"?',
     treeRootName: 'Quality Dimension'
   },
   cleanCat: {
@@ -195,7 +195,7 @@ export default {
     },
     importTitle: 'Clean Rule Category Import',
     messages: {
-      confirmDelete: 'Are you sure to delete the clean rule category with code "<ids>"?'
+      confirmDelete: 'Are you sure to delete the clean rule category with code "{ids}"?'
     }
   },
   cleanRule: {
@@ -217,7 +217,7 @@ export default {
       detail: 'Clean Rule Detail'
     },
     importTitle: 'Clean Rule Import',
-    deleteConfirm: 'Are you sure to delete the item with code "<ids>"?',
+    deleteConfirm: 'Are you sure to delete the item with code "{ids}"?',
     cleanRuleCategory: 'Clean Rule Category'
   },
   dataElemCat: {
@@ -230,7 +230,7 @@ export default {
       edit: 'Edit Data Element Category'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the data element category with code "<name>"?'
+      confirmDelete: 'Are you sure to delete the data element category with code "{name}"?'
     }
   },
   documentCat: {
@@ -243,7 +243,7 @@ export default {
       edit: 'Edit Standard Info Category'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the standard info category with code "<ids>"?'
+      confirmDelete: 'Are you sure to delete the standard info category with code "{ids}"?'
     }
   },
   modelCat: {
@@ -256,7 +256,7 @@ export default {
       edit: 'Edit Logical Model Category'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the logical model category with code "<name>"?'
+      confirmDelete: 'Are you sure to delete the logical model category with code "{name}"?'
     }
   },
   project: {
@@ -277,7 +277,7 @@ export default {
     },
     importTitle: 'Project Import',
     message: {
-      confirmDelete: 'Are you sure to delete the project with code "<ids>"?'
+      confirmDelete: 'Are you sure to delete the project with code "{ids}"?'
     }
   },
   qualityCat: {
@@ -290,7 +290,7 @@ export default {
       edit: 'Edit Data Quality Category'
     },
     messages: {
-      confirmDelete: 'Are you sure to delete the data quality category with code "<name>"?'
+      confirmDelete: 'Are you sure to delete the data quality category with code "{name}"?'
     }
   },
   tag: {
@@ -311,7 +311,7 @@ export default {
       detail: 'Tag Management Detail'
     },
     message: {
-      deleteConfirm: 'Are you sure to delete the item with "<ids>"?',
+      deleteConfirm: 'Are you sure to delete the item with "{ids}"?',
       batchDeleteConfirm: 'Are you sure to batch delete selected items?'
     }
   },
@@ -337,7 +337,7 @@ export default {
       detail: 'Theme Detail'
     },
     importTitle: 'Theme Import',
-    deleteConfirm: 'Are you sure to delete the theme with code "<ids>"?',
+    deleteConfirm: 'Are you sure to delete the theme with code "{ids}"?',
     themeWord: 'Theme'
   },
   sourceSystem: {
@@ -369,8 +369,8 @@ export default {
     message: {
       nameRequired: 'System name is required',
       typeRequired: 'System type is required',
-      confirmStatus: 'Are you sure to "<status>" "<name>" source system?',
-      statusSuccess: '<status>" successful',
+      confirmStatus: 'Are you sure to "{status}" "{name}" source system?',
+      statusSuccess: '{status}" successful',
       deleteConfirm: '{deletable} can be deleted, {undeletable} cannot be deleted. Delete the deletable ones?'
     },
     textareaLimit: '500 characters'

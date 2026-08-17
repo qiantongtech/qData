@@ -31,44 +31,44 @@
     </div>
     <el-table stripe height="360" v-loading="loading" :data="dpCodeMapList" @selection-change="handleSelectionChange"
         :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column :label="td('dp.dataElem.codeMap.serialNumber')" align="left" prop="id" width="50" />
-        <el-table-column :label="td('dp.dataElem.originalValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue"
+        <el-table-column :label="td('dp.dataCode.codeMap.serialNumber')" align="left" prop="id" width="50" />
+        <el-table-column :label="td('dp.dataCode.originalValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue"
             width="210">
             <template #default="scope">
                 {{ scope.row.originalValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.codeName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeName"
+        <el-table-column :label="td('dp.dataCode.codeMap.codeName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeName"
             width="220">
             <template #default="scope">
                 {{ scope.row.codeName || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.codeValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeValue"
+        <el-table-column :label="td('dp.dataCode.codeMap.codeValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeValue"
             width="180">
             <template #default="scope">
                 {{ scope.row.codeValue || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.createBy')" align="left" prop="createBy">
+        <el-table-column :label="td('dp.dataCode.codeMap.createBy')" align="left" prop="createBy">
             <template #default="scope">
                 {{ scope.row.createBy || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.createTime')" align="left" prop="createTime" width="200">
+        <el-table-column :label="td('dp.dataCode.codeMap.createTime')" align="left" prop="createTime" width="200">
             <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.remark')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="remark" width="320">
+        <el-table-column :label="td('dp.dataCode.codeMap.remark')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="remark" width="320">
             <template #default="scope">
                 {{ scope.row.remark || '-' }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('dp.dataElem.codeMap.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
+        <el-table-column :label="td('dp.dataCode.codeMap.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
             <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataElem.codeMap.modify') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataElem.codeMap.delete') }}</el-button>
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataCode.codeMap.modify') }}</el-button>
+                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataCode.codeMap.delete') }}</el-button>
             </template>
         </el-table-column>
 
@@ -88,13 +88,13 @@
         <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.originalValue')" prop="originalValue" :label-position="labelPosition">
-                        <el-input v-model="form.originalValue" :placeholder="td('dp.dataElem.originalValuePlaceholder')" />
+                    <el-form-item :label="td('dp.dataCode.originalValue')" prop="originalValue" :label-position="labelPosition">
+                        <el-input v-model="form.originalValue" :placeholder="td('dp.dataCode.originalValuePlaceholder')" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeMap.codeName')" prop="codeName" :label-position="labelPosition">
-                        <el-select v-model="form.codeName" :placeholder="td('dp.dataElem.codeNameSelect')" @change="handleCodeNameChange">
+                    <el-form-item :label="td('dp.dataCode.codeMap.codeName')" prop="codeName" :label-position="labelPosition">
+                        <el-select v-model="form.codeName" :placeholder="td('dp.dataCode.codeNameSelect')" @change="handleCodeNameChange">
                             <el-option v-for="item in dpDataElemCodeList" :key="item.id" :label="item.codeName"
                                 :value="item.codeName" />
                         </el-select>
@@ -103,14 +103,14 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item :label="td('dp.dataElem.codeMap.codeValue')" prop="codeValue" :label-position="labelPosition">
-                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataElem.codeValue')" disabled />
+                    <el-form-item :label="td('dp.dataCode.codeMap.codeValue')" prop="codeValue" :label-position="labelPosition">
+                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataCode.codeValue')" disabled />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item :label="td('dp.dataElem.codeMap.remark')" prop="remark" :label-position="labelPosition">
+                    <el-form-item :label="td('dp.dataCode.codeMap.remark')" prop="remark" :label-position="labelPosition">
                         <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
                     </el-form-item>
                 </el-col>
@@ -118,8 +118,8 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">{{ td('dp.dataElem.codeMap.cancel') }}</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">{{ td('dp.dataElem.codeMap.confirm') }}</el-button>
+                <el-button size="mini" @click="cancel">{{ td('dp.dataCode.codeMap.cancel') }}</el-button>
+                <el-button type="primary" size="mini" @click="submitForm">{{ td('dp.dataCode.codeMap.confirm') }}</el-button>
             </div>
         </template>
     </el-dialog>
@@ -181,8 +181,8 @@ const data = reactive({
         createTime: null
     },
     rules: {
-        originalValue: [{ required: true, message: td('dp.dataElem.originalValueRequired'), trigger: 'blur' }],
-        codeName: [{ required: true, message: td('dp.dataElem.codeNameRequired'), trigger: 'change' }]
+        originalValue: [{ required: true, message: td('dp.dataCode.originalValueRequired'), trigger: 'blur' }],
+        codeName: [{ required: true, message: td('dp.dataCode.codeNameRequired'), trigger: 'change' }]
     }
 });
 
@@ -270,7 +270,7 @@ function handleSortChange(column, prop, order) {
 function handleAdd() {
     reset();
     open.value = true;
-    title.value = td('dp.dataElem.addCodeMapTitle');
+    title.value = td('dp.dataCode.addCodeMapTitle');
 }
 
 /** Modify button actions */
@@ -280,7 +280,7 @@ function handleUpdate(row) {
     getDpCodeMap(_id).then((response) => {
         form.value = response.data;
         open.value = true;
-        title.value = td('dp.dataElem.editCodeMapTitle');
+        title.value = td('dp.dataCode.editCodeMapTitle');
     });
 }
 
@@ -291,7 +291,7 @@ function handleDetail(row) {
     getDpCodeMap(_id).then((response) => {
         form.value = response.data;
         openDetail.value = true;
-        title.value = td('dp.dataElem.codeMap.detailTitle');
+        title.value = td('dp.dataCode.codeMap.detailTitle');
     });
 }
 
@@ -303,7 +303,7 @@ function submitForm() {
             if (form.value.id != null) {
                 updateDpCodeMap(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.codeMap.updateSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.updateSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -311,7 +311,7 @@ function submitForm() {
             } else {
                 addDpCodeMap(form.value)
                     .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataElem.codeMap.addSuccess'));
+                        proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.addSuccess'));
                         open.value = false;
                         getList();
                     })
@@ -325,13 +325,13 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('dp.dataElem.confirmDeleteCodeMap', '', { id: _ids }))
+        .confirm(td('dp.dataCode.confirmDeleteCodeMap', '', { id: _ids }))
         .then(function () {
             return delDpCodeMap(_ids);
         })
         .then(() => {
             getList();
-            proxy.$modal.msgSuccess(td('dp.dataElem.codeMap.deleteSuccess'));
+            proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.deleteSuccess'));
         })
         .catch(() => { });
 }

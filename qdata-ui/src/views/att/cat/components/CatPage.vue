@@ -275,7 +275,7 @@ function handleStatusChange(row) {
     : '';
   proxy.$modal
     .confirm(
-      impactText + td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', effectiveTitleBase.value)
+      impactText + td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: effectiveTitleBase.value })
     )
     .then(function () {
       props
@@ -285,7 +285,7 @@ function handleStatusChange(row) {
           validFlag: row.validFlag,
         })
         .then(() => {
-          proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
+          proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
           handleQueryClick();
         })
         .catch(() => {
@@ -375,7 +375,7 @@ function handleDelete(row) {
   const childCount = Array.isArray(row.children) ? row.children.length : 0;
   const confirmText = childCount > 0
     ? `该类目包含${childCount}个子类目，不能直接删除。`
-    : td('att.common.confirmDeleteCat').replace('<titleBase>', effectiveTitleBase.value).replace('<id>', id);
+    : td('att.common.confirmDeleteCat', '', { titleBase: effectiveTitleBase.value, id });
   proxy.$modal
     .confirm(confirmText)
     .then(function () {
@@ -405,7 +405,7 @@ function handleDeleteSelected() {
           canDeleteCount = 0,
         } = res?.data || {};
         return ElMessageBox.confirm(
-          td('att.common.deleteConfirmCount').replace('<canDeleteCount>', canDeleteCount).replace('<cannotDeleteCount>', cannotDeleteCount),
+          td('att.common.deleteConfirmCount', '', { canDeleteCount, cannotDeleteCount }),
           td('common.message.systemPrompt'),
           {
             confirmButtonText: td('common.button.confirm'),
@@ -427,7 +427,7 @@ function handleDeleteSelected() {
       .finally(() => {});
   } else {
     ElMessageBox.confirm(
-      td('att.common.deleteConfirmCount').replace('<canDeleteCount>', selection.rows.length).replace('<cannotDeleteCount>', 0),
+      td('att.common.deleteConfirmCount', '', { canDeleteCount: selection.rows.length, cannotDeleteCount: 0 }),
       td('common.message.systemPrompt'),
       { confirmButtonText: td('common.button.confirm'), cancelButtonText: td('common.button.cancel'), type: "warning" }
     )

@@ -606,7 +606,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.document.confirmDelete').replace('<id>', _ids))
+    .confirm(td('dp.document.confirmDelete', '', { id: _ids }))
     .then(function () {
       return delDpDocument(_ids);
     })
@@ -706,7 +706,7 @@ const handleFileSuccess = (response, file, fileList) => {
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.document.enableText') : td('dp.document.disableText');
   proxy.$modal
-    .confirm(td('dp.document.confirmStatusChange').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dp.document.confirmStatusChange', '', { text, name: row.name }))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));

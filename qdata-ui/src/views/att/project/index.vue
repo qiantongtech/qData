@@ -621,10 +621,10 @@ function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   const status = row.validFlag === true ? 1 : 0;
   proxy.$modal
-    .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.projectName')))
+    .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: td('att.common.projectName') }))
     .then(function () {
       editProjectStatus(row.id, status).then((response) => {
-        proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
+        proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
         getList();
       });
     })
@@ -757,7 +757,7 @@ function handleDelete(row) {
     return proxy.$modal.msgWarning(td('common.message.selectRecord'));
   }
   proxy.$modal
-    .confirm(td('att.project.message.confirmDelete').replace("<ids>", Array.isArray(_ids) ? _ids.join(',') : _ids))
+    .confirm(td('att.project.message.confirmDelete', '', { ids: Array.isArray(_ids) ? _ids.join(',') : _ids }))
     .then(function () {
       return delAttProject(_ids);
     })

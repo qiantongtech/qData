@@ -75,12 +75,12 @@ const fileDesc = computed(() => {
 const table = ref([
   {
     key: "personChargeName",
-    label: td('dp.dataElem.personCharge'),
+    label: td('dp.dataCode.personCharge'),
     value: "",
   },
   {
     key: "contactNumber",
-    label: td('dp.dataElem.contactNumber'),
+    label: td('dp.dataCode.contactNumber'),
     value: "",
   },
 

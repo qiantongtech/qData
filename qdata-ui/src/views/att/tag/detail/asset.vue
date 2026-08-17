@@ -493,7 +493,7 @@ function handleDelete(row) {
     assetId: row.id,
   };
   proxy.$modal
-      .confirm(td('att.tag.message.deleteConfirm').replace('<ids>', _ids))
+      .confirm(td('att.tag.message.deleteConfirm', '', { ids: _ids }))
       .then(function () {
         return delByTagIdAndAesstId(map);
       })

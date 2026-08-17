@@ -287,7 +287,7 @@ function handleDetail(row) {
 function handleStatusChange(row) {
   const text = row.validFlag ? td('dm.businessCategory.enableText', 'Enable') : td('dm.businessCategory.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmStatusChange', 'Are you sure to "<text>" business category "<name>"?').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dm.businessCategory.confirmStatusChange', 'Are you sure to "{text}" business category "{name}"?', { text, name: row.name }))
     .then(() =>
       updateBusinessCategory({
         id: row.id,
@@ -344,7 +344,7 @@ function onDialogSubmit(payload) {
 }
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.businessCategory.confirmDelete', 'Are you sure to delete business category "<name>"?').replace('<name>', row.name))
+    .confirm(td('dm.businessCategory.confirmDelete', 'Are you sure to delete business category "{name}"?', { name: row.name }))
     .then(() => delBusinessCategory(row.id))
     .then(() => {
       tableRef.value?.getList();

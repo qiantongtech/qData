@@ -714,12 +714,7 @@ function handleschedulerState(id, row) {
   // Confirmation box pops up
   proxy.$modal
     .confirm(
-      td(
-        "dpp.developTask.confirmScheduleStatus",
-        'Are you sure to "{action}" data development schedule status "{name}"?'
-      )
-        .replace("{action}", text)
-        .replace("{name}", row.name)
+      td("dpp.developTask.confirmScheduleStatus", 'Are you sure to "{action}" data development schedule status "{name}"?', { action: text, name: row.name })
     )
     .then(function () {
       loading.value = true;
@@ -759,12 +754,7 @@ function handleStatusChange(id, row) {
   // Confirmation box pops up
   proxy.$modal
     .confirm(
-      td(
-        "dpp.developTask.confirmTaskStatus",
-        'Are you sure to "{action}" data development task "{name}"?'
-      )
-        .replace("{action}", text)
-        .replace("{name}", row.name)
+      td("dpp.developTask.confirmTaskStatus", 'Are you sure to "{action}" data development task "{name}"?', { action: text, name: row.name })
     )
     .then(function () {
       loading.value = true; // Start loading
@@ -1103,10 +1093,7 @@ function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
     .confirm(
-      td(
-        "dpp.developTask.confirmDelete",
-        'Are you sure to delete data development task with ID "{id}"?'
-      ).replace("{id}", _ids)
+      td("dpp.developTask.confirmDelete", 'Are you sure to delete data development task with ID "{id}"?', { id: _ids })
     )
     .then(function () {
       return delDppEtlTask(_ids);

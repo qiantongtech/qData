@@ -2,7 +2,7 @@ export default {
   common: {
     edit: '修改',
     nameRequired: '{name}不能为空',
-    confirmDeleteItem: '是否确认删除编号为"<ids>"的数据项？',
+    confirmDeleteItem: '是否确认删除编号为"{ids}"的数据项？',
     dataAssetCatName: '数据资产类目名称',
     dataAssetCatNamePlaceholder: '请输入数据资产类目名称',
     dataDocCatName: '数据文档名称',
@@ -104,20 +104,20 @@ export default {
     assetCountTip: '当前已关联此标签的数据资产总数',
     statusTip: '启用状态表示该标签可用于打标数据资产；禁用后无法再被使用，但已有标签仍保留。',
     createdByPlaceholder: '请输入创建人',
-    confirmStatusChange: '确认要"{status}""<name>"标签吗？',
-    confirmDeleteTag: '是否确认删除标签编号为"<ids>"的数据项？',
+    confirmStatusChange: '确认要"{status}""{name}"标签吗？',
+    confirmDeleteTag: '是否确认删除标签编号为"{ids}"的数据项？',
     tagCatRequired: '标签管理类目不能为空',
     addTag: '新增标签',
     editTag: '修改标签',
     tagDetail: '标签详情',
     ruleCategoryPlaceholder: '请输入稽查规则类目',
-    confirmDeleteCat: '是否确认删除<titleBase>编号为"<id>"的数据项？',
-    deleteConfirmCount: '可删除<canDeleteCount>个，不可删除<cannotDeleteCount>个，是否删除可删部分',
+    confirmDeleteCat: '是否确认删除{titleBase}编号为"{id}"的数据项？',
+    deleteConfirmCount: '可删除{canDeleteCount}个，不可删除{cannotDeleteCount}个，是否删除可删部分',
     addTitle: '新增{title}',
     editTitle: '修改{title}',
     detailTitle: '{title}详情',
     importTitle: '{title}导入',
-    confirmStatusChangeGeneric: '确认要"<status>","<name>"<type>吗？',
+    confirmStatusChangeGeneric: '确认要"{status}","{name}"{type}吗？',
     statusSuccess: '{status}成功',
     contactWayPlaceholder: '请输入联系方式'
   },
@@ -131,7 +131,7 @@ export default {
       parentIdRequired: '上级类目不能为空'
     },
     messages: {
-      confirmDelete: '是否确认删除数据资产类目管理编号为"<name>"的数据项？'
+      confirmDelete: '是否确认删除数据资产类目管理编号为"{name}"的数据项？'
     },
     title: {
       add: '新增数据资产类目',
@@ -151,7 +151,7 @@ export default {
       edit: '修改数据文档类目'
     },
     messages: {
-      confirmDelete: '是否确认删除数据文档管理编号为"<name>"的数据项？'
+      confirmDelete: '是否确认删除数据文档管理编号为"{name}"的数据项？'
     }
   },
   auditRule: {
@@ -180,7 +180,7 @@ export default {
       detail: '稽查规则详情'
     },
     importTitle: '稽查规则导入',
-    deleteConfirm: '是否确认删除稽查规则编号为"<ids>"的数据项？',
+    deleteConfirm: '是否确认删除稽查规则编号为"{ids}"的数据项？',
     treeRootName: '质量维度'
   },
   cleanCat: {
@@ -205,7 +205,7 @@ export default {
     },
     importTitle: '清洗规则类目导入',
     messages: {
-      confirmDelete: '是否确认删除清洗规则类目编号为"<ids>"的数据项？'
+      confirmDelete: '是否确认删除清洗规则类目编号为"{ids}"的数据项？'
     }
   },
   cleanRule: {
@@ -227,7 +227,7 @@ export default {
       detail: '清洗规则详情'
     },
     importTitle: '清洗规则导入',
-    deleteConfirm: '是否确认删除编号为"<ids>"的数据项？',
+    deleteConfirm: '是否确认删除编号为"{ids}"的数据项？',
     cleanRuleCategory: '清洗规则类目'
   },
   dataElemCat: {
@@ -244,7 +244,7 @@ export default {
       edit: '修改数据元类目'
     },
     messages: {
-      confirmDelete: '是否确认删除数据元类目管理编号为"<name>"的数据项？'
+      confirmDelete: '是否确认删除数据元类目管理编号为"{name}"的数据项？'
     }
   },
   documentCat: {
@@ -261,7 +261,7 @@ export default {
       edit: '修改标准信息分类管理'
     },
     messages: {
-      confirmDelete: '是否确认删除标准信息分类管理编号为"<ids>"的数据项？'
+      confirmDelete: '是否确认删除标准信息分类管理编号为"{ids}"的数据项？'
     }
   },
   modelCat: {
@@ -278,7 +278,7 @@ export default {
       edit: '修改逻辑模型类目'
     },
     messages: {
-      confirmDelete: '是否确认删除逻辑模型类目管理编号为"<name>"的数据项？'
+      confirmDelete: '是否确认删除逻辑模型类目管理编号为"{name}"的数据项？'
     }
   },
   project: {
@@ -303,7 +303,7 @@ export default {
     },
     importTitle: '项目导入',
     message: {
-      confirmDelete: '是否确认删除项目编号为"<ids>"的数据项？'
+      confirmDelete: '是否确认删除项目编号为"{ids}"的数据项？'
     },
     importResult: '导入结果'
   },
@@ -320,7 +320,7 @@ export default {
       edit: '修改数据质量类目'
     },
     messages: {
-      confirmDelete: '是否确认删除数据质量类目管理编号为"<name>"的数据项？'
+      confirmDelete: '是否确认删除数据质量类目管理编号为"{name}"的数据项？'
     }
   },
   tag: {
@@ -341,7 +341,7 @@ export default {
       detail: '标签管理详情'
     },
     message: {
-      deleteConfirm: '是否确认删除为"<ids>"的数据项？',
+      deleteConfirm: '是否确认删除为"{ids}"的数据项？',
       batchDeleteConfirm: '是否确认批量删除选中的数据项？'
     }
   },
@@ -367,7 +367,7 @@ export default {
       detail: '主题详情'
     },
     importTitle: '主题导入',
-    deleteConfirm: '是否确认删除主题编号为"<ids>"的数据项？',
+    deleteConfirm: '是否确认删除主题编号为"{ids}"的数据项？',
     themeWord: '主题'
   },
   sourceSystem: {
@@ -399,9 +399,9 @@ export default {
     message: {
       nameRequired: '系统名称不能为空',
       typeRequired: '系统类型不能为空',
-      confirmStatus: '确认要"<status><<name>"来源系统吗？',
-      statusSuccess: '<status>"成功',
-      deleteConfirm: '可删除"<deletable>"个，不可删除"<undeletable>"个，是否删除可删部分'
+      confirmStatus: '确认要"{status}<{name}"来源系统吗？',
+      statusSuccess: '{status}"成功',
+      deleteConfirm: '可删除"{deletable}"个，不可删除"{undeletable}"个，是否删除可删部分'
     },
     textareaLimit: '500个字符'
   }

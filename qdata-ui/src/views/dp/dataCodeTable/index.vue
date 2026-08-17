@@ -22,19 +22,19 @@
     <GuideTip tip-id="dp/dpDataElem.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataElem.treePlaceholder')"
+      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataCode.treePlaceholder')"
         @node-click="handleNodeClick" />
 
       <el-main>
         <div class="pagecont-top" v-show="showSearch">
           <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
             v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name" :label-position="labelPosition">
-              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" clearable
+            <el-form-item :label="td('dp.dataCode.nameZh')" prop="name" :label-position="labelPosition">
+              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('dp.dataCode.nameZhPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName" :label-position="labelPosition">
-              <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
+            <el-form-item :label="td('dp.dataCode.nameEn')" prop="engName" :label-position="labelPosition">
+              <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataCode.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
             <el-form-item>
@@ -64,13 +64,13 @@
           <el-table stripe v-loading="loading" :data="dpDataElemList" @selection-change="handleSelectionChange"
             :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="id" width="50" />
-            <el-table-column v-if="getColumnVisibility(1)" :label="td('dp.dataElem.nameZh')" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column v-if="getColumnVisibility(1)" :label="td('dp.dataCode.nameZh')" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="name" width="200">
               <template #default="scope">
                 {{ scope.row.name || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" :label="td('dp.dataElem.nameEn')" :show-overflow-tooltip="{ effect: 'light' }"
+            <el-table-column v-if="getColumnVisibility(2)" :label="td('dp.dataCode.nameEn')" :show-overflow-tooltip="{ effect: 'light' }"
               align="left" prop="engName" width="200">
               <template #default="scope">
                 {{ scope.row.engName || "-" }}
@@ -82,7 +82,7 @@
                 {{ scope.row.description || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="180"
+            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataCode.catCode')" width="180"
               :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
               <template #default="scope">
                 {{ scope.row.catName || "-" }}
@@ -153,30 +153,30 @@
       <el-form ref="dpDataElemRef" :model="form" :rules="rules" label-width="100px" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name">
-              <el-input v-model="form.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" />
+            <el-form-item :label="td('dp.dataCode.nameZh')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('dp.dataCode.nameZhPlaceholder')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName">
-              <el-input v-model="form.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" />
+            <el-form-item :label="td('dp.dataCode.nameEn')" prop="engName">
+              <el-input v-model="form.engName" :placeholder="td('dp.dataCode.nameEnPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.columnType')" prop="columnType" :label-position="labelPosition">
-              <el-select v-model="form.columnType" :placeholder="td('dp.dataElem.columnTypePlaceholder')">
+            <el-form-item :label="td('dp.dataCode.columnType')" prop="columnType" :label-position="labelPosition">
+              <el-select v-model="form.columnType" :placeholder="td('dp.dataCode.columnTypePlaceholder')">
                 <el-option v-for="dict in column_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.catCode')" prop="catCode" :label-position="labelPosition">
+            <el-form-item :label="td('dp.dataCode.catCode')" prop="catCode" :label-position="labelPosition">
               <el-tree-select filterable v-model="form.catCode" :data="deptOptions"
-                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" :placeholder="td('dp.dataElem.catCodePlaceholder')"
+                :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id" :placeholder="td('dp.dataCode.catCodePlaceholder')"
                 check-strictly />
             </el-form-item>
           </el-col>
@@ -191,8 +191,8 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.documentType')" prop="description" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="form.documentType" :placeholder="td('dp.dataElem.documentTypePlaceholder')" clearable
+            <el-form-item :label="td('dp.dataCode.documentType')" prop="description" :label-position="labelPosition">
+              <el-select class="el-form-input-width" v-model="form.documentType" :placeholder="td('dp.dataCode.documentTypePlaceholder')" clearable
                 @change="fetchSecondLevelDocs" style="width: 100%;">
                 <el-option v-for="dict in dp_document_type" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
@@ -200,8 +200,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.documentId')" prop="documentId" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="form.documentId" :placeholder="td('dp.dataElem.documentIdPlaceholder')"
+            <el-form-item :label="td('dp.dataCode.documentId')" prop="documentId" :label-position="labelPosition">
+              <el-select class="el-form-input-width" v-model="form.documentId" :placeholder="td('dp.dataCode.documentIdPlaceholder')"
                 style="width: 100%;">
                 <el-option v-for="doc in secondLevelDocs" :key="doc.value" :label="doc.label" :value="doc.value">
                 </el-option>
@@ -211,9 +211,9 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.personCharge')" prop="personCharge" :label-position="labelPosition">
+            <el-form-item :label="td('dp.dataCode.personCharge')" prop="personCharge" :label-position="labelPosition">
               <!--                <el-input v-model="form.managerId" placeholder="Please select the person in charge" />-->
-              <el-select v-model="form.personCharge" @change="handleChange" filterable :placeholder="td('dp.dataElem.personChargePlaceholder')">
+              <el-select v-model="form.personCharge" @change="handleChange" filterable :placeholder="td('dp.dataCode.personChargePlaceholder')">
                 <el-option v-for="item in managerOptions" :key="String(item.userId)" :label="item.nickName"
                   :value="item.userId">
                 </el-option>
@@ -221,8 +221,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('dp.dataElem.contactNumber')" prop="contactNumber" :label-position="labelPosition">
-              <el-input disabled v-model="form.contactNumber" :placeholder="td('dp.dataElem.contactNumberPlaceholder')" />
+            <el-form-item :label="td('dp.dataCode.contactNumber')" prop="contactNumber" :label-position="labelPosition">
+              <el-input disabled v-model="form.contactNumber" :placeholder="td('dp.dataCode.contactNumberPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -321,10 +321,10 @@ const dpDataElemRuleRelList = ref([]);
 // Show hidden information
 const columns = ref([
   { key: 0, label: td('common.texts.number'), visible: true },
-  { key: 1, label: td('dp.dataElem.nameZh'), visible: true },
-  { key: 2, label: td('dp.dataElem.nameEn'), visible: true },
+  { key: 1, label: td('dp.dataCode.nameZh'), visible: true },
+  { key: 2, label: td('dp.dataCode.nameEn'), visible: true },
   { key: 7, label: td('common.texts.description'), visible: true },
-  { key: 4, label: td('dp.dataElem.catCode'), visible: true },
+  { key: 4, label: td('dp.dataCode.catCode'), visible: true },
   { key: 10, label: td('common.texts.createdBy'), visible: true },
   { key: 11, label: td('common.texts.createdTime'), visible: true },
   { key: 5, label: td('common.texts.status'), visible: true },
@@ -413,18 +413,18 @@ const data = reactive({
     description: "",
   },
   rules: {
-    name: [{ required: true, message: td('dp.dataElem.nameZhRequired'), trigger: "blur" }],
+    name: [{ required: true, message: td('dp.dataCode.nameZhRequired'), trigger: "blur" }],
     engName: [
-      { required: true, message: td('dp.dataElem.nameEnRequired'), trigger: "blur" },
+      { required: true, message: td('dp.dataCode.nameEnRequired'), trigger: "blur" },
       {
         pattern: /^[a-zA-Z_]+$/,
-        message: td('dp.dataElem.nameEnPattern'),
+        message: td('dp.dataCode.nameEnPattern'),
         trigger: "blur",
       },
     ],
-    catCode: [{ required: true, message: td('dp.dataElem.catCodeRequired'), trigger: "blur" }],
+    catCode: [{ required: true, message: td('dp.dataCode.catCodeRequired'), trigger: "blur" }],
     columnType: [
-      { required: true, message: td('dp.dataElem.columnTypeRequired'), trigger: "change" },
+      { required: true, message: td('dp.dataCode.columnTypeRequired'), trigger: "change" },
     ],
   },
 });
@@ -542,7 +542,7 @@ function getDeptTree() {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td('dp.dataElem.treeRootName'),
+        name: td('dp.dataCode.treeRootName'),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -557,7 +557,7 @@ function handleAdd() {
     form.value.catCode = queryParams.value.catCode;
   }
   open.value = true;
-  title.value = td('dp.dataElem.addTitle');
+  title.value = td('dp.dataCode.addTitle');
 }
 function handleUpdate(row) {
   reset();
@@ -575,7 +575,7 @@ function handleUpdate(row) {
     fetchSecondLevelDocs(form.value.documentType, true);
 
     open.value = true;
-    title.value = td('dp.dataElem.editTitle');
+    title.value = td('dp.dataCode.editTitle');
   });
 }
 
@@ -628,7 +628,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmDelete').replace('<id>', _ids))
+    .confirm(td('dp.dataCode.confirmDelete', '', { id: _ids }))
     .then(function () {
       return delDpDataElem(_ids);
     })
@@ -657,7 +657,7 @@ function handleAddDpDataElemRuleRel() {
 /** Data metadata rule association information delete button operation */
 function handleDeleteDpDataElemRuleRel() {
   if (checkedDpDataElemRuleRel.value.length == 0) {
-    proxy.$modal.msgWarning(td('dp.dataElem.selectToDeleteWarning'));
+    proxy.$modal.msgWarning(td('dp.dataCode.selectToDeleteWarning'));
   } else {
     const dpDataElemRuleRels = dpDataElemRuleRelList.value;
     const checkedDpDataElemRuleRels = checkedDpDataElemRuleRel.value;
@@ -686,7 +686,7 @@ function handleExport() {
 /** ---------------- Import related operations ------------------**/
 /** Import button actions */
 function handleImport() {
-  upload.title = td('dp.dataElem.importTitle');
+  upload.title = td('dp.dataCode.importTitle');
   upload.open = true;
 }
 
@@ -718,7 +718,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
     response.msg +
     "</div>",
-    td('dp.dataElem.importResult'),
+    td('dp.dataCode.importResult'),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -726,9 +726,9 @@ const handleFileSuccess = (response, file, fileList) => {
 
 /** Enable disable switch */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? td('dp.dataElem.enableText') : td('dp.dataElem.disableText');
+  const text = e === "1" ? td('dp.dataCode.enableText') : td('dp.dataCode.disableText');
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmStatusChange').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dp.dataCode.confirmStatusChange','',{text,name: row.name}))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));

@@ -633,7 +633,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmDeleteSpecification', 'Are you sure to delete specification "<id>"?').replace('<id>', _ids))
+    .confirm(td('dm.dataLayer.confirmDeleteSpecification', 'Are you sure to delete specification "{id}"?', { id: _ids }))
     .then(function () {
       return delDataLayerSpecification(_ids);
     })
@@ -648,7 +648,7 @@ function handleDelete(row) {
 function handleStatusChange(row) {
   let text = row.status === "0" ? td('dm.dataLayer.enableText', 'Enable') : td('dm.dataLayer.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', 'Are you sure to "<text>" specification "<id>"?').replace('<text>', text).replace('<id>', row.id))
+    .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', 'Are you sure to "{text}" specification "{id}"?', { text, id: row.id }))
     .then(function () {
       return updateDataLayerSpecification({ id: row.id, status: row.status });
     })

@@ -445,7 +445,7 @@ const upload = reactive({
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.model.enableText') : td('dp.model.disableText');
   proxy.$modal
-    .confirm(td('dp.model.confirmStatusChange').replace('<text>', text).replace('<name>', row.modelComment))
+    .confirm(td('dp.model.confirmStatusChange', '', { text, name: row.modelComment }))
     .then(function () {
       updateStatusDpDataModel(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
@@ -642,7 +642,7 @@ function submitForm(obj) {
 function handleDelete(row) {
   const _IDs = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.model.confirmDelete').replace('<id>', _IDs))
+    .confirm(td('dp.model.confirmDelete', '', { id: _IDs }))
     .then(function () {
       return delDpModelColumn(_IDs);
     })

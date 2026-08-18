@@ -44,8 +44,8 @@ services:
       - qdatanet
 
   # qData quality service
-  qdata-quality:
-    image: ${QDATA_HUB}/qdata-quality-ce:${QDATA_TAG}
+  qdata-service-quality:
+    image: ${QDATA_HUB}/qdata-service-quality-ce:${QDATA_TAG}
     restart: always
     profiles: [ "all", "light" ]
     env_file: .env
@@ -55,9 +55,9 @@ services:
 #      - "8083:8083"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./qdata-quality/logs:/usr/app/jar/logs
-      - ./qdata-quality/job-log:/usr/app/jar/job-log
-      - ./qdata-quality/application-prod.yml:/usr/app/jar/application-prod.yml
+      - ./qdata-service-quality/logs:/usr/app/jar/logs
+      - ./qdata-service-quality/job-log:/usr/app/jar/job-log
+      - ./qdata-service-quality/application-prod.yml:/usr/app/jar/application-prod.yml
     depends_on:
       redis:
         condition: service_healthy
@@ -71,9 +71,9 @@ services:
       - qdatanet
 
   # qData backend service
-  qdata-ai:
+  qdata-service-ai:
     privileged: true
-    image: ${QDATA_HUB}/qdata-ai-ce:${QDATA_TAG}
+    image: ${QDATA_HUB}/qdata-service-ai-ce:${QDATA_TAG}
     restart: always
     profiles: [ "all", "light" ]
     env_file: .env
@@ -83,8 +83,8 @@ services:
     #      - "8087:8087"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./qdata-ai/logs:/usr/app/jar/logs
-      - ./qdata-ai/application-prod.yml:/usr/app/jar/application-prod.yml
+      - ./qdata-service-ai/logs:/usr/app/jar/logs
+      - ./qdata-service-ai/application-prod.yml:/usr/app/jar/application-prod.yml
     depends_on:
       redis:
         condition: service_healthy

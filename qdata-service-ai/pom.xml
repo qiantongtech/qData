@@ -11,7 +11,7 @@
         <module>qdata-ai-server</module>
         <module>qdata-ai-core</module>
     </modules>
-    <name>qdata-ai</name>
+    <name>qdata-service-ai</name>
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>

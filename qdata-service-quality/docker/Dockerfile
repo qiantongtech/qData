@@ -12,9 +12,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 WORKDIR $APP_HOME
 
 # Copy product
-COPY ./target/*.jar ./qdata-quality.jar
+COPY ./target/*.jar ./qdata-service-quality.jar
 
 EXPOSE 8083
 
-ENTRYPOINT ["java", "-Xms512m", "-Xmx2g", "-Dspring.profiles.active=prod","-jar","qdata-quality.jar"]
+ENTRYPOINT ["java", "-Xms512m", "-Xmx2g", "-Dspring.profiles.active=prod","-jar","qdata-service-quality.jar"]
 CMD ["--server.port=8083"]

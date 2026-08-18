@@ -31,7 +31,9 @@
 ├─qdata-module-dpp          # 数据汇聚模块
 ├─qdata-module-ds           # 数据服务模块
 ├─qdata-api-ds              # ds调度器接口模块
-├─qdata-etl                 # spark-etl程序模块
+├─qdata-service-ai          # 独立部署的 AI 能力服务
+├─qdata-service-quality     # 独立部署的数据质量能力服务
+├─qdata-executor-etl        # Spark/Flink 任务执行引擎所需的 JAR（执行器）
 ├─qdata-ui                  # 前端模块
 ├─sql                       # sql脚本
 ├─README.md                 # 相关介绍
@@ -59,7 +61,9 @@
 ├─qdata-module-dpp          # 数据汇聚模块
 ├─qdata-module-ds           # 数据服务模块
 ├─qdata-api-ds              # ds调度器接口模块
-├─qdata-etl                 # spark-etl程序模块
+├─qdata-service-ai          # 独立部署的 AI 能力服务
+├─qdata-service-quality     # 独立部署的数据质量能力服务
+├─qdata-executor-etl        # Spark/Flink 任务执行引擎所需的 JAR（执行器）
 ```
 
 ### 2.3 前端结构&#xA;
@@ -184,7 +188,7 @@ ds:
  token: <调度器令牌>  # 在调度器-安全中心-令牌管理中创建
  spark:
    master_url: spark://127.0.0.1:7077  # 与Spark Master地址一致
-   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar  # 上传etl包后路径
+   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl-3.8.8.jar  # 上传etl包后路径
    main_class: tech.qiantong.qdata.spark.etl.EtlApplication
 ```
 

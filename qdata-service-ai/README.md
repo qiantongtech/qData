@@ -4,8 +4,8 @@
 
 mvn clean install -DskipTests=true
 
-## 2.idea新窗口打开qdata-ai jdk需要为17
+## 2.idea新窗口打开qdata-service-ai jdk需要为17
 
 ## 3.maven加载后即可启动
 
-qdata-ai/qdata-ai-server/src/main/java/tech/qiantong/qdata/ai/server/QDataAiApplication.java
+qdata-service-ai/qdata-ai-server/src/main/java/tech/qiantong/qdata/ai/server/QDataAiApplication.java

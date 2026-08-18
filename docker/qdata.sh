@@ -1,10 +1,24 @@
 #!/bin/sh
 
-# qData Docker Compose launcher for Linux and macOS.
-# Keep this script POSIX-sh compatible so it can be invoked with: sh qdata.sh
+# -----------------------------------------------------------------------------
+# qData Docker Management Script
+#
+# Purpose:
+#   Manages the qData Docker Compose deployment on Linux and macOS, including
+#   environment validation, startup, status checks, logs, restarts, diagnostics,
+#   shutdown, and complete uninstallation.
+#
+# Usage:
+#   sh qdata.sh <command> [mode] [options]
+#
+# Requirements:
+#   POSIX-compatible shell, Docker Engine 20.10.0 or later, and Docker Compose
+#   2.20.2 or later. Keep this script POSIX-sh compatible.
+# -----------------------------------------------------------------------------
 
 set -u
 
+# Runtime paths, version constraints, and command-line state.
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
 PROJECT_NAME=${QDATA_PROJECT_NAME:-qdata}
 ENV_FILE="$SCRIPT_DIR/.env"
@@ -19,6 +33,11 @@ WITH_DEMO=0
 OFFLINE=0
 FORCE=0
 
+# -----------------------------------------------------------------------------
+# Command-line help and logging utilities
+# -----------------------------------------------------------------------------
+
+# Print the supported commands, modes, and options.
 usage() {
     cat <<'EOF'
 qData Docker 管理脚本
@@ -43,24 +62,33 @@ qData Docker 管理脚本
 EOF
 }
 
+# Return a timestamp suitable for operational log messages.
 timestamp() {
     date '+%Y-%m-%d %H:%M:%S'
 }
 
+# Write a timestamped informational message.
 log() {
     message=$1
     printf '[%s] %s\n' "$(timestamp)" "$message"
 }
 
+# Write a non-fatal warning message.
 warn() {
     log "警告：$1"
 }
 
+# Write an error message and terminate with the requested exit code.
 fail() {
     log "错误：$1"
     exit "${2:-1}"
 }
 
+# -----------------------------------------------------------------------------
+# Environment file and version helpers
+# -----------------------------------------------------------------------------
+
+# Read a normalized value from a dotenv-style configuration file.
 env_value() {
     key=$1
     file=${2:-$ENV_FILE}
@@ -89,6 +117,7 @@ env_value() {
     ' "$file"
 }
 
+# Update or append a key in the active environment file atomically.
 write_env_value() {
     key=$1
     value=$2
@@ -114,10 +143,12 @@ write_env_value() {
     mv "$tmp_file" "$ENV_FILE"
 }
 
+# Extract the numeric portion of a tool version string.
 numeric_version() {
     printf '%s\n' "$1" | sed -E 's/^[^0-9]*//; s/[^0-9.].*$//'
 }
 
+# Return success when the actual semantic version meets the minimum version.
 version_ge() {
     awk -v actual="$1" -v required="$2" 'BEGIN {
         na=split(actual,a,"."); nr=split(required,r,"."); n=(na>nr?na:nr)
@@ -126,6 +157,11 @@ version_ge() {
     }'
 }
 
+# -----------------------------------------------------------------------------
+# Docker Compose command wrappers
+# -----------------------------------------------------------------------------
+
+# Invoke either the Docker Compose plugin or the legacy standalone executable.
 compose() {
     if [ "$COMPOSE_KIND" = plugin ]; then
         docker compose "$@"
@@ -134,22 +170,27 @@ compose() {
     fi
 }
 
+# Invoke Compose with the shared project, environment, and configuration options.
 compose_base() {
     compose --env-file "$ENV_FILE" -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "$@"
 }
 
+# Invoke Compose for the currently selected qData deployment profile.
 compose_mode() {
     compose_base --profile "$MODE" "$@"
 }
 
+# Invoke Compose for the optional demonstration-data profile.
 compose_demo() {
     compose_base --profile demo "$@"
 }
 
+# Invoke Compose across every profile in the selected Compose file.
 compose_everything() {
     compose_base --profile '*' "$@"
 }
 
+# Detect the available Compose implementation and enforce its minimum version.
 discover_compose() {
     if docker compose version >/dev/null 2>&1; then
         COMPOSE_KIND=plugin
@@ -168,7 +209,13 @@ discover_compose() {
     log "Docker Compose 检查通过：$version"
 }
 
+# -----------------------------------------------------------------------------
+# Deployment preflight checks
+# -----------------------------------------------------------------------------
+
+# Validate Docker availability, compatibility, security mode, and context scope.
 check_docker() {
+    # Confirm that the Docker CLI is installed and the daemon is reachable.
     command -v docker >/dev/null 2>&1 ||
         fail "未安装 Docker。请先安装 Docker Desktop 或 Docker Engine。" 2
 
@@ -185,6 +232,7 @@ check_docker() {
         esac
     fi
 
+    # Enforce the minimum engine version and Linux-container mode.
     server_version=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
     server_version=$(numeric_version "$server_version")
     [ -n "$server_version" ] || fail "无法获取 Docker Engine 版本。" 2
@@ -194,6 +242,7 @@ check_docker() {
     os_type=$(docker info --format '{{.OSType}}' 2>/dev/null)
     [ "$os_type" = linux ] || fail "当前 Docker 不是 Linux Containers 模式，请切换到 Linux Containers。" 2
 
+    # Reject unsupported rootless engines and unsafe remote bind-mount contexts.
     security_options=$(docker info --format '{{json .SecurityOptions}}' 2>/dev/null || printf '')
     case "$security_options" in
         *rootless*) fail "当前使用 Rootless Docker，但 qData 的 DM8、Neo4j 等服务需要 privileged 能力，请改用普通 Docker Engine。" 2 ;;
@@ -212,6 +261,7 @@ check_docker() {
     log "Docker Engine 检查通过：${server_version}，架构 $(docker info --format '{{.Architecture}}' 2>/dev/null)"
 }
 
+# Create the active environment file from the distributed example when needed.
 ensure_env() {
     if [ ! -f "$ENV_FILE" ]; then
         [ -f "$ENV_EXAMPLE" ] || fail "缺少 .env 和 .env.example，部署包不完整。" 3
@@ -220,6 +270,7 @@ ensure_env() {
     fi
 }
 
+# Validate the requested database and select its matching Compose file.
 select_database() {
     requested=$1
     current=$(env_value DB_TYPE 2>/dev/null || printf '')
@@ -245,6 +296,7 @@ select_database() {
     log "部署选择：数据库=${DB_TYPE}，模式=${MODE}，演示数据=$WITH_DEMO"
 }
 
+# Convert an entrypoint to Unix line endings and ensure it is executable.
 normalize_entrypoint() {
     file=$1
     [ -f "$file" ] || return 0
@@ -258,6 +310,7 @@ normalize_entrypoint() {
     chmod u+x "$file" 2>/dev/null || warn "无法设置执行权限：${file#$SCRIPT_DIR/}"
 }
 
+# Normalize every database entrypoint shipped in the deployment package.
 prepare_files() {
     normalize_entrypoint "$SCRIPT_DIR/database/dm8/entrypoint.sh"
     normalize_entrypoint "$SCRIPT_DIR/database/dm8/entrypoint-arm64.sh"
@@ -265,32 +318,37 @@ prepare_files() {
     normalize_entrypoint "$SCRIPT_DIR/demo/dm8/entrypoint-arm64.sh"
 }
 
+# Fail with a package-integrity error when a required path is missing.
 require_path() {
     path=$1
     description=$2
     [ -e "$path" ] || fail "部署包不完整：缺少${description}（${path#$SCRIPT_DIR/}）。" 3
 }
 
+# Verify that all artifacts required by the selected mode and database exist.
 check_package() {
+    # Light and full modes require the web application and backend assets.
     if [ "$MODE" = light ] || [ "$MODE" = all ]; then
         require_path "$SCRIPT_DIR/nginx/dist/index.html" "前端文件 nginx/dist/index.html"
         require_path "$SCRIPT_DIR/qdata-server/application-prod.yml" "qData服务配置"
-        require_path "$SCRIPT_DIR/qdata-quality/application-prod.yml" "质量服务配置"
-        require_path "$SCRIPT_DIR/qdata-ai/application-prod.yml" "AI服务配置"
+        require_path "$SCRIPT_DIR/qdata-service-quality/application-prod.yml" "质量服务配置"
+        require_path "$SCRIPT_DIR/qdata-service-ai/application-prod.yml" "AI服务配置"
         require_path "$SCRIPT_DIR/qdata-server/datax" "DataX目录"
     fi
 
+    # Full and local modes require the scheduler runtimes and qData ETL artifact.
     if [ "$MODE" = all ] || [ "$MODE" = local ]; then
         require_path "$SCRIPT_DIR/dolphinscheduler/soft/spark" "DolphinScheduler使用的Spark目录"
         require_path "$SCRIPT_DIR/dolphinscheduler/soft/flink" "DolphinScheduler使用的Flink目录"
         etl_jar_found=0
-        for etl_jar in "$SCRIPT_DIR"/dolphinscheduler/resource/default/resources/spark-jar/qdata-etl*.jar; do
+        for etl_jar in "$SCRIPT_DIR"/dolphinscheduler/resource/default/resources/spark-jar/qdata-executor-etl*.jar; do
             [ -f "$etl_jar" ] && etl_jar_found=1
         done
         [ "$etl_jar_found" -eq 1 ] ||
             fail "部署包不完整：缺少 qData ETL jar（dolphinscheduler/resource/default/resources/spark-jar/）。" 3
     fi
 
+    # Each database implementation must include its corresponding initialization SQL.
     if [ "$DB_TYPE" = dm8 ]; then
         require_path "$SCRIPT_DIR/database/dm8/init-qdata.sql" "DM8初始化SQL"
     else
@@ -299,6 +357,7 @@ check_package() {
     log "部署包完整性检查通过"
 }
 
+# Ask Compose to validate the selected application and optional demo profiles.
 validate_compose() {
     output=$(compose_mode config --quiet 2>&1)
     if [ $? -ne 0 ]; then
@@ -311,18 +370,22 @@ validate_compose() {
     log "Compose 配置校验通过"
 }
 
+# Verify Docker CPU and memory allocations and warn about low host disk space.
 check_resources() {
+    # Read the resources assigned to the active Docker engine.
     resource_info=$(docker info --format '{{.NCPU}}|{{.MemTotal}}|{{.Architecture}}' 2>/dev/null)
     cpu=$(printf '%s' "$resource_info" | awk -F'|' '{print $1+0}')
     memory_bytes=$(printf '%s' "$resource_info" | awk -F'|' '{print $2+0}')
     memory_gb=$(awk -v bytes="$memory_bytes" 'BEGIN { printf "%d", bytes/1073741824 }')
 
+    # Select recommended resource thresholds for the requested deployment mode.
     case "$MODE" in
         light) min_cpu=4; min_memory=8; min_disk=20 ;;
         all|local) min_cpu=8; min_memory=14; min_disk=40 ;;
         *) min_cpu=4; min_memory=8; min_disk=20 ;;
     esac
 
+    # Stop on insufficient Docker resources unless the caller explicitly forces startup.
     if [ "$cpu" -lt "$min_cpu" ] || [ "$memory_gb" -lt "$min_memory" ]; then
         message="Docker可用资源不足：当前 ${cpu}CPU/${memory_gb}GB，$MODE 模式最低建议 ${min_cpu}CPU/${min_memory}GB。"
         [ "$FORCE" -eq 1 ] && warn "$message" || fail "$message 可使用 --force 自行承担风险。" 2
@@ -330,6 +393,7 @@ check_resources() {
         log "资源检查通过：${cpu}CPU/${memory_gb}GB"
     fi
 
+    # Disk space is advisory because Docker storage may reside on another filesystem.
     disk_kb=$(df -Pk "$SCRIPT_DIR" 2>/dev/null | awk 'NR==2 {print $4+0}')
     if [ -n "$disk_kb" ] && [ "$disk_kb" -gt 0 ]; then
         disk_gb=$((disk_kb / 1048576))
@@ -337,11 +401,13 @@ check_resources() {
     fi
 }
 
+# Return the Compose project and container currently publishing a host port.
 port_owner() {
     port=$1
     docker ps --filter "publish=$port" --format '{{.Label "com.docker.compose.project"}}|{{.Names}}' 2>/dev/null | sed -n '1p'
 }
 
+# Detect a non-Docker process listening on a host TCP port.
 port_in_use_host() {
     port=$1
     if command -v lsof >/dev/null 2>&1; then
@@ -355,7 +421,9 @@ port_in_use_host() {
     fi
 }
 
+# Ensure all ports required by the selected profile are available to qData.
 check_ports() {
+    # Build the required port list from the active database and deployment mode.
     nginx_port=$(env_value EXPOSE_NGINX_PORT 2>/dev/null || printf '80')
     redis_port=$(env_value EXPOSE_REDIS_PORT 2>/dev/null || printf '6379')
     db_port=5236
@@ -367,6 +435,7 @@ check_ports() {
         [ "$MODE" = all ] && ports="$ports 5432 12345 25333"
     fi
 
+    # Allow ports already owned by this project and reject all other listeners.
     for port in $ports; do
         owner=$(port_owner "$port")
         if [ -n "$owner" ]; then
@@ -380,9 +449,11 @@ check_ports() {
     log "端口检查通过"
 }
 
+# Detect IPv4 subnet collisions with the fixed qData bridge network.
 check_network_subnet() {
     subnet=172.28.0.0/16
 
+    # Compare two IPv4 CIDR ranges and return success when they overlap.
     cidr_overlaps() {
         awk -v first="$1" -v second="$2" '
             function range(cidr, out, parts, octets, prefix, ip, size) {
@@ -402,6 +473,7 @@ check_network_subnet() {
         '
     }
 
+    # Inspect networks outside this Compose project for conflicting IPv4 ranges.
     for network_id in $(docker network ls -q 2>/dev/null); do
         network_name=$(docker network inspect "$network_id" --format '{{.Name}}' 2>/dev/null || true)
         network_project=$(docker network inspect "$network_id" --format '{{index .Labels "com.docker.compose.project"}}' 2>/dev/null || true)
@@ -418,11 +490,17 @@ check_network_subnet() {
     log "Docker网段检查通过：$subnet"
 }
 
+# -----------------------------------------------------------------------------
+# Image preparation
+# -----------------------------------------------------------------------------
+
+# List the unique images required by the selected application profiles.
 selected_images() {
     compose_mode config --images 2>/dev/null
     [ "$WITH_DEMO" -eq 1 ] && compose_demo config --images 2>/dev/null
 }
 
+# Ensure every required image is already present when running offline.
 check_offline_images() {
     missing=0
     for image in $(selected_images | sort -u); do
@@ -435,9 +513,11 @@ check_offline_images() {
     log "离线镜像检查通过"
 }
 
+# Pull one profile with bounded retries and actionable registry error handling.
 pull_profile() {
     profile=$1
     attempt=1
+    # Retry transient registry failures up to three times with incremental delays.
     while [ "$attempt" -le 3 ]; do
         log "正在拉取 $profile 模式镜像（第 $attempt/3 次）..."
         if [ "$profile" = demo ]; then
@@ -461,6 +541,7 @@ pull_profile() {
     fail "镜像拉取失败：$output" 4
 }
 
+# Select online image pulls or strict local-image validation.
 prepare_images() {
     if [ "$OFFLINE" -eq 1 ]; then
         check_offline_images
@@ -470,16 +551,23 @@ prepare_images() {
     fi
 }
 
+# -----------------------------------------------------------------------------
+# Service startup and readiness checks
+# -----------------------------------------------------------------------------
+
+# Return the runtime and health states for a container ID.
 container_state() {
     docker inspect --format '{{.State.Status}}|{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$1" 2>/dev/null
 }
 
+# Wait until every requested service is running and healthy or the timeout expires.
 wait_services() {
     profile=$1
     timeout=$2
     shift 2
     services="$*"
     start_time=$(date +%s)
+    # Poll all containers together so failures include a complete state summary.
     while :; do
         ready=1
         summary=
@@ -522,6 +610,7 @@ wait_services() {
     done
 }
 
+# Discover and wait for all services in the active deployment profile.
 wait_profile() {
     timeout=$1
     services=$(compose_mode config --services 2>/dev/null | tr '\n' ' ')
@@ -529,6 +618,7 @@ wait_profile() {
     wait_services "$MODE" "$timeout" $services
 }
 
+# Confirm that the qData web endpoint responds after its containers become healthy.
 wait_web() {
     [ "$MODE" = local ] && return 0
     command -v curl >/dev/null 2>&1 || {
@@ -548,7 +638,9 @@ wait_web() {
     return 0
 }
 
+# Run all preflight checks, initialize databases, and start the requested stack.
 start_qdata() {
+    # Complete all non-mutating validation before creating containers.
     log "开始启动 qData"
     check_docker
     discover_compose
@@ -560,6 +652,7 @@ start_qdata() {
     check_network_subnet
     prepare_images
 
+    # Initialize the selected primary database and shared MongoDB service first.
     log "正在初始化数据库..."
     output=$(compose_base --profile schema up -d 2>&1)
     [ $? -eq 0 ] || fail "数据库启动失败：$output" 5
@@ -567,10 +660,12 @@ start_qdata() {
     [ "$DB_TYPE" = mysql ] && db_service=mysql
     wait_services schema 1200 "$db_service" mongodb || fail "数据库未能正常就绪。" 6
 
+    # Start the application stack after the databases report healthy states.
     log "数据库已就绪，正在启动 $MODE 模式..."
     output=$(compose_mode up -d 2>&1)
     [ $? -eq 0 ] || fail "qData启动失败：$output" 5
 
+    # Start and validate the optional demonstration databases independently.
     if [ "$WITH_DEMO" -eq 1 ]; then
         log "正在启动演示数据库..."
         output=$(compose_demo up -d 2>&1)
@@ -579,6 +674,7 @@ start_qdata() {
         wait_services demo 1200 $demo_services || fail "演示数据库存在未就绪或异常容器。" 6
     fi
 
+    # Apply the longer readiness timeout required by scheduler-enabled modes.
     timeout=600
     if [ "$MODE" = all ] || [ "$MODE" = local ]; then
         timeout=1200
@@ -586,6 +682,7 @@ start_qdata() {
     wait_profile "$timeout" || fail "$MODE 模式存在未就绪或异常容器。" 6
     wait_web
 
+    # Print access details only after the deployment has passed readiness checks.
     log "qData启动完成"
     if [ "$MODE" != local ]; then
         port=$(env_value EXPOSE_NGINX_PORT 2>/dev/null || printf '80')
@@ -597,6 +694,7 @@ start_qdata() {
     printf '状态查看：sh qdata.sh status\n日志查看：sh qdata.sh logs\n'
 }
 
+# Restore the database and Compose selection used by management commands.
 load_saved_selection() {
     ensure_env
     MODE=light
@@ -608,6 +706,7 @@ load_saved_selection() {
     esac
 }
 
+# Execute a non-destructive lifecycle action against every project profile.
 manage_qdata() {
     action=$1
     check_docker
@@ -627,6 +726,7 @@ manage_qdata() {
     esac
 }
 
+# Remove a runtime path only when it is contained by the deployment directory.
 safe_remove_runtime_path() {
     path=$1
     case "$path" in
@@ -637,7 +737,9 @@ safe_remove_runtime_path() {
     esac
 }
 
+# Remove qData Docker resources and generated runtime data after confirmation.
 uninstall_qdata() {
+    # Require an exact confirmation phrase before any destructive operation.
     printf '%s\n' "该操作将彻底删除 qData 容器、网络、数据卷、运行数据及未被占用的相关镜像。"
     printf '%s' "请输入 DELETE QDATA 确认："
     IFS= read -r confirmation
@@ -652,6 +754,7 @@ uninstall_qdata() {
     load_saved_selection
     log "开始彻底卸载 qData项目 $PROJECT_NAME"
 
+    # Capture referenced images before removing the Compose resources.
     images=$(
         for file in "$SCRIPT_DIR/docker-compose.yml" "$SCRIPT_DIR/docker-compose-mysql.yml"; do
             COMPOSE_FILE=$file
@@ -659,11 +762,13 @@ uninstall_qdata() {
         done | sort -u
     )
 
+    # Tear down both database variants so prior configuration changes leave no resources.
     for file in "$SCRIPT_DIR/docker-compose.yml" "$SCRIPT_DIR/docker-compose-mysql.yml"; do
         COMPOSE_FILE=$file
         compose_everything down --volumes --remove-orphans >/dev/null 2>&1 || true
     done
 
+    # Remove any labeled resources left behind by incomplete Compose operations.
     for container in $(docker ps -aq --filter "label=com.docker.compose.project=$PROJECT_NAME" 2>/dev/null); do
         docker rm -f "$container" >/dev/null 2>&1 || true
     done
@@ -674,19 +779,21 @@ uninstall_qdata() {
         docker network rm "$network" >/dev/null 2>&1 || true
     done
 
+    # Remove project images only when Docker confirms they are not in use elsewhere.
     for image in $images; do
         if docker image inspect "$image" >/dev/null 2>&1; then
             docker image rm "$image" >/dev/null 2>&1 || warn "镜像仍被其他容器使用，已保留：$image"
         fi
     done
 
+    # Delete generated logs and data while retaining scripts and configuration files.
     for runtime_path in \
         "$SCRIPT_DIR/nginx/logs" \
         "$SCRIPT_DIR/qdata-server/logs" \
         "$SCRIPT_DIR/qdata-server/upload" \
-        "$SCRIPT_DIR/qdata-quality/logs" \
-        "$SCRIPT_DIR/qdata-quality/job-log" \
-        "$SCRIPT_DIR/qdata-ai/logs" \
+        "$SCRIPT_DIR/qdata-service-quality/logs" \
+        "$SCRIPT_DIR/qdata-service-quality/job-log" \
+        "$SCRIPT_DIR/qdata-service-ai/logs" \
         "$SCRIPT_DIR/dolphinscheduler/logs" \
         "$SCRIPT_DIR/neo4j/data" \
         "$SCRIPT_DIR/neo4j/logs" \
@@ -700,6 +807,7 @@ uninstall_qdata() {
     printf '%s\n' "qData已彻底卸载。部署脚本、Compose文件和 .env 配置已保留。"
 }
 
+# Run the complete preflight suite without starting any services.
 doctor_qdata() {
     check_docker
     discover_compose
@@ -712,6 +820,7 @@ doctor_qdata() {
     log "环境诊断通过，可以启动 qData。"
 }
 
+# Parse start or doctor options and resolve the requested database configuration.
 parse_start_options() {
     requested_db=
     while [ $# -gt 0 ]; do
@@ -732,6 +841,7 @@ parse_start_options() {
     select_database "$requested_db"
 }
 
+# Dispatch the requested top-level command and validate its positional arguments.
 main() {
     action=${1:-help}
     [ $# -gt 0 ] && shift
@@ -758,4 +868,5 @@ main() {
     esac
 }
 
+# Preserve all original command-line arguments when entering the dispatcher.
 main "$@"

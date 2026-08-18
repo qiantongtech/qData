@@ -179,7 +179,7 @@ ds:
     # Spark master address
     master_url: spark://127.0.0.1:7077
     # JAR package path in DolphinScheduler
-    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar
+    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl-3.8.8.jar
     # JAR main entry point
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   # HDFS-related configuration

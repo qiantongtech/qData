@@ -18,14 +18,14 @@
 
 <template>
   <el-row>
-    <el-col :span="5">
+    <el-col :span="5" class="dept-tree">
       <DeptTree
-        :deptOptions="processedData"
-        :leftWidth="leftWidth"
-        :placeholder="td('dpp.cleanRule.inputRuleType', 'Please enter rule type')"
-        @node-click="handleNodeClick"
-        ref="DeptTreeRef"
-        :showFilter="false"
+          :deptOptions="processedData"
+          :leftWidth="leftWidth"
+          :placeholder="td('dpp.cleanRule.inputRuleType', 'Please enter rule type')"
+          @node-click="handleNodeClick"
+          ref="DeptTreeRef"
+          :showFilter="false"
       />
     </el-col>
     <div class="divider"></div>
@@ -89,7 +89,7 @@ import {
   Files,
   Monitor,
 } from "@element-plus/icons-vue";
-import DeptTree from "@/components/DeptTree/tree.vue";
+import DeptTree from "@/components/DeptTree";
 import { listAll } from "@/api/att/rule/cleanRule.js";
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -173,6 +173,15 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+.dept-tree{
+  :deep(.resize-bar) {
+    display: none;
+  }
+  :deep(.el-aside) {
+    padding: 0;
+  }
+}
+
 .main-layout {
   height: 75vh;
   overflow: hidden;

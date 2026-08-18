@@ -23,7 +23,7 @@ const logo = [
   '    __ _  |  _ \\    __ _  | |_    __ _  ',
   '   / _` | | | | |  / _` | | __|  / _` | ',
   '  | (_| | | |_| | | (_| | | |_  | (_| | ',
-  '   \\__, | |____/   \\__,_|  \\____|  \\____,_| ',
+  '   \\__, | |____/   \\__,_|  \\__|  \\__,_| ',
   '      |_|                                '
 ].join('\n')
 
@@ -118,8 +118,8 @@ export function printConsoleBanner() {
   const styles = createStyles()
   const segments = [
     { text: `${logo}\n\n`, style: styles.logo },
-    { text: ' qData OPEN SOURCE ', style: styles.brand },
-    { text: ` 版 本 号：${packageInfo.version} `, style: styles.version },
+    { text: 'qData OPEN SOURCE', style: styles.brand },
+    { text: `${packageInfo.version} `, style: styles.version },
     { text: `\n\n${licenseContent.intro}`, style: styles.introText },
     { text: `\n\n${licenseContent.commercialTitle}`, style: styles.termTitle },
     { text: `\n${licenseContent.commercialDetail}`, style: styles.licenseText },
@@ -128,7 +128,7 @@ export function printConsoleBanner() {
     { text: `\n\n${licenseContent.apacheNotice}`, style: styles.licenseText },
     { text: `\n\n${licenseContent.patentNotice}`, style: styles.termTitle },
     { text: `\n${licenseContent.copyright}\n\n`, style: styles.copyright },
-    { text: ' OFFICIAL WEBSITE ', style: styles.websiteLabel },
+    { text: ' COMMUNITY ', style: styles.websiteLabel },
     { text: ' https://community.qdata.tech', style: styles.websiteUrl }
   ]
 

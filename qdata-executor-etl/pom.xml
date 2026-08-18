@@ -27,7 +27,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>qdata-etl</artifactId>
+    <artifactId>qdata-executor-etl</artifactId>
 
     <description>
         ETL service entry point

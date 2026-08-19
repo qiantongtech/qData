@@ -29,3 +29,10 @@ INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,
 INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES (2775,'数据元删除',2771,4,'#','',NULL,1,0,NULL,'F','0','0','dp:dataElem:remove','#','qData','2025-01-21 14:54:21.000000','admin','2025-09-30 10:11:43.000000','');
 INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES (2776,'数据元导出',2771,5,'#','',NULL,1,0,NULL,'F','0','0','dp:dataElem:export','#','qData','2025-01-21 14:54:21.000000','admin','2025-09-30 10:11:52.000000','');
 INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES (2777,'数据元导入',2771,6,'#','',NULL,1,0,NULL,'F','0','0','dp:dataElem:import','#','qData','2025-01-21 14:54:21.000000','admin','2025-09-30 10:11:57.000000','');
+
+-- 调整清洗规则备注、描述
+UPDATE `att_clean_rule`
+SET `description` = '通过正则表达式匹配符合特定规则的文本，并将其批量替换为指定内容',
+    `example` = '使用 (\d{4})/(\d{2})/(\d{2}) 匹配 2026/08/18，替换为 $1-$2-$3 后得到 2026-08-18',
+    `use_case` = '批量统一文本中的日期格式，提高数据处理效率'
+WHERE `id` = 11;

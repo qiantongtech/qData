@@ -118,7 +118,7 @@ export function printConsoleBanner() {
   const styles = createStyles()
   const segments = [
     { text: `${logo}\n\n`, style: styles.logo },
-    { text: 'qData OPEN SOURCE', style: styles.brand },
+    { text: 'VERSION', style: styles.brand },
     { text: `${packageInfo.version} `, style: styles.version },
     { text: `\n\n${licenseContent.intro}`, style: styles.introText },
     { text: `\n\n${licenseContent.commercialTitle}`, style: styles.termTitle },

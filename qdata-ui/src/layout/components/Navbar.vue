@@ -852,7 +852,7 @@ function openDocumentation() {
     "ja-JP": "/ja",
   };
   const localePath = localePathMap[lang] || "";
-  window.open(`https://community.qdata.tech${localePath}/docs/start/introduction.html`, "_blank");
+  window.open(`https://community.qdata.tech${localePath}/docs/overview/introduction.html`, "_blank");
 }
 function toggleSideBar() {
   appStore.toggleSideBar();

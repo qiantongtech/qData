@@ -6,18 +6,14 @@ import tech.qiantong.qdata.common.database.utils.AesEncryptUtil;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.utils.JSONUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utility for generating DataX job.json content.
  */
 public final class DataXJsonBuilder {
-
+    private static final String MASKED_SESSIONID = "U2FsdGVkX1+oAoyFtI8RPvKmb5f/vHcn3c5kYrNnBuw=";
     private DataXJsonBuilder() {
     }
 
@@ -27,8 +23,10 @@ public final class DataXJsonBuilder {
         List<Map<String, Object>> nodeList = new ArrayList<>();
         nodeList.add(buildContent(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps));
         Map<String, Object> jobJsonMap = new HashMap<>();
-        jobJsonMap.put("job", new HashMap<String, Object>() {{
+        jobJsonMap.put("job", new TreeMap<String, Object>() {{
             put("content", nodeList);
+            //Data Execution Session ID, used for data encryption and decryption
+            put("session_id", MASKED_SESSIONID);
             put("setting", new HashMap<String, Object>() {{
                 put("speed", new HashMap<String, Object>() {{
                     put("channel", 1);

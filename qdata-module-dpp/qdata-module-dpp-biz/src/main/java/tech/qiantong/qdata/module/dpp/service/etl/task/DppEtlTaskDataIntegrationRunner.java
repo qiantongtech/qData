@@ -172,7 +172,7 @@ public class DppEtlTaskDataIntegrationRunner {
             String json = DataXJsonBuilder.buildJson(readerNodeJsonMap, writerNodeJsonMap, definitionJsonMaps);
             // Never persist connection passwords in task logs.
             LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + maskSensitiveJson(json));
-
+            //LogUtils.appendLocalLogLine(taskLog, "DataX JSON: " + json);
             LogUtils.appendLocalLogLine(taskLog, "********************************* Execute DataX task instance ********************************");
             LogUtils.appendLocalLogLine(taskLog, "Start executing DataX job");
 

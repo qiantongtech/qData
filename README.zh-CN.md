@@ -4,7 +4,7 @@
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/license-Apache--2.0-green"/>
- <img src="https://img.shields.io/badge/qData-v1.6.0-blue.svg"/>
+ <img src="https://img.shields.io/badge/qData-v1.6.1-blue.svg"/>
 
  <img src="https://gitee.com/qiantongtech/qData/badge/star.svg"/>
  <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars"/>

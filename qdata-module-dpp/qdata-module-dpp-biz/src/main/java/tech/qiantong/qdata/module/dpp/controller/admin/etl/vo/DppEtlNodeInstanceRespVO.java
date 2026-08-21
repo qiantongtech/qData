@@ -183,4 +183,13 @@ public class DppEtlNodeInstanceRespVO implements Serializable {
     @Excel(name = "运行类型")
     @Schema(description = "运行类型", example = "")
     private String commandType;
+
+    @Schema(description = "Semantic execution status")
+    private String currentStatus;
+
+    @Schema(description = "Execution status name")
+    private String currentStatusName;
+
+    @Schema(description = "Formatted running duration")
+    private String duration;
 }

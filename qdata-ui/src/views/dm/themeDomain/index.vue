@@ -469,7 +469,7 @@ function handleQuery() {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('dm.themeDomain.enableText', 'Enable') : td('dm.themeDomain.disableText', 'Disable');
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmStatusChange', 'Are you sure to "<text>" theme domain "<name>"?').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dm.themeDomain.confirmStatusChange', 'Are you sure to "{text}" theme domain "{name}"?', { text, name: row.name }))
     .then(() => {
       updateThemeDomain({
         id: row.id,
@@ -595,7 +595,7 @@ function submitForm() {
 /** Delete button action */
 function handleDelete(row) {
   proxy.$modal
-    .confirm(td('dm.themeDomain.confirmDelete', 'Are you sure to delete theme domain "<name>"?').replace('<name>', row.name))
+    .confirm(td('dm.themeDomain.confirmDelete', 'Are you sure to delete theme domain "{name}"?', { name: row.name }))
     .then(function () {
       return delThemeDomain(row.id);
     })

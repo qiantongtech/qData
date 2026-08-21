@@ -290,10 +290,10 @@ function resetQuery() {
 function handleStatusChange(row) {
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.modelCatName')))
+        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: td('att.common.modelCatName') }))
         .then(function () {
             updateAttModelCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
+                proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
                 getList();
             }).catch(()=>{
                 row.validFlag = !row.validFlag;
@@ -396,7 +396,7 @@ function submitForm() {
 /** Delete button operation */
 function handleDelete(row) {
     proxy.$modal
-        .confirm(td('att.modelCat.messages.confirmDelete').replace('<name>', row.name))
+        .confirm(td('att.modelCat.messages.confirmDelete', '', { name: row.name }))
         .then(function () {
             return delAttModelCat(row.id);
         })

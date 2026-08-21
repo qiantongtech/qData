@@ -514,18 +514,22 @@ public class DpModelServiceImpl extends ServiceImpl<DpModelMapper, DpModelDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("Public Layer")
+                .name(MessageUtils.messageWithFallback("dp.model.tree.public.layer", "公共层"))
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for data developers, as the data foundation of the application layer, build messy data into common detailed models for easy reuse.\"}"))
+                .otherData(buildTooltipData(MessageUtils.messageWithFallback("dp.model.tree.public.layer.tooltip", "主要面向数据开发人员，作为应用层的数据地基，把杂乱的数据建成通用的明细模型，方便大家复用。")))
                 .children(dmBusinessCategoryApiService.getTreeData(null))
                 .build());
         treeData.add(TreeData.builder()
-                .name("Application Layer")
+                .name(MessageUtils.messageWithFallback("dp.model.tree.application.layer", "应用层"))
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"Mainly for business and analysis personnel, computed by processing base data from the public layer, directly used for visualization dashboards or business reports.\"}"))
+                .otherData(buildTooltipData(MessageUtils.messageWithFallback("dp.model.tree.application.layer.tooltip", "主要面向业务及分析人员，通过加工公共层的基础数据计算而来，直接用来做可视化大屏或业务报表。")))
                 .children(dmThemeDomainApiService.getTreeData(null))
                 .build());
         return treeData;
+    }
+
+    private com.alibaba.fastjson2.JSONObject buildTooltipData(String tooltip) {
+        return JSON.parseObject(JSON.toJSONString(Collections.singletonMap("tooltipStr", tooltip)));
     }
 
     @Override

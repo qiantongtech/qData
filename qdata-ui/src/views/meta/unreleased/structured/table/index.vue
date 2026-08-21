@@ -25,6 +25,7 @@
               icon="Delete"
               :disabled="!store.rows.length"
               @click="handleDeleteColumnClick"
+              v-hasPermi="['mc:metadata:table:remove']"
             >
               {{ td("common.button.delete") }}
             </el-button>
@@ -50,6 +51,7 @@
                 type="primary"
                 icon="view"
                 @click="handleDetailClick(row)"
+                v-hasPermi="['mc:metadata:table:detail']"
               >
                 {{ td("common.button.details") }}
               </el-button>
@@ -59,6 +61,7 @@
                 icon="Edit"
                 :disabled="row.status == 1"
                 @click="handleEditClick(row)"
+                v-hasPermi="['mc:metadata:table:edit']"
               >
                 {{ td("common.button.update") }}
               </el-button>
@@ -79,6 +82,7 @@
                   icon="Delete"
                   :disabled="row.status == 1"
                   @click="handleDeleteClick(row)"
+                  v-hasPermi="['mc:metadata:table:remove']"
                 >
                   {{ td("common.button.delete") }}
                 </el-button>
@@ -391,12 +395,7 @@ function handleDeleteColumnClick() {
     const { canDeleteCount, cannotDeleteCount, canDeleteIds } = res.data;
     store.loading = false;
     ElMessageBox.confirm(
-      td(
-        "meta.unreleased.structured.table.list.confirmBatchDelete",
-        "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?"
-      )
-        .replace("{canDelete}", canDeleteCount)
-        .replace("{cannotDelete}", cannotDeleteCount),
+      td("meta.unreleased.structured.table.list.confirmBatchDelete", "Can delete {canDelete}, cannot delete {cannotDelete}. Delete the deletable items?", { canDelete: canDeleteCount, cannotDelete: cannotDeleteCount }),
       td("common.message.systemPrompt", "System Prompt"),
       {
         confirmButtonText: td("common.button.confirm", "Confirm"),
@@ -477,12 +476,7 @@ function handleStatusChange(row, status) {
     })
     .then(() => {
       ElMessage.success(
-        td(
-          "meta.unreleased.structured.table.list.statusChangeSuccess",
-          "Table metadata with ID {id} {action} successful!"
-        )
-          .replace("{id}", row.id)
-          .replace("{action}", action)
+        td("meta.unreleased.structured.table.list.statusChangeSuccess", "Table metadata with ID {id} {action} successful!", { id: row.id, action })
       );
       row.status = status;
     })

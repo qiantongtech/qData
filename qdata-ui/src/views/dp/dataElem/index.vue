@@ -37,12 +37,6 @@
               <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
                 @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item :label="td('dp.dataElem.type')" prop="type" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('dp.dataElem.typePlaceholder')">
-                <el-option v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item>
               <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
                 <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}
@@ -88,11 +82,11 @@
                 {{ scope.row.description || "-" }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" width="100" :label="td('dp.dataElem.type')" align="center" prop="type">
+<!--            <el-table-column v-if="getColumnVisibility(3)" width="100" :label="td('dp.dataElem.type')" align="center" prop="type">
               <template #default="scope">
                 <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="180"
               :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
               <template #default="scope">
@@ -238,14 +232,14 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+<!--          <el-col :span="12">
             <el-form-item :label="td('dp.dataElem.type')" prop="type">
               <el-radio-group v-model="form.type" :disabled="form.id">
                 <el-radio v-for="dict in dp_data_elem_code_type" :key="dict.value" :label="dict.value">{{ dict.label }}
                 </el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="12">
             <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
               <el-radio-group v-model="form.status">
@@ -430,7 +424,7 @@ const data = reactive({
     name: null,
     engName: null,
     catCode: null,
-    type: null,
+    type: "1",
     description: "",
   },
   rules: {
@@ -649,7 +643,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmDelete').replace('<id>', _ids))
+    .confirm(td('dp.dataElem.confirmDelete', '', { id: _ids }))
     .then(function () {
       return delDpDataElem(_ids);
     })
@@ -749,7 +743,7 @@ const handleFileSuccess = (response, file, fileList) => {
 function handleStatusChange(id, row, e) {
   const text = e === "1" ? td('dp.dataElem.enableText') : td('dp.dataElem.disableText');
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmStatusChange').replace('<text>', text).replace('<name>', row.name))
+    .confirm(td('dp.dataElem.confirmStatusChange','',{ text,name: row.name}))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
         proxy.$modal.msgSuccess(td('common.message.operationSuccess'));

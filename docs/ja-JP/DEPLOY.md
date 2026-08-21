@@ -31,7 +31,9 @@
 ├─qdata-module-dpp          # データ集約モジュール
 ├─qdata-module-ds           # データサービスモジュール
 ├─qdata-api-ds              # DSスケジューラインターフェースモジュール
-├─qdata-etl                 # Spark-ETLプログラムモジュール
+├─qdata-service-ai          # 独立デプロイ型AI機能サービス
+├─qdata-service-quality     # 独立デプロイ型データ品質機能サービス
+├─qdata-executor-etl        # Spark/Flinkタスク実行エンジン用JAR（エグゼキューター）
 ├─qdata-ui                  # フロントエンドモジュール
 ├─sql                       # SQLスクリプト
 ├─README.md                 # プロジェクト紹介
@@ -59,7 +61,9 @@
 ├─qdata-module-dpp          # データ集約モジュール
 ├─qdata-module-ds           # データサービスモジュール
 ├─qdata-api-ds              # DSスケジューラインターフェースモジュール
-├─qdata-etl                 # Spark-ETLプログラムモジュール
+├─qdata-service-ai          # 独立デプロイ型AI機能サービス
+├─qdata-service-quality     # 独立デプロイ型データ品質機能サービス
+├─qdata-executor-etl        # Spark/Flinkタスク実行エンジン用JAR（エグゼキューター）
 ```
 
 ### 2.3 フロントエンド構造&#xA;
@@ -184,7 +188,7 @@ ds:
  token: <スケジューラトークン>  # スケジューラ-セキュリティセンター-トークン管理で作成
  spark:
    master_url: spark://127.0.0.1:7077  # Spark Masterアドレスと一致
-   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar  # ETLパッケージアップロード後のパス
+   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl-3.8.8.jar  # ETLパッケージアップロード後のパス
    main_class: tech.qiantong.qdata.spark.etl.EtlApplication
 ```
 

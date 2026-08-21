@@ -18,9 +18,11 @@
 
 package tech.qiantong.qdata.module.dpp.service.etl.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -60,10 +62,9 @@ import tech.qiantong.qdata.module.dpp.utils.TaskConverter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static tech.qiantong.qdata.common.core.domain.AjaxResult.error;
@@ -116,7 +117,11 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
 
     @Override
     public PageResult<DppEtlTaskInstanceDO> getDppEtlTaskInstancePage(DppEtlTaskInstancePageReqVO pageReqVO) {
-        return dppEtlTaskInstanceMapper.selectPage(pageReqVO);
+        PageResult<DppEtlTaskInstanceDO> page = dppEtlTaskInstanceMapper.selectPage(pageReqVO);
+        if (page.getRows() != null) {
+            page.getRows().forEach(this::fillInstanceDisplayFields);
+        }
+        return page;
     }
 
     @Override
@@ -435,17 +440,9 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public DppEtlTaskInstanceLogStatusRespDTO getLogByTaskInstanceId(Long taskInstanceId) {
         String log = "";
         DppEtlTaskInstanceDO dppEtlTaskInstanceDO = this.getById(taskInstanceId);
-        // Get task info
-        DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
-                .code(dppEtlTaskInstanceDO.getTaskCode())
-                .version(dppEtlTaskInstanceDO.getTaskVersion())
-                .build());
-        if (dppEtlTaskLogRespVO == null) {
-            throw new RuntimeException(MessageUtils.messageWithFallback(
-                    "dpp.error.task.notfound", "Task does not exist"));
+        if (dppEtlTaskInstanceDO == null) {
+            throw new ServiceException("Task instance does not exist");
         }
-        // Get node relation data
-        JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
         // Get node data
         List<DppEtlNodeInstanceDO> dppEtlNodeInstanceDOList = dppEtlTNodeInstanceService.list(Wrappers.lambdaQuery(DppEtlNodeInstanceDO.class)
                 .select(DppEtlNodeInstanceDO::getId,
@@ -465,7 +462,32 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                     log = logContent;
                 }
             }
+        } else if (StringUtils.equals("3", dppEtlTaskInstanceDO.getTaskType())) {
+            // Data-development JDBC tasks persist their realtime output as node logs and
+            // do not have a DolphinScheduler task-log locations payload. Aggregate the
+            // node logs directly, matching the data-development instance log dialog.
+            for (DppEtlNodeInstanceDO nodeInstance : dppEtlNodeInstanceDOList) {
+                String taskInstanceLogKey = TaskConverter.TASK_INSTANCE_LOG_KEY + nodeInstance.getId();
+                if (redisService.hasKey(taskInstanceLogKey)) {
+                    log += redisService.get(taskInstanceLogKey) + "\n";
+                } else {
+                    String logContent = dppEtlNodeInstanceLogService.getLog(nodeInstance.getId());
+                    if (logContent != null) {
+                        log += logContent + "\n";
+                    }
+                }
+            }
         } else {
+            // Integration tasks use the saved task definition to keep node logs ordered.
+            DppEtlTaskLogRespVO dppEtlTaskLogRespVO = dppEtlTaskLogService.getDppEtlTaskLogById(DppEtlTaskLogPageReqVO.builder()
+                    .code(dppEtlTaskInstanceDO.getTaskCode())
+                    .version(dppEtlTaskInstanceDO.getTaskVersion())
+                    .build());
+            if (dppEtlTaskLogRespVO == null || StringUtils.isBlank(dppEtlTaskLogRespVO.getLocations())) {
+                throw new RuntimeException(MessageUtils.messageWithFallback(
+                        "dpp.error.task.notfound", "Task does not exist"));
+            }
+            JSONArray locations = JSONArray.parse(dppEtlTaskLogRespVO.getLocations());
             Map<String, DppEtlNodeInstanceDO> nodeInstanceMap = dppEtlNodeInstanceDOList.stream().collect(Collectors.toMap(key -> key.getNodeCode(), value -> value));
 
             for (int i = 0; i < locations.size(); i++) {
@@ -494,6 +516,47 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
                 .status(dppEtlTaskInstanceDO.getStatus())
                 .nodeInstanceList(BeanUtils.toBean(dppEtlNodeInstanceDOList, DppEtlNodeInstanceRespDTO.class))
                 .build();
+    }
+
+    @Override
+    public DppEtlTaskInstanceLogDetailRespVO getLogDetailByTaskInstanceId(Long taskInstanceId) {
+        DppEtlTaskInstanceDO taskInstance = this.getById(taskInstanceId);
+        if (taskInstance == null) {
+            throw new ServiceException("Task instance does not exist");
+        }
+        DppEtlTaskInstanceLogStatusRespDTO logStatus = getLogByTaskInstanceId(taskInstanceId);
+        String logContent = logStatus == null || logStatus.getLog() == null ? "" : logStatus.getLog();
+        List<DppEtlTaskInstanceLogLineRespVO> logLines = new ArrayList<>();
+        String[] lines = logContent.split("\\r?\\n");
+        for (String line : lines) {
+            if (StringUtils.isBlank(line)) continue;
+            DppEtlTaskInstanceLogLineRespVO item = new DppEtlTaskInstanceLogLineRespVO();
+            item.setLineNo(logLines.size() + 1);
+            item.setLevel(guessLogLevel(line));
+            item.setContent(line);
+            item.setDetailContent(line);
+            logLines.add(item);
+        }
+        DppEtlTaskInstanceLogDetailRespVO result = new DppEtlTaskInstanceLogDetailRespVO();
+        result.setTaskInstanceId(taskInstanceId);
+        result.setTaskName(taskInstance.getName());
+        result.setStatus(taskInstance.getStatus());
+        result.setStatusName(getInstanceStatusName(taskInstance.getStatus()));
+        result.setCurrentStatus(getInstanceCurrentStatus(taskInstance.getStatus()));
+        result.setStartTime(taskInstance.getStartTime());
+        result.setRefreshTime(new Date());
+        result.setDuration(getTaskInstanceDuration(taskInstance));
+        result.setLogList(logLines);
+        result.setLog(logContent);
+        return result;
+    }
+
+    private String guessLogLevel(String content) {
+        if (StringUtils.containsIgnoreCase(content, "ERROR")
+                || content.contains("失败") || content.contains("异常")) return "ERROR";
+        if (StringUtils.containsIgnoreCase(content, "WARN") || content.contains("警告")) return "WARN";
+        if (StringUtils.containsIgnoreCase(content, "DEBUG")) return "DEBUG";
+        return "INFO";
     }
 
     @Override
@@ -557,6 +620,88 @@ public class DppEtlTaskInstanceServiceImpl extends ServiceImpl<DppEtlTaskInstanc
     public List<DppEtlTaskInstanceRespDTO> getLastTaskInstance(List<Long> taskIdList) {
         List<DppEtlTaskInstanceDO> dppEtlTaskInstanceDO = dppEtlTaskInstanceMapper.getLastTaskInstance(taskIdList);
         return BeanUtils.toBean(dppEtlTaskInstanceDO, DppEtlTaskInstanceRespDTO.class);
+    }
+
+    @Override
+    public DppEtlTaskInstanceStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, Long taskId, String taskType) {
+        Date now = new Date();
+        Date beginOfDay = DateUtil.beginOfDay(now);
+        Date endOfDay = DateUtil.endOfDay(now);
+        long allCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType));
+        long runningCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .in(DppEtlTaskInstanceDO::getStatus, "0", "1", "12"));
+        long successCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .eq(DppEtlTaskInstanceDO::getStatus, "7"));
+        long failCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .eq(DppEtlTaskInstanceDO::getStatus, "6"));
+        long todayExecuteCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .ge(DppEtlTaskInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlTaskInstanceDO::getStartTime, endOfDay));
+        long todayErrorCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .eq(DppEtlTaskInstanceDO::getStatus, "6")
+                .ge(DppEtlTaskInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlTaskInstanceDO::getStartTime, endOfDay));
+        long todaySuccessCount = this.count(buildStatisticsQuery(projectId, projectCode, taskId, taskType)
+                .eq(DppEtlTaskInstanceDO::getStatus, "7")
+                .ge(DppEtlTaskInstanceDO::getStartTime, beginOfDay)
+                .le(DppEtlTaskInstanceDO::getStartTime, endOfDay));
+        long todayCompletedCount = todaySuccessCount + todayErrorCount;
+        BigDecimal successRate = todayCompletedCount == 0
+                ? BigDecimal.ZERO
+                : BigDecimal.valueOf(todaySuccessCount).multiply(BigDecimal.valueOf(100))
+                .divide(BigDecimal.valueOf(todayCompletedCount), 2, RoundingMode.HALF_UP);
+        DppEtlTaskInstanceStatisticsRespVO result = new DppEtlTaskInstanceStatisticsRespVO();
+        result.setAllCount(allCount);
+        result.setRunningCount(runningCount);
+        result.setSuccessCount(successCount);
+        result.setFailCount(failCount);
+        result.setTodayErrorCount(todayErrorCount);
+        result.setTodayExecuteCount(todayExecuteCount);
+        result.setTodaySuccessRate(successRate);
+        result.setRefreshTime(now);
+        return result;
+    }
+
+    private LambdaQueryWrapper<DppEtlTaskInstanceDO> buildStatisticsQuery(
+            Long projectId, String projectCode, Long taskId, String taskType) {
+        return Wrappers.lambdaQuery(DppEtlTaskInstanceDO.class)
+                .eq(projectId != null, DppEtlTaskInstanceDO::getProjectId, projectId)
+                .eq(StringUtils.isNotBlank(projectCode), DppEtlTaskInstanceDO::getProjectCode, projectCode)
+                .eq(taskId != null, DppEtlTaskInstanceDO::getTaskId, taskId)
+                .eq(StringUtils.isNotBlank(taskType), DppEtlTaskInstanceDO::getTaskType, taskType);
+    }
+
+    private void fillInstanceDisplayFields(DppEtlTaskInstanceDO instance) {
+        instance.setCurrentStatus(getInstanceCurrentStatus(instance.getStatus()));
+        instance.setCurrentStatusName(getInstanceStatusName(instance.getStatus()));
+        instance.setDuration(getTaskInstanceDuration(instance));
+    }
+
+    private String getTaskInstanceDuration(DppEtlTaskInstanceDO instance) {
+        if (instance == null || instance.getStartTime() == null) return null;
+        Date endTime = isRunningInstanceStatus(instance.getStatus()) ? new Date() : instance.getEndTime();
+        if (endTime == null) return null;
+        return DateUtils.format2Duration(Math.max(0L, endTime.getTime() - instance.getStartTime().getTime()));
+    }
+
+    private boolean isRunningInstanceStatus(String status) {
+        return "0".equals(status) || "1".equals(status) || "12".equals(status);
+    }
+
+    private String getInstanceCurrentStatus(String status) {
+        if (isRunningInstanceStatus(status)) return "running";
+        if ("7".equals(status)) return "success";
+        if ("6".equals(status)) return "failed";
+        return "idle";
+    }
+
+    private String getInstanceStatusName(String status) {
+        if (isRunningInstanceStatus(status)) return "Running";
+        if ("7".equals(status)) return "Success";
+        if ("6".equals(status)) return "Failed";
+        if ("5".equals(status)) return "Stopped";
+        return "Idle";
     }
 
 }

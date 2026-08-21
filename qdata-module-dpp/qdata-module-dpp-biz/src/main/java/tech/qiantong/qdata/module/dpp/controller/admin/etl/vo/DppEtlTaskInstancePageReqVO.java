@@ -94,11 +94,14 @@ public class DppEtlTaskInstancePageReqVO extends PageParam {
     @Schema(description = "是否是子任务", example = "")
     private String subTaskFlag;
 
-    @Schema(description = "状态", example = "")
+    @Schema(description = "Status filter: running, success, failed, idle or a raw status code", example = "running")
     private String status;
 
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;
+
+    @Schema(description = "Category code; child categories are included by prefix matching", example = "001001")
+    private String catCode;
 
 
 }

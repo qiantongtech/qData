@@ -39,8 +39,6 @@ import daDynamicRouter from './da/dynamic/index.js';
 import daAssetRouter from './da/asset/index.js';
 /* Data quality */
 import daQualityRouter from './da/quality/index.js';
-
-
 import dsPublicRouter from './ds/public/index.js';
 /* api service */
 import dsDynamicRouter from './ds/dynamic/index.js';
@@ -51,6 +49,7 @@ import dpPublicRouter from './dp/model/index.js';
 import dsCatRouter from './ds/client/index.js';
 /* Data planning dynamic routing */
 import dpDataElemRouter from './dp/dataElem/index.js';
+import dpDataCodeTableRouter from './dp/dataCodeTable/index.js';
 
 // // R&D routing
 import dppRouter from './dpp/index.js';
@@ -96,7 +95,7 @@ import attTag from './att/tag/index.js';
  */
 
 // public route
-export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
+export const constantRoutes = [...systemPublicRouter, ...examplePublicRouter, ...daPublicRouter, ...dsCatRouter, ...dsPublicRouter, ...dPdocument, ...dpPublicRouter, ...dpDataElemRouter, ...dpDataCodeTableRouter, ...daAssetRouter, ...daQualityRouter, ...dppRouter, ...mcPublicRouter, ...metaPublicRouter, ...mcDynamicRouter, ...metaDynamicRouter, ...dmRouter, ...attTag];
 
 // Dynamic routing, dynamic loading based on user permissions
 export const dynamicRoutes = [...systemDynamicRouter, ...exampleDynamicRouter, ...daDynamicRouter, ...dsDynamicRouter,];
@@ -115,7 +114,9 @@ const router = createRouter({
 
 // Add cancellation request logic in route guard
 router.beforeEach((to, from, next) => {
-    clearCancelTokens(); // Cancel all outstanding requests before routing switch
+    if (to.path !== from.path) {
+        clearCancelTokens(); // Cancel all outstanding requests before routing switch
+    }
     next();
 });
 

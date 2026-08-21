@@ -31,7 +31,9 @@
 ├─qdata-module-dpp          # Data aggregation module
 ├─qdata-module-ds           # Data service module
 ├─qdata-api-ds              # DS scheduler interface module
-├─qdata-etl                 # Spark-ETL program module
+├─qdata-service-ai          # Independently deployed AI capability service
+├─qdata-service-quality     # Independently deployed data quality capability service
+├─qdata-executor-etl        # Executor JAR required by the Spark/Flink task engine
 ├─qdata-ui                  # Frontend module
 ├─sql                       # SQL scripts
 ├─README.md                 # Project introduction
@@ -59,7 +61,9 @@
 ├─qdata-module-dpp          # Data aggregation module
 ├─qdata-module-ds           # Data service module
 ├─qdata-api-ds              # DS scheduler interface module
-├─qdata-etl                 # Spark-ETL program module
+├─qdata-service-ai          # Independently deployed AI capability service
+├─qdata-service-quality     # Independently deployed data quality capability service
+├─qdata-executor-etl        # Executor JAR required by the Spark/Flink task engine
 ```
 
 ### 2.3 Frontend Structure&#xA;
@@ -184,7 +188,7 @@ ds:
  token: <scheduler-token>  # Create in scheduler - Security Center - Token Management
  spark:
    master_url: spark://127.0.0.1:7077  # Must match Spark Master address
-   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl-3.8.8.jar  # Path after uploading ETL jar
+   main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl-3.8.8.jar  # Path after uploading ETL jar
    main_class: tech.qiantong.qdata.spark.etl.EtlApplication
 ```
 

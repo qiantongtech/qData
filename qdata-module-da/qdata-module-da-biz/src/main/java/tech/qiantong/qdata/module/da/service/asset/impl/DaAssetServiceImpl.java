@@ -1788,26 +1788,30 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
         List<TreeData> treeData = new ArrayList<>();
 
         treeData.add(TreeData.builder()
-                .name("By Business Category")
+                .name(MessageUtils.messageWithFallback("da.asset.tree.business.category", "按业务分类"))
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for business and analytics personnel. Categorized by actual business lines or departmental functions, facilitating quick identification of data for specific business scenarios.\"}"))
+                .otherData(buildTooltipData(MessageUtils.messageWithFallback("da.asset.tree.business.category.tooltip", "主要面向业务与分析人员。按实际业务线或部门职能归类，方便快速定位特定业务场景的数据。")))
                 .children(dmBusinessCategoryApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("By Theme Domain")
+                .name(MessageUtils.messageWithFallback("da.asset.tree.theme.domain", "按主题域"))
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for architects and data developers. Divides global data by core business entities, suitable for cross-departmental data exploration and model design.\"}"))
+                .otherData(buildTooltipData(MessageUtils.messageWithFallback("da.asset.tree.theme.domain.tooltip", "主要面向架构与数据开发人员。按核心业务实体划分全局数据，适用于跨部门的数据探索与模型设计。")))
                 .children(dmThemeDomainApiService.getTreeData("1"))
                 .build());
 
         treeData.add(TreeData.builder()
-                .name("By Data Warehouse Layer")
+                .name(MessageUtils.messageWithFallback("da.asset.tree.data.layer", "按数仓分层"))
                 .type("0")
-                .otherData(JSON.parseObject("{\"tooltipStr\":\"Primarily for underlying data developers. Divided by data processing depth and flow architecture, facilitating lineage tracing and technical troubleshooting.\"}"))
+                .otherData(buildTooltipData(MessageUtils.messageWithFallback("da.asset.tree.data.layer.tooltip", "主要面向底层数据开发人员。按数据加工深度与流转架构划分，方便溯源血缘链路和进行技术排查。")))
                 .children(dmDataLayerApiService.getTreeData("1"))
                 .build());
         return treeData;
+    }
+
+    private com.alibaba.fastjson2.JSONObject buildTooltipData(String tooltip) {
+        return JSON.parseObject(JSON.toJSONString(Collections.singletonMap("tooltipStr", tooltip)));
     }
 
     @Override

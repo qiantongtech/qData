@@ -29,6 +29,8 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceLogDO
  */
 public interface IDppEtlNodeInstanceLogService extends IService<DppEtlNodeInstanceLogDO> {
 
+    /** 使用独立事务新增或刷新节点实例日志。 */
+    boolean saveOrUpdateRealtime(DppEtlNodeInstanceLogDO entity);
 
     String getLog(Long nodeInstanceId);
 }

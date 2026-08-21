@@ -55,6 +55,8 @@ import tech.qiantong.qdata.module.dpp.api.etl.dto.DppEtlTaskInstanceLogStatusRes
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstancePageReqVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceSaveReqVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceLogDetailRespVO;
+import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeInstanceStatisticsRespVO;
 import tech.qiantong.qdata.module.dpp.convert.etl.DppEtlNodeInstanceConvert;
 import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlNodeInstanceDO;
 import tech.qiantong.qdata.module.dpp.service.etl.IDppEtlNodeInstanceLogService;
@@ -88,6 +90,22 @@ public class DppEtlNodeInstanceController extends BaseController {
     public CommonResult<PageResult<DppEtlNodeInstanceRespVO>> list(DppEtlNodeInstancePageReqVO dppEtlNodeInstance) {
         PageResult<DppEtlNodeInstanceDO> page = dppEtlNodeInstanceService.getDppEtlNodeInstancePage(dppEtlNodeInstance);
         return CommonResult.success(BeanUtils.toBean(page, DppEtlNodeInstanceRespVO.class));
+    }
+
+    @Operation(summary = "Query data development node instance statistics")
+    @GetMapping("/statistics")
+    public CommonResult<DppEtlNodeInstanceStatisticsRespVO> statistics(
+            @RequestParam(required = false) Long projectId,
+            @RequestParam(required = false) String projectCode,
+            @RequestParam(defaultValue = "3") String taskType) {
+        return CommonResult.success(dppEtlNodeInstanceService.getStatistics(projectId, projectCode, taskType));
+    }
+
+    @Operation(summary = "Query formatted node instance log detail")
+    @GetMapping("/logDetail")
+    public CommonResult<DppEtlNodeInstanceLogDetailRespVO> getLogDetail(
+            @RequestParam Long nodeInstanceId) {
+        return CommonResult.success(dppEtlNodeInstanceService.getLogDetailByNodeInstanceId(nodeInstanceId));
     }
 
     @Operation(summary = "导出数据集成节点实例列表")

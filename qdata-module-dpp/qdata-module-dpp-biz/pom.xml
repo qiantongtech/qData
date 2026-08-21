@@ -92,7 +92,7 @@
         <!-- Local DataX executor -->
         <dependency>
             <groupId>tech.qiantong</groupId>
-            <artifactId>qdata-etl</artifactId>
+            <artifactId>qdata-executor-etl</artifactId>
             <version>${qdata.version}</version>
             <exclusions>
                 <exclusion>

@@ -28,9 +28,22 @@ export default [
         children: [
             {
                 path: '',
-                component: () => import('@/views/dpp/asset/detail/index.vue'),
+                component: () => import('@/views/da/asset/detail/assetDetail.vue'),
                 name: 'daDaAssetDetail',
                 meta: { title: 'Asset Map Details', activeMenu: '/da/asset', lang: 'public.assetMapDetail' }
+            }
+        ]
+    },
+    {
+        path: '/da/asset/addAsset/:assetType?',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '',
+                component: () => import('@/views/da/asset/addAsset/index.vue'),
+                name: 'daAssetAdd',
+                meta: { title: 'Add Data Asset', activeMenu: '/da/asset', lang: 'public.addDataAsset' }
             }
         ]
     },

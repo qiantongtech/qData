@@ -323,10 +323,10 @@ function handleSelectionChange(selection) {
 function handleStatusChange(row) {
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
   proxy.$modal
-    .confirm(td('att.common.confirmStatusChangeGeneric').replace('<status>', text).replace('<name>', row.name).replace('<type>', td('att.common.cleanCatName')))
+    .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: td('att.common.cleanCatName') }))
     .then(function () {
       updateAttCleanCat({ id: row.id, validFlag: row.validFlag }).then((response) => {
-        proxy.$modal.msgSuccess(td('att.common.statusSuccess').replace('<status>', text));
+        proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
         getList();
       }).catch((err) => {
         row.validFlag = !row.validFlag;
@@ -448,7 +448,7 @@ function submitForm() {
 /** Delete button operation */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  proxy.$modal.confirm(td('att.cleanCat.messages.confirmDelete').replace('<ids>', _ids)).then(function () {
+  proxy.$modal.confirm(td('att.cleanCat.messages.confirmDelete', '', { ids: _ids })).then(function () {
     return delAttCleanCat(_ids);
   }).then(() => {
     getList();

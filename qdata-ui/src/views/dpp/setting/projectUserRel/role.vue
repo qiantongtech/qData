@@ -620,10 +620,7 @@ async function handleDelete(row = {}) {
       .filter((role) => assignedRoleIds.includes(role.roleId))
       .map((role) => role.roleName);
     proxy.$modal.msgWarning(
-      td("dpp.setting.projectUserRel.roleInUseCannotDelete").replace(
-        "{name}",
-        assignedRoleNames.join(", ") || assignedRoleIds.join(", ")
-      )
+      td("dpp.setting.projectUserRel.roleInUseCannotDelete", '', { name: assignedRoleNames.join(", ") || assignedRoleIds.join(", ") })
     );
     return;
   }
@@ -631,10 +628,7 @@ async function handleDelete(row = {}) {
   const roleIds = row.roleId || ids.value;
   proxy.$modal
     .confirm(
-      td(
-        "dpp.setting.projectUserRel.confirmDeleteRole",
-        '是否确认删除角色编号为"{id}"的数据项？'
-      ).replace("{id}", roleIds)
+      td("dpp.setting.projectUserRel.confirmDeleteRole", '是否确认删除角色编号为"{id}"的数据项？', { id: roleIds })
     )
     .then(function () {
       return delRole(roleIds, warningRequestOptions);

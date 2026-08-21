@@ -268,6 +268,7 @@ import {
 } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
+import { typeList } from "@/utils/graph.js";
 import useUserStore from "@/store/system/user.js";
 import { createNodeSelect } from "@/views/dpp/utils/opBase.js";
 import { hasDuplicateObjects } from "@/utils/index.js";
@@ -282,6 +283,7 @@ const props = defineProps({
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
+  taskType: { type: String, default: "" },
 });
 
 let dragTable = ref(null);

@@ -80,6 +80,9 @@ public class DataDevelopmentJdbcTaskRunner {
     @Resource
     private IDppEtlNodeInstanceLogService dppEtlNodeInstanceLogService;
 
+    /** 当前线程正在执行的节点日志上下文，防止并发任务串写。 */
+    private final ThreadLocal<DataDevelopmentLogContext> realtimeLogContext = new ThreadLocal<>();
+
     /**
      * Executes the JDBC nodes in a data development task.
      *
@@ -87,7 +90,7 @@ public class DataDevelopmentJdbcTaskRunner {
      * @param instance Current task instance
      * @param taskLog Task execution log buffer
      */
-    @Transactional
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void run(DppEtlTaskDO task, DppEtlTaskInstanceDO instance, StringBuilder taskLog) {
         // Allow only one execution instance of a task at a time to prevent duplicate clicks or scheduler re-entry.
         Date startTime = new Date();
@@ -102,11 +105,11 @@ public class DataDevelopmentJdbcTaskRunner {
 
         int totalUpdateCount = 0;
         int totalResultCount = 0;
-        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
-        LogUtils.appendLocalLogLine(taskLog, "********************************* Load task instance plugin *********************************");
-        LogUtils.appendLocalLogLine(taskLog, "***********************************************************************************************");
-        LogUtils.appendLocalLogLine(taskLog, "Send task status RUNNING_EXECUTION");
-        LogUtils.appendLocalLogLine(taskLog, "Create TaskChannel: qData DataDevelopmentJdbcTaskRunner successfully");
+        appendDataDevelopmentLog(taskLog, "***********************************************************************************************");
+        appendDataDevelopmentLog(taskLog, "********************************* Load task instance plugin *********************************");
+        appendDataDevelopmentLog(taskLog, "***********************************************************************************************");
+        appendDataDevelopmentLog(taskLog, "Send task status RUNNING_EXECUTION");
+        appendDataDevelopmentLog(taskLog, "Create TaskChannel: qData DataDevelopmentJdbcTaskRunner successfully");
 
         // Execute only SQL-development and stored-procedure-development nodes; cleaning, input, and output nodes are outside the local JDBC execution scope.
         List<DppEtlNodeRespVO> sqlNodes = getDataDevelopmentSqlNodes(task);
@@ -116,38 +119,42 @@ public class DataDevelopmentJdbcTaskRunner {
                     "No SQL-development or stored-procedure node was found for the data development task.");
         }
 
-        LogUtils.appendLocalLogLine(taskLog, "********************************* Execute task instance *************************************");
+        appendDataDevelopmentLog(taskLog, "********************************* Execute task instance *************************************");
         // Aggregate affected-row and result-row counts so the execution scale is visible in the instance log.
         for (DppEtlNodeRespVO node : sqlNodes) {
             // Create the node instance
             Long nodeInstanceId = createNodeInstance(task, node, instance);
+            realtimeLogContext.set(new DataDevelopmentLogContext(nodeInstanceId, instance.getId(), task));
             try {
-                LogUtils.appendLocalLogLine(taskLog, "Start executing node: " + node.getName());
+                appendDataDevelopmentLog(taskLog, "Start executing node: " + node.getName());
 
                 JdbcExecuteResult result = executeDataDevelopmentNodeSql(node, taskLog);
                 totalUpdateCount += result.getUpdateCount();
                 totalResultCount += result.getResultCount();
-                LogUtils.appendLocalLogLine(taskLog, String.format("Node execution completed: %s, affected rows=%d, result rows=%d",
+                appendDataDevelopmentLog(taskLog, String.format("Node execution completed: %s, affected rows=%d, result rows=%d",
                         node.getName(), result.getUpdateCount(), result.getResultCount()));
                 // Mark the node instance as successful
                 updateNodeInstance(nodeInstanceId, TaskExecutionStatus.SUCCESS);
                 // Mark the task instance as successful
                 markDataDevelopmentSuccess(instance);
-                LogUtils.appendLocalLogLine(taskLog, String.format("Data development task executed successfully: node count=%d, affected rows=%d, result rows=%d",
+                appendDataDevelopmentLog(taskLog, String.format("Data development task executed successfully: node count=%d, affected rows=%d, result rows=%d",
                         sqlNodes.size(), totalUpdateCount, totalResultCount));
             } catch (Exception e) {
-                // Record business and JDBC exceptions in the instance status and log so the failure reason is visible in the UI.
+                // 更新节点实例状态为失败
+                updateNodeInstance(nodeInstanceId, TaskExecutionStatus.FAILURE);
+                // 更新任务实例状态为失败
                 markDataDevelopmentFail(instance, e);
-                LogUtils.appendLocalLogLine(taskLog, "Data development task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
+                appendDataDevelopmentLog(taskLog, "Data development task execution failed: " + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
             } finally {
-                // Always release the lock and write the complete execution log once at the end of the method.
-                redisService.delete(redisKey);
-                // Set the end time during final cleanup if the failure path has not already set it.
-                if (instance.getEndTime() == null) {
-                    instance.setEndTime(new Date());
+                try {
+                    redisService.delete(redisKey);
+                    if (instance.getEndTime() == null) {
+                        instance.setEndTime(new Date());
+                    }
+                    appendDataDevelopmentLog(taskLog, "Data development task execution finished, duration: " + calcDurationSeconds(startTime) + " seconds");
+                } finally {
+                    realtimeLogContext.remove();
                 }
-                LogUtils.appendLocalLogLine(taskLog, "Data development task execution finished, duration: " + calcDurationSeconds(startTime) + " seconds");
-                safeDataDevelopmentLog(nodeInstanceId, instance.getId(), task, taskLog.toString());
             }
         }
     }
@@ -324,15 +331,15 @@ public class DataDevelopmentJdbcTaskRunner {
         // Convert the node data source JSON to the shared DbQueryProperty and reuse the existing JDBC URL generation logic.
         DbQueryProperty dbQueryProperty = buildNodeDbQueryProperty(params);
 
-        LogUtils.appendLocalLogLine(taskLog, "Initialize sql task parameter " + JSONUtils.formatJson(params.toJSONString()));
-        LogUtils.appendLocalLogLine(taskLog, "Database type: " + dbQueryProperty.getDbType());
-        LogUtils.appendLocalLogLine(taskLog, "SQL type: " + sqlType);
+        appendDataDevelopmentLog(taskLog, "Initialize sql task parameter " + JSONUtils.formatJson(params.toJSONString()));
+        appendDataDevelopmentLog(taskLog, "Database type: " + dbQueryProperty.getDbType());
+        appendDataDevelopmentLog(taskLog, "SQL type: " + sqlType);
         // Log the delimiter only when explicitly configured so complex procedure-script splitting can be verified.
         if (StringUtils.isNotEmpty(sqlSegmentDelimiter)) {
-            LogUtils.appendLocalLogLine(taskLog, "SQL segment delimiter: " + sqlSegmentDelimiter);
+            appendDataDevelopmentLog(taskLog, "SQL segment delimiter: " + sqlSegmentDelimiter);
         }
-        LogUtils.appendLocalLogLine(taskLog, "Full sql parameters: " + sql);
-        LogUtils.appendLocalLogLine(taskLog, "Prepare to create JDBC connection");
+        appendDataDevelopmentLog(taskLog, "Full sql parameters: " + sql);
+        appendDataDevelopmentLog(taskLog, "Prepare to create JDBC connection");
 
         Class.forName(getDriverClassName(dbQueryProperty.getDbType()));
 
@@ -341,14 +348,14 @@ public class DataDevelopmentJdbcTaskRunner {
         Long delayTime = params.getLong("delayTime"); // Execution delay in minutes
         SqlExecutionTiming timing = buildSqlExecutionTiming(failRetryTimes, failRetryInterval, delayTime);
 
-        LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
+        appendDataDevelopmentLog(taskLog, String.format("SQL execution timing: delay=%d minutes, retryTimes=%d, retryInterval=%d minutes",
                 normalizeNonNegative(delayTime), normalizeNonNegative(failRetryTimes), normalizeNonNegative(failRetryInterval)));
         sleepBeforeSqlExecution(timing.getDelayMillis(), taskLog, "Delay before SQL execution");
 
         Exception lastException = null;
         // maxAttempts includes the initial attempt, so failRetryTimes=0 executes the loop only once.
         for (int attempt = 1; attempt <= timing.getMaxAttempts(); attempt++) {
-            LogUtils.appendLocalLogLine(taskLog, String.format("Start SQL execution attempt %d/%d", attempt, timing.getMaxAttempts()));
+            appendDataDevelopmentLog(taskLog, String.format("Start SQL execution attempt %d/%d", attempt, timing.getMaxAttempts()));
             try {
 
                 try (Connection connection = DriverManager.getConnection(
@@ -364,13 +371,13 @@ public class DataDevelopmentJdbcTaskRunner {
 
                         // Log recovery information only after a successful retry; do not duplicate it for an initial success.
                         if (attempt > 1) {
-                            LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution retry succeeded on attempt %d/%d", attempt, timing.getMaxAttempts()));
+                            appendDataDevelopmentLog(taskLog, String.format("SQL execution retry succeeded on attempt %d/%d", attempt, timing.getMaxAttempts()));
                         }
                         return result;
                     } catch (Exception e) {
                         // Roll back all uncommitted SQL on the current connection when any stage fails.
                         connection.rollback();
-                        LogUtils.appendLocalLogLine(taskLog, "SQL execution failed, transaction rolled back: "
+                        appendDataDevelopmentLog(taskLog, "SQL execution failed, transaction rolled back: "
                                 + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
                         throw e;
                     }
@@ -380,10 +387,10 @@ public class DataDevelopmentJdbcTaskRunner {
                 lastException = e;
                 // Throw immediately after the maximum number of attempts instead of entering another wait cycle.
                 if (attempt >= timing.getMaxAttempts()) {
-                    LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution failed after %d attempt(s)", timing.getMaxAttempts()));
+                    appendDataDevelopmentLog(taskLog, String.format("SQL execution failed after %d attempt(s)", timing.getMaxAttempts()));
                     throw e;
                 }
-                LogUtils.appendLocalLogLine(taskLog, String.format("SQL execution attempt %d/%d failed, will retry after %d minutes: %s",
+                appendDataDevelopmentLog(taskLog, String.format("SQL execution attempt %d/%d failed, will retry after %d minutes: %s",
                         attempt, timing.getMaxAttempts(), TimeUnit.MILLISECONDS.toMinutes(timing.getRetryIntervalMillis()),
                         JSONUtils.formatJson(JSONUtils.toJson(e.getMessage()))));
                 sleepBeforeSqlExecution(timing.getRetryIntervalMillis(), taskLog, "Wait before SQL retry");
@@ -441,13 +448,13 @@ public class DataDevelopmentJdbcTaskRunner {
         if (millis <= 0) {
             return;
         }
-        LogUtils.appendLocalLogLine(taskLog, String.format("%s, wait %d minutes", action, TimeUnit.MILLISECONDS.toMinutes(millis)));
+        appendDataDevelopmentLog(taskLog, String.format("%s, wait %d minutes", action, TimeUnit.MILLISECONDS.toMinutes(millis)));
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             // Restore the interrupt flag so the parent scheduler can detect cancellation or interruption.
             Thread.currentThread().interrupt();
-            LogUtils.appendLocalLogLine(taskLog, action + " interrupted");
+            appendDataDevelopmentLog(taskLog, action + " interrupted");
             throw e;
         }
     }
@@ -711,7 +718,7 @@ public class DataDevelopmentJdbcTaskRunner {
         for (String script : scripts) {
             // A single pre or post item may contain multiple SQL statements, so it must still pass through the common splitter.
             for (String statement : splitJdbcSqlScript(script, dbType, sqlSegmentDelimiter)) {
-                LogUtils.appendLocalLogLine(taskLog, "Execute " + handlerType + " sql: " + statement);
+                appendDataDevelopmentLog(taskLog, "Execute " + handlerType + " sql: " + statement);
                 JdbcExecuteResult result = executeStatement(connection, buildSqlBind(statement, localParams), queryLimit, taskLog);
                 updateCount += result.getUpdateCount();
             }
@@ -728,7 +735,7 @@ public class DataDevelopmentJdbcTaskRunner {
                                                 StringBuilder taskLog) throws SQLException {
         int updateCount = 0;
         int resultCount = 0;
-        LogUtils.appendLocalLogLine(taskLog, "Execute sql: " + sqlBind.sql);
+        appendDataDevelopmentLog(taskLog, "Execute sql: " + sqlBind.sql);
         try (PreparedStatement statement = prepareStatement(connection, sqlBind, queryLimit)) {
             boolean hasResultSet = statement.execute();
             while (true) {
@@ -759,7 +766,7 @@ public class DataDevelopmentJdbcTaskRunner {
      */
     private int executeQueryStatement(Connection connection, SqlBind sqlBind, int queryLimit, int displayRows,
                                       StringBuilder taskLog) throws SQLException {
-        LogUtils.appendLocalLogLine(taskLog, "Execute query sql: " + sqlBind.sql);
+        appendDataDevelopmentLog(taskLog, "Execute query sql: " + sqlBind.sql);
         try (PreparedStatement statement = prepareStatement(connection, sqlBind, queryLimit);
              ResultSet resultSet = statement.executeQuery()) {
             return countResultSetRows(resultSet, displayRows, taskLog);
@@ -806,7 +813,7 @@ public class DataDevelopmentJdbcTaskRunner {
             }
             count++;
             if (row != null) {
-                LogUtils.appendLocalLogLine(taskLog, "Query result row " + count + ": " + JSONUtils.toJson(row));
+                appendDataDevelopmentLog(taskLog, "Query result row " + count + ": " + JSONUtils.toJson(row));
             }
         }
         return count;
@@ -991,8 +998,7 @@ public class DataDevelopmentJdbcTaskRunner {
      */
     private void safeDataDevelopmentLog(Long nodeInstanceId, Long instanceId, DppEtlTaskDO task, String msg) {
         try {
-            // The run method passes the complete log once at the end; save it unchanged to avoid duplicate appends or prefixes.
-            dppEtlNodeInstanceLogService.save(DppEtlNodeInstanceLogDO.builder()
+            dppEtlNodeInstanceLogService.saveOrUpdateRealtime(DppEtlNodeInstanceLogDO.builder()
                     .nodeId(task.getId())
                     .nodeCode(task.getCode())
                     .nodeInstanceId(nodeInstanceId)
@@ -1006,6 +1012,27 @@ public class DataDevelopmentJdbcTaskRunner {
         } catch (Exception e) {
             // A log-write failure must not mask the actual SQL exception, so record it only in the local error log.
             log.error("Failed to write the data development task instance log: instanceId={}, msg={}", instanceId, msg, e);
+        }
+    }
+
+    /** 追加一行日志并立即刷新当前节点的完整日志内容。 */
+    private void appendDataDevelopmentLog(StringBuilder taskLog, String msg) {
+        LogUtils.appendLocalLogLine(taskLog, msg);
+        DataDevelopmentLogContext context = realtimeLogContext.get();
+        if (context != null) {
+            safeDataDevelopmentLog(context.nodeInstanceId, context.instanceId, context.task, taskLog.toString());
+        }
+    }
+
+    private static class DataDevelopmentLogContext {
+        private final Long nodeInstanceId;
+        private final Long instanceId;
+        private final DppEtlTaskDO task;
+
+        private DataDevelopmentLogContext(Long nodeInstanceId, Long instanceId, DppEtlTaskDO task) {
+            this.nodeInstanceId = nodeInstanceId;
+            this.instanceId = instanceId;
+            this.task = task;
         }
     }
 }

@@ -27,6 +27,15 @@ export function listDppEtlTaskInstance(query) {
   })
 }
 
+// Query ETL task instance statistics
+export function getEtlTaskInstanceStatistics(query) {
+  return request({
+    url: '/dpp/etlTaskInstance/statistics',
+    method: 'get',
+    params: query
+  })
+}
+
 // Query data integration task instance details
 export function getDppEtlTaskInstance(id) {
   return request({
@@ -60,7 +69,6 @@ export function delDppEtlTaskInstance(id) {
     method: 'delete'
   })
 }
-
 
 // Query the list of data integration task instances
 export function listDppEtlTreeList(query) {

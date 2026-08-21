@@ -18,13 +18,30 @@
 
 import request from '@/utils/request'
 
-
 /**
  * Query the list of data integration node instances
  */
 export function listDppEtlNodeInstance(query) {
         return request({
                 url: '/dpp/etlNodeInstance/list',
+                method: 'get',
+                params: query
+        });
+}
+
+/** Query data development node instance statistics. */
+export function getEtlNodeInstanceStatistics(query) {
+        return request({
+                url: '/dpp/etlNodeInstance/statistics',
+                method: 'get',
+                params: query
+        });
+}
+
+/** Query formatted node instance log details. */
+export function getLogByNodeInstanceId(query) {
+        return request({
+                url: '/dpp/etlNodeInstance/logDetail',
                 method: 'get',
                 params: query
         });

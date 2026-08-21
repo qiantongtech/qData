@@ -13,7 +13,7 @@
     <description>qData Open Source Edition</description>
 
     <properties>
-        <qdata.version>1.6.0</qdata.version>
+        <qdata.version>1.6.1</qdata.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -210,8 +210,8 @@
         <module>qdata-module-da</module>
         <module>qdata-module-ds</module>
         <module>qdata-api-ds</module>
-        <module>qdata-etl</module>
-        <module>qdata-quality</module>
+        <module>qdata-executor-etl</module>
+        <module>qdata-service-quality</module>
         <module>qdata-module-dm</module>
         <module>qdata-module-ai</module>
         <module>qdata-module-mc</module>

@@ -1076,8 +1076,8 @@ const data = reactive({
     ip: [
       { required: true, message: td('da.datasource.ipRequired'), trigger: "blur" },
       {
-        pattern: /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$/,
-        message: td('da.datasource.ipInvalid'),
+        pattern: /^(?:((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)|(?![\d.]+$)(?=.{1,253}$)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/,
+        message: td('da.datasource.ipOrHostnameInvalid'),
         trigger: "blur",
       },
     ],

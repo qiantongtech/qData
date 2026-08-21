@@ -168,7 +168,7 @@ file:
 # Scheduler-related configuration
 ds:
   base_url: http://dolphinscheduler-api:12345/dolphinscheduler
-  quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor/runExecuteTask
+  quality_url: http://qdata-service-quality:8083/quality/qualityTaskExecutor/runExecuteTask
   http_url: http://qdata-api:8080/da/daDiscoveryTask/runDaDiscoveryTask
   # Metadata collection task API prefix
   mc_url: http://qdata-api:8080/mc/taskExecutor/runExecuteTask
@@ -183,14 +183,23 @@ ds:
     # Spark master address
     master_url: spark://spark:7077
     # JAR package path in DolphinScheduler
-    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl.jar
+    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl.jar
     # JAR main entry point
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   hdfs:
     url: hdfs://namenode:8020
+  redis:
+    # Address
+    host: redis
+    # Port, defaults to 6379
+    port: 6379
+    # Database index
+    database: 0
+    # Password
+    password: J98%FHF#9h@e88h9fre9
 
 path:
-  quality_url: http://qdata-quality:8083/quality/qualityTaskExecutor
+  quality_url: http://qdata-service-quality:8083/quality/qualityTaskExecutor
   mc_url: http://qdata-api:8080/mc/taskExecutor
 datax:
   # DataX根目录，可通过 QDATA_DATAX_HOME 覆盖

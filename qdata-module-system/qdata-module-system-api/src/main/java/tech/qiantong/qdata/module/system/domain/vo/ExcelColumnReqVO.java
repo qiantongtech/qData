@@ -43,4 +43,7 @@ public class ExcelColumnReqVO implements Serializable {
 
     @Schema(description = "Start Data Row")
     private Integer startData;
+
+    @Schema(description = "Task Type")
+    private String taskType;
 }

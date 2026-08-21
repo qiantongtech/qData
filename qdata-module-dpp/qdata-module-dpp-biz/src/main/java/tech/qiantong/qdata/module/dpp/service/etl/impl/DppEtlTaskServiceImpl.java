@@ -49,6 +49,7 @@ import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
 import tech.qiantong.qdata.common.utils.JSONUtils;
+import tech.qiantong.qdata.common.utils.DateUtils;
 import tech.qiantong.qdata.common.utils.MessageUtils;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
@@ -78,6 +79,9 @@ import tech.qiantong.qdata.quartz.scheduler.ISchedulerAdapter;
 import tech.qiantong.qdata.redis.service.IRedisService;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -157,7 +161,55 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
     @Override
     public PageResult<DppEtlTaskRespVO> getDppEtlTaskPageList(DppEtlTaskPageReqVO dppEtlTask) {
         IPage<DppEtlTaskRespVO> mpPage = dppEtlTaskMapper.getDppEtlTaskPage(MyBatisUtils.buildPage(dppEtlTask), dppEtlTask);//BeanUtils.toBean(dppEtlTaskDOPageResult, DppEtlTaskRespVO.class);
+        mpPage.getRecords().forEach(this::fillCurrentStatusAndDuration);
         return new PageResult(mpPage.getRecords(), mpPage.getTotal());
+    }
+
+    @Override
+    public DppEtlTaskStatisticsRespVO getStatistics(
+            Long projectId, String projectCode, String taskType) {
+        Date beginOfDay = DateUtil.beginOfDay(new Date());
+        Date endOfDay = DateUtil.endOfDay(new Date());
+        DppEtlTaskStatisticsRespVO result = dppEtlTaskMapper.getDppEtlTaskStatistics(
+                projectId, projectCode, taskType, beginOfDay, endOfDay);
+        if (result == null) {
+            result = new DppEtlTaskStatisticsRespVO();
+            result.setRunningCount(0L);
+            result.setTodayErrorCount(0L);
+            result.setTodayExecuteCount(0L);
+            result.setTodaySuccessRate(BigDecimal.ZERO);
+        } else if (result.getTodaySuccessRate() == null) {
+            result.setTodaySuccessRate(BigDecimal.ZERO);
+        } else {
+            result.setTodaySuccessRate(result.getTodaySuccessRate().setScale(2, RoundingMode.HALF_UP));
+        }
+        result.setStatisticsTime(new Date());
+        return result;
+    }
+
+    private void fillCurrentStatusAndDuration(DppEtlTaskRespVO task) {
+        String status = task.getLastExecuteStatus();
+        boolean running = "0".equals(status) || "1".equals(status) || "12".equals(status);
+        if (running) {
+            task.setCurrentStatus("running");
+            task.setCurrentStatusName("Running");
+        } else if ("7".equals(status)) {
+            task.setCurrentStatus("success");
+            task.setCurrentStatusName("Success");
+        } else if ("6".equals(status)) {
+            task.setCurrentStatus("failed");
+            task.setCurrentStatusName("Failed");
+        } else {
+            task.setCurrentStatus("idle");
+            task.setCurrentStatusName("Idle");
+        }
+        if (task.getLastExecuteTime() != null) {
+            Date endTime = running ? new Date() : task.getLastExecuteEndTime();
+            if (endTime != null) {
+                task.setDuration(DateUtils.format2Duration(
+                        Math.max(0L, endTime.getTime() - task.getLastExecuteTime().getTime())));
+            }
+        }
     }
 
     @Override
@@ -877,16 +929,21 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                 newTaskDefinitionLogs.add(createReqVO);
                 continue;
             } else {
-                // Check if it is an input component with ID increment
+                // Apply Redis cursor reconciliation only to DB readers in ID incremental mode.
                 if (StringUtils.equals(TaskComponentTypeEnum.DB_READER.getCode(), String.valueOf(createReqVO.getTaskParams().get("type"))) &&
                         StringUtils.equals("2", String.valueOf(createReqVO.getTaskParams().get("readModeType")))) {
                     JSONObject idIncrementConfig = JSONObject.parseObject(String.valueOf(createReqVO.getTaskParams().get("idIncrementConfig")));
                     String incrementColumn = idIncrementConfig.getString("incrementColumn");
-                    Integer incrementStart = idIncrementConfig.getInteger("incrementStart");
+                    String incrementStart = idIncrementConfig.getString("incrementStart");
                     String cacheKey = TaskConverter.ETL_READER_ID_KEY + createReqVO.getCode() + ":" + incrementColumn;
-                    // Check if cache exists and cache value does not equal current value, delete cache if so
-                    if (redisService.hasKey(cacheKey) && Integer.parseInt(redisService.get(cacheKey)) != incrementStart) {
-                        redisService.delete(cacheKey);
+                    // Delete a stale cursor when the user explicitly changes the configured start ID.
+                    if (redisService.hasKey(cacheKey)) {
+                        String cachedIncrementId = redisService.get(cacheKey);
+                        // BigInteger prevents overflow for IDs beyond the Java integer/long range.
+                        if (incrementStart == null || cachedIncrementId == null
+                                || !new BigInteger(cachedIncrementId).equals(new BigInteger(incrementStart))) {
+                            redisService.delete(cacheKey);
+                        }
                     }
                 }
                 createReqVO.setUpdatorId(dppEtlNewNodeSaveReqVO.getUpdatorId()); // Assume project ID as updater ID (adjust as needed)
@@ -1626,7 +1683,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
                         String incrementColumn = idIncrementConfig.getString("incrementColumn");
                         String cacheKey = TaskConverter.ETL_READER_ID_KEY + nodeCode + ":" + incrementColumn;
                         if (redisService.hasKey(cacheKey)) {
-                            idIncrementConfig.put("incrementStart", redisService.get(cacheKey));
+                            // Redis stores the greatest completed ID; the next inclusive start is cursor + 1.
+                            BigInteger completedCursor = new BigInteger(redisService.get(cacheKey));
+                            idIncrementConfig.put("incrementStart",
+                                    completedCursor.add(BigInteger.ONE).toString());
                         }
                     } else if (StringUtils.equals("3", readModeType)) {
                         JSONObject dateIncrementConfig = taskParams.getJSONObject("dateIncrementConfig");

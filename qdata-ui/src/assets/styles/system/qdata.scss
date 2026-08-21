@@ -15,6 +15,13 @@
  .pb5 {
  	padding-bottom: 5px;
  }
+ .pb15 {
+	 padding-bottom: 15px !important;
+ }
+
+ .mt2{
+	 margin-top: 2px;
+ }
 
  .mt5 {
  	margin-top: 5px;
@@ -507,4 +514,24 @@
  .handle-svg-icon {
  	font-size: 13px !important;
  	margin-right: 7px;
+ }
+
+ .hint-div {
+	 margin: 0 0 15px 0;
+	 // border: 1px solid #a0cfff;
+	 border-radius: 2px;
+	 background-color: #ecf5ff;
+	 padding: 8px 19px;
+	 box-shadow: -1px 1px 2px #e5f1f8;
+	 display: flex;
+	 align-items: center;
+	 font-size: 14px;
+	 color: #333;
+	 width: 100%;
+	 max-width: 100%;
+
+	 span {
+		 margin-left: 5px;
+		 line-height: 1.5;
+	 }
  }

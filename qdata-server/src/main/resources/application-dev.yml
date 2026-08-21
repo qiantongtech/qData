@@ -179,7 +179,7 @@ ds:
     # Spark master address
     master_url: spark://127.0.0.1:7077
     # JAR package path in DolphinScheduler
-    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-etl.jar
+    main_jar: file:/dolphinscheduler/default/resources/spark-jar/qdata-executor-etl.jar
     # JAR main entry point
     main_class: tech.qiantong.qdata.spark.etl.EtlApplication
   # HDFS-related configuration
@@ -199,7 +199,7 @@ ds:
 
 datax:
   # DataX root directory, can be overridden by QDATA_DATAX_HOME
-  home: ${user.dir}/datax
+  home: ${user.dir}/datax/
   # Python command
   python-command: python3
   # Path to the datax.py invocation file

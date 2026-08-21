@@ -16,7 +16,7 @@ export default {
     isLatestVersion: '最新バージョンです。',
     latestVersion: '最新バージョン',
     update: '更新',
-    updateLog: '更新ログ',
+    updateLog: '最新版を入手する',
     weekOverWeek: '前週比：',
     apiCallTrend: 'APIデータ呼び出し量変化トレンド',
     governanceDataTrend: 'ガバナンスデータ量変化トレンド',

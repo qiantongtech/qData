@@ -17,10 +17,27 @@
  */
 
 import request from '@/utils/request.js'
+import packageInfo from '../../../../package.json'
+
+const { name, version, description, author } = packageInfo
 
 export function getCurrentAppVersion() {
     return request({
         url: '/updater/getCurrentAppVersion',
-        method: 'get'
+        method: 'get',
+        params: {
+            name,
+            version,
+            description,
+            author
+        }
+    })
+}
+
+export function addVersionTrack(data) {
+    return request({
+        url: '/system/VersionTrack',
+        method: 'post',
+        data: data
     })
 }

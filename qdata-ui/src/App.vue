@@ -32,6 +32,7 @@ import { useRoute } from "vue-router"; // Introduce useRoute hook
 import useUserStore from "@/store/system/user";
 import defaultSettings from '@/settings'
 import {i18n} from '@/plugins/vueI18n'
+import { printConsoleBanner } from '@/utils/consoleBanner'
 // import useAppStore from "@/store/system/app";
 // const appStore = useAppStore();
 const userStore = useUserStore();
@@ -64,6 +65,7 @@ onMounted(() => {
   nextTick(() => {
     // Initialize theme style
     handleThemeStyle(useSettingsStore().theme);
+    printConsoleBanner();
   });
 });
 </script>

@@ -438,7 +438,7 @@ function getList() {
 function handleStatusChange(row) {
     const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: status, type: td('att.theme.themeWord') }).replace('<name>', row.name))
+        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: status, type: td('att.theme.themeWord'), name: row.name }))
         .then(function () {
             updateAttTheme({ id: row.id, validFlag: row.validFlag }).then((response) => {
                 proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: status }));
@@ -574,7 +574,7 @@ function submitForm() {
 function handleDelete(row) {
     const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('att.theme.deleteConfirm').replace('<ids>', _ids))
+        .confirm(td('att.theme.deleteConfirm', '', { ids: _ids }))
         .then(function () {
             return delAttTheme(_ids);
         })

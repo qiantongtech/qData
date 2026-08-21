@@ -111,6 +111,18 @@ public class DppEtlTaskInstanceRespVO implements Serializable {
     @Schema(description = "状态", example = "")
     private String status;
 
+    @Schema(description = "Current status name", example = "")
+    private String currentStatusName;
+
+    @Schema(description = "Current status: running, success, failed or idle", example = "failed")
+    private String currentStatus;
+
+    @Schema(description = "Current node", example = "")
+    private String currentNode;
+
+    @Schema(description = "Execution duration", example = "")
+    private String duration;
+
     @Excel(name = "DolphinScheduler的id")
     @Schema(description = "DolphinScheduler的id", example = "")
     private Long dsId;

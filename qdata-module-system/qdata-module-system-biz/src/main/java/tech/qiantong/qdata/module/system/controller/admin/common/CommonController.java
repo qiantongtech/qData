@@ -69,6 +69,9 @@ public class CommonController {
     @Value("${ds.resource_url}")
     private String resourceUrl;
 
+    @Value("${datax.home}")
+    private String csv_dir;
+
     @Value("${ds.hdfs.url}")
     private String hdfsUrl;
 
@@ -192,12 +195,16 @@ public class CommonController {
         Integer startColumn = excelColumnReqVO.getStartColumn();
         Integer startData = excelColumnReqVO.getStartData();
         String fileName = UUID.randomUUID().toString().replace("-", "") + ".csv";
-        String csvFile = resourceUrl + "csv" + File.separator + fileName;
+        String prefixUrl = "DATAX".equals(excelColumnReqVO.getTaskType()) ? csv_dir : resourceUrl;
+        String csvFile = prefixUrl + "csv" + File.separator + fileName;
         List<String> columnList = ExcelToCsvUtil.convertExcelToCsv(excelFile, csvFile, startColumn, startData);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
                 return AjaxResult.error("Column name format in attachment is incorrect, please check!");
             }
+        }
+        if ("DATAX".equals(excelColumnReqVO.getTaskType())) {
+            return AjaxResult.success(ColumnRespVO.builder().csvFile(prefixUrl + "csv/" + fileName).columnList(columnList).build());
         }
         String hdfsPath = "/tmp/etl";
         uploadHdfs(hdfsUrl, hdfsPath, csvFile, fileName);
@@ -217,12 +224,16 @@ public class CommonController {
         file = AniviaConfig.getProfile() + file.replace(Constants.RESOURCE_PREFIX + "/", "");
         file = file.replace("/", File.separator);
         String fileName = UUID.randomUUID().toString().replace("-", "") + ".csv";
-        String csvFile = resourceUrl + "csv" + File.separator + fileName;
+        String prefixUrl = "DATAX".equals(csvColumnReqVO.getTaskType()) ? csv_dir : resourceUrl;
+        String csvFile = prefixUrl + "csv" + File.separator + fileName;
         List<String> columnList = ExcelToCsvUtil.parseCsv(file, csvFile);
         if (columnList.size() > 0) {
             if (!ExcelToCsvUtil.verifyColumn(columnList)) {
                 return AjaxResult.error("Column name format in attachment is incorrect, please check!");
             }
+        }
+        if ("DATAX".equals(csvColumnReqVO.getTaskType())) {
+            return AjaxResult.success(ColumnRespVO.builder().csvFile(prefixUrl + "csv/" + fileName).columnList(columnList).build());
         }
         String hdfsPath = "/tmp/etl";
         uploadHdfs(hdfsUrl, hdfsPath, csvFile, fileName);

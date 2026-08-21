@@ -311,6 +311,7 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
+import { typeList } from "@/utils/graph.js";
 const { proxy } = getCurrentInstance();
 import Sortable from "sortablejs";
 import useUserStore from "@/store/system/user.js";
@@ -339,6 +340,7 @@ const props = defineProps({
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
+  taskType: { type: String, default: '' },
 });
 let dragTable = ref(null);
 let sortableInstance = null;

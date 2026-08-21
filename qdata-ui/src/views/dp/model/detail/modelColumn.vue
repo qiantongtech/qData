@@ -670,7 +670,7 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.modelForm.confirmDeleteProperty').replace('<id>', _ids))
+    .confirm(td('dp.modelForm.confirmDeleteProperty', '', { id: _ids }))
     .then(function () {
       return delDpModelColumns(_ids);
     })

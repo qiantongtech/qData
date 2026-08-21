@@ -29,6 +29,8 @@ import tech.qiantong.qdata.module.dpp.dal.dataobject.etl.DppEtlTaskInstanceLogDO
  */
 public interface IDppEtlTaskInstanceLogService extends IService<DppEtlTaskInstanceLogDO> {
 
+    /** 使用独立事务保存任务实例日志，使长任务执行期间日志立即可见。 */
+    boolean saveOrUpdateRealtime(DppEtlTaskInstanceLogDO entity);
 
     String getLog(Long taskInstanceId);
 }

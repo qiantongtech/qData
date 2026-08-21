@@ -139,7 +139,7 @@ export default function useCatManager({
     if (!updateFunc) return;
     const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
     proxy.$modal
-      .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: nameLabel }).replace('<name>', row.name))
+      .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: text, type: nameLabel, name: row.name }))
       .then(function () {
         updateFunc({ id: row.id, parentId: row.parentId, validFlag: row.validFlag })
           .then(() => {
@@ -182,7 +182,7 @@ export default function useCatManager({
   function handleDelete(row) {
     const ids = row.id;
     proxy.$modal
-      .confirm(td('att.common.confirmDeleteItem').replace('<ids>', ids))
+      .confirm(td('att.common.confirmDeleteItem', '', { ids }))
       .then(function () {
         return delFunc && delFunc(ids);
       })

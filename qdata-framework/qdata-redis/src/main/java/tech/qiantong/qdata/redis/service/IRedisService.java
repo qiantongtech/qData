@@ -40,6 +40,13 @@ public interface IRedisService {
      */
     void set(String key, String value, long timeout);
 
+    /** Atomically sets a non-negative integer value only when it is greater. */
+    boolean setIfGreater(String key, String value);
+
+    /** Atomically compares and stores a group of formatted time cursors. */
+    boolean setDatesIfLater(Map<String, String> values, Map<String, Long> epochMillis,
+                            Map<String, Long> legacyEpochMillis);
+
     String get(String key);
 
     boolean delete(String key);

@@ -153,7 +153,11 @@
             <el-input
               v-model="scope.row.outputField"
               :placeholder="td('dpp.integration.fieldAliasPlaceholder', 'Please enter new field name')"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'outputField') }"
+              :title="getFieldError(scope.$index, 'outputField')"
               style="width: 100%"
+              @input="validateFieldRows"
+              @blur="normalizeFieldAlias(scope.row)"
             />
           </template>
         </el-table-column>
@@ -162,8 +166,11 @@
             <el-select
               v-model="scope.row.type"
               :placeholder="td('dpp.integration.fieldTypePlaceholder', 'Please select field type')"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'type') }"
+              :title="getFieldError(scope.$index, 'type')"
               style="width: 100%"
               clearable
+              @change="handleTypeChange(scope.row)"
             >
               <el-option
                 v-for="dict in columntype"
@@ -184,9 +191,12 @@
             <el-input-number
               :placeholder="td('dpp.integration.fieldLengthPlaceholder', 'Please enter field length')"
               v-model="scope.row.length"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'length') }"
+              :title="getFieldError(scope.$index, 'length')"
               :min="0"
               controls-position="right"
               style="width: 100%"
+              @change="validateFieldRows"
             />
           </template>
         </el-table-column>
@@ -200,9 +210,12 @@
             <el-input-number
               :placeholder="td('dpp.integration.fieldPrecisionPlaceholder', 'Please enter field precision')"
               v-model="scope.row.precision"
+              :class="{ 'field-input-error': getFieldError(scope.$index, 'precision') }"
+              :title="getFieldError(scope.$index, 'precision')"
               :min="0"
               controls-position="right"
               style="width: 100%"
+              @change="validateFieldRows"
             />
           </template>
         </el-table-column>
@@ -325,13 +338,14 @@ import {
   defineEmits,
   ref,
   computed,
-  watchEffect,
+  watch,
   getCurrentInstance,
 } from "vue";
 
 import { getNodeUniqueKey } from "@/api/dpp/task/index.js";
+import { typeList } from "@/utils/graph.js";
 import useUserStore from "@/store/system/user.js";
-import { createNodeSelect } from "@/views/dpp/utils/opBase.js";
+import { createNodeSelect, getParentNode } from "@/views/dpp/utils/opBase.js";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -343,6 +357,7 @@ const props = defineProps({
   currentNode: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
   graph: { type: Object, default: () => ({}) },
+  taskType: { type: String, default: "" },
 });
 const columntype = [
   { value: "BigNumber", label: "BigNumber" },
@@ -371,9 +386,20 @@ function hasDuplicateObjects(arr, key) {
   }
   return false;
 }
+
+function refreshInputFields() {
+  const parentNode = getParentNode(props.currentNode, props.graph);
+  const upstreamFields = parentNode?.data?.taskParams?.outputFields;
+  inputFields.value = Array.isArray(upstreamFields)
+    ? deepCopy(upstreamFields)
+    : [];
+  return inputFields.value;
+}
+
 function handleAddField() {
-  if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
+  const availableFields = refreshInputFields();
+  if (!Array.isArray(availableFields) || availableFields.length === 0) {
+    proxy.$message.warning(td("dpp.integratioTask.cannotFindInputFields", "Cannot find input fields"));
     return;
   }
   // Added field name
@@ -414,10 +440,12 @@ function handleAddField() {
     ignoreCase: 1,
     source: form.value.name,
   });
+  validateFieldRows();
 }
 function handleAddField2() {
-  if (!Array.isArray(inputFields.value) || inputFields.value.length === 0) {
-    proxy.$message.warning(td("dpp.integration.inputFieldEmptyCannotAdd", "Input field is empty, cannot add fields"));
+  const availableFields = refreshInputFields();
+  if (!Array.isArray(availableFields) || availableFields.length === 0) {
+    proxy.$message.warning(td("dpp.integratioTask.cannotFindInputFields", "Cannot find input fields"));
     return;
   }
   // Added field name
@@ -440,10 +468,16 @@ function handleAddField2() {
     ignoreCase: 1,
     source: form.value.name,
   });
+  validateFieldRows();
 }
 const showConflictDialog = ref(false);
 
 const handleFetchFields = () => {
+  const availableFields = refreshInputFields();
+  if (!Array.isArray(availableFields) || availableFields.length === 0) {
+    proxy.$message.warning(td("dpp.integratioTask.cannotFindInputFields", "Cannot find input fields"));
+    return;
+  }
   showConflictDialog.value = true;
 };
 function onResolveFields(payload) {
@@ -451,6 +485,7 @@ function onResolveFields(payload) {
   const tableNames = tableFields.value.map((f) => f.columnName).sort();
   const inputNames = inputFields.value.map((f) => f.columnName).sort();
   const isEqual =
+    inputNames.length > 0 &&
     tableNames.length === inputNames.length &&
     tableNames.every((name, idx) => name === inputNames[idx]);
   switch (payload.action) {
@@ -467,6 +502,7 @@ function onResolveFields(payload) {
       );
       // Add to tableFields
       tableFields.value = tableFields.value.concat(deepCopy(newUniqueFields));
+      validateFieldRows();
       break;
     }
 
@@ -477,12 +513,14 @@ function onResolveFields(payload) {
       );
       if (isEqual) {
         proxy.$message.warning(td("dpp.integration.alreadyLatestFields", "Add failed, already at latest fields"));
+        return;
       }
       console.log("Parent component: add all fields");
       tableFields.value = [];
       removeFields.value = [];
       // Clear it here first and then add all the fields to avoid duplication.
       tableFields.value = deepCopy(inputFields.value);
+      validateFieldRows();
 
       break;
     }
@@ -492,6 +530,7 @@ function onResolveFields(payload) {
       removeFields.value = [];
       // Restore original backup fields
       tableFields.value = deepCopy(inputFields.value);
+      validateFieldRows();
 
       break;
     }
@@ -518,6 +557,7 @@ const handleColumnChange = (columnName, currentRow) => {
   if (!selectedField) return;
 
   currentRow.columnType = selectedField.columnType;
+  validateFieldRows();
 };
 
 const emit = defineEmits(["update", "confirm"]);
@@ -541,6 +581,154 @@ let opens = ref(false);
 let row = ref();
 let dpModelRefs = ref();
 let form = ref({});
+let fieldErrors = ref([]);
+let showFieldErrors = ref(false);
+
+const FIELD_ALIAS_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const LENGTH_TYPES = new Set(["BigNumber", "Binary", "Integer", "Number", "String", "InternetAddress"]);
+const PRECISION_TYPES = new Set(["BigNumber", "Number"]);
+const NUMERIC_TYPES = new Set(["BigNumber", "Integer", "Number"]);
+
+const normalizeName = (value) => String(value ?? "").trim().toLowerCase();
+const requiresLength = (type) => LENGTH_TYPES.has(type);
+const requiresPrecision = (type) => PRECISION_TYPES.has(type);
+const hasValue = (value) => value !== null && value !== undefined && value !== "";
+const isNonNegativeInteger = (value) => hasValue(value) && Number.isInteger(Number(value)) && Number(value) >= 0;
+const isPositiveInteger = (value) => hasValue(value) && Number.isInteger(Number(value)) && Number(value) > 0;
+
+function getSourceTypeFamily(columnType) {
+  const type = String(columnType || "").toLowerCase();
+  if (!type) return "unknown";
+  if (/(int|number|numeric|decimal|double|float|real|long|short)/.test(type)) return "numeric";
+  if (/(timestamp|datetime)/.test(type)) return "timestamp";
+  if (/(date|time)/.test(type)) return "date";
+  if (/(bool|bit)/.test(type)) return "boolean";
+  if (/(binary|blob|byte)/.test(type)) return "binary";
+  if (/(inet|address|ip)/.test(type)) return "internet";
+  if (/(char|string|text|clob|json|uuid)/.test(type)) return "string";
+  return "unknown";
+}
+
+function isTypeCompatible(row) {
+  const sourceFamily = getSourceTypeFamily(row.columnType);
+  if (!row.type || sourceFamily === "unknown" || row.type === "String") return true;
+  if (sourceFamily === "numeric") return NUMERIC_TYPES.has(row.type);
+  if (sourceFamily === "timestamp") return row.type === "Timestamp" || row.type === "Date";
+  if (sourceFamily === "date") return row.type === "Date" || row.type === "Timestamp";
+  if (sourceFamily === "boolean") return row.type === "Boolean";
+  if (sourceFamily === "binary") return row.type === "Binary";
+  if (sourceFamily === "internet") return row.type === "InternetAddress";
+  // String values can only be safely retained as strings at design time; parsing
+  // them into another structure cannot be guaranteed without examining the data.
+  return sourceFamily !== "string";
+}
+
+function validateFieldRows() {
+  const aliasCounts = new Map();
+  tableFields.value.forEach((item) => {
+    const alias = normalizeName(item.outputField);
+    if (alias) aliasCounts.set(alias, (aliasCounts.get(alias) || 0) + 1);
+  });
+
+  const selectedNames = new Set(tableFields.value.map((item) => normalizeName(item.columnName)));
+  const removedNames = new Set(removeFields.value.map((item) => normalizeName(item.columnName)));
+  const reservedNames = new Set(
+    inputFields.value
+      .map((item) => normalizeName(item.columnName))
+      .filter((name) => name && !selectedNames.has(name) && !removedNames.has(name))
+  );
+
+  fieldErrors.value = tableFields.value.map((item) => {
+    const errors = {};
+    const alias = String(item.outputField ?? "").trim();
+    const normalizedAlias = normalizeName(alias);
+    if (!alias) {
+      errors.outputField = td(
+        "dpp.integration.fieldAliasRequired",
+        "Field alias cannot be empty."
+      );
+    } else if (aliasCounts.get(normalizedAlias) > 1) {
+      errors.outputField = td(
+        "dpp.integration.fieldAliasDuplicate",
+        "Please do not enter duplicate field aliases."
+      );
+    } else if (reservedNames.has(normalizedAlias)) {
+      errors.outputField = td(
+        "dpp.integration.fieldAliasExistingField",
+        "The field alias duplicates an existing field name."
+      );
+    } else if (!FIELD_ALIAS_PATTERN.test(alias)) {
+      errors.outputField = td(
+        "dpp.integration.fieldAliasInvalid",
+        "The field alias contains invalid characters."
+      );
+    }
+
+    // An empty type means retaining the source type. Compatibility is checked
+    // only when the user explicitly requests a type conversion.
+    if (item.type && !isTypeCompatible(item)) {
+      errors.type = td(
+        "dpp.integration.fieldTypeIncompatible",
+        "The selected field type is incompatible with the source field type."
+      );
+    }
+
+    const hasLength = hasValue(item.length);
+    const hasPrecision = hasValue(item.precision);
+    if (hasLength && !requiresLength(item.type)) {
+      errors.length = td(
+        "dpp.integration.fieldLengthUnsupported",
+        "The current field type does not support field length."
+      );
+    } else if (hasLength && !isPositiveInteger(item.length)) {
+      errors.length = td(
+        "dpp.integration.fieldLengthPositiveInteger",
+        "Field length must be a positive integer."
+      );
+    }
+    if (hasPrecision && !requiresPrecision(item.type)) {
+      errors.precision = td(
+        "dpp.integration.fieldPrecisionUnsupported",
+        "The current field type does not support field precision."
+      );
+    } else if (hasPrecision && !isNonNegativeInteger(item.precision)) {
+      errors.precision = td(
+        "dpp.integration.fieldPrecisionNonNegativeInteger",
+        "Field precision must be a non-negative integer."
+      );
+    } else if (hasPrecision && hasLength && Number(item.precision) > Number(item.length)) {
+      errors.precision = td(
+        "dpp.integration.fieldPrecisionExceedsLength",
+        "Field precision cannot exceed field length."
+      );
+    }
+    return errors;
+  });
+  return fieldErrors.value.every((errors) => Object.keys(errors).length === 0);
+}
+
+const getFieldError = (index, field) =>
+  showFieldErrors.value ? fieldErrors.value[index]?.[field] || "" : "";
+
+function getFirstFieldError() {
+  for (const field of ["outputField", "type", "length", "precision"]) {
+    for (const errors of fieldErrors.value) {
+      if (errors[field]) {
+        return errors[field];
+      }
+    }
+  }
+  return "";
+}
+
+function normalizeFieldAlias(row) {
+  row.outputField = String(row.outputField ?? "").trim();
+  validateFieldRows();
+}
+
+function handleTypeChange() {
+  validateFieldRows();
+}
 
 function handleDelete(row) {
   // 1. Delete the corresponding item from tableFields
@@ -563,6 +751,7 @@ function handleDelete(row) {
       inputFields.value.push(JSON.parse(JSON.stringify(originalField)));
     }
   }
+  validateFieldRows();
 }
 function handleDelete2(row) {
   // 1. Delete the corresponding item from tableFields
@@ -572,6 +761,7 @@ function handleDelete2(row) {
   if (idxTable !== -1) {
     removeFields.value.splice(idxTable, 1);
   }
+  validateFieldRows();
 }
 // Submit pop-up rule data
 const submitForm = (value) => {
@@ -619,6 +809,8 @@ const off = () => {
   tableFields.value = [];
   inputFields.value = [];
   originalTableFieldsBackup.value = [];
+  fieldErrors.value = [];
+  showFieldErrors.value = false;
 };
 
 const saveData = async () => {
@@ -630,20 +822,17 @@ const saveData = async () => {
       proxy.$message.warning(td("dpp.integration.validateFailedAddAtLeastOne", "Validation failed, please add at least one field"));
       return;
     }
-    let isRepeat = hasDuplicateObjects(tableFields.value, "outputField");
-    if (isRepeat) {
-      proxy.$message.warning(td("dpp.integration.noRepeatOutputField", "Please do not use duplicate output fields"));
+    showFieldErrors.value = true;
+    if (!validateFieldRows()) {
+      proxy.$message.warning(
+        getFirstFieldError()
+      );
       return;
     }
 
-    let names = inputFields.value.map((item) => item.columnName);
-    let isOut = names.find((item) =>
-      tableFields.value.some((row) => row.outputField === item)
-    );
-    if (isOut) {
-      proxy.$message.warning(td("dpp.integration.outputFieldCannotDuplicate", "Output field cannot duplicate existing field names"));
-      return;
-    }
+    tableFields.value.forEach((item) => {
+      item.outputField = String(item.outputField).trim();
+    });
 
     if (!form.value.code) {
       loading.value = true;
@@ -709,25 +898,38 @@ function deepCopy(data) {
 }
 
 let nodeOptions = ref([]);
-watchEffect(() => {
-  if (!props.visible) {
-    off();
-    return;
-  }
-  form.value = deepCopy(props.currentNode?.data || {});
-  nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
-  let taskParams = deepCopy(props.currentNode?.data?.taskParams || {});
-  originalTableFieldsBackup.value = deepCopy(
-    props.currentNode?.data?.taskParams?.inputFields || []
-  );
-  inputFields.value = taskParams?.inputFields || [];
-  tableFields.value = taskParams?.tableFields || [];
-  removeFields.value = taskParams?.removeFields || [];
-});
+watch(
+  // Dialog state is initialized only when it opens or switches to another node.
+  // Watching currentNode.data here would overwrite rows added by the user when
+  // X6 refreshes the node data object during editing.
+  () => [props.visible, props.currentNode?.id],
+  ([visible]) => {
+    if (!visible) {
+      off();
+      return;
+    }
+    form.value = deepCopy(props.currentNode?.data || {});
+    nodeOptions.value = createNodeSelect(props.graph, props.currentNode.id);
+    const taskParams = deepCopy(props.currentNode?.data?.taskParams || {});
+    originalTableFieldsBackup.value = deepCopy(
+      props.currentNode?.data?.taskParams?.inputFields || []
+    );
+    inputFields.value = taskParams?.inputFields || [];
+    tableFields.value = taskParams?.tableFields || [];
+    removeFields.value = taskParams?.removeFields || [];
+    validateFieldRows();
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="less">
 .blue-text {
   color: #2666fb;
+}
+
+:deep(.field-input-error .el-input__wrapper),
+:deep(.field-input-error .el-select__wrapper) {
+  box-shadow: 0 0 0 1px var(--el-color-danger) inset;
 }
 </style>

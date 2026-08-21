@@ -101,20 +101,20 @@ export default {
     assetCountTip: '現在このタグに関連付けられているデータ資産の総数',
     statusTip: '有効状態はタグがデータ資産のタグ付けに使用できることを示します。無効にすると使用できなくなりますが、既存のタグは保持されます。',
     createdByPlaceholder: '作成者を入力してください',
-    confirmStatusChange: 'タグ「<name>」を「{status}」にしてもよろしいですか？',
-    confirmDeleteTag: '番号「<ids>」のタグを削除してもよろしいですか？',
+    confirmStatusChange: 'タグ「{name}」を「{status}」にしてもよろしいですか？',
+    confirmDeleteTag: '番号「{ids}」のタグを削除してもよろしいですか？',
     tagCatRequired: 'タグ管理カテゴリは必須です',
     addTag: 'タグ追加',
     editTag: 'タグ編集',
     tagDetail: 'タグ詳細',
     ruleCategoryPlaceholder: '監査ルールカテゴリを入力してください',
-    confirmDeleteCat: '<titleBase>番号「<id>」を削除してもよろしいですか？',
-    deleteConfirmCount: '<canDeleteCount>件削除可能、<cannotDeleteCount>件削除不可。削除可能なものを削除しますか？',
+    confirmDeleteCat: '{titleBase}番号「{id}」を削除してもよろしいですか？',
+    deleteConfirmCount: '{canDeleteCount}件削除可能、{cannotDeleteCount}件削除不可。削除可能なものを削除しますか？',
     addTitle: '{title}追加',
     editTitle: '{title}編集',
     detailTitle: '{title}詳細',
     importTitle: '{title}インポート',
-    confirmStatusChangeGeneric: '「<name>」<type>を「<status>」にしてもよろしいですか？',
+    confirmStatusChangeGeneric: '「{name}」{type}を「{status}」にしてもよろしいですか？',
     statusSuccess: '{status}成功',
     contactWayPlaceholder: '連絡先を入力してください'
   },
@@ -128,7 +128,7 @@ export default {
       parentIdRequired: '上位カテゴリは必須です'
     },
     messages: {
-      confirmDelete: 'データ資産カテゴリ番号「<name>」を削除してもよろしいですか？'
+      confirmDelete: 'データ資産カテゴリ番号「{name}」を削除してもよろしいですか？'
     },
     title: {
       add: 'データ資産カテゴリ追加',
@@ -145,7 +145,7 @@ export default {
       edit: 'データドキュメントカテゴリ編集'
     },
     messages: {
-      confirmDelete: 'データドキュメント番号「<name>」を削除してもよろしいですか？'
+      confirmDelete: 'データドキュメント番号「{name}」を削除してもよろしいですか？'
     }
   },
   auditRule: {
@@ -174,7 +174,7 @@ export default {
       detail: '監査ルール詳細'
     },
     importTitle: '監査ルールインポート',
-    deleteConfirm: '監査ルール番号「<ids>」を削除してもよろしいですか？',
+    deleteConfirm: '監査ルール番号「{ids}」を削除してもよろしいですか？',
     treeRootName: '品質ディメンション'
   },
   cleanCat: {
@@ -195,7 +195,7 @@ export default {
     },
     importTitle: 'クレンジングルールカテゴリインポート',
     messages: {
-      confirmDelete: 'クレンジングルールカテゴリ番号「<ids>」を削除してもよろしいですか？'
+      confirmDelete: 'クレンジングルールカテゴリ番号「{ids}」を削除してもよろしいですか？'
     }
   },
   cleanRule: {
@@ -217,7 +217,7 @@ export default {
       detail: 'クレンジングルール詳細'
     },
     importTitle: 'クレンジングルールインポート',
-    deleteConfirm: '番号「<ids>」を削除してもよろしいですか？',
+    deleteConfirm: '番号「{ids}」を削除してもよろしいですか？',
     cleanRuleCategory: 'クレンジングルールカテゴリ'
   },
   dataElemCat: {
@@ -230,7 +230,7 @@ export default {
       edit: 'データ要素カテゴリ編集'
     },
     messages: {
-      confirmDelete: 'データ要素カテゴリ番号「<name>」を削除してもよろしいですか？'
+      confirmDelete: 'データ要素カテゴリ番号「{name}」を削除してもよろしいですか？'
     }
   },
   documentCat: {
@@ -243,7 +243,7 @@ export default {
       edit: '標準情報カテゴリ編集'
     },
     messages: {
-      confirmDelete: '標準情報カテゴリ番号「<ids>」を削除してもよろしいですか？'
+      confirmDelete: '標準情報カテゴリ番号「{ids}」を削除してもよろしいですか？'
     }
   },
   modelCat: {
@@ -256,7 +256,7 @@ export default {
       edit: '論理モデルカテゴリ編集'
     },
     messages: {
-      confirmDelete: '論理モデルカテゴリ番号「<name>」を削除してもよろしいですか？'
+      confirmDelete: '論理モデルカテゴリ番号「{name}」を削除してもよろしいですか？'
     }
   },
   project: {
@@ -277,7 +277,7 @@ export default {
     },
     importTitle: 'プロジェクトインポート',
     message: {
-      confirmDelete: 'プロジェクト番号「<ids>」を削除してもよろしいですか？'
+      confirmDelete: 'プロジェクト番号「{ids}」を削除してもよろしいですか？'
     }
   },
   qualityCat: {
@@ -290,7 +290,7 @@ export default {
       edit: 'データ品質カテゴリ編集'
     },
     messages: {
-      confirmDelete: 'データ品質カテゴリ番号「<name>」を削除してもよろしいですか？'
+      confirmDelete: 'データ品質カテゴリ番号「{name}」を削除してもよろしいですか？'
     }
   },
   tag: {
@@ -311,7 +311,7 @@ export default {
       detail: 'タグ管理詳細'
     },
     message: {
-      deleteConfirm: '「<ids>」を削除してもよろしいですか？',
+      deleteConfirm: '「{ids}」を削除してもよろしいですか？',
       batchDeleteConfirm: '選択したデータをバッチ削除してもよろしいですか？'
     }
   },
@@ -337,7 +337,7 @@ export default {
       detail: 'テーマ詳細'
     },
     importTitle: 'テーマインポート',
-    deleteConfirm: 'テーマ番号「<ids>」を削除してもよろしいですか？',
+    deleteConfirm: 'テーマ番号「{ids}」を削除してもよろしいですか？',
     themeWord: 'テーマ'
   },
   sourceSystem: {
@@ -369,9 +369,9 @@ export default {
     message: {
       nameRequired: 'システム名は必須です',
       typeRequired: 'システムタイプは必須です',
-      confirmStatus: '「<name>」ソースシステムを「<status>」にしてもよろしいですか？',
-      statusSuccess: '<status>」成功',
-      deleteConfirm: '<deletable>件削除可能、<undeletable>件削除不可。削除可能なものを削除しますか？'
+      confirmStatus: '「{name}」ソースシステムを「{status}」にしてもよろしいですか？',
+      statusSuccess: '{status}」成功',
+      deleteConfirm: '{deletable}件削除可能、{undeletable}件削除不可。削除可能なものを削除しますか？'
     },
     textareaLimit: '500文字'
   }

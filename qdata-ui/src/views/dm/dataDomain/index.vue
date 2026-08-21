@@ -564,7 +564,7 @@ const handleContactChange = (selectedValue) => {
 function handleDelete(row) {
   const _ids = row?.id || ids.value;
   proxy.$modal
-    .confirm(td('dm.dataDomain.confirmDelete', 'Are you sure to delete data domain "<id>"?').replace('<id>', _ids))
+    .confirm(td('dm.dataDomain.confirmDelete', 'Are you sure to delete data domain "{id}"?', { id: _ids }))
     .then(function () {
       return delDataDomain(_ids);
     })

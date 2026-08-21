@@ -24,75 +24,121 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 /**
- * <P>
- * Purpose: rabbitmq message middleware tool class
- * </p>
+ * RabbitMQ publisher used by the standalone ETL process.
  *
- * @author: FXB
- * @create: 2025-04-28 15:48
- **/
-public class RabbitmqUtils {
-    public static Boolean convertAndSend(JSONObject config, String exchange, String routingKey, Object object) {
-        // Create connection factory
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(config.getString("host"));
-        factory.setPort(config.getIntValue("port"));
-        factory.setUsername(config.getString("username"));
-        factory.setPassword(config.getString("password"));
+ * A Spark task emits many status and log messages. Reusing one confirmed
+ * channel avoids a TCP/AMQP handshake for every log line and, more
+ * importantly, makes a failed callback visible to DolphinScheduler instead
+ * of silently reporting success.
+ */
+@Slf4j
+public final class RabbitmqUtils {
 
-        Connection connection = null;
-        Channel channel = null;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final long PUBLISH_CONFIRM_TIMEOUT_MS = 5000L;
+
+    private static Connection connection;
+    private static Channel channel;
+    private static String connectionKey;
+    private static final Set<String> declaredRoutes = new HashSet<>();
+
+    private RabbitmqUtils() {
+    }
+
+    public static synchronized Boolean convertAndSend(JSONObject config, String exchange,
+                                                       String routingKey, Object object) {
+        if (config == null || config.isEmpty()) {
+            throw new IllegalArgumentException("RabbitMQ configuration must not be empty");
+        }
+
         try {
-            // Establish connections and channels
-            connection = factory.newConnection();
-            channel = connection.createChannel();
-            // Declare the queue (create it if it does not exist)
-            channel.queueDeclare(routingKey, true, false, false, null);
-
-            // Serialize to JSON using Jackson
-            ObjectMapper objectMapper = new ObjectMapper();
-            byte[] body = objectMapper.writeValueAsBytes(object);
-
-            // Set message properties (JSON format)
+            ensureChannel(config);
+            ensureRoute(exchange, routingKey);
+            byte[] body = OBJECT_MAPPER.writeValueAsBytes(object);
             AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
                     .contentType("application/json")
                     .contentEncoding("utf-8")
+                    .deliveryMode(2)
                     .build();
 
-            // Send message
-            channel.basicPublish(
-                    exchange,         // Use default switch (direct swap)
-                    routingKey, // Routing key (queue name is used directly here)
-                    props,      // Message properties
-                    body // Convert message body to byte array
-            );
+            channel.basicPublish(exchange, routingKey, true, props, body);
+            channel.waitForConfirmsOrDie(PUBLISH_CONFIRM_TIMEOUT_MS);
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (channel != null && channel.isOpen()) {
-                try {
-                    channel.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null && connection.isOpen()) {
-                try {
-                    connection.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            closeInternal();
+            throw new IllegalStateException(
+                    "RabbitMQ callback failed, exchange=" + exchange + ", routingKey=" + routingKey, e);
+        }
+    }
+
+    public static synchronized void close() {
+        closeInternal();
+    }
+
+    private static void ensureChannel(JSONObject config) throws IOException, TimeoutException {
+        String expectedKey = buildConnectionKey(config);
+        if (!expectedKey.equals(connectionKey)) {
+            closeInternal();
+        }
+        if (connection == null || !connection.isOpen()) {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(config.getString("host"));
+            factory.setPort(config.getIntValue("port"));
+            factory.setUsername(config.getString("username"));
+            factory.setPassword(config.getString("password"));
+            factory.setConnectionTimeout(config.getIntValue("connectionTimeoutMs", 5000));
+            factory.setHandshakeTimeout(config.getIntValue("handshakeTimeoutMs", 5000));
+            factory.setAutomaticRecoveryEnabled(true);
+            connection = factory.newConnection("qdata-etl-callback");
+            connectionKey = expectedKey;
+        }
+        if (channel == null || !channel.isOpen()) {
+            channel = connection.createChannel();
+            channel.confirmSelect();
+        }
+    }
+
+    private static String buildConnectionKey(JSONObject config) {
+        return config.getString("host") + ':' + config.getIntValue("port") + ':'
+                + config.getString("username");
+    }
+
+    private static void ensureRoute(String exchange, String routingKey) throws IOException {
+        String route = exchange + '|' + routingKey;
+        if (declaredRoutes.add(route)) {
+            channel.exchangeDeclare(exchange, "direct", true);
+            channel.queueDeclare(routingKey, true, false, false, null);
+            channel.queueBind(routingKey, exchange, routingKey);
+        }
+    }
+
+    private static void closeInternal() {
+        if (channel != null) {
+            try {
+                channel.close();
+            } catch (Exception e) {
+                log.debug("Failed to close RabbitMQ channel", e);
             }
         }
-        return true;
+        channel = null;
+
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                log.debug("Failed to close RabbitMQ connection", e);
+            }
+        }
+        connection = null;
+        connectionKey = null;
+        declaredRoutes.clear();
     }
 }

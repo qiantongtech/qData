@@ -55,154 +55,174 @@ import java.util.*;
 public class EtlApplication {
 
     public static void main(String[] args) {
-        DBUtils.init();
+        SparkSession spark = null;
+        ProcessInstance processInstance = null;
+        TaskInstance activeTaskInstance = null;
+        LogUtils.Params activeLogParams = null;
+        JSONObject rabbitmq = null;
 
-        Date now = new Date();
-        log.info(args[0]);
-        String jsonStr = Base64.decodeStr(args[0]);
-        log.info(jsonStr);
-        JSONObject taskParams = JSONObject.parseObject(jsonStr);
-        JSONObject config = taskParams.getJSONObject("config");
-        JSONObject rabbitmq = config.getJSONObject("rabbitmq");
-        JSONObject redis = config.getJSONObject("redis");
-        JSONObject taskInfo = config.getJSONObject("taskInfo");
-
-        // Initialize redis (compatible with historical tasks, repackage after configuring default values in RedisUtils)
-        if (redis != null && redis.size() > 0) {
-            RedisUtils.init(redis);
-        }
-
-        //Create process instance
-        ProcessInstance processInstance = createProcess(taskInfo, now, rabbitmq);
-
-        //Register spark
-        SparkConf conf = new SparkConf().setAppName("EtlApplication");
-
-        SparkSession spark = SparkSession.builder()
-                .config(conf)
-                .getOrCreate();
-
-        //Read configuration
-        JSONObject reader = taskParams.getJSONObject("reader");
-        //Parameter information
-        JSONObject readParameter = reader.getJSONObject("parameter");
-
-        //Input type
-        TaskComponentTypeEnum readerComponentType = TaskComponentTypeEnum.findEnumByType(reader.getString("componentType"));
-
-        //Input field
-        List<String> readerColumns = new ArrayList<>();
-
-        //Create an input node instance
-        TaskInstance readerTaskInstance = createTask(processInstance, reader, now, rabbitmq);
-        LogUtils.Params readerLogParams = new LogUtils.Params(rabbitmq, readerTaskInstance.getProcessInstanceId(), readerTaskInstance.getId());
-
-        //Read the data set
-        Dataset<Row> data;
         try {
-            data = ReaderFactory.getReader(readerComponentType.getCode())
-                    .read(spark, reader, readerColumns, readerLogParams);
+            DBUtils.init();
+            if (args == null || args.length == 0 || args[0] == null) {
+                throw new IllegalArgumentException("ETL task parameters must not be empty");
+            }
+
+            Date now = new Date();
+            log.info(args[0]);
+            String jsonStr = Base64.decodeStr(args[0]);
+            log.info(jsonStr);
+            JSONObject taskParams = JSONObject.parseObject(jsonStr);
+            JSONObject config = taskParams.getJSONObject("config");
+            rabbitmq = config.getJSONObject("rabbitmq");
+            JSONObject redis = config.getJSONObject("redis");
+            JSONObject taskInfo = config.getJSONObject("taskInfo");
+
+            // Publish the running state before Redis/Spark startup so the UI can show it promptly.
+            processInstance = createProcess(taskInfo, now, rabbitmq);
+
+            // Initialize redis (compatible with historical tasks, repackage after configuring default values in RedisUtils)
+            if (redis != null && !redis.isEmpty()) {
+                RedisUtils.init(redis);
+            }
+
+            SparkConf conf = new SparkConf().setAppName("EtlApplication");
+            spark = SparkSession.builder().config(conf).getOrCreate();
+
+            JSONObject reader = taskParams.getJSONObject("reader");
+            TaskComponentTypeEnum readerComponentType = TaskComponentTypeEnum.findEnumByType(reader.getString("componentType"));
+            List<String> readerColumns = new ArrayList<>();
+
+            activeTaskInstance = createTask(processInstance, reader, now, rabbitmq);
+            activeLogParams = new LogUtils.Params(rabbitmq, activeTaskInstance.getProcessInstanceId(), activeTaskInstance.getId());
+            Dataset<Row> data = ReaderFactory.getReader(readerComponentType.getCode())
+                    .read(spark, reader, readerColumns, activeLogParams);
             if (data == null) {
-                LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
-                updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-                //Update input node instance execution failed
-                updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-                spark.stop();
-                return;
+                throw new IllegalStateException("Database input returned no dataset");
             }
-        } catch (Exception e) {
-            log.error(MessageUtils.message("etl.task.failed"), e);
-            updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            //Update input node instance execution failed
-            updateTask(readerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
-            LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.failed"));
-            LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
-            spark.stop();
-            return;
-        }
+            finishTaskSuccessfully(activeTaskInstance, activeLogParams, rabbitmq);
+            activeTaskInstance = null;
+            activeLogParams = null;
 
-        //Update input node instance executed successfully
-        updateTask(readerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-        LogUtils.writeLog(readerLogParams, MessageUtils.messageEn("etl.task.success"));
-        LogUtils.writeLog(readerLogParams, "FINALIZE_SESSION");
-
-//        if (readParameter.containsKey("batchSize")) {
-// //Batch processing
-//            data = data.repartition(readParameter.getInteger("batchSize"));
-//        }
-
-        if (taskParams.getJSONArray("transition") != null && taskParams.getJSONArray("transition").size() > 0) {
-            //Read configuration
             JSONArray transitionArr = taskParams.getJSONArray("transition");
-            for (int i = 0; i < transitionArr.size(); i++) {
-                JSONObject transition = (JSONObject) transitionArr.get(i);
-                //Conversion type
-                TaskComponentTypeEnum transitionComponentType = TaskComponentTypeEnum.findEnumByType(transition.getString("componentType"));
+            if (transitionArr != null) {
+                for (int i = 0; i < transitionArr.size(); i++) {
+                    JSONObject transition = transitionArr.getJSONObject(i);
+                    TaskComponentTypeEnum transitionComponentType = TaskComponentTypeEnum.findEnumByType(
+                            transition.getString("componentType"));
 
-                //Create a transformation node instance
-                TaskInstance transitionTaskInstance = createTask(processInstance, transition, now, rabbitmq);
-                LogUtils.Params transitionLogParams = new LogUtils.Params(rabbitmq, transitionTaskInstance.getProcessInstanceId(), transitionTaskInstance.getId());
-
-                try {
+                    activeTaskInstance = createTask(processInstance, transition, now, rabbitmq);
+                    activeLogParams = new LogUtils.Params(rabbitmq, activeTaskInstance.getProcessInstanceId(), activeTaskInstance.getId());
                     data = TransitionFactory.getTransition(transitionComponentType.getCode())
-                            .transition(spark, data, transition, transitionLogParams);
-                } catch (Exception e) {
-                    //Update cleaning node instance execution failed
-                    updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-                    updateTask(transitionTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-                    spark.stop();
-                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
-                    LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.failed"));
-                    LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
-                    spark.stop();
-                    return;
+                            .transition(spark, data, transition, activeLogParams);
+                    finishTaskSuccessfully(activeTaskInstance, activeLogParams, rabbitmq);
+                    activeTaskInstance = null;
+                    activeLogParams = null;
                 }
-                //Update input node instance executed successfully
-                updateTask(transitionTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-                LogUtils.writeLog(transitionLogParams, MessageUtils.messageEn("etl.task.success"));
-                LogUtils.writeLog(transitionLogParams, "FINALIZE_SESSION");
             }
-        }
-        //Write configuration
-        JSONObject writer = taskParams.getJSONObject("writer");
-        //Output type
-        TaskComponentTypeEnum writerComponentType = TaskComponentTypeEnum.findEnumByType(writer.getString("componentType"));
 
+            JSONObject writer = taskParams.getJSONObject("writer");
+            TaskComponentTypeEnum writerComponentType = TaskComponentTypeEnum.findEnumByType(writer.getString("componentType"));
+            activeTaskInstance = createTask(processInstance, writer, now, rabbitmq);
+            activeLogParams = new LogUtils.Params(rabbitmq, activeTaskInstance.getProcessInstanceId(), activeTaskInstance.getId());
 
-        //Create an output node instance
-        TaskInstance writerTaskInstance = createTask(processInstance, writer, now, rabbitmq);
+            Boolean writeSucceeded = WriterFactory.getWriter(writerComponentType.getCode())
+                    .writer(config, data, writer, activeLogParams);
+            if (!Boolean.TRUE.equals(writeSucceeded)) {
+                throw new IllegalStateException("Database output returned a failed result");
+            }
 
-        LogUtils.Params writerLogParams = new LogUtils.Params(rabbitmq, writerTaskInstance.getProcessInstanceId(), writerTaskInstance.getId());
-
-        Boolean flag = false;
-        try {
-            flag = WriterFactory.getWriter(writerComponentType.getCode())
-                    .writer(config, data, writer, writerLogParams);
-        } catch (Exception e) {
-            log.error(MessageUtils.message("etl.task.failed"), e);
-            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.failure.reason", e.getMessage()));
-        }
-
-        if (flag) {
-            updateTask(writerTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
-            updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
-            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.success"));
-            LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
-            //Determine whether there is data cache
+            // Store the incremental cursor only after the target write succeeds.
             if (reader.containsKey("cacheDataMap")) {
                 Map<String, String> cacheDataMap = (Map<String, String>) reader.get("cacheDataMap");
-                cacheDataMap.forEach((key, value) -> {
-                    RedisUtils.set(key, value, -1);
-                });
+                cacheDataMap.forEach((key, value) -> RedisUtils.set(key, value, -1));
             }
-        } else {
-            updateTask(writerTaskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
-            updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
-            LogUtils.writeLog(writerLogParams, MessageUtils.messageEn("etl.task.failed"));
-            LogUtils.writeLog(writerLogParams, "FINALIZE_SESSION");
+
+            updateTask(activeTaskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
+            updateProcess(processInstance, WorkflowExecutionStatus.SUCCESS, rabbitmq);
+            LogUtils.writeLog(activeLogParams, MessageUtils.messageEn("etl.task.success"));
+            LogUtils.writeLog(activeLogParams, "FINALIZE_SESSION");
+            activeTaskInstance = null;
+            activeLogParams = null;
+        } catch (Exception e) {
+            log.error("ETL task failed", e);
+            RuntimeException callbackFailure = notifyFailure(
+                    processInstance, activeTaskInstance, activeLogParams, rabbitmq, e);
+            RuntimeException executionFailure = e instanceof RuntimeException
+                    ? (RuntimeException) e
+                    : new IllegalStateException("ETL task failed", e);
+            if (callbackFailure != null) {
+                executionFailure.addSuppressed(callbackFailure);
+            }
+            // A failed ETL must also fail the Spark/DS process; returning here would produce exit code 0.
+            throw executionFailure;
+        } finally {
+            if (spark != null) {
+                try {
+                    spark.stop();
+                } catch (Exception e) {
+                    log.warn("Failed to stop Spark session", e);
+                }
+            }
+            // close() is null-safe and also cleans up a partially initialized client.
+            RedisUtils.close();
+            RabbitmqUtils.close();
         }
-        spark.stop();
+    }
+
+    private static void finishTaskSuccessfully(TaskInstance taskInstance, LogUtils.Params logParams,
+                                               JSONObject rabbitmq) {
+        updateTask(taskInstance, TaskExecutionStatus.SUCCESS, rabbitmq);
+        LogUtils.writeLog(logParams, MessageUtils.messageEn("etl.task.success"));
+        LogUtils.writeLog(logParams, "FINALIZE_SESSION");
+    }
+
+    private static RuntimeException notifyFailure(ProcessInstance processInstance, TaskInstance taskInstance,
+                                                  LogUtils.Params logParams, JSONObject rabbitmq, Exception cause) {
+        RuntimeException callbackFailure = null;
+        if (processInstance != null && rabbitmq != null) {
+            try {
+                updateProcess(processInstance, WorkflowExecutionStatus.FAILURE, rabbitmq);
+            } catch (RuntimeException e) {
+                callbackFailure = e;
+                log.error("Failed to publish ETL process failure status", e);
+            }
+        }
+        if (taskInstance != null && rabbitmq != null) {
+            try {
+                updateTask(taskInstance, TaskExecutionStatus.FAILURE, rabbitmq);
+            } catch (RuntimeException e) {
+                callbackFailure = mergeCallbackFailure(callbackFailure, e);
+                log.error("Failed to publish ETL node failure status", e);
+            }
+        }
+        if (logParams != null) {
+            String reason = cause.getMessage() == null ? cause.toString() : cause.getMessage();
+            callbackFailure = writeFailureLog(logParams,
+                    MessageUtils.messageEn("etl.failure.reason", reason), callbackFailure);
+            callbackFailure = writeFailureLog(logParams,
+                    MessageUtils.messageEn("etl.task.failed"), callbackFailure);
+            callbackFailure = writeFailureLog(logParams, "FINALIZE_SESSION", callbackFailure);
+        }
+        return callbackFailure;
+    }
+
+    private static RuntimeException writeFailureLog(LogUtils.Params logParams, String message,
+                                                    RuntimeException callbackFailure) {
+        try {
+            LogUtils.writeLog(logParams, message);
+        } catch (RuntimeException e) {
+            log.error("Failed to publish ETL failure log", e);
+            return mergeCallbackFailure(callbackFailure, e);
+        }
+        return callbackFailure;
+    }
+
+    private static RuntimeException mergeCallbackFailure(RuntimeException existing, RuntimeException next) {
+        if (existing == null) {
+            return next;
+        }
+        existing.addSuppressed(next);
+        return existing;
     }
 
     public static ProcessInstance createProcess(JSONObject taskInfo, Date now, JSONObject rabbitmq) {

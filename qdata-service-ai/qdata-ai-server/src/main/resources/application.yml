@@ -18,7 +18,7 @@ qdata:
   # Name
   name: qData
   # Version
-  version: 1.6.0
+  version: 1.6.1
   # Copyright year
   copyrightYear: 2024
   # File path example (Windows configuration D:/qdata/uploadPath, Linux configuration /home/qdata/uploadPath) -- needs to be consistent with the file module

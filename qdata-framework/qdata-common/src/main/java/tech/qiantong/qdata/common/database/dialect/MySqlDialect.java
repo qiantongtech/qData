@@ -426,7 +426,7 @@ public class MySqlDialect extends AbstractDbDialect {
     public String getFlinkSQL(DbQueryProperty property, String flinkTableName, String tableName, String tableFieldName) {
         String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
                 "WITH ( 'connector' = 'jdbc'," +
-                "'url' = 'jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai'," +
+                "'url' = 'jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai'," +
                 "'table-name' = '${tableName}'," +
                 "'username' = '${username}'," +
                 "'password' = '${password}')";
@@ -472,7 +472,7 @@ public class MySqlDialect extends AbstractDbDialect {
     public String getFlinkSinkSQL(DbQueryProperty property, JSONObject config, String flinkTableName, String tableName, String tableFieldName) {
         String sql = "CREATE TABLE ${flinkTableName} (${tableFieldName}) " +
                 "WITH ( 'connector' = 'jdbc'," +
-                "'url' = 'jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai'," +
+                "'url' = 'jdbc:mysql://${host}:${port}/${dbName}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai'," +
                 "'table-name' = '${tableName}'," +
                 "'username' = '${username}'," +
                 "'password' = '${password}'," +

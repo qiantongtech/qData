@@ -36,3 +36,21 @@ SET `description` = '通过正则表达式匹配符合特定规则的文本，�
     `example` = '使用 (\d{4})/(\d{2})/(\d{2}) 匹配 2026/08/18，替换为 $1-$2-$3 后得到 2026-08-18',
     `use_case` = '批量统一文本中的日期格式，提高数据处理效率'
 WHERE `id` = 11;
+
+-- 插入数据集成执行状态字典
+INSERT INTO `system_dict_type`
+(`dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES ('数据集成执行状态', 'dpp_task_current_status', '0', 'admin', '2026-07-13 11:39:19.000', 'admin', '2026-07-13 11:33:29.000', NULL);
+
+INSERT INTO `system_dict_data`
+(`dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (1, '运行中', 'running', 'dpp_task_current_status', NULL, 'default', 'N', '0', 'admin', '2026-07-13 11:49:43.000', 'admin', '2026-07-13 11:52:50.000', NULL);
+INSERT INTO `system_dict_data`
+(`dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (2, '成功', 'success', 'dpp_task_current_status', NULL, 'default', 'N', '0', 'admin', '2026-07-13 11:49:43.000', 'admin', '2026-07-13 11:52:50.000', NULL);
+INSERT INTO `system_dict_data`
+(`dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (3, '失败', 'failed', 'dpp_task_current_status', NULL, 'default', 'N', '0', 'admin', '2026-07-13 11:49:43.000', 'admin', '2026-07-13 11:52:50.000', NULL);
+INSERT INTO `system_dict_data`
+(`dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES (4, '空闲', 'idle', 'dpp_task_current_status', NULL, 'default', 'N', '0', 'admin', '2026-07-13 11:49:43.000', 'admin', '2026-07-13 11:52:50.000', NULL);

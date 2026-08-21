@@ -24,10 +24,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import tech.qiantong.qdata.common.utils.spring.SpringUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
@@ -182,17 +181,45 @@ public class MessageUtils
      */
     private static Locale getCurrentLocaleOrEnglishDefault()
     {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Object attributes = RequestContextHolder.getRequestAttributes();
         if (attributes == null)
         {
             return Locale.US;
         }
 
-        HttpServletRequest request = attributes.getRequest();
-        if (request == null || StringUtils.isEmpty(request.getHeader("Accept-Language")))
+        if (StringUtils.isEmpty(getRequestHeader(attributes, "Accept-Language")))
         {
             return Locale.US;
         }
         return LocaleContextHolder.getLocale();
+    }
+
+    /**
+     * Read a request header without linking against javax.servlet or jakarta.servlet.
+     *
+     * Spring Framework 5 and 6 expose ServletRequestAttributes#getRequest with
+     * different return types. Invoking it reflectively keeps this shared module
+     * binary-compatible with both servlet namespaces.
+     */
+    private static String getRequestHeader(Object attributes, String headerName)
+    {
+        try
+        {
+            Method getRequest = attributes.getClass().getMethod("getRequest");
+            Object request = getRequest.invoke(attributes);
+            if (request == null)
+            {
+                return null;
+            }
+
+            Method getHeader = request.getClass().getMethod("getHeader", String.class);
+            Object headerValue = getHeader.invoke(request, headerName);
+            return headerValue instanceof String ? (String) headerValue : null;
+        }
+        catch (ReflectiveOperationException | SecurityException e)
+        {
+            log.trace("Unable to read request header '{}'; using the English locale fallback", headerName, e);
+            return null;
+        }
     }
 }

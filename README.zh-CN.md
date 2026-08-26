@@ -29,7 +29,7 @@
 
 ## ✅ 功能清单
 
-> 👉 qData 数据中台采用模块化设计，当前开源版聚焦数据集成、数据开发、数据建模、元数据、数据质量、数据资产、数据服务和智能问数等核心能力。更多功能可参考：[qData 功能清单总揽](https://community.qdata.tech/business/pro/features.html)
+> 👉 qData 数据中台采用模块化设计，当前开源版聚焦数据集成、数据开发、数据建模、元数据、数据质量、数据资产、数据服务和智能问数等核心能力。更多功能可参考：[qData 功能清单总览](https://community.qdata.tech/business/pro/features.html)
 
 | 模块 | 描述 |
 | --- | --- |

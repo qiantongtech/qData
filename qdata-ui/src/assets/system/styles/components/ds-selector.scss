@@ -1,0 +1,324 @@
+// ==========================================
+// 数据选择器 (ds-selector) 样式
+// ==========================================
+$font-family-base: PingFangSC;
+$font-family-medium: PingFang SC;
+
+$color-text-main: #333333;
+$color-text-title: #000000;
+$color-text-secondary: rgba(0, 0, 0, 0.65);
+$color-text-muted: rgba(0, 0, 0, 0.45);
+$color-primary: rgba(51, 103, 252, 1);
+$color-primary-light: rgba(51, 103, 252, 0.06);
+$color-primary-alt: rgba(38, 102, 251, 1);
+
+$border-light: rgba(232, 232, 232, 0.45);
+$border-base: rgba(214, 218, 225, 0.45);
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin font-style($size, $color, $weight: 400, $lh: normal) {
+  font-family: if($weight == 500, $font-family-medium, $font-family-base);
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  line-height: $lh;
+}
+
+.ds-selector {
+  display: flex;
+  width: 100%;
+  height: 75vh;
+  margin: 0 auto;
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid $border-light;
+
+  &__sidebar {
+    width: 308px;
+    height: 100%; /* 侧边栏高度撑满 */
+    padding: 0px 0px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    box-sizing: border-box;
+
+    /* 内部树组件深度样式适配 */
+    :deep(.DeptTree-container) {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    :deep(.left-pane) {
+      width: 100% !important;
+      height: 100% !important;
+      background-color: #fff !important;
+    }
+
+    :deep(.left-tree) {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    :deep(.resize-bar) {
+      display: none;
+    }
+
+    :deep(.el-tree) {
+      flex: 1;
+      overflow-y: auto;
+      background-color: transparent;
+    }
+  }
+
+  &__main {
+    position: relative;
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid $border-base;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* 统一左右两侧滚动条样式 */
+.ds-selector__sidebar,
+.ds-selector__main,
+.ds-selector__sidebar .el-tree {  /* 增加对树组件滚动条的统一支持 */
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 78px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: transparent;
+  }
+}
+
+.ds-search {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+
+  &__input {
+    width: 300px;
+
+    :deep(.el-input__wrapper) {
+      height: 32px;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(214, 218, 225, 1) inset;
+    }
+
+    :deep(.el-input__inner) {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+}
+
+.tree-label-with-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 8px;
+
+  .label-text {
+    flex: 1;
+    @include text-ellipsis;
+  }
+
+  .count-text {
+    margin-left: 8px;
+    color: #999;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}
+
+.category-group {
+  margin-bottom: 24px;
+
+  &.is-first {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 32px; 
+    margin: 0 320px 20px 0; 
+    @include font-style(16px, $color-text-main, 500, 22px);
+  }
+
+  &__title {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.ds-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-rows: 20px 37px;
+  column-gap: 17px;
+  row-gap: 4px;
+  width: 100%;
+  height: 86px;
+  padding: 13px 17px 12px;
+  overflow: hidden;
+  border: 1px solid $border-base;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 2px;
+    border: 1px solid rgba(214, 218, 225, 0.45);
+
+    .ds-card__title {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .ds-card__desc {
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  &:hover:not(.is-disabled) {
+    border-color: $color-primary-alt;
+    box-shadow: 0 2px 8px rgba(38, 102, 251, 0.15);
+  }
+
+  &--selected {
+    border: 1px solid $border-light;
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(38, 102, 251, 0.05) 100%
+    );
+    border-color: $color-primary-alt;
+  }
+
+  &__check {
+    position: absolute;
+    top: 12px;
+    right: 11px;
+    width: 14px;
+    height: 14px;
+    border: 4px solid $color-primary-alt;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+
+    :deep(.el-icon) {
+      display: none;
+    }
+  }
+
+  &__header {
+    display: contents;
+  }
+
+  &__icon {
+    grid-row: 1 / span 2;
+    align-self: center;
+    width: 36px;
+    height: 36px;
+    font-size: 32px;
+    flex-shrink: 0;
+    color: $color-primary;
+    @include flex-center;
+
+    &.is-disabled {
+      color: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__title {
+    grid-column: 2;
+    width: 100%;
+    height: 20px;
+    @include text-ellipsis;
+    @include font-style(14px, $color-text-title, 400, 20px);
+  }
+
+  &__desc {
+    grid-column: 2;
+    width: 100%;
+    height: 37px;
+    @include font-style(12px, $color-text-secondary, 400, 18px);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+  }
+}
+
+.empty-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .emptyBg {
+    text-align: center;
+    img {
+      width: 130px;
+      height: 104px;
+      margin-bottom: 8px;
+    }
+    p {
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 14px;
+      line-height: 22px;
+      margin: 0;
+    }
+  }
+}

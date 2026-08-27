@@ -125,7 +125,8 @@ export default {
     data: 'Data',
     success: 'Success',
     sortOrder: 'Sort Order',
-    superAdmin: 'Super Admin'
+    superAdmin: 'Super Admin',
+    noSpaces: 'Cannot be all spaces'
   },
   graph: {
     inputComponent: 'Input Component',

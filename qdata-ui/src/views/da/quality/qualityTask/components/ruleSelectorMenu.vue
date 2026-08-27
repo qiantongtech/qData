@@ -17,80 +17,108 @@
 -->
 
 <template>
-  <!-- Inspection rule info - Step 1: cleansing rule cards  -->
-  <el-row>
-    <el-col :span="5">
+  <div class="ds-selector" v-loading="loading">
+    <div class="ds-selector__sidebar">
       <DeptTree
+        preset="simple"
         :deptOptions="processedData"
         :leftWidth="leftWidth"
-        :placeholder="td('da.qualityTask.ruleBase.ruleTypePlaceholder')"
+        :placeholder="td('da.qualityTask.ruleBase.ruleTypePlaceholder', 'Please enter rule type')"
         @node-click="handleNodeClick"
         ref="DeptTreeRef"
-        :default-expand="true"
-      />
-    </el-col>
-    <div class="divider"></div>
-    <el-col :span="18" class="content-col" v-loading="loading">
-      <div class="content" ref="contentWrapper">
-        <el-row>
-          <div class="cards-wrapper">
-            <template v-if="attAuditRuleList.length">
-              <div
-                v-for="data in attAuditRuleList"
-                :key="data.id"
-                class="card-item"
-                :class="{ selected: selectedCard?.id === data.id }"
-                @click="cardClick(data)"
-              >
-                <el-card
-                  class="box-card boxCard"
-                  shadow="never"
-                  :body-style="{ padding: '15px' }"
-                >
-                  <div
-                    class="card-icon"
-                    :class="{ 'is-disabled': data.validFlag == false }"
-                  >
-                    <el-icon>
+        :showFilter="false"
+      >
+        <template #label="{ data }">
+          <span class="tree-label-with-count">
+            <span class="label-text">{{ data.name }}</span>
+            <span class="count-text" v-if="data.id === ''">({{ allRulesCount }})</span>
+            <span class="count-text" v-else>({{ getRulesCountByDimension(data.id) }})</span>
+          </span>
+        </template>
+      </DeptTree>
+    </div>
+    <div class="ds-selector__main" ref="contentWrapper">
+      <div class="ds-search">
+        <el-input
+          v-model="searchKeyword"
+          :placeholder="td('da.qualityTask.ruleBase.search', '请输入你要搜索的内容')"
+          clearable
+          class="ds-search__input"
+          :prefix-icon="Search"
+        />
+      </div>
+
+      <div v-if="visibleCategories.length > 0">
+        <div
+          v-for="(cat, index) in visibleCategories"
+          :key="cat.id"
+          class="category-group"
+          :class="{ 'is-first': index === 0 }"
+        >
+          <div :id="`category-${cat.id}`" class="category-group__header">
+            <span class="category-group__title">{{ cat.name }}</span>
+          </div>
+          <div class="ds-grid">
+            <div
+              v-for="data in getRulesByDimension(cat.id)"
+              :key="data.id"
+              class="ds-card"
+              :class="{ 'ds-card--selected': selectedCard?.id === data.id, 'is-disabled': data.validFlag == false }"
+              @click="cardClick(data)"
+            >
+              <div class="ds-card__check" v-if="selectedCard?.id === data.id">
+                <el-icon><CircleCheckFilled /></el-icon>
+              </div>
+              <div class="ds-card__header">
+                <div class="ds-card__icon" :class="{ 'is-disabled': data.validFlag == false }">
+                  <template v-if="data.validFlag == false">
+                    <div v-if="data.iconPath" class="rule-icon-mask" :style="{ '--icon-url': `url('${getIconByName(data.iconPath)}')` }"></div>
+                    <div v-else-if="getIcon(data.id)" class="rule-icon-mask" :style="{ '--icon-url': `url('${getIcon(data.id)}')` }"></div>
+                    <el-icon v-else class="rule-icon-fallback">
                       <Document />
                     </el-icon>
-                  </div>
-                  <div class="card-title ellipsis-8">{{ data.name }}</div>
-                  <div class="card-desc ellipsis-multi">{{ data.useCase }}</div>
-                </el-card>
+                  </template>
+                  <template v-else>
+                    <img v-if="data.iconPath" :src="getIconByName(data.iconPath)" class="rule-icon" />
+                    <img v-else-if="getIcon(data.id)" :src="getIcon(data.id)" class="rule-icon" />
+                    <el-icon v-else>
+                      <Document />
+                    </el-icon>
+                  </template>
+                </div>
+                <div class="ds-card__title" :title="data.name">{{ data.name }}</div>
               </div>
-            </template>
-
-            <template v-else>
-              <div class="empty-wrapper">{{td('common.noData')}}</div>
-            </template>
+              <div class="ds-card__desc" :title="data.useCase">{{ data.useCase }}</div>
+            </div>
           </div>
-        </el-row>
+        </div>
       </div>
-    </el-col>
-  </el-row>
+      
+      <div v-if="visibleCategories.length === 0" class="empty-wrapper">
+        <div class="emptyBg">
+          <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
+          <p>{{ td('common.noData', 'No Data') }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang";
-const { td } = useDefaultLang();
-import {
-  Document,
-  Menu,
-  DataLine,
-  Files,
-  Monitor,
-} from "@element-plus/icons-vue";
+import { Document, CircleCheckFilled, Search } from "@element-plus/icons-vue";
 import { listAttAuditRule } from "@/api/att/rule/auditRule.js";
-import DeptTree from "@/components/DeptTree/tree.vue";
+import DeptTree from "@/components/DeptTree";
+import { ref, computed, onMounted, getCurrentInstance } from "vue";
+
+const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
-const { att_rule_audit_q_dimension } = proxy.useDict(
-  "att_rule_audit_q_dimension"
-);
+const { att_rule_audit_q_dimension } = proxy.useDict("att_rule_audit_q_dimension");
+
 const loading = ref(false);
 const contentWrapper = ref(null);
 const selectedCard = ref(null);
-const leftWidth = ref(250); // Initial left width
+const leftWidth = ref(308);
 const emit = defineEmits(["card-click"]);
 const props = defineProps({
   type: {
@@ -98,17 +126,86 @@ const props = defineProps({
     default: "",
   },
 });
-let queryParams = ref({
-  pageNum: 1,
-  pageSize: 999,
-  qualityDim: "",
-  // validFlag: '1'
+
+const activeCategory = ref("");
+const allRules = ref([]);
+const searchKeyword = ref("");
+
+// 静态资源与映射配置 (Static Resources & Mapping)
+const iconModules = import.meta.glob("@/assets/images/da/qualityTask/rule/**/*.svg", { eager: true, import: "default" });
+
+const ruleIconMap = [
+  { id: "107", icon: "character-type-validation.svg" },
+  { id: "108", icon: "length-range-validation.svg" },
+  { id: "109", icon: "datetime-format-validation.svg" },
+  { id: "110", icon: "decimal-precision-validation.svg" },
+  { id: "111", icon: "enum-validation.svg" },
+  { id: "112", icon: "master-data-ref-validation.svg" },
+  { id: "113", icon: "logic-model-consistency-validation.svg" },
+  { id: "114", icon: "field-meta-info-completeness-validation.svg" },
+  { id: "115", icon: "time-sequence-logic-validation.svg" },
+  { id: "116", icon: "numeric-logic-relation-validation.svg" },
+  { id: "117", icon: "status-dependency-validation.svg" },
+  { id: "118", icon: "mutually-exclusive-field-conflict.svg" },
+  { id: "119", icon: "sensitive-field-desensitization-validation.svg" },
+  { id: "203", icon: "required-not-null-validation.svg" },
+  { id: "204", icon: "invalid-placeholder-identification.svg" },
+  { id: "205", icon: "group-field-completeness.svg" },
+  { id: "206", icon: "whole-record-missing-check-validation.svg" },
+  { id: "207", icon: "conditional-field-completeness-validation.svg" },
+  { id: "306", icon: "numeric-range-validation.svg" },
+  { id: "307", icon: "numeric-logic-relation-validation.svg" },
+  { id: "308", icon: "numeric-outlier-identification.svg" },
+  { id: "309", icon: "dirty-data-identification.svg" },
+  { id: "310", icon: "single-field-uniqueness-validation.svg" },
+  { id: "311", icon: "composite-uniqueness-validation.svg" },
+  { id: "403", icon: "cross-table-consistency-validation.svg" },
+  { id: "404", icon: "foreign-key-validity-validation.svg" },
+  { id: "405", icon: "status-consistency-validation.svg" },
+  { id: "504", icon: "time-order-validation.svg" }
+];
+
+/**
+ * Get the icon for the corresponding rule
+ */
+const getIcon = (id) => {
+  const rule = ruleIconMap.find(item => String(item.id) === String(id));
+  if (!rule || !rule.icon) return null;
+  const path = Object.keys(iconModules).find(p => p.endsWith(rule.icon));
+  return path ? iconModules[path] : null;
+};
+
+/**
+ * Get the icon by filename
+ */
+const getIconByName = (filename) => {
+  if (!filename) return null;
+  const rule = ruleIconMap.find(item => item.icon === filename);
+  const mappedName = rule ? rule.icon : filename;
+  const path = Object.keys(iconModules).find(p => p.endsWith(mappedName));
+  return path ? iconModules[path] : null;
+};
+
+/**
+ * Filter rules by keyword
+ */
+const filteredRules = computed(() => {
+  const keyword = searchKeyword.value?.toLowerCase() || '';
+  if (!keyword) return allRules.value;
+  return allRules.value.filter(rule => 
+    rule.name?.toLowerCase().includes(keyword) || 
+    rule.useCase?.toLowerCase().includes(keyword)
+  );
 });
-const processedData = ref([]);
-processedData.value = computed(() => {
+
+/**
+ * 处理左侧树的分类数据
+ */
+const processedData = computed(() => {
   return [
     {
-      name: td('da.qualityTask.ruleBase.qualityDimension'),
+      id: "",
+      name: td('da.qualityTask.ruleBase.qualityDimension', 'Quality Dimension'),
       children: Array.isArray(att_rule_audit_q_dimension.value)
         ? att_rule_audit_q_dimension.value.map((item) => ({
             name: item.label,
@@ -118,20 +215,72 @@ processedData.value = computed(() => {
     },
   ];
 });
-function handleNodeClick(data) {
-  queryParams.value.qualityDim = data.id;
-  queryParams.value.pageNum = 1;
-  fetchRulesByDimension();
+
+/**
+ * Total number of all rules
+ */
+const allRulesCount = computed(() => allRules.value.length);
+
+/**
+ * Get rule count by dimension
+ */
+function getRulesCountByDimension(dimId) {
+  if (!dimId) return allRulesCount.value;
+  return allRules.value.filter((rule) => rule.qualityDim === dimId).length;
 }
 
-let attAuditRuleList = ref([]);
+/**
+ * Get filtered rule count by dimension
+ */
+function getFilteredRulesCountByDimension(dimId) {
+  if (!dimId) return filteredRules.value.length;
+  return filteredRules.value.filter((rule) => rule.qualityDim === dimId).length;
+}
 
+/**
+ * Get rule list by dimension
+ */
+function getRulesByDimension(dimId) {
+  if (!dimId) return filteredRules.value;
+  return filteredRules.value.filter((rule) => rule.qualityDim === dimId);
+}
+
+/**
+ * Actually visible category groups on the right
+ */
+const visibleCategories = computed(() => {
+  const allDims = Array.isArray(att_rule_audit_q_dimension.value)
+    ? att_rule_audit_q_dimension.value.map(item => ({ id: item.value, name: item.label }))
+    : [];
+    
+  if (activeCategory.value === "") {
+    return allDims.filter(cat => getFilteredRulesCountByDimension(cat.id) > 0);
+  } else {
+    return allDims.filter(cat => cat.id === activeCategory.value && getFilteredRulesCountByDimension(cat.id) > 0);
+  }
+});
+
+/**
+ * Handle left tree node click event
+ */
+function handleNodeClick(data) {
+  const raw = data && data.payload ? data.payload : data;
+  const targetId = raw?.id ?? "";
+  activeCategory.value = targetId;
+  
+  if (contentWrapper.value) {
+    contentWrapper.value.scrollTop = 0;
+  }
+}
+
+/**
+ * Fetch all rule data and process validity
+ */
 async function fetchRulesByDimension() {
   loading.value = true;
-  const res = await listAttAuditRule(queryParams.value);
+  const res = await listAttAuditRule({ pageNum: 1, pageSize: 999 });
   const list = res.data.rows || [];
-  console.log("🚀 ~ fetchRulesByDimension ~ list:", list);
-
+  
   if (props.type == "3") {
     const disabledCodes = [
       "TIME_ORDER_VALIDATION",
@@ -143,11 +292,11 @@ async function fetchRulesByDimension() {
       }
       return item;
     });
-    attAuditRuleList.value = processedList.sort((a, b) => {
+    allRules.value = processedList.sort((a, b) => {
       return (b.validFlag === true) - (a.validFlag === true);
     });
   } else {
-    attAuditRuleList.value = list.sort((a, b) => {
+    allRules.value = list.sort((a, b) => {
       return (b.validFlag === true) - (a.validFlag === true);
     });
   }
@@ -155,9 +304,12 @@ async function fetchRulesByDimension() {
   loading.value = false;
 }
 
+/**
+ * Handle rule card click event
+ */
 function cardClick(data) {
   if (data.validFlag == false) {
-    return ElMessage.info(td('da.qualityTask.ruleBase.developing'));
+    return proxy.$message.info(td('da.qualityTask.ruleBase.developing', 'Under Development'));
   }
   selectedCard.value = data;
   emit("card-click", data);
@@ -168,155 +320,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped>
-.main-layout {
-  height: 75vh;
-  overflow: hidden;
-}
-
-.left-col {
-  padding-right: 0;
-}
-
-.divider {
-  width: 1px;
-  height: 700px;
-  background-color: #dcdfe6;
-}
-
-.content-col {
-  width: 100%;
-  overflow: hidden;
-  padding-left: 0;
-}
-
-.content {
-  overflow-y: auto;
-  position: relative;
-}
-
-/* Right side content */
-.content-col {
-  height: 75vh;
-  overflow: hidden;
-}
-
-.content {
-  height: 75vh;
-  overflow-y: auto;
-  padding: 20px 10px;
-}
-
-.cards-wrapper {
-  padding-left: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
-}
-
-.card-item {
-  width: 180px;
-  box-sizing: border-box;
-  transition: transform 0.2s;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-
-  &.selected {
-    transform: translateY(-2px);
-    border: 2px solid #409eff;
-    box-shadow: 0 0 10px rgba(64, 158, 255, 0.3);
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-}
-
-.boxCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 150px;
-  height: 150px;
-  width: 100%;
-  padding: 10px;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.15);
-
-  &:hover {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .card-icon {
-    font-size: 45px;
-    color: #409eff;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .card-title {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    text-align: center;
-    width: 100%;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: #666;
-    text-align: center;
-    padding: 0 5px;
-    word-break: break-word;
-  }
-}
-
-.dh {
-  padding: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.menu-icon {
-  font-size: 20px;
-  vertical-align: middle;
-}
-
-::v-deep .el-card__body {
-  padding: 0 !important;
-}
-
-.empty-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  /* Text style */
-  font-size: 16px;
-  color: #999;
-  user-select: none;
-}
-
-.card-icon {
-  cursor: pointer;
-  color: #409eff;
-}
-
-.card-icon.is-disabled {
-  color: #ccc;
-  cursor: not-allowed;
-}
+<style lang="scss" scoped>
+@import "@/assets/system/styles/components/option-card.scss";
+@import "@/assets/system/styles/components/ds-selector.scss";
 </style>

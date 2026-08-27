@@ -1,0 +1,195 @@
+.option-card-group {
+  --option-card-width: max(210px, calc((100% - 34px) / 3));
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 17px;
+  width: 100%;
+}
+
+.option-card.el-radio {
+  flex: 0 0 var(--option-card-width);
+  width: var(--option-card-width);
+  margin-right: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 13px 30px 13px 15px;
+  white-space: normal;
+  transition: border-color 0.2s, box-shadow 0.2s, background-image 0.2s;
+  height: 86px;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  border: 1px solid #D6DAE1;
+
+  &:hover:not(.is-disabled) {
+    border-color: #2666fb;
+    box-shadow: 0 2px 8px rgba(38, 102, 251, 0.15);
+  }
+
+  &.is-checked {
+    border-color: #2666fb;
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(38, 102, 251, 0.05) 100%
+    );
+  }
+
+  &.is-disabled {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 2px;
+    border: 1px solid rgba(214, 218, 225, 0.45);
+    background-image: none;
+  }
+
+  /* 隐藏原生的 el-radio 圆圈 */
+  .el-radio__input {
+    display: none;
+  }
+
+  /* 选中的对勾样式参考 DatasourceTypeSelector.vue */
+  .option-card__check {
+    position: absolute;
+    top: 12px;
+    right: 11px;
+    width: 14px;
+    height: 14px;
+    border: 4px solid #2666fb;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+    box-sizing: border-box;
+
+    .el-icon {
+      display: none;
+    }
+  }
+
+  .el-radio__label {
+    display: flex;
+    flex: 1;
+    align-self: stretch;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    padding-left: 0;
+    color: var(--el-text-color-primary);
+  }
+}
+
+.option-card__icon {
+  flex: 0 0 auto;
+  width: 36px;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.option-card .tag-label {
+  padding: 0 4px;
+  height: 20px;
+  line-height: 18px;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.option-card__content,
+.option-card__heading,
+.option-card__description {
+  display: block;
+}
+
+.option-card__content {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+}
+
+.option-card__heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 4px;
+  width: 100%;
+
+  .task-cat-ellipsis {
+    min-width: 60px;
+  }
+}
+
+.option-card__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 20px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--color-third-party-Langfuse);
+  line-height: 20px;
+  text-align: left;
+  font-style: normal;
+  margin-right: 8px;
+  max-width: calc(100% - 60px);
+}
+
+.option-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  width: 108%;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(0,0,0,0.65);
+  line-height: 18px;
+  text-align: left;
+  font-style: normal;
+}
+
+.option-card.el-radio.is-disabled {
+  .option-card__icon,
+  .option-card__content {
+    opacity: 0.55;
+  }
+}
+
+.scheduler-section-title {
+  margin-top: 4px;
+  padding-top: 16px;
+}
+
+/* 规则选择器禁用的图标遮罩样式 */
+.ds-card__icon.is-disabled {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.rule-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rule-icon-mask {
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  mask-image: var(--icon-url);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.rule-icon-fallback {
+  font-size: 32px;
+}

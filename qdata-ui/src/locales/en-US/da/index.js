@@ -258,6 +258,7 @@ export default {
     // RuleBase component
     ruleBase: {
       ruleTypePlaceholder: 'Please enter rule type',
+      search: 'Please enter what you want to search',
       qualityDimension: 'Quality Dimension',
       developing: 'Under Development'
     },

@@ -327,6 +327,7 @@ export default {
     // RuleBase component
     ruleBase: {
       ruleTypePlaceholder: '请输入规则类型',
+      search: '请输入你要搜索的内容',
       qualityDimension: '质量维度',
       developing: '开发中'
     },

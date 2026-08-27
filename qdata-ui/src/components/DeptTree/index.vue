@@ -97,7 +97,7 @@
                 :disabled="node.label?.length < 10"
               >
                 <span class="treelabel" @click="getNode(node)">
-                  {{ node.label }}
+                  <slot name="label" :node="node" :data="data">{{ node.label }}</slot>
                 </span>
               </el-tooltip>
 

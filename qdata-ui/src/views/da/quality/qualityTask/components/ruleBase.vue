@@ -21,8 +21,7 @@
   <el-dialog
     v-model="dialogVisible"
     draggable
-    class="medium-dialog"
-    :class="{ 'max-dialogs-status0': dialogStatus === 0 }"
+    width="1200px"
     :title="dialogTitle"
     destroy-on-close
     :append-to="$refs['app-container']"
@@ -36,61 +35,62 @@
       />
     </div>
     <div
-      class="content"
-      style="max-height: 650px; overflow-y: auto; padding-right: 10px"
+      class="content form-content"
       v-show="dialogStatus == 1 || dialogStatus == 2"
       :disabled="dialogStatus == 2"
     >
-      <el-form ref="formRef" :model="form" :label-position="labelPosition">
-        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.basicInfo') }}</div>
-        <el-row :gutter="20">
+      <el-form ref="formRef" :model="form" label-width="130px">
+        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.basicInfo', 'Basic Info') }}</div>
+        <el-row>
           <el-col :span="8">
             <el-form-item
-              :label="td('da.qualityTask.ruleSelectorMenu.evaluationName')"
+              :label="td('da.qualityTask.ruleSelectorMenu.evaluationName', 'Evaluation Name')"
               prop="name"
               v-if="type != 3"
               :rules="[
-                { required: true, message: td('da.qualityTask.ruleSelectorMenu.evaluationNameRequired'), trigger: 'blur' },
+                { required: true, message: td('da.qualityTask.ruleSelectorMenu.evaluationNameRequired', 'Evaluation Name Required'), trigger: 'blur' },
+                { pattern: /^(?!\s+$).*$/, message: td('common.texts.noSpaces', 'Cannot be all spaces'), trigger: 'blur' }
               ]"
-             :label-position="labelPosition">
+            >
               <template v-if="!falg">
-                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationNamePlaceholder')" />
+                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationNamePlaceholder', 'Evaluation Name Placeholder')" maxlength="50" />
               </template>
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
             <el-form-item
-              :label="td('da.qualityTask.ruleSelectorMenu.inspectionName')"
+              :label="td('da.qualityTask.ruleSelectorMenu.inspectionName', 'Inspection Name')"
               prop="name"
               v-else
               :rules="[
-                { required: true, message: td('da.qualityTask.ruleSelectorMenu.inspectionNameRequired'), trigger: 'blur' },
+                { required: true, message: td('da.qualityTask.ruleSelectorMenu.inspectionNameRequired', 'Inspection Name Required'), trigger: 'blur' },
+                { pattern: /^(?!\s+$).*$/, message: td('common.texts.noSpaces', 'Cannot be all spaces'), trigger: 'blur' }
               ]"
-             :label-position="labelPosition">
+            >
               <template v-if="!falg">
-                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.inspectionNamePlaceholder')" />
+                <el-input v-model="form.name" :placeholder="td('da.qualityTask.ruleSelectorMenu.inspectionNamePlaceholder', 'Inspection Name Placeholder')" maxlength="50" />
               </template>
               <div v-else class="form-readonly">{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleId')" prop="ruleCode" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleId', 'Inspection Rule ID')" prop="ruleCode">
               <div class="form-readonly">{{ form.ruleCode || "-" }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleName')" prop="ruleName" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.inspectionRuleName', 'Inspection Rule Name')" prop="ruleName">
               <div class="form-readonly">{{ form.ruleName || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="8">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel')" prop="warningLevel" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.alarmLevel', 'Alarm Level')" prop="warningLevel">
               <template v-if="!falg">
                 <el-select
                   v-model="form.warningLevel"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.qualityDimensionPlaceholder')"
-                  style="width: 290px"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.qualityDimensionPlaceholder', 'Quality Dimension Placeholder')"
+                  class="warning-level-select"
                 >
                   <el-option
                     v-for="dict in quality_warning_status"
@@ -110,24 +110,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
+            <el-form-item :label="td('common.texts.status', 'Status')" prop="status">
               <el-radio-group v-model="form.status" :disabled="falg">
-                <el-radio :value="'1'">{{ td('da.qualityTask.online') }}</el-radio>
-                <el-radio :value="'0'">{{ td('da.qualityTask.offline') }}</el-radio>
+                <el-radio :value="'1'">{{ td('da.qualityTask.online', 'Online') }}</el-radio>
+                <el-radio :value="'0'">{{ td('da.qualityTask.offline', 'Offline') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription')" prop="ruleDescription" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.ruleDescription', 'Rule Description')" prop="ruleDescription">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="500"
+                  :maxlength="256"
                   show-word-limit
                   v-model="form.ruleDescription"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.ruleDescriptionPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.ruleDescriptionPlaceholder', 'Rule Description Placeholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -136,16 +136,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample')" prop="errDescription" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.errorExample', 'Error Example')" prop="errDescription">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="500"
+                  :maxlength="256"
                   show-word-limit
                   v-model="form.errDescription"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.errorExamplePlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.errorExamplePlaceholder', 'Error Example Placeholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -154,16 +154,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion')" prop="suggestion" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.fixSuggestion', 'Fix Suggestion')" prop="suggestion">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="500"
+                  :maxlength="256"
                   show-word-limit
                   v-model="form.suggestion"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.fixSuggestionPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.fixSuggestionPlaceholder', 'Fix Suggestion Placeholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -172,16 +172,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="24">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition')" prop="whereClause" :label-position="labelPosition">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.whereCondition', 'Where Condition')" prop="whereClause">
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="500"
+                  :maxlength="256"
                   show-word-limit
                   v-model="form.whereClause"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.whereConditionPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.whereConditionPlaceholder', 'Where Condition Placeholder')"
                 />
               </template>
               <div v-else class="form-readonly textarea">
@@ -191,24 +191,35 @@
           </el-col>
         </el-row>
         <!-- Rule configuration -->
-        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.ruleConfig') }}</div>
-        <el-row :gutter="20">
-          <el-col :span="12" class="hasMsg" v-if="type != 3">
+        <div class="h2-title">{{ td('da.qualityTask.ruleSelectorMenu.ruleConfig', 'Rule Config') }}</div>
+        <el-row>
+          <el-col
+            :span="12"
+            class="hasMsg"
+            v-if="
+              type != 3 &&
+              form.ruleType != 'STATUS_CONSIST_VAL' &&
+              form.ruleType != 'MASTER_DATA_REF_VALIDATION' &&
+              form.ruleType != 'CROSS_TABLE_CONSIST_VAL' &&
+              form.ruleType != 'FOREIGN_KEY_VALIDITY_VAL' &&
+              form.ruleType != 'NUMERIC_LOGIC_VALUE_VALIDITY_VAL'
+            "
+          >
             <el-form-item
-              :label="td('da.qualityTask.ruleSelectorMenu.evaluationTarget')"
+              :label="td('da.qualityTask.ruleSelectorMenu.evaluationTarget', 'Evaluation Target')"
               prop="tableName"
               :rules="[
                 {
                   required: true,
-                  message: td('da.qualityTask.ruleSelectorMenu.evaluationTargetRequired'),
+                  message: td('da.qualityTask.ruleSelectorMenu.evaluationTargetRequired', 'Evaluation Target Required'),
                   trigger: 'change',
                 },
               ]"
-             :label-position="labelPosition">
+            >
               <template v-if="!falg">
                 <el-select
                   v-model="form.tableName"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationTargetPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.evaluationTargetPlaceholder', 'Evaluation Target Placeholder')"
                   filterable
                   clearable
                   :disabled="type == 2"
@@ -236,25 +247,40 @@
           </el-col>
           <el-col
             :span="12"
-            v-if="form.ruleType != 'TIME_ORDER_VALIDATION' && type != 3"
+            v-if="
+              form.ruleType != 'TIME_ORDER_VALIDATION' &&
+              form.ruleType != 'TIME_ORDER_VAL' &&
+              form.ruleType != 'NUMERIC_LOGIC_RELATION_VALIDATION' &&
+              form.ruleType != 'NUM_LOGIC_REL_VAL' &&
+              form.ruleType != 'STATUS_DEPENDENCY_VALIDATION' &&
+              form.ruleType != 'STATUS_DEPEND_VAL' &&
+              form.ruleType != 'STATUS_CONSIST_VAL' &&
+              form.ruleType != 'MUTUALLY_EXCLUSIVE_FIELD_CONFLICT' &&
+              form.ruleType != 'MASTER_DATA_REF_VALIDATION' &&
+              form.ruleType != 'NUM_OUTLIER_VAL' &&
+              form.ruleType != 'CROSS_TABLE_CONSIST_VAL' &&
+              form.ruleType != 'FOREIGN_KEY_VALIDITY_VAL' &&
+              form.ruleType != 'NUMERIC_LOGIC_VALUE_VALIDITY_VAL' &&
+              type != 3
+            "
           >
             <el-form-item
-              :label="td('da.qualityTask.ruleSelectorMenu.checkField')"
+              :label="td('da.qualityTask.ruleSelectorMenu.checkField', 'Check Field')"
               prop="evaColumn"
               :rules="[
                 {
                   required: true,
-                  message: td('da.qualityTask.ruleSelectorMenu.checkFieldRequired'),
+                  message: td('da.qualityTask.ruleSelectorMenu.checkFieldRequired', 'Check Field Required'),
                   trigger: 'change',
                 },
               ]"
-             :label-position="labelPosition">
+            >
               <template v-if="!falg">
                 <el-select
                   v-if="isMultipleRuleType"
                   v-model="form.evaColumn"
                   multiple
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder', 'Check Field Placeholder')"
                   filterable
                   clearable
                   :loading="loading"
@@ -270,7 +296,7 @@
                 <el-select
                   v-else
                   v-model="form.evaColumn"
-                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder')"
+                  :placeholder="td('da.qualityTask.ruleSelectorMenu.checkFieldPlaceholder', 'Check Field Placeholder')"
                   filterable
                   clearable
                   :loading="loading"
@@ -293,20 +319,27 @@
           :is="currentRuleComponent"
           ref="ruleComponentRef"
           :form="form.rule"
+          :tableName="form.tableName"
+          @update:tableName="
+            (val) => {
+              form.tableName = val;
+              handleTargetObjectChange(val);
+            }
+          "
           :dppQualityTaskObjSaveReqVO="dppQualityTaskObjSaveReqVO"
           :falg="falg"
           :columnList="columnList"
+          :loading="loading"
         />
 
         <div class="h2-title" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
-          {{ td('da.qualityTask.ruleSelectorMenu.sampleCheck') }}
+          {{ td('da.qualityTask.ruleSelectorMenu.sampleCheck', 'Sample Check') }}
         </div>
-        <el-row :gutter="20" v-if="form.ruleType == 'CHARACTER_VALIDATION'">
+        <el-row v-if="form.ruleType == 'CHARACTER_VALIDATION'">
           <el-col :span="12">
-            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData')" prop="sampleData" :label-position="labelPosition">
-              <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder')" />
-              <!-- <span class="msg">Sample must comply with rule; cannot contain special characters if non-compliant</span> -->
-              <div style="margin-top: 6px; display: inline-block">
+            <el-form-item :label="td('da.qualityTask.ruleSelectorMenu.sampleData', 'Sample Data')" prop="sampleData">
+              <el-input v-model="title" :placeholder="td('da.qualityTask.ruleSelectorMenu.sampleDataPlaceholder', 'Sample Data Placeholder')" />
+              <div class="sample-tag-wrapper">
                 <el-tag
                   v-if="sampleCheckMsg"
                   closable
@@ -320,7 +353,7 @@
           </el-col>
           <el-col :span="11" :offset="1">
             <el-button plain type="primary" @click="handleSampleCheck">
-              <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('da.qualityTask.ruleSelectorMenu.monitor') }}
+              <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('da.qualityTask.ruleSelectorMenu.monitor', 'Monitor') }}
             </el-button>
           </el-col>
         </el-row>
@@ -330,25 +363,24 @@
     <template #footer>
       <template v-if="dialogStatus == 1">
         <el-button type="warning" v-if="type != 3" @click="handleSpotCheck"
-          >{{ td('da.qualityTask.ruleSelectorMenu.spotCheck') }}</el-button
+          >{{ td('da.qualityTask.ruleSelectorMenu.spotCheck', 'Spot Check') }}</el-button
         >
-        <el-button @click="handleBack" v-if="!mode">{{ td('common.button.cancel') }}</el-button>
+        <el-button @click="handleBack" v-if="!mode">{{ td('common.button.cancel', 'Cancel') }}</el-button>
         <el-button type="primary" @click="handleSave" v-if="!falg"
-          >{{ td('common.button.confirm') }}</el-button
+          >{{ td('common.button.confirm', 'Confirm') }}</el-button
         >
       </template>
-      <el-button @click="closeDialog" v-else>{{ td('common.button.cancel') }}</el-button>
+      <el-button @click="closeDialog" v-else>{{ td('common.button.cancel', 'Cancel') }}</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
 import useDefaultLang from "@/composables/useDefaultLang"
-import { ref, reactive, watch, toRefs } from "vue";
+import { ref, reactive, watch, toRefs, nextTick, getCurrentInstance, onMounted, computed } from "vue";
 import SideMenu from "./ruleSelectorMenu.vue";
 import SpotCheckDialog from "./spotCheckResult.vue";
 import { getColumnByAssetId } from "@/api/dpp/task/index.js";
-// Load rule subcomponents on demand via registry to reduce first-screen bundle size
 import { getRuleConfig, getRuleComponent } from "./rule/registry.js";
 import { verifyInterfaceValue } from "@/api/da/quality/qualityTask";
 
@@ -357,7 +389,7 @@ let falg = ref(false);
 const { proxy } = getCurrentInstance();
 const { quality_warning_status } = proxy.useDict("quality_warning_status");
 const emit = defineEmits(["confirm"]);
-// Evaluation object list from parent component
+
 const props = defineProps({
   dppQualityTaskObjSaveReqVO: {
     type: Array,
@@ -372,6 +404,7 @@ const props = defineProps({
     default: "",
   },
 });
+
 const { dppQualityTaskObjSaveReqVO } = toRefs(props);
 const dialogVisible = ref(false);
 const dialogStatus = ref(1);
@@ -380,8 +413,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", // Inspection rule name:
-  ruleCode: "", // Inspection rule code:
+  ruleName: "", 
+  ruleCode: "", 
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -394,41 +427,36 @@ let form = reactive({
   tableName: "",
 
   rule: {
-    // String type validation
-    allowedChars: ["1"], // Allowed character types
-    useRegexFlag: 0, // Use regex
-    regex: "", // Regex
-    // Ignore null value, keep one
-    ignoreNullValue: "0", // Ignore null value
-    // Field length range validation
-    minLength: null, // Min length
-    maxLength: null, // Max length
-    // Field precision
-    scale: "2", // Decimal places
-    skipInteger: "1", // Skip integer value
-    // Field group integrity validation
+    allowedChars: ["1"], 
+    useRegexFlag: 0, 
+    regex: "", 
+    ignoreNullValue: "0", 
+    minLength: null, 
+    maxLength: null, 
+    scale: "2", 
+    skipInteger: "1", 
     fillStrategy: "1",
-
-    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
-    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
     codeList: [],
     validValues: [],
     calculationGroups: [],
-    // Time selection
     conditions: [],
   },
 });
+
 const isMultipleRuleType = computed(
   () =>
     form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
-    form.ruleType == "GROUP_FIELD_COMPLETENESS"
+    form.ruleType == "COMP_UNIQUE_VAL" ||
+    form.ruleType == "GROUP_FIELD_COMPLETENESS" ||
+    form.ruleType == "GROUP_COMPLETE_VAL"
 );
+
 const selectedRef = computed(() => {
   return (
     dppQualityTaskObjSaveReqVO.value.find(
@@ -436,6 +464,7 @@ const selectedRef = computed(() => {
     ) || null
   );
 });
+
 const evaColumnLabel = computed(() => {
   const map = new Map(
     (columnList.value || []).map((c) => [c.columnName, c.label])
@@ -447,45 +476,39 @@ const evaColumnLabel = computed(() => {
   }
   return map.get(val) || val;
 });
+
 let title = ref();
 
-// Computed: current rule configuration
 const currentRuleConfig = computed(() => {
   return getRuleConfig(form.ruleType);
 });
 
-// Computed: current rule component
 const currentRuleComponent = computed(() => {
   return getRuleComponent(form.ruleType) || null;
 });
 
 let loading = ref(false);
 let columnList = ref([]);
-// Evaluation field list cache: key = datasourceId|tableName
 const columnsCache = new Map();
-
 const spotCheckRef = ref();
 
-// Watch
 async function handleSpotCheck() {
-  console.log(
-    "🚀 ~ handleSpotCheck ~  selectedRef.value:",
-    selectedRef.value.datasourceId
-  );
   await nextTick();
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete', 'Validation Incomplete'));
     return;
   }
   let res = { valid: true, data: {} };
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
-    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
+    }
+    if (res.data?.tableName) {
+      form.tableName = res.data.tableName;
     }
   }
 
@@ -500,59 +523,53 @@ async function handleSpotCheck() {
     formCopy.evaColumn =
       formCopy.evaColumn.length > 0 ? formCopy.evaColumn.join(",") : null;
   }
-  console.log(
-    "🚀 ~ handleSpotCheck ~  formCopy.evaColumn:",
-    formCopy.evaColumn
-  );
 
   let obj = {
     ...formCopy,
     datasourceId: selectedRef.value?.datasourceId,
     title: title.value,
   };
-  // let resw = await validationErrorDataSql(obj)
   spotCheckRef.value.openDialog(obj);
 }
+
 function handleTargetObjectChange(tableName) {
   const selected = dppQualityTaskObjSaveReqVO.value.find(
     (item) => item.tableName == tableName
   );
-  console.log("🚀 ~ handleTargetObjectChange ~ selected:", selected);
   if (selected) {
     form.datasourceId = selected.datasourceId;
-    if (
-      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
-      form.ruleType == "GROUP_FIELD_COMPLETENESS"
-    ) {
-      console.log("2222");
-
+    if (isMultipleRuleType.value) {
       form.evaColumn = [];
     } else {
       form.evaColumn = "";
     }
-    // Clear current table cache to ensure fresh request on each switch
     const cacheKey = `${selected.datasourceId}|${tableName}`;
     columnsCache.delete(cacheKey);
     fetchColumns();
   } else {
     form.datasourceId = null;
     form.tableName = "";
-    if (
-      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
-      form.ruleType == "GROUP_FIELD_COMPLETENESS"
-    ) {
+    if (isMultipleRuleType.value) {
       form.evaColumn = [];
     } else {
       form.evaColumn = "";
     }
-
     columnList.value = [];
   }
 }
-async function fetchColumns() {
-  console.log("🚀 ~ fetchColumns ~ selectedRef:", selectedRef.value);
 
-  if (!selectedRef.value.datasourceId || !form?.tableName) {
+async function fetchColumns() {
+  if (
+    form.ruleType == 'MASTER_DATA_REF_VALIDATION' ||
+    form.ruleType == 'CROSS_TABLE_CONSIST_VAL' ||
+    form.ruleType == 'FOREIGN_KEY_VALIDITY_VAL' ||
+    form.ruleType == 'STATUS_CONSIST_VAL' ||
+    form.ruleType == 'NUMERIC_LOGIC_VALUE_VALIDITY_VAL'
+  ) {
+    return;
+  }
+
+  if (!selectedRef.value?.datasourceId || !form?.tableName) {
     columnList.value = [];
     return;
   }
@@ -587,13 +604,14 @@ async function fetchColumns() {
     loading.value = false;
   }
 }
+
 let ruleComponentRef = ref();
 async function handleSave() {
   await nextTick();
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete', 'Validation Incomplete'));
     return;
   }
   let res = { valid: true, data: {} };
@@ -601,20 +619,21 @@ async function handleSave() {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
 
-    // If sub-component returns evaColumn field (e.g. timeOrderRule), assign directly to form.evaColumn
     if (res.data?.evaColumn) {
       form.evaColumn = res.data.evaColumn;
     }
+    if (res.data?.tableName) {
+      form.tableName = res.data.tableName;
+    }
   }
-  const selectedLabels = columnList.value.map((col) => ({
+  const currentColumnList = res.data?.columnList || columnList.value;
+  const selectedLabels = currentColumnList.map((col) => ({
     name: col.columnName,
     label: col.label,
   }));
-  // Convert evaColumn array to comma-separated string first
   if (Array.isArray(form.evaColumn)) {
     form.evaColumn = form.evaColumn.join(",");
   }
-  // Build the final rule field
   form.rule = JSON.stringify({
     ...res.data,
     evaColumns: selectedLabels,
@@ -627,25 +646,34 @@ async function handleSave() {
 let sampleCheckMsg = ref();
 async function handleSampleCheck() {
   if (!title.value) {
-    return proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.sampleDataRequired'));
+    return proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.sampleDataRequired', 'Sample Data Required'));
+  }
+  if (title.value.trim() === "") {
+    return proxy.$message.warning(td('common.texts.noSpaces', 'Cannot be all spaces'));
   }
   await nextTick();
   try {
     await formRef?.value?.validate();
   } catch (err) {
-    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete'));
+    proxy.$message.warning(td('da.qualityTask.ruleSelectorMenu.validationIncomplete', 'Validation Incomplete'));
     return;
   }
   let res = { valid: true, data: {} };
   if (form.ruleType !== "COMPOSITE_UNIQUENESS_VALIDATION") {
     res = await ruleComponentRef.value?.validate();
     if (!res.valid) return;
+    
+    if (res.data?.evaColumn) {
+      form.evaColumn = res.data.evaColumn;
+    }
+    if (res.data?.tableName) {
+      form.tableName = res.data.tableName;
+    }
   }
   const ruleData = res.data;
   const formCopy = JSON.parse(
     JSON.stringify({
       ...form,
-
       rule: JSON.stringify({ ...ruleData }),
     })
   );
@@ -658,40 +686,39 @@ async function handleSampleCheck() {
   if (resw.code === 200) {
     sampleCheckMsg.value = resw.data;
   } else {
-    sampleCheckMsg.value = resw.msg || td('da.qualityTask.ruleSelectorMenu.monitorFailed');
+    sampleCheckMsg.value = resw.msg || td('da.qualityTask.ruleSelectorMenu.monitorFailed', 'Monitor Failed');
   }
 }
+
 function handleCardClick(data) {
   resetForm();
-  if (props.type == 2) {
-    form.tableName = props.tableName;
-  }
-  if (props.type == 3) {
+  if (props.type == 2 || props.type == 3) {
     form.tableName = props.tableName;
   }
   form.ruleName = data?.name;
   form.ruleCode = data?.code;
   form.ruleType = data?.strategyKey;
   form.dimensionType = data?.qualityDim;
-  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.addInspectionRule') : td('da.qualityTask.ruleSelectorMenu.addEvaluationRule');
+  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.addInspectionRule', 'Add Inspection Rule') : td('da.qualityTask.ruleSelectorMenu.addEvaluationRule', 'Add Evaluation Rule');
   dialogTitle.value = `${prefix}${data?.name ? "-" + data.name : ""}`;
   if (form.tableName) {
     handleTargetObjectChange(form.tableName);
   }
   dialogStatus.value = 1;
 }
+
 let mode = ref();
 async function openDialog(record, index, fg) {
   falg.value = fg;
   mode.value = index;
   resetForm();
-  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRule') : td('da.qualityTask.ruleSelectorMenu.evaluationRule');
+  const prefix = props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRule', 'Inspection Rule') : td('da.qualityTask.ruleSelectorMenu.evaluationRule', 'Evaluation Rule');
   if (falg.value) {
-    dialogTitle.value = `${props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRuleDetail') : td('da.qualityTask.ruleSelectorMenu.evaluationRuleDetail')}${
+    dialogTitle.value = `${props?.type == 3 ? td('da.qualityTask.ruleSelectorMenu.inspectionRuleDetail', 'Inspection Rule Detail') : td('da.qualityTask.ruleSelectorMenu.evaluationRuleDetail', 'Evaluation Rule Detail')}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   } else {
-    dialogTitle.value = `${mode.value ? td('common.button.update') : td('common.button.add')}${prefix}${
+    dialogTitle.value = `${mode.value ? td('common.button.update', 'Update') : td('common.button.add', 'Add')}${prefix}${
       record?.ruleName ? `-${record.ruleName}` : ""
     }`;
   }
@@ -704,14 +731,10 @@ async function openDialog(record, index, fg) {
     const { evaColumn, ruleType, rule, ...rest } = record;
     Object.assign(form, rest);
     form.ruleType = record.ruleType;
-    console.log("🚀 ~ openDialog ~ form.ruleType:", form.ruleType);
     if (props.type == 2) {
       form.tableName = props.tableName;
     }
-    if (
-      form.ruleType == "COMPOSITE_UNIQUENESS_VALIDATION" ||
-      form.ruleType == "GROUP_FIELD_COMPLETENESS"
-    ) {
+    if (isMultipleRuleType.value) {
       form.evaColumn = evaColumn ? evaColumn.split(",") : [];
     } else {
       form.evaColumn = evaColumn || "";
@@ -732,8 +755,8 @@ async function openDialog(record, index, fg) {
 
 const initialForm = () => ({
   name: "",
-  ruleName: "", // Inspection rule name:
-  ruleCode: "", // Inspection rule code:
+  ruleName: "", 
+  ruleCode: "", 
   status: "1",
   warningLevel: "2",
   ruleDescription: "",
@@ -745,40 +768,25 @@ const initialForm = () => ({
   evaColumn: undefined,
   tableName: "",
   rule: {
-    // String type validation
-    allowedChars: ["1"], // Allowed character types
-    useRegexFlag: 0, // Use regex
-    regex: "", // Regex
-    ignoreNullValue: "1", // Ignore null value
-
-    // Field length range validation
-    minLength: null, // Min length
-    maxLength: null, // Max length
-
-    // Field precision
-    scale: "2", // Decimal places
-    skipInteger: "1", // Skip integer value
-
-    // Field group integrity validation
+    allowedChars: ["1"], 
+    useRegexFlag: 0, 
+    regex: "", 
+    ignoreNullValue: "1", 
+    minLength: null, 
+    maxLength: null, 
+    scale: "2", 
+    skipInteger: "1", 
     fillStrategy: "1",
-
-    // Numeric field range validation
     minValue: null,
     maxValue: null,
     includeBoundary: "1",
-
-    // Enum value validation
     useCodeTable: "0",
     ruleCodeTableId: "",
     ignoreCase: "0",
     codeList: [],
     validValues: [],
     calculationGroups: [],
-
-    // Time field
     allowPartialEmpty: "1",
-
-    // Multi-condition field
     conditions: [],
   },
 });
@@ -786,7 +794,7 @@ const initialForm = () => ({
 function resetForm() {
   Object.assign(form, initialForm());
   columnList.value = [];
-  columnsCache.clear(); // Clear field list cache
+  columnsCache.clear(); 
   title.value = "";
   sampleCheckMsg.value = "";
 }
@@ -798,24 +806,23 @@ function closeDialog() {
 
 function handleBack() {
   dialogStatus.value = 0;
-  dialogTitle.value = td('da.qualityTask.ruleSelectorMenu.addEvaluationRule');
+  dialogTitle.value = td('da.qualityTask.ruleSelectorMenu.addEvaluationRule', 'Add Evaluation Rule');
   resetForm();
 }
 defineExpose({ openDialog, closeDialog });
 </script>
 
-<style scoped>
-.blue-text {
-  color: var(--el-color-primary);
+<style lang="scss" scoped>
+.form-content {
+  max-height: 650px;
+  overflow-y: auto;
+  padding-right: 20px;
 }
-
-.medium-dialog {
-  width: 800px;
+.warning-level-select {
+  width: 290px;
 }
-</style>
-<style>
-.el-dialog.max-dialogs-status0 .el-dialog__body {
-  padding: 0 !important;
-  padding-left: 10px !important;
+.sample-tag-wrapper {
+  margin-top: 6px;
+  display: inline-block;
 }
 </style>

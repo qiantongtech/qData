@@ -22,7 +22,6 @@
     v-model="dialogVisible"
     draggable
     class="medium-dialog"
-    :class="{ 'max-dialogs-status0': dialogStatus === 0 }"
     :title="dialogTitle"
     destroy-on-close
     :append-to="$refs['app-container']"
@@ -36,8 +35,7 @@
       />
     </div>
     <div
-      class="content"
-      style="height: 600px; padding-right: 10px"
+      class="content form-content"
       v-show="dialogStatus == 1 || dialogStatus == 2"
       :disabled="dialogStatus == 2"
     >
@@ -56,10 +54,12 @@
                         message: td('dpp.cleanRule.inputCleanName', 'Please enter clean name'),
                         trigger: 'blur',
                       },
+                      { pattern: /^(?!\s*$).+/, message: td('dpp.cleanRule.noEmptySpace', 'Clean name cannot be empty spaces'), trigger: 'blur' }
                     ]
                   : []
               "
-             :label-position="labelPosition">
+              :label-position="labelPosition"
+            >
               <el-input
                 v-if="!falg"
                 v-model="form.name"
@@ -153,7 +153,8 @@
                     ]
                   : []
               "
-             :label-position="labelPosition">
+              :label-position="labelPosition"
+            >
               <template v-if="!falg">
                 <el-select
                   v-if="isMultipleSelect"
@@ -163,7 +164,7 @@
                   clearable
                 >
                   <el-option
-                    v-for="dict in processedFields"
+                    v-for="dict in cleanFieldOptions"
                     :key="dict.columnName"
                     :label="dict.label"
                     :value="dict.columnName"
@@ -177,7 +178,7 @@
                   clearable
                 >
                   <el-option
-                    v-for="dict in processedFields"
+                    v-for="dict in cleanFieldOptions"
                     :key="dict.columnName"
                     :label="dict.label"
                     :value="dict.columnName"
@@ -246,12 +247,24 @@ const processedFields = computed(() => {
       : item.columnName,
   }));
 });
-const isFieldValueToUpperRule = computed(() => {
+
+const textFieldRuleCodes = ["021", "022"];
+const isTextField = (dict) => {
+  const type = dict.columnType?.toUpperCase() || "";
   return (
-    form.ruleCode == "022" ||
-    String(form.ruleName || "").includes("字段值转大写")
+    type.includes("CHAR") ||
+    type.includes("TEXT") ||
+    type.includes("VARCHAR") ||
+    type.includes("STRING")
   );
+};
+const cleanFieldOptions = computed(() => {
+  if (textFieldRuleCodes.includes(form.ruleCode)) {
+    return processedFields.value.filter(isTextField);
+  }
+  return processedFields.value;
 });
+
 const columnsDisplayText = computed(() => {
   if (isMultipleSelect.value) {
     const values = Array.isArray(form.columns) ? form.columns : [];
@@ -275,8 +288,8 @@ const formRef = ref();
 
 let form = reactive({
   name: "",
-  ruleName: "", //Cleaning rule name:
-  ruleCode: "", //Cleaning rule number:
+  ruleName: "", // Cleaning rule name
+  ruleCode: "", // Cleaning rule code
   status: "1",
   // warningLevel: "2",
   whereClause: "",
@@ -285,15 +298,15 @@ let form = reactive({
   ruleDesc: "",
   type: "",
   ruleConfig: {
-    //Numerical boundary adjustment
+    // Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
     // Remove spaces from string
-    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    handleType: "1", // "1-Remove leading and trailing spaces, 2-Remove all spaces"
     // Regular expression replacement
-    pattern: "", //expression
-    replacement: "", //replacement
+    pattern: "", // Expression
+    replacement: "", // Replacement
     ruleValue: [],
     deduplicationStrategy: "1",
     dataRangeValue: moment().format("YYYY-MM-DD"),
@@ -317,19 +330,15 @@ let form = reactive({
 const isMultipleSelect = computed(() => {
   return form.ruleCode == "019" || form.ruleCode == "029";
 });
-// A new calculated property is used to determine whether a field should be disabled
+// A new computed property to determine if a field should be disabled
 const shouldDisableField = computed(() => {
   return (dict) => {
-    // For rule 025 (deduplication by combined fields), only fields with pkFlag 1 are allowed
-    // if (form.ruleCode == "025") {
-    //   return dict.pkFlag != 1;
-    // }
-
-    // For rule 039 (Purge expired records), only date type fields are allowed
+    // For rule 039 (Clean expired records), only date type fields are allowed
     if (
       form.ruleCode == "039" ||
       form.ruleCode == "007" ||
-      form.ruleCode == "017"
+      form.ruleCode == "017" ||
+      form.ruleCode == "038"
     ) {
       const isDateType =
         dict.columnType?.toUpperCase().includes("DATE") ||
@@ -339,30 +348,31 @@ const shouldDisableField = computed(() => {
       return !isDateType;
     }
 
+    // For rule 014 (Numeric null value filling), only numeric type fields are allowed
+    if (form.ruleCode == "014") {
+      return !isNumericColumnType(dict.columnType);
+    }
+
+    // For rule 015 (String null value filling), only string type fields are allowed
+    if (form.ruleCode == "015" || form.ruleCode == "034") {
+      return !isTextColumnType(dict.columnType);
+    }
+
     if (form.ruleCode == "001" || form.ruleCode == "008") {
       return !isNumericColumnType(dict.columnType);
     }
 
     if (
       ["009", "010", "011", "012"].includes(form.ruleCode) ||
-      isFieldValueToUpperRule.value
+      textFieldRuleCodes.includes(form.ruleCode)
     ) {
       return !isTextColumnType(dict.columnType);
     }
 
-    // For rule 007 date format
-    // if (form.ruleCode == "007") {
-    //   const isStringType =
-    //     dict.columnType?.toUpperCase().includes("CHAR") ||
-    //     dict.columnType?.toUpperCase().includes("TEXT") ||
-    //     dict.columnType?.toUpperCase().includes("VARCHAR") ||
-    //     dict.columnType?.toUpperCase().includes("STRING");
-    //   return !isStringType;
-    // }
-
     return false;
   };
 });
+
 watch(
   [() => form.ruleCode, () => form.ruleName, processedFields],
   () => {
@@ -487,38 +497,38 @@ const initialForm = () => ({
   id: "",
   name: "",
   type: "",
-  ruleName: "", //Cleaning rule name:
-  ruleCode: "", //Cleaning rule number:
+  ruleName: "", // Cleaning rule name
+  ruleCode: "", // Cleaning rule code
   status: "1",
   whereClause: "",
   columns: isMultipleSelect.value ? [] : "",
   tableName: "",
   ruleDesc: "",
   ruleConfig: {
-    //Numerical boundary adjustment
+    // Numerical boundary adjustment
     max: "100",
     min: "0",
     handleType: "1",
     // Remove spaces from string
-    handleType: "1", //"1-Remove leading and trailing spaces, 2-Remove all spaces"
+    handleType: "1", // "1-Remove leading and trailing spaces, 2-Remove all spaces"
     // Regular expression replacement
-    pattern: "", //expression
-    replacement: "", //replacement
+    pattern: "", // Expression
+    replacement: "", // Replacement
 
     ruleValue: [],
     deduplicationStrategy: "1",
     // Enumeration value mapping normalization
     stringValue: [],
-    dataRange: "1", // 0: fixed time range, 1: specific date
-    dataRangeType: "1", // 0: days ago
+    dataRange: "1", // 0: Fixed time range, 1: Specific date
+    dataRangeType: "1", // 0: Days ago
     dataRangeValue: moment().format("YYYY-MM-DD"),
-    handleType: "1", // 0: Expiration processing method, 1: Delete records
-    handleColumns: "", // // Mark field only exists if the expiration processing method is selected
-    handleValue: "", // The tag value is only available if the expiration processing method is selected.
+    handleType: "1", // 0: Expiration handling method, 1: Delete records
+    handleColumns: "", // Only if expiration handling method is selected, marking field exists
+    handleValue: "", // Only if expiration handling method is selected, marking value exists
     // Very long field truncation
     maxLength: "0",
     direction: "1",
-    // date format
+    // Date format
     targetFormat: "",
     inputFormats: [
       "yyyyMMdd",
@@ -530,15 +540,18 @@ const initialForm = () => ({
     ],
     // Field value replacement
     mode: "1", // 1-whitelist, 2-blacklist
-    allowed: [], //cleaning value
-    defaultValue: "", //Default value
+    allowed: [], // Cleaning values
+    defaultValue: "", // Default value
     ignoreCase: "1", // 1-Case sensitive, 2-Case insensitive
     caseSensitive: "1", // 1-Remove spaces, 2-Do not remove spaces
-    ignoreNullValue: "1", // 1-ignore null, 2-do not ignore null
+    ignoreNullValue: "1", // 1-Ignore null, 2-do not ignore null
     // Date null filling
-    fillType: "3", //1=Current date, 2=Yesterday, 3=Fixed value
+    fillType: "3", // 1=Current date, 2=Yesterday, 3=Fixed value
     defaultValue: "", // Used when fixed value fillType=3
-    format: "", // date format
+    format: "", // Date format
+    // Keyword desensitization
+    keywords: [""],
+    maskString: "",
   },
 });
 
@@ -562,7 +575,12 @@ function handleBack() {
 defineExpose({ openDialog, closeDialog });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.form-content {
+  max-height: 650px;
+  overflow-y: auto;
+  padding-right: 20px;
+}
 .blue-text {
   color: var(--el-color-primary);
 }
@@ -572,8 +590,5 @@ defineExpose({ openDialog, closeDialog });
 }
 </style>
 <style>
-.el-dialog.max-dialogs-status0 .el-dialog__body {
-  padding: 0 !important;
-  padding-left: 10px !important;
-}
+
 </style>

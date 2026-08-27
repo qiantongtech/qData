@@ -1580,6 +1580,7 @@ export default {
     cleanRulePrefix: 'Clean Rule',
     completeRequired: 'Please complete required fields',
     inputRuleType: 'Please enter rule type',
+    search: 'Please enter what you want to search',
     cleanRuleTree: 'Clean Rule',
     developing: 'Under Development'
   },

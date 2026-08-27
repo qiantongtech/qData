@@ -1577,6 +1577,7 @@ export default {
     cleanRulePrefix: 'クレンジングルール',
     completeRequired: '必須項目を入力してください',
     inputRuleType: 'ルールタイプを入力してください',
+    search: '検索内容を入力してください',
     cleanRuleTree: 'クレンジングルール',
     developing: '開発中'
   },

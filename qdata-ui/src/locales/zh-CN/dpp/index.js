@@ -1616,6 +1616,7 @@ export default {
     cleanRulePrefix: '清洗规则',
     completeRequired: '请完善必填项',
     inputRuleType: '请输入规则类型',
+    search: '请输入你要搜索的内容',
     cleanRuleTree: '清洗规则',
     developing: '开发中'
   },

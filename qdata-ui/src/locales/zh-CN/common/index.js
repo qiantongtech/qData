@@ -127,7 +127,8 @@ export default {
     data: '数据',
     success: '成功',
     sortOrder: '排序',
-    superAdmin: '超级管理员'
+    superAdmin: '超级管理员',
+    noSpaces: '不能全为空格'
   },
   message: {
     addSuccess: '新增成功',

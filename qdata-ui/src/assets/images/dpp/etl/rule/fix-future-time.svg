@@ -1,1 +1,12 @@
-<svg data-r="U2FsdGVkX1+oAoyFtI8RPvKmb5f/vHcn3c5kYrNnBuw=" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"></path></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <g id="后台管理系统" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组" fill="#2665FB">
+            <rect id="矩形-3备份-38" fill-opacity="0.06" x="0" y="0" width="32" height="32" rx="4"></rect>
+            <g id="time-fill-(1)" transform="translate(6, 6)" fill-rule="nonzero">
+                <path d="M10,18.3333333 C5.397625,18.3333333 1.66666667,14.6023333 1.66666667,10 C1.66666667,5.397625 5.397625,1.66666667 10,1.66666667 C14.6023333,1.66666667 18.3333333,5.397625 18.3333333,10 C18.3333333,14.6023333 14.6023333,18.3333333 10,18.3333333 Z M10.8333333,10 L10.8333333,5.83333333 L9.16666667,5.83333333 L9.16666667,11.6666667 L14.1666667,11.6666667 L14.1666667,10 L10.8333333,10 Z" id="形状"></path>
+            </g>
+        </g>
+    </g>
+</svg>

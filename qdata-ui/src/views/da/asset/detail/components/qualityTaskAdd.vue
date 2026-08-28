@@ -30,6 +30,39 @@
       <!--                <div class="infotop">-->
       <!--                    <div class="main">-->
       <div v-loading="loadingList">
+        <el-form
+          ref="formRef"
+          :model="form"
+          label-width="100px"
+          :disabled="route.query.info"
+          :label-position="labelPosition"
+        >
+          <el-form-item
+            :label="td('da.qualityTask.responsiblePerson')"
+            prop="contactId"
+            :rules="[
+              {
+                required: true,
+                message: td('da.qualityTask.responsiblePersonRequired'),
+                trigger: 'change',
+              },
+            ]"
+          >
+            <el-tree-select
+              v-model="form.contactId"
+              :data="userList"
+              :props="{
+                value: 'userId',
+                label: 'nickName',
+                children: 'children',
+              }"
+              filterable
+              check-strictly
+              :placeholder="td('da.qualityTask.responsiblePersonPlaceholder')"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-form>
         <!-- <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
                                  @submit.prevent :label-position="labelPosition">
                                 <el-form-item label="Rule name" prop="name" :label-position="labelPosition">
@@ -588,13 +621,15 @@ function getDppQualityTaskinfo(data) {
     dppQualityTaskEvaluateSaveReqVO.value = dppQualityTaskEvaluateRespVOS;
     code(dppQualityTaskObjSaveReqVO);
     Object.assign(form.value, obj);
-    form.value.contactId = Number(form.value.contactId);
+    const contactId = Number(form.value.contactId);
+    form.value.contactId = contactId > 0 ? contactId : '';
   } finally {
     loadingInstance.value = false;
   }
 }
 const handleClose = () => {
   formData.value == {};
+  form.value.contactId = '';
   dppQualityTaskEvaluateSaveReqVO.value = [];
   dppQualityTaskObjSaveReqVO.value = [];
   originList.value = [];

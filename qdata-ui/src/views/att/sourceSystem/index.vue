@@ -339,7 +339,7 @@ const tableStore = reactive({
     table: {
       stripe: true,
       rowKey: "id",
-      defaultSort: { prop: "create_time", order: "desc" },
+      defaultSort: { prop: "sortOrder", order: "descending" },
       onSelectionChange: function (rows) {
         store.rows = rows;
       },
@@ -594,25 +594,29 @@ function submitForm() {
 }
 /** Delete button action */
 function handleDelete(row) {
-  const invalidIds = [];
-  let _ids = null;
-  if (row?.id) {
-    _ids = row.id;
-  } else {
-    // _ids = store.rows.map((item) => item.id).join(",");
-    store.rows.forEach((item) => {
-      // When validFlag is false, record id
-      if (item.validFlag === false) {
-        invalidIds.push(item.id);
-      }
-    });
+  // A row can only be deleted when it is disabled. For batch deletion, keep
+  // the same rule and only submit the selected disabled rows.
+  const targetRows = row?.id != null ? [row] : store.rows;
+  const deletableIds = targetRows
+    .filter((item) => item.validFlag === false)
+    .map((item) => item.id);
+
+  // Do not issue DELETE /att/sourceSystem/ when there are no deletable rows;
+  // that URL does not match the backend's /{ids} mapping.
+  if (deletableIds.length === 0) {
+    proxy.$modal.msgWarning(td('common.message.selectRecord'));
+    return;
   }
+
   proxy.$modal
     .confirm(
-      td('att.sourceSystem.message.deleteConfirm', '', { deletable: invalidIds.length, undeletable: store.rows.length - invalidIds.length })
+      td('att.sourceSystem.message.deleteConfirm', '', {
+        deletable: deletableIds.length,
+        undeletable: targetRows.length - deletableIds.length,
+      })
     )
     .then(function () {
-      return delSourceSystem(invalidIds);
+      return delSourceSystem(deletableIds);
     })
     .then(() => {
       tableRef.value.getList();

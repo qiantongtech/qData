@@ -69,6 +69,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -221,13 +222,30 @@ public class IAttProjectServiceImpl extends ServiceImpl<AttProjectMapper, AttPro
 
     @Override
     public int removeAttProject(Collection<Long> idList) {
+        if (CollectionUtils.isEmpty(idList)) {
+            return 0;
+        }
+        List<AttProjectDO> projectDOList = attProjectMapper.selectList(
+                new QueryWrapper<AttProjectDO>().in("id", idList));
+
+        // A newly created project has an implicit member relationship for its
+        // manager.  That relationship alone must not prevent deletion; only
+        // additional project members should block the operation.
         QueryWrapper<AttProjectUserRelDO> projectWrapper = new QueryWrapper<>();
-        projectWrapper.in(!CollectionUtils.isEmpty(idList), "project_id", idList);
+        projectWrapper.in("project_id", idList);
         List<AttProjectUserRelDO> attProjectUserRelDOList = attProjectUserRelMapper.selectList(projectWrapper);
-        if (attProjectUserRelDOList.size() > 0) {
+        Map<Long, Long> managerByProject = projectDOList.stream()
+                .filter(project -> project.getManagerId() != null)
+                .collect(Collectors.toMap(AttProjectDO::getId, AttProjectDO::getManagerId, (left, right) -> left));
+        boolean hasAdditionalMembers = attProjectUserRelDOList.stream()
+                .anyMatch(rel -> !Objects.equals(rel.getUserId(), managerByProject.get(rel.getProjectId())));
+        if (hasAdditionalMembers) {
             return -1;
         }
-        List<AttProjectDO> projectDOList = attProjectMapper.selectList(new QueryWrapper<AttProjectDO>().in(!CollectionUtils.isEmpty(idList), "id", idList));
+
+        // Remove the implicit manager relationships together with the project
+        // so no orphan records remain in ATT_PROJECT_USER_REL.
+        attProjectUserRelMapper.delete(projectWrapper);
         int i = attProjectMapper.deleteBatchIds(idList);
         for (AttProjectDO attProjectDO : projectDOList) {
             DsProjectDeleteRespDTO dsProjectDeleteRespDTO = dsProjectService.deleteProject(Long.valueOf(attProjectDO.getCode()));

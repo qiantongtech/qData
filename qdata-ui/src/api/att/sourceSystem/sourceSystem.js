@@ -64,8 +64,9 @@ export function updateSourceSystem(data) {
 
 // Delete source system
 export function delSourceSystem(id) {
+  const ids = Array.isArray(id) ? id.join(',') : id
   return request({
-    url: '/att/sourceSystem/' + id,
+    url: '/att/sourceSystem/' + ids,
     method: 'delete'
   })
 }

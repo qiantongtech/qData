@@ -574,13 +574,26 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
 
     @Override
     public AjaxResult clientsTest(Long id) {
-        DbQuery dbQuery = this.buildDbQuery(id);
-        if (dbQuery.valid()) {
-            dbQuery.close();
-            return AjaxResult.success(MessageUtils.messageWithFallback("da.error.connection.success", "Database connection successful"));
+        DbQuery dbQuery = null;
+        try {
+            dbQuery = this.buildDbQuery(id);
+            if (dbQuery.valid()) {
+                return AjaxResult.success(MessageUtils.messageWithFallback(
+                        "da.error.connection.success", "Database connection successful"));
+            }
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "da.error.connection.fail", "Database connection failed"));
+        } catch (Exception exception) {
+            // Connection timeouts and driver errors must be returned as a
+            // normal business response instead of bubbling up as HTTP 504.
+            log.warn("Datasource connection test failed, datasourceId={}", id, exception);
+            return AjaxResult.error(MessageUtils.messageWithFallback(
+                    "da.error.connection.fail", "Database connection failed"));
+        } finally {
+            if (dbQuery != null) {
+                dbQuery.close();
+            }
         }
-        dbQuery.close();
-        return AjaxResult.error(MessageUtils.messageWithFallback("da.error.connection.fail", "Database connection failed"));
 
     }
 

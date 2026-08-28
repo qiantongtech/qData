@@ -898,7 +898,7 @@ function getCodeTableList() {
 }
 
 function openBindTerm(row) {
-  proxy.$modal.msgWarning(td('common.message.msgOpFailed', 'Operation failed'));
+  proxy.$modal.msgWarning(td('da.asset.developing', 'Feature under development'));
 
   // currentColumnId.value = row.id;
   // Promise.all([getDaAssetColumn(row.id), getTermList()]).then(([detailRes]) => {

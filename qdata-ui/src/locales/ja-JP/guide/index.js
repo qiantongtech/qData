@@ -150,13 +150,13 @@ export default {
   },
   structured: {
     title: '収集タスク — 自動検出、統合管理',
-    content: `収集タスクを設定し、指定データソースからデータベース、テーブル、フィールドなどのメタデータを取得し、プラットフォーム仕様に従って解析、変換、取り込みを行います。 <a href="${QDATA_COMMUNITY_URL}/ja/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `収集タスクを設定し、指定データソースからデータベース、テーブル、フィールドなどのメタデータを取得し、プラットフォーム仕様に従って解析、変換、取り込みを行います。 <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/collect-tasks.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
   unreleasedTable: {
     title: '最新メタデータ — データベースレベル資産の核心ユニット維持キャリア',
-    content: `テーブルの構造情報とビジネス記述を管理し、テーブルの所属ビジネスドメイン、公開状態の維持、収集されたテーブルレベルのメタデータ更新が可能です。 <a href="${QDATA_COMMUNITY_URL}/ja/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `テーブルの構造情報とビジネス記述を管理し、テーブルの所属ビジネスドメイン、公開状態の維持、収集されたテーブルレベルのメタデータ更新が可能です。 <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/latest-metadata.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   }

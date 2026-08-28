@@ -1603,8 +1603,10 @@ function handleTestConnection(row) {
       console.log(response);
       proxy.$modal.msgSuccess(response.msg);
     })
-    .catch((error) => {
-      proxy.$modal.msgWarning(error.message);
+    .catch(() => {
+      proxy.$modal.msgWarning(
+        td('da.datasource.connectionTestFailed', '数据连接测试失败，请检查连接信息')
+      );
     })
     .finally(() => {
       testConnectionLoadingMap.value[_id] = false;

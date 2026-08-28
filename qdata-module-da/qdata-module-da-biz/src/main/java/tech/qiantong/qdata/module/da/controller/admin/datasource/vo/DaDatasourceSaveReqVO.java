@@ -65,7 +65,7 @@ public class DaDatasourceSaveReqVO extends BaseEntity {
     @Schema(description = "IP", example = "")
     @Size(max = 256, message = "IP长度不能超过256个字符")
     @Pattern(
-            regexp = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}(\\.[a-zA-Z0-9][a-zA-Z0-9-]{0,62})+$",
+            regexp = "^(?:((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)|(?![\\d.]+$)(?=.{1,253}$)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$",
             message = "IP/域名格式不正确，请检查"
     )
     private String ip;

@@ -18,6 +18,7 @@
 
 package tech.qiantong.qdata.module.att.dal.mapper.sourceSystem;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.apache.commons.lang3.StringUtils;
 import tech.qiantong.qdata.common.core.page.PageResult;
@@ -27,7 +28,9 @@ import tech.qiantong.qdata.mybatis.core.mapper.BaseMapperX;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Source System Mapper Interface
@@ -40,7 +43,7 @@ public interface AttSourceSystemMapper extends BaseMapperX<AttSourceSystemDO> {
 
     default PageResult<AttSourceSystemDO> selectPage(AttSourceSystemPageReqVO reqVO) {
         // Define sortable fields (prevent SQL injection, must match database column names)
-        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "create_time", "update_time"));
+        Set<String> allowedColumns = new HashSet<>(Arrays.asList("id", "sort_order", "create_time", "update_time"));
         MPJLambdaWrapper<AttSourceSystemDO> lambdaWrapper = new MPJLambdaWrapper();
         lambdaWrapper.selectAll(AttSourceSystemDO.class)
                 .select("t2.NICK_NAME AS responsiblePersonName,t3.NICK_NAME AS contactPersonName")
@@ -48,8 +51,18 @@ public interface AttSourceSystemMapper extends BaseMapperX<AttSourceSystemDO> {
                 .leftJoin("SYSTEM_USER t3 on t.CONTACT_PERSON = t3.USER_ID AND t3.DEL_FLAG = '0'")
                 .like(StringUtils.isNotBlank(reqVO.getName()), AttSourceSystemDO::getName, reqVO.getName())
                 .eq(StringUtils.isNotBlank(reqVO.getType()), AttSourceSystemDO::getType, reqVO.getType())
-                .eq(reqVO.getValidFlag()!=null, AttSourceSystemDO::getValidFlag, reqVO.getValidFlag())
-                .orderByStr(StringUtils.isNotBlank(reqVO.getOrderByColumn()), StringUtils.equals("asc", reqVO.getIsAsc()), StringUtils.isNotBlank(reqVO.getOrderByColumn()) ? Arrays.asList(reqVO.getOrderByColumn().split(",")) : null);
+                .eq(reqVO.getValidFlag()!=null, AttSourceSystemDO::getValidFlag, reqVO.getValidFlag());
+        if (StringUtils.isBlank(reqVO.getOrderByColumn())) {
+            lambdaWrapper.orderByDesc(AttSourceSystemDO::getSortOrder);
+        } else {
+            List<String> orderColumns = Arrays.stream(reqVO.getOrderByColumn().split(","))
+                    .map(StrUtil::toUnderlineCase)
+                    .collect(Collectors.toList());
+            if (orderColumns.stream().anyMatch(column -> !allowedColumns.contains(column))) {
+                throw new IllegalArgumentException("Invalid sort column");
+            }
+            lambdaWrapper.orderByStr(true, StringUtils.equals("asc", reqVO.getIsAsc()), orderColumns);
+        }
         return selectJoinPage(reqVO, AttSourceSystemDO.class, lambdaWrapper);
     }
 

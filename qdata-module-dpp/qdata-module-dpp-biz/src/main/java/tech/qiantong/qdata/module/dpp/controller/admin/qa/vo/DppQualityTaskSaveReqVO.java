@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.qiantong.qdata.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -53,6 +55,8 @@ public class DppQualityTaskSaveReqVO extends BaseEntity {
     private String contact;
 
     @Schema(description = "联系人ID", example = "")
+    @NotBlank(message = "责任人不能为空")
+    @Pattern(regexp = "^[1-9]\\d*$", message = "责任人不能为空")
     @Size(max = 256, message = "联系人ID长度不能超过256个字符")
     private String contactId;
 

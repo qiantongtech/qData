@@ -150,13 +150,13 @@ export default {
   },
   structured: {
     title: 'Collection Task — Auto-discovery, unified management',
-    content: `Configure collection tasks to obtain metadata (databases, tables, fields) from specified data sources, parsed, transformed, and stored according to platform standards. <a href="${QDATA_COMMUNITY_URL}/en/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">View documentation</a>`,
+    content: `Configure collection tasks to obtain metadata (databases, tables, fields) from specified data sources, parsed, transformed, and stored according to platform standards. <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/collect-tasks.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
   unreleasedTable: {
     title: 'Latest Metadata — Core unit maintenance carrier for database-level assets',
-    content: `Manages table structure information and business descriptions, maintaining table domain, publishing status, and collected table-level metadata. <a href="${QDATA_COMMUNITY_URL}/en/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">View documentation</a>`,
+    content: `Manages table structure information and business descriptions, maintaining table domain, publishing status, and collected table-level metadata. <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/latest-metadata.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   }

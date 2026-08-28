@@ -285,14 +285,14 @@ export const guideTipConfig = {
     'mc/task/structured': {
         title: '采集任务 — 自动发现，统一纳管',
         content: `通过配置采集任务，从指定的数据源中获取库、表、字段等元数据，并按照平台规范进行解析、转换与入库。确保元数据的完整性、时效性与一致性，实现对全域数据资产的动态感知与集中纳管。
-        <a href="${DOCS_BASE_URL}/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/collect-tasks.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
     'meta/unreleased/structured/table': {
         title: '最新元数据 — 库级资产的核心单元维护载体',
         content: `管理表的结构信息、业务描述，可维护表的归属业务域、发布状态，也可更新采集而来的表级元数据。
-        <a href="${DOCS_BASE_URL}/user/%E6%95%B0%E6%8D%AE%E7%A0%94%E5%8F%91/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/latest-metadata.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },

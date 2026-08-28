@@ -148,7 +148,17 @@
               </el-col>
               <el-col :span="2"> </el-col>
               <el-col :span="11">
-                <el-form-item :label="td('da.qualityTask.responsiblePerson')" prop="contactId">
+                <el-form-item
+                  :label="td('da.qualityTask.responsiblePerson')"
+                  prop="contactId"
+                  :rules="[
+                    {
+                      required: true,
+                      message: td('da.qualityTask.responsiblePersonRequired'),
+                      trigger: 'change',
+                    },
+                  ]"
+                >
                   <el-tree-select
                     filterable
                     v-model="form.contactId"
@@ -1065,7 +1075,8 @@ async function getDppQualityTaskinfo() {
     dppQualityTaskEvaluateSaveReqVO.value = dppQualityTaskEvaluateRespVOS;
     code(dppQualityTaskObjSaveReqVO);
     Object.assign(form.value, obj);
-    form.value.contactId = Number(form.value.contactId);
+    const contactId = Number(form.value.contactId);
+    form.value.contactId = contactId > 0 ? contactId : '';
   } catch (error) {
     console.error("Failed to fetch quality task:", error);
     ElMessage.warning(td('da.qualityTask.getTaskFailed'));

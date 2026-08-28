@@ -203,7 +203,7 @@ path:
   mc_url: http://qdata-api:8080/mc/taskExecutor
 datax:
   # DataX根目录，可通过 QDATA_DATAX_HOME 覆盖
-  home: ${user.dir}/datax
+  home: ${user.dir}/datax/
   # Python命令；
   python-command: python3
   # datax.py调用文件路径

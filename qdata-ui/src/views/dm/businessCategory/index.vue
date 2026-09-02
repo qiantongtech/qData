@@ -182,13 +182,6 @@ const tableStore = reactive({
     { label: td('dm.businessCategory.ownerId', 'Responsible Person'), prop: "owner", width: 100 },
     { label: td('dm.businessCategory.ownerPhone', 'Responsible Person Phone'), prop: "ownerPhone", width: 120 },
     { label: td('common.texts.status', 'Status'), prop: "validFlag", width: 100, slot: "validFlag" },
-    {
-      label: td('common.texts.remark', 'Remark'),
-      prop: "remark",
-      align: "left",
-      width: 150,
-      showOverflowTooltip: { effect: "light" },
-    },
     { label: td('common.texts.createdBy', 'Created By'), prop: "createBy", width: 120 },
     {
       label: td('common.texts.createdTime', 'Created Time'),

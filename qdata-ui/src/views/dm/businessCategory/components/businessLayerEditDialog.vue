@@ -130,20 +130,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
-            <el-input
-              type="textarea"
-              maxlength="256字符"
-              show-word-limit
-              :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
-              v-model="form.remark"
-              :rows="3"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">

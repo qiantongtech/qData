@@ -129,16 +129,7 @@
             maxlength="256字符"
           />
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
-          <el-input
-            v-model="form.remark"
-            type="textarea"
-            :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
-            :min-height="192"
-            show-word-limit
-            maxlength="256字符"
-          />
-        </el-form-item>
+        
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -185,9 +176,6 @@
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
           </div>
-        </el-form-item>
-        <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
-          <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="24">
@@ -372,7 +360,6 @@ const tableStore = reactive({
       width: 150,
       align: "left",
     },
-    // { label: t('common.texts.remark'), prop: "remark", align: "left" },
     {
       label: td('common.texts.operation', 'Operation'),
       width: 240,
@@ -477,7 +464,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("dataDomainRef");
 }

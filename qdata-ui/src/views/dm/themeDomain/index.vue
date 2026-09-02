@@ -192,17 +192,6 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
-              <el-input
-                v-model="form.remark"
-                type="textarea"
-                maxlength="256字符"
-                show-word-limit
-                :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
-              />
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
       <template #footer>
@@ -325,7 +314,6 @@ const tableStore = reactive({
       align: "left",
     },
     { label: td('common.texts.status', 'Status'), prop: "validFlag", slot: "validFlag", width: 100 },
-    { label: td('common.texts.remark', 'Remark'), prop: "remark", align: "left" },
 
     { label: td('common.texts.createdBy', 'Created By'), prop: "createBy", align: "left" },
     {
@@ -456,7 +444,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("themeDomainRef");
 }

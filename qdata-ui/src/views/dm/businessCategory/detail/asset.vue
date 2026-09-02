@@ -92,10 +92,6 @@
             {{ form.description ?? "-" }}
           </div>
         </el-form-item>
-        <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" class="row-full" :label-position="labelPosition">
-          <div class="form-readonly textarea">{{ form.remark ?? "-" }}</div>
-        </el-form-item>
-
         <el-form-item :label="td('common.texts.createdBy', 'Created By')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ form.createBy }}
@@ -190,7 +186,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
 }
 

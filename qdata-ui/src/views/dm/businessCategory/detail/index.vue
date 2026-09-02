@@ -87,7 +87,6 @@ const detailItems = computed(() => [
   { label: td('common.texts.createdBy', 'Created By'), key: "createBy" },
   { label: td('common.texts.createdTime', 'Created Time'), key: "createTime" },
   { label: td('common.texts.updatedTime', 'Updated Time'), key: "updateTime" },
-  { label: td('common.texts.remark', 'Remark'), key: "remark", span: 24 },
 ]);
 
 function getDetail(id) {

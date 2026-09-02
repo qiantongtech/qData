@@ -432,6 +432,11 @@ function handleSortChange({ column, order, prop }) {
 // Filter Column data
 function getElColumnData(column) {
   const { hide, dict, link, ...otherData } = column;
+  // If width is provided but minWidth is not, default to minWidth for responsive layout
+  if (otherData.width && !otherData.minWidth) {
+    otherData.minWidth = otherData.width;
+    delete otherData.width;
+  }
   return otherData;
 }
 

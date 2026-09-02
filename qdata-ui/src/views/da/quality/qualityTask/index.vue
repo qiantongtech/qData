@@ -64,33 +64,33 @@
           </div>
           <el-table stripe v-loading="loading" :data="DppQualityTaskEvaluateList" :default-sort="defaultSort"
             @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(1)" :label="td('da.qualityTask.columnVisibility.id')" align="center" prop="id" width="80" />
+            <el-table-column v-if="getColumnVisibility(1)" :label="td('da.qualityTask.columnVisibility.id')" align="center" prop="id" min-width="80" />
             <el-table-column v-if="getColumnVisibility(2)" :label="td('da.qualityTask.columnVisibility.taskName')" align="left" prop="taskName"
-              :show-overflow-tooltip="{ effect: 'light' }" width="200">
+              :show-overflow-tooltip="{ effect: 'light' }" min-width="200">
               <template #default="scope">
                 {{ scope.row.taskName || '-' }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(3)" :label="td('da.qualityTask.columnVisibility.belongCat')" align="center" prop="catName"
-              :show-overflow-tooltip="{ effect: 'light' }" width="150">
+              :show-overflow-tooltip="{ effect: 'light' }" min-width="150">
               <template #default="scope">
                 {{ scope.row.catName || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" :label="td('da.qualityTask.columnVisibility.description')" width="200" align="left" prop="description"
+            <el-table-column v-if="getColumnVisibility(4)" :label="td('da.qualityTask.columnVisibility.description')" min-width="200" align="left" prop="description"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.description || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" :label="td('da.qualityTask.columnVisibility.inspectionTargetCount')" align="center" prop="taskObjNum" width="80"
+            <el-table-column v-if="getColumnVisibility(5)" :label="td('da.qualityTask.columnVisibility.inspectionTargetCount')" align="center" prop="taskObjNum" min-width="80"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.taskObjNum || '-' }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(6)" :label="td('da.qualityTask.columnVisibility.inspectionRuleCount')" align="center" prop="taskEvaluateNum"
-              width="160" :show-overflow-tooltip="{ effect: 'light' }">
+              min-width="160" :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.taskEvaluateNum || '-' }}
               </template>
@@ -103,24 +103,24 @@
 
 
             <el-table-column v-if="getColumnVisibility(8)" :label="td('da.qualityTask.columnVisibility.schedulePeriod')" align="center" prop="cycle"
-              :show-overflow-tooltip="{ effect: 'light' }" width="240">
+              :show-overflow-tooltip="{ effect: 'light' }" min-width="240">
               <template #default="scope">
                 {{ cronToZh(scope.row.cycle) || "-" }}
               </template>
             </el-table-column>
             <el-table-column v-if="getColumnVisibility(9)" :label="td('da.qualityTask.columnVisibility.lastExecutionTime')" align="center" prop="lastExecuteTime"
-              width="160" :show-overflow-tooltip="{ effect: 'light' }">
+              min-width="160" :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ parseTime(scope.row.lastExecuteTime, '{y}-{m}-{d} {h}:{i}') || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" width="120" :label="td('da.qualityTask.columnVisibility.createdBy')" align="center" prop="createBy"
+            <el-table-column v-if="getColumnVisibility(10)" min-width="120" :label="td('da.qualityTask.columnVisibility.createdBy')" align="center" prop="createBy"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.createBy || '-' }}
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" :label="td('da.qualityTask.columnVisibility.createdTime')" align="center" prop="createTime" width="150"
+            <el-table-column v-if="getColumnVisibility(11)" :label="td('da.qualityTask.columnVisibility.createdTime')" align="center" prop="createTime" min-width="150"
               sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
               <template #default="scope">
                 <span>{{
@@ -128,7 +128,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(12)" align="center" prop="status" width="150">
+            <el-table-column v-if="getColumnVisibility(12)" align="center" prop="status" min-width="150">
               <template #header>
                 <div class="justify-center" style="display: flex; align-items: center; justify-content: center;">
                   <span>{{ td('da.qualityTask.columnVisibility.status') }}</span>
@@ -146,7 +146,7 @@
                 </el-switch>
               </template>
             </el-table-column>
-            <el-table-column v-if="getColumnVisibility(13)" :label="td('da.qualityTask.columnVisibility.remark')" width="200" align="left" prop="remark"
+            <el-table-column v-if="getColumnVisibility(13)" :label="td('da.qualityTask.columnVisibility.remark')" min-width="200" align="left" prop="remark"
               :show-overflow-tooltip="{ effect: 'light' }">
               <template #default="scope">
                 {{ scope.row.remark || '-' }}
@@ -154,7 +154,7 @@
             </el-table-column>
 
             <el-table-column v-if="getColumnVisibility(14)" :label="td('common.texts.operation')" align="center"
-              class-name="small-padding fixed-width" fixed="right" width="240">
+              class-name="small-padding fixed-width" fixed="right" min-width="240">
               <template #default="scope">
                 <!--  :disabled="scope.row.status == 1" -->
                 <el-button link type="primary" icon="Edit" @click="routeTo('/da/quality/qualityTask/edit', {

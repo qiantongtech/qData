@@ -5,6 +5,7 @@
         <qt-search-bar
           v-bind="searchStore"
           :params="tableStore.params"
+          :tableRef="tableRef"
           @query="handleQueryClick"
           @reset="handleResetQueryClick"
         />
@@ -23,10 +24,7 @@
           {{ td('common.button.delete') }}
         </el-button>
       </template>
-      <qt-table v-bind="tableStore" ref="tableRef">
-        <template #type="scope">
-          <dict-tag :options="sys_source_system_type" :value="scope.row.type" />
-        </template>
+      <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
         <template #validFlag="scope">
           <el-switch
             v-model="scope.row.validFlag"
@@ -34,12 +32,6 @@
             inactive-color="#ff4949"
             @change="handleStatusChange(scope.row)"
           />
-        </template>
-        <template #responsiblePerson="scope">
-          {{ getUserLabel(scope.row.responsiblePerson) }}
-        </template>
-        <template #contactPerson="scope">
-          {{ getUserLabel(scope.row.contactPerson) }}
         </template>
         <template #handle="{ row }">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(row)"
@@ -140,20 +132,10 @@
         <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
           <el-input
             type="textarea"
-            maxlength="256字符"
+            maxlength="256"
             show-word-limit
             v-model="form.description"
             :placeholder="td('common.form.descriptionPlaceholder')"
-          />
-        </el-form-item>
-
-        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-          <el-input
-            type="textarea"
-            maxlength="256字符"
-            show-word-limit
-            v-model="form.remark"
-            :placeholder="td('common.form.remarkPlaceholder')"
           />
         </el-form-item>
       </el-form>
@@ -219,11 +201,6 @@
         <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
           <div class="form-readonly textarea">
             {{ form.description ?? "-" }}
-          </div>
-        </el-form-item>
-        <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
-          <div class="form-readonly textarea">
-            {{ form.remark ?? "-" }}
           </div>
         </el-form-item>
 
@@ -314,13 +291,6 @@ function loadUserOptions() {
   });
 }
 
-// Get username based on user ID
-function getUserLabel(userId) {
-  if (!userId) return "-";
-  const user = userOptions.value.find((u) => u.value === userId);
-  return user ? user.label : userId;
-}
-
 // Get tags based on dictionary value
 function getDictLabel(dictOptions, value) {
   if (!value) return "-";
@@ -350,104 +320,125 @@ const tableStore = reactive({
       type: "selection",
       width: 55,
     },
-    { label: computed(()=>td('common.texts.number')), prop: "id", width: 60, sortable: true },
-    { label: computed(()=>td('att.sourceSystem.table.name')), prop: "name", align: "left", width: 150 },
+    { label: td("common.texts.number"), prop: "id", width: 60, sortable: true },
     {
-      label: computed(()=>td('att.sourceSystem.table.type')),
-      prop: "type",
-      width: 120,
-      slot: "type",
+      label: td("att.sourceSystem.table.name"),
+      prop: "name",
+      align: "left",
+      width: 260,
     },
     {
-      label: computed(()=>td('common.texts.description')),
+      label: td("att.sourceSystem.table.type"),
+      prop: "type",
+      width: 160,
+      dict: "sys_source_system_type",
+    },
+    {
+      label: td("common.texts.description"),
       prop: "description",
       align: "left",
-      width: 200,
-      showOverflowTooltip: true,
+      width: 256,
+      showOverflowTooltip: { effect: "light" },
     },
     {
-      label: computed(()=>td('common.texts.status')),
+      label: td("common.texts.status"),
       prop: "validFlag",
       width: 80,
       slot: "validFlag",
     },
     {
-      label: computed(()=>td('common.texts.sortOrder')),
+      label: td("common.texts.sortOrder"),
       prop: "sortOrder",
       sortableKey: "sort_order",
       width: 80,
       sortable: true,
     },
     {
-      label: computed(()=>td('att.sourceSystem.table.responsiblePerson')),
+      label: td("att.sourceSystem.table.responsiblePerson"),
       prop: "responsiblePersonName",
       width: 160,
     },
     {
-      label: computed(()=>td('att.sourceSystem.table.contactPerson')),
+      label: td("att.sourceSystem.table.contactPerson"),
       prop: "contactPersonName",
-      width: 160
+      width: 160,
     },
-    { label: computed(()=>td('common.texts.createdBy')), prop: "createBy", width: 120 },
+    { label: td("common.texts.createdBy"), prop: "createBy", width: 120 },
     {
-      label: computed(()=>td('common.texts.createdTime')),
+      label: td("common.texts.createdTime"),
       prop: "createTime",
-      width: 150,
+      width: 160,
       sortable: true,
       sortableKey: "create_time",
       date: true,
     },
-    { label: computed(()=>td('common.texts.operation')), width: 240, fixed: "right", slot: "handle" },
+    {
+      label: td("common.texts.operation"),
+      width: 240,
+      fixed: "right",
+      slot: "handle",
+    },
   ],
   func: listSourceSystem,
-  params: {},
+  params: {
+    pageNum: 1,
+    pageSize: 10,
+    name: "",
+    type: "",
+    validFlag: null,
+    responsiblePerson: null,
+    contactPerson: null,
+  },
   events: {},
 });
 
 const searchStore = reactive({
   items: [
     {
-      label: computed(()=>td('att.sourceSystem.form.name')),
+      label: td("att.sourceSystem.form.name"),
       prop: "name",
       align: "left",
-      component: { is: "input", placeholder: computed(()=>td('att.sourceSystem.form.namePlaceholder')) },
+      component: {
+        is: "input",
+        placeholder: td("att.sourceSystem.form.namePlaceholder"),
+      },
     },
     {
-      label: computed(()=>td('att.sourceSystem.form.type')),
+      label: td("att.sourceSystem.form.type"),
       prop: "type",
       component: {
         is: "select",
-        placeholder: computed(()=>td('att.sourceSystem.form.typePlaceholder')),
+        placeholder: td("att.sourceSystem.form.typePlaceholder"),
         options: sys_source_system_type,
       },
     },
     {
-      label: computed(()=>td('common.texts.status')),
+      label: td("common.texts.status"),
       prop: "validFlag",
       component: {
         is: "select",
-        placeholder: computed(()=>td('common.form.statusPlaceholder')),
+        placeholder: td("common.form.statusPlaceholder"),
         options: [
-          { value: true, label: td('att.sourceSystem.form.enable') },
-          { value: false, label: td('att.sourceSystem.form.disable') },
+          { value: true, label: td("att.sourceSystem.form.enable") },
+          { value: false, label: td("att.sourceSystem.form.disable") },
         ],
       },
     },
     {
-      label: computed(()=>td('att.sourceSystem.form.responsiblePerson')),
+      label: td("att.sourceSystem.form.responsiblePerson"),
       prop: "responsiblePerson",
       component: {
         is: "select",
-        placeholder: computed(()=>td('att.sourceSystem.form.responsiblePersonPlaceholder')),
+        placeholder: td("att.sourceSystem.form.responsiblePersonPlaceholder"),
         options: [],
       },
     },
     {
-      label: computed(()=>td('att.sourceSystem.form.contactPerson')),
+      label: td("att.sourceSystem.form.contactPerson"),
       prop: "contactPerson",
       component: {
         is: "select",
-        placeholder: computed(()=>td('att.sourceSystem.form.contactPersonPlaceholder')),
+        placeholder: td("att.sourceSystem.form.contactPersonPlaceholder"),
         options: [],
       },
     },
@@ -470,13 +461,11 @@ const { form, rules } = toRefs(data);
 
 // Click to query
 function handleQueryClick() {
-  tableRef.value.getList();
+  tableStore.params.pageNum = 1;
 }
 
 // Reset query
-function handleResetQueryClick() {
-  tableRef.value.resetQuery();
-}
+function handleResetQueryClick() {}
 
 /** Change enabled status value */
 function handleStatusChange(row) {
@@ -521,7 +510,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("sourceSystemRef");
 }
@@ -595,28 +583,31 @@ function submitForm() {
 /** Delete button action */
 function handleDelete(row) {
   const invalidIds = [];
-  let _ids = null;
   if (row?.id) {
-    _ids = row.id;
+    invalidIds.push(row.id);
   } else {
-    // _ids = store.rows.map((item) => item.id).join(",");
     store.rows.forEach((item) => {
-      // When validFlag is false, record id
       if (item.validFlag === false) {
         invalidIds.push(item.id);
       }
     });
   }
+
+  if (invalidIds.length === 0) return;
+
   proxy.$modal
     .confirm(
-      td('att.sourceSystem.message.deleteConfirm', '', { deletable: invalidIds.length, undeletable: store.rows.length - invalidIds.length })
+      td("att.sourceSystem.message.deleteConfirm", "", {
+        deletable: invalidIds.length,
+        undeletable: row?.id ? 0 : store.rows.length - invalidIds.length,
+      })
     )
     .then(function () {
       return delSourceSystem(invalidIds);
     })
     .then(() => {
       tableRef.value.getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
     .catch(() => {
       // User cancels deletion operation

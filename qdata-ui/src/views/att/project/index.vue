@@ -139,7 +139,7 @@
           align="left"
           prop="name"
           v-if="getColumnVisibility(2)"
-          width="200"
+          min-width="200"
         >
           <template #default="scope">
             {{ scope.row.name || "-" }}
@@ -151,7 +151,7 @@
           prop="description"
           :show-overflow-tooltip="{ effect: 'light' }"
           v-if="getColumnVisibility(3)"
-          width="300"
+          min-width="300"
         >
           <template #default="scope">
             {{ scope.row.description || "-" }}
@@ -172,7 +172,7 @@
           align="center"
           prop="managerPhone"
           v-if="getColumnVisibility(5)"
-          width="120"
+          min-width="120"
         >
           <template #default="scope">
             {{ scope.row.managerPhone || "-" }}
@@ -184,7 +184,7 @@
           :show-overflow-tooltip="{ effect: 'light' }"
           align="left"
           prop="createBy"
-          width="120"
+          min-width="120"
         >
           <template #default="scope">
             {{ scope.row.createBy || "-" }}
@@ -196,7 +196,7 @@
           :label="td('att.common.createTime')"
           align="center"
           prop="createTime"
-          width="150"
+          min-width="150"
         >
           <template #default="scope">
             <span>{{
@@ -223,7 +223,7 @@
         <el-table-column
           :label="td('common.texts.remark')"
           align="left"
-          width="200"
+          min-width="200"
           prop="remark"
           :show-overflow-tooltip="{ effect: 'light' }"
           v-if="getColumnVisibility(9)"
@@ -312,7 +312,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('att.common.manager')" prop="managerId">
               <!--                <el-input v-model="form.managerId" placeholder="Please select the person in charge" />-->
               <el-select
@@ -332,7 +332,7 @@
               <!--                <el-cascader :options="managerOptions" :show-all-levels="false"></el-cascader>-->
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('att.common.contactWay')" prop="managerPhone" :label-position="labelPosition">
               <el-input
                 v-model="form.managerPhone"
@@ -413,14 +413,14 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('att.project.texts.manager') + ':'" prop="assetTableName" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.nickName }}
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('att.project.texts.contact') + ':'" prop="managerPhone" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.managerPhone ?? "-" }}
@@ -438,14 +438,14 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('common.texts.createdBy') + ':'" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.createBy }}
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
@@ -454,14 +454,14 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('common.texts.updatedBy') + ':'" prop="createBy" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.updateBy }}
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('common.texts.updatedTime') + ':'" prop="updateTime" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
@@ -470,7 +470,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag" :label-position="labelPosition">
               <div class="form-readonly">
                 {{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}
@@ -478,15 +478,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-              <div class="form-readonly textarea">
-                {{ form.remark ?? "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
+      
       </el-form>
       <template #footer>
         <div class="dialog-footer">

@@ -42,6 +42,5 @@ const items = computed(() => [
   { key: "createTime", label: td('common.texts.createdTime'), type: "time" },
   { key: "updateBy", label: td('common.texts.updatedBy') },
   { key: "updateTime", label: td('common.texts.updatedTime'), type: "time" },
-  { key: "remark", label: td('common.texts.remark'), span: 24 },
 ]);
 </script>

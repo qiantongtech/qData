@@ -20,7 +20,7 @@
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="att/attAuditRule.list" />
 
-    <el-container style="90%">
+    <el-container>
       <DeptTree
         :deptOptions="processedData"
         :leftWidth="leftWidth"
@@ -30,198 +30,53 @@
         :default-expand="true"
       />
 
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form
-            class="btn-style"
-            :model="queryParams"
-            ref="queryRef"
-            :inline="true"
-            v-show="showSearch"
-            @submit.prevent
-          >
-            <el-form-item :label="td('att.common.ruleName')" prop="name" :label-position="labelPosition">
-              <el-input
-                class="el-form-input-width"
-                v-model="queryParams.name"
-                :placeholder="td('att.common.ruleNamePlaceholder')"
-                clearable
-                @keyup.enter="handleQuery"
-              />
-            </el-form-item>
-
-            <el-form-item>
-              <el-button
-                plain
-                type="primary"
-                @click="handleQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
-              </el-button>
-              <el-button
-                @click="resetQuery"
-                @mousedown="(e) => e.preventDefault()"
-              >
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
+      <el-main class="main-content">
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
+              :tableRef="tableRef"
+            />
+          </template>
+          <template #actions-data>
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <!-- <el-button type="primary" plain @click="handleAdd"
-                                    v-hasPermi="['att:rule:auditrule:add']" @mousedown="(e) => e.preventDefault()">
-                                    <i class="iconfont-mini icon-xincheng mr5"></i>New
-                                </el-button> -->
+                <el-button
+                  type="primary"
+                  plain
+                  @click="handleAdd"
+                  v-hasPermi="['att:rule:auditrule:add']"
+                  @mousedown="(e) => e.preventDefault()"
+                >
+                  <i class="iconfont-mini icon-xincheng mr5"></i>{{ td('common.button.new') }}
+                </el-button>
               </el-col>
-              <!--                            <el-col :span="1.5">-->
-              <!--                                <el-button type="primary" plain :disabled="single" @click="handleUpdate"-->
-              <!--                                    v-hasPermi="['att:rule:auditrule:edit']" @mousedown="(e) => e.preventDefault()">-->
-              <!--                                    <i class="iconfont-mini icon-xiugai--copy mr5"></i>Modify-->
-              <!--                                </el-button>-->
-              <!--                            </el-col>-->
-              <!--                            <el-col :span="1.5">-->
-              <!--                                <el-button type="danger" plain :disabled="multiple" @click="handleDelete"-->
-              <!--                                    v-hasPermi="['att:rule:auditrule:remove']" @mousedown="(e) => e.preventDefault()">-->
-              <!--                                    <i class="iconfont-mini icon-shanchu-huise mr5"></i>Delete-->
-              <!--                                </el-button>-->
-              <!--                            </el-col>-->
             </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-                :columns="columns"
-              ></right-toolbar>
-            </div>
-          </div>
-          <el-table
-            stripe
-            v-loading="loading"
-            :data="attAuditRuleList"
-            @selection-change="handleSelectionChange"
-            :default-sort="defaultSort"
-            @sort-change="handleSortChange"
-          >
-            <el-table-column
-              v-if="getColumnVisibility(6)"
-              :label="td('common.texts.number')"
-              align="left"
-              prop="code"
-              width="80"
-            >
-              <template #default="scope">
-                {{ scope.row.code || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(1)"
-              :label="td('att.auditRule.table.name')"
-              align="left"
-              prop="name"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              width="200"
-            >
-              <template #default="scope">
-                {{ scope.row.name || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(2)"
-              :label="td('att.auditRule.table.qualityDim')"
-              align="left"
-              prop="qualityDim"
-              :show-overflow-tooltip="{ effect: 'light' }"
-              width="160"
-            >
-              <template #default="scope">
-                <dict-tag
-                  :options="att_rule_audit_q_dimension"
-                  :value="scope.row.qualityDim"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              :show-overflow-tooltip="{ effect: 'light' }"
-              v-if="getColumnVisibility(5)"
-              :label="td('common.texts.description')"
-              width="400"
-              align="left"
-              prop="description"
-            >
-              <template #default="scope">
-                {{ scope.row.description || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(3)"
-              :label="td('att.auditRule.table.useCase')"
-              width="500"
-              align="left"
-              prop="level"
-              :show-overflow-tooltip="{ effect: 'light' }"
-            >
-              <template #default="scope">
-                {{ scope.row.useCase || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-if="getColumnVisibility(4)"
-              :label="td('att.auditRule.table.example')"
-              width="700"
-              align="left"
-              prop="type"
-              :show-overflow-tooltip="{ effect: 'light' }"
-            >
-              <template #default="scope">
-                {{ scope.row.example || "-" }}
-              </template>
-            </el-table-column>
-
-            <!-- <el-table-column
-                            :show-overflow-tooltip="{effect: 'light'}"
-                            v-if="getColumnVisibility(14)"
-                            :label="td('common.texts.remark')"
-                            align="left"
-                            prop="remark"
-                        >
-                            <template #default="scope">
-                                {{ scope.row.remark || '-' }}
-                            </template>
-                        </el-table-column> -->
-            <!-- <el-table-column label="Operation" align="left" class-name="small-padding fixed-width" fixed="right"
-                            width="120">
-                            <template #default="scope">
-                                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                                    v-hasPermi="['att:rule:auditrule:edit']">Edit</el-button>
-                                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                                    v-hasPermi="['att:rule:auditrule:remove']">Delete</el-button>
-                            </template>
-                        </el-table-column> -->
-
-            <template #empty>
-              <div class="emptyBg">
-                <img
-                  src="../../../../assets/images/system/no_data/empty-nodata.png"
-                  alt=""
-                />
-                <p>{{td('common.noData')}}</p>
-              </div>
+          </template>
+          <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(row)"
+                v-hasPermi="['att:rule:auditrule:edit']"
+                >{{ td('common.button.edit') }}</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                v-hasPermi="['att:rule:auditrule:remove']"
+                >{{ td('common.button.delete') }}</el-button
+              >
             </template>
-          </el-table>
-
-          <pagination
-            v-show="total > 0"
-            :total="total"
-            v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize"
-            @pagination="getList"
-          />
-        </div>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
     <!-- Add or modify audit rule dialog box -->
@@ -322,7 +177,6 @@ import {
   addAttAuditRule,
   updateAttAuditRule,
 } from "@/api/att/rule/auditRule";
-import { getToken } from "@/utils/auth.js";
 import { computed } from "vue";
 import DeptTree from "@/components/DeptTree";
 import useDefaultLang from "@/composables/useDefaultLang";
@@ -337,29 +191,97 @@ const { att_rule_audit_type, att_rule_level, att_rule_audit_q_dimension } =
     "att_rule_audit_q_dimension"
   );
 const leftWidth = ref(300); // Initial left width
-const isResizing = ref(false); // Determine whether dragging is in progress
-let startX = 0; // Initial position when mouse is pressed // Initial left width
-let Materialization = ref(false);
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // Calculate mouse movement distance
-    leftWidth.value += delta; // Modify left width
-    startX = event.clientX; // Update starting position
-    // Use requestAnimationFrame to reduce page redraw frequency
-    requestAnimationFrame(() => {});
-  }
-};
+
+const tableRef = ref(null);
+const ids = ref([]);
+const single = ref(true);
+const multiple = ref(true);
+
+const tableStore = reactive({
+  config: {
+    sort: true,
+    initResquest: false, // 禁用自动初始化请求
+    table: {
+      stripe: true,
+      defaultSort: { prop: "createTime", order: "descending" },
+      onSelectionChange: function (selection) {
+        ids.value = selection.map((item) => item.id);
+        single.value = selection.length != 1;
+        multiple.value = !selection.length;
+      },
+    },
+  },
+  columns: [
+    {
+      label: td('common.texts.number'),
+      prop: "code",
+      width: 60,
+      align: "left",
+      sortable: true,
+    },
+    {
+      label: td('att.auditRule.table.name'),
+      prop: "name",
+      align: "left",
+      width: 260,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('att.auditRule.table.qualityDim'),
+      prop: "qualityDim",
+      dict: "att_rule_audit_q_dimension",
+      align: "left",
+      width: 160,
+    },
+    {
+      label: td('common.texts.description'),
+      prop: "description",
+      align: "left",
+      width: 256,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('att.auditRule.table.useCase'),
+      prop: "useCase",
+      align: "left",
+      width: 500,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('att.auditRule.table.example'),
+      prop: "example",
+      align: "left",
+      width: 700,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('common.texts.action'),
+      slot: "action",
+      width: 120,
+      fixed: "right",
+    },
+  ],
+  func: listAttAuditRule,
+  params: {
+    name: null,
+    qualityDim: "",
+    validFlag: 1,
+  },
+});
+
+const searchStore = reactive({
+  items: [
+    {
+      label: td('att.common.ruleName'),
+      prop: "name",
+      component: {
+        is: "input",
+        placeholder: td('att.common.ruleNamePlaceholder'),
+      },
+    },
+  ],
+});
+
 const processedData = computed(() => {
   return [
     {
@@ -375,90 +297,29 @@ const processedData = computed(() => {
     },
   ];
 });
-const attAuditRuleList = ref([]);
+
 function handleNodeClick(data) {
-  queryParams.value.qualityDim = data.id;
-  queryParams.value.pageNum = 1;
+  tableStore.params.qualityDim = data.id;
   handleQuery();
 }
-// Show hidden information
-const columns = ref([
-  { key: 6, label: td('common.texts.number'), visible: true },
-  { key: 1, label: td('att.auditRule.texts.name'), visible: true },
-  { key: 2, label: td('att.auditRule.texts.qualityDim'), visible: true },
-  { key: 5, label: td('common.texts.description'), visible: true },
-  { key: 3, label: td('att.auditRule.texts.scenario'), visible: true },
-  { key: 4, label: td('att.auditRule.texts.example'), visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
-  if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
-  return column.visible;
-};
 
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
-
-/*** User import parameters */
-const upload = reactive({
-  // Whether to display the pop-up layer (user import)
-  open: false,
-  // Popup layer title (user imported)
-  title: "",
-  // Whether to disable uploading
-  isUploading: false,
-  // Whether to update existing user data
-  updateSupport: 0,
-  // Set upload request headers
-  headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
-  url: import.meta.env.VITE_APP_BASE_API + "/att/auditRule/importData",
-});
 
 const data = reactive({
   form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    name: null,
-    qualityDim: "",
-    type: "",
-    code: "",
-  },
   rules: {
     name: [{ required: true, message: td('att.common.ruleNameRequired'), trigger: "blur" }],
     qualityDim: [
       { required: true, message: td('att.auditRule.qualityDimRequired'), trigger: "change" },
     ],
-    // type: [{ required: true, message: td('att.common.ruleTypeRequired'), trigger: 'change' }],
     code: [{ required: true, message: td('att.common.codeRequired'), trigger: "change" }],
-    // level: [{ required: true, message: 'Rule level cannot be empty', trigger: 'change' }]
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
-
-/** Query the list of audit rules */
-function getList() {
-  loading.value = true;
-  listAttAuditRule({ ...queryParams.value, validFlag: 1 }).then((response) => {
-    attAuditRuleList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
-}
+const { form, rules } = toRefs(data);
 
 // Cancel button
 function cancel() {
@@ -491,8 +352,8 @@ function reset() {
 
 /** Search button action */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  tableStore.params.pageNum = 1;
+  // qt-search-bar 会自动调用 tableRef.value.getList()
 }
 const DeptTreeRef = ref(null);
 /** reset button action */
@@ -500,30 +361,14 @@ function resetQuery() {
   if (DeptTreeRef.value?.resetTree) {
     DeptTreeRef.value.resetTree();
   }
-  queryParams.value.qualityDim = "";
-  queryParams.value.pageNum = 1;
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
+  tableStore.params.qualityDim = "";
+  // qt-search-bar 会自动调用 tableRef.value.resetQuery()
 }
 
 /** Add button operation */
 function handleAdd() {
   reset();
-  form.value.qualityDim = queryParams.value.qualityDim;
+  form.value.qualityDim = tableStore.params.qualityDim;
   form.value.type = "5";
   form.value.level = "1";
   open.value = true;
@@ -567,7 +412,7 @@ function submitForm() {
             submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.getList();
           })
           .catch((error) => {
             submitLoading.value = false;
@@ -578,7 +423,7 @@ function submitForm() {
             submitLoading.value = false;
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.getList();
           })
           .catch((error) => {
             submitLoading.value = false;
@@ -599,7 +444,7 @@ function handleDelete(row) {
       return delAttAuditRule(_ids);
     })
     .then(() => {
-      getList();
+      tableRef.value.getList();
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => {});
@@ -610,74 +455,11 @@ function handleExport() {
   proxy.download(
     "att/auditRule/export",
     {
-      ...queryParams.value,
+      ...tableStore.params,
     },
     `attAuditRule_${new Date().getTime()}.xlsx`
   );
 }
-
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
-function handleImport() {
-  upload.title = td('att.auditRule.importTitle');
-  upload.open = true;
-}
-
-/** Download template operation */
-function importTemplate() {
-  proxy.download(
-    "system/user/importTemplate",
-    {},
-    `attAuditRule_template_${new Date().getTime()}.xlsx`
-  );
-}
-
-/** Submit upload file */
-function submitFileForm() {
-  proxy.$refs["uploadRef"].submit();
-}
-
-/**File upload is being processed */
-const handleFileUploadProgress = (event, file, fileList) => {
-  upload.isUploading = true;
-};
-
-/** File upload successfully processed */
-const handleFileSuccess = (response, file, fileList) => {
-  upload.open = false;
-  upload.isUploading = false;
-  proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert(
-    "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-      response.msg +
-      "</div>",
-    td('att.common.importResult'),
-    { dangerouslyUseHTMLString: true }
-  );
-  getList();
-};
-/** ---------------------------------**/
-
-function routeTo(link, row) {
-  if (link !== "" && link.indexOf("http") !== -1) {
-    window.location.href = link;
-    return;
-  }
-  if (link !== "") {
-    if (link === router.currentRoute.value.path) {
-      window.location.reload();
-    } else {
-      router.push({
-        path: link,
-        query: {
-          id: row.id,
-        },
-      });
-    }
-  }
-}
-
-getList();
 </script>
 <style scoped lang="scss">
 .app-container {

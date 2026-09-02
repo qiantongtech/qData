@@ -32,31 +32,31 @@
 
     <el-table stripe height="400" v-loading="loading" :data="dpDataElemList" @selection-change="handleSelectionChange"
         :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="id" width="50" />
+        <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="id" min-width="50" />
         <el-table-column v-if="getColumnVisibility(1)" :label="td('dp.dataElem.nameZh')" :show-overflow-tooltip="{ effect: 'light' }"
-            align="left" prop="name" width="200">
+            align="left" prop="name" min-width="200">
             <template #default="scope">
                 {{ scope.row.name || "-" }}
             </template>
         </el-table-column>
         <el-table-column v-if="getColumnVisibility(2)" :label="td('dp.dataElem.nameEn')" :show-overflow-tooltip="{ effect: 'light' }"
-            align="left" prop="engName" width="200">
+            align="left" prop="engName" min-width="200">
             <template #default="scope">
                 {{ scope.row.engName || "-" }}
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(7)" width="240" :label="td('common.texts.description')" align="left" prop="description"
+        <el-table-column v-if="getColumnVisibility(7)" min-width="240" :label="td('common.texts.description')" align="left" prop="description"
             :show-overflow-tooltip="{ effect: 'light' }">
             <template #default="scope">
                 {{ scope.row.description || "-" }}
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(3)" width="100" :label="td('dp.dataElem.type')" align="left" prop="type">
+        <el-table-column v-if="getColumnVisibility(3)" min-width="100" :label="td('dp.dataElem.type')" align="left" prop="type">
             <template #default="scope">
                 <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" width="120"
+        <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" min-width="120"
             :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
             <template #default="scope">
                 {{ scope.row.catName || "-" }}
@@ -70,12 +70,12 @@
             </template>
         </el-table-column>
         <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-        <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.createdTime')" align="left" prop="createTime" width="150">
+        <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.createdTime')" align="left" prop="createTime" min-width="150">
             <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
                     }}</span>
             </template>
         </el-table-column>
-        <el-table-column v-if="getColumnVisibility(5)" width="80" :label="td('common.texts.status')" align="left" prop="status">
+        <el-table-column v-if="getColumnVisibility(5)" min-width="80" :label="td('common.texts.status')" align="left" prop="status">
             <template #default="scope">
                 <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
                     inactive-value="0" @change="
@@ -89,7 +89,7 @@
                 {{ scope.row.remark || "-" }}
             </template>
         </el-table-column>
-        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" min-width="200">
             <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                     v-hasPermi="['dp:dataElem:dataelem:edit']">{{ td('dp.common.edit') }}

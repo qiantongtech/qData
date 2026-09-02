@@ -18,7 +18,6 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <GuideTip tip-id="att/attTag.list" />
 
     <el-container>
       <DeptTree
@@ -35,8 +34,9 @@
             <qt-search-bar
               v-bind="searchStore"
               :params="tableStore.params"
-              @query="handleQueryClick"
-              @reset="handleResetQueryClick"
+              @query="handleQuery"
+              @reset="resetQuery"
+              :tableRef="tableRef"
             />
           </template>
           <template #actions-data>
@@ -60,7 +60,7 @@
               {{ td('common.button.delete') }}
             </el-button>
           </template>
-          <qt-table v-bind="tableStore" ref="tableRef">
+          <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
             <template #status="scope">
               <el-switch
                 v-model="scope.row.status"
@@ -186,19 +186,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-              <el-input
-                v-model="form.remark"
-                type="textarea"
-                maxlength="256字符"
-                show-word-limit
-                :placeholder="td('common.form.remarkPlaceholder')"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -235,7 +222,7 @@ const submitLoading = ref(false);
 const router = useRouter();
 
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // Initial left width
+const leftWidth = ref(280); // Initial left width
 const store = reactive({
   rows: [],
 });
@@ -255,6 +242,7 @@ function getDeptTree() {
 const tableRef = ref(null);
 const tableStore = reactive({
   config: {
+    initResquest: true,
     sort: true,
     table: {
       stripe: true,
@@ -272,7 +260,7 @@ const tableStore = reactive({
       label: td('att.tag.table.name'),
       prop: "name",
       align: "left",
-      width: 180,
+      width: 260,
       showOverflowTooltip: { effect: "light" },
       link: {
         external: handleDetail,
@@ -281,15 +269,16 @@ const tableStore = reactive({
     {
       label: td('dpp.asset.add.tag.tagCategory'),
       prop: "catName",
+      tag: { class: "task-cat-ellipsis" },
       align: "left",
-      width: 200,
+      width: 160,
       showOverflowTooltip: { effect: "light" },
     },
     {
       label: td('common.texts.description'),
       prop: "description",
       align: "left",
-      width: 240,
+      width: 256,
       showOverflowTooltip: { effect: "light" },
     },
     {
@@ -369,16 +358,13 @@ function handleNodeClick(data) {
   tableRef.value.getList();
 }
 
-function handleQueryClick() {
-  tableRef.value.getList();
+function handleQuery() {
+  tableStore.params.pageNum = 1;
 }
 let DeptTreeRef = ref(null);
-function handleResetQueryClick() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
+function resetQuery() {
+  DeptTreeRef.value?.resetTree?.();
   tableStore.params.catCode = null;
-  tableRef.value.resetQuery();
 }
 
 /** Enable disable switch */
@@ -432,7 +418,6 @@ function reset() {
     status: "1",
     nearSynonyms: null,
     synonyms: null,
-    remark: null,
   };
   proxy.resetForm("AttTagRef");
 }

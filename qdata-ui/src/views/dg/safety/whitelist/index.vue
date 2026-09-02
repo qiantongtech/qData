@@ -411,7 +411,7 @@
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
             :label="td('common.texts.number')"
-            width="80"
+            min-width="80"
             align="center"
             prop="userId"
           />
@@ -429,14 +429,14 @@
           />
           <el-table-column
             :label="td('dg.whitelist.department')"
-            width="180"
+            min-width="180"
             align="center"
             prop="dept.deptName"
             :show-overflow-tooltip="{ effect: 'light' }"
           />
           <el-table-column
             :label="td('dg.whitelist.phoneNumber')"
-            width="180"
+            min-width="180"
             align="center"
             prop="phonenumber"
           />
@@ -496,7 +496,7 @@
           <el-table-column type="selection" width="70" align="center" />
           <el-table-column
             :label="td('common.texts.number')"
-            width="80"
+            min-width="80"
             align="center"
             prop="roleId"
           />

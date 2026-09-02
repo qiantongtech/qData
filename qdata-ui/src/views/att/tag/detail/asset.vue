@@ -22,7 +22,7 @@
     :tableRef="tableRef"
     :config="{ fullContent: false, actions: { table: { search: false } } }"
   >
-    <qt-table v-bind="tableStore" ref="tableRef">
+    <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
       <template #themeNames="{ row }">
         {{
           row.daAssetThemeRelList?.length
@@ -111,19 +111,9 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :label-position="labelPosition">
             <el-input v-model="form.synonyms" :placeholder="td('att.common.synonymsPlaceholder')" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-            <el-input
-              v-model="form.remark"
-              :placeholder="td('common.form.remarkPlaceholder')"
-              maxlength="256字符"
-              show-word-limit
-            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -217,17 +207,10 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item :label="td('att.common.synonyms')" prop="synonyms" :label-position="labelPosition">
             <div>
               {{ form.synonyms }}
-            </div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-            <div>
-              {{ form.remark }}
             </div>
           </el-form-item>
         </el-col>
@@ -316,18 +299,20 @@ const tableStore = reactive({
       label: td('dpp.asset.assetName'),
       prop: "name",
       align: "left",
+      width: 260,
       showOverflowTooltip: { effect: "light" },
     },
     {
       label: td('common.texts.description'),
       prop: "description",
       align: "left",
+      width: 256,
       showOverflowTooltip: { effect: "light" },
-      width: 230,
     },
     {
       label: td('dpp.asset.assetCategory'),
       prop: "catName",
+      tag: { class: "task-cat-ellipsis" },
       align: "left",
       showOverflowTooltip: { effect: "light" },
     },
@@ -358,8 +343,8 @@ const tableStore = reactive({
   func: (params) => pageListByIds({ tagIdList: route.query.id, ...params }),
   params: queryParams.value,
 });
-function handleQueryClick() {
-  tableRef.value && tableRef.value.getList();
+function handleQuery() {
+  tableStore.params.pageNum = 1;
 }
 
 // Cancel button
@@ -390,21 +375,18 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("AttTagRef");
 }
 
 /** Search button action */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  handleQueryClick();
+function handleQueryClick() {
+  tableStore.params.pageNum = 1;
 }
 
 /** reset button action */
 function resetQuery() {
   proxy.resetForm("queryRef");
-  handleQuery();
 }
 
 // Multiple selection box selected data

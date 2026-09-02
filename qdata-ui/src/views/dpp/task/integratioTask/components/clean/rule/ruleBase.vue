@@ -107,7 +107,7 @@
               <el-input
                 v-if="!falg"
                 type="textarea"
-                maxlength="500"
+                maxlength="256字符"
                 show-word-limit
                 v-model="form.ruleDesc"
                 :placeholder="td('dpp.cleanRule.inputRuleDesc', 'Please enter rule description')"
@@ -124,7 +124,7 @@
               <el-input
                 v-if="!falg"
                 type="textarea"
-                maxlength="500"
+                maxlength="256字符"
                 show-word-limit
                 v-model="form.whereClause"
                 :placeholder="td('dpp.cleanRule.inputWhereCondition', 'Please enter where condition')"

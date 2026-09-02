@@ -126,7 +126,7 @@
             :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
         <el-form-item :label="td('common.texts.remark', 'Remark')" prop="remark" :label-position="labelPosition">
@@ -136,7 +136,7 @@
             :placeholder="td('common.form.remarkPlaceholder', 'Please enter remark')"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
       </el-form>

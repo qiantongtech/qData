@@ -133,7 +133,7 @@
             :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            :maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
       </div>
@@ -356,7 +356,7 @@
             :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            :maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
 
@@ -372,7 +372,7 @@
             placeholder="Please enter a change description"
             :min-height="192"
             show-word-limit
-            maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item> -->
       </div>

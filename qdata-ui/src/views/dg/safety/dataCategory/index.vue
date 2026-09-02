@@ -292,7 +292,7 @@
                 v-model="form.description"
                 type="textarea"
                 :placeholder="td('common.form.descriptionPlaceholder')"
-                maxlength="500"
+                maxlength="256字符"
                 show-word-limit
               />
             </el-form-item>
@@ -305,7 +305,7 @@
               <el-input
                 v-model="form.remark"
                 type="textarea"
-                maxlength="500"
+                maxlength="256字符"
                 show-word-limit
                 :placeholder="td('common.form.remarkPlaceholder')"
               />

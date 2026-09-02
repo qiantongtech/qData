@@ -209,7 +209,7 @@
       <el-form-item :label="td('common.texts.description')" prop="description" class="row-full" :label-position="labelPosition">
         <el-input
             type="textarea"
-            :maxlength="500"
+            maxlength="256字符"
             show-word-limit
             :min-height="192"
             v-model="form.description"
@@ -219,7 +219,7 @@
       <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
         <el-input
             type="textarea"
-            :maxlength="500"
+            maxlength="256字符"
             show-word-limit
             :min-height="192"
             v-model="form.remark"

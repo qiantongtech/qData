@@ -408,7 +408,7 @@
             :placeholder="td('common.form.descriptionPlaceholder')"
             :min-height="192"
             show-word-limit
-            :maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
 
@@ -423,7 +423,7 @@
             :placeholder="td('common.form.remarkPlaceholder')"
             :min-height="192"
             show-word-limit
-            :maxlength="500"
+            maxlength="256字符"
           />
         </el-form-item>
       </el-form>

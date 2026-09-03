@@ -25,126 +25,72 @@
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataElem.treePlaceholder')"
         @node-click="handleNodeClick" />
 
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-            v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('dp.dataElem.nameZh')" prop="name" :label-position="labelPosition">
-              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('dp.dataElem.nameZhPlaceholder')" clearable
-                @keyup.enter="handleQuery" />
-            </el-form-item>
-            <el-form-item :label="td('dp.dataElem.nameEn')" prop="engName" :label-position="labelPosition">
-              <el-input class="el-form-input-width" v-model="queryParams.engName" :placeholder="td('dp.dataElem.nameEnPlaceholder')" clearable
-                @keyup.enter="handleQuery" />
-            </el-form-item>
-            <el-form-item>
-              <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('dp.common.query') }}
-              </el-button>
-              <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('dp.common.reset') }}
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
+      <el-main class="main-content">
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
+              :tableRef="tableRef"
+            />
+          </template>
+
+          <template #actions-data>
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain @click="handleAdd" v-hasPermi="['dp:dataElem:add']"
-                  @mousedown="(e) => e.preventDefault()">
+                <el-button
+                  type="primary"
+                  plain
+                  @click="handleAdd"
+                  v-hasPermi="['dp:dataElem:add']"
+                  @mousedown="(e) => e.preventDefault()"
+                >
                   <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('dp.common.add') }}
                 </el-button>
               </el-col>
             </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-            </div>
-          </div>
-          <el-table stripe v-loading="loading" :data="dpDataElemList" @selection-change="handleSelectionChange"
-            :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="left" prop="id" min-width="50" />
-            <el-table-column v-if="getColumnVisibility(1)" :label="td('dp.dataElem.nameZh')" :show-overflow-tooltip="{ effect: 'light' }"
-              align="left" prop="name" min-width="200">
-              <template #default="scope">
-                {{ scope.row.name || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(2)" :label="td('dp.dataElem.nameEn')" :show-overflow-tooltip="{ effect: 'light' }"
-              align="left" prop="engName" min-width="200">
-              <template #default="scope">
-                {{ scope.row.engName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" min-width="240" :label="td('common.texts.description')" align="left" prop="description"
-              :show-overflow-tooltip="{ effect: 'light' }">
-              <template #default="scope">
-                {{ scope.row.description || "-" }}
-              </template>
-            </el-table-column>
-<!--            <el-table-column v-if="getColumnVisibility(3)" min-width="100" :label="td('dp.dataElem.type')" align="center" prop="type">
-              <template #default="scope">
-                <dict-tag :options="dp_data_elem_code_type" :value="scope.row.type" />
-              </template>
-            </el-table-column>-->
-            <el-table-column v-if="getColumnVisibility(4)" :label="td('dp.dataElem.catCode')" min-width="180"
-              :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="catCode">
-              <template #default="scope">
-                {{ scope.row.catName || "-" }}
-              </template>
-            </el-table-column>
+          </template>
 
-            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }"
-              align="left" prop="createBy" min-width="140">
-              <template #default="scope">
-                {{ scope.row.createBy || "-" }}
-              </template>
-            </el-table-column>
-            <!--  sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']" -->
-            <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.createdTime')" align="left" prop="createTime" min-width="150">
-              <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                  }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(5)" min-width="80" :label="td('common.texts.status')" align="left" prop="status">
-              <template #default="scope">
-                <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                  inactive-value="0" @change="
-                    (e) => handleStatusChange(scope.row.id, scope.row, e)
-                  " />
-              </template>
-            </el-table-column>
-            <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
-              v-if="getColumnVisibility(15)">
-              <template #default="scope">
-                {{ scope.row.remark || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" min-width="200">
-              <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                  v-hasPermi="['dp:dataElem:edit']">{{ td('dp.common.edit') }}
-                </el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)" :disabled="scope.row.status === '1'"
-                  v-hasPermi="['dp:dataElem:remove']">{{ td('dp.common.delete') }}
-                </el-button>
-                <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-                  v-hasPermi="['dp:dataElem:edit']">{{ td('dp.common.details') }}
-                </el-button>
-              </template>
-            </el-table-column>
-
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-                <p>{{td('common.noData')}}</p>
-              </div>
+          <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+            <template #status="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0"
+                @change="(e) => handleStatusChange(row.id, row, e)"
+              />
             </template>
-          </el-table>
 
-          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
-        </div>
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(row)"
+                v-hasPermi="['dp:dataElem:edit']"
+              >{{ td('dp.common.edit') }}</el-button>
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                :disabled="row.status === '1'"
+                v-hasPermi="['dp:dataElem:remove']"
+              >{{ td('dp.common.delete') }}</el-button>
+              <el-button
+                link
+                type="primary"
+                icon="view"
+                @click="handleDetail(row)"
+                v-hasPermi="['dp:dataElem:edit']"
+              >{{ td('dp.common.details') }}</el-button>
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
 
@@ -321,38 +267,70 @@ const { column_type, sys_disable, dp_data_elem_code_type, dp_document_type } = p
   "sys_disable",
   "dp_data_elem_code_type",
   "dp_document_type"
-); import {
-  listDpDocument,
-} from "@/api/dp/document/document";
+);
+import { listDpDocument } from "@/api/dp/document/document";
 const deptOptions = ref(undefined);
-const leftWidth = ref(300); // Initial left width
-const isResizing = ref(false); // Determine whether dragging is in progress
-let startX = 0; // Initial position when mouse is pressed // Initial left width
+const tableRef = ref(null);
+const DeptTreeRef = ref(null);
 
-const dpDataElemList = ref([]);
-const dpDataElemRuleRelList = ref([]);
+const tableStore = reactive({
+  config: {
+    initResquest: true,
+  },
+  columns: [
+    { label: td("common.texts.number"), prop: "id", width: 60, align: "left", sortable: true },
+    { label: td("dp.dataElem.nameZh"), prop: "name", width: 260, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td("dp.dataElem.nameEn"), prop: "engName", width: 260, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td("common.texts.description"), prop: "description", width: 256, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td("dp.dataElem.catCode"), prop: "catName", width: 160, align: "left" },
+    { label: td("common.texts.createdBy"), prop: "createBy", width: 140, align: "left" },
+    {
+      label: td("common.texts.createdTime"),
+      prop: "createTime",
+      width: 150,
+      align: "left",
+      sortableKey: "create_time",
+      sortable: true,
+      date: true
+    },
+    { label: td("common.texts.status"), prop: "status", width: 80, align: "left", slot: "status" },
+    { label: td("common.texts.remark"), prop: "remark", width: 200, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td("common.texts.operation"), slot: "action", width: 220, align: "center", fixed: "right" },
+  ],
+  func: listDpDataElem,
+  params: {
+    name: null,
+    engName: null,
+    catCode: null,
+    type: "1",
+    orderByColumn: "create_time",
+    isAsc: "descending",
+  },
+});
 
-// Show hidden information
-const columns = ref([
-  { key: 0, label: td('common.texts.number'), visible: true },
-  { key: 1, label: td('dp.dataElem.nameZh'), visible: true },
-  { key: 2, label: td('dp.dataElem.nameEn'), visible: true },
-  { key: 7, label: td('common.texts.description'), visible: true },
-  { key: 3, label: td('dp.dataElem.type'), visible: true },
-  { key: 4, label: td('dp.dataElem.catCode'), visible: true },
-  { key: 10, label: td('common.texts.createdBy'), visible: true },
-  { key: 11, label: td('common.texts.createdTime'), visible: true },
-  { key: 5, label: td('common.texts.status'), visible: true },
-  { key: 6, label: td('common.texts.description'), visible: true },
-]);
+const searchStore = reactive({
+  items: [
+    {
+      label: td("dp.dataElem.nameZh"),
+      prop: "name",
+      component: { is: "input", placeholder: td("dp.dataElem.nameZhPlaceholder") },
+    },
+    {
+      label: td("dp.dataElem.nameEn"),
+      prop: "engName",
+      component: { is: "input", placeholder: td("dp.dataElem.nameEnPlaceholder") },
+    },
+  ],
+});
+
 let secondLevelDocs = ref([]);
-const btnloading = ref(false); // loading state
+const btnloading = ref(false);
 
 const fetchSecondLevelDocs = async (type, preserveSelection = false) => {
   if (!type) {
     secondLevelDocs.value = [];
     if (!preserveSelection) {
-      form.value.documentId = '';
+      form.value.documentId = "";
     }
     return;
   }
@@ -360,140 +338,72 @@ const fetchSecondLevelDocs = async (type, preserveSelection = false) => {
   try {
     btnloading.value = true;
     const res = await listDpDocument({ type });
-    secondLevelDocs.value = (res.data.rows || []).map(d => ({
+    secondLevelDocs.value = (res.data.rows || []).map((d) => ({
       label: d.name,
       value: d.id,
     }));
 
-    // Clear only if not retaining selection
     if (!preserveSelection) {
-      form.value.documentId = '';
+      form.value.documentId = "";
     }
   } catch (error) {
     secondLevelDocs.value = [];
     if (!preserveSelection) {
-      form.value.documentId = '';
+      form.value.documentId = "";
     }
   } finally {
     btnloading.value = false;
   }
-}
-
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
-  if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
-  return column.visible;
 };
 
 const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const checkedDpDataElemRuleRel = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 
-/*** User import parameters */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
   open: false,
-  // Popup layer title (user imported)
   title: "",
-  // Whether to disable uploading
   isUploading: false,
-  // Whether to update existing user data
   updateSupport: 0,
-  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/dp/dataElem/importData",
 });
 
 const data = reactive({
   form: { status: "1" },
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    name: null,
-    engName: null,
-    catCode: null,
-    type: "1",
-    description: "",
-  },
   rules: {
-    name: [{ required: true, message: td('dp.dataElem.nameZhRequired'), trigger: "blur" }],
+    name: [{ required: true, message: td("dp.dataElem.nameZhRequired"), trigger: "blur" }],
     engName: [
-      { required: true, message: td('dp.dataElem.nameEnRequired'), trigger: "blur" },
+      { required: true, message: td("dp.dataElem.nameEnRequired"), trigger: "blur" },
       {
         pattern: /^[a-zA-Z_]+$/,
-        message: td('dp.dataElem.nameEnPattern'),
+        message: td("dp.dataElem.nameEnPattern"),
         trigger: "blur",
       },
     ],
-    catCode: [{ required: true, message: td('dp.dataElem.catCodeRequired'), trigger: "blur" }],
-    columnType: [
-      { required: true, message: td('dp.dataElem.columnTypeRequired'), trigger: "change" },
-    ],
+    catCode: [{ required: true, message: td("dp.dataElem.catCodeRequired"), trigger: "blur" }],
+    columnType: [{ required: true, message: td("dp.dataElem.columnTypeRequired"), trigger: "change" }],
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { form, rules } = toRefs(data);
 const managerOptions = ref([]);
-/** Query data element list */
-function getList() {
-  loading.value = true;
-  listDpDataElem(queryParams.value).then((response) => {
-    dpDataElemList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
-  deptUserTree().then((response) => {
-    managerOptions.value = response.data;
-  });
-}
+
 function handleChange(value) {
-  const selectedManager = managerOptions.value.find(
-    (item) => item.userId === form.value.personCharge
-  );
-  form.value.contactNumber = selectedManager.phonenumber; // Store the complete object into form
+  const selectedManager = managerOptions.value.find((item) => item.userId === form.value.personCharge);
+  form.value.contactNumber = selectedManager.phonenumber;
 }
-// Cancel button
+
 function cancel() {
   open.value = false;
   reset();
 }
+
 function handleNodeClick(data) {
-  queryParams.value.catCode = data.code;
+  tableStore.params.catCode = data.code;
   handleQuery();
 }
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // Calculate mouse movement distance
-    leftWidth.value += delta; // Modify left width
-    startX = event.clientX; // Update starting position
-    // Use requestAnimationFrame to reduce page redraw frequency
-    requestAnimationFrame(() => { });
-  }
-}; /** Query department drop-down tree structure */
-// form reset
+
 function reset() {
   form.value = {
     id: null,
@@ -517,47 +427,25 @@ function reset() {
     updateTime: null,
     remark: null,
   };
-  dpDataElemRuleRelList.value = [];
   proxy.resetForm("dpDataElemRef");
 }
 
-/** Search button action */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  tableStore.params.pageNum = 1;
 }
-const DeptTreeRef = ref(null);
-/** reset button action */
+
 function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
-  queryParams.value.catCode = "";
-  queryParams.value.pageNum = 1;
-  reset();
-  proxy.resetForm("queryRef");
+  DeptTreeRef.value?.resetTree?.();
+  tableStore.params.catCode = "";
   handleQuery();
 }
 
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
 function getDeptTree() {
   listAttDataElemCat({ validFlag: true }).then((response) => {
     deptOptions.value = proxy.handleTree(response.data, "id", "parentId");
     deptOptions.value = [
       {
-        name: td('dp.dataElem.treeRootName'),
+        name: td("dp.dataElem.treeRootName"),
         value: "",
         id: 0,
         children: deptOptions.value,
@@ -565,36 +453,33 @@ function getDeptTree() {
     ];
   });
 }
-/** Add button operation */
+
 function handleAdd() {
   reset();
-  if (queryParams.value.catCode) {
-    form.value.catCode = queryParams.value.catCode;
+  if (tableStore.params.catCode) {
+    form.value.catCode = tableStore.params.catCode;
   }
   open.value = true;
-  title.value = td('dp.dataElem.addTitle');
+  title.value = td("dp.dataElem.addTitle");
 }
+
 function handleUpdate(row) {
   reset();
-  const _id = row.id || ids.value;
-  getDpDataElem(_id).then((response) => {
+  getDpDataElem(row.id).then((response) => {
     form.value = response.data;
-    dpDataElemRuleRelList.value = response.data.dpDataElemRuleRelList;
-    if (response.data.personCharge != null || response.data.personCharge == '0') {
+    if (response.data.personCharge != null || response.data.personCharge == "0") {
       form.value.personCharge = Number(response.data.personCharge);
     }
     if (form.value.documentId == -1) {
       form.value.documentId = null;
     }
-    // Keep selected standard registration values when modifying
     fetchSecondLevelDocs(form.value.documentType, true);
 
     open.value = true;
-    title.value = td('dp.dataElem.editTitle');
+    title.value = td("dp.dataElem.editTitle");
   });
 }
 
-/** Detail button operation */
 function handleDetail(row) {
   if (row.type == 1) {
     routeTo("/dp/dataElem/column/detail", row);
@@ -603,19 +488,17 @@ function handleDetail(row) {
   }
 }
 
-/** submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
   proxy.$refs["dpDataElemRef"].validate((valid) => {
     if (valid) {
-      form.value.dpDataElemRuleRelList = dpDataElemRuleRelList.value;
       if (form.value.id != null) {
         updateDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
+            proxy.$modal.msgSuccess(td("common.message.editSuccess"));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => {
@@ -624,9 +507,9 @@ function submitForm() {
       } else {
         addDpDataElem({ ...form.value, documentId: form.value.documentId || -1 })
           .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
+            proxy.$modal.msgSuccess(td("common.message.addSuccess"));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => {
@@ -639,121 +522,73 @@ function submitForm() {
   });
 }
 
-/** Delete button action */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmDelete', '', { id: _ids }))
+    .confirm(td("dp.dataElem.confirmDelete", "", { id: row.id }))
     .then(function () {
-      return delDpDataElem(_ids);
+      return delDpDataElem(row.id);
     })
     .then(() => {
-      getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+      tableRef.value.refresh();
+      proxy.$modal.msgSuccess(td("common.message.deleteSuccess"));
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 
-/** Data metadata rule association information number */
-function rowDpDataElemRuleRelIndex({ row, rowIndex }) {
-  row.index = rowIndex + 1;
-}
-
-/** New button operation for data metadata rule association information */
-function handleAddDpDataElemRuleRel() {
-  let obj = {};
-  obj.ruleType = "";
-  obj.ruleId = "";
-  obj.ruleConfig = "";
-  obj.remark = "";
-  dpDataElemRuleRelList.value.push(obj);
-}
-
-/** Data metadata rule association information delete button operation */
-function handleDeleteDpDataElemRuleRel() {
-  if (checkedDpDataElemRuleRel.value.length == 0) {
-    proxy.$modal.msgWarning(td('dp.dataElem.selectToDeleteWarning'));
-  } else {
-    const dpDataElemRuleRels = dpDataElemRuleRelList.value;
-    const checkedDpDataElemRuleRels = checkedDpDataElemRuleRel.value;
-    dpDataElemRuleRelList.value = dpDataElemRuleRels.filter(function (item) {
-      return checkedDpDataElemRuleRels.indexOf(item.index) == -1;
-    });
-  }
-}
-
-/** Checkbox selected data */
-function handleDpDataElemRuleRelSelectionChange(selection) {
-  checkedDpDataElemRuleRel.value = selection.map((item) => item.index);
-}
-
-/** Export button action */
 function handleExport() {
   proxy.download(
     "dp/dpDataElem/export",
     {
-      ...queryParams.value,
+      ...tableStore.params,
     },
     `dpDataElem_${new Date().getTime()}.xlsx`
   );
 }
 
-/** ---------------- Import related operations ------------------**/
-/** Import button actions */
 function handleImport() {
-  upload.title = td('dp.dataElem.importTitle');
+  upload.title = td("dp.dataElem.importTitle");
   upload.open = true;
 }
 
-/** Download template operation */
 function importTemplate() {
-  proxy.download(
-    "system/user/importTemplate",
-    {},
-    `dpDataElem_template_${new Date().getTime()}.xlsx`
-  );
+  proxy.download("system/user/importTemplate", {}, `dpDataElem_template_${new Date().getTime()}.xlsx`);
 }
 
-/** Submit upload file */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 }
 
-/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
   proxy.$alert(
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-    response.msg +
-    "</div>",
-    td('dp.dataElem.importResult'),
+      response.msg +
+      "</div>",
+    td("dp.dataElem.importResult"),
     { dangerouslyUseHTMLString: true }
   );
-  getList();
+  tableRef.value.refresh();
 };
 
-/** Enable disable switch */
 function handleStatusChange(id, row, e) {
-  const text = e === "1" ? td('dp.dataElem.enableText') : td('dp.dataElem.disableText');
+  const text = e === "1" ? td("dp.dataElem.enableText") : td("dp.dataElem.disableText");
   proxy.$modal
-    .confirm(td('dp.dataElem.confirmStatusChange','',{ text,name: row.name}))
+    .confirm(td("dp.dataElem.confirmStatusChange", "", { text, name: row.name }))
     .then(function () {
       updateStatusDpDataElem(id, row.status).then((response) => {
-        proxy.$modal.msgSuccess(td('common.message.operationSuccess'));
+        proxy.$modal.msgSuccess(td("common.message.operationSuccess"));
       });
     })
     .catch(function () {
       row.status = row.status === "1" ? "0" : "1";
     });
 }
-/** ---------------------------------**/
 
 function routeTo(link, row) {
   if (link !== "" && link.indexOf("http") !== -1) {
@@ -773,8 +608,10 @@ function routeTo(link, row) {
     }
   }
 }
+deptUserTree().then((response) => {
+  managerOptions.value = response.data;
+});
 getDeptTree();
-getList();
 </script>
 <style scoped lang="scss">
 ::v-deep {

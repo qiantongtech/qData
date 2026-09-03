@@ -17,266 +17,211 @@
 -->
 
 <template>
-    <div class="justify-between mb15">
-        <div class="justify-end top-right-btn">
-            <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-        </div>
-    </div>
-    <el-table stripe height="360" v-loading="loading" :data="dpDataElemAssetRelList"
-        @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column :label="td('dp.dataCode.asset.id')" align="left" prop="id" width="50" />
-        <el-table-column :label="td('dp.dataCode.asset.assetName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="assetName"
-            width="300">
-            <template #default="scope">
-                {{ scope.row.assetName || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.description')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="description"
-            width="380">
-            <template #default="scope">
-                {{ scope.row.description || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.tableName')" align="left" prop="tableName" width="290">
-            <template #default="scope">
-                {{ scope.row.tableName || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.columnName')" align="left" prop="columnName" width="300">
-            <template #default="scope">
-                {{ scope.row.columnName || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.createBy')" :show-overflow-tooltip="{ effect: 'light' }" align="left" width="120"
-            prop="createBy">
-            <template #default="scope">
-                {{ scope.row.createBy || "-" }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.createTime')" align="left" prop="createTime" width="150">
-            <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-            }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.asset.updateTime')" align="left" prop="updateTime" width="300">
-            <template #default="scope">
-                <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d} {h}:{i}') || '-' }}</span>
-            </template>
-        </el-table-column>
-
-        <template #empty>
-            <div class="emptyBg">
-                <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-                <p>{{td('common.noData')}}</p>
-            </div>
-        </template>
-    </el-table>
-
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" @pagination="getList" />
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+    <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+    </qt-table>
+  </qt-wrap>
 </template>
 
 <script setup name="ComponentOne">
 import {
-    listDpDataElemAssetRel,
-    getDpDataElemAssetRel,
-    delDpDataElemAssetRel,
-    addDpDataElemAssetRel,
-    updateDpDataElemAssetRel
+  listDpDataElemAssetRel,
+  getDpDataElemAssetRel,
+  delDpDataElemAssetRel,
+  addDpDataElemAssetRel,
+  updateDpDataElemAssetRel
 } from '@/api/dp/dataElem/dataElem';
 import useDefaultLang from "@/composables/useDefaultLang";
+import { ref, reactive, toRefs, watch, getCurrentInstance } from 'vue';
+import { useRoute } from 'vue-router';
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const route = useRoute();
 
-const dpDataElemAssetRelList = ref([]);
-
-const open = ref(false);
-const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
+const tableRef = ref(null);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
-const title = ref('');
-const defaultSort = ref({ prop: 'createTime', order: 'desc' });
 
-const data = reactive({
-    dpDataElemAssetRelDetail: {},
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        dataElemType: null,
-        dataElemId: null,
-        assetId: null,
-        tableName: null,
-        columnId: null,
-        columnName: null,
-        createTime: null
+const wrapConfig = reactive({
+  actions: {
+    table: {
+      search: false,
     },
-    rules: {}
+  },
 });
 
-const { queryParams, form, dpDataElemAssetRelDetail, rules } = toRefs(data);
+const tableStore = reactive({
+  config: {
+    sort: true,
+    initResquest: true,
+    table: {
+      stripe: true,
+      height: 360,
+      onSelectionChange: (selection) => {
+        ids.value = selection.map((item) => item.id);
+        single.value = selection.length != 1;
+        multiple.value = !selection.length;
+      },
+    },
+  },
+  columns: [
+    {
+      label: td('common.texts.number'),
+      prop: "id",
+      width: 60,
+      align: "left",
+      sortable: true,
+    },
+    {
+      label: td('dp.dataCode.asset.assetName'),
+      prop: "assetName",
+      align: "left",
+      width: 300,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('common.texts.description'),
+      prop: "description",
+      align: "left",
+      width: 380,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.asset.tableName'),
+      prop: "tableName",
+      align: "left",
+      width: 290,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.asset.columnName'),
+      prop: "columnName",
+      align: "left",
+      width: 300,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('common.texts.createdBy'),
+      prop: "createBy",
+      width: 120,
+      align: "left",
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('common.texts.createdTime'),
+      prop: "createTime",
+      width: 150,
+      align: "left",
+      sortableKey: "create_time",
+      sortable: true,
+      date: true,
+    },
+    {
+      label: td('common.texts.updatedTime'),
+      prop: "updateTime",
+      width: 150,
+      align: "left",
+      sortableKey: "update_time",
+      sortable: true,
+      date: true,
+    },
+  ],
+  func: listDpDataElemAssetRel,
+  params: {
+    pageNum: 1,
+    pageSize: 10,
+    dataElemType: null,
+    dataElemId: route.query.id,
+    assetId: null,
+    tableName: null,
+    columnId: null,
+    columnName: null,
+    orderByColumn: "create_time",
+    isAsc: "descending",
+  },
+});
 
-queryParams.value.dataElemId = route.query.id;
+const data = reactive({
+  dpDataElemAssetRelDetail: {},
+  form: {},
+  rules: {}
+});
+
+const { form, dpDataElemAssetRelDetail, rules } = toRefs(data);
+
 // Monitor id changes
 watch(
-    () => route.query.id,
-    (newId) => {
-        queryParams.value.dataElemId = newId;
-        getList();
-    },
-    { immediate: true } // `immediate` is true, which means that a watch will be executed immediately when the page is loaded.
+  () => route.query.id,
+  (newId) => {
+    tableStore.params.dataElemId = newId;
+    tableRef.value?.getList();
+  },
+  { immediate: true }
 );
-/** Query the data metadata asset related information list */
-function getList() {
-    loading.value = true;
-    listDpDataElemAssetRel(queryParams.value).then((response) => {
-        dpDataElemAssetRelList.value = response.data.rows;
-        total.value = response.data.total;
-        loading.value = false;
-    });
-}
-
-// Cancel button
-function cancel() {
-    open.value = false;
-    openDetail.value = false;
-    reset();
-}
 
 // form reset
 function reset() {
-    form.value = {
-        id: null,
-        dataElemType: null,
-        dataElemId: null,
-        assetId: null,
-        tableName: null,
-        columnId: null,
-        columnName: null,
-        validFlag: null,
-        delFlag: null,
-        createBy: null,
-        creatorId: null,
-        createTime: null,
-        updateBy: null,
-        updaterId: null,
-        updateTime: null,
-        remark: null
-    };
-    proxy.resetForm('dpDataElemAssetRelRef');
-}
-
-/** Search button action */
-function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
-}
-
-/** reset button action */
-function resetQuery() {
-    proxy.resetForm('queryRef');
-    handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-    ids.value = selection.map((item) => item.id);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-    queryParams.value.orderByColumn = column.prop;
-    queryParams.value.isAsc = column.order;
-    getList();
+  form.value = {
+    id: null,
+    dataElemType: null,
+    dataElemId: null,
+    assetId: null,
+    tableName: null,
+    columnId: null,
+    columnName: null,
+    validFlag: null,
+    delFlag: null,
+    createBy: null,
+    creatorId: null,
+    createTime: null,
+    updateBy: null,
+    updaterId: null,
+    updateTime: null,
+    remark: null
+  };
+  proxy.resetForm('dpDataElemAssetRelRef');
 }
 
 /** Add button operation */
 function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = td('dp.dataCode.asset.addTitle');
+  reset();
+  proxy.$modal.msgWarning("Add logic not implemented in this refactor");
 }
 
 /** Modify button actions */
 function handleUpdate(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getDpDataElemAssetRel(_id).then((response) => {
-        form.value = response.data;
-        open.value = true;
-        title.value = td('dp.dataCode.asset.editTitle');
-    });
-}
-
-/** Detail button operation */
-function handleDetail(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getDpDataElemAssetRel(_id).then((response) => {
-        form.value = response.data;
-        openDetail.value = true;
-        title.value = td('dp.dataCode.asset.detailTitle');
-    });
-}
-
-/** submit button */
-function submitForm() {
-    proxy.$refs['dpDataElemAssetRelRef'].validate((valid) => {
-        if (valid) {
-            if (form.value.id != null) {
-                updateDpDataElemAssetRel(form.value)
-                    .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataCode.asset.updateSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => { });
-            } else {
-                addDpDataElemAssetRel(form.value)
-                    .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataCode.asset.addSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => { });
-            }
-        }
-    });
+  reset();
+  const _id = row.id || ids.value;
+  getDpDataElemAssetRel(_id).then((response) => {
+    form.value = response.data;
+  });
 }
 
 /** Delete button action */
 function handleDelete(row) {
-    const _ids = row.id || ids.value;
-    proxy.$modal
-        .confirm(td('dp.dataCode.confirmDeleteAsset', 'Are you sure to delete the data element-asset relation with ID "{id}"?', { id: _ids }))
-        .then(function () {
-            return delDpDataElemAssetRel(_ids);
-        })
-        .then(() => {
-            getList();
-            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
-        })
-        .catch(() => { });
+  const _ids = row.id || ids.value;
+  proxy.$modal
+    .confirm(td('dp.dataCode.confirmDeleteAsset', 'Are you sure to delete the data element-asset relation with ID "{id}"?', { id: _ids }))
+    .then(function () {
+      return delDpDataElemAssetRel(_ids);
+    })
+    .then(() => {
+      tableRef.value.getList();
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+    })
+    .catch(() => { });
 }
 
 /** Export button action */
 function handleExport() {
-    proxy.download(
-        'dp/dpDataElemAssetRel/export',
-        {
-            ...queryParams.value
-        },
-        `dpDataElemAssetRel_${new Date().getTime()}.xlsx`
-    );
+  proxy.download(
+    'dp/dpDataElemAssetRel/export',
+    {
+      ...tableStore.params
+    },
+    `dpDataElemAssetRel_${new Date().getTime()}.xlsx`
+  );
 }
-
-getList();
 </script>

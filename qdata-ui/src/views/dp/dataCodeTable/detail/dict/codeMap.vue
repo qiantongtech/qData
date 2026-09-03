@@ -17,348 +17,321 @@
 -->
 
 <template>
-    <div class="justify-between mb15">
-        <el-row :gutter="15" class="btn-style">
-            <el-col :span="1.5">
-                <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-                    <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
-                </el-button>
-            </el-col>
-        </el-row>
-        <div class="justify-end top-right-btn">
-            <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-        </div>
-    </div>
-    <el-table stripe height="360" v-loading="loading" :data="dpCodeMapList" @selection-change="handleSelectionChange"
-        :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column :label="td('dp.dataCode.codeMap.serialNumber')" align="left" prop="id" width="50" />
-        <el-table-column :label="td('dp.dataCode.originalValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="originalValue"
-            width="210">
-            <template #default="scope">
-                {{ scope.row.originalValue || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.codeName')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeName"
-            width="220">
-            <template #default="scope">
-                {{ scope.row.codeName || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.codeValue')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="codeValue"
-            width="180">
-            <template #default="scope">
-                {{ scope.row.codeValue || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.createBy')" align="left" prop="createBy">
-            <template #default="scope">
-                {{ scope.row.createBy || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.createTime')" align="left" prop="createTime" width="200">
-            <template #default="scope">
-                <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.remark')" :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="remark" width="320">
-            <template #default="scope">
-                {{ scope.row.remark || '-' }}
-            </template>
-        </el-table-column>
-        <el-table-column :label="td('dp.dataCode.codeMap.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="300">
-            <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('dp.dataCode.codeMap.modify') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('dp.dataCode.codeMap.delete') }}</el-button>
-            </template>
-        </el-table-column>
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+    <template #actions-data>
+      <el-row :gutter="15" class="btn-style">
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            @click="handleAdd"
+            @mousedown="(e) => e.preventDefault()"
+          >
+            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
+          </el-button>
+        </el-col>
+      </el-row>
+    </template>
 
-        <template #empty>
-            <div class="emptyBg">
-                <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-                <p>{{td('common.noData')}}</p>
-            </div>
-        </template>
-    </el-table>
+    <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+      <template #action="{ row }">
+        <el-button
+          link
+          type="primary"
+          icon="Edit"
+          @click="handleUpdate(row)"
+        >{{ td('dp.dataCode.codeMap.modify') }}</el-button>
+        <el-button
+          link
+          type="danger"
+          icon="Delete"
+          @click="handleDelete(row)"
+        >{{ td('dp.dataCode.codeMap.delete') }}</el-button>
+      </template>
+    </qt-table>
+  </qt-wrap>
 
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" @pagination="getList" />
-
-    <!-- Add or modify data element code mapping dialog box -->
-    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-        <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px" :label-position="labelPosition">
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item :label="td('dp.dataCode.originalValue')" prop="originalValue" :label-position="labelPosition">
-                        <el-input v-model="form.originalValue" :placeholder="td('dp.dataCode.originalValuePlaceholder')" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item :label="td('dp.dataCode.codeMap.codeName')" prop="codeName" :label-position="labelPosition">
-                        <el-select v-model="form.codeName" :placeholder="td('dp.dataCode.codeNameSelect')" @change="handleCodeNameChange">
-                            <el-option v-for="item in dpDataElemCodeList" :key="item.id" :label="item.codeName"
-                                :value="item.codeName" />
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item :label="td('dp.dataCode.codeMap.codeValue')" prop="codeValue" :label-position="labelPosition">
-                        <el-input v-model="form.codeValue" :placeholder="td('dp.dataCode.codeValue')" disabled />
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item :label="td('dp.dataCode.codeMap.remark')" prop="remark" :label-position="labelPosition">
-                        <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button size="mini" @click="cancel">{{ td('dp.dataCode.codeMap.cancel') }}</el-button>
-                <el-button type="primary" size="mini" @click="submitForm">{{ td('dp.dataCode.codeMap.confirm') }}</el-button>
-            </div>
-        </template>
-    </el-dialog>
+  <!-- Add or modify data element code mapping dialog box -->
+  <el-dialog :title="title" v-model="open" width="800px" draggable>
+    <el-form ref="dpCodeMapRef" :model="form" :rules="rules" label-width="80px">
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="td('dp.dataCode.originalValue')" prop="originalValue">
+            <el-input v-model="form.originalValue" :placeholder="td('dp.dataCode.originalValuePlaceholder')" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item :label="td('dp.dataCode.codeMap.codeName')" prop="codeName">
+            <el-select v-model="form.codeName" :placeholder="td('dp.dataCode.codeNameSelect')" @change="handleCodeNameChange">
+              <el-option v-for="item in dpDataElemCodeList" :key="item.id" :label="item.codeName"
+                :value="item.codeName" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="td('dp.dataCode.codeMap.codeValue')" prop="codeValue">
+            <el-input v-model="form.codeValue" :placeholder="td('dp.dataCode.codeValue')" disabled />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-form-item :label="td('dp.dataCode.codeMap.remark')" prop="remark">
+            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="cancel">{{ td('dp.dataCode.codeMap.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm">{{ td('dp.dataCode.codeMap.confirm') }}</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup name="ComponentOne">
 import {
-    listDpCodeMap,
-    getDpCodeMap,
-    delDpCodeMap,
-    addDpCodeMap,
-    updateDpCodeMap
+  listDpCodeMap,
+  getDpCodeMap,
+  delDpCodeMap,
+  addDpCodeMap,
+  updateDpCodeMap,
+  listDpDataElemCode
 } from '@/api/dp/dataElem/dataElem';
-import { listDpDataElemCode } from '@/api/dp/dataElem/dataElem';
 import useDefaultLang from "@/composables/useDefaultLang";
+import { ref, reactive, toRefs, watch, getCurrentInstance } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 
-const dpCodeMapList = ref([]);
+const tableRef = ref(null);
 const dpDataElemCodeList = ref([]);
-
 const open = ref(false);
-const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
+const title = ref('');
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
-const total = ref(0);
-const title = ref('');
-const defaultSort = ref({ prop: 'createTime', order: 'desc' });
-const id = ref(route.query.id || 1);
 
-watch(
-    () => route.query.id,
-    (newId) => {
-        if (newId !== id.value) {
-            id.value = newId || -1;
-            queryParams.value.dataElemId = id.value;
-            getList();
-            getDpDataElemCodeList();
-        }
+const wrapConfig = reactive({
+  actions: {
+    table: {
+      search: false,
     },
-    { immediate: true }
-);
-
-const data = reactive({
-    dpCodeMapDetail: {},
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        dataElemId: null,
-        originalValue: null,
-        codeName: null,
-        codeValue: null,
-        createTime: null
-    },
-    rules: {
-        originalValue: [{ required: true, message: td('dp.dataCode.originalValueRequired'), trigger: 'blur' }],
-        codeName: [{ required: true, message: td('dp.dataCode.codeNameRequired'), trigger: 'change' }]
-    }
+  },
 });
 
-const { queryParams, form, dpCodeMapDetail, rules } = toRefs(data);
+const tableStore = reactive({
+  config: {
+    sort: true,
+    initResquest: true,
+    table: {
+      stripe: true,
+      height: 360,
+      onSelectionChange: (selection) => {
+        ids.value = selection.map((item) => item.id);
+        single.value = selection.length != 1;
+        multiple.value = !selection.length;
+      },
+    },
+  },
+  columns: [
+    {
+      label: td('dp.dataCode.codeMap.serialNumber'),
+      prop: "id",
+      width: 60,
+      align: "left",
+      sortable: true,
+    },
+    {
+      label: td('dp.dataCode.originalValue'),
+      prop: "originalValue",
+      align: "left",
+      width: 210,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.codeMap.codeName'),
+      prop: "codeName",
+      align: "left",
+      width: 220,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.codeMap.codeValue'),
+      prop: "codeValue",
+      align: "left",
+      width: 180,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.codeMap.createBy'),
+      prop: "createBy",
+      align: "left",
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.codeMap.createTime'),
+      prop: "createTime",
+      width: 200,
+      align: "left",
+      sortableKey: "create_time",
+      sortable: true,
+      date: true,
+    },
+    {
+      label: td('dp.dataCode.codeMap.remark'),
+      prop: "remark",
+      align: "left",
+      width: 320,
+      showOverflowTooltip: { effect: 'light' },
+    },
+    {
+      label: td('dp.dataCode.codeMap.operation'),
+      slot: "action",
+      width: 180,
+      align: "center",
+      fixed: "right",
+    },
+  ],
+  func: listDpCodeMap,
+  params: {
+    pageNum: 1,
+    pageSize: 10,
+    dataElemId: route.query.id,
+    originalValue: null,
+    codeName: null,
+    codeValue: null,
+    orderByColumn: "create_time",
+    isAsc: "descending",
+  },
+});
 
-/** Query the data element code mapping list */
-function getList() {
-    if (id.value == -1) {
-        return;
+const data = reactive({
+  form: {},
+  rules: {
+    originalValue: [{ required: true, message: td('dp.dataCode.originalValueRequired'), trigger: 'blur' }],
+    codeName: [{ required: true, message: td('dp.dataCode.codeNameRequired'), trigger: 'change' }]
+  }
+});
+
+const { form, rules } = toRefs(data);
+
+watch(
+  () => route.query.id,
+  (newId) => {
+    tableStore.params.dataElemId = newId || -1;
+    if (newId) {
+      tableRef.value?.getList();
+      getDpDataElemCodeList();
     }
-    loading.value = true;
-    queryParams.value.dataElemId = id.value;
-    listDpCodeMap(queryParams.value).then((response) => {
-        dpCodeMapList.value = response.data.rows;
-        total.value = response.data.total;
-        loading.value = false;
-    });
-}
+  },
+  { immediate: true }
+);
 
 function getDpDataElemCodeList() {
-    if (id.value == -1) {
-        return;
-    }
-    queryParams.value.dataElemId = id.value;
-    listDpDataElemCode(queryParams.value).then((response) => {
-        dpDataElemCodeList.value = response.data.rows;
-    });
+  listDpDataElemCode({ dataElemId: route.query.id, pageNum: 1, pageSize: 1000 }).then((response) => {
+    dpDataElemCodeList.value = response.data.rows;
+  });
 }
 
 // Cancel button
 function cancel() {
-    open.value = false;
-    openDetail.value = false;
-    reset();
+  open.value = false;
+  reset();
 }
 
 // form reset
 function reset() {
-    form.value = {
-        id: null,
-        dataElemId: null,
-        originalValue: null,
-        codeName: null,
-        codeValue: null,
-        validFlag: null,
-        delFlag: null,
-        createBy: null,
-        creatorId: null,
-        createTime: null,
-        updateBy: null,
-        updaterId: null,
-        updateTime: null,
-        remark: null
-    };
-    proxy.resetForm('dpCodeMapRef');
-}
-
-/** Search button action */
-function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
-}
-
-/** reset button action */
-function resetQuery() {
-    proxy.resetForm('queryRef');
-    handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-    ids.value = selection.map((item) => item.id);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-    queryParams.value.orderByColumn = column.prop;
-    queryParams.value.isAsc = column.order;
-    getList();
+  form.value = {
+    id: null,
+    dataElemId: null,
+    originalValue: null,
+    codeName: null,
+    codeValue: null,
+    validFlag: null,
+    delFlag: null,
+    createBy: null,
+    creatorId: null,
+    createTime: null,
+    updateBy: null,
+    updaterId: null,
+    updateTime: null,
+    remark: null
+  };
+  proxy.resetForm('dpCodeMapRef');
 }
 
 /** Add button operation */
 function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = td('dp.dataCode.addCodeMapTitle');
+  reset();
+  open.value = true;
+  title.value = td('dp.dataCode.addCodeMapTitle');
 }
 
 /** Modify button actions */
 function handleUpdate(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getDpCodeMap(_id).then((response) => {
-        form.value = response.data;
-        open.value = true;
-        title.value = td('dp.dataCode.editCodeMapTitle');
-    });
-}
-
-/** Detail button operation */
-function handleDetail(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getDpCodeMap(_id).then((response) => {
-        form.value = response.data;
-        openDetail.value = true;
-        title.value = td('dp.dataCode.codeMap.detailTitle');
-    });
+  reset();
+  const _id = row.id || ids.value;
+  getDpCodeMap(_id).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = td('dp.dataCode.editCodeMapTitle');
+  });
 }
 
 /** submit button */
 function submitForm() {
-    proxy.$refs['dpCodeMapRef'].validate((valid) => {
-        if (valid) {
-            form.value.dataElemId = id.value;
-            if (form.value.id != null) {
-                updateDpCodeMap(form.value)
-                    .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.updateSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => { });
-            } else {
-                addDpCodeMap(form.value)
-                    .then((response) => {
-                        proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.addSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => { });
-            }
-        }
-    });
+  proxy.$refs['dpCodeMapRef'].validate((valid) => {
+    if (valid) {
+      form.value.dataElemId = route.query.id;
+      if (form.value.id != null) {
+        updateDpCodeMap(form.value)
+          .then(() => {
+            proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.updateSuccess'));
+            open.value = false;
+            tableRef.value.getList();
+          });
+      } else {
+        addDpCodeMap(form.value)
+          .then(() => {
+            proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.addSuccess'));
+            open.value = false;
+            tableRef.value.getList();
+          });
+      }
+    }
+  });
 }
 
 /** Delete button action */
 function handleDelete(row) {
-    const _ids = row.id || ids.value;
-    proxy.$modal
-        .confirm(td('dp.dataCode.confirmDeleteCodeMap', '', { id: _ids }))
-        .then(function () {
-            return delDpCodeMap(_ids);
-        })
-        .then(() => {
-            getList();
-            proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.deleteSuccess'));
-        })
-        .catch(() => { });
+  const _ids = row.id || ids.value;
+  proxy.$modal
+    .confirm(td('dp.dataCode.confirmDeleteCodeMap', '', { id: _ids }))
+    .then(function () {
+      return delDpCodeMap(_ids);
+    })
+    .then(() => {
+      tableRef.value.getList();
+      proxy.$modal.msgSuccess(td('dp.dataCode.codeMap.deleteSuccess'));
+    })
+    .catch(() => { });
 }
 
-/** Export button action */
-function handleExport() {
-    proxy.download(
-        'dp/dpCodeMap/export',
-        {
-            ...queryParams.value
-        },
-        `dpCodeMap_${new Date().getTime()}.xlsx`
-    );
-}
-
-// Added code name selection processing function
 function handleCodeNameChange(value) {
-    const selectedCode = dpDataElemCodeList.value.find((item) => item.codeName === value);
-    if (selectedCode) {
-        form.value.codeValue = selectedCode.codeValue;
-    }
+  const selectedCode = dpDataElemCodeList.value.find((item) => item.codeName === value);
+  if (selectedCode) {
+    form.value.codeValue = selectedCode.codeValue;
+  }
 }
 
-getList();
-getDpDataElemCodeList();
-
-proxy.$bus.on('data_elem_code_change', (data) => {
-    getDpDataElemCodeList();
+proxy.$bus.on('data_elem_code_change', () => {
+  getDpDataElemCodeList();
 });
 </script>

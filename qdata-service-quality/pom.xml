@@ -256,7 +256,7 @@
                             <arguments>
                                 <argument>/c</argument>
                                 <argument>
-                                    echo docker buildx build --platform linux/amd64,linux/arm64 --no-cache --push -t ${docker.hub}/${docker.repo}:${docker.tag} ${project.basedir} --file=docker/Dockerfile
+                                    echo docker buildx build --platform linux/amd64,linux/arm64 --provenance=false --no-cache --push -t ${docker.hub}/${docker.repo}:${docker.tag} ${project.basedir} --file=docker/Dockerfile
                                 </argument>
                             </arguments>
                         </configuration>
@@ -302,6 +302,8 @@
                                 <argument>build</argument>
                                 <argument>--platform</argument>
                                 <argument>linux/amd64,linux/arm64</argument>
+                                <!-- 阿里云个人版镜像仓库不支持 BuildKit 默认生成的 OCI provenance 附加清单 -->
+                                <argument>--provenance=false</argument>
                                 <argument>--no-cache</argument>
                                 <argument>--push</argument>
                                 <argument>-t</argument>

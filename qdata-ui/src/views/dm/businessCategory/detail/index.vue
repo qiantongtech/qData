@@ -97,9 +97,9 @@ function getDetail(id) {
 }
 
 watch(
-  () => route.query.id,
-  (newId) => {
-    if (newId) {
+  [() => route.name, () => route.query.id],
+  ([routeName, newId]) => {
+    if (routeName === "BusinessLayerDetail" && newId) {
       getDetail(newId);
     }
   },

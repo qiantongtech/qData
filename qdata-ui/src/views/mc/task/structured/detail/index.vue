@@ -102,14 +102,7 @@
               <div class="infotop-row-value">{{ form.createTime }}</div>
             </div>
           </el-col>
-          <el-col :span="24" style="margin: 2px 0 0">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">
-                {{ td("common.texts.remark") }}
-              </div>
-              <div class="infotop-row-value">{{ form.remark }}</div>
-            </div>
-          </el-col>
+         
         </el-row>
       </div>
     </div>

@@ -100,6 +100,9 @@
 
   <CatEditDialog
     ref="catEditDialogRef"
+    :rules="rules"
+    :before-submit="beforeSubmit"
+    :show-remark="showRemark"
     @cancel="onDialogCancel"
     @submit="onDialogSubmit"
   />
@@ -115,6 +118,11 @@ const props = defineProps({
   addFunc: { type: Function, required: true },
   updateFunc: { type: Function, required: true },
   batchDelCheckFunc: { type: Function, required: false },
+  statusChangeCheckFunc: { type: Function, required: false },
+  statusChangePassRow: { type: Boolean, default: false },
+  beforeSubmit: { type: Function, required: false },
+  showRemark: { type: Boolean, default: false },
+  rules: { type: Object, default: () => ({}) },
   nameLabel: { type: String, default: "Category Name" },
   titleBase: { type: String, default: "Category" },
   permBase: { type: String, required: true },
@@ -177,7 +185,6 @@ const tableStore = reactive({
       prop: "name",
       align: "left",
       width: 220,
-      align: "left",
     },
     {
       label: computed(()=>td('common.texts.description')),
@@ -193,12 +200,12 @@ const tableStore = reactive({
       sortable: true,
       sortableKey: "sortOrder",
     },
-    {
+    ...(props.showRemark ? [{
       label: computed(()=>td('common.texts.remark')),
       prop: "remark",
       width: 200,
       showOverflowTooltip: { effect: "light" },
-    },
+    }] : []),
     { label: computed(()=>td('common.texts.createdBy')), prop: "createBy" },
     {
       label: computed(()=>td('common.texts.createdTime')),
@@ -268,33 +275,67 @@ if (props.checkProjectParams) {
   );
 }
 
-function handleStatusChange(row) {
+async function handleStatusChange(row) {
+  if (row.validFlag === true && row.parentId != null && Number(row.parentId) !== 0) {
+    const parent = findCategoryById(tableRef.value.data, row.parentId);
+    if (!parent || parent.validFlag !== true) {
+      row.validFlag = false;
+      proxy.$modal.msgWarning(
+        td(
+          "att.common.enableParentFirst",
+          '请先启用父节点“{name}”，再启用当前节点。',
+          { name: parent?.name || row.parentId }
+        )
+      );
+      return;
+    }
+  }
+
   const text = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
-  const impactText = row.validFlag === false
-    ? '停用父类目将同步影响子类目，且不能继续新增任务到该类目。'
-    : '';
-  proxy.$modal
-    .confirm(
-      impactText + td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: effectiveTitleBase.value })
+  const isDisabling = row.validFlag === false;
+
+  const confirmMessage = isDisabling && row.children?.length
+    ? td(
+      'att.common.confirmDisableParent',
+      '停用父类目将同步影响子类目，且不能继续新增任务到该类目。'
     )
-    .then(function () {
-      props
-        .updateFunc({
+    : td('att.common.confirmStatusChangeGeneric', '', { status: text, name: row.name, type: effectiveTitleBase.value });
+
+  try {
+    await proxy.$modal.confirm(confirmMessage);
+
+    if (isDisabling && props.statusChangeCheckFunc) {
+      const canDisable = await props.statusChangeCheckFunc(row);
+      if (!canDisable) {
+        row.validFlag = true;
+        return;
+      }
+    }
+
+    const updatePayload = props.statusChangePassRow
+      ? row
+      : {
           id: row.id,
           parentId: row.parentId,
           validFlag: row.validFlag,
-        })
-        .then(() => {
-          proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
-          handleQueryClick();
-        })
-        .catch(() => {
-          row.validFlag = !row.validFlag;
-        });
-    })
-    .catch(function () {
-      row.validFlag = !row.validFlag;
-    });
+        };
+
+    await props.updateFunc(updatePayload);
+
+    proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: text }));
+    handleQueryClick();
+  } catch (error) {
+    row.validFlag = !row.validFlag;
+  }
+}
+
+function findCategoryById(categories, id) {
+  for (const category of categories) {
+    if (String(category.id) === String(id)) return category;
+    const child = findCategoryById(category.children || [], id);
+    if (child) return child;
+  }
+  return null;
 }
 
 function buildTreeOptions(source) {

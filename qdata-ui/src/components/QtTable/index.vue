@@ -521,6 +521,7 @@ if (config.value.initResquest || config.value.initResquest === undefined) {
 
 defineExpose({
   getList,
+  refresh: getList,
   resetQuery,
   reload,
   elTableRef,

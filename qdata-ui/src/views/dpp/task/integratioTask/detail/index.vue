@@ -18,95 +18,29 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
-      <div class="infotop">
-
-        <div class="infotop-title mb15">
-          <!-- <div class="h2-titles" style="font-weight: 600;">[&nbsp;{{ dpModelDetail.id || '-' }}&nbsp;]&nbsp;&nbsp;{{
-            dpModelDetail.modelComment ||
-            '' }}</div> -->
-          <div class="task-item">
-            <!-- square number -->
-            <div class="task-id">
-              {{ dppEtlTaskDetail.id || '-' }}
-            </div>
-
-            <!-- Name -->
-            <div class="task-name">
-              {{ dppEtlTaskDetail.name || '' }}
-            </div>
-          </div>
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.responsiblePerson', 'Responsible Person') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail?.personChargeName || '-' }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.contactNumber', 'Contact Phone') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail.contactNumber || '-' }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.taskStatus', 'Task Status') }}</div>
-              <div class="infotop-row-value">
-                <el-tag :type="dppEtlTaskDetail.status == '1' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.status == '1' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
-                </el-tag>
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.integratioTask.dataIntegrationCategory', 'Data Integration Category') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail.catName || '-' }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.developTask.scheduleStatus', 'Schedule Status') }}</div>
-              <div class="infotop-row-value">
-                <el-tag :type="dppEtlTaskDetail.schedulerState == '0' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.schedulerState == '0' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
-                </el-tag>
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime', 'Created Time') }}</div>
-              <div class="infotop-row-value">
-                {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="24" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.description', 'Description') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail.description || '-' }}
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="dppEtlTaskDetail"
+      :header="{
+        className: 'clearfixs',
+        nameKey: 'name',
+        statusKey: 'status',
+        statusOptions: taskStatusOptions,
+      }"
+      :items="detailItems"
+      mode="free"
+    >
+      <template #schedulerState="{ data }">
+        <el-tag :type="data.schedulerState == '0' ? 'success' : 'danger'">
+          {{ data.schedulerState == '0' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
+        </el-tag>
+      </template>
+      <template #configStatus="{ data }">
+        <el-tag :type="data.status == -1 ? 'warning' : 'success'">
+          {{ data.status == -1 ? td('dpp.info.draft', 'Draft') : td('dpp.info.completed', 'Completed') }}
+        </el-tag>
+      </template>
+    </DetailInfo>
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -127,10 +61,29 @@ import { etlTask } from "@/api/dpp/task/index.js";
 import { useRoute } from "vue-router";
 import process from "@/views/dpp/task/integratioTask/detail/process.vue";
 import info from "@/views/dpp/task/integratioTask/detail/info.vue";
-import { onActivated, reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
+import DetailInfo from "@/components/DetailInfo/index.vue";
+import { onActivated, onDeactivated, reactive, ref, toRefs, watch, getCurrentInstance, computed } from "vue";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+const { dpp_etl_task_status } = proxy.useDict("dpp_etl_task_status");
+
+const taskStatusOptions = computed(() => {
+  const options = dpp_etl_task_status.value || [];
+  const hasMinusOne = options.some(opt => String(opt.value) === '-1');
+  const hasZero = options.some(opt => String(opt.value) === '0');
+  
+  const extraOptions = [];
+  if (!hasMinusOne) {
+    extraOptions.push({ label: td('dpp.integratioTask.off', 'Off'), value: '-1', elTagType: 'danger' });
+  }
+  if (!hasZero) {
+    extraOptions.push({ label: td('dpp.integratioTask.off', 'Off'), value: '0', elTagType: 'danger' });
+  }
+  
+  return [...options, ...extraOptions];
+});
+
 const activeName = ref("1");
 const showSearch = ref(true);
 const route = useRoute();
@@ -141,6 +94,41 @@ const data = reactive({
 });
 let compRef = ref(null);
 const { dppEtlTaskDetail } = toRefs(data);
+
+const detailItems = computed(() => [
+  {
+    label: td("dpp.integratioTask.dataIntegrationCategory", "Data Integration Category"),
+    key: "catName",
+  },
+  {
+    label: td("dpp.developTask.scheduleStatus", "Schedule Status"),
+    slot: "schedulerState",
+  },
+  {
+    label: td("dpp.integratioTask.responsiblePerson", "Responsible Person"),
+    key: "personChargeName",
+  },
+  {
+    label: td("common.texts.description", "Description"),
+    key: "description",
+    span: 24,
+    className: "mt2 mb2",
+  },
+  {
+    label: td("dpp.info.configStatus", "Config Status"),
+    slot: "configStatus",
+  },
+  {
+    label: td("dpp.integratioTask.contactNumber", "Contact Phone"),
+    key: "contactNumber",
+  },
+  {
+    label: td("common.texts.createdTime", "Created Time"),
+    key: "createTime",
+    type: "time",
+  },
+  
+]);
 function getDppEtlTaskDetailById(id) {
   if (!id) return;
   loading.value = true;

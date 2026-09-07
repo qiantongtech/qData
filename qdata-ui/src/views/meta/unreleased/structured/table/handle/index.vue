@@ -125,17 +125,6 @@
             </el-radio>
           </el-radio-group>
         </el-form-item> -->
-
-        <el-form-item :label="td('common.texts.remark')" class="row-full">
-          <el-input
-            v-model="store.form.remark"
-            type="textarea"
-            :placeholder="td('common.form.remarkPlaceholder')"
-            :min-height="192"
-            show-word-limit
-            maxlength="256字符"
-          />
-        </el-form-item>
       </div>
 
       <div class="module-head">

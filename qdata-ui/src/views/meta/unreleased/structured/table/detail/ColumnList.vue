@@ -295,18 +295,6 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-
-        <el-form-item :label="td('common.texts.remark')" class="row-full" :label-position="labelPosition">
-          <el-input
-            v-model="dialog.form.remark"
-            type="textarea"
-            :placeholder="td('common.form.remarkPlaceholder')"
-            :min-height="192"
-            show-word-limit
-            maxlength="256字符"
-          />
-        </el-form-item>
-
         <el-form-item :label="td('common.texts.description')" class="row-full" :label-position="labelPosition">
           <el-input
             v-model="dialog.form.description"

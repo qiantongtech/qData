@@ -32,7 +32,8 @@
       label-width="120px"
       @submit.prevent
       :disabled="title == td('dpp.developTask.taskDetail', 'Task Details')"
-     :label-position="labelPosition">
+      :label-position="labelPosition"
+    >
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
@@ -40,12 +41,17 @@
             prop="name"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
-                message: td('dpp.developTask.inputTaskName', 'Please enter task name'),
+                required:
+                  title != td('dpp.developTask.taskDetail', 'Task Details'),
+                message: td(
+                  'dpp.developTask.inputTaskName',
+                  'Please enter task name'
+                ),
                 trigger: 'blur',
               },
             ]"
-           :label-position="labelPosition">
+            :label-position="labelPosition"
+          >
             <el-input
               v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
               v-model="form.name"
@@ -58,11 +64,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            :label="td('dpp.developTask.dataDevCategory', 'Data Development Category')"
+            :label="
+              td('dpp.developTask.dataDevCategory', 'Data Development Category')
+            "
             prop="catCode"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
+                required:
+                  title != td('dpp.developTask.taskDetail', 'Task Details'),
                 message: td(
                   'dpp.developTask.selectTaskCategory',
                   'Please select data development category'
@@ -70,7 +79,8 @@
                 trigger: 'change',
               },
             ]"
-           :label-position="labelPosition">
+            :label-position="labelPosition"
+          >
             <el-tree-select
               filterable
               v-model="form.catCode"
@@ -78,7 +88,10 @@
               :props="{ value: 'code', label: 'name', children: 'children' }"
               value-key="id"
               :placeholder="
-                td('dpp.developTask.selectTaskCategory', 'Please select data development category')
+                td(
+                  'dpp.developTask.selectTaskCategory',
+                  'Please select data development category'
+                )
               "
               check-strictly
             />
@@ -93,12 +106,14 @@
             prop="personCharge"
             :rules="[
               {
-                required: title != td('dpp.developTask.taskDetail', 'Task Details'),
+                required:
+                  title != td('dpp.developTask.taskDetail', 'Task Details'),
                 message: td('dpp.developTask.selectResponsiblePerson'),
                 trigger: 'change',
               },
             ]"
-           :label-position="labelPosition">
+            :label-position="labelPosition"
+          >
             <el-tree-select
               filterable
               v-model="form.personCharge"
@@ -110,7 +125,10 @@
               }"
               value-key="ID"
               :placeholder="
-                td('dpp.developTask.selectResponsiblePersonInfo', 'Please select responsible person')
+                td(
+                  'dpp.developTask.selectResponsiblePersonInfo',
+                  'Please select responsible person'
+                )
               "
               check-strictly
               @change="handleContactChange"
@@ -119,16 +137,20 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-              :label="td('dpp.developTask.contactNumber', 'Contact Phone')"
-              prop="contactNumber"
-              :label-position="labelPosition">
+            :label="td('dpp.developTask.contactNumber', 'Contact Phone')"
+            prop="contactNumber"
+            :label-position="labelPosition"
+          >
             <el-input
-                v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
-                v-model="form.contactNumber"
-                :placeholder="
-                td('dpp.developTask.inputContactNumberInfo', 'Please enter contact phone')
+              v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
+              v-model="form.contactNumber"
+              :placeholder="
+                td(
+                  'dpp.developTask.inputContactNumberInfo',
+                  'Please enter contact phone'
+                )
               "
-                disabled
+              disabled
             />
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
           </el-form-item>
@@ -138,9 +160,9 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-              :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
-              prop="typaCode"
-              :rules="[
+            :label="td('dpp.integration.dbConnectionType', '数据连接类型')"
+            prop="typaCode"
+            :rules="[
               {
                 required: title != td('dpp.developTask.taskDetail', '任务详情'),
                 message: td(
@@ -150,42 +172,44 @@
                 trigger: 'change',
               },
             ]"
-              :label-position="labelPosition">
+            :label-position="labelPosition"
+          >
             <el-tree-select
-                filterable
-                :disabled="info"
-                v-model="form.typaCode"
-                :data="treeData"
-                :props="{ value: 'value', label: 'label', children: 'children' }"
-                value-key="label"
-                check-strictly
-                @change="getDaDatasource(true)"
+              filterable
+              :disabled="info"
+              v-model="form.typaCode"
+              :data="treeData"
+              :props="{ value: 'value', label: 'label', children: 'children' }"
+              value-key="label"
+              check-strictly
+              @change="getDaDatasource(true)"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-              :label="td('dpp.developTask.taskStatus', '任务状态')"
-              prop="releaseState"
-              :label-position="labelPosition"><el-radio-group
+            :label="td('dpp.developTask.taskStatus', '任务状态')"
+            prop="releaseState"
+            :label-position="labelPosition"
+            ><el-radio-group
               style="width: 100%"
               v-model="form.releaseState"
               class="el-form-input-width"
               v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-          >
-            <el-radio
+            >
+              <el-radio
                 v-for="dict in dpp_etl_task_status"
                 :key="dict.value"
                 :value="dict.value"
                 :disabled="dict.value == 1"
-            >
-              {{ dict.label }}
-            </el-radio>
-          </el-radio-group>
+              >
+                {{ dict.label }}
+              </el-radio>
+            </el-radio-group>
             <div class="form-readonly" v-else>
               {{
                 dpp_etl_task_status.find(
-                    (item) => item.value == form.releaseState
+                  (item) => item.value == form.releaseState
                 )?.label || "-"
               }}
             </div>
@@ -196,15 +220,21 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-              :label="td('dpp.developTask.description', 'Description')"
-              prop="description"
-              :label-position="labelPosition">
+            :label="td('dpp.developTask.description', 'Description')"
+            prop="description"
+            :label-position="labelPosition"
+          >
             <el-input
-                v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
-                v-model="form.description"
-                type="textarea"
-                :placeholder="
-                td('dpp.developTask.inputDescription', 'Please enter description')
+              v-if="title != td('dpp.developTask.taskDetail', 'Task Details')"
+              v-model="form.description"
+              type="textarea"
+              maxlength="256字符"
+              show-word-limit
+              :placeholder="
+                td(
+                  'dpp.developTask.inputDescription',
+                  'Please enter description'
+                )
               "
             />
             <div class="form-readonly" v-else>
@@ -217,38 +247,43 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item
-              :label="td('dpp.integratioTask.schedulerSystem', '调度系统')"
-              prop="scheduler"
-              :rules="[
+            :label="td('dpp.integratioTask.schedulerSystem', '调度系统')"
+            prop="scheduler"
+            :rules="[
               {
                 required: title != td('dpp.developTask.taskDetail', '任务详情'),
                 message: td('dpp.developTask.selectScheduler', '请选择调度器'),
                 trigger: 'change',
               },
             ]"
-              :label-position="labelPosition"
+            :label-position="labelPosition"
           >
             <el-radio-group
-                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-                v-model="form.scheduler"
-                class="scheduler-card-group"
-                @change="handleSchedulerChange"
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.scheduler"
+              class="scheduler-card-group"
+              @change="handleSchedulerChange"
             >
               <el-radio
-                  v-for="(item, index) in scheduler_type"
-                  :key="index"
-                  :value="item.value"
-                  class="option-card"
+                v-for="(item, index) in scheduler_type"
+                :key="index"
+                :value="item.value"
+                class="option-card"
               >
                 <img
-                    class="option-card__icon scheduler-card__icon"
-                    :src="getSchedulerMeta(item.value).icon"
-                    :alt="item.label"
+                  class="option-card__icon scheduler-card__icon"
+                  :src="getSchedulerMeta(item.value).icon"
+                  :alt="item.label"
                 />
                 <span class="option-card__content">
                   <span class="option-card__heading">
                     <span class="option-card__name">{{ item.label }}</span>
-                    <el-tag type="primary" :underline="false" class="task-cat-ellipsis" size="small">
+                    <el-tag
+                      type="primary"
+                      :underline="false"
+                      class="task-cat-ellipsis"
+                      size="small"
+                    >
                       {{ getSchedulerMeta(item.value).tag || "-" }}
                     </el-tag>
                   </span>
@@ -265,34 +300,34 @@
         </el-col>
       </el-row>
 
-
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-              class="schedule-cycle-form-item"
-              :label="td('dpp.developTask.scheduleCycle', '调度周期')"
-              prop="crontab"
-              :rules="[
+            class="schedule-cycle-form-item"
+            :label="td('dpp.developTask.scheduleCycle', '调度周期')"
+            prop="crontab"
+            :rules="[
               {
                 required: title != td('dpp.developTask.taskDetail', '任务详情'),
                 validator: validateCrontab,
                 trigger: 'blur',
               },
             ]"
-              :label-position="labelPosition">
+            :label-position="labelPosition"
+          >
             <el-input
-                v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
-                v-model="form.crontab"
-                :placeholder="
+              v-if="title != td('dpp.developTask.taskDetail', '任务详情')"
+              v-model="form.crontab"
+              :placeholder="
                 td('dpp.developTask.selectScheduleCycle', '请选择调度周期')
               "
-                readonly
+              readonly
             >
               <template #append>
                 <el-button
-                    type="primary"
-                    @click="handleShowCron"
-                    style="background-color: #2666fb; color: #fff"
+                  type="primary"
+                  @click="handleShowCron"
+                  style="background-color: #2666fb; color: #fff"
                 >
                   {{ td("dpp.developTask.configure", "配置") }}
                   <i class="el-icon-time el-icon--right"></i>
@@ -301,21 +336,20 @@
             </el-input>
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
             <p
-                v-if="showCrontabDescription"
-                class="form-item-description schedule-cycle-description"
+              v-if="showCrontabDescription"
+              class="form-item-description schedule-cycle-description"
             >
-              {{ td("dpp.developTask.scheduleCycleDescription", "定义任务自动触发的时间和频率") }}
+              {{
+                td(
+                  "dpp.developTask.scheduleCycleDescription",
+                  "定义任务自动触发的时间和频率"
+                )
+              }}
             </p>
           </el-form-item>
         </el-col>
       </el-row>
-      <!-- <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('dpp.developTask.remark', 'Remarks')" prop="remark" :label-position="labelPosition">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('dpp.developTask.inputRemark', 'Please enter remarks')" />
-          </el-form-item>
-        </el-col>
-      </el-row> -->
+
       <div class="h2" @click="templateShow = !templateShow">
         {{ td("dpp.developTask.useTemplate", "> Use Template") }}
       </div>
@@ -426,7 +460,7 @@ const { dpp_etl_task_status } = proxy.useDict("dpp_etl_task_status");
 import useUserStore from "@/store/system/user";
 const userStore = useUserStore();
 import { treeData } from "@/views/dpp/task/developTask/data";
-import {checkApi} from "@/api/ds/api/api.js";
+import { checkApi } from "@/api/ds/api/api.js";
 
 const scheduler_type = [
   { label: "Quartz", value: "QUARTZ" },
@@ -463,7 +497,9 @@ const props = defineProps({
   userList: { type: Object, default: () => ({}) },
   info: { type: Boolean, default: false },
 });
-const effectiveTitle = computed(() => props.title || td('dpp.developTask.formTitle'));
+const effectiveTitle = computed(
+  () => props.title || td("dpp.developTask.formTitle")
+);
 
 const showCrontabDescription = ref(true);
 const validateCrontab = (_rule, value, callback) => {
@@ -472,9 +508,7 @@ const validateCrontab = (_rule, value, callback) => {
   showCrontabDescription.value = !isRequired || Boolean(value);
   if (isRequired && !value) {
     callback(
-      new Error(
-        td("dpp.developTask.selectScheduleCycle", "请选择调度周期")
-      )
+      new Error(td("dpp.developTask.selectScheduleCycle", "请选择调度周期"))
     );
     return;
   }
@@ -484,7 +518,9 @@ const validateCrontab = (_rule, value, callback) => {
 const emit = defineEmits(["update:visible", "confirm", "save"]);
 
 const getOptionLabel = (value) => {
-  return scheduler_type.find((item) => item.value == value)?.label || value || "-";
+  return (
+    scheduler_type.find((item) => item.value == value)?.label || value || "-"
+  );
 };
 
 const form = ref({
@@ -635,7 +671,10 @@ const closeDialog = () => {
 };
 const saveClose = async () => {
   try {
-    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    if (
+      form.value.scheduler === "DOLPHINSCHEDULER" &&
+      !(await checkDSUpStart())
+    ) {
       return;
     }
     const valid = await daDiscoveryTaskRef.value.validate();
@@ -666,7 +705,10 @@ const saveClose = async () => {
 // How to save data
 const saveData = async () => {
   try {
-    if (form.value.scheduler === 'DOLPHINSCHEDULER' && !await checkDSUpStart()) {
+    if (
+      form.value.scheduler === "DOLPHINSCHEDULER" &&
+      !(await checkDSUpStart())
+    ) {
       return;
     }
     const valid = await daDiscoveryTaskRef.value.validate();
@@ -701,10 +743,15 @@ const saveData = async () => {
 const checkDSUpStart = async () => {
   const resp = await checkApi();
   if (!resp.data) {
-    proxy.$modal.msgWarning(td("dpp.integratioTask.upDs", "Please start the DolphinScheduler scheduler！"));
+    proxy.$modal.msgWarning(
+      td(
+        "dpp.integratioTask.upDs",
+        "Please start the DolphinScheduler scheduler！"
+      )
+    );
   }
   return resp.data;
-}
+};
 
 let openCron = ref(false);
 const expression = ref("");
@@ -804,9 +851,9 @@ const handleContactChange = (selectedValue) => {
   white-space: normal;
   transition: border-color 0.2s, box-shadow 0.2s;
   height: 86px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 2px;
-  border: 1px solid #D6DAE1;
+  border: 1px solid #d6dae1;
 
   &:hover:not(.is-disabled) {
     border-color: var(--el-color-primary);

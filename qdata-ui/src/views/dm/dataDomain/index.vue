@@ -325,6 +325,7 @@ const tableStore = reactive({
       label: td('dm.dataDomain.name', 'Data Domain Name'),
       prop: "name",
       align: "left",
+      width: 260,
       showOverflowTooltip: {
         effect: "light",
       },

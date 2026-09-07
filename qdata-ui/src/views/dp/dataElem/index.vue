@@ -22,8 +22,13 @@
     <GuideTip tip-id="dp/dpDataElem.list" />
 
     <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataElem.treePlaceholder')"
-        @node-click="handleNodeClick" />
+      <DeptTree
+        ref="DeptTreeRef"
+        :deptOptions="deptOptions"
+        :leftWidth="leftWidth"
+        :placeholder="td('dp.dataElem.treePlaceholder')"
+        @node-click="handleNodeClick"
+      />
 
       <el-main class="main-content">
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
@@ -195,13 +200,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
-              <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -294,7 +292,6 @@ const tableStore = reactive({
       date: true
     },
     { label: td("common.texts.status"), prop: "status", width: 80, align: "left", slot: "status" },
-    { label: td("common.texts.remark"), prop: "remark", width: 200, align: "left", showOverflowTooltip: { effect: "light" } },
     { label: td("common.texts.operation"), slot: "action", width: 220, align: "center", fixed: "right" },
   ],
   func: listDpDataElem,
@@ -400,7 +397,7 @@ function cancel() {
 }
 
 function handleNodeClick(data) {
-  tableStore.params.catCode = data.code;
+  tableStore.params.catCode = data.code || null;
   handleQuery();
 }
 
@@ -425,18 +422,18 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("dpDataElemRef");
 }
 
 function handleQuery() {
   tableStore.params.pageNum = 1;
+  tableRef.value?.refresh();
 }
 
 function resetQuery() {
   DeptTreeRef.value?.resetTree?.();
-  tableStore.params.catCode = "";
+  tableStore.params.catCode = null;
   handleQuery();
 }
 

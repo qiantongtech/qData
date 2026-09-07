@@ -20,66 +20,20 @@
   <div class="app-container" ref="app-container">
     <GuideTip tip-id="da/daDatasource.list" />
 
-    <div class="pagecont-top" v-show="showSearch">
-      <el-form
-        class="btn-style"
-        :model="queryParams"
-        ref="queryRef"
-        :inline="true"
+    <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+      <!-- 搜索栏插槽 -->
+      <template #search>
+        <qt-search-bar
+          v-bind="searchStore"
+          :params="tableStore.params"
+          @query="handleQuery"
+          @reset="resetQuery"
+          :tableRef="tableRef"
+        />
+      </template>
 
-        v-show="showSearch"
-        @submit.prevent
-      >
-        <el-form-item
-          :label="td('dpp.datasource.datasourceName')"
-          prop="datasourceName"
-        >
-          <el-input
-            class="el-form-input-width"
-            v-model="queryParams.datasourceName"
-            :placeholder="td('dpp.datasource.inputDatasourceName')"
-            clearable
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item
-          :label="td('dpp.datasource.datasourceType')"
-          prop="datasourceType"
-        >
-          <el-select
-            class="el-form-input-width"
-            v-model="queryParams.datasourceType"
-            :placeholder="td('dpp.datasource.selectDatasourceType')"
-            clearable
-          >
-            <el-option
-              v-for="dict in datasource_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label-position="labelPosition">
-          <el-button
-            plain
-            type="primary"
-            @click="handleQuery"
-            @mousedown="(e) => e.preventDefault()"
-          >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i
-            >{{ td("common.button.query") }}
-          </el-button>
-          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i
-            >{{ td("common.button.reset") }}
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <div class="pagecont-bottom">
-      <div class="justify-between mb15">
+      <!-- 数据操作按钮插槽 (如：新增、导出) -->
+      <template #actions-data>
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
             <el-button
@@ -89,246 +43,91 @@
               v-hasPermi="['da:dataSource:add']"
               @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i
-              >{{ td("common.button.add") }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td("common.button.add") }}
             </el-button>
           </el-col>
-          <!--         <el-col :span="1.5">-->
-          <!--           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['da:dataSource:edit']"-->
-          <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i class = "iconfont-mini econ-xiugai & #45; copy mr5">/i>-->
-          <!--           </el-button>-->
-          <!--         </el-col>-->
-          <!--         <el-col :span="1.5">-->
-          <!--           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['da:dataSource:remove']"-->
-          <!--                      @mousedown="(e) => e.preventDefault()">-->
-          <!--             <i calass="iconfont-mini icon-shanchu-huise mr5">/i>-->
-          <!--           </el-button>-->
-          <!--         </el-col>-->
         </el-row>
-        <div class="justify-end top-right-btn">
-          <right-toolbar
-            v-model:showSearch="showSearch"
-            @queryTable="getList"
-            :columns="columns"
-          ></right-toolbar>
-        </div>
-      </div>
-      <el-table
-        stripe
-        v-loading="loading"
-        :data="daDatasourceList"
-        @selection-change="handleSelectionChange"
-        :default-sort="defaultSort"
-        @sort-change="handleSortChange"
-      >
-        <el-table-column
-          v-if="getColumnVisibility(1)"
-          width="80"
-          :label="td('dpp.datasource.number')"
-          align="center"
-          prop="id"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.id || "-" }}
-          </template>
-        </el-table-column>
-        <!--       <el-table-column type="selection" width="55" align="center" />-->
-        <el-table-column
-          v-if="getColumnVisibility(2)"
-          width="250"
-          :label="td('dpp.datasource.datasourceName')"
-          align="left"
-          prop="datasourceName"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.datasourceName || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(3)"
-          :label="td('dpp.datasource.description')"
-          width="240"
-          align="left"
-          prop="description"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.description || "-" }}
-          </template>
-        </el-table-column>
+      </template>
 
-        <el-table-column
-          v-if="getColumnVisibility(4)"
-          width="160"
-          :label="td('dpp.datasource.datasourceType')"
-          align="center"
-          prop="datasourceType"
-        >
-          <template #default="scope">
-            <dict-tag
-              :options="datasource_type"
-              :value="scope.row.datasourceType"
-            />
-          </template>
-        </el-table-column>
-        <!-- <el-table-column
-            v-if="getColumnVisibility(2) && type == 1"
-            width="120"
-            :label="td('dpp.datasource.projectNameList')"
-            align="center"
-            prop="projectName"
-        >
-            <template #default="scope">
-                {{ scope.row.projectName || '-' }}
-            </template>
-        </el-table-column> -->
-        <el-table-column
-          v-if="getColumnVisibility(5)"
-          :label="td('dpp.datasource.createBy')"
-          width="120"
-          align="center"
-          prop="createBy"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.createBy || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(6)"
-          :label="td('dpp.datasource.createTime')"
-          align="center"
-          prop="createTime"
-          width="160"
-          sortable="custom"
-          :sort-orders="['descending', 'ascending']"
-        >
-          <template #default="scope">
-            <span>{{
-              parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(7)"
-          :label="td('dpp.datasource.status')"
-          align="center"
-          prop="validFlag"
-          width="100"
-        >
-          <template #default="scope">
-            <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
-
-            <el-switch
-              v-model="scope.row.validFlag"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              :loading="statusLoadingMap[scope.row.id] === true"
-              @change="handleStatusChange(scope.row)"
-            >
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(8)"
-          :label="td('dpp.datasource.remark')"
-          align="left"
-          prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.remark || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="getColumnVisibility(9)"
-          :label="td('dpp.datasource.operation')"
-          align="center"
-          class-name="small-padding fixed-width"
-          fixed="right"
-          width="280"
-        >
-          <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              icon="Connection"
-              :loading="testConnectionLoadingMap[scope.row.id] === true"
-              @click="handleTestConnection(scope.row)"
-              v-hasPermi="['da:dataSource:edit']"
-              >{{ td("dpp.datasource.testConnection") }}
-            </el-button>
-
-            <el-button
-              link
-              type="primary"
-              icon="view"
-              @click="handleDetail(scope.row)"
-              v-hasPermi="['da:dataSource:edit']"
-              >{{ td("common.button.details") }}
-            </el-button>
-            <el-popover placement="bottom" :width="100" trigger="click">
-              <template #reference>
-                <el-button
-                  link
-                  type="primary"
-                  :disabled="scope.row.isAdminAddTo == false"
-                  icon="ArrowDown"
-                >
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    :content="td('dpp.datasource.noPermission')"
-                    placement="top"
-                    :disabled="scope.row.isAdminAddTo != false"
-                  >
-                    {{ td("dpp.datasource.more") }}
-                  </el-tooltip>
-                </el-button>
-              </template>
-              <div class="butgdlist">
-                <el-button
-                  link
-                  type="primary"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['da:dataSource:edit']"
-                  >{{ td("common.button.update") }}
-                </el-button>
-                <el-button
-                  link
-                  type="danger"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['da:dataSource:remove']"
-                  >{{ td("common.button.delete") }}
-                </el-button>
-              </div>
-            </el-popover>
-            <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/datasource/daDatasourceDetail',scope.row)"-->
-            <!--                      v-hasPermi=['da:dataSource:edit']-->
-          </template>
-        </el-table-column>
-
-        <template #empty>
-          <div class="emptyBg">
-            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-            <p>{{ td("common.noData") }}</p>
-          </div>
+      <!-- 表格组件 -->
+      <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+        <!-- 状态切换插槽 -->
+        <template #status="{ row }">
+          <el-switch
+            v-model="row.validFlag"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            :loading="statusLoadingMap[row.id] === true"
+            @change="handleStatusChange(row)"
+          />
         </template>
-      </el-table>
 
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </div>
+        <!-- 操作列插槽 -->
+        <template #action="{ row }">
+          <el-button
+            link
+            type="primary"
+            icon="Connection"
+            :loading="testConnectionLoadingMap[row.id] === true"
+            @click="handleTestConnection(row)"
+            v-hasPermi="['da:dataSource:edit']"
+          >
+            {{ td("dpp.datasource.testConnection") }}
+          </el-button>
+
+          <el-button
+            link
+            type="primary"
+            icon="view"
+            @click="handleDetail(row)"
+            v-hasPermi="['da:dataSource:edit']"
+          >
+            {{ td("common.button.details") }}
+          </el-button>
+
+          <el-popover placement="bottom" :width="100" trigger="click">
+            <template #reference>
+              <el-button
+                link
+                type="primary"
+                :disabled="row.isAdminAddTo == false"
+                icon="ArrowDown"
+              >
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  :content="td('dpp.datasource.noPermission')"
+                  placement="top"
+                  :disabled="row.isAdminAddTo != false"
+                >
+                  {{ td("dpp.datasource.more") }}
+                </el-tooltip>
+              </el-button>
+            </template>
+            <div class="butgdlist">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(row)"
+                v-hasPermi="['da:dataSource:edit']"
+              >
+                {{ td("common.button.update") }}
+              </el-button>
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                v-hasPermi="['da:dataSource:remove']"
+              >
+                {{ td("common.button.delete") }}
+              </el-button>
+            </div>
+          </el-popover>
+        </template>
+      </qt-table>
+    </qt-wrap>
 
     <!-- Add or modify the data source dialogue -->
     <el-dialog
@@ -578,6 +377,8 @@
                 :min-height="192"
                 v-model="form.description"
                 :placeholder="td('dpp.datasource.inputDescription')"
+                 maxlength="256字符"
+                show-word-limit
               />
             </el-form-item>
           </el-col>
@@ -616,18 +417,6 @@
                   {{ dict.label }}
                 </el-radio>
               </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.remark')" :label-position="labelPosition">
-              <el-input
-                type="textarea"
-                v-model="form.remark"
-                :placeholder="td('common.form.remarkPlaceholder')"
-                :min-height="192"
-              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -847,15 +636,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('dpp.datasource.remark')" :label-position="labelPosition">
-              <div class="form-readonly textarea">
-                {{ form.remark || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -1001,8 +781,8 @@
 </template>
 
 <script setup name="DppDataSource">
-import { ref, computed, watch, onActivated, onBeforeUnmount } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
+import { ref, computed, watch, onActivated, onBeforeUnmount, reactive, toRefs, getCurrentInstance, nextTick } from "vue";
+import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
 import { ElMessageBox } from "element-plus";
 import {
   listDaDatasource,
@@ -1021,7 +801,6 @@ import { encrypt, isDecrypted } from "@/utils/aesEncrypt";
 import { deptUserTree } from "@/api/system/system/user.js";
 import { getToken } from "@/utils/auth.js";
 import useUserStore from "@/store/system/user";
-import { config } from "ace-builds";
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const userStore = useUserStore();
@@ -1031,100 +810,117 @@ const { datasource_type, sys_disable } = proxy.useDict(
   "datasource_type",
   "sys_disable"
 );
-const daDatasourceList = ref([]);
 
-// Column hidden status
-const columnVisible = ref({
-  1: true,
-  2: true,
-  3: true,
-  4: true,
-  5: true,
-  6: true,
-  7: true,
-  8: true,
-  9: true,
+const tableRef = ref(null);
+const DeptTreeRef = ref(null);
+
+const searchStore = reactive({
+  items: [
+    {
+      label: td("dpp.datasource.datasourceName"),
+      prop: "datasourceName",
+      component: {
+        is: "input",
+        placeholder: td("dpp.datasource.inputDatasourceName"),
+      },
+    },
+    {
+      label: td("dpp.datasource.datasourceType"),
+      prop: "datasourceType",
+      component: {
+        is: "select",
+        options: datasource_type,
+        placeholder: td("dpp.datasource.selectDatasourceType"),
+      },
+    },
+  ],
 });
 
-// Column Configuration (use ref to ensure that RightToolbar changes last)
-const columns = ref([
-  {
-    key: 1,
-    label: td("dpp.datasource.number"),
-    visible: columnVisible.value[1],
+const tableStore = reactive({
+  config: {
+    initResquest: true,
   },
-  {
-    key: 2,
-    label: td("dpp.datasource.datasourceName"),
-    visible: columnVisible.value[2],
+  columns: [
+    {
+      label: td("dpp.datasource.number"),
+      prop: "id",
+      width: 60,
+      align: "left",
+      sortable: true,
+    },
+    {
+      label: td("dpp.datasource.datasourceName"),
+      prop: "datasourceName",
+      width: 260,
+      align: "left",
+      showOverflowTooltip: { effect: "light" },
+    },
+    {
+      label: td("dpp.datasource.description"),
+      prop: "description",
+      width: 256,
+      align: "left",
+      showOverflowTooltip: { effect: "light" },
+    },
+    {
+      label: td("dpp.datasource.datasourceType"),
+      prop: "datasourceType",
+      width: 160,
+      align: "left",
+      dict: "datasource_type",
+    },
+    {
+      label: td("dpp.datasource.createBy"),
+      prop: "createBy",
+      width: 120,
+      align: "left",
+      showOverflowTooltip: { effect: "light" },
+    },
+    {
+      label: td("dpp.datasource.createTime"),
+      prop: "createTime",
+      width: 160,
+      align: "left",
+      sortable: true,
+      date: true,
+    },
+    {
+      label: td("dpp.datasource.status"),
+      prop: "validFlag",
+      width: 100,
+      align: "left",
+      slot: "status",
+    },
+    {
+      label: td("dpp.datasource.operation"),
+      slot: "action",
+      width: 280,
+      align: "center",
+      fixed: "right",
+    },
+  ],
+  func: (params) => {
+    if (type == 1) {
+      params.projectId = userStore.projectId;
+      params.projectCode = userStore.projectCode;
+      return listDaDatasourceByProjectCode(params);
+    }
+    return listDaDatasource(params);
   },
-  {
-    key: 3,
-    label: td("dpp.datasource.description"),
-    visible: columnVisible.value[3],
+  params: {
+    pageNum: 1,
+    pageSize: 10,
+    datasourceName: null,
+    datasourceType: null,
+    orderByColumn: "createTime",
+    isAsc: "descending",
   },
-  {
-    key: 4,
-    label: td("dpp.datasource.datasourceType"),
-    visible: columnVisible.value[4],
-  },
-  {
-    key: 5,
-    label: td("dpp.datasource.createBy"),
-    visible: columnVisible.value[5],
-  },
-  {
-    key: 6,
-    label: td("dpp.datasource.createTime"),
-    visible: columnVisible.value[6],
-  },
-  {
-    key: 7,
-    label: td("dpp.datasource.status"),
-    visible: columnVisible.value[7],
-  },
-  {
-    key: 8,
-    label: td("dpp.datasource.remark"),
-    visible: columnVisible.value[8],
-  },
-  {
-    key: 9,
-    label: td("dpp.datasource.operation"),
-    visible: columnVisible.value[9],
-  },
-]);
-
-// Listen to RightToolbar changes to columns, sync to columnVisible
-watch(
-  columns,
-  (newColumns) => {
-    newColumns.forEach((col) => {
-      if (columnVisible.value[col.key] !== undefined) {
-        columnVisible.value[col.key] = col.visible;
-      }
-    });
-  },
-  { deep: true }
-);
-
-const getColumnVisibility = (key) => {
-  return columnVisible.value[key] !== undefined
-    ? columnVisible.value[key]
-    : true;
-};
+});
 
 const open = ref(false);
 const openProject = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
 const projectOptions = ref([]);
 const projectList = ref([]);
@@ -1331,13 +1127,14 @@ const data = reactive({
 
 const { queryParams, form, rules, queryParamsProject } = toRefs(data);
 const selectable = (row) => !row.dppAssigned;
-// Listen id changes
+
+// Watch id changes
 watch(
   () => userStore.projectCode,
   (newCode) => {
-    getList();
+    tableRef.value?.refresh();
   },
-  { immediate: true } // `immediate` for true means that when the page is loaded, watch
+  { immediate: false }
 );
 
 function getProjectOptions() {
@@ -1409,26 +1206,6 @@ function resetQueryProject() {
   getListProject();
 }
 
-/** Query list of data sources */
-function getList() {
-  loading.value = true;
-  if (type == 1) {
-    queryParams.value.projectId = userStore.projectId;
-    queryParams.value.projectCode = userStore.projectCode;
-    listDaDatasourceByProjectCode(queryParams.value).then((response) => {
-      daDatasourceList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-  } else {
-    listDaDatasource(queryParams.value).then((response) => {
-      daDatasourceList.value = response.data.rows;
-      total.value = response.data.total;
-      loading.value = false;
-    });
-  }
-}
-
 // Cancel button
 function cancel() {
   open.value = false;
@@ -1460,35 +1237,21 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("daDatasourceRef");
 }
 
 /** Search button operation */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  tableStore.params.pageNum = 1;
 }
 
 /** Reset button operations */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  DeptTreeRef.value?.resetTree?.();
+  tableStore.params.datasourceName = null;
+  tableStore.params.datasourceType = null;
   handleQuery();
-}
-
-// Multiple box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sort Trigger Event */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
 }
 
 /** Add button operation */
@@ -1516,8 +1279,7 @@ let old_password;
 
 function handleUpdate(row, type) {
   reset();
-  const _id = row.id || ids.value;
-  loading.value = true;
+  const _id = row.id;
   getDaDatasource(_id)
     .then((response) => {
       form.value = response.data;
@@ -1551,16 +1313,13 @@ function handleUpdate(row, type) {
         old_password = form.value.password;
         title.value = td("dpp.datasource.editDatasource");
       }
-    })
-    .finally(() => {
-      loading.value = false; // No matter how successful, it's over.
     });
 }
 
 /** Details button operation */
 function handleDetail(row) {
   reset();
-  const _id = row.id || ids.value;
+  const _id = row.id;
   getDaDatasource(_id).then((response) => {
     form.value = response.data;
     form.value.projectNameListStr = form.value.projectList
@@ -1595,8 +1354,7 @@ function handleDetail(row) {
 
 /** Details button operation */
 function handleTestConnection(row) {
-  reset();
-  const _id = row.id || ids.value;
+  const _id = row.id;
   testConnectionLoadingMap.value[_id] = true;
   clientsTest(_id, { hideErrorMessage: true })
     .then((response) => {
@@ -1649,7 +1407,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td("dpp.datasource.editSuccess"));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
           })
           .finally(() => {
             btnLoading.value = false;
@@ -1690,7 +1448,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td("dpp.datasource.addSuccess"));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
           })
           .finally(() => {
             btnLoading.value = false;
@@ -1702,14 +1460,14 @@ function submitForm() {
 
 /** Remove button operation */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
+  const _ids = row.id;
   proxy.$modal
     .confirm(td("dpp.datasource.confirmDelete", { ids: _ids }))
     .then(function () {
       return removeDppOrDa(_ids, type);
     })
     .then(() => {
-      getList();
+      tableRef.value.refresh();
       proxy.$modal.msgSuccess(td("dpp.datasource.deleteSuccess"));
     })
     .catch(() => {});
@@ -1720,7 +1478,7 @@ function handleExport() {
   proxy.download(
     "da/daDatasource/export",
     {
-      ...queryParams.value,
+      ...tableStore.params,
     },
     `daDatasource_${new Date().getTime()}.xlsx`
   );
@@ -1764,7 +1522,7 @@ const handleFileSuccess = (response, file, fileList) => {
     td("dpp.datasource.importResult"),
     { dangerouslyUseHTMLString: true }
   );
-  getList();
+  tableRef.value.refresh();
 };
 
 /** ---------------------------------**/
@@ -1839,13 +1597,10 @@ function handleStatusChange(row) {
     .finally(function () {
       statusLoadingMap.value[row.id] = false;
       if (isDatasourcePageActive) {
-        getList();
+        tableRef.value.refresh();
       }
     });
 }
 
-queryParams.value.orderByColumn = defaultSort.value.prop;
-queryParams.value.isAsc = defaultSort.value.order;
-getList();
 getProjectOptions();
 </script>

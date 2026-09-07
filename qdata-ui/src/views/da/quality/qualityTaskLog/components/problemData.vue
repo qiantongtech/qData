@@ -126,11 +126,6 @@
                     {{ scope.row.time ? moment(scope.row.time).format('YYYY-MM-DD') : '-' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="td('common.texts.remark')" align="center" prop="remark" :show-overflow-tooltip="{effect: 'light'}" width="300">
-                <template #default="scope">
-                    {{ scope.row.remark || '-' }}
-                </template>
-            </el-table-column>
             <el-table-column :label="td('common.texts.operation')" align="center" width="240" fixed="right">
                 <template #default="scope">
                     <el-button link type="primary" v-if="scope.row.repair != 2" @click="addIgnore(scope.row)"

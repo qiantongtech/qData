@@ -68,7 +68,6 @@ const props = defineProps({
 
 // public fields
 const baseTable = [
-  { key: "status", label: td('dpp.info.configStatus', 'Config Status'), value: "" },
   { key: "crontab", label: td('dpp.info.scheduleCycle', 'Schedule Cycle'), value: "" },
   { key: "executionType", label: td('dpp.info.executionStrategy', 'Execution Strategy'), value: "" },
   { key: "scheduler", label: td('dpp.info.scheduler', 'Scheduler'), value: "" },

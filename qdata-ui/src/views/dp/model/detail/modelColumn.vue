@@ -197,20 +197,6 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
-            <el-input
-              type="textarea"
-              maxlength="256字符"
-              show-word-limit
-              :placeholder="td('common.form.remarkPlaceholder')"
-              v-model="form.remark"
-              :min-height="192"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
           <el-form-item :label="td('dp.modelForm.isPrimaryKey')" prop="pkFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pkFlag" @change="handlePkFlagChange">
               <el-radio
@@ -316,9 +302,6 @@
         <div class="form-readonly textarea">
           {{ form.modelComment || "-" }}
         </div>
-      </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
-        <div class="form-readonly textarea">{{ form.remark || "-" }}</div>
       </el-form-item>
 
       <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
@@ -587,7 +570,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null,
   };
   proxy.resetForm("dpModelColumnRef");
 }

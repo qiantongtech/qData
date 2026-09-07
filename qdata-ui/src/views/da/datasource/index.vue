@@ -29,7 +29,10 @@
         v-show="showSearch"
         @submit.prevent
       >
-        <el-form-item :label="td('da.datasource.datasourceName')" prop="datasourceName" >
+        <el-form-item
+          :label="td('da.datasource.datasourceName')"
+          prop="datasourceName"
+        >
           <el-input
             class="el-form-input-width"
             v-model="queryParams.datasourceName"
@@ -38,7 +41,10 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('da.datasource.datasourceType')" prop="datasourceType" >
+        <el-form-item
+          :label="td('da.datasource.datasourceType')"
+          prop="datasourceType"
+        >
           <el-select
             class="el-form-input-width"
             v-model="queryParams.datasourceType"
@@ -53,17 +59,19 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item >
+        <el-form-item>
           <el-button
             plain
             type="primary"
             @click="handleQuery"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i
+            >{{ td("common.button.query") }}
           </el-button>
           <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i
+            >{{ td("common.button.reset") }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -80,7 +88,8 @@
               v-hasPermi="['da:dataSource:add']"
               @mousedown="(e) => e.preventDefault()"
             >
-              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
+              <i class="iconfont-mini icon-xinzeng mr5"></i
+              >{{ td("common.button.add") }}
             </el-button>
           </el-col>
           <!--         <el-col :span="1.5">-->
@@ -223,17 +232,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="getColumnVisibility(8)"
-          :label="td('da.datasource.columnVisibility.remark')"
-          align="left"
-          prop="remark"
-          :show-overflow-tooltip="{ effect: 'light' }"
-        >
-          <template #default="scope">
-            {{ scope.row.remark || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
           v-if="getColumnVisibility(9)"
           :label="td('common.texts.operation')"
           align="center"
@@ -249,7 +247,7 @@
               :loading="testConnectionLoadingMap[scope.row.id] === true"
               @click="handleTestConnection(scope.row)"
               v-hasPermi="['da:dataSource:edit']"
-              >{{ td('dpp.datasource.testConnection') }}
+              >{{ td("dpp.datasource.testConnection") }}
             </el-button>
 
             <el-button
@@ -258,7 +256,7 @@
               icon="view"
               @click="handleDetail(scope.row)"
               v-hasPermi="['da:dataSource:edit']"
-              >{{ td('common.button.details') }}
+              >{{ td("common.button.details") }}
             </el-button>
             <el-popover placement="bottom" :width="100" trigger="click">
               <template #reference>
@@ -275,7 +273,7 @@
                     placement="top"
                     :disabled="scope.row.isAdminAddTo != false"
                   >
-                    {{ td('common.button.more') }}
+                    {{ td("common.button.more") }}
                   </el-tooltip>
                 </el-button>
               </template>
@@ -286,7 +284,7 @@
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['da:dataSource:edit']"
-                  >{{ td('common.button.update') }}
+                  >{{ td("common.button.update") }}
                 </el-button>
                 <el-button
                   link
@@ -294,7 +292,7 @@
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['da:dataSource:remove']"
-                  >{{ td('common.button.delete') }}
+                  >{{ td("common.button.delete") }}
                 </el-button>
               </div>
             </el-popover>
@@ -306,7 +304,7 @@
         <template #empty>
           <div class="emptyBg">
             <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-            <p>{{td('common.noData')}}</p>
+            <p>{{ td("common.noData") }}</p>
           </div>
         </template>
       </el-table>
@@ -341,10 +339,13 @@
         @submit.prevent
         :disabled="title == td('da.datasource.datasourceDetail')"
         :label-position="labelPosition"
-       >
+      >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceName')" prop="datasourceName">
+            <el-form-item
+              :label="td('da.datasource.datasourceName')"
+              prop="datasourceName"
+            >
               <el-input
                 v-model="form.datasourceName"
                 :placeholder="td('da.datasource.datasourceNamePlaceholder')"
@@ -353,7 +354,10 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceType')" prop="datasourceType">
+            <el-form-item
+              :label="td('da.datasource.datasourceType')"
+              prop="datasourceType"
+            >
               <el-select
                 v-model="form.datasourceType"
                 :placeholder="td('da.datasource.datasourceTypePlaceholder')"
@@ -372,13 +376,20 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.ip')" prop="ip" >
-              <el-input v-model="form.ip" :placeholder="td('da.datasource.ipPlaceholder')" />
+            <el-form-item :label="td('da.datasource.ip')" prop="ip">
+              <el-input
+                v-model="form.ip"
+                :placeholder="td('da.datasource.ipPlaceholder')"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.port')" prop="port" >
-              <el-input v-model="form.port" :placeholder="td('da.datasource.portPlaceholder')" @input="form.port = $event.replace(/\D/g, '')" />
+            <el-form-item :label="td('da.datasource.port')" prop="port">
+              <el-input
+                v-model="form.port"
+                :placeholder="td('da.datasource.portPlaceholder')"
+                @input="form.port = $event.replace(/\D/g, '')"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -391,12 +402,15 @@
           "
         >
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.account')" prop="username" >
-              <el-input v-model="form.username" :placeholder="td('da.datasource.accountPlaceholder')" />
+            <el-form-item :label="td('da.datasource.account')" prop="username">
+              <el-input
+                v-model="form.username"
+                :placeholder="td('da.datasource.accountPlaceholder')"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.password')" prop="password" >
+            <el-form-item :label="td('da.datasource.password')" prop="password">
               <el-input
                 type="password"
                 v-model="form.password"
@@ -416,12 +430,18 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keyID')" prop="keyId" >
-                <el-input v-model="form.keyId" :placeholder="td('da.datasource.keyIDPlaceholder')" />
+              <el-form-item :label="td('da.datasource.keyID')" prop="keyId">
+                <el-input
+                  v-model="form.keyId"
+                  :placeholder="td('da.datasource.keyIDPlaceholder')"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keySecret')" prop="keySecret" >
+              <el-form-item
+                :label="td('da.datasource.keySecret')"
+                prop="keySecret"
+              >
                 <el-input
                   v-model="form.keySecret"
                   :placeholder="td('da.datasource.keySecretPlaceholder')"
@@ -438,7 +458,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.bucket')" prop="bucket" >
+              <el-form-item :label="td('da.datasource.bucket')" prop="bucket">
                 <el-input
                   v-model="form.bucket"
                   :placeholder="td('da.datasource.bucketPlaceholder')"
@@ -446,7 +466,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.endpoint')" prop="endpoint" >
+              <el-form-item
+                :label="td('da.datasource.endpoint')"
+                prop="endpoint"
+              >
                 <el-input
                   v-model="form.endpoint"
                   :placeholder="td('da.datasource.endpointPlaceholder')"
@@ -456,7 +479,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('da.datasource.domain')" prop="domain" >
+              <el-form-item :label="td('da.datasource.domain')" prop="domain">
                 <el-input
                   v-model="form.domain"
                   :placeholder="td('da.datasource.domainPlaceholder')"
@@ -475,7 +498,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('da.datasource.dbName')" prop="dbname" >
+            <el-form-item :label="td('da.datasource.dbName')" prop="dbname">
               <el-input
                 v-model="form.dbname"
                 :placeholder="td('da.datasource.dbNamePlaceholder')"
@@ -496,7 +519,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('da.datasource.schemaName')" prop="sid" >
+            <el-form-item :label="td('da.datasource.schemaName')" prop="sid">
               <el-input
                 v-model="form.sid"
                 :placeholder="td('da.datasource.schemaNamePlaceholder')"
@@ -514,7 +537,10 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.configParams')" prop="config" >
+            <el-form-item
+              :label="td('da.datasource.configParams')"
+              prop="config"
+            >
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4 }"
@@ -530,19 +556,26 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description" >
+            <el-form-item
+              :label="td('common.texts.description')"
+              prop="description"
+            >
               <el-input
                 type="textarea"
-                :min-height="192"
+                show-word-limit
+                maxlength="256字符"
+                :rows="3"
                 v-model="form.description"
-                :placeholder="td('da.datasource.descriptionPlaceholder')"
               />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" v-if="type == 0">
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.belongProject')" prop="projectNameList" >
+            <el-form-item
+              :label="td('da.datasource.belongProject')"
+              prop="projectNameList"
+            >
               <el-input
                 style="width: 83.5%"
                 v-model="form.projectNameList"
@@ -554,14 +587,14 @@
                 style="margin-left: 11px"
                 type="primary"
                 @click="getListProject"
-                >{{ td('da.datasource.projectSelect') }}</el-button
+                >{{ td("da.datasource.projectSelect") }}</el-button
               >
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="validFlag" >
+            <el-form-item :label="td('common.texts.status')" prop="validFlag">
               <el-radio-group v-model="form.validFlag">
                 <el-radio
                   v-for="dict in sys_disable"
@@ -574,28 +607,18 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" >
-              <el-input
-                type="textarea"
-                v-model="form.remark"
-                :placeholder="td('common.form.remarkPlaceholder')"
-                :min-height="192"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button size="mini" @click="cancel">{{
+            td("common.button.cancel")
+          }}</el-button>
           <el-button
             type="primary"
             size="mini"
             :loading="btnLoading"
             @click="submitForm"
-            >{{ td('common.button.confirm') }}</el-button
+            >{{ td("common.button.confirm") }}</el-button
           >
         </div>
       </template>
@@ -620,10 +643,10 @@
         :rules="rules"
         label-width="130px"
         :label-position="labelPosition"
-       >
+      >
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceName')" >
+            <el-form-item :label="td('da.datasource.datasourceName')">
               <div class="form-readonly">
                 {{ form.datasourceName || "-" }}
               </div>
@@ -631,7 +654,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.datasourceType')" >
+            <el-form-item :label="td('da.datasource.datasourceType')">
               <div>
                 <dict-tag
                   :options="datasource_type"
@@ -643,14 +666,14 @@
         </el-row>
         <el-row :gutter="20" v-if="form.datasourceType !== 'OSS-ALIYUN'">
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.ip')" >
+            <el-form-item :label="td('da.datasource.ip')">
               <div class="form-readonly">
                 {{ form.ip || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.port')" >
+            <el-form-item :label="td('da.datasource.port')">
               <div class="form-readonly">
                 {{ form.port || "-" }}
               </div>
@@ -666,14 +689,14 @@
           "
         >
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.account')" >
+            <el-form-item :label="td('da.datasource.account')">
               <div class="form-readonly">
                 {{ form.username || "-" }}
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="td('da.datasource.password')" >
+            <el-form-item :label="td('da.datasource.password')">
               <div class="form-readonly">***********</div>
             </el-form-item>
           </el-col>
@@ -682,14 +705,14 @@
         <template v-if="form.datasourceType === 'OSS-ALIYUN'">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keyID')" >
+              <el-form-item :label="td('da.datasource.keyID')">
                 <div class="form-readonly">
                   {{ form.keyId || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.keySecret')" >
+              <el-form-item :label="td('da.datasource.keySecret')">
                 <div class="form-readonly">
                   {{ form.keyIkeySecretd || "-" }}
                 </div>
@@ -698,14 +721,14 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.bucket')" >
+              <el-form-item :label="td('da.datasource.bucket')">
                 <div class="form-readonly">
                   {{ form.bucket || "-" }}
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="td('da.datasource.endpoint')" >
+              <el-form-item :label="td('da.datasource.endpoint')">
                 <div class="form-readonly">
                   {{ form.endpoint || "-" }}
                 </div>
@@ -714,7 +737,7 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item :label="td('da.datasource.domain')" >
+              <el-form-item :label="td('da.datasource.domain')">
                 <div class="form-readonly">
                   {{ form.domain || "-" }}
                 </div>
@@ -732,7 +755,7 @@
           "
         >
           <el-col :span="12" v-if="form.datasourceType !== null">
-            <el-form-item :label="td('da.datasource.dbName')" >
+            <el-form-item :label="td('da.datasource.dbName')">
               <div class="form-readonly">
                 {{ form.dbname || "-" }}
               </div>
@@ -751,7 +774,7 @@
                 form.datasourceType == 'PostgreSQL')
             "
           >
-            <el-form-item :label="td('da.datasource.schemaName')" >
+            <el-form-item :label="td('da.datasource.schemaName')">
               <div class="form-readonly">
                 {{ form.sid || "-" }}
               </div>
@@ -767,7 +790,7 @@
           "
         >
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.configParams')" >
+            <el-form-item :label="td('da.datasource.configParams')">
               <div class="form-readonly">
                 {{ form.config || "-" }}
               </div>
@@ -776,7 +799,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" >
+            <el-form-item :label="td('common.texts.description')">
               <div class="form-readonly textarea">
                 {{ form.description || "-" }}
               </div>
@@ -785,7 +808,7 @@
         </el-row>
         <el-row :gutter="20" v-if="type == 0">
           <el-col :span="24">
-            <el-form-item :label="td('da.datasource.belongProject')" >
+            <el-form-item :label="td('da.datasource.belongProject')">
               <div class="form-readonly">
                 {{ form.projectNameListStr || "-" }}
               </div>
@@ -794,7 +817,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" >
+            <el-form-item :label="td('common.texts.status')">
               <dict-tag
                 :options="sys_disable"
                 :value="form.validFlag ? '1' : '0'"
@@ -802,26 +825,24 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" >
-              <div class="form-readonly textarea">
-                {{ form.remark || "-" }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{ td('common.button.close') }}</el-button>
+          <el-button size="mini" @click="cancel">{{
+            td("common.button.close")
+          }}</el-button>
         </div>
       </template>
     </el-dialog>
-    <el-dialog :title="td('da.datasource.projectDialogTitle')" v-model="openProject" width="1000px" draggable>
+    <el-dialog
+      :title="td('da.datasource.projectDialogTitle')"
+      v-model="openProject"
+      width="1000px"
+      draggable
+    >
       <template>
         <span role="heading" aria-level="2" class="el-dialog__title">
-          {{ td('da.datasource.projectDialogTitle') }}
+          {{ td("da.datasource.projectDialogTitle") }}
         </span>
       </template>
       <!-- User data -->
@@ -830,8 +851,8 @@
         :model="queryParamsProject"
         ref="queryRef"
         :inline="true"
-       >
-        <el-form-item :label="td('da.datasource.projectName')" prop="name" >
+      >
+        <el-form-item :label="td('da.datasource.projectName')" prop="name">
           <el-input
             class="el-form-input-width"
             v-model="queryParamsProject.name"
@@ -840,7 +861,10 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item :label="td('da.datasource.projectLeader')" prop="managerId" >
+        <el-form-item
+          :label="td('da.datasource.projectLeader')"
+          prop="managerId"
+        >
           <el-select
             v-model="queryParamsProject.managerId"
             class="el-form-input-width"
@@ -863,13 +887,15 @@
             @click="handleQueryProject"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
+            <i class="iconfont-mini icon-a-zu22377 mr5"></i
+            >{{ td("common.button.query") }}
           </el-button>
           <el-button
             @click="resetQueryProject"
             @mousedown="(e) => e.preventDefault()"
           >
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
+            <i class="iconfont-mini icon-a-zu22378 mr5"></i
+            >{{ td("common.button.reset") }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -886,23 +912,39 @@
           :selectable="selectable"
           align="center"
         />
-        <el-table-column :label="td('da.datasource.columnVisibility.id')" prop="id" width="80">
+        <el-table-column
+          :label="td('da.datasource.columnVisibility.id')"
+          prop="id"
+          width="80"
+        >
           <template #default="scope">
             {{ scope.row.id || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('da.datasource.projectName')" align="center" prop="name">
+        <el-table-column
+          :label="td('da.datasource.projectName')"
+          align="center"
+          prop="name"
+        >
           <template #default="scope">
             {{ scope.row.name || "-" }}
           </template>
         </el-table-column>
 
-        <el-table-column :label="td('da.datasource.projectLeader')" align="center" prop="managerId">
+        <el-table-column
+          :label="td('da.datasource.projectLeader')"
+          align="center"
+          prop="managerId"
+        >
           <template #default="scope">
             {{ scope.row.nickName || "-" }}
           </template>
         </el-table-column>
-        <el-table-column :label="td('da.datasource.projectContact')" align="center" prop="managerPhone">
+        <el-table-column
+          :label="td('da.datasource.projectContact')"
+          align="center"
+          prop="managerPhone"
+        >
           <template #default="scope">
             {{ scope.row.managerPhone || "-" }}
           </template>
@@ -917,10 +959,12 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="openProject = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" size="mini" @click="submitFormProject"
-            >{{ td('common.button.confirm') }}</el-button
-          >
+          <el-button size="mini" @click="openProject = false">{{
+            td("common.button.cancel")
+          }}</el-button>
+          <el-button type="primary" size="mini" @click="submitFormProject">{{
+            td("common.button.confirm")
+          }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -962,15 +1006,35 @@ const daDatasourceList = ref([]);
 
 // Column visibility information
 const columns = ref([
-  { key: 1, label: td('da.datasource.columnVisibility.id'), visible: true },
-  { key: 2, label: td('da.datasource.columnVisibility.dataSourceName'), visible: true },
-  { key: 3, label: td('da.datasource.columnVisibility.description'), visible: true },
-  { key: 4, label: td('da.datasource.columnVisibility.dataSourceType'), visible: true },
-  { key: 5, label: td('da.datasource.columnVisibility.createdBy'), visible: true },
-  { key: 6, label: td('da.datasource.columnVisibility.createdTime'), visible: true },
-  { key: 7, label: td('da.datasource.columnVisibility.status'), visible: true },
-  { key: 8, label: td('da.datasource.columnVisibility.remark'), visible: true },
-  { key: 9, label: td('common.texts.operation'), visible: true },
+  { key: 1, label: td("da.datasource.columnVisibility.id"), visible: true },
+  {
+    key: 2,
+    label: td("da.datasource.columnVisibility.dataSourceName"),
+    visible: true,
+  },
+  {
+    key: 3,
+    label: td("da.datasource.columnVisibility.description"),
+    visible: true,
+  },
+  {
+    key: 4,
+    label: td("da.datasource.columnVisibility.dataSourceType"),
+    visible: true,
+  },
+  {
+    key: 5,
+    label: td("da.datasource.columnVisibility.createdBy"),
+    visible: true,
+  },
+  {
+    key: 6,
+    label: td("da.datasource.columnVisibility.createdTime"),
+    visible: true,
+  },
+  { key: 7, label: td("da.datasource.columnVisibility.status"), visible: true },
+  { key: 8, label: td("da.datasource.columnVisibility.remark"), visible: true },
+  { key: 9, label: td("common.texts.operation"), visible: true },
 ]);
 
 const getColumnVisibility = (key) => {
@@ -1061,54 +1125,119 @@ const data = reactive({
   },
   rules: {
     datasourceName: [
-      { required: true, message: td('da.datasource.datasourceNameRequired'), trigger: "blur" },
+      {
+        required: true,
+        message: td("da.datasource.datasourceNameRequired"),
+        trigger: "blur",
+      },
     ],
     datasourceType: [
-      { required: true, message: td('da.datasource.datasourceTypeRequired'), trigger: "change" },
+      {
+        required: true,
+        message: td("da.datasource.datasourceTypeRequired"),
+        trigger: "change",
+      },
     ],
     datasourceConfig: [
       {
         required: true,
-        message: td('da.datasource.configRequired'),
+        message: td("da.datasource.configRequired"),
         trigger: "blur",
       },
     ],
     ip: [
-      { required: true, message: td('da.datasource.ipRequired'), trigger: "blur" },
       {
-        pattern: /^(?:((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)|(?![\d.]+$)(?=.{1,253}$)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/,
-        message: td('da.datasource.ipOrHostnameInvalid'),
+        required: true,
+        message: td("da.datasource.ipRequired"),
+        trigger: "blur",
+      },
+      {
+        pattern:
+          /^(?:((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)|(?![\d.]+$)(?=.{1,253}$)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/,
+        message: td("da.datasource.ipOrHostnameInvalid"),
         trigger: "blur",
       },
     ],
     port: [
-      { required: true, message: td('da.datasource.portRequired'), trigger: "blur" },
+      {
+        required: true,
+        message: td("da.datasource.portRequired"),
+        trigger: "blur",
+      },
       {
         pattern: /^\d{1,9}$/,
-        message: td('da.datasource.portInvalid'),
+        message: td("da.datasource.portInvalid"),
         trigger: "blur",
       },
     ],
-    username: [{ required: true, message: td('da.datasource.accountRequired'), trigger: "blur" }],
-    password: [{ required: true, message: td('da.datasource.passwordRequired'), trigger: "blur" }],
-    keyId: [{ required: true, message: td('da.datasource.keyIDRequired'), trigger: "blur" }],
-    keySecret: [
-      { required: true, message: td('da.datasource.keySecretRequired'), trigger: "blur" },
+    username: [
+      {
+        required: true,
+        message: td("da.datasource.accountRequired"),
+        trigger: "blur",
+      },
     ],
-    bucket: [{ required: true, message: td('da.datasource.bucketRequired'), trigger: "blur" }],
+    password: [
+      {
+        required: true,
+        message: td("da.datasource.passwordRequired"),
+        trigger: "blur",
+      },
+    ],
+    keyId: [
+      {
+        required: true,
+        message: td("da.datasource.keyIDRequired"),
+        trigger: "blur",
+      },
+    ],
+    keySecret: [
+      {
+        required: true,
+        message: td("da.datasource.keySecretRequired"),
+        trigger: "blur",
+      },
+    ],
+    bucket: [
+      {
+        required: true,
+        message: td("da.datasource.bucketRequired"),
+        trigger: "blur",
+      },
+    ],
     endpoint: [
-      { required: true, message: td('da.datasource.endpointRequired'), trigger: "blur" },
+      {
+        required: true,
+        message: td("da.datasource.endpointRequired"),
+        trigger: "blur",
+      },
     ],
     dbname: [
-      { required: true, message: td('da.datasource.dbNameRequired'), trigger: "blur" },
+      {
+        required: true,
+        message: td("da.datasource.dbNameRequired"),
+        trigger: "blur",
+      },
       // {
       //   pattern: /^[^\u4e00-\u9fa5]+$/,
       //   Message: 'Cannot contact Chinese agents',
       //   trigger: 'blur'
       // }
     ],
-    sid: [{ required: true, message: td('da.datasource.schemaRequired'), trigger: "blur" }],
-    description: [{ required: true, message: td('da.datasource.descriptionRequired'), trigger: "blur" }],
+    sid: [
+      {
+        required: true,
+        message: td("da.datasource.schemaRequired"),
+        trigger: "blur",
+      },
+    ],
+    description: [
+      {
+        required: true,
+        message: td("da.datasource.descriptionRequired"),
+        trigger: "blur",
+      },
+    ],
     config: [
       {
         trigger: "blur",
@@ -1129,7 +1258,7 @@ const data = reactive({
           if (flag) {
             callback();
           } else {
-            callback(td('da.datasource.jsonInvalid'));
+            callback(td("da.datasource.jsonInvalid"));
           }
         },
       },
@@ -1316,7 +1445,7 @@ function handleAdd() {
     form.value.projectList = [];
   }
   open.value = true;
-  title.value = td('da.datasource.addDatasource');
+  title.value = td("da.datasource.addDatasource");
 }
 
 /** Edit button operation */
@@ -1354,10 +1483,10 @@ function handleUpdate(row, type) {
       queryParamsProject.value.datasourceId = form.value.id;
       open.value = true;
       if (type == 3) {
-        title.value = td('da.datasource.datasourceDetail');
+        title.value = td("da.datasource.datasourceDetail");
       } else {
         old_password = form.value.password;
-        title.value = td('da.datasource.editDatasource');
+        title.value = td("da.datasource.editDatasource");
       }
     })
     .finally(() => {
@@ -1397,7 +1526,7 @@ function handleDetail(row) {
       }
     }
     openDetail.value = true;
-    title.value = td('da.datasource.datasourceDetail');
+    title.value = td("da.datasource.datasourceDetail");
   });
 }
 
@@ -1455,7 +1584,7 @@ function submitForm() {
         form.value.projectListOld = projectListOld;
         updateDaDatasource(form.value)
           .then((response) => {
-            proxy.$modal.msgSuccess(td('da.datasource.editSuccess'));
+            proxy.$modal.msgSuccess(td("da.datasource.editSuccess"));
             open.value = false;
             getList();
           })
@@ -1485,8 +1614,8 @@ function submitForm() {
             return proxy.$modal
               .confirm(
                 td(
-                  'da.datasource.connectionValidationFailedConfirm',
-                  '数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用'
+                  "da.datasource.connectionValidationFailedConfirm",
+                  "数据源校验未通过，确认继续新增吗？若点击确认，该数据源启用状态将自动置为禁用"
                 )
               )
               .then(() => {
@@ -1496,7 +1625,7 @@ function submitForm() {
           })
           .then(() => addDaDatasource(form.value))
           .then((response) => {
-            proxy.$modal.msgSuccess(td('da.datasource.addSuccess'));
+            proxy.$modal.msgSuccess(td("da.datasource.addSuccess"));
             open.value = false;
             getList();
           })
@@ -1512,13 +1641,13 @@ function submitForm() {
 function handleDelete(row) {
   const _ids = row.id || ids.value;
   proxy.$modal
-    .confirm(td('da.datasource.confirmDelete', '', { id: _ids }))
+    .confirm(td("da.datasource.confirmDelete", "", { id: _ids }))
     .then(function () {
       return removeDppOrDa(_ids, type);
     })
     .then(() => {
       getList();
-      proxy.$modal.msgSuccess(td('da.datasource.deleteSuccess'));
+      proxy.$modal.msgSuccess(td("da.datasource.deleteSuccess"));
     })
     .catch(() => {});
 }
@@ -1537,7 +1666,7 @@ function handleExport() {
 /** ---------------- Import related operations -----------------**/
 /** Import button operation */
 function handleImport() {
-  upload.title = td('da.datasource.importTitle');
+  upload.title = td("da.datasource.importTitle");
   upload.open = true;
 }
 
@@ -1569,7 +1698,7 @@ const handleFileSuccess = (response, file, fileList) => {
     "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
       response.msg +
       "</div>",
-    td('da.datasource.importResult'),
+    td("da.datasource.importResult"),
     { dangerouslyUseHTMLString: true }
   );
   getList();
@@ -1599,10 +1728,17 @@ function routeTo(link, row) {
 /** Toggle enable status value */
 function handleStatusChange(row) {
   const isEnabling = row.validFlag === true;
-  const text = isEnabling ? td('da.datasource.enable') : td('da.datasource.disable');
+  const text = isEnabling
+    ? td("da.datasource.enable")
+    : td("da.datasource.disable");
   const status = isEnabling ? 1 : 0;
   proxy.$modal
-    .confirm(td('da.datasource.confirmStatusChange', '', { text: text, name: row.datasourceName }))
+    .confirm(
+      td("da.datasource.confirmStatusChange", "", {
+        text: text,
+        name: row.datasourceName,
+      })
+    )
     .then(function () {
       statusLoadingMap.value[row.id] = true;
       return editDatasourceStatus(row.id, status, {
@@ -1610,7 +1746,9 @@ function handleStatusChange(row) {
       })
         .then(() => {
           if (isDatasourcePageActive) {
-            proxy.$modal.msgSuccess(td('da.datasource.statusSuccess', '', { text: text }));
+            proxy.$modal.msgSuccess(
+              td("da.datasource.statusSuccess", "", { text: text })
+            );
           }
         })
         .catch((error) => {
@@ -1621,8 +1759,11 @@ function handleStatusChange(row) {
             return Promise.reject(error);
           }
           return ElMessageBox.alert(
-            td('da.datasource.enableFailedMessage', '数据连接启动失败,请查看数据库连接信息'),
-            td('da.datasource.enableFailedTitle', '数据连接'),
+            td(
+              "da.datasource.enableFailedMessage",
+              "数据连接启动失败,请查看数据库连接信息"
+            ),
+            td("da.datasource.enableFailedTitle", "数据连接"),
             {
               type: "warning",
               confirmButtonText: td("common.button.confirm"),

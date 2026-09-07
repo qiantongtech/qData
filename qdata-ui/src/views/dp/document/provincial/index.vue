@@ -28,7 +28,7 @@
 
       <el-main class="main-content">
         <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
-          <!-- 搜索栏插槽 -->
+          <!-- Search bar slot -->
           <template #search>
             <qt-search-bar
               v-bind="searchStore"
@@ -39,7 +39,7 @@
             />
           </template>
 
-          <!-- 数据操作按钮插槽 -->
+          <!-- Data operation button slot -->
           <template #actions-data>
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
@@ -54,9 +54,12 @@
             </el-row>
           </template>
 
-          <!-- 表格组件 -->
+          <!-- Table component -->
           <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
-            <!-- 操作列插槽 -->
+            <template #catName="{ row }">
+              <QtTagGroup :items="[row.catName]" />
+            </template>
+            <!-- Operation column slot -->
             <template #action="{ row }">
               <el-button
                 link
@@ -147,11 +150,11 @@ const tableStore = reactive({
     { label: td("dp.document.standardCode"), prop: "code", width: 160, align: "left" },
     { label: td("dp.document.standardName"), prop: "name", width: 260, align: "left", showOverflowTooltip: { effect: "light" } },
     { label: td("common.texts.description"), prop: "description", width: 256, align: "left", showOverflowTooltip: { effect: "light" } },
-    { label: td("dp.document.standardCategory"), prop: "catName", width: 160, align: "left", tag: { class: "task-cat-ellipsis" } },
+       { label: td("dp.document.standardCategory"), slot: "catName", width: 160, align: "left" },
+
     { label: td("common.texts.createdBy"), prop: "createBy", width: 120, align: "left" },
     { label: td("common.texts.createdTime"), prop: "createTime", width: 160, align: "left", sortable: true, date: true },
     { label: td("dp.document.standardStatus"), prop: "status", width: 160, align: "left", dict: "dp_document_status" },
-    { label: td("common.texts.remark"), prop: "remark", width: 200, align: "left", showOverflowTooltip: { effect: "light" } },
     { label: td("common.texts.operation"), slot: "action", width: 220, align: "center", fixed: "right" },
   ],
   func: listDpDocument,
@@ -177,7 +180,7 @@ const searchStore = reactive({
   ],
 });
 
-/** 查询分类树 */
+/** Query category tree */
 function getDeptTree() {
   listAttDocumentCat({ validFlag: true }).then((response) => {
     const treeData = proxy.handleTree(response.data, "id", "parentId");
@@ -192,34 +195,36 @@ function getDeptTree() {
   });
 }
 
-/** 树节点点击 */
+/** Tree node click */
 function handleNodeClick(data) {
-  tableStore.params.catCode = data.code;
+  tableStore.params.catCode = data.code || null;
   handleQuery();
 }
 
-/** 搜索按钮操作 */
+/** Search button operation */
 function handleQuery() {
   tableStore.params.pageNum = 1;
+  tableRef.value?.refresh();
 }
 
-/** 重置按钮操作 */
+/** Reset button operation */
 function resetQuery() {
   DeptTreeRef.value?.resetTree?.();
-  tableStore.params.catCode = "";
+  tableStore.params.catCode = null;
+  handleQuery();
 }
 
-/** 新增按钮操作 */
+/** Add button operation */
 function handleAdd() {
   standardModalRef.value.openModal({}, treeProps.deptOptions, tableStore.params.type);
 }
 
-/** 修改按钮操作 */
+/** Update button operation */
 function handleUpdate(row) {
   standardModalRef.value.openModal(row, treeProps.deptOptions, tableStore.params.type);
 }
 
-/** 详情按钮操作 */
+/** Detail button operation */
 function handleDetail(row) {
   router.push({
     path: "/dm/document/provincial/detail",
@@ -227,7 +232,7 @@ function handleDetail(row) {
   });
 }
 
-/** 下载操作 */
+/** Download operation */
 const handleDownload = (row) => {
   const baseUrl = import.meta.env.VITE_APP_BASE_API;
   const fullUrl = `${baseUrl}${row.fileUrl.trim()}`;
@@ -239,7 +244,7 @@ const handleDownload = (row) => {
   document.body.removeChild(a);
 };
 
-/** 删除按钮操作 */
+/** Delete button operation */
 function handleDelete(row) {
   const ids = row.id || tableRef.value.selection.map((item) => item.id);
   proxy.$modal

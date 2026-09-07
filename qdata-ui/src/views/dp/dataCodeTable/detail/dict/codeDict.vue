@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef":config="{ fullContent: false, actions: { table: { search: false } } }">
     <template #actions-data>
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">
@@ -66,13 +66,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('dp.dataCode.codeDict.remark')" prop="remark">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+     
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -167,12 +161,7 @@ const tableStore = reactive({
       sortable: true,
       date: true,
     },
-    {
-      label: td('dp.dataCode.codeDict.remark'),
-      prop: "remark",
-      align: "left",
-      showOverflowTooltip: { effect: 'light' },
-    },
+   
     {
       label: td('dp.dataCode.codeDict.operation'),
       slot: "action",
@@ -257,7 +246,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null
   };
   proxy.resetForm('dpDataElemCodeRef');
 }

@@ -75,7 +75,8 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-form-item :label="td('common.texts.description')" prop="description">
-                    <el-input v-model="form1.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
+                    <el-input v-model="form1.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')"  maxlength="256字符"   show-word-limit
+             />
                 </el-form-item>
             </el-col>
         </el-row>
@@ -95,7 +96,7 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-form-item :label="td('ds.apiEdit.base.ipBlacklist')" prop="deny">
-                    <el-input v-model="form1.deny" type="textarea" :placeholder="td('ds.apiEdit.base.ipBlacklistPlaceholder')" />
+                    <el-input v-model="form1.deny" type="textarea" :placeholder="td('ds.apiEdit.base.ipBlacklistPlaceholder')" maxlength="256字符"   show-word-limit/>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -133,13 +134,6 @@
                 </el-form-item>
             </el-col>
 
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="24">
-                <el-form-item :label="td('common.texts.remark')" prop="remark">
-                    <el-input v-model="form1.remark" type="textarea" :placeholder="td('ds.apiEdit.base.remarkPlaceholder')" />
-                </el-form-item>
-            </el-col>
         </el-row>
     </el-form>
 </template>

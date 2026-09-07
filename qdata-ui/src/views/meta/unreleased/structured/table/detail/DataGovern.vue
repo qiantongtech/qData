@@ -102,15 +102,6 @@
             {{ getFormatValue(dialog.form.description) }}
           </div>
         </el-form-item>
-        <el-form-item
-          :label="td('common.texts.remark')"
-          prop="remark"
-          class="row-full"
-         :label-position="labelPosition">
-          <div class="form-readonly textarea">
-            {{ getFormatValue(dialog.form.remark) }}
-          </div>
-        </el-form-item>
         <el-form-item :label="td('common.texts.createdBy')" prop="createBy" :label-position="labelPosition">
           <div class="form-readonly">
             {{ getFormatValue(dialog.form.createBy) }}

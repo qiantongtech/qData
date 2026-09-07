@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef":config="{ fullContent: false, actions: { table: { search: false } } }">
     <template #actions-data>
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">

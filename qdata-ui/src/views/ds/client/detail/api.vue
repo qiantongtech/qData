@@ -18,94 +18,38 @@
 
 <template>
   <div ref="app-container">
-    <div class="justify-between mb15">
-      <el-row :gutter="15" class="btn-style">
-        <el-col :span="1.5">
-          <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
-          </el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <el-table stripe v-loading="loading" :data="clientApiRelList" @selection-change="handleSelectionChange"
-      :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column :label="td('common.texts.number')" type="index" align="center" width="50" :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column :label="td('ds.client.details.apiCode')" align="center" prop="apiId" :show-overflow-tooltip="{ effect: 'light' }" />
-      <el-table-column :label="td('ds.client.details.apiName')" align="center" prop="apiName" :show-overflow-tooltip="{ effect: 'light' }"
-        width="150">
-        <template #default="scope">
-          {{ scope.row.apiName || "-" }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('ds.client.details.apiPath')" align="center" prop="apiUrl" :show-overflow-tooltip="{ effect: 'light' }" width="150">
-        <template #default="scope">
-          {{ scope.row.apiUrl || "-" }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('ds.client.details.requestMethod')" align="center" prop="reqMethod" :show-overflow-tooltip="{ effect: 'light' }">
-        <template #default="scope">
-          <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('ds.client.details.validPeriod')" align="center" prop="startTime" width="260"
-        :show-overflow-tooltip="{ effect: 'light' }">
-        <template #default="scope">
-          <span v-if="scope.row.pvFlag == 1">{{ td('ds.client.details.permanent') }}</span>
+    <qt-wrap :columns="tableStore.columns" :tableRef="tableRef":config="{ fullContent: false, actions: { table: { search: false } } }">
+      <template #actions-data>
+        <el-row :gutter="15" class="btn-style">
+          <el-col :span="1.5">
+            <el-button type="primary" plain @click="handleAdd" @mousedown="(e) => e.preventDefault()">
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </template>
+
+      <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+        <template #startTime="{ row }">
+          <span v-if="row.pvFlag == 1">{{ td('ds.client.details.permanent') }}</span>
           <div v-else>
-            <span>{{ parseTime(scope.row.startTime, "{y}-{m}-{d} ") }}</span>
+            <span>{{ parseTime(row.startTime, "{y}-{m}-{d} ") }}</span>
             <span>- </span>
-            <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d} ") }}</span>
+            <span>{{ parseTime(row.endTime, "{y}-{m}-{d} ") }}</span>
           </div>
         </template>
-      </el-table-column>
-      <el-table-column :label="td('common.texts.description')" align="left" prop="description" :show-overflow-tooltip="{ effect: 'light' }"
-        width="250">
-        <template #default="scope">
-          {{ scope.row.description || '-' }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('common.texts.createdBy')" align="center" prop="createBy" :show-overflow-tooltip="{ effect: 'light' }" width="100">
-        <template #default="scope">
-          {{ scope.row.createBy || "-" }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('common.texts.createdTime')" align="center" prop="createTime" width="180"
-        :show-overflow-tooltip="{ effect: 'light' }">
-        <template #default="scope">
-          <span>{{
-            parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}")
-          }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('ds.client.details.authStatus')" align="center" prop="status" :show-overflow-tooltip="{ effect: 'light' }" width="160">
-        <template #default="scope">
-          <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-            inactive-value="0" @change="(e) => handleStatusChange(scope.row.id, scope.row, e)" />
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }">
-        <template #default="scope">
-          {{ scope.row.remark || '-' }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="140">
-        <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">{{ td('common.button.update') }}</el-button>
-          <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">{{ td('common.button.delete') }}</el-button>
-        </template>
-      </el-table-column>
 
-      <template #empty>
-        <div class="emptyBg">
-          <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-          <p>{{td('common.noData')}}</p>
-        </div>
-      </template>
-    </el-table>
+        <template #status="{ row }">
+          <el-switch v-model="row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
+            inactive-value="0" @change="(e) => handleStatusChange(row.id, row, e)" />
+        </template>
 
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize" @pagination="getList" />
-  </div>
+        <template #action="{ row }">
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(row)">{{ td('common.button.update') }}</el-button>
+          <el-button link type="danger" icon="Delete" @click="handleDelete(row)">{{ td('common.button.delete') }}</el-button>
+        </template>
+      </qt-table>
+    </qt-wrap>
 
   <!-- Add or modify application API service association dialog box -->
   <el-dialog :title="title" v-model="open" class="dialog" :append-to="$refs['app-container']" draggable>
@@ -115,41 +59,35 @@
       </span>
     </template>
     <el-form ref="clientApiRelRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row >
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.apiService')" prop="apiName" :label-position="labelPosition">
             <el-autocomplete :disabled="form.id" v-model="form.apiName" :fetch-suggestions="remoteMethod"
               :placeholder="td('ds.client.details.apiServicePlaceholder')" @select="handleApiIdSelect" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.permanentValid')" prop="pvFlag" :label-position="labelPosition">
             <el-radio-group v-model="form.pvFlag" @change="handlePvFlagChange">
               <el-radio v-for="dict in sys_is_or_not" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="form.pvFlag == 0">
+        <el-col  :span="12" v-if="form.pvFlag == 0">
           <el-form-item :label="td('ds.client.details.validPeriod')" prop="dateRange" :label-position="labelPosition">
             <el-date-picker class="el-form-input-width" v-model="form.dateRange" value-format="YYYY-MM-DD"
               type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
+      <el-row >
         <el-col :span="24">
           <el-form-item :label="td('common.texts.description')" :label-position="labelPosition">
-            <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192" />
+            <el-input type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" v-model="form.description" :min-height="192"   maxlength="256字符" show-word-limit/>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
-            <el-input type="textarea" :placeholder="td('common.form.remarkPlaceholder')" v-model="form.remark" :min-height="192" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+      
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -167,15 +105,15 @@
       </span>
     </template>
     <el-form ref="clientApiRelRef" :model="form" label-width="80px" :label-position="labelPosition">
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row >
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.appId')" prop="clientId" :label-position="labelPosition">
             <div>
               {{ form.clientId }}
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.apiServiceId')" prop="apiId" :label-position="labelPosition">
             <div>
               {{ form.apiId }}
@@ -183,27 +121,27 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row >
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.permanentValid')" prop="pvFlag" :label-position="labelPosition">
             <dict-tag :options="sys_is_or_not" :value="form.pvFlag" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.startTime')" prop="startTime" :label-position="labelPosition">
             <el-date-picker clearable style="width: 100%" v-model="form.startTime" type="date" value-format="YYYY-MM-DD"
               :placeholder="td('ds.client.details.startTimePlaceholder')"> </el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row >
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.endTime')" prop="endTime" :label-position="labelPosition">
             <el-date-picker clearable style="width: 100%" v-model="form.endTime" type="date" value-format="YYYY-MM-DD"
               :placeholder="td('ds.client.details.endTimePlaceholder')"> </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col  :span="24">
           <el-form-item :label="td('ds.client.details.authStatus')" prop="status" :label-position="labelPosition">
             <div>
               {{ form.status }}
@@ -219,13 +157,15 @@
       </div>
     </template>
   </el-dialog>
+  </div>
 </template>
 
 <script setup name="ClientApiRel">
 import { listClientApiRel, getClientApiRel, delClientApiRel, addClientApiRel, updateClientApiRel } from "@/api/ds/client/clientApiRel";
 import { selectByName } from "@/api/ds/api/api.js";
-import { status } from "nprogress";
 import useDefaultLang from "@/composables/useDefaultLang";
+import { reactive, ref, watch, getCurrentInstance, toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -243,36 +183,53 @@ watch(
   () => props.clientDetail,
   (newValue) => {
     clientId.value = newValue.id;
-    getList();
+    tableStore.params.clientId = newValue.id;
+    tableRef.value?.refresh();
   }
 );
-const clientApiRelList = ref([]);
 
+const tableRef = ref(null);
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(false);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
 const router = useRouter();
+
+const wrapConfig = reactive({
+  actions: {
+    table: {
+      search: false,
+    },
+  },
+});
+
+const tableStore = reactive({
+  func: listClientApiRel,
+  params: {
+    clientId: null,
+  },
+  config: {
+    initResquest: false,
+  },
+  columns: [
+    { label: td('common.texts.number'), prop: "id", width: 60, align: "center" },
+    { label: td('ds.client.details.apiCode'), prop: "apiId", width: 120, align: "center", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.client.details.apiName'), prop: "apiName", width: 200, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.client.details.apiPath'), prop: "apiUrl", minWidth: 200, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.client.details.requestMethod'), prop: "reqMethod", width: 120, align: "center", dict: "ds_api_bas_info_api_method_type" },
+    { label: td('ds.client.details.validPeriod'), prop: "startTime", width: 260, align: "center", slot: "startTime" },
+    { label: td('common.texts.description'), prop: "description", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120, align: "center" },
+    { label: td('common.texts.createdTime'), prop: "createTime", width: 160, align: "center", date: true },
+    { label: td('ds.client.details.authStatus'), prop: "status", width: 100, align: "center", slot: "status" },
+    { label: td('common.texts.remark'), prop: "remark", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('common.texts.operation'), width: 140, align: "center", fixed: "right", slot: "action" }
+  ]
+});
 
 const data = reactive({
   form: {
     pvFlag: "0",
     dateRange: [],
-  },
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    clientId: null,
-    apiId: null,
-    pvFlag: null,
-    startTime: null,
-    endTime: null,
-    status: null,
   },
   rules: {
     apiName: [{ required: true, message: td('ds.client.details.apiServiceRequired'), trigger: "change" }],
@@ -281,49 +238,22 @@ const data = reactive({
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
-
-/** Query application API service association list */
-function getList() {
-  queryParams.value.clientId = clientId.value;
-  loading.value = true;
-  listClientApiRel(queryParams.value)
-    .then((response) => {
-      clientApiRelList.value = response.data.rows;
-      total.value = response.data.total;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
-}
+const { form, rules } = toRefs(data);
 
 /** Change enabled status value */
 function handleStatusChange(id, row, e) {
-  console.log(e);
   const text = row.status == "1" ? td('ds.client.details.authorize') : td('ds.client.details.deauthorize');
-  // Confirmation box pops up
   proxy.$modal
     .confirm(td('ds.client.details.confirmStatusChange') + text + td('ds.client.details.confirmStatusSuffix') + row.apiName + td('ds.client.details.confirmStatusSuffix2'))
     .then(function () {
-      loading.value = true; // Start loading
-      // Call the background interface to update the publishing status
-      updateClientApiRel({ ...row })
-        .then((res) => {
-          if (res.code == 200) {
-            proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          // Restoring state on failure
-          row.status = row.status === "1" ? "0" : "1";
-        })
-        .finally(() => {
-          loading.value = false; // Stop loading regardless of success or failure
-        });
+      return updateClientApiRel({ ...row });
+    })
+    .then((res) => {
+      if (res.code == 200) {
+        proxy.$modal.msgSuccess(td('common.message.msgOpSuccess'));
+      }
     })
     .catch((error) => {
-      // Restoring state on failure
       row.status = row.status === "1" ? "0" : "1";
     });
 }
@@ -333,12 +263,14 @@ const handlePvFlagChange = (e) => {
     form.value.dateRange = [];
   }
 };
+
 const apiIdloading = ref(false);
 const handleApiIdSelect = (row) => {
   form.value.apiId = row.id;
   form.value.reqMethod = row.reqMethod;
   form.value.apiUrl = row.apiUrl;
 };
+
 const remoteMethod = (queryString, cb) => {
   apiIdloading.value = true;
   selectByName(queryString || "")
@@ -361,14 +293,12 @@ const remoteMethod = (queryString, cb) => {
     });
 };
 
-// Cancel button
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// form reset
 function reset() {
   form.value = {
     id: null,
@@ -392,40 +322,12 @@ function reset() {
   proxy.resetForm("clientApiRelRef");
 }
 
-/** Search button action */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-
-/** reset button action */
-function resetQuery() {
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
-/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('ds.client.details.addApiAuth');
 }
 
-/** Modify button actions */
 function handleUpdate(row) {
   reset();
   form.value = JSON.parse(JSON.stringify(row));
@@ -434,10 +336,9 @@ function handleUpdate(row) {
   title.value = td('ds.client.details.editApiAuth');
 }
 
-/** Detail button operation */
 function handleDetail(row) {
   reset();
-  const _id = row.id || ids.value;
+  const _id = row.id;
   getClientApiRel(_id).then((response) => {
     form.value = response.data;
     openDetail.value = true;
@@ -445,7 +346,6 @@ function handleDetail(row) {
   });
 }
 
-/** submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
@@ -459,7 +359,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => {
@@ -470,7 +370,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.addSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => {
@@ -483,16 +383,15 @@ function submitForm() {
   });
 }
 
-/** Delete button action */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
+  const _ids = row.id;
   proxy.$modal
     .confirm(td('ds.client.details.deleteApiRelConfirm') + _ids + td('ds.client.details.deleteApiRelConfirmSuffix'))
     .then(function () {
       return delClientApiRel(_ids);
     })
     .then(() => {
-      getList();
+      tableRef.value.refresh();
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });

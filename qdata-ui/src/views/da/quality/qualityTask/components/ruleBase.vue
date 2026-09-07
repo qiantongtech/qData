@@ -124,7 +124,7 @@
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="256"
+                 maxlength="256字符"
                   show-word-limit
                   v-model="form.ruleDescription"
                   :placeholder="td('da.qualityTask.ruleSelectorMenu.ruleDescriptionPlaceholder', 'Rule Description Placeholder')"
@@ -142,7 +142,7 @@
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="256"
+                 maxlength="256字符"
                   show-word-limit
                   v-model="form.errDescription"
                   :placeholder="td('da.qualityTask.ruleSelectorMenu.errorExamplePlaceholder', 'Error Example Placeholder')"
@@ -160,7 +160,7 @@
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="256"
+                 maxlength="256字符"
                   show-word-limit
                   v-model="form.suggestion"
                   :placeholder="td('da.qualityTask.ruleSelectorMenu.fixSuggestionPlaceholder', 'Fix Suggestion Placeholder')"
@@ -178,7 +178,7 @@
               <template v-if="!falg">
                 <el-input
                   type="textarea"
-                  :maxlength="256"
+                 maxlength="256字符"
                   show-word-limit
                   v-model="form.whereClause"
                   :placeholder="td('da.qualityTask.ruleSelectorMenu.whereConditionPlaceholder', 'Where Condition Placeholder')"

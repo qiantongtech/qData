@@ -612,14 +612,13 @@ function reset() {
 
 /** Search button operation */
 function handleQuery() {
-  tableRef.value && tableRef.value.getList();
+  tableStore.params.pageNum = 1;
+  tableRef.value?.refresh();
 }
 
 /** Reset button operations */
 function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
+  DeptTreeRef.value?.resetTree?.();
   tableStore.params.catCode = null;
   tableStore.params.id = null;
   tableStore.params.businessCategoryCode = null;

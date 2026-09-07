@@ -7,18 +7,18 @@
       @submit.prevent
       v-bind="props.config?.form"
     >
-      <el-form-item
-        :label="item.label"
-        :prop="item.prop"
-        v-for="(item, index) in props.items"
-        :key="item.prop"
-        v-bind="getFormItemProps(item)"
-        v-show="index < props.visibleCount ? true : store.expand"
-      >
+      <template v-for="(item, index) in props.items" :key="item?.prop || index">
+        <el-form-item
+          v-if="item"
+          :label="item.label"
+          :prop="item.prop"
+          v-bind="getFormItemProps(item)"
+          v-show="index < props.visibleCount ? true : store.expand"
+        >
         <!-- Input box -->
         <el-input
           class="search-content"
-          v-if="item.component.is == 'input'"
+          v-if="item.component && item.component.is == 'input'"
           v-model="props.params[item.prop]"
           clearable
           :placeholder="t('components.qtSearchBar.inputPlaceholder', { label: item.label })"
@@ -29,14 +29,14 @@
         <!-- drop down box -->
         <el-select
           class="search-content"
-          v-if="item.component.is == 'select'"
+          v-if="item.component && item.component.is == 'select'"
           v-model="props.params[item.prop]"
           clearable
           :placeholder="t('components.qtSearchBar.selectPlaceholder', { label: item.label })"
           v-bind="item.component"
         >
           <el-option
-            v-for="(option, index) in item.component.options"
+            v-for="(option, index) in (item.component.options || getDictOptions(item.component.dict))"
             :key="index"
             v-bind="option"
           />
@@ -45,7 +45,7 @@
         <!-- time picker -->
         <el-date-picker
           class="search-content"
-          v-if="item.component.is == 'date-picker'"
+          v-if="item.component && item.component.is == 'date-picker'"
           v-model="props.params[item.prop]"
           :type="item.component.type || 'date'"
           clearable
@@ -58,13 +58,14 @@
         <!-- tree selection box -->
         <el-tree-select
           class="search-content"
-          v-if="item.component.is == 'tree-select'"
+          v-if="item.component && item.component.is == 'tree-select'"
           v-model="props.params[item.prop]"
           clearable
           :placeholder="t('components.qtSearchBar.selectPlaceholder', { label: item.label })"
           v-bind="item.component"
         />
       </el-form-item>
+    </template>
       <el-form-item class="search-btns">
         <el-button plain type="primary" @click="handleQueryClick">
           <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ t('common.button.query') }}
@@ -90,9 +91,10 @@
 
 <script setup name="QtSearchBar">
 import { useI18n } from 'vue-i18n'
-import { reactive, ref } from "vue";
+import { reactive, ref, getCurrentInstance } from "vue";
 
 const { t } = useI18n();
+const { proxy } = getCurrentInstance();
 const props = defineProps({
   params: {
     type: Object,
@@ -127,7 +129,18 @@ const formRef = ref(null);
 const store = reactive({
   expand: false,
   length: props.items.length,
+  dict: {},
 });
+
+// Get dictionary data
+function getDictOptions(key) {
+  if (!key) return [];
+  if (store.dict[key]) return store.dict[key];
+  const dict = proxy.useDict(key);
+  const value = dict[key];
+  store.dict[key] = value;
+  return value;
+}
 
 // Filter form parameters
 function getFormItemProps(item) {

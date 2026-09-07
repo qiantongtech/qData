@@ -18,72 +18,17 @@
 
 <template>
   <div class="app-container">
-    <div class="pagecont-top" style="padding-bottom: 15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-          {{ form.name || "-" }}
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
-              <div class="infotop-row-value">
-                {{ form.id || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.nameEn') }}</div>
-              <div class="infotop-row-value">
-                {{ form.engName || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <!-- <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">Chinese name</div>
-              <div class="infotop-row-value">
-                {{ form.name || "-" }}
-              </div>
-            </div>
-          </el-col> -->
-          <el-col :span="24" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
-              <div class="infotop-row-value">
-                {{ form.description || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.catCode') }}</div>
-              <div class="infotop-row-value">
-                {{ form.catName || "-" }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.dataElem.columnType') }}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="column_type" :value="form.columnType" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="sys_disable" :value="form.status" />
-              </div>
-            </div>
-          </el-col>
-
-        </el-row>
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="form"
+      :header="{
+        nameKey: 'name',
+        statusKey: 'status',
+        statusOptions: sys_disable,
+      }"
+      :items="detailItems"
+      mode="free"
+    />
     <!-- Tab section -->
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -125,6 +70,25 @@ const { column_type, sys_disable, dp_data_elem_code_type } = proxy.useDict(
   "sys_disable",
   "dp_data_elem_code_type"
 );
+
+const showSearch = ref(true);
+const detailItems = computed(() => [
+  { label: td("dp.dataElem.catCode"), key: "catName" },
+  { label: td("dp.dataElem.nameEn"), key: "engName" },
+    {
+    label: td("dp.dataElem.columnType"),
+    key: "columnType",
+    dictOptions: column_type.value,
+  },
+  {
+    label: td("common.texts.description"),
+    key: "description",
+    span: 24,
+    className: "mt2 mb2",
+  },
+
+ 
+]);
 
 const dpDataElemRuleRelList = ref([]);
 

@@ -17,645 +17,458 @@
 -->
 
 <template>
-    <div class="app-container" ref="app-container">
+  <div class="app-container" ref="app-container">
+    <GuideTip tip-id="att/attTheme.list" />
 
-        <GuideTip tip-id="att/attTheme.list" />
+    <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+      <template #search>
+        <qt-search-bar
+          v-bind="searchStore"
+          :params="tableStore.params"
+          @query="handleQuery"
+          @reset="resetQuery"
+          :tableRef="tableRef"
+        />
+      </template>
 
-        <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-                v-show="showSearch" @submit.prevent>
-                <el-form-item :label="td('att.common.themeName')" prop="name" :label-position="labelPosition">
-                    <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('common.form.namePlaceholder')" clearable
-                        @keyup.enter="handleQuery" />
-                </el-form-item>
-                <!-- <el-form-item label="Description" prop="description">
-                    <el-input class="el-form-input-width" v-model="queryParams.description" :placeholder="td('common.form.descriptionPlaceholder')"
-                        clearable @keyup.enter="handleQuery" />
-                </el-form-item> -->
-                <el-form-item>
-                    <el-button plain type="primary" v-hasPermi="['att:theme:query']" @click="handleQuery"
-                        @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
-                    </el-button>
-                    <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
-                    </el-button>
-                </el-form-item>
-            </el-form>
+      <template #actions-data>
+        <el-row :gutter="15" class="btn-style">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              @click="handleAdd"
+              v-hasPermi="['att:theme:add']"
+            >
+              <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </template>
+
+      <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+        <template #icon="{ row }">
+          <image-preview :src="row.icon || noDataImg" :width="50" :height="50" />
+        </template>
+
+        <template #validFlag="{ row }">
+          <el-switch
+            v-model="row.validFlag"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="handleStatusChange(row)"
+          />
+        </template>
+
+        <template #action="{ row }">
+          <el-button
+            link
+            type="primary"
+            icon="Edit"
+            @click="handleUpdate(row)"
+            v-hasPermi="['att:theme:edit']"
+          >{{ td('common.button.update') }}</el-button>
+          <el-button
+            link
+            type="danger"
+            icon="Delete"
+            @click="handleDelete(row)"
+            v-hasPermi="['att:theme:remove']"
+          >{{ td('common.button.delete') }}</el-button>
+          <el-button
+            link
+            type="primary"
+            icon="View"
+            @click="handleDetail(row)"
+            v-hasPermi="['att:theme:query']"
+          >{{ td('common.button.details') }}</el-button>
+        </template>
+      </qt-table>
+    </qt-wrap>
+
+    <!-- Add or modify theme dialog box -->
+    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
+      <el-form ref="attThemeRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item :label="td('att.common.themeName')" prop="name">
+              <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item :label="td('common.texts.description')" prop="description">
+              <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')"  maxlength="256字符" show-word-limit />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item :label="td('att.common.icon')" prop="icon">
+              <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder">
+              <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.status')" prop="validFlag">
+              <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
+              <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
         </div>
-        <div class="pagecont-bottom">
-            <div class="justify-between mb15">
-                <el-row :gutter="15" class="btn-style">
-                    <el-col :span="1.5">
-                        <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:theme:add']"
-                            @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
-                        </el-button>
-                    </el-col>
-                    <!-- <el-col :span="1.5">
-                        <el-button type="primary" plain :disabled="single" @click="handleUpdate"
-                            v-hasPermi="['att:theme:theme:edit']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-xiugai--copy mr5"></i>Modify
-                        </el-button>
-                    </el-col>
-                    <el-col :span="1.5">
-                        <el-button type="danger" plain :disabled="multiple" @click="handleDelete"
-                            v-hasPermi="['att:theme:theme:remove']" @mousedown="(e) => e.preventDefault()">
-                            <i class="iconfont-mini icon-shanchu-huise mr5"></i>Delete
-                        </el-button>
-                    </el-col> -->
-                </el-row>
-                <div class="justify-end top-right-btn">
-                    <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"
-                        :columns="columns"></right-toolbar>
-                </div>
+      </template>
+    </el-dialog>
+
+    <!-- Theme details dialog -->
+    <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
+      <el-form ref="attThemeDetailRef" :model="form" label-width="90px" :label-position="labelPosition">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item :label="td('common.texts.number')+':'" prop="id">
+              <div class="form-readonly">{{ form.id }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item :label="td('att.common.themeName') + ':'" prop="name">
+              <div class="form-readonly">{{ form.name }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item :label="td('att.common.icon')+':'" prop="icon">
+              <image-preview :src="form.icon || noDataImg" :width="50" :height="50" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item :label="td('common.texts.description') + ':'" prop="description">
+              <div class="form-readonly textarea">{{ form.description ?? "-" }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.createdBy')+':'" prop="createBy">
+              <div class="form-readonly">{{ form.createBy }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime">
+              <div class="form-readonly">{{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.updatedBy')+':'" prop="updateBy">
+              <div class="form-readonly">{{ form.updateBy }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.updatedTime')+':'" prop="updateTime">
+              <div class="form-readonly">{{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag">
+              <div class="form-readonly">{{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button size="mini" @click="openDetail = false">{{ td('common.button.close') }} </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <!-- User import dialog -->
+    <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable destroy-on-close>
+      <el-upload
+        ref="uploadRef"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <div class="el-upload__text">{{ td('common.upload.dragOrClick') }}</div>
+        <template #tip>
+          <div class="el-upload__tip text-center">
+            <div class="el-upload__tip">
+              <el-checkbox v-model="upload.updateSupport" />{{ td('common.upload.updateExistingData') }}
             </div>
-            <el-table stripe v-loading="loading" :data="attThemeList" @selection-change="handleSelectionChange"
-                :default-sort="defaultSort" @sort-change="handleSortChange">
-                <!-- <el-table-column type="selection" width="55" align="center" /> -->
-                <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="center" prop="id" width="60" />
-                <!--       <el-table-column v-if="getColumnVisibility(0)" label="ID" align="center" prop="id" />-->
-                <el-table-column v-if="getColumnVisibility(1)" :label="td('att.theme.table.name')" align="left" prop="name" width="200">
-                    <template #default="scope">
-                        {{ scope.row.name || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" :label="td('att.theme.table.icon')" align="center" prop="icon" width="100">
-                    <template #default="scope">
-                        <image-preview :src="scope.row.icon || noDataImg" :width="50" :height="50" />
-                    </template>
-                </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(3)" :label="td('common.texts.description')"
-                    align="left" prop="description" width="300">
-                    <template #default="scope">
-                        {{ scope.row.description || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(10)" :label="td('common.texts.sortOrder')"
-                    align="left" prop="sortOrder" width="50">
-                    <template #default="scope">
-                        {{ scope.row.sortOrder || '-' }}
-                    </template>
-                </el-table-column>
-
-                <el-table-column v-if="getColumnVisibility(7)" :label="td('common.texts.createdBy')" :show-overflow-tooltip="{ effect: 'light' }"
-                    align="left" prop="createBy">
-                    <template #default="scope">
-                        {{ scope.row.createBy || "-" }}
-                    </template>
-                </el-table-column>
-                <!-- column-key="create_time" :sort-orders="['descending', 'ascending']"   sortable="custom"-->
-                <el-table-column v-if="getColumnVisibility(6)" :label="td('common.texts.createdTime')" align="center" prop="createTime"
-                    width="150">
-                    <template #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                    }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column :label="td('common.texts.status')" align="center" prop="validFlag" width="120" v-if="getColumnVisibility(4)">
-                    <template #default="scope">
-                        <!--              <dict-tag :options="sys_valid" :value="scope.row.validFlag"/>-->
-
-                        <el-switch v-model="scope.row.validFlag" active-color="#13ce66" inactive-color="#ff4949"
-                            @change="handleStatusChange(scope.row)">
-                        </el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" :label="td('common.texts.remark')"
-                    align="left" prop="remark">
-                    <template #default="scope">
-                        {{ scope.row.remark || '-' }}
-                    </template>
-                </el-table-column>
-
-                <el-table-column :label="td('common.texts.handle')" align="center" class-name="small-padding fixed-width" fixed="right"
-                    width="240">
-                    <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['att:theme:edit']">{{ td('common.button.update') }}</el-button>
-                        <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['att:theme:remove']">{{ td('common.button.delete') }}</el-button>
-                        <el-button link v-hasPermi="['att:theme:query']" type="primary" icon="view"
-                            @click="handleDetail(scope.row)">{{ td('common.button.details') }}</el-button>
-
-                    </template>
-                </el-table-column>
-
-                <template #empty>
-                    <div class="emptyBg">
-                        <img src="../../../assets/images/system/no_data/empty-nodata.png" alt="" />
-                        <p>{{td('common.noData')}}</p>
-                    </div>
-                </template>
-            </el-table>
-
-            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-                v-model:limit="queryParams.pageSize" @pagination="getList" />
+            <span>{{ td('common.upload.fileFormat') }}</span>
+            <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline" @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
+          </div>
+        </template>
+      </el-upload>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
+          <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
         </div>
-
-        <!-- Add or modify theme dialog box -->
-        <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-            <template #header="{ close, titleId, titleClass }">
-                <span role="heading" aria-level="2" class="el-dialog__title">
-                    {{ title }}
-                </span>
-            </template>
-            <el-form ref="attThemeRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
-                <el-row :gutter="20">
-                    <el-col>
-                        <el-form-item :label="td('att.common.themeName')" prop="name">
-                            <el-input v-model="form.name" :placeholder="td('common.form.namePlaceholder')" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
-                            <el-input type="textarea" v-model="form.description" :placeholder="td('common.form.descriptionPlaceholder')" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item :label="td('att.common.icon')" prop="icon" :label-position="labelPosition">
-                            <image-upload :limit="1" v-model="form.icon" :width="50" :height="50" />
-
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item :label="td('att.common.sortOrder')" prop="sortOrder" :label-position="labelPosition">
-                            <el-input-number style="width: 100%" v-model="form.sortOrder" controls-position="right"
-                                :min="0" />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status')" prop="validFlag" :label-position="labelPosition">
-                            <el-radio v-model="form.validFlag" :label="true">{{ td('att.common.enable') }}</el-radio>
-                            <el-radio v-model="form.validFlag" :label="false">{{ td('att.common.disable') }}</el-radio>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-                            <el-input type="textarea" v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button size="mini" @click="cancel">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{ td('common.button.confirm') }}</el-button>
-                </div>
-            </template>
-        </el-dialog>
-
-        <!-- Theme details dialog -->
-        <el-dialog :title="title" v-model="openDetail" width="1000px" :append-to="$refs['app-container']" draggable>
-            <el-form ref="daAssetApplyRef" :model="form" label-width="90px" :label-position="labelPosition">
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item :label="td('common.texts.number')+':'" prop="id" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ form.id }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item :label="td('att.common.themeName') + ':'" prop="name" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ form.name }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item :label="td('att.common.icon')+':'" prop="icon" :label-position="labelPosition">
-                            <image-preview :src="form.icon || noDataImg" :width="50" :height="50" />
-
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
-                            <div class="form-readonly textarea">
-                                {{ form.description ?? "-" }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.createdBy')+':'" prop="createBy" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ form.createBy }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.createdTime') + ':'" prop="createTime" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ parseTime(form.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
-
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.updatedBy')+':'" prop="createBy" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ form.updateBy }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.updatedTime')+':'" prop="updateTime" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ parseTime(form.updateTime, "{y}-{m}-{d} {h}:{i}") || "-" }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.status') + ':'" prop="validFlag" :label-position="labelPosition">
-                            <div class="form-readonly">
-                                {{ form.validFlag ? td('att.common.enable') : td('att.common.disable') }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-                            <div class="form-readonly textarea">
-                                {{ form.remark ?? "-" }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button size="mini" @click="openDetail = false">{{ td('common.button.close') }} </el-button>
-                </div>
-            </template>
-        </el-dialog>
-
-        <!-- User import dialog -->
-        <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']"
-            draggable destroy-on-close>
-            <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
-                :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
-                :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
-                <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                <div class="el-upload__text">{{ td('common.upload.dragOrClick') }}</div>
-                <template #tip>
-                    <div class="el-upload__tip text-center">
-                        <div class="el-upload__tip">
-                            <el-checkbox v-model="upload.updateSupport" />{{ td('common.upload.updateExistingData') }}
-                        </div>
-                        <span>{{ td('common.upload.fileFormat') }}</span>
-                        <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-                            @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
-                    </div>
-                </template>
-            </el-upload>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
-                    <el-button type="primary" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
-                </div>
-            </template>
-        </el-dialog>
-    </div>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup name="Theme">
 import {
-    listAttTheme,
-    getAttTheme,
-    delAttTheme,
-    addAttTheme,
-    updateAttTheme
+  listAttTheme,
+  getAttTheme,
+  delAttTheme,
+  addAttTheme,
+  updateAttTheme
 } from '@/api/att/theme/theme.js';
 import { getToken } from '@/utils/auth.js';
 import useDefaultLang from "@/composables/useDefaultLang";
-const noDataImg = new URL('@/assets/images/system/D.png', import.meta.url).href
 
+const noDataImg = new URL('@/assets/images/system/D.png', import.meta.url).href
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
+
+const tableRef = ref(null);
 const submitLoading = ref(false);
-const attThemeList = ref([]);
-// Show hidden information
-const columns = ref([
-    { key: 0, label: td('common.texts.number'), visible: true },
-    { key: 1, label: td('att.theme.texts.name'), visible: true },
-    { key: 2, label: td('att.theme.texts.icon'), visible: true },
-    { key: 3, label: td('common.texts.description'), visible: true },
-    { key: 10, label: td('att.theme.texts.sortOrder'), visible: true },
-    { key: 7, label: td('common.texts.createdBy'), visible: true },
-    { key: 6, label: td('common.texts.createdTime'), visible: true },
-    { key: 4, label: td('common.texts.status'), visible: true },
-    { key: 5, label: td('common.texts.remark'), visible: true }
-]);
-
-const getColumnVisibility = (key) => {
-    const column = columns.value.find((col) => col.key === key);
-    // If the corresponding column configuration is not found, it will be displayed by default.
-    if (!column) return true;
-    // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
-    return column.visible;
-};
-
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref('');
-const defaultSort = ref({ prop: 'createTime', order: 'desc' });
-const router = useRouter();
 
 /*** User import parameters */
 const upload = reactive({
-    // Whether to display the pop-up layer (user import)
-    open: false,
-    // Popup layer title (user imported)
-    title: '',
-    // Whether to disable uploading
-    isUploading: false,
-    // Whether to update existing user data
-    updateSupport: 0,
-    // Set upload request headers
-    headers: { Authorization: 'Bearer ' + getToken() },
-    // Upload address
-    url: import.meta.env.VITE_APP_BASE_API + '/att/attTheme/importData'
+  open: false,
+  title: '',
+  isUploading: false,
+  updateSupport: 0,
+  headers: { Authorization: 'Bearer ' + getToken() },
+  url: import.meta.env.VITE_APP_BASE_API + '/att/attTheme/importData'
+});
+
+const searchStore = reactive({
+  items: [
+    {
+      label: td('att.common.themeName'),
+      prop: "name",
+      component: { is: "input", placeholder: td('common.form.namePlaceholder') }
+    }
+  ]
+});
+
+const tableStore = reactive({
+  columns: [
+    { label: td('common.texts.number'), prop: "id", width: 60, align: "left", sortable: true },
+    { label: td('att.theme.table.name'), prop: "name", width: 200, align: "left" },
+    { label: td('att.theme.table.icon'), prop: "icon", width: 100, align: "center", slot: "icon" },
+    { label: td('common.texts.description'), prop: "description", width: 300, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td('common.texts.sortOrder'), prop: "sortOrder", width: 80, align: "left" },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120, align: "left", showOverflowTooltip: { effect: "light" } },
+    { label: td('common.texts.createdTime'), prop: "createTime", width: 150, align: "center", sortable: true, date: true },
+    { label: td('common.texts.status'), prop: "validFlag", width: 120, align: "center", slot: "validFlag" },
+    { label: td('common.texts.handle'), prop: "action", width: 240, align: "center", slot: "action", fixed: "right" }
+  ],
+  func: listAttTheme,
+  params: {
+    pageNum: 1,
+    pageSize: 10,
+    name: null,
+    orderByColumn: 'sortOrder,createTime',
+    description: null
+  }
 });
 
 const data = reactive({
-    form: {},
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        name: null,
-        orderByColumn: 'sortOrder,createTime',
-        description: null
-    },
-    rules: {
-        name: [{ required: true, message: td('att.common.themeNameRequired'), trigger: 'blur' }],
-        // icon: [{ required: true, message: td('att.common.iconRequired'), trigger: "blur" }],
-        // sortOrder: [{ required: true, message: td('att.theme.sortOrderRequired'), trigger: 'blur' }],
-        // description: [{ required: true, message: td('common.form.descriptionRequired'), trigger: 'blur' }],
-        // validFlag: [{ required: true, message: td('common.form.statusRequired'), trigger: 'blur' }]
-    }
+  form: {},
+  rules: {
+    name: [{ required: true, message: td('att.common.themeNameRequired'), trigger: 'blur' }],
+  }
 });
 
-const { queryParams, form, rules } = toRefs(data);
-
-/** Query topic list */
-function getList() {
-    loading.value = true;
-    listAttTheme(queryParams.value).then((response) => {
-        attThemeList.value = response.data.rows;
-        total.value = response.data.total;
-        loading.value = false;
-    });
-}
-/** Change enabled status value */
-function handleStatusChange(row) {
-    const status = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
-    proxy.$modal
-        .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: status, type: td('att.theme.themeWord'), name: row.name }))
-        .then(function () {
-            updateAttTheme({ id: row.id, validFlag: row.validFlag }).then((response) => {
-                proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: status }));
-                getList();
-            });
-        })
-        .catch(function () {
-            row.validFlag = !row.validFlag;
-        });
-}
-
-// Cancel button
-function cancel() {
-    open.value = false;
-    openDetail.value = false;
-    reset();
-}
-
-// form reset
-function reset() {
-    form.value = {
-        id: null,
-        name: null,
-        icon: null,
-        sortOrder: 0,
-        description: null,
-        validFlag: true,
-        delFlag: null,
-        createBy: null,
-        creatorId: null,
-        createTime: null,
-        updateBy: null,
-        updaterId: null,
-        updateTime: null,
-        remark: null
-    };
-    proxy.resetForm('attThemeRef');
-}
+const { form, rules } = toRefs(data);
 
 /** Search button action */
 function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
+  tableStore.params.pageNum = 1;
 }
 
 /** reset button action */
 function resetQuery() {
-    proxy.resetForm('queryRef');
-    handleQuery();
+  tableStore.params.name = null;
+  tableStore.params.description = null;
 }
 
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-    ids.value = selection.map((item) => item.id);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
+/** Change enabled status value */
+function handleStatusChange(row) {
+  const statusText = row.validFlag === true ? td('att.common.enable') : td('att.common.disable');
+  proxy.$modal
+    .confirm(td('att.common.confirmStatusChangeGeneric', '', { status: statusText, type: td('att.theme.themeWord'), name: row.name }))
+    .then(() => {
+      return updateAttTheme({ id: row.id, validFlag: row.validFlag });
+    })
+    .then(() => {
+      proxy.$modal.msgSuccess(td('att.common.statusSuccess', '', { status: statusText }));
+      tableRef.value.refresh();
+    })
+    .catch(() => {
+      row.validFlag = !row.validFlag;
+    });
 }
 
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-    queryParams.value.orderByColumn = column.prop;
-    queryParams.value.isAsc = column.order;
-    getList();
+// Cancel button
+function cancel() {
+  open.value = false;
+  openDetail.value = false;
+  reset();
+}
+
+// form reset
+function reset() {
+  form.value = {
+    id: null,
+    name: null,
+    icon: null,
+    sortOrder: 0,
+    description: null,
+    validFlag: true,
+    remark: null
+  };
+  proxy.resetForm('attThemeRef');
 }
 
 /** Add button operation */
 function handleAdd() {
-    reset();
-    open.value = true;
-    title.value = td('att.theme.title.add');
+  reset();
+  open.value = true;
+  title.value = td('att.theme.title.add');
 }
 
 /** Modify button actions */
 function handleUpdate(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getAttTheme(_id).then((response) => {
-        delete response.data.createTime;
-        delete response.data.updateTime;
-        form.value = response.data;
-        open.value = true;
-        title.value = td('att.theme.title.edit');
-    });
+  reset();
+  getAttTheme(row.id).then((response) => {
+    delete response.data.createTime;
+    delete response.data.updateTime;
+    form.value = response.data;
+    open.value = true;
+    title.value = td('att.theme.title.edit');
+  });
 }
 
 /** Detail button operation */
 function handleDetail(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getAttTheme(_id).then((response) => {
-        form.value = response.data;
-        openDetail.value = true;
-        title.value = td('att.theme.title.detail');
-    });
+  reset();
+  getAttTheme(row.id).then((response) => {
+    form.value = response.data;
+    openDetail.value = true;
+    title.value = td('att.theme.title.detail');
+  });
 }
 
 /** submit button */
 function submitForm() {
-    if (submitLoading.value) return;
-    submitLoading.value = true;
-    proxy.$refs['attThemeRef'].validate((valid) => {
-        if (valid) {
-            if (form.value.id != null) {
-                updateAttTheme(form.value)
-                    .then((response) => {
-                        submitLoading.value = false;
-                        proxy.$modal.msgSuccess(td('common.message.editSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => {
-                        submitLoading.value = false;
-                    });
-            } else {
-                addAttTheme(form.value)
-                    .then((response) => {
-                        submitLoading.value = false;
-                        proxy.$modal.msgSuccess(td('common.message.addSuccess'));
-                        open.value = false;
-                        getList();
-                    })
-                    .catch((error) => {
-                        submitLoading.value = false;
-                    });
-            }
-        } else {
-            submitLoading.value = false;
-        }
-    });
+  if (submitLoading.value) return;
+  submitLoading.value = true;
+  proxy.$refs['attThemeRef'].validate((valid) => {
+    if (valid) {
+      const api = form.value.id ? updateAttTheme : addAttTheme;
+      const msg = form.value.id ? td('common.message.editSuccess') : td('common.message.addSuccess');
+      api(form.value)
+        .then(() => {
+          submitLoading.value = false;
+          proxy.$modal.msgSuccess(msg);
+          open.value = false;
+          tableRef.value.refresh();
+        })
+        .catch(() => {
+          submitLoading.value = false;
+        });
+    } else {
+      submitLoading.value = false;
+    }
+  });
 }
 
 /** Delete button action */
 function handleDelete(row) {
-    const _ids = row.id || ids.value;
-    proxy.$modal
-        .confirm(td('att.theme.deleteConfirm', '', { ids: _ids }))
-        .then(function () {
-            return delAttTheme(_ids);
-        })
-        .then(() => {
-            getList();
-            proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
-        })
-        .catch(() => { });
+  proxy.$modal
+    .confirm(td('att.theme.deleteConfirm', '', { ids: row.id }))
+    .then(() => {
+      return delAttTheme(row.id);
+    })
+    .then(() => {
+      tableRef.value.refresh();
+      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+    })
+    .catch(() => { });
 }
 
 /** Export button action */
 function handleExport() {
-    proxy.download(
-        'att/attTheme/export',
-        {
-            ...queryParams.value
-        },
-        `attTheme_${new Date().getTime()}.xlsx`
-    );
+  proxy.download(
+    'att/attTheme/export',
+    { ...tableStore.params },
+    `attTheme_${new Date().getTime()}.xlsx`
+  );
 }
 
 /** ---------------- Import related operations ------------------**/
-/** Import button actions */
 function handleImport() {
-    upload.title = td('att.theme.importTitle');
-    upload.open = true;
+  upload.title = td('att.theme.importTitle');
+  upload.open = true;
 }
 
-/** Download template operation */
 function importTemplate() {
-    proxy.download(
-        'system/user/importTemplate',
-        {},
-        `attTheme_template_${new Date().getTime()}.xlsx`
-    );
+  proxy.download(
+    'system/user/importTemplate',
+    {},
+    `attTheme_template_${new Date().getTime()}.xlsx`
+  );
 }
 
-/** Submit upload file */
 function submitFileForm() {
-    proxy.$refs['uploadRef'].submit();
+  proxy.$refs['uploadRef'].submit();
 }
 
-/**File upload is being processed */
-const handleFileUploadProgress = (event, file, fileList) => {
-    upload.isUploading = true;
+const handleFileUploadProgress = () => {
+  upload.isUploading = true;
 };
 
-/** File upload successfully processed */
-const handleFileSuccess = (response, file, fileList) => {
-    upload.open = false;
-    upload.isUploading = false;
-    proxy.$refs['uploadRef'].handleRemove(file);
-    proxy.$alert(
-        "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
-        response.msg +
-        '</div>',
-        td('att.common.importResult'),
-        { dangerouslyUseHTMLString: true }
-    );
-    getList();
+const handleFileSuccess = (response, file) => {
+  upload.open = false;
+  upload.isUploading = false;
+  proxy.$refs['uploadRef'].handleRemove(file);
+  proxy.$alert(
+    "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
+    response.msg +
+    '</div>',
+    td('att.common.importResult'),
+    { dangerouslyUseHTMLString: true }
+  );
+  tableRef.value.refresh();
 };
-/** ---------------------------------**/
-
-function routeTo(link, row) {
-    if (link !== '' && link.indexOf('http') !== -1) {
-        window.location.href = link;
-        return;
-    }
-    if (link !== '') {
-        if (link === router.currentRoute.value.path) {
-            window.location.reload();
-        } else {
-            router.push({
-                path: link,
-                query: {
-                    id: row.id
-                }
-            });
-        }
-    }
-}
-
-getList();
 </script>
+

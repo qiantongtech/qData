@@ -216,16 +216,6 @@
             :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
-        <el-input
-            type="textarea"
-            maxlength="256字符"
-            show-word-limit
-            :min-height="192"
-            v-model="form.remark"
-            :placeholder="td('common.form.remarkPlaceholder')"
-        />
-      </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">

@@ -105,12 +105,6 @@ const table = ref([
     value: "",
     type: "time",
   },
-  {
-    key: "remark",
-    label: td('common.texts.remark'),
-    value: "",
-    span: 24,
-  },
 ]);
 const getDescValue = (row) => {
   let detail = { ...props.daDiscoveryTaskDetail };

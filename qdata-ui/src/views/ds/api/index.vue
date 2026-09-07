@@ -18,418 +18,131 @@
 
 <template>
   <div class="app-container" ref="app-container">
-
     <GuideTip tip-id="ds/dsApi.list" />
 
-    <el-container style="90%">
-      <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('ds.api.apiCategoryPlaceholder')" ref="DeptTreeRef"
-        @node-click="handleNodeClick" />
+    <el-container>
+      <DeptTree
+        :deptOptions="deptOptions"
+        :leftWidth="leftWidth"
+        :placeholder="td('ds.api.apiCategoryPlaceholder')"
+        ref="DeptTreeRef"
+        @node-click="handleNodeClick"
+      />
 
-      <el-main>
-        <div class="pagecont-top" v-show="showSearch">
-          <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-            v-show="showSearch" @submit.prevent>
-            <el-form-item :label="td('ds.api.apiName')" prop="name" :label-position="labelPosition">
-              <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.api.apiNamePlaceholder')" clearable
-                @keyup.enter="handleQuery" />
-            </el-form-item>
-            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
-              <el-select class="el-form-input-width" v-model="queryParams.status" :placeholder="td('ds.api.statusPlaceholder')" clearable>
-                <el-option v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="td('common.texts.createdTime')">
-              <el-date-picker class="el-form-input-width" v-model="daterangeCreateTime" value-format="YYYY-MM-DD"
-                type="daterange" range-separator="-" :start-placeholder="td('common.form.startDatePlaceholder')" :end-placeholder="td('common.form.endDatePlaceholder')"></el-date-picker>
-            </el-form-item>
-
-            <el-form-item>
-              <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
-              </el-button>
-              <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div class="pagecont-bottom">
-          <div class="justify-between mb15">
+      <el-main class="main-content">
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+          <template #search>
+            <qt-search-bar
+              v-bind="searchStore"
+              :params="tableStore.params"
+              @query="handleQuery"
+              @reset="resetQuery"
+              :tableRef="tableRef"
+            />
+          </template>
+          <template #actions-data>
             <el-row :gutter="15" class="btn-style">
               <el-col :span="1.5">
-                <el-button type="primary" plain @click="routeToAdd('/ds/api/add')" v-hasPermi="['ds:api:add']"
-                  @mousedown="(e) => e.preventDefault()">
+                <el-button
+                  type="primary"
+                  plain
+                  @click="routeToAdd('/ds/api/add')"
+                  v-hasPermi="['ds:api:add']"
+                >
                   <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                 </el-button>
               </el-col>
             </el-row>
-            <div class="justify-end top-right-btn">
-              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-            </div>
-          </div>
-          <el-table stripe v-loading="loading" :data="dsApiList" @selection-change="handleSelectionChange"
-            :default-sort="defaultSort" @sort-change="handleSortChange">
-            <!--            <el-table-column type="selection" width="55" align="center" />-->
-            <el-table-column v-if="getColumnVisibility(0)" :label="td('common.texts.number')" align="center" prop="id" width="80px" />
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(1)" :label="td('ds.api.apiName')"
-              width="300px" align="left" prop="name">
-              <template #default="scope">
-                {{ scope.row.name || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(2)" :label="td('ds.api.serviceCategory')"
-              min-width="160px" align="left" prop="catName">
-              <template #default="scope">
-                {{ scope.row.catName || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(3)" :label="td('common.texts.description')" width="200" align="left" prop="description"
-              :show-overflow-tooltip="{ effect: 'light' }">
-              <template #default="scope">
-                {{ scope.row.description || '-' }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(4)" width="80" :label="td('ds.api.apiVersion')" align="center" prop="apiVersion">
-              <template #default="scope">
-                {{ scope.row.apiVersion || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column :show-overflow-tooltip="{ effect: 'light' }" v-if="getColumnVisibility(5)" :label="td('ds.api.apiPath')"
-              min-width="200px" align="left" prop="apiUrl">
-              <template #default="scope">
-                {{ scope.row.apiUrl || "-" }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(6)" width="120" :label="td('ds.api.requestType')" align="center" prop="reqMethod">
-              <template #default="scope">
-                <dict-tag :options="ds_api_bas_info_api_method_type" :value="scope.row.reqMethod" />
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(7)" width="120" :label="td('ds.api.returnFormat')" align="center" prop="resDataType">
-              <template #default="scope">
-                <dict-tag :options="ds_api_bas_info_res_data_type" :value="scope.row.resDataType" />
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(8)" width="120" :label="td('common.texts.createdBy')" align="center" prop="createBy"
-              :show-overflow-tooltip="{ effect: 'light' }">
-              <template #default="scope">
-                {{ scope.row.createBy || '-' }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(9)" :label="td('common.texts.createdTime')" align="center" prop="createTime" width="150"
-              sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
-              <template #default="scope">
-                <span>{{
-                  parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-"
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.status')" align="center" prop="status" width="80">
-              <template #header>
-                <div class="justify-center">
-                  <span style="margin-right: 5px;">{{td('common.texts.status')}}</span>
-                  <el-tooltip effect="light" :content="td('ds.api.statusTip')" placement="top">
-                    <el-icon class="tip-icon">
-                      <InfoFilled />
-                    </el-icon>
-                  </el-tooltip>
-                </div>
-              </template>
-              <template #default="scope">
-                <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                  inactive-value="0" @change="handleStatusChange(scope.row)" />
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(11)" :label="td('common.texts.remark')" width="200" align="left" prop="remark"
-              :show-overflow-tooltip="{ effect: 'light' }">
-              <template #default="scope">
-                {{ scope.row.remark || '-' }}
-              </template>
-            </el-table-column>
-            <el-table-column v-if="getColumnVisibility(12)" :label="td('common.texts.operation')" align="center"
-              class-name="small-padding fixed-width" fixed="right" width="220">
-              <template #default="scope">
-                <el-button link type="primary" icon="Edit" @click="routeTo('/ds/api/edit', scope.row)"
-                  v-hasPermi="['ds:api:edit']">{{td('common.button.update')}}</el-button>
-                <el-button link type="primary" icon="view" @click="routeTo('/ds/api/detail', scope.row)"
-                  v-hasPermi="['ds:api:edit']">{{td('common.button.details')}}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['ds:api:remove']">{{td('common.button.delete')}}</el-button>
-              </template>
-            </el-table-column>
+          </template>
 
-            <template #empty>
-              <div class="emptyBg">
-                <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-                <p>{{td('common.noData')}}</p>
-              </div>
+          <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+            <template #status="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0"
+                @change="handleStatusChange(row)"
+              />
             </template>
-          </el-table>
 
-          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-            v-model:limit="queryParams.pageSize" @pagination="getList" />
-        </div>
+            <template #action="{ row }">
+              <el-button
+                link
+                type="primary"
+                icon="Edit"
+                @click="routeTo('/ds/api/edit', row)"
+                v-hasPermi="['ds:api:edit']"
+                >{{ td('common.button.update') }}</el-button
+              >
+              <el-button
+                link
+                type="primary"
+                icon="view"
+                @click="routeTo('/ds/api/detail', row)"
+                v-hasPermi="['ds:api:edit']"
+                >{{ td('common.button.details') }}</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                v-hasPermi="['ds:api:remove']"
+                >{{ td('common.button.delete') }}</el-button
+              >
+            </template>
+          </qt-table>
+        </qt-wrap>
       </el-main>
     </el-container>
 
-    <!-- Add or modify API service dialog -->
-    <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
-      <template #header="{ close, titleId, titleClass }">
-        <span role="heading" aria-level="2" class="el-dialog__title">
-          {{ title }}
-        </span>
-      </template>
-      <el-form ref="dsApiRef" :model="form" :rules="rules" label-width="80px" @submit.prevent :label-position="labelPosition">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiName')" prop="name" :label-position="labelPosition">
-              <el-input v-model="form.name" :placeholder="td('ds.api.apiNamePlaceholder')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion" :label-position="labelPosition">
-              <el-input v-model="form.apiVersion" :placeholder="td('ds.api.apiVersionPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl" :label-position="labelPosition">
-              <el-input v-model="form.apiUrl" :placeholder="td('ds.api.apiUrlPlaceholder')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod" :label-position="labelPosition">
-              <el-radio-group v-model="form.reqMethod">
-                <el-radio v-for="dict in ds_api_bas_info_api_method_type" :key="dict.value" :label="dict.value">{{
-                  dict.label }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType" :label-position="labelPosition">
-              <el-radio-group v-model="form.apiServiceType">
-                <el-radio v-for="dict in ds_api_bas_info_api_service_type" :key="dict.value" :label="dict.value">{{
-                  dict.label }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType" :label-position="labelPosition">
-              <el-select v-model="form.resDataType" :placeholder="td('ds.api.returnResultType')">
-                <el-option v-for="dict in ds_api_bas_info_res_data_type" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp" :label-position="labelPosition">
-              <el-input v-model="form.denyIp" type="textarea" :placeholder="td('ds.api.ipBlacklistPlaceholder')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson" :label-position="labelPosition">
-              <el-input v-model="form.configJson" type="textarea" :placeholder="td('ds.api.executeConfigPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson" :label-position="labelPosition">
-              <el-input v-model="form.limitJson" :placeholder="td('ds.api.limitConfig')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams" :label-position="labelPosition">
-              <el-input v-model="form.reqParams" type="textarea" :placeholder="td('ds.api.requestParamsPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.returnParams')" prop="resParams" :label-position="labelPosition">
-              <el-input v-model="form.resParams" type="textarea" :placeholder="td('ds.api.returnParamsPlaceholder')" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
-              <el-input v-model="form.description" :placeholder="td('ds.api.descriptionPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status" :label-position="labelPosition">
-              <el-radio-group v-model="form.status">
-                <el-radio v-for="dict in ds_api_log_status" :key="dict.value" :label="dict.value">{{ dict.label
-                }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-              <el-input v-model="form.remark" :placeholder="td('ds.api.remarkPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{td('common.button.cancel')}}</el-button>
-          <el-button type="primary" size="mini" :loading="submitLoading" @click="submitForm">{{td('common.button.confirm')}}</el-button>
-        </div>
-      </template>
-    </el-dialog>
-
-    <!-- API service details dialog box -->
-    <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
-      <template #header="{ close, titleId, titleClass }">
-        <span role="heading" aria-level="2" class="el-dialog__title">
-          {{ title }}
-        </span>
-      </template>
-      <el-form ref="dsApiRef" :model="form" label-width="80px" :label-position="labelPosition">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiName')" prop="name">
-              <div>
-                {{ form.name }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiVersion')" prop="apiVersion" :label-position="labelPosition">
-              <div>
-                {{ form.apiVersion }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiPath')" prop="apiUrl" :label-position="labelPosition">
-              <div>
-                {{ form.apiUrl }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.requestMethod')" prop="reqMethod" :label-position="labelPosition">
-              <dict-tag :options="ds_api_bas_info_api_method_type" :value="form.reqMethod" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.apiServiceType')" prop="apiServiceType" :label-position="labelPosition">
-              <dict-tag :options="ds_api_bas_info_api_service_type" :value="form.apiServiceType" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.returnResultType')" prop="resDataType" :label-position="labelPosition">
-              <dict-tag :options="ds_api_bas_info_res_data_type" :value="form.resDataType" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.ipBlacklist')" prop="denyIp" :label-position="labelPosition">
-              <div>
-                {{ form.denyIp }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.executeConfig')" prop="configJson" :label-position="labelPosition">
-              <div>
-                {{ form.configJson }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.api.limitConfig')" prop="limitJson" :label-position="labelPosition">
-              <div>
-                {{ form.limitJson }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.requestParams')" prop="reqParams" :label-position="labelPosition">
-              <div>
-                {{ form.reqParams }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('ds.api.returnParams')" prop="resParams" :label-position="labelPosition">
-              <div>
-                {{ form.resParams }}
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
-              <div>
-                {{ form.description }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.status')" prop="status">
-              <dict-tag :options="ds_api_log_status" :value="form.status" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-              <div>
-                {{ form.remark }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button size="mini" @click="cancel">{{td('common.button.close')}}</el-button>
-        </div>
-      </template>
-    </el-dialog>
-
     <!-- User import dialog -->
-    <el-dialog :title="upload.title" v-model="upload.open" width="800px" :append-to="$refs['app-container']" draggable
-      destroy-on-close>
-      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
-        :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
-        :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+    <el-dialog
+      :title="upload.title"
+      v-model="upload.open"
+      width="800px"
+      :append-to="$refs['app-container']"
+      draggable
+      destroy-on-close
+    >
+      <el-upload
+        ref="uploadRef"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text" v-html="td('common.upload.dragOrClick')"></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />{{td('ds.api.importTip')}}
+              <el-checkbox v-model="upload.updateSupport" />{{ td('ds.api.importTip') }}
             </div>
-            <span>{{td('ds.apiCat.uploadFormat')}}</span>
-            <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline"
-              @click="importTemplate">{{ td('common.upload.downloadTemplate') }}</el-link>
+            <span>{{ td('ds.apiCat.uploadFormat') }}</span>
+            <el-link
+              type="primary"
+              :underline="false"
+              style="font-size: 12px; vertical-align: baseline"
+              @click="importTemplate"
+              >{{ td('common.upload.downloadTemplate') }}</el-link
+            >
           </div>
         </template>
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="upload.open = false">{{ td('common.button.cancel') }}</el-button>
-          <el-button type="primary" :loading="submitLoading" @click="submitFileForm">{{ td('common.button.confirm') }}</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="submitFileForm">{{
+            td('common.button.confirm')
+          }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -439,10 +152,7 @@
 <script setup name="DaApi">
 import {
   listDsApi,
-  getDsApi,
   delDsApi,
-  addDsApi,
-  updateDsApi,
   releaseDataApi,
   cancelDataApi,
 } from "@/api/ds/api/api.js";
@@ -450,97 +160,113 @@ import { getToken } from "@/utils/auth.js";
 import DeptTree from "@/components/DeptTree";
 import { listAttApiCat } from "@/api/ds/apiCat/apiCat";
 import useDefaultLang from "@/composables/useDefaultLang";
+import { reactive, ref, onActivated, getCurrentInstance } from "vue";
+import { useRouter } from "vue-router";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
 const submitLoading = ref(false);
 const {
   ds_api_log_status,
-  ds_api_bas_info_api_service_type,
   ds_api_bas_info_api_method_type,
   ds_api_bas_info_res_data_type,
 } = proxy.useDict(
   "ds_api_log_status",
-  "ds_api_bas_info_api_service_type",
   "ds_api_bas_info_api_method_type",
   "ds_api_bas_info_res_data_type"
 );
 
-const dsApiList = ref([]);
-
-// Show hidden information
-const columns = ref([
-  { key: 0, label: td('common.texts.number'), visible: true },
-  { key: 1, label: td('ds.api.apiName'), visible: true },
-  { key: 2, label: td('ds.apiCat.title'), visible: true },
-  { key: 3, label: td('common.texts.description'), visible: true },
-  { key: 4, label: td('ds.api.apiVersion'), visible: true },
-  { key: 5, label: td('ds.api.apiPath'), visible: true },
-  { key: 6, label: td('ds.api.requestType'), visible: true },
-  { key: 7, label: td('ds.api.returnFormat'), visible: true },
-  { key: 8, label: td('common.texts.createdBy'), visible: true },
-  { key: 9, label: td('common.texts.createdTime'), visible: true },
-  { key: 10, label: td('common.texts.status'), visible: true },
-  { key: 11, label: td('common.texts.remark'), visible: true },
-  { key: 12, label: td('common.texts.operation'), visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
-  if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
-  return column.visible;
-};
+const router = useRouter();
+const tableRef = ref(null);
+const DeptTreeRef = ref(null);
 
 const deptOptions = ref(undefined);
 const leftWidth = ref(300); // Initial left width
-const isResizing = ref(false); // Determine whether dragging is in progress
-let startX = 0; // Initial position when mouse is pressed // Initial left width
-const open = ref(false);
-const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const daterangeCreateTime = ref([]);
-const defaultSort = ref({ prop: "create_time", order: "desc" });
-const router = useRouter();
+
+const searchStore = reactive({
+  items: [
+    {
+      label: td('ds.api.apiName'),
+      prop: "name",
+      component: { is: "input", placeholder: td('ds.api.apiNamePlaceholder') }
+    },
+    {
+      label: td('common.texts.status'),
+      prop: "status",
+      component: {
+        is: "select",
+        placeholder: td('ds.api.statusPlaceholder'),
+        options: ds_api_log_status
+      }
+    },
+    {
+      label: td('common.texts.createdTime'),
+      prop: "daterangeCreateTime",
+      component: {
+        is: "date-picker",
+        type: "daterange",
+        valueFormat: "YYYY-MM-DD",
+        startPlaceholder: td('common.form.startDatePlaceholder'),
+        endPlaceholder: td('common.form.endDatePlaceholder')
+      }
+    }
+  ]
+});
+
+const tableStore = reactive({
+  func: listDsApi,
+  params: {
+    name: null,
+    status: null,
+    catCode: "",
+    daterangeCreateTime: [],
+    orderByColumn: "create_time",
+    isAsc: "desc"
+  },
+  config: {
+    initResquest: true,
+    beforeRequest: (params) => {
+      let p = { ...params };
+      if (p.daterangeCreateTime && p.daterangeCreateTime.length === 2) {
+        p.beginCreateTime = p.daterangeCreateTime[0];
+        p.endCreateTime = p.daterangeCreateTime[1];
+      } else {
+        p.beginCreateTime = undefined;
+        p.endCreateTime = undefined;
+      }
+      delete p.daterangeCreateTime;
+      return p;
+    }
+  },
+  columns: [
+    { label: td('common.texts.number'), prop: "id", width: 60, align: "left", sortable: true },
+    { label: td('ds.api.apiName'), prop: "name", width: 260, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.api.serviceCategory'), prop: "catName", width: 160, align: "left", tag: { class: "task-cat-ellipsis" } },
+    { label: td('common.texts.description'), prop: "description", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.api.apiVersion'), prop: "apiVersion", width: 80, align: "center" },
+    { label: td('ds.api.apiPath'), prop: "apiUrl", minWidth: 200, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.api.requestType'), prop: "reqMethod", width: 120, align: "left", dict: "ds_api_bas_info_api_method_type" },
+    { label: td('ds.api.returnFormat'), prop: "resDataType", width: 120, align: "left", dict: "ds_api_bas_info_res_data_type" },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120, align: "center", showOverflowTooltip: { effect: 'light' } },
+    { label: td('common.texts.createdTime'), prop: "createTime", width: 160, align: "center", sortable: true, date: true },
+    { label: td('common.texts.status'), prop: "status", width: 100, align: "center", slot: "status" },
+    { label: td('common.texts.remark'), prop: "remark", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('common.texts.operation'), width: 220, align: "center", fixed: "right", slot: "action" }
+  ]
+});
 
 /*** User import parameters */
 const upload = reactive({
-  // Whether to display the pop-up layer (user import)
   open: false,
-  // Popup layer title (user imported)
   title: "",
-  // Whether to disable uploading
   isUploading: false,
-  // Whether to update existing user data
   updateSupport: 0,
-  // Set upload request headers
   headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
   url: import.meta.env.VITE_APP_BASE_API + "/ds/dsApi/importData",
 });
 
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    NAME: null,
-    STATUS: null,
-    createTime: null,
-  },
-  rules: {},
-});
-const { queryParams, form, rules } = toRefs(data);
-
 function handleNodeClick(data) {
-  queryParams.value.catCode = data.code;
+  tableStore.params.catCode = data.code || null;
   handleQuery();
 }
 
@@ -558,43 +284,17 @@ function getApiCatList() {
   });
 }
 
-/** Query API service list */
-function getList() {
-  loading.value = true;
-  queryParams.value.params = {};
-  if (null != daterangeCreateTime && "" != daterangeCreateTime) {
-    queryParams.value.params["beginCreateTime"] = daterangeCreateTime.value[0];
-    queryParams.value.params["endCreateTime"] = daterangeCreateTime.value[1];
-  }
-  console.log(queryParams.value);
-
-  listDsApi(queryParams.value).then((response) => {
-    dsApiList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
+function handleQuery() {
+  tableStore.params.pageNum = 1;
+  tableRef.value?.refresh();
 }
 
-const startResize = (event) => {
-  isResizing.value = true;
-  startX = event.clientX;
-  document.addEventListener("mousemove", updateResize);
-  document.addEventListener("mouseup", stopResize);
-};
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener("mousemove", updateResize);
-  document.removeEventListener("mouseup", stopResize);
-};
-const updateResize = (event) => {
-  if (isResizing.value) {
-    const delta = event.clientX - startX; // Calculate mouse movement distance
-    leftWidth.value += delta; // Modify left width
-    startX = event.clientX; // Update starting position
-    // Use requestAnimationFrame to reduce page redraw frequency
-    requestAnimationFrame(() => { });
-  }
-};
+function resetQuery() {
+  DeptTreeRef.value?.resetTree?.();
+  tableStore.params.catCode = null;
+  tableStore.params.daterangeCreateTime = [];
+  handleQuery();
+}
 
 /** Enable disable switch */
 function handleStatusChange(row) {
@@ -602,194 +302,42 @@ function handleStatusChange(row) {
   proxy.$modal
     .confirm(td('ds.api.confirm' + (row.status === "1" ? 'Online' : 'Offline')) + '"' + row.name + '"' + td('ds.api.confirmSuffix2'))
     .then(function () {
-      loading.value = true;
       if (row.status === "1") {
-        releaseDataApi(row.id).then((response) => {
-          proxy.$modal.msgSuccess(text + td('common.message.success'));
-          getList();
-        });
+        return releaseDataApi(row.id);
       } else {
-        cancelDataApi(row.id).then((response) => {
-          proxy.$modal.msgSuccess(text + td('common.message.success'));
-          getList();
-        });
+        return cancelDataApi(row.id);
       }
     })
+    .then(() => {
+      proxy.$modal.msgSuccess(text + td('common.message.success'));
+      tableRef.value.refresh();
+    })
     .catch(function () {
-      if (row.status === "1") {
-        row.status = "0";
-      } else {
-        row.status = "1";
-      }
-      loading.value = false;
+      row.status = row.status === "1" ? "0" : "1";
     });
-}
-
-// Cancel button
-function cancel() {
-  open.value = false;
-  openDetail.value = false;
-  reset();
-}
-
-// form reset
-function reset() {
-  form.value = {
-    ID: null,
-    NAME: null,
-    apiVersion: null,
-    apiUrl: null,
-    reqMethod: null,
-    apiServiceType: null,
-    resDataType: null,
-    denyIp: null,
-    configJson: null,
-    limitJson: null,
-    reqParams: null,
-    resParams: null,
-    DESCRIPTION: null,
-    STATUS: null,
-    validFlag: null,
-    delFlag: null,
-    createBy: null,
-    creatorId: null,
-    createTime: null,
-    updateBy: null,
-    updaterId: null,
-    updateTime: null,
-    REMARK: null,
-  };
-  proxy.resetForm("dsApiRef");
-}
-
-/** Search button action */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-const DeptTreeRef = ref(null);
-
-/** reset button action */
-function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
-  daterangeCreateTime.value = [];
-  queryParams.value.catCode = "";
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange({ column, prop, order }) {
-  console.log(column, prop, order);
-  console.log("column?.columnKey::" + column?.columnKey);
-  queryParams.value.orderByColumn = column?.columnKey || prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
-/** Add button operation */
-function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = td('ds.api.addApi');
-}
-
-/** Modify button actions */
-function handleUpdate(row) {
-  reset();
-  const _ID = row.ID || ids.value;
-  getDsApi(_ID).then((response) => {
-    form.value = response.data;
-    open.value = true;
-    title.value = td('ds.api.editApi');
-  });
-}
-
-/** Detail button operation */
-function handleDetail(row) {
-  reset();
-  const _ID = row.id || ids.value;
-  getDsApi(_ID).then((response) => {
-    form.value = response.data;
-    openDetail.value = true;
-    title.value = td('ds.api.detailApi');
-  });
-}
-
-/** submit button */
-function submitForm() {
-  if (submitLoading.value) return;
-  submitLoading.value = true;
-  proxy.$refs["dsApiRef"].validate((valid) => {
-    if (valid) {
-      if (form.value.ID != null) {
-        updateDsApi(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.editSuccess'));
-            open.value = false;
-            getList();
-            submitLoading.value = false;
-          })
-          .catch((error) => { submitLoading.value = false; });
-      } else {
-        addDsApi(form.value)
-          .then((response) => {
-            proxy.$modal.msgSuccess(td('common.message.addSuccess'));
-            open.value = false;
-            getList();
-            submitLoading.value = false;
-          })
-          .catch((error) => { submitLoading.value = false; });
-      }
-    } else {
-      submitLoading.value = false;
-    }
-  });
 }
 
 /** Delete button action */
 function handleDelete(row) {
-  const _IDs = row.id || ids.value;
+  const _IDs = row.id;
   proxy.$modal
     .confirm(td('ds.api.deleteConfirm') + _IDs + td('ds.api.deleteConfirmSuffix'))
     .then(function () {
       return delDsApi(_IDs);
     })
     .then(() => {
-      getList();
+      tableRef.value.refresh();
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
 
-/** Export button action */
-function handleExport() {
-  proxy.download(
-    "ds/dsApi/export",
-    {
-      ...queryParams.value,
-    },
-    `dsApi_${new Date().getTime()}.xlsx`
-  );
-}
-
 /** ---------------- Import related operations ------------------**/
-/** Import button actions */
 function handleImport() {
   upload.title = td('ds.api.importTitle');
   upload.open = true;
 }
 
-/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -798,19 +346,16 @@ function importTemplate() {
   );
 }
 
-/** Submit upload file */
 function submitFileForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
   proxy.$refs["uploadRef"].submit();
 }
 
-/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -823,7 +368,7 @@ const handleFileSuccess = (response, file, fileList) => {
     td('ds.api.importResult'),
     { dangerouslyUseHTMLString: true }
   );
-  getList();
+  tableRef.value.refresh();
 };
 /** ---------------------------------**/
 
@@ -846,7 +391,7 @@ function routeTo(link, row) {
   }
 }
 
-function routeToAdd(link, row) {
+function routeToAdd(link) {
   if (link !== "" && link.indexOf("http") !== -1) {
     window.location.href = link;
     return;
@@ -861,14 +406,12 @@ function routeToAdd(link, row) {
     }
   }
 }
-queryParams.value.orderByColumn = defaultSort.value.prop;
-queryParams.value.isAsc = defaultSort.value.order;
-onActivated(() => {
-  getList();
-});
-getList();
+
+
+
 getApiCatList();
 </script>
+
 <style scoped lang="scss">
 ::v-deep {
   .selectlist .el-tag.el-tag--info {
@@ -884,15 +427,9 @@ getApiCatList();
 
 .el-main {
   padding: 2px 0px;
-  // box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
-//Upload attachment style adjustment
 ::v-deep {
-
-  // .el-upload-list{
-  //    display: flex;
-  // }
   .el-upload-list__item {
     width: 100%;
     height: 25px;

@@ -41,21 +41,7 @@
               :tableRef="tableRef"
             />
           </template>
-          <template #actions-data>
-            <el-row :gutter="15" class="btn-style">
-              <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  plain
-                  @click="handleAdd"
-                  v-hasPermi="['att:rule:auditrule:add']"
-                  @mousedown="(e) => e.preventDefault()"
-                >
-                  <i class="iconfont-mini icon-xincheng mr5"></i>{{ td('common.button.new') }}
-                </el-button>
-              </el-col>
-            </el-row>
-          </template>
+      
           <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
             <template #action="{ row }">
               <el-button
@@ -200,7 +186,7 @@ const multiple = ref(true);
 const tableStore = reactive({
   config: {
     sort: true,
-    initResquest: false, // 禁用自动初始化请求
+    initResquest: true, // 启用自动初始化请求
     table: {
       stripe: true,
       defaultSort: { prop: "createTime", order: "descending" },
@@ -237,7 +223,7 @@ const tableStore = reactive({
       label: td('common.texts.description'),
       prop: "description",
       align: "left",
-      width: 256,
+      width: 500,
       showOverflowTooltip: { effect: 'light' },
     },
     {
@@ -254,12 +240,12 @@ const tableStore = reactive({
       width: 700,
       showOverflowTooltip: { effect: 'light' },
     },
-    {
-      label: td('common.texts.action'),
-      slot: "action",
-      width: 120,
-      fixed: "right",
-    },
+    // {
+    //   label: td('common.texts.action'),
+    //   slot: "action",
+    //   width: 120,
+    //   fixed: "right",
+    // },
   ],
   func: listAttAuditRule,
   params: {
@@ -299,7 +285,7 @@ const processedData = computed(() => {
 });
 
 function handleNodeClick(data) {
-  tableStore.params.qualityDim = data.id;
+  tableStore.params.qualityDim = data.id || null;
   handleQuery();
 }
 
@@ -353,16 +339,14 @@ function reset() {
 /** Search button action */
 function handleQuery() {
   tableStore.params.pageNum = 1;
-  // qt-search-bar 会自动调用 tableRef.value.getList()
+  tableRef.value?.refresh();
 }
 const DeptTreeRef = ref(null);
 /** reset button action */
 function resetQuery() {
-  if (DeptTreeRef.value?.resetTree) {
-    DeptTreeRef.value.resetTree();
-  }
-  tableStore.params.qualityDim = "";
-  // qt-search-bar 会自动调用 tableRef.value.resetQuery()
+  DeptTreeRef.value?.resetTree?.();
+  tableStore.params.qualityDim = null;
+  handleQuery();
 }
 
 /** Add button operation */

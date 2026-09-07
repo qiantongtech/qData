@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef":config="{ fullContent: false, actions: { table: { search: false } } }">
     <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
     </qt-table>
   </qt-wrap>

@@ -18,85 +18,19 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-          {{ dpDocumentDetail.name }}
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
-              <div class="infotop-row-value">{{ dpDocumentDetail.id }}</div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.document.standardCode') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.code || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.document.standardCategory') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.catName || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.description || "-" }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.document.issuingAgency') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.issuingAgency || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.document.version') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.version || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dp.document.standardStatus') }}</div>
-              <dict-tag :options="dp_document_status" :value="dpDocumentDetail.status" />
-            </div>
-          </el-col>
-          <!-- <el-col :span="24">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.remark || "-" }}
-              </div>
-            </div>
-          </el-col> -->
-          <!-- <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">Standard name</div>
-              <div class="infotop-row-value">
-                {{ dpDocumentDetail.name || '-' }}
-              </div>
-            </div>
-          </el-col> -->
-        </el-row>
-
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="dpDocumentDetail"
+      :gutter="0"
+      :header="{
+        className: 'clearfixs',
+        nameKey: 'name',
+        statusKey: 'status',
+        statusOptions: dp_document_status,
+      }"
+      :items="detailItems"
+      mode="free"
+    />
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane v-for="pane in tabPanes" :key="pane.name" :label="pane.label" :name="pane.name">
@@ -156,6 +90,33 @@ const data = reactive({
 });
 
 const { dpDocumentDetail, rules } = toRefs(data);
+
+const detailItems = computed(() => [
+  {
+    label: td('dp.document.standardCode'),
+    key: "code",
+    
+  },
+  {
+    label: td('dp.document.standardCategory'),
+    key: "catName",
+  },
+  {
+    label: td('dp.document.issuingAgency'),
+    key: "issuingAgency",
+  },
+  {
+    label: td('common.texts.description'),
+    key: "description",
+    span: 24,
+    ellipsisClass: "ellipsis",
+    className: "mt2 mb2",
+  },
+  {
+    label: td('dp.document.version'),
+    key: "version",
+  },
+]);
 
 /** Form query at the top of the complex details page */
 function getDpDocumentDetailById() {

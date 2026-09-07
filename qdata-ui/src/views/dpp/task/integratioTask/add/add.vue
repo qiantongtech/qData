@@ -17,127 +17,67 @@
 -->
 
 <template>
-  <el-dialog
-    v-model="visibleDialog"
-    draggable
-    class="dialog"
-    :title="title"
-    destroy-on-close
-    width="60%"
-    :append-to="$refs['app-container']"
-  >
-    <el-form
-      ref="daDiscoveryTaskRef"
-      :model="form"
-      :rules="
-        title == td('dpp.integratioTask.taskDetail', 'Task Details') ? {} : rules
-      "
-      label-width="146px"
-      @submit.prevent
-      :disabled="title == td('dpp.integratioTask.taskDetail', 'Task Details')"
-     :label-position="labelPosition">
+  <el-dialog v-model="visibleDialog" draggable class="dialog" :title="title" destroy-on-close width="60%"
+    :append-to="$refs['app-container']">
+    <el-form ref="daDiscoveryTaskRef" :model="form" :rules="title == td('dpp.integratioTask.taskDetail', 'Task Details') ? {} : rules
+      " label-width="146px" @submit.prevent :disabled="title == td('dpp.integratioTask.taskDetail', 'Task Details')"
+      :label-position="labelPosition">
       <div class="h2-title">
         {{ td("dpp.integratioTask.basicInfo", "Basic Info") }}
       </div>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.integratioTask.taskName', 'Task Name')"
-            prop="name"
-           :label-position="labelPosition">
-            <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-              v-model="form.name"
-              :placeholder="
-                td('dpp.integratioTask.inputTaskName', 'Please enter task name')
-              "
-            />
+          <el-form-item :label="td('dpp.integratioTask.taskName', 'Task Name')" prop="name"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" v-model="form.name"
+              :placeholder="td('dpp.integratioTask.inputTaskName', 'Please enter task name')
+                " />
             <div class="form-readonly" v-else>{{ form.name }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.taskCategory', 'Task Category')"
-              prop="catCode"
-              :label-position="labelPosition">
-            <el-tree-select
-                :default-expanded-keys="defaultExpandedCats"
-                filterable
-                v-model="form.catCode"
-                :data="deptOptions"
-                :props="{ value: 'code', label: 'name', children: 'children' }"
-                value-key="id"
-                :placeholder="
-                td('dpp.integratioTask.selectTaskCategory', 'Please select task category')
-              "
-                check-strictly
-                @node-click="handleNodeClick"
-            />
+          <el-form-item :label="td('dpp.integratioTask.taskCategory', 'Task Category')" prop="catCode"
+            :label-position="labelPosition">
+            <el-tree-select :default-expanded-keys="defaultExpandedCats" filterable v-model="form.catCode"
+              :data="deptOptions" :props="{ value: 'code', label: 'name', children: 'children' }" value-key="id"
+              :placeholder="td('dpp.integratioTask.selectTaskCategory', 'Please select task category')
+                " check-strictly @node-click="handleNodeClick" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.responsiblePerson', 'Responsible Person')"
-              prop="personCharge"
-              :label-position="labelPosition">
-            <el-tree-select
-                filterable
-                v-model="form.personCharge"
-                :data="userList"
-                :props="{
-                value: 'userId',
-                label: 'nickName',
-                children: 'children',
-              }"
-                value-key="ID"
-                :placeholder="
-                td('dpp.integratioTask.selectResponsiblePersonInfo', '任务维护责任人，用于异常跟进和追溯')
-              "
-                check-strictly
-                @change="handleContactChange"
-            />
+          <el-form-item :label="td('dpp.integratioTask.responsiblePerson', 'Responsible Person')" prop="personCharge"
+            :label-position="labelPosition">
+            <el-tree-select filterable v-model="form.personCharge" :data="userList" :props="{
+              value: 'userId',
+              label: 'nickName',
+              children: 'children',
+            }" value-key="ID" :placeholder="td('dpp.integratioTask.selectResponsiblePersonInfo', '任务维护责任人，用于异常跟进和追溯')
+              " check-strictly @change="handleContactChange" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.contactNumber', 'Contact Phone')"
-              prop="contactNumber"
-              :label-position="labelPosition">
-            <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                v-model="form.contactNumber"
-                :placeholder="
-                td('dpp.integratioTask.inputContactNumberInfo', '责任人联系电话，随责任人自动带出')
-              "
-                disabled
-            >
+          <el-form-item :label="td('dpp.integratioTask.contactNumber', 'Contact Phone')" prop="contactNumber"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail')" v-model="form.contactNumber" :placeholder="td('dpp.integratioTask.inputContactNumberInfo', '责任人联系电话，随责任人自动带出')
+              " disabled>
             </el-input>
             <div class="form-readonly" v-else>{{ form.contactNumber }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.taskStatus', 'Task Status')"
-              prop="releaseState"
-              :label-position="labelPosition">
-            <el-radio-group
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                v-model="form.releaseState"
-                class="el-form-input-width"
-            >
-              <el-radio
-                  v-for="dict in dpp_etl_task_status"
-                  :key="dict.value"
-                  :label="dict.value"
-                  :disabled="dict.value == 1"
-              >
+          <el-form-item :label="td('dpp.integratioTask.taskStatus', 'Task Status')" prop="releaseState"
+            :label-position="labelPosition">
+            <el-radio-group v-if="title != td('dpp.integratioTask.taskDetail')" v-model="form.releaseState"
+              class="el-form-input-width">
+              <el-radio v-for="dict in dpp_etl_task_status" :key="dict.value" :label="dict.value"
+                :disabled="dict.value == 1">
                 {{ dict.label }}
               </el-radio>
             </el-radio-group>
             <div class="form-readonly" v-else>
               {{
                 dpp_etl_task_status.find(
-                    (item) => item.value == form.releaseState
+                  (item) => item.value == form.releaseState
                 )?.label || "-"
               }}
             </div>
@@ -146,16 +86,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item
-              :label="td('common.texts.description')"
-              prop="description"
-              :label-position="labelPosition">
-            <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                v-model="form.description"
-                type="textarea"
-                :placeholder="td('common.form.descriptionPlaceholder')"
-            />
+          <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail')" v-model="form.description" show-word-limit
+              maxlength="256字符" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
             <div class="form-readonly" v-else>
               {{ form.description || "-" }}
             </div>
@@ -172,29 +105,14 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item
-              :label="td('dpp.integratioTask.executionEngine', '执行引擎')"
-              prop="taskType"
-              :label-position="labelPosition">
-            <el-radio-group
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                :model-value="form.taskType"
-                class="engine-card-group"
-                :disabled="props.data.id"
-                @change="handleExecutionEngineChange"
-            >
-              <el-radio
-                  v-for="(item, index) in actuator_type"
-                  :key="index"
-                  :value="item.value"
-                  class="option-card engine-card"
-                  :disabled="item.value === 'FLINK'"
-              >
-                <img
-                    class="option-card__icon engine-card__icon"
-                    :src="getEngineMeta(item.value).icon"
-                    :alt="item.label"
-                />
+          <el-form-item :label="td('dpp.integratioTask.executionEngine', '执行引擎')" prop="taskType"
+            :label-position="labelPosition">
+            <el-radio-group v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" :model-value="form.taskType"
+              class="engine-card-group" :disabled="props.data.id" @change="handleExecutionEngineChange">
+              <el-radio v-for="(item, index) in actuator_type" :key="index" :value="item.value"
+                class="option-card engine-card" :disabled="item.value === 'FLINK'">
+                <img class="option-card__icon engine-card__icon" :src="getEngineMeta(item.value).icon"
+                  :alt="item.label" />
 
                 <span class="option-card__content">
                   <span class="option-card__heading">
@@ -216,17 +134,10 @@
       <el-row :gutter="20" class="engine-config-grid">
         <template v-if="form.taskType == 'DATAX'">
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXJvmXms', 'JVM初始内存')"
-                prop="dataXJvmXms"
-                :label-position="labelPosition"
-            >
-              <el-input
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="dataXJvmXmsInput"
-                  inputmode="numeric"
-                  :placeholder="td('dpp.integratioTask.inputDataXJvmXms', '请输入JVM初始内存')"
-              >
+            <el-form-item :label="td('dpp.integratioTask.dataXJvmXms', 'JVM初始内存')" prop="dataXJvmXms"
+              :label-position="labelPosition">
+              <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" v-model="dataXJvmXmsInput"
+                inputmode="numeric" :placeholder="td('dpp.integratioTask.inputDataXJvmXms', '请输入JVM初始内存')">
                 <template #append>MB</template>
               </el-input>
               <div class="form-readonly" v-else>
@@ -238,17 +149,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXJvmXmx', 'JVM最大内存')"
-                prop="dataXJvmXmx"
-                :label-position="labelPosition"
-            >
-              <el-input
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="dataXJvmXmxInput"
-                  inputmode="numeric"
-                  :placeholder="td('dpp.integratioTask.inputDataXJvmXmx', '请输入JVM最大内存')"
-              >
+            <el-form-item :label="td('dpp.integratioTask.dataXJvmXmx', 'JVM最大内存')" prop="dataXJvmXmx"
+              :label-position="labelPosition">
+              <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" v-model="dataXJvmXmxInput"
+                inputmode="numeric" :placeholder="td('dpp.integratioTask.inputDataXJvmXmx', '请输入JVM最大内存')">
                 <template #append>MB</template>
               </el-input>
               <div class="form-readonly" v-else>
@@ -260,19 +164,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXChannel', 'Channel并发数')"
-                prop="dataXChannel"
-                :label-position="labelPosition"
-            >
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="form.dataXChannel"
-                  controls-position="right"
-                  :min="1"
-                  :max="128"
-                  style="width: 100%"
-              />
+            <el-form-item :label="td('dpp.integratioTask.dataXChannel', 'Channel并发数')" prop="dataXChannel"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" v-model="form.dataXChannel"
+                controls-position="right" :min="1" :max="128" style="width: 100%" />
               <div class="form-readonly" v-else>
                 {{ form.dataXChannel ?? "-" }}
               </div>
@@ -282,18 +177,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXByteSpeed', '字节限速')"
-                prop="dataXByteSpeed"
-                :label-position="labelPosition"
-            >
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="form.dataXByteSpeed"
-                  controls-position="right"
-                  :min="0"
-                  style="width: 100%"
-              />
+            <el-form-item :label="td('dpp.integratioTask.dataXByteSpeed', '字节限速')" prop="dataXByteSpeed"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" v-model="form.dataXByteSpeed"
+                controls-position="right" :min="0" style="width: 100%" />
               <div class="form-readonly" v-else>
                 {{ form.dataXByteSpeed ?? "-" }}
               </div>
@@ -303,18 +190,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXRecordSpeed', '记录限速')"
-                prop="dataXRecordSpeed"
-                :label-position="labelPosition"
-            >
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="form.dataXRecordSpeed"
-                  controls-position="right"
-                  :min="0"
-                  style="width: 100%"
-              />
+            <el-form-item :label="td('dpp.integratioTask.dataXRecordSpeed', '记录限速')" prop="dataXRecordSpeed"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-model="form.dataXRecordSpeed" controls-position="right" :min="0" style="width: 100%" />
               <div class="form-readonly" v-else>
                 {{ form.dataXRecordSpeed ?? "-" }}
               </div>
@@ -324,18 +203,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.dataXErrorLimit', '脏数据上限')"
-                prop="dataXErrorLimit"
-                :label-position="labelPosition"
-            >
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                  v-model="form.dataXErrorLimit"
-                  controls-position="right"
-                  :min="0"
-                  style="width: 100%"
-              />
+            <el-form-item :label="td('dpp.integratioTask.dataXErrorLimit', '脏数据上限')" prop="dataXErrorLimit"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
+                v-model="form.dataXErrorLimit" controls-position="right" :min="0" style="width: 100%" />
               <div class="form-readonly" v-else>
                 {{ form.dataXErrorLimit ?? "-" }}
               </div>
@@ -347,23 +218,13 @@
         </template>
         <template v-if="form.taskType == 'SPARK'">
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.driverCores', 'Driver Cores')"
-                prop="driverCores"
-                :label-position="labelPosition">
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputDriverCores',
-                    'Please enter driver cores'
-                  )
-                "
-                  v-model="form.driverCores"
-                  controls-position="right"
-                  :min="0"
-                  style="width: 100%"
-              />
+            <el-form-item :label="td('dpp.integratioTask.driverCores', 'Driver Cores')" prop="driverCores"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" :placeholder="td(
+                'dpp.integratioTask.inputDriverCores',
+                'Please enter driver cores'
+              )
+                " v-model="form.driverCores" controls-position="right" :min="0" style="width: 100%" />
               <div class="form-readonly" v-else>
                 {{ form.driverCores || "-" }}
               </div>
@@ -373,21 +234,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.driverMemory', 'Driver Memory')"
-                prop="driverMemory"
-                :label-position="labelPosition">
-              <el-input
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  v-model="form.driverMemory"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputDriverMemory',
-                    'Please enter driver memory'
-                  )
-                "
-                  style="width: 100%"
-              >
+            <el-form-item :label="td('dpp.integratioTask.driverMemory', 'Driver Memory')" prop="driverMemory"
+              :label-position="labelPosition">
+              <el-input v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" v-model="form.driverMemory"
+                :placeholder="td(
+                  'dpp.integratioTask.inputDriverMemory',
+                  'Please enter driver memory'
+                )
+                  " style="width: 100%">
               </el-input>
               <div class="form-readonly" v-else>
                 {{ form.driverMemory || "-" }}
@@ -398,23 +252,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.executorCount', 'Executor Count')"
-                prop="numExecutors"
-                :label-position="labelPosition">
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputExecutorCount',
-                    'Please enter executor count'
-                  )
-                "
-                  v-model="form.numExecutors"
-                  controls-position="right"
-                  style="width: 100%"
-                  :min="0"
-              />
+            <el-form-item :label="td('dpp.integratioTask.executorCount', 'Executor Count')" prop="numExecutors"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" :placeholder="td(
+                'dpp.integratioTask.inputExecutorCount',
+                'Please enter executor count'
+              )
+                " v-model="form.numExecutors" controls-position="right" style="width: 100%" :min="0" />
               <div class="form-readonly" v-else>
                 {{ form.numExecutors || "-" }}
               </div>
@@ -424,21 +268,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.executorMemory', 'Executor Memory')"
-                prop="executorMemory"
-                :label-position="labelPosition">
-              <el-input
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  v-model="form.executorMemory"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputExecutorMemory',
-                    'Please enter executor memory'
-                  )
-                "
-                  style="width: 100%"
-              >
+            <el-form-item :label="td('dpp.integratioTask.executorMemory', 'Executor Memory')" prop="executorMemory"
+              :label-position="labelPosition">
+              <el-input v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
+                v-model="form.executorMemory" :placeholder="td(
+                  'dpp.integratioTask.inputExecutorMemory',
+                  'Please enter executor memory'
+                )
+                  " style="width: 100%">
               </el-input>
               <div class="form-readonly" v-else>
                 {{ form.executorMemory || "-" }}
@@ -449,23 +286,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.executorCores', 'Executor Cores')"
-                prop="executorCores"
-                :label-position="labelPosition">
-              <el-input-number
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputExecutorCores',
-                    'Please enter executor cores'
-                  )
-                "
-                  v-model="form.executorCores"
-                  controls-position="right"
-                  style="width: 100%"
-                  :min="0"
-              />
+            <el-form-item :label="td('dpp.integratioTask.executorCores', 'Executor Cores')" prop="executorCores"
+              :label-position="labelPosition">
+              <el-input-number v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" :placeholder="td(
+                'dpp.integratioTask.inputExecutorCores',
+                'Please enter executor cores'
+              )
+                " v-model="form.executorCores" controls-position="right" style="width: 100%" :min="0" />
               <div class="form-readonly" v-else>
                 {{ form.executorCores || "-" }}
               </div>
@@ -475,20 +302,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-                :label="td('dpp.integratioTask.yarnQueue', 'Yarn Queue')"
-                prop="yarnQueue"
-                :label-position="labelPosition">
-              <el-input
-                  v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')"
-                  v-model="form.yarnQueue"
-                  :placeholder="
-                  td(
-                    'dpp.integratioTask.inputYarnQueue',
-                    'Please enter Yarn queue (optional)'
-                  )
-                "
-              >
+            <el-form-item :label="td('dpp.integratioTask.yarnQueue', 'Yarn Queue')" prop="yarnQueue"
+              :label-position="labelPosition">
+              <el-input v-if="title != td('dpp.integratioTask.taskDetail', 'Task Details')" v-model="form.yarnQueue"
+                :placeholder="td(
+                  'dpp.integratioTask.inputYarnQueue',
+                  'Please enter Yarn queue (optional)'
+                )
+                  ">
               </el-input>
               <div class="form-readonly" v-else>
                 {{ form.yarnQueue || "-" }}
@@ -510,28 +331,13 @@
 
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item
-              :label="td('dpp.integratioTask.schedulerSystem', '调度系统')"
-              prop="scheduler"
-              :label-position="labelPosition"
-          >
-            <el-radio-group
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                class="scheduler-card-group"
-                :model-value="form.scheduler"
-                @change="handleSchedulerChange"
-            >
-              <el-radio
-                  v-for="(item, index) in scheduler_type"
-                  :key="index"
-                  :value="item.value"
-                  class="option-card"
-              >
-                <img
-                    class="option-card__icon scheduler-card__icon"
-                    :src="getSchedulerMeta(item.value).icon"
-                    :alt="item.label"
-                />
+          <el-form-item :label="td('dpp.integratioTask.schedulerSystem', '调度系统')" prop="scheduler"
+            :label-position="labelPosition">
+            <el-radio-group v-if="title != td('dpp.integratioTask.taskDetail')" class="scheduler-card-group"
+              :model-value="form.scheduler" @change="handleSchedulerChange">
+              <el-radio v-for="(item, index) in scheduler_type" :key="index" :value="item.value" class="option-card">
+                <img class="option-card__icon scheduler-card__icon" :src="getSchedulerMeta(item.value).icon"
+                  :alt="item.label" />
                 <span class="option-card__content">
                   <span class="option-card__heading">
                     <span class="option-card__name">{{ item.label }}</span>
@@ -551,50 +357,29 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.scheduleCycle', '调度周期')"
-              prop="crontab"
-              :label-position="labelPosition">
-            <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                v-model="form.crontab"
-                :placeholder="
-                td('dpp.integratioTask.selectScheduleCycle', '请选择调度周期')
-              "
-            >
+          <el-form-item :label="td('dpp.integratioTask.scheduleCycle', '调度周期')" prop="crontab"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail')" v-model="form.crontab" :placeholder="td('dpp.integratioTask.selectScheduleCycle', '请选择调度周期')
+              ">
               <template #append>
-                <el-button
-                    type="primary"
-                    @click="handleShowCron"
-                    style="background-color: #2666fb; color: #fff"
-                >
+                <el-button type="primary" @click="handleShowCron" style="background-color: #2666fb; color: #fff">
                   {{ td("dpp.integratioTask.configure", "配置") }}
                   <i class="el-icon-time el-icon--right"></i>
                 </el-button>
               </template>
             </el-input>
             <div class="form-readonly" v-else>{{ form.crontab }}</div>
-            <p
-                v-if="showCrontabDescription"
-                class="form-item-description"
-            >
+            <p v-if="showCrontabDescription" class="form-item-description">
               {{ td("dpp.integratioTask.scheduleCycleDescription", "定义任务自动触发的时间和频率") }}
             </p>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.workerGroup', 'Worker分组')"
-              prop="workerGroup"
-              :label-position="labelPosition">
-            <el-input
-                v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-                v-model="form.workerGroup"
-                :placeholder="
-                td('dpp.integratioTask.inputWorkerGroup', '请输入Worker分组')
-              "
-                disabled
-            />
+          <el-form-item :label="td('dpp.integratioTask.workerGroup', 'Worker分组')" prop="workerGroup"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" v-model="form.workerGroup"
+              :placeholder="td('dpp.integratioTask.inputWorkerGroup', '请输入Worker分组')
+                " disabled />
             <div class="form-readonly" v-else>
               {{ form.workerGroup ?? "-" }}
             </div>
@@ -613,24 +398,13 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.integratioTask.taskPriority', '任务优先级')"
-            prop="taskPriority"
-           :label-position="labelPosition">
-            <el-select
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-              clearable
-              v-model="form.taskPriority"
-              :placeholder="
-                td('dpp.integratioTask.selectTaskPriority', '请选择任务优先级')
-              "
-            >
-              <el-option
-                v-for="(item, index) in dpp_etl_task_priority"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-              />
+          <el-form-item :label="td('dpp.integratioTask.taskPriority', '任务优先级')" prop="taskPriority"
+            :label-position="labelPosition">
+            <el-select v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" clearable v-model="form.taskPriority"
+              :placeholder="td('dpp.integratioTask.selectTaskPriority', '请选择任务优先级')
+                ">
+              <el-option v-for="(item, index) in dpp_etl_task_priority" :key="index" :label="item.label"
+                :value="item.value" />
             </el-select>
             <div class="form-readonly" v-else>
               {{
@@ -645,21 +419,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.integratioTask.failRetryTimes', '失败重试次数')"
-            prop="failRetryTimes"
-           :label-position="labelPosition">
-            <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-              type="number"
-              v-model="form.failRetryTimes"
-              :placeholder="
-                td(
-                  'dpp.integratioTask.inputFailRetryTimes',
-                  '请输入失败重试次数'
-                )
-              "
-            >
+          <el-form-item :label="td('dpp.integratioTask.failRetryTimes', '失败重试次数')" prop="failRetryTimes"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" type="number"
+              v-model="form.failRetryTimes" :placeholder="td(
+                'dpp.integratioTask.inputFailRetryTimes',
+                '请输入失败重试次数'
+              )
+                ">
               <template #append>{{
                 td("dpp.integratioTask.times", "次")
               }}</template>
@@ -673,21 +440,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.integratioTask.failRetryInterval', '失败重试间隔')"
-            prop="failRetryInterval"
-           :label-position="labelPosition">
-            <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-              type="number"
-              v-model="form.failRetryInterval"
-              :placeholder="
-                td(
-                  'dpp.integratioTask.inputFailRetryInterval',
-                  '请输入失败重试间隔'
-                )
-              "
-            >
+          <el-form-item :label="td('dpp.integratioTask.failRetryInterval', '失败重试间隔')" prop="failRetryInterval"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" type="number"
+              v-model="form.failRetryInterval" :placeholder="td(
+                'dpp.integratioTask.inputFailRetryInterval',
+                '请输入失败重试间隔'
+              )
+                ">
               <template #append>{{
                 td("dpp.integratioTask.minutes", "分")
               }}</template>
@@ -701,18 +461,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-            :label="td('dpp.integratioTask.delayExecutionTime', '延迟执行时间')"
-            prop="delayTime"
-           :label-position="labelPosition">
-            <el-input
-              v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')"
-              type="number"
-              v-model="form.delayTime"
-              :placeholder="
-                td('dpp.integratioTask.inputDelayTime', '请输入延迟执行时间')
-              "
-            >
+          <el-form-item :label="td('dpp.integratioTask.delayExecutionTime', '延迟执行时间')" prop="delayTime"
+            :label-position="labelPosition">
+            <el-input v-if="title != td('dpp.integratioTask.taskDetail', '任务详情')" type="number" v-model="form.delayTime"
+              :placeholder="td('dpp.integratioTask.inputDelayTime', '请输入延迟执行时间')
+                ">
               <template #append>分</template>
             </el-input>
             <div class="form-readonly" v-else>{{ form.delayTime || "-" }}</div>
@@ -722,33 +475,21 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-              :label="td('dpp.integratioTask.executionStrategy', '执行策略')"
-              prop="executionType"
-              :label-position="labelPosition">
-            <el-select
-                v-if="title != td('dpp.integratioTask.taskDetail')"
-                class="el-form-input-width"
-                v-model="form.executionType"
-                :placeholder="
-                td(
-                  'dpp.integratioTask.selectExecutionStrategy',
-                  '请选择执行策略'
-                )
-              "
-                style="width: 100%"
-            >
-              <el-option
-                  v-for="dict in dpp_etl_task_execution_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-              ></el-option>
+          <el-form-item :label="td('dpp.integratioTask.executionStrategy', '执行策略')" prop="executionType"
+            :label-position="labelPosition">
+            <el-select v-if="title != td('dpp.integratioTask.taskDetail')" class="el-form-input-width"
+              v-model="form.executionType" :placeholder="td(
+                'dpp.integratioTask.selectExecutionStrategy',
+                '请选择执行策略'
+              )
+                " style="width: 100%">
+              <el-option v-for="dict in dpp_etl_task_execution_type" :key="dict.value" :label="dict.label"
+                :value="dict.value"></el-option>
             </el-select>
             <div class="form-readonly" v-else>
               {{
                 dpp_etl_task_execution_type.find(
-                    (item) => item.value == form.executionType
+                  (item) => item.value == form.executionType
                 )?.label || "-"
               }}
             </div>
@@ -759,13 +500,7 @@
         </el-col>
       </el-row>
 
-      <!-- <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="t('common.texts.remark')" prop="remark" :label-position="labelPosition">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
-          </el-form-item>
-        </el-col>
-      </el-row> -->
+
     </el-form>
     <template #footer>
       <div style="text-align: right">
@@ -773,12 +508,8 @@
           <el-button @click="closeDialog">{{
             td("common.button.close", "Close")
           }}</el-button>
-          <el-button
-            type="primary"
-            v-if="!route.query.info"
-            @click="saveClose"
-            >{{ td("common.button.save", "Save") }}</el-button
-          >
+          <el-button type="primary" v-if="!route.query.info" @click="saveClose">{{ td("common.button.save", "Save")
+          }}</el-button>
         </template>
         <template v-else>
           <el-button @click="saveClose">{{
@@ -792,20 +523,10 @@
     </template>
   </el-dialog>
 
-  <el-dialog
-    :title="td('dpp.integratioTask.cronGenerator', 'Cron Expression Generator')"
-    v-model="openCron"
-    class="dialog"
-    :append-to="$refs['app-container']"
-    destroy-on-close
-  >
+  <el-dialog :title="td('dpp.integratioTask.cronGenerator', 'Cron Expression Generator')" v-model="openCron"
+    class="dialog" :append-to="$refs['app-container']" destroy-on-close>
     <!--    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="expression" :Crontab="false">-->
-    <crontab
-      ref="crontabRef"
-      @hide="openCron = false"
-      @fill="crontabFill"
-      :expression="expression"
-    >
+    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="expression">
     </crontab>
   </el-dialog>
 </template>
@@ -1329,7 +1050,7 @@ const defaultExpandedCats = computed(() => {
   margin: 0;
 }
 
-:deep(.el-form-item__content .form-item-description){
+:deep(.el-form-item__content .form-item-description) {
   margin-bottom: 0;
 }
 
@@ -1344,7 +1065,8 @@ const defaultExpandedCats = computed(() => {
     }
   }
 }
-:deep(.el-divider--horizontal){
+
+:deep(.el-divider--horizontal) {
   margin: 8px 0 12px;
 }
 
@@ -1353,7 +1075,7 @@ const defaultExpandedCats = computed(() => {
   align-items: center;
 }
 
-.h2-title > .form-item-description {
+.h2-title>.form-item-description {
   align-self: center;
 }
 
@@ -1483,13 +1205,14 @@ const defaultExpandedCats = computed(() => {
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
   font-size: 12px;
-  color: rgba(0,0,0,0.65);
+  color: rgba(0, 0, 0, 0.65);
   line-height: 18px;
   text-align: left;
   font-style: normal;
 }
 
 :deep(.option-card.el-radio.is-disabled) {
+
   .option-card__icon,
   .option-card__content {
     opacity: 0.55;
@@ -1503,5 +1226,4 @@ const defaultExpandedCats = computed(() => {
     margin-bottom: 12px;
   }
 }
-
 </style>

@@ -127,6 +127,7 @@ const tableStroe = reactive({
     {
       label: td("common.texts.number"),
       prop: "id",
+      sortable: true,
       width: 60,
     },
     {

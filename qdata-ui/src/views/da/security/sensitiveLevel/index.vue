@@ -18,131 +18,69 @@
 
 <template>
     <div class="app-container" ref="app-container">
-
         <GuideTip tip-id="da/daSensitiveLevel/daSensitiveLevel.list" />
 
-        <div class="pagecont-top" v-show="showSearch">
-            <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-                v-show="showSearch" @submit.prevent>
-                <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel" :label-position="labelPosition">
-                    <el-input class="el-form-input-width" v-model="queryParams.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')"
-                        clearable @keyup.enter="handleQuery" />
-                </el-form-item>
-                <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule" :label-position="labelPosition">
-                    <el-select class="el-form-input-width" v-model="queryParams.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')"
-                        clearable>
-                        <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
-                            :value="dict.value" />
-                    </el-select>
-                </el-form-item>
+        <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+            <!-- 搜索栏插槽 -->
+            <template #search>
+                <qt-search-bar
+                    v-bind="searchStore"
+                    :params="tableStore.params"
+                    @query="handleQuery"
+                    @reset="resetQuery"
+                    :tableRef="tableRef"
+                />
+            </template>
 
-                <el-form-item>
-                    <el-button plain type="primary" @click="handleQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
-                    </el-button>
-                    <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-                        <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </div>
-
-        <div class="pagecont-bottom">
-            <div class="justify-between mb15">
+            <!-- 数据操作按钮插槽 -->
+            <template #actions-data>
                 <el-row :gutter="15" class="btn-style">
                     <el-col :span="1.5">
-                        <el-button type="primary" plain @click="handleAdd" v-hasPermi="['da:sensitiveLevel:add']"
-                            @mousedown="(e) => e.preventDefault()">
+                        <el-button
+                            type="primary"
+                            plain
+                            @click="handleAdd"
+                            v-hasPermi="['da:sensitiveLevel:add']"
+                        >
                             <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
                         </el-button>
                     </el-col>
                 </el-row>
-                <div class="justify-end top-right-btn">
-                    <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"
-                        :columns="columns"></right-toolbar>
-                </div>
-            </div>
-            <el-table stripe v-loading="loading" :data="daSensitiveLevelList" @selection-change="handleSelectionChange"
-                :default-sort="defaultSort" @sort-change="handleSortChange">
-                <!--       <el-table-column type="selection" width="55" align="center" />-->
-                <el-table-column v-if="getColumnVisibility(1)" :label="td('da.security.columnVisibility.id')" align="center" prop="id" width="80">
-                    <template #default="scope">
-                        {{ scope.row.id || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(2)" :label="td('da.security.columnVisibility.sensitiveLevelName')" align="center" prop="sensitiveLevel"  width="170">
-                    <template #default="scope">
-                        {{ scope.row.sensitiveLevel || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(3)" width="350" :label="td('da.security.columnVisibility.description')" align="left" prop="description">
-                    <template #default="scope">
-                        {{ scope.row.description || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(4)" :label="td('da.security.columnVisibility.replaceRule')" align="center" prop="sensitiveRule" width="140">
-                    <template #default="scope">
-                        <dict-tag :options="da_sensitive_level_rule" :value="scope.row.sensitiveRule" />
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(5)" :label="td('da.security.columnVisibility.replaceContent')" align="center" prop="maskCharacter" width="140">
-                    <template #default="scope">
-                        {{ scope.row.maskCharacter || '-' }}
-                    </template>
-                </el-table-column>
+            </template>
 
-                <el-table-column v-if="getColumnVisibility(6)" :label="td('da.security.columnVisibility.createdBy')" width="120" align="center" prop="createBy"
-                    :show-overflow-tooltip="{ effect: 'light' }">
-                    <template #default="scope">
-                        {{ scope.row.createBy || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(7)" :label="td('da.security.columnVisibility.createdTime')" align="center" prop="createTime" width="160"
-                    sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']">
-                    <template #default="scope">
-                        <span>{{
-                            parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}')
-                            }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(8)" :label="td('da.security.columnVisibility.onlineStatus')" align="center" prop="onlineFlag"
-                    width="160">
-                    <template #default="scope">
-                        <el-switch v-model="scope.row.onlineFlag" active-color="#13ce66" inactive-color="#ff4949"
-                            active-value="1" inactive-value="0" @change="handleStatusChange(scope.row)" />
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(9)" :label="td('da.security.columnVisibility.remark')" align="left" prop="remark"
-                    :show-overflow-tooltip="{ effect: 'light' }">
-                    <template #default="scope">
-                        {{ scope.row.remark || '-' }}
-                    </template>
-                </el-table-column>
-                <el-table-column v-if="getColumnVisibility(10)" :label="td('common.texts.operation')" align="center"
-                    class-name="small-padding fixed-width" fixed="right" width="240">
-                    <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:edit']">{{ td('common.button.update') }}</el-button>
-                        <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                            v-hasPermi="['da:sensitiveLevel:remove']">{{ td('common.button.delete') }}</el-button>
-                        <!--           <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"-->
-                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Detail</el-button>-->
-                        <!--           <el-button link type="primary" icon="view" @click="routeTo('/da/sensitiveLevel/daSensitiveLevelDetail',scope.row)"-->
-                        <!--                      v-hasPermi="['da:sensitiveLevel:edit']">Detailed Info</el-button>-->
-                    </template>
-                </el-table-column>
-
-                <template #empty>
-                    <div class="emptyBg">
-                        <img src="../../../../assets/images/system/no_data/empty-nodata.png" alt="" />
-                        <p>{{td('common.noData')}}</p>
-                    </div>
+            <!-- 表格组件 -->
+            <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+                <!-- 状态切换插槽 -->
+                <template #status="{ row }">
+                    <el-switch
+                        v-model="row.onlineFlag"
+                        active-value="1"
+                        inactive-value="0"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        @change="handleStatusChange(row)"
+                    />
                 </template>
-            </el-table>
 
-            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-                v-model:limit="queryParams.pageSize" @pagination="getList" />
-        </div>
+                <!-- 操作列插槽 -->
+                <template #action="{ row }">
+                    <el-button
+                        link
+                        type="primary"
+                        icon="Edit"
+                        @click="handleUpdate(row)"
+                        v-hasPermi="['da:sensitiveLevel:edit']"
+                    >{{ td('common.button.update') }}</el-button>
+                    <el-button
+                        link
+                        type="danger"
+                        icon="Delete"
+                        @click="handleDelete(row)"
+                        v-hasPermi="['da:sensitiveLevel:remove']"
+                    >{{ td('common.button.delete') }}</el-button>
+                </template>
+            </qt-table>
+        </qt-wrap>
 
         <!-- Add or edit sensitive level dialog -->
         <el-dialog :title="title" v-model="open" width="800px" :append-to="$refs['app-container']" draggable>
@@ -153,12 +91,12 @@
             </template>
             <el-form ref="daSensitiveLevelRef" :model="form" :rules="rules" label-width="132px" @submit.prevent :label-position="labelPosition">
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.levelName')" prop="sensitiveLevel">
                             <el-input v-model="form.sensitiveLevel" :placeholder="td('da.security.levelNamePlaceholder')" />
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule" :label-position="labelPosition">
                             <el-select v-model="form.sensitiveRule" :placeholder="td('da.security.replaceRulePlaceholder')">
                                 <el-option v-for="dict in da_sensitive_level_rule" :key="dict.value" :label="dict.label"
@@ -168,12 +106,12 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20" v-if="form.sensitiveRule != '1' && form.sensitiveRule != null">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
                             <el-input v-model="form.startCharLoc" :placeholder="td('da.security.startCharPosPlaceholder')" @input="form.startCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
                             <el-input v-model="form.endCharLoc" :placeholder="td('da.security.endCharPosPlaceholder')" @input="form.endCharLoc = $event.replace(/\D/g, '')" />
                         </el-form-item>
@@ -186,15 +124,9 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('da.security.description')" prop="description" :label-position="labelPosition">
-                            <el-input v-model="form.description" type="textarea" :placeholder="td('da.security.descriptionPlaceholder')" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
                         <el-form-item :label="td('da.security.onlineStatus')" prop="onlineFlag" :label-position="labelPosition">
                             <el-radio-group v-model="form.onlineFlag">
                                 <el-radio v-for="dict in da_sensitive_status" :key="dict.value" :value="dict.value">{{
@@ -205,8 +137,8 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-                            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
+                        <el-form-item :label="td('da.security.description')" prop="description" :label-position="labelPosition">
+                            <el-input v-model="form.description" type="textarea" :placeholder="td('da.security.descriptionPlaceholder')"  maxlength="256字符" show-word-limit />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -231,28 +163,28 @@
             </template>
             <el-form ref="daSensitiveLevelRef" :model="form" label-width="80px" :label-position="labelPosition">
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.sensitiveLevelName')" prop="sensitiveLevel" :label-position="labelPosition">
                             <div>
                                 {{ form.sensitiveLevel }}
                             </div>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.replaceRule')" prop="sensitiveRule">
                             <dict-tag :options="da_sensitive_level_rule" :value="form.sensitiveRule" />
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.startCharPos')" prop="startCharLoc" :label-position="labelPosition">
                             <div>
                                 {{ form.startCharLoc }}
                             </div>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.endCharPos')" prop="endCharLoc" :label-position="labelPosition">
                             <div>
                                 {{ form.endCharLoc }}
@@ -261,14 +193,14 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.replaceContent')" prop="maskCharacter" :label-position="labelPosition">
                             <div>
                                 {{ form.maskCharacter }}
                             </div>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.onlineFlag')" prop="onlineFlag" :label-position="labelPosition">
                             <div>
                                 {{ form.onlineFlag }}
@@ -277,17 +209,10 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <el-form-item :label="td('da.security.description')" prop="description" :label-position="labelPosition">
                             <div>
                                 {{ form.description }}
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-                            <div>
-                                {{ form.remark }}
                             </div>
                         </el-form-item>
                     </el-col>
@@ -339,7 +264,6 @@ import {
     updateStatus
 } from '@/api/da/security/sensitiveLevel/sensitiveLevel';
 import { getToken } from '@/utils/auth.js';
-import { updateDaAsset } from '@/api/da/asset/asset.js';
 import useDefaultLang from "@/composables/useDefaultLang";
 
 const { td } = useDefaultLang();
@@ -349,41 +273,52 @@ const { da_sensitive_level_rule, da_sensitive_status } = proxy.useDict(
     'da_sensitive_level_rule',
     'da_sensitive_status'
 );
-const daSensitiveLevelList = ref([]);
 
-// Column visibility information
-const columns = ref([
-    { key: 1, label: td('da.security.columnVisibility.id'), visible: true },
-    { key: 2, label: td('da.security.columnVisibility.sensitiveLevelName'), visible: true },
-    { key: 3, label: td('da.security.columnVisibility.description'), visible: true },
-    { key: 4, label: td('da.security.columnVisibility.replaceRule'), visible: true },
-    { key: 5, label: td('da.security.columnVisibility.replaceContent'), visible: true },
-    { key: 6, label: td('da.security.columnVisibility.createdBy'), visible: true },
-    { key: 7, label: td('da.security.columnVisibility.createdTime'), visible: true },
-    { key: 8, label: td('da.security.columnVisibility.onlineStatus'), visible: true },
-    { key: 9, label: td('da.security.columnVisibility.remark'), visible: true },
-    { key: 10, label: td('common.texts.operation'), visible: true }
-]);
-
-const getColumnVisibility = (key) => {
-    const column = columns.value.find((col) => col.key === key);
-    // If no corresponding column configuration found, default to showing it
-    if (!column) return true;
-    // If corresponding column configuration found, control visibility based on the visible property
-    return column.visible;
-};
-
+const tableRef = ref(null);
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref('');
-const defaultSort = ref({ columnKey: 'reate_time', order: 'desc' });
-const router = useRouter();
+
+const tableStore = reactive({
+    config: {
+        initResquest: true,
+    },
+    columns: [
+        { label: td('da.security.columnVisibility.id'), prop: "id", width: 80, align: "center", sortable: true },
+        { label: td('da.security.columnVisibility.sensitiveLevelName'), prop: "sensitiveLevel", width: 170, align: "center" },
+        { label: td('da.security.columnVisibility.description'), prop: "description", width: 350, align: "left", showOverflowTooltip: { effect: "light" } },
+        { label: td('da.security.columnVisibility.replaceRule'), prop: "sensitiveRule", width: 140, align: "center", dict: 'da_sensitive_level_rule' },
+        { label: td('da.security.columnVisibility.replaceContent'), prop: "maskCharacter", width: 140, align: "center" },
+        { label: td('da.security.columnVisibility.createdBy'), prop: "createBy", width: 120, align: "center", showOverflowTooltip: { effect: 'light' } },
+        { label: td('da.security.columnVisibility.createdTime'), prop: "createTime", width: 160, align: "center", sortable: true, date: true },
+        { label: td('da.security.columnVisibility.onlineStatus'), prop: "onlineFlag", width: 160, align: "center", slot: "status" },
+        { label: td('common.texts.operation'), width: 240, align: "center", fixed: "right", slot: "action" }
+    ],
+    func: listDaSensitiveLevel,
+    params: {
+        sensitiveLevel: null,
+        sensitiveRule: null,
+    }
+});
+
+const searchStore = reactive({
+    items: [
+        {
+            label: td('da.security.levelName'),
+            prop: "sensitiveLevel",
+            component: { is: "input", placeholder: td('da.security.levelNamePlaceholder') }
+        },
+        {
+            label: td('da.security.replaceRule'),
+            prop: "sensitiveRule",
+            component: {
+                is: "select",
+                placeholder: td('da.security.replaceRulePlaceholder'),
+                options: da_sensitive_level_rule
+            }
+        }
+    ]
+});
 
 /*** User import parameters */
 const upload = reactive({
@@ -405,22 +340,11 @@ const data = reactive({
     form: {
         onlineFlag: 0
     },
-    queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        sensitiveLevel: null,
-        sensitiveRule: null,
-        startCharLoc: null,
-        endCharLoc: null,
-        maskCharacter: null,
-        onlineFlag: null,
-        description: null,
-        createTime: null
-    },
     rules: {
         sensitiveLevel: [{ required: true, message: td('da.security.levelNameRequired'), trigger: 'blur' }],
         maskCharacter: [{ required: true, message: td('da.security.replaceContentRequired'), trigger: 'blur' }],
         sensitiveRule: [{ required: true, message: td('da.security.replaceRuleRequired'), trigger: 'blur' }],
+        description: [{ max: 256, message: td('common.form.descriptionLimit', { count: 256 }), trigger: 'blur' }],
         startCharLoc: [
             { required: true, message: td('da.security.startCharPosRequired'), trigger: 'blur' },
             { pattern: /^\d+$/, message: td('da.security.startCharPosPattern'), trigger: 'blur' }
@@ -442,17 +366,7 @@ const data = reactive({
     }
 });
 
-const { queryParams, form, rules } = toRefs(data);
-
-/** Query sensitive level list */
-function getList() {
-    loading.value = true;
-    listDaSensitiveLevel(queryParams.value).then((response) => {
-        daSensitiveLevelList.value = response.data.rows;
-        total.value = response.data.total;
-        loading.value = false;
-    });
-}
+const { form, rules } = toRefs(data);
 
 // Cancel button
 function cancel() {
@@ -472,43 +386,21 @@ function reset() {
         maskCharacter: null,
         onlineFlag: '0',
         description: null,
-        validFlag: null,
-        delFlag: null,
         createBy: null,
-        creatorId: null,
-        createTime: null,
-        updateBy: null,
-        updaterId: null,
-        updateTime: null,
-        remark: null
+        createTime: null
     };
     proxy.resetForm('daSensitiveLevelRef');
 }
 
 /** Search button operation */
 function handleQuery() {
-    queryParams.value.pageNum = 1;
-    getList();
+    tableStore.params.pageNum = 1;
 }
 
 /** Reset button operation */
 function resetQuery() {
-    proxy.resetForm('queryRef');
-    handleQuery();
-}
-
-// Checkbox selection data
-function handleSelectionChange(selection) {
-    ids.value = selection.map((item) => item.id);
-    single.value = selection.length != 1;
-    multiple.value = !selection.length;
-}
-
-/** Sort trigger event */
-function handleSortChange({ column, prop, order }) {
-    queryParams.value.orderByColumn = column?.columnKey || prop;
-    queryParams.value.isAsc = column.order;
-    getList();
+    // tableStore.params will be reset by qt-search-bar internally, 
+    // but we can manually reset specific fields if needed
 }
 
 /** Add button operation */
@@ -521,22 +413,10 @@ function handleAdd() {
 /** Edit button operation */
 function handleUpdate(row) {
     reset();
-    const _id = row.id || ids.value;
-    getDaSensitiveLevel(_id).then((response) => {
+    getDaSensitiveLevel(row.id).then((response) => {
         form.value = response.data;
         open.value = true;
         title.value = td('da.security.editTitle');
-    });
-}
-
-/** Detail button operation */
-function handleDetail(row) {
-    reset();
-    const _id = row.id || ids.value;
-    getDaSensitiveLevel(_id).then((response) => {
-        form.value = response.data;
-        openDetail.value = true;
-        title.value = td('da.security.detailTitle');
     });
 }
 
@@ -551,7 +431,7 @@ function submitForm() {
                     .then((response) => {
                         proxy.$modal.msgSuccess(td('da.security.editSuccess'));
                         open.value = false;
-                        getList();
+                        tableRef.value.refresh();
                         submitLoading.value = false;
                     })
                     .catch((error) => {
@@ -562,7 +442,7 @@ function submitForm() {
                     .then((response) => {
                         proxy.$modal.msgSuccess(td('da.security.addSuccess'));
                         open.value = false;
-                        getList();
+                        tableRef.value.refresh();
                         submitLoading.value = false;
                     })
                     .catch((error) => {
@@ -577,28 +457,16 @@ function submitForm() {
 
 /** Delete button operation */
 function handleDelete(row) {
-    const _ids = row.id || ids.value;
     proxy.$modal
-        .confirm(td('da.security.confirmDelete', '', { id: _ids }))
+        .confirm(td('da.security.confirmDelete', '', { id: row.id }))
         .then(function () {
-            return delDaSensitiveLevel(_ids);
+            return delDaSensitiveLevel(row.id);
         })
         .then(() => {
-            getList();
+            tableRef.value.refresh();
             proxy.$modal.msgSuccess(td('da.security.deleteSuccess'));
         })
         .catch(() => { });
-}
-
-/** Export button operation */
-function handleExport() {
-    proxy.download(
-        'da/daSensitiveLevel/export',
-        {
-            ...queryParams.value
-        },
-        `daSensitiveLevel_${new Date().getTime()}.xlsx`
-    );
 }
 
 /** ---------------- Import related operations -----------------**/
@@ -639,28 +507,9 @@ const handleFileSuccess = (response, file, fileList) => {
         td('da.security.importResult'),
         { dangerouslyUseHTMLString: true }
     );
-    getList();
+    tableRef.value.refresh();
 };
 /** ---------------------------------**/
-
-function routeTo(link, row) {
-    if (link !== '' && link.indexOf('http') !== -1) {
-        window.location.href = link;
-        return;
-    }
-    if (link !== '') {
-        if (link === router.currentRoute.value.path) {
-            window.location.reload();
-        } else {
-            router.push({
-                path: link,
-                query: {
-                    id: row.id
-                }
-            });
-        }
-    }
-}
 
 /** Toggle enable status value */
 function handleStatusChange(row) {
@@ -671,16 +520,14 @@ function handleStatusChange(row) {
             updateStatus(row.id, row.onlineFlag)
                 .then((response) => {
                     proxy.$modal.msgSuccess(td('da.security.statusSuccess', '', { text: text }));
-                    getList();
+                    tableRef.value.refresh();
                 })
                 .catch((error) => {
-                    row.onlineFlag = !row.onlineFlag;
+                    row.onlineFlag = row.onlineFlag === '1' ? '0' : '1';
                 });
         })
         .catch(function () {
-            row.onlineFlag = !row.onlineFlag;
+            row.onlineFlag = row.onlineFlag === '1' ? '0' : '1';
         });
 }
-
-getList();
 </script>

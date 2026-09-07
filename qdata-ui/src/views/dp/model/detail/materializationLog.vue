@@ -151,11 +151,7 @@
             <el-input v-model="form.assetId" :placeholder="td('dp.materializedModel.assetId')" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-            <el-input v-model="form.remark" :placeholder="td('common.form.remarkPlaceholder')" />
-          </el-form-item>
-        </el-col>
+       
       </el-row>
     </el-form>
     <template #footer>
@@ -270,13 +266,7 @@
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-            <div>
-              {{ form.remark }}
-            </div>
-          </el-form-item>
-        </el-col>
+      
       </el-row>
     </el-form>
     <template #footer>

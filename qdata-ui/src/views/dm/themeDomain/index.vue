@@ -185,7 +185,7 @@
               <el-input
                 v-model="form.description"
                 type="textarea"
-                maxlength="256"
+                 maxlength="256字符"
                 :min-height="256"
                 show-word-limit
                 :placeholder="td('common.form.descriptionPlaceholder', 'Please enter description')"

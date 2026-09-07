@@ -411,21 +411,6 @@
             maxlength="256字符"
           />
         </el-form-item>
-
-        <el-form-item
-          :label="td('common.texts.remark')"
-          class="row-full"
-          prop="remark"
-         :label-position="labelPosition">
-          <el-input
-            v-model="dialog.form.remark"
-            type="textarea"
-            :placeholder="td('common.form.remarkPlaceholder')"
-            :min-height="192"
-            show-word-limit
-            maxlength="256字符"
-          />
-        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">

@@ -93,17 +93,7 @@
           </div>
         </el-col>
       </el-row>
-
-      <el-row :gutter="2">
-        <el-col :span="24">
-          <div class="infotop-row border-top">
-            <div class="infotop-row-lable">{{ td("common.texts.remark") }}</div>
-            <div class="infotop-row-value">
-              {{ getFormatValue(detail.remark) }}
-            </div>
-          </div>
-        </el-col>
-      </el-row>
+    
     </div>
 
     <div class="module-head">

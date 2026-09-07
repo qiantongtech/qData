@@ -104,20 +104,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('common.texts.remark')" :label-position="labelPosition">
-            <el-input
-              type="textarea"
-              maxlength="256字符"
-              show-word-limit
-              :placeholder="td('common.form.remarkPlaceholder')"
-              v-model="form.remark"
-              :min-height="192"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+   
     </el-form>
 
     <template #footer>

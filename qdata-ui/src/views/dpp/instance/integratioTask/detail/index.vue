@@ -18,112 +18,18 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-          <div class="task-item">
-            <!-- square number -->
-            <div class="task-id" style=" aspect-ratio: auto !important">
-              {{ dppEtlTaskDetail.id || '-' }}
-            </div>
-            <!-- Name -->
-            <div class="task-name">
-              {{ dppEtlTaskDetail.names || '' }}
-            </div>
-          </div>
-        </div>
-        <el-row :gutter="2">
-          <!-- <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ t('common.texts.number') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail?.id || '-' }}
-              </div>
-            </div>
-          </el-col> -->
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.taskInstanceName', 'Task Instance Name') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail?.name || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime', 'Created Time') }}</div>
-              <div class="infotop-row-value">
-                {{ parseTime(dppEtlTaskDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}
-
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionStatus', 'Execution Status') }}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="dpp_etl_node_instance" :value="dppEtlTaskDetail.status" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdBy', 'Created By') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail?.createBy || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.responsiblePerson', 'Responsible Person') }}</div>
-              <div class="infotop-row-value">
-                {{ dppEtlTaskDetail?.personChargeName || '-' }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.executionType', 'Execution Type') }}</div>
-              <div class="infotop-row-value">
-
-                <dict-tag :options="dpp_etl_task_instance_command_type" :value="dppEtlTaskDetail.commandType" />
-
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.startTime', 'Start Time') }}</div>
-              <div class="infotop-row-value">
-                {{
-                  parseTime(
-                    dppEtlTaskDetail.startTime,
-                    "{y}-{m}-{d} {h}:{i}"
-                  ) || "-"
-                }}
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('dpp.instance.endTime', 'End Time') }}</div>
-              <div class="infotop-row-value">
-                {{
-                  parseTime(
-                    dppEtlTaskDetail.endTime,
-                    "{y}-{m}-{d} {h}:{i}"
-                  ) || "-"
-                }}
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="dppEtlTaskDetail"
+      :header="{
+        nameKey: 'names',
+        idKey: 'id',
+        statusKey: 'status',
+        statusOptions: dpp_etl_node_instance,
+      }"
+      :items="detailItems"
+      mode="free"
+    />
 
     <div class="pagecont-bottom" v-loading="loading">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -143,7 +49,7 @@ import useDefaultLang from "@/composables/useDefaultLang"
 import { useRoute } from "vue-router";
 import processNode from "./processNode.vue";
 import instanceLog from "./instanceLog.vue";
-import { reactive, ref, toRefs, watch, getCurrentInstance } from "vue";
+import { reactive, ref, toRefs, watch, getCurrentInstance, computed, onUnmounted, onDeactivated } from "vue";
 import { getLogByTaskInstanceId, getTaskInfo } from "@/api/dpp/task/etlTask";
 
 const { td } = useDefaultLang();
@@ -163,19 +69,42 @@ const data = reactive({
   form: {}
 });
 const { dppEtlTaskDetail } = toRefs(data);
-// function getTask(id) {
-//   if (!id) return;
-//   loading.value = true;
-//   dppEtlTask(id).then(response => {
-//     dppEtlTaskDetail.value = {
-//       ...response.data,
-//       ...JSON.parse(response.data.draftJson || "{}"),
-//       catName: response.data.catName
-//     };
-//     loading.value = false;
-
-//   });
-// }
+const detailItems = computed(() => [
+  {
+    label: td('common.texts.createdBy', 'Created By'),
+    key: 'createBy',
+     className: "mt2 mb2",
+  },
+  
+  {
+    label: td('common.texts.createdTime', 'Created Time'),
+    key: 'createTime',
+    formatter: (val) => proxy.parseTime(val, '{y}-{m}-{d} {h}:{i}'),
+     className: "mt2 mb2",
+  },
+  
+  {
+    label: td('dpp.instance.responsiblePerson', 'Responsible Person'),
+    key: 'personChargeName',
+     className: "mt2 mb2",
+    
+  },
+  {
+    label: td('dpp.instance.executionType', 'Execution Type'),
+    key: 'commandType',
+    dictOptions: dpp_etl_task_instance_command_type.value
+  },
+  {
+    label: td('dpp.instance.startTime', 'Start Time'),
+    key: 'startTime',
+    formatter: (val) => proxy.parseTime(val, '{y}-{m}-{d} {h}:{i}')
+  },
+  {
+    label: td('dpp.instance.endTime', 'End Time'),
+    key: 'endTime',
+    formatter: (val) => proxy.parseTime(val, '{y}-{m}-{d} {h}:{i}')
+  }
+]);
 let compRef = ref(null);
 let logContent = ref("");
 let polling = ref(false);

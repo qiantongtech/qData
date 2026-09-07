@@ -32,90 +32,19 @@
         ]
     }
  -->
-
 <template>
     <div class="app-container" ref="app-container">
-        <div class="pagecont-top" v-show="showSearch" style="padding-bottom: 15px">
-            <div class="infotop">
-                <div class="infotop-title mb15">
-                    {{ dpDataElemDetail.name || '-' }}
-                </div>
-                <el-row :gutter="20">
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataCode.nameEn') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.engName || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataCode.catCode') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.catName || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataCode.personCharge') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.personCharge || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataCode.contactNumber') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.contactNumber || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('dp.dataCode.columnType') }}</div>
-                            <div class="infotop-row-value">
-                                <dict-tag :options="column_type" :value="dpDataElemDetail.columnType" />
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
-                            <div class="infotop-row-value">
-                                <dict-tag :options="sys_disable" :value="dpDataElemDetail.status" />
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('common.texts.createdTime') }}</div>
-                            <div class="infotop-row-value">
-                                {{ parseTime(dpDataElemDetail.createTime, '{y}-{m}-{d}') }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('common.texts.createdBy') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.createBy || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="24">
-                        <div class="infotop-row border-top">
-                            <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
-                            <div class="infotop-row-value">
-                                {{ dpDataElemDetail.description || '-' }}
-                            </div>
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-        </div>
+        <DetailInfo
+            :show="showSearch"
+            :data="dpDataElemDetail"
+            :header="{
+                nameKey: 'name',
+                statusKey: 'status',
+                statusOptions: sys_disable,
+            }"
+            :items="detailItems"
+            mode="free"
+        />
 
         <div class="pagecont-bottom">
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -147,6 +76,17 @@ const { column_type, sys_disable } = proxy.useDict(
     'column_type',
     'sys_disable'
 );
+
+const detailItems = computed(() => [
+    { label: td('dp.dataCode.nameEn'), key: 'engName' },
+    { label: td('dp.dataCode.catCode'), key: 'catName' },
+    { label: td('dp.dataCode.columnType'), key: 'columnType', dictOptions: column_type.value },
+    { label: td('common.texts.description'), key: 'description', span: 24, className: 'mt2 mb2' },
+    { label: td('dp.dataCode.personCharge'), key: 'personChargeName' },
+    { label: td('dp.dataCode.contactNumber'), key: 'contactNumber' },
+    { label: td('common.texts.createdTime'), key: 'createTime', type: 'time' },
+    { label: td('common.texts.createdBy'), key: 'createBy',className: 'mt2 mb2' },
+]);
 
 const activeName = ref('1');
 

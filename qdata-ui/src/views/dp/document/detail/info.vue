@@ -87,6 +87,8 @@
 <script setup name="BasicInfo">
 import useDefaultLang from "@/composables/useDefaultLang"
 
+import { ref, reactive, nextTick, getCurrentInstance } from "vue";
+const { proxy } = getCurrentInstance();
 const { td } = useDefaultLang();
 const props = defineProps({
   form1: {
@@ -94,7 +96,6 @@ const props = defineProps({
     default: () => { },
   },
 });
-const { proxy } = getCurrentInstance();
 const { column_type, sys_disable, dp_document_status } = proxy.useDict(
   "column_type",
   "sys_disable",
@@ -119,7 +120,7 @@ const fileDesc = ref([
     value: "",
     type: "time",
   },
-  { key: "remark", label: td('common.texts.remark'), span: 2 },]);
+]);
 const getDescValue = (row) => {
   let detail = { ...props.form1 };
   if (props.form1) {

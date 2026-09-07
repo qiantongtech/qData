@@ -230,7 +230,7 @@
                 <template #default="{ row, $index }">
                   <el-form-item :prop="`props.form2.resParams[${findPosi(props.form2.resParams, row.id)}].remark`"
                     :rules="rules.fieldDefault">
-                    <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')" />
+                    <el-input v-model="row.remark" :placeholder="td('common.form.descriptionPlaceholder')"   />
                   </el-form-item>
                 </template>
               </el-table-column>

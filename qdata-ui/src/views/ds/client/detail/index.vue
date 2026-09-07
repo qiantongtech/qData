@@ -18,54 +18,15 @@
 
 <template>
   <div class="app-container" ref="app-container">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-          {{ clientDetail.name }}
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
-              <div class="infotop-row-value">{{ clientDetail.id }}</div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('ds.client.details.appSecret') }}</div>
-              <div class="infotop-row-value">
-                {{ clientDetail.secret || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{td('ds.client.details.appSecret')}}</div>
-              <div class="infotop-row-value">
-                <image-preview :src="clientDetail.logo || noDataImg" :width="50" :height="50" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
-              <div class="infotop-row-value">
-                <span class="ellipsis-2" :title="clientDetail.description">{{ clientDetail.description || '-' }}</span>
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
-              <div class="infotop-row-value">
-                <span class="ellipsis" :title="clientDetail.remark">{{ clientDetail.remark || '-' }}</span>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="clientDetail"
+      :header="{
+        nameKey: 'name',
+      }"
+      :items="detailItems"
+      mode="free"
+    />
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -79,6 +40,7 @@
 </template>
 
 <script setup name="Client">
+import { ref, reactive, watch, toRefs, computed, getCurrentInstance } from 'vue';
 import useDefaultLang from "@/composables/useDefaultLang";
 import { getClient } from "@/api/ds/client/client";
 import { useRoute } from 'vue-router';
@@ -109,6 +71,21 @@ const handleClick = (tab, event) => {
 }
 
 const showSearch = ref(true);
+
+const detailItems = computed(() => [
+  { label: td('common.texts.number'), key: 'id' },
+  { label: td('ds.client.details.appSecret'), key: 'secret' },
+  {
+    label: td('ds.client.details.appSecret'),
+    key: 'logo',
+    type: 'image',
+    imageFallback: noDataImg,
+    width: 50,
+    height: 50
+  },
+  { label: td('common.texts.description'), key: 'description', span: 24, ellipsisClass: 'ellipsis-2' , className: "mt2 mb2",},
+]);
+
 const route = useRoute();
 let id = route.query.id || 1;
 // Monitor id changes

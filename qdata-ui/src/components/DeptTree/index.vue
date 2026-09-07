@@ -574,6 +574,7 @@ const getNode = (node) => {
 const resetTree = () => {
   if (deptTreeRef.value) {
     deptTreeRef.value.setCurrentKey(null);
+    currentNodeKey.value = null;
   }
 };
 

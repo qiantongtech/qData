@@ -243,15 +243,6 @@
           :placeholder="td('common.form.descriptionPlaceholder')"
         />
       </el-form-item>
-      <el-form-item :label="td('common.texts.remark')" prop="remark" class="row-full" :label-position="labelPosition">
-        <el-input
-          v-model="form.remark"
-          type="textarea"
-          maxlength="256字符"
-          show-word-limit
-          :placeholder="td('common.form.remarkPlaceholder')"
-        />
-      </el-form-item>
 
       <template v-if="form.createType == 2 && !form.id">
         <div class="h2-title row-full">{{ td('dp.modelForm.dataSource') }}</div>
@@ -480,7 +471,6 @@ const form = ref({
   contact: "",
   contactNumber: "",
   description: "",
-  remark: "",
   status: "0",
   dataLayerId: null,
   businessDomainId: null,
@@ -1080,7 +1070,6 @@ const reset = () => {
     contact: "",
     contactNumber: "",
     description: "",
-    remark: "",
     status: "0",
     dataLayerId: null,
     businessDomainId: null,

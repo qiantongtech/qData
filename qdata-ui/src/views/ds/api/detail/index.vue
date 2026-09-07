@@ -18,101 +18,17 @@
 
 <template>
   <div class="app-container" ref="app-container" v-if="dsApiDetail">
-    <div class="pagecont-top" v-show="showSearch" style="padding-bottom:15px">
-      <div class="infotop">
-        <div class="infotop-title mb15">
-          {{ dsApiDetail.name }}
-        </div>
-        <el-row :gutter="2">
-          <el-col :span="8">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.number') }}</div>
-              <div class="infotop-row-value">{{ dsApiDetail.id }}</div>
-            </div>
-          </el-col>
-          <el-col :span="8">
-              <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ td('ds.api.apiDetail.belongingCategory') }}</div>
-                  <div class="infotop-row-value">
-                      {{ dsApiDetail.catName || '-' }}
-                  </div>
-              </div>
-          </el-col>
-          <el-col :span="8">
-              <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ td('common.texts.status') }}</div>
-                  <div class="infotop-row-value">
-                      <dict-tag :options="sys_disable" :value="dsApiDetail.status" />
-                  </div>
-              </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('ds.api.apiDetail.apiVersion') }}</div>
-              <div class="infotop-row-value">
-                {{ dsApiDetail.apiVersion || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{td('ds.api.apiDetail.requestMethod')}}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="ds_api_bas_info_api_method_type" :value="dsApiDetail.reqMethod" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="8" >
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('ds.api.apiDetail.returnResultType') }}</div>
-              <div class="infotop-row-value">
-                <dict-tag :options="ds_api_bas_info_res_data_type" :value="dsApiDetail.resDataType" />
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24" >
-              <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ td('common.texts.description') }}</div>
-                  <div class="infotop-row-value">
-                     <span class="ellipsis-2">
-                         {{ dsApiDetail.description || '-' }}
-                     </span>
-                  </div>
-              </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-              <div class="infotop-row border-top">
-                  <div class="infotop-row-lable">{{ td('common.texts.createdBy') }}</div>
-                  <div class="infotop-row-value">{{ dsApiDetail.createBy || '-' }}</div>
-              </div>
-          </el-col>
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.createdTime') }}</div>
-              <div class="infotop-row-value">{{ parseTime(dsApiDetail.createTime, '{y}-{m}-{d} {h}:{i}') }}</div>
-            </div>
-          </el-col>
-
-          <el-col :span="8" style="margin: 2px 0;">
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{td('ds.api.apiDetail.apiRequestAddress')}}</div>
-              <div class="infotop-row-value">
-                {{ '/services/' + dsApiDetail.apiVersion + dsApiDetail.apiUrl || '-' }}
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="24" >
-            <div class="infotop-row border-top">
-              <div class="infotop-row-lable">{{ td('common.texts.remark') }}</div>
-              <div class="infotop-row-value">
-                {{ dsApiDetail.remark || '-' }}
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-
-      </div>
-    </div>
+    <DetailInfo
+      :show="showSearch"
+      :data="dsApiDetail"
+      :header="{
+        nameKey: 'name',
+        statusKey: 'status',
+        statusOptions: sys_disable,
+      }"
+      :items="detailItems"
+      mode="free"
+    />
 
     <div class="pagecont-bottom">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -134,6 +50,7 @@
 <script setup name="DsApi">
 import { getDsApi } from "@/api/ds/api/api.js";
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
+import { ref, reactive, watch, toRefs, computed, getCurrentInstance } from 'vue';
 import ComponentOne from "@/views/ds/api/detail/parameter.vue";
 import ComponentTwo from "@/views/ds/api/detail/simulation.vue";
 import useDefaultLang from "@/composables/useDefaultLang";
@@ -152,6 +69,22 @@ const handleClick = (tab, event) => {
 }
 
 const showSearch = ref(true);
+
+const detailItems = computed(() => [
+  { label: td('ds.api.apiDetail.belongingCategory'), key: 'catName' },
+  { label: td('ds.api.apiDetail.apiVersion'), key: 'apiVersion' },
+   {
+    label: td('ds.api.apiDetail.apiRequestAddress'),
+    formatter: (val, data) => `/services/${data.apiVersion}${data.apiUrl}`
+  },
+  { label: td('common.texts.description'), key: 'description', span: 24, ellipsisClass: 'ellipsis-2' , className: "mt2 mb2",},
+  { label: td('ds.api.apiDetail.requestMethod'), key: 'reqMethod', dictOptions: ds_api_bas_info_api_method_type.value },
+  { label: td('ds.api.apiDetail.returnResultType'), key: 'resDataType', dictOptions: ds_api_bas_info_res_data_type.value },
+  { label: td('common.texts.createdBy'), key: 'createBy' },
+  { label: td('common.texts.createdTime'), key: 'createTime', type: 'time' ,className: "mt2 mb2",},
+ 
+]);
+
 const route = useRoute();
 let id = route.query.id || 1;
 // Monitor id changes

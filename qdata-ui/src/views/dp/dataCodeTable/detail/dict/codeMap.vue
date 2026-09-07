@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef" :config="wrapConfig">
+  <qt-wrap :columns="tableStore.columns" :tableRef="tableRef":config="{ fullContent: false, actions: { table: { search: false } } }">
     <template #actions-data>
       <el-row :gutter="15" class="btn-style">
         <el-col :span="1.5">
@@ -73,13 +73,6 @@
         <el-col :span="12">
           <el-form-item :label="td('dp.dataCode.codeMap.codeValue')" prop="codeValue">
             <el-input v-model="form.codeValue" :placeholder="td('dp.dataCode.codeValue')" disabled />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-form-item :label="td('dp.dataCode.codeMap.remark')" prop="remark">
-            <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -185,13 +178,6 @@ const tableStore = reactive({
       date: true,
     },
     {
-      label: td('dp.dataCode.codeMap.remark'),
-      prop: "remark",
-      align: "left",
-      width: 320,
-      showOverflowTooltip: { effect: 'light' },
-    },
-    {
       label: td('dp.dataCode.codeMap.operation'),
       slot: "action",
       width: 180,
@@ -262,7 +248,6 @@ function reset() {
     updateBy: null,
     updaterId: null,
     updateTime: null,
-    remark: null
   };
   proxy.resetForm('dpCodeMapRef');
 }

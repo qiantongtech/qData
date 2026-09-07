@@ -86,7 +86,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
+      <el-row :gutter="20" v-if="showRemark">
         <el-col :span="24">
           <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
             <el-input
@@ -151,6 +151,12 @@ const { td } = useDefaultLang();
 const { t } = useI18n();
 const emit = defineEmits(["submit", "cancel"]);
 
+const props = defineProps({
+  rules: { type: Object, default: () => ({}) },
+  beforeSubmit: { type: Function, required: false },
+  showRemark: { type: Boolean, default: false },
+});
+
 const visible = ref(false);
 const loading = ref(false);
 const formRef = ref();
@@ -188,9 +194,12 @@ const defaultRules = {
 
 // Compute final rules to use, preferring passed-in customRules
 const currentRules = computed(() => {
-  const rules = customRules.value
-    ? Object.fromEntries(Object.entries(customRules.value).map(([key, value]) => [key, [...value]]))
-    : JSON.parse(JSON.stringify(defaultRules));
+  const rules = {
+    ...JSON.parse(JSON.stringify(defaultRules)),
+    ...(props.rules || {}),
+    ...(customRules.value || {}),
+  };
+
   if (rules.name && rules.name[0]) {
     rules.name[0].message = td('att.common.nameRequired', { name: nameLabel.value });
   }
@@ -260,12 +269,17 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  const submit = () => formRef.value?.validate((valid) => {
+  const submit = async () => {
+    const valid = await formRef.value?.validate().catch(() => false);
     if (valid) {
+      if (props.beforeSubmit) {
+        const canSubmit = await props.beforeSubmit(JSON.parse(JSON.stringify(form.value)));
+        if (!canSubmit) return;
+      }
       loading.value = true;
       emit("submit", JSON.parse(JSON.stringify(form.value)));
     }
-  });
+  };
   if (form.value.id && form.value.parentId !== oldParentId.value) {
     ElMessageBox.confirm(
       '修改上级类目会影响该类目下任务的归属路径，请确认。',

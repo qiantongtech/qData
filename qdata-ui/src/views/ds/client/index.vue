@@ -18,179 +18,86 @@
 
 <template>
   <div class="app-container" ref="app-container">
-
     <GuideTip tip-id="att/client.list" />
 
-    <div class="pagecont-top" v-show="showSearch">
-      <el-form class="btn-style" :model="queryParams" ref="queryRef" :inline="true"
-        v-show="showSearch" @submit.prevent>
-        <!-- <el-form-item :label="td('ds.client.details.id')" prop="id" :label-position="labelPosition">
-          <el-input class="el-form-input-width" v-model="queryParams.id" placeholder="Please enter the number" clearable
-            @keyup.enter="handleQuery" />
-        </el-form-item> -->
-        <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
-          <el-input class="el-form-input-width" v-model="queryParams.name" :placeholder="td('ds.client.appNamePlaceholder')" clearable
-            @keyup.enter="handleQuery" />
-        </el-form-item>
-        <el-form-item :label="td('ds.client.appType')" prop="type" :label-position="labelPosition">
-          <el-select class="el-form-input-width" v-model="queryParams.type" :placeholder="td('ds.client.appTypePlaceholder')" clearable>
-            <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label" :value="dict.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
-          <el-select class="el-form-input-width" v-model="queryParams.publicFlag" :placeholder="td('ds.client.isPublicPlaceholder')" clearable>
-            <el-option v-for="dict in auth_public" :key="dict.value" :label="dict.label" :value="dict.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button plain type="primary" v-hasPermi="['att:client:query']" @click="handleQuery"
-            @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22377 mr5"></i>{{ td('common.button.query') }}
-          </el-button>
-          <el-button @click="resetQuery" @mousedown="(e) => e.preventDefault()">
-            <i class="iconfont-mini icon-a-zu22378 mr5"></i>{{ td('common.button.reset') }}
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <qt-wrap :columns="tableStore.columns" :tableRef="tableRef">
+      <template #search>
+        <qt-search-bar
+          v-bind="searchStore"
+          :params="tableStore.params"
+          @query="handleQuery"
+          @reset="resetQuery"
+          :tableRef="tableRef"
+        />
+      </template>
 
-    <div class="pagecont-bottom">
-      <div class="justify-between mb15">
+      <template #actions-data>
         <el-row :gutter="15" class="btn-style">
           <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleAdd" v-hasPermi="['att:client:add']"
-              @mousedown="(e) => e.preventDefault()">
+            <el-button
+              type="primary"
+              plain
+              @click="handleAdd"
+              v-hasPermi="['att:client:add']"
+            >
               <i class="iconfont-mini icon-xinzeng mr5"></i>{{ td('common.button.add') }}
             </el-button>
           </el-col>
-          <!--         <el-col :span="1.5">
-           <el-button type="primary" plain :disabled="single" @click="handleUpdate" v-hasPermi="['att:client:edit']"
-                      @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-xiugai--copy mr5"></i>Modify
-           </el-button>
-         </el-col>
-         <el-col :span="1.5">
-           <el-button type="danger" plain :disabled="multiple" @click="handleDelete" v-hasPermi="['att:client:remove']"
-                      @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-shanchu-huise mr5"></i>Delete
-           </el-button>
-         </el-col>
-         <el-col :span="1.5">
-           <el-button type="info" plain  @click="handleImport" v-hasPermi="['att:client:export']"
-                      @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-upload-cloud-line mr5"></i>Import
-           </el-button>
-         </el-col>
-         <el-col :span="1.5">
-           <el-button type="warning" plain @click="handleExport" v-hasPermi="['att:client:export']"
-                      @mousedown="(e) => e.preventDefault()">
-             <i class="iconfont-mini icon-download-line mr5"></i>Export
-           </el-button>
-         </el-col>-->
         </el-row>
-        <div class="justify-end top-right-btn">
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-        </div>
-      </div>
-      <el-table stripe v-loading="loading" :data="clientList" @selection-change="handleSelectionChange"
-        :default-sort="defaultSort" @sort-change="handleSortChange">
-        <el-table-column v-if="getColumnVisibility(0)" width="50" :label="td('common.texts.number')"  align="center" prop="id" />
-        <el-table-column v-if="getColumnVisibility(1)" width="200" :label="td('ds.client.appName')"
-          :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
-          <template #default="scope">
-            {{ scope.row.name || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column v-if="getColumnVisibility(3)" :label="td('ds.client.appType')" align="center" prop="type">
-          <template #default="scope">
-            <dict-tag :options="auth_app_type" :value="scope.row.type" />
-          </template>
-        </el-table-column>
-        <el-table-column v-if="getColumnVisibility(2)" :show-overflow-tooltip="{ effect: 'light' }" :label="td('common.texts.description')"
-          align="left" prop="description" width="300">
-          <template #default="scope">
-            {{ scope.row.description || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column v-if="getColumnVisibility(16)" :label="td('ds.client.appIcon')"
-          :show-overflow-tooltip="{ effect: 'light' }" align="left" prop="name">
-          <template #default="scope">
-            <div class="clientInfo">
-              <div>
-                <image-preview :src="scope.row.logo || noDataImg" :width="50" :height="50" />
+      </template>
 
-              </div>
+      <qt-table v-bind="tableStore" ref="tableRef" :params="tableStore.params">
+        <template #logo="{ row }">
+          <div class="clientInfo">
+            <div>
+              <image-preview :src="row.logo || noDataImg" :width="50" :height="50" />
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column width="100" v-if="getColumnVisibility(4)" :label="td('ds.client.isPublic')" align="center" prop="publicFlag">
-          <template #default="scope">
-            <dict-tag :options="auth_public" :value="scope.row.publicFlag" />
-          </template>
-        </el-table-column>
-        <!--       <el-table-column v-if="getColumnVisibility(5)" label="Allow authorized url" align="center" prop="allowUrl">
-         <template #default="scope">
-           {{ scope.row.allowUrl || '-' }}
-         </template>
-       </el-table-column>-->
-        <!--       <el-table-column v-if="getColumnVisibility(6)" label="Sync address" align="center" prop="syncUrl">
-         <template #default="scope">
-           {{ scope.row.syncUrl || '-' }}
-         </template>
-       </el-table-column>-->
-        <!--       <el-table-column v-if="getColumnVisibility(7)" label="App icon" align="center" prop="logo" width="100">
-         <template #default="scope">
-           <image-preview :src="scope.row.logo" :width="50" :height="50"/>
-         </template>
-       </el-table-column>-->
-
-        <el-table-column v-if="getColumnVisibility(12)" :label="td('common.texts.createdBy')" align="center" prop="createBy">
-          <template #default="scope">
-            {{ scope.row.createBy || "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column v-if="getColumnVisibility(14)" :label="td('common.texts.createdTime')" align="center" prop="createTime" width="150"
-          sortable="custom" column-key="create_time" :sort-orders="['descending', 'ascending']"> <template
-            #default="scope"> <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}") || "-" }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column :label="td('common.texts.remark')" align="left" prop="remark" :show-overflow-tooltip="{ effect: 'light' }"
-          v-if="getColumnVisibility(15)">
-          <template #default="scope">
-            {{ scope.row.remark || '-' }}
-          </template>
-        </el-table-column>
-        <el-table-column :label="td('common.texts.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="280">
-          <template #default="scope">
-            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['att:client:edit']">{{td('common.button.update')}}</el-button>
-            <el-button link type="primary" icon="view" @click="handleDetail(scope.row)"
-              v-hasPermi="['att:client:query']">{{td('common.button.details')}}</el-button>
-            <el-popover placement="bottom" :width="150" trigger="click">
-              <template #reference>
-                <el-button link type="primary" icon="ArrowDown">{{td('common.button.more')}}</el-button>
-              </template>
-              <div style="width: 100px" class="butgdlist">
-                <el-button link style="padding-left: 14px" type="primary" icon="Refresh" @click="handleReset(scope.row)"
-                  v-hasPermi="['att:client:edit']">{{ td('ds.client.resetSecret') }}</el-button>
-                <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)"
-                  v-hasPermi="['att:client:remove']">{{td('common.button.delete')}}</el-button>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-
-        <template #empty>
-          <div class="emptyBg">
-            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
-            <p>{{td('common.noData')}}</p>
           </div>
         </template>
-      </el-table>
-
-      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize" @pagination="getList" />
-    </div>
+        <template #action="{ row }">
+          <el-button
+            link
+            type="primary"
+            icon="Edit"
+            @click="handleUpdate(row)"
+            v-hasPermi="['att:client:edit']"
+            >{{ td('common.button.update') }}</el-button
+          >
+          <el-button
+            link
+            type="primary"
+            icon="view"
+            @click="handleDetail(row)"
+            v-hasPermi="['att:client:query']"
+            >{{ td('common.button.details') }}</el-button
+          >
+          <el-popover placement="bottom" :width="150" trigger="click">
+            <template #reference>
+              <el-button link type="primary" icon="ArrowDown">{{ td('common.button.more') }}</el-button>
+            </template>
+            <div style="width: 100px" class="butgdlist">
+              <el-button
+                link
+                style="padding-left: 14px"
+                type="primary"
+                icon="Refresh"
+                @click="handleReset(row)"
+                v-hasPermi="['att:client:edit']"
+                >{{ td('ds.client.resetSecret') }}</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                icon="Delete"
+                @click="handleDelete(row)"
+                v-hasPermi="['att:client:remove']"
+                >{{ td('common.button.delete') }}</el-button
+              >
+            </div>
+          </el-popover>
+        </template>
+      </qt-table>
+    </qt-wrap>
 
     <!-- Add or modify application dialog box -->
     <el-dialog :title="title" v-model="open" :append-to="$refs['app-container']" draggable>
@@ -201,12 +108,12 @@
       </template>
       <el-form ref="clientRef" :model="form" :rules="rules" @submit.prevent :label-position="labelPosition">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appName')" prop="name" :label-position="labelPosition">
               <el-input v-model="form.name" :placeholder="td('ds.client.appNamePlaceholder')"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appType')" prop="type" :label-position="labelPosition">
               <el-select v-model="form.type" :placeholder="td('ds.client.appTypePlaceholder')">
                 <el-option v-for="dict in auth_app_type" :key="dict.value" :label="dict.label"
@@ -215,26 +122,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
-              <el-input v-model="form.description" type="textarea" :placeholder="td('common.form.descriptionPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <!-- <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
-              <el-input v-model="form.homepageUrl" placeholder="Please enter the homepage address" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
-              <el-input v-model="form.syncUrl" placeholder="Please enter the synchronization address" />
-            </el-form-item>
-          </el-col>
-        </el-row> -->
+     
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item :label="td('ds.client.appIcon')" prop="logo" :label-position="labelPosition">
@@ -243,7 +131,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag" :label-position="labelPosition">
               <el-radio-group v-model="form.publicFlag">
                 <el-radio v-for="dict in auth_public" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
@@ -251,10 +139,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+           <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark" :label-position="labelPosition">
-              <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
+            <el-form-item :label="td('common.texts.description')" prop="description" :label-position="labelPosition">
+              <el-input v-model="form.description" type="textarea"  maxlength="256字符" show-word-limit
+ :placeholder="td('common.form.descriptionPlaceholder')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -266,6 +155,7 @@
         </div>
       </template>
     </el-dialog>
+
     <!-- Application details dialog -->
     <el-dialog :title="title" v-model="openDetail" width="800px" :append-to="$refs['app-container']" draggable>
       <template #header="{ close, titleId, titleClass }">
@@ -275,55 +165,55 @@
       </template>
       <el-form ref="clientRef" :model="form" label-width="100px" :label-position="labelPosition">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.details.id')" prop="id">
               <div>{{ form.id || "-" }}</div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appSecret')" prop="secret" :label-position="labelPosition">
               <div>{{ form.secret || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appName')" prop="name">
               <div>{{ form.name || "-" }}</div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appIcon')" prop="logo" :label-position="labelPosition">
               <image-preview :src="form.logo || noDataImg" :width="50" :height="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.appType')" prop="type">
               <dict-tag :options="auth_app_type" :value="form.type" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.isPublic')" prop="publicFlag">
               <dict-tag :options="auth_public" :value="form.publicFlag" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.homepageUrl')" prop="homepageUrl" :label-position="labelPosition">
               <div>{{ form.homepageUrl || "-" }}</div>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.syncUrl')" prop="syncUrl" :label-position="labelPosition">
               <div>{{ form.syncUrl || "-" }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item :label="td('ds.client.authPath')" prop="allowUrl" :label-position="labelPosition">
               <div>{{ form.allowUrl || "-" }}</div>
             </el-form-item>
@@ -382,6 +272,8 @@ import {
 } from "@/api/ds/client/client";
 import { getToken } from "@/utils/auth.js";
 import useDefaultLang from "@/composables/useDefaultLang";
+import { reactive, ref, onActivated, getCurrentInstance, toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 const { td } = useDefaultLang();
 const { proxy } = getCurrentInstance();
@@ -390,101 +282,112 @@ const { auth_public, auth_app_type } = proxy.useDict(
   "auth_public",
   "auth_app_type"
 );
-const noDataImg = new URL('../../../assets/system/images/D.png', import.meta.url).href
-const clientList = ref([]);
+const noDataImg = new URL('../../../assets/system/images/D.png', import.meta.url).href;
 
-// Show hidden information
-const columns = ref([
-  { key: 0, label: td('common.texts.number'), visible: true },
-  { key: 1, label: td('ds.client.appName'), visible: true },
-  { key: 3, label: td('ds.client.appType'), visible: true },
-  { key: 2, label: td('common.texts.description'), visible: true },
-  { key: 16, label: td('ds.client.appIcon'), visible: true },
-  { key: 4, label: td('ds.client.isPublic'), visible: true },
-  { key: 12, label: td('common.texts.createdBy'), visible: true },
-  { key: 14, label: td('common.texts.createdTime'), visible: true },
-  { key: 15, label: td('common.texts.remark'), visible: true },
-]);
-
-const getColumnVisibility = (key) => {
-  const column = columns.value.find((col) => col.key === key);
-  // If the corresponding column configuration is not found, it will be displayed by default.
-  if (!column) return true;
-  // If the corresponding column configuration is found, the display is controlled based on the visible attribute.
-  return column.visible;
-};
+const tableRef = ref(null);
+const router = useRouter();
 
 const open = ref(false);
 const openDetail = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
 const title = ref("");
-const defaultSort = ref({ prop: "createTime", order: "desc" });
-const router = useRouter();
 
-/*** User import parameters */
-const upload = reactive({
-  // Whether to display the pop-up layer (user import)
-  open: false,
-  // Popup layer title (user imported)
-  title: "",
-  // Whether to disable uploading
-  isUploading: false,
-  // Whether to update existing user data
-  updateSupport: 0,
-  // Set upload request headers
-  headers: { Authorization: "Bearer " + getToken() },
-  // Upload address
-  url: import.meta.env.VITE_APP_BASE_API + "/att/client/importData",
+const searchStore = reactive({
+  items: [
+    {
+      label: td('ds.client.appName'),
+      prop: "name",
+      component: { is: "input", placeholder: td('ds.client.appNamePlaceholder') }
+    },
+    {
+      label: td('ds.client.appType'),
+      prop: "type",
+      component: {
+        is: "select",
+        placeholder: td('ds.client.appTypePlaceholder'),
+        options: auth_app_type
+      }
+    },
+    {
+      label: td('ds.client.isPublic'),
+      prop: "publicFlag",
+      component: {
+        is: "select",
+        placeholder: td('ds.client.isPublicPlaceholder'),
+        options: auth_public
+      }
+    }
+  ]
+});
+
+const tableStore = reactive({
+  func: listClient,
+  params: {
+    name: null,
+    type: null,
+    publicFlag: null,
+    orderByColumn: "create_time",
+    isAsc: "desc"
+  },
+  config: {
+    initResquest: true,
+    beforeRequest: (params) => {
+      let p = { ...params };
+      if (p.orderByColumn === 'createTime') {
+        p.orderByColumn = 'create_time';
+      }
+      return p;
+    }
+  },
+  columns: [
+    { label: td('common.texts.number'), prop: "id", width: 60, align: "left", sortable: true },
+    { label: td('ds.client.appName'), prop: "name", width: 260, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.client.appType'), prop: "type", width: 120, align: "center", dict: "auth_app_type" },
+    { label: td('common.texts.description'), prop: "description", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('ds.client.appIcon'), prop: "logo", width: 100, align: "left", slot: "logo" },
+    { label: td('ds.client.isPublic'), prop: "publicFlag", width: 100, align: "center", dict: "auth_public" },
+    { label: td('common.texts.createdBy'), prop: "createBy", width: 120, align: "center" },
+    { label: td('common.texts.createdTime'), prop: "createTime", width: 160, align: "center", sortable: "custom", date: true },
+    { label: td('common.texts.remark'), prop: "remark", width: 256, align: "left", showOverflowTooltip: { effect: 'light' } },
+    { label: td('common.texts.operation'), width: 280, align: "center", fixed: "right", slot: "action" }
+  ]
 });
 
 const data = reactive({
   form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    id: null,
-    name: null,
-    type: null,
-    secret: null,
-    homepageUrl: null,
-    allowUrl: null,
-    syncUrl: null,
-    logo: null,
-    description: null,
-    publicFlag: null,
-    createTime: null,
-  },
   rules: {
     name: [{ required: true, message: td('ds.client.appNameRequired'), trigger: "blur" }],
     type: [{ required: true, message: td('ds.client.appTypeRequired'), trigger: "change" }],
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { form, rules } = toRefs(data);
 
-/** Query application list */
-function getList() {
-  loading.value = true;
-  listClient(queryParams.value).then((response) => {
-    clientList.value = response.data.rows;
-    total.value = response.data.total;
-    loading.value = false;
-  });
+/*** User import parameters */
+const upload = reactive({
+  open: false,
+  title: "",
+  isUploading: false,
+  updateSupport: 0,
+  headers: { Authorization: "Bearer " + getToken() },
+  url: import.meta.env.VITE_APP_BASE_API + "/att/client/importData",
+});
+
+function handleQuery() {
+  tableStore.params.pageNum = 1;
 }
 
-// Cancel button
+function resetQuery() {
+  tableStore.params.name = null;
+  tableStore.params.type = null;
+  tableStore.params.publicFlag = null;
+}
+
 function cancel() {
   open.value = false;
   openDetail.value = false;
   reset();
 }
 
-// form reset
 function reset() {
   form.value = {
     id: null,
@@ -510,45 +413,16 @@ function reset() {
   proxy.resetForm("clientRef");
 }
 
-/** Search button action */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-
-/** reset button action */
-function resetQuery() {
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// Multiple selection box selected data
-function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** Sorting trigger events */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
-/** Add button operation */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = td('ds.client.addApp');
-
-  data.form.publicFlag = "1";
+  form.value.publicFlag = "1";
 }
 
-/** Modify button actions */
 function handleUpdate(row) {
   reset();
-  const _id = row.id || ids.value;
+  const _id = row.id;
   getClient(_id).then((response) => {
     form.value = response.data;
     open.value = true;
@@ -556,33 +430,22 @@ function handleUpdate(row) {
   });
 }
 
-/** Reset key button operation */
 function handleReset(row) {
-  const _id = row.id || ids.value;
-
+  const _id = row.id;
   proxy.$modal
     .confirm(td('ds.client.resetSecretConfirm'))
     .then(function () {
       resetSecret(_id).then((res) => {
         proxy.$modal.msgSuccess(td('ds.client.newSecret') + res.data);
-        getList();
+        tableRef.value.refresh();
       });
     });
 }
 
-/** Detail button operation */
 function handleDetail(row) {
-  // reset();
-  // const _id = row.id || ids.value;
-  // getClient(_id).then((response) => {
-  //   form.value = response.data;
-  //   openDetail.value = true;
-  //   title.value = "Application Details";
-  // });
   routeTo("/ds/client/clientDetail", row);
 }
 
-/** submit button */
 function submitForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
@@ -593,7 +456,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td('ds.client.editSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => { submitLoading.value = false; });
@@ -602,7 +465,7 @@ function submitForm() {
           .then((response) => {
             proxy.$modal.msgSuccess(td('ds.client.addSuccess'));
             open.value = false;
-            getList();
+            tableRef.value.refresh();
             submitLoading.value = false;
           })
           .catch((error) => { submitLoading.value = false; });
@@ -613,40 +476,26 @@ function submitForm() {
   });
 }
 
-/** Delete button action */
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
+  const _ids = row.id;
   proxy.$modal
     .confirm(td('ds.client.deleteConfirm') + _ids + td('ds.client.deleteConfirmSuffix'))
     .then(function () {
       return delClient(_ids);
     })
     .then(() => {
-      getList();
+      tableRef.value.refresh();
       proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
     })
     .catch(() => { });
 }
 
-/** Export button action */
-function handleExport() {
-  proxy.download(
-    "att/client/export",
-    {
-      ...queryParams.value,
-    },
-    `client_${new Date().getTime()}.xlsx`
-  );
-}
-
 /** ---------------- Import related operations ------------------**/
-/** Import button actions */
 function handleImport() {
   upload.title = td('ds.client.importTitle');
   upload.open = true;
 }
 
-/** Download template operation */
 function importTemplate() {
   proxy.download(
     "system/user/importTemplate",
@@ -655,19 +504,16 @@ function importTemplate() {
   );
 }
 
-/** Submit upload file */
 function submitFileForm() {
   if (submitLoading.value) return;
   submitLoading.value = true;
   proxy.$refs["uploadRef"].submit();
 }
 
-/**File upload is being processed */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
 
-/** File upload successfully processed */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
@@ -680,9 +526,8 @@ const handleFileSuccess = (response, file, fileList) => {
     td('ds.client.importResult'),
     { dangerouslyUseHTMLString: true }
   );
-  getList();
+  tableRef.value.refresh();
 };
-/** ---------------------------------**/
 
 function routeTo(link, row) {
   if (link !== "" && link.indexOf("http") !== -1) {
@@ -703,7 +548,10 @@ function routeTo(link, row) {
   }
 }
 
-getList();
+onActivated(() => {
+  tableRef.value?.refresh();
+});
+
 </script>
 
 <style scoped lang="scss">
@@ -712,12 +560,4 @@ getList();
   align-items: center;
   justify-content: flex-start;
 }
-
-// :deep {
-//   .el-popper.is-dark {
-//     max-width: 900px !important;
-//     max-height: 400px;
-//     font-size: 14px;
-//     text-align: start;
-//   }
-// }</style>
+</style>

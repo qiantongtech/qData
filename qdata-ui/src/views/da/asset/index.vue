@@ -578,15 +578,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item :label="td('da.asset.remark')" prop="remark" :label-position="labelPosition">
-              <div>
-                {{ form.remark }}
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        
       </el-form>
       <template #footer>
         <div class="dialog-footer">

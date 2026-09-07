@@ -233,7 +233,6 @@ const tableStore = reactive({
     { label: td("common.texts.createdBy"), prop: "createBy", width: 120, align: "left" },
     { label: td("common.texts.createdTime"), prop: "createTime", width: 180, align: "left", sortable: true, date: true },
     { label: td("common.texts.status"), slot: "status", width: 120, align: "center" },
-    { label: td("common.texts.remark"), prop: "remark", width: 200, align: "left", showOverflowTooltip: { effect: "light" } },
     { label: td("common.texts.operation"), slot: "action", width: 240, align: "center", fixed: "right" },
   ],
   func: listDpModel,
@@ -279,7 +278,6 @@ function reset() {
     contact: null,
     contactNumber: null,
     description: null,
-    remark: null,
     documentId: tableStore.params.documentId,
   };
   proxy.resetForm("dpModelRef");

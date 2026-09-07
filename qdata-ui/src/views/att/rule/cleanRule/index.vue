@@ -281,7 +281,7 @@ const tableStore = reactive({
       label: td('common.texts.description'),
       prop: "description",
       align: "left",
-      width: 256,
+      width: 400,
       showOverflowTooltip: { effect: 'light' },
     },
     {
@@ -335,7 +335,7 @@ const searchStore = reactive({
 });
 
 function handleNodeClick(data) {
-  tableStore.params.catCode = data.id === 0 ? null : data.code;
+  tableStore.params.catCode = data.id === 0 ? null : (data.code || null);
   handleQuery();
 }
 
@@ -386,12 +386,14 @@ function reset() {
 /** Search button action */
 function handleQuery() {
   tableStore.params.pageNum = 1;
+  tableRef.value?.refresh();
 }
 
 /** reset button action */
 function resetQuery() {
   DeptTreeRef.value?.resetTree?.();
   tableStore.params.catCode = null;
+  handleQuery();
 }
 
 /** Add button operation */

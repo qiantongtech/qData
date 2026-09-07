@@ -21,26 +21,26 @@
   <div class="pagecont-top pb15" v-show="show">
     <div class="infotop">
       <!-- title/header area -->
-      <div class="infotop-title mb15" :class="headerClasses">
+      <div class="infotop-title mb15" :class="headerClasses" v-if="header || title">
         <!-- Default title (displayed when no header is passed) -->
-        <template v-if="!header">
-          {{ title }}
+        <template v-if="!header && title">
+          {{ title || "-" }}
         </template>
         <!-- Fixed header: numbered square + name + status dictionary + right button/slot -->
         <template v-else>
           <div class="task-item">
             <div class="task-id">
               {{
-                stringify(getByPath(data, header.idKey ?? "id")) || placeholder
+                stringify(getByPath(data, props.header?.idKey ?? "id")) || placeholder
               }}
             </div>
             <div class="task-name">
-              {{ stringify(getByPath(data, header.nameKey)) || "" }}
+              {{ stringify(getByPath(data, props.header?.nameKey)) || "" }}
             </div>
             <dict-tag
-              v-if="header.statusKey && header.statusOptions"
-              :options="header.statusOptions"
-              :value="getByPath(data, header.statusKey)"
+              v-if="props.header?.statusKey && props.header?.statusOptions"
+              :options="props.header?.statusOptions"
+              :value="getByPath(data, props.header?.statusKey)"
             />
           </div>
           <div class="btn-style">
@@ -51,8 +51,8 @@
               @mousedown="(e) => e.preventDefault()"
               @click="handleBack"
             >
-              <svg-icon :iconClass="header.backIcon ?? 'fhs'"/>
-              {{ header.backText ?? td('common.button.return') }}
+              <svg-icon :iconClass="props.header?.backIcon ?? 'fhs'"/>
+              {{ props.header?.backText ?? td('common.button.return') }}
             </el-button>
           </div>
           <slot name="header-right" />
@@ -298,13 +298,6 @@ const displayItems = computed(() => {
       { label: td('common.texts.createdBy'), key: "createBy", span: 8 },
       { label: td('common.texts.createdTime'), key: "createTime", type: "time", span: 8 },
       { label: td('common.texts.updatedTime'), key: "updateTime", type: "time", span: 8 },
-      {
-        label: td('common.texts.remark'),
-        key: "remark",
-        span: 24,
-        ellipsisClass: "ellipsis",
-        className: "mt2 mb2",
-      },
     ];
     return rows;
   }

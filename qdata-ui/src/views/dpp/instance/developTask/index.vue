@@ -471,7 +471,7 @@ watch(locale, () => {
 <style scoped lang="scss">
 .main-content {
   min-width: 0;
-  padding: 0 0 0 12px;
+  padding: 0 0 0 0px;
 }
 
 .log-status {

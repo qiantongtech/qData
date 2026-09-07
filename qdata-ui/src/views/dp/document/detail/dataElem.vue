@@ -158,13 +158,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item :label="td('common.texts.remark')" prop="remark">
-              <el-input v-model="form.remark" type="textarea" :placeholder="td('common.form.remarkPlaceholder')" />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -278,7 +271,6 @@ const tableStore = reactive({
     { label: td("common.texts.createdBy"), prop: "createBy", width: 120, align: "left" },
     { label: td("common.texts.createdTime"), prop: "createTime", width: 160, align: "left", sortable: true, date: true },
     { label: td("common.texts.status"), slot: "status", width: 100, align: "center" },
-    { label: td("common.texts.remark"), prop: "remark", width: 200, align: "left", showOverflowTooltip: { effect: "light" } },
     { label: td("common.texts.operation"), slot: "action", width: 220, align: "center", fixed: "right" },
   ],
   func: listDpDataElem,
@@ -352,7 +344,6 @@ function reset() {
     columnType: null,
     status: "0",
     description: null,
-    remark: null,
     documentId: tableStore.params.documentId,
   };
   proxy.resetForm("dpDataElemRef");

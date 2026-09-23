@@ -33,7 +33,8 @@ services:
       - qdatanet
 
   oracle11g:
-    image: wnameless/oracle-xe-11g-r2
+    platform: linux/amd64
+    image: ${QDATA_HUB}/oracle-xe-11g-r2
     profiles: [ "demo", "oracle" ]
     environment:
       - TZ=Asia/Shanghai

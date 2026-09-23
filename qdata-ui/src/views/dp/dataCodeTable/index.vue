@@ -19,7 +19,7 @@
 <template>
   <div class="app-container" ref="app-container">
 
-    <GuideTip tip-id="dp/dpDataElem.list" />
+    <GuideTip tip-id="dp/dpDataCodeTable.list" />
 
     <el-container style="90%">
       <DeptTree :deptOptions="deptOptions" :leftWidth="leftWidth" :placeholder="td('dp.dataCode.treePlaceholder')"

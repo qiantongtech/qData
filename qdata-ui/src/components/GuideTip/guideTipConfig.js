@@ -74,7 +74,7 @@ export const guideTipConfig = {
  */
 
 // Define document base path
-const DOCS_BASE_URL = 'https://qdata.qiantong.tech';
+const DOCS_BASE_URL = 'https://community.qdata.tech';
 
 export const guideTipConfig = {
     // Home page
@@ -123,7 +123,7 @@ export const guideTipConfig = {
     'att/client.list': {
         title: '应用 —— 用于对接第三方系统',
         content: `通过创建应用并生成专属密钥，实现对平台API的安全访问与权限控制。您可在此管理应用信息并获取调用凭证，确保服务间安全、可控地集成。
-        <a href="${DOCS_BASE_URL}/docs/user/basic-management/application-management.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-services/application-management.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
@@ -139,7 +139,7 @@ export const guideTipConfig = {
     'cat/attApiCat.list': {
         title: '数据API服务目录是什么？',
         content: `数据API服务目录是 <u>数据服务</u> 模块中 API 服务的逻辑分类与目录化管理视图，实现接口资产的结构化组织、便捷检索和统一呈现。
-        <a href="${DOCS_BASE_URL}/docs/user/basic-management/category-management/api-category.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-services/service-categories.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
@@ -149,7 +149,7 @@ export const guideTipConfig = {
     'dp/dpModel.list': {
         title: '逻辑模型 — 可视化设计与规范化的数据建模',
         content: `支持在业务层构建标准化的数据表结构，可从数据库导入或手动设计模型，并关联 <u>标准数据元</u> 实现字段级统一规范。支持一键物化为物理表，打通模型设计与数据落地的全流程。
-        <a href="${DOCS_BASE_URL}/docs/user/data-standards/logical-model.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-modeling/logical-model/create-model.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
@@ -157,7 +157,16 @@ export const guideTipConfig = {
     'dp/dpDataElem.list': {
         title: '标准数据元 — 统一字段级数据定义与规范',
         content: `定义字段的名称、类型、长度、格式等标准属性，支持绑定代码表与清洗规则，为建模、<u>数据清洗</u> 和 <u>质量稽查</u> 提供统一依据，提升数据一致性与治理自动化水平。
-        <a href="${DOCS_BASE_URL}/docs/user/data-standards/standard-data-element.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-modeling/standard-data-element.html" target="_blank">查看帮助文档</a>
+    `,
+        type: 'remind', version: '1.0'
+    },
+
+    // standard code table
+    'dp/dpDataCodeTable.list': {
+        title: '标准代码表 — 统一管理标准代码与值域',
+        content: `集中维护标准代码及其代码值，为数据建模、数据元定义和数据治理提供统一的值域规范。
+        <a href="https://community.qdata.tech/docs/user/data-modeling/standard-data-codetable.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
@@ -211,7 +220,7 @@ export const guideTipConfig = {
     'dpp/tasker/dppEtlTask.list': {
         title: '数据集成任务 — 多源数据同步与转换的统一通道',
         content: `通过图形化方式配置ETL流程，支持关系型数据库、大数据平台、Kafka、HDFS等多源数据的接入与写出。提供丰富的转换组件，支持离线批处理与Flink实时流处理，实现数据清洗、转换与入湖入仓的一体化调度。
-        <a href="${DOCS_BASE_URL}/docs/user/data-development/task-management/integration-tasks.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-development/integration-tasks.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },
@@ -219,7 +228,7 @@ export const guideTipConfig = {
     'dpp/tasker/dpptaskerddv.list': {
         title: '数据开发任务 — 实时与离线数据处理的统一编排',
         content: `支持基于Flink的实时流处理和Spark SQL的离线批处理，提供SQL开发、调试与调度执行能力。覆盖数据同步、计算加工与入湖入仓等场景，实现对多源数据的灵活处理与高效编排。
-        <a href="${DOCS_BASE_URL}/docs/user/data-development/task-management/development-tasks.html" target="_blank">查看帮助文档</a>
+        <a href="https://community.qdata.tech/docs/user/data-development/development-tasks.html" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },

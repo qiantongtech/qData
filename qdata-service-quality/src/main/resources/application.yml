@@ -242,9 +242,9 @@ minidao:
 
 jeecg :
   jmreport:
-    #Multi-tenant mode, the default value is empty (created: isolated by creator, tenant: isolated by tenant) (v1.6.2+ new)
+    #Multi-tenant mode, the default value is empty (created: isolated by creator, tenant: isolated by tenant) (v1.6.3+ new)
     saasMode: created
-    # Platform online security configuration (v1.6.2+ new)
+    # Platform online security configuration (v1.6.3+ new)
     firewall:
       # Data source security (when turned on, the use of platform data sources, SQL parsing, select * query, and testing of whether the data source connection is correct are prohibited)
       # Under data source security, reserved roles have permission to use select * and test data source links.

@@ -18,7 +18,7 @@ version: "3.8"
 
 services:
   redis:
-    image: redis:6-alpine
+    image: ${QDATA_HUB}/redis:6-alpine
     profiles: ["all", "light", "local"]
     env_file: .env
     restart: always
@@ -37,7 +37,7 @@ services:
       - qdatanet
 
   rabbitmq:
-    image: rabbitmq:3.12-management
+    image: ${QDATA_HUB}/rabbitmq:3.12-management
     restart: always
     ports:
       - 5672:5672
@@ -61,7 +61,7 @@ services:
       - qdatanet
 
   nginx:
-    image: nginx:1.24.0
+    image: ${QDATA_HUB}/nginx:1.24.0
     restart: always
     profiles: [ "all", "light" ]
     env_file: .env
@@ -109,7 +109,7 @@ services:
     restart: always
     profiles: [ "all", "light", "schema", "local"  ]
     env_file: .env
-    image: mongo:4.4
+    image: ${QDATA_HUB}/mongo:4.4
     ports:
       - 27017:27017
 #    volumes:
@@ -128,7 +128,7 @@ services:
       - qdatanet
   neo4j:
     privileged: true
-    image: neo4j:4.4.40
+    image: ${QDATA_HUB}/neo4j:4.4.40
     profiles: [ "all", "light", "neo4j" ]
     restart: always
     ports:

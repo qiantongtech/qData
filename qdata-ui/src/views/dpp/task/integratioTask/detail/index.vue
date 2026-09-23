@@ -80,8 +80,8 @@
             <div class="infotop-row border-top">
               <div class="infotop-row-lable">{{ td('dpp.developTask.scheduleStatus', 'Schedule Status') }}</div>
               <div class="infotop-row-value">
-                <el-tag :type="dppEtlTaskDetail.schedulerState == '0' ? 'success' : 'danger'">
-                  {{ dppEtlTaskDetail.schedulerState == '0' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
+                <el-tag :type="dppEtlTaskDetail.schedulerState == '1' ? 'success' : 'danger'">
+                  {{ dppEtlTaskDetail.schedulerState == '1' ? td('dpp.integratioTask.on', 'On') : td('dpp.integratioTask.off', 'Off') }}
                 </el-tag>
               </div>
             </div>

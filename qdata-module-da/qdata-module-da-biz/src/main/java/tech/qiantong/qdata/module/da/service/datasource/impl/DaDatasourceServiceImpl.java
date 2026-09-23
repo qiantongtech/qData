@@ -383,13 +383,15 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         JSONObject targetConfig = JSONUtil.parseObj(datasource.getDatasourceConfig());
         String targetDbName = StrUtil.nullToEmpty(targetConfig.getStr("dbname"));
         String targetUsername = StrUtil.nullToEmpty(targetConfig.getStr("username"));
+        String targetSchema = StrUtil.nullToEmpty(targetConfig.getStr("sid"));
         for (DaDatasourceDO existing : this.list(connectionWrapper)) {
             if (StrUtil.isBlank(existing.getDatasourceConfig()) || !JSONUtil.isJsonObj(existing.getDatasourceConfig())) {
                 continue;
             }
             JSONObject existingConfig = JSONUtil.parseObj(existing.getDatasourceConfig());
             if (targetDbName.equals(StrUtil.nullToEmpty(existingConfig.getStr("dbname")))
-                    && targetUsername.equals(StrUtil.nullToEmpty(existingConfig.getStr("username")))) {
+                    && targetUsername.equals(StrUtil.nullToEmpty(existingConfig.getStr("username")))
+                    && targetSchema.equals(StrUtil.nullToEmpty(existingConfig.getStr("sid")))) {
                 throw new ServiceException("da.error.datasource.connection.duplicate",
                         "A data source with the same connection information already exists");
             }

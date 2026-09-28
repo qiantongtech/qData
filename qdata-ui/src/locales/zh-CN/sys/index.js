@@ -67,7 +67,7 @@ export default {
     }
   },
   register: {
-    title: '冰凤后台管理系统',
+    title: 'qData后台管理系统',
     account: '账号',
     password: '密码',
     confirmPassword: '确认密码',

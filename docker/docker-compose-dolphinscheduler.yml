@@ -148,6 +148,8 @@ services:
     image: ${DS_HUB}/dolphinscheduler-worker:${DS_TAG}
     profiles: ["all", "local" ]
     env_file: .env
+    environment:
+      - JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:1235/actuator/health" ]
       interval: 30s

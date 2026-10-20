@@ -646,7 +646,7 @@ function handleDelete(row) {
 
 /** Status modification */
 function handleStatusChange(row) {
-  let text = row.status === "0" ? td('dm.dataLayer.enableText', 'Enable') : td('dm.dataLayer.disableText', 'Disable');
+  let text = row.status === "1" ? td('dm.dataLayer.enableText', 'Enable') : td('dm.dataLayer.disableText', 'Disable');
   proxy.$modal
     .confirm(td('dm.dataLayer.confirmStatusChangeSpecification', 'Are you sure to "{text}" specification "{id}"?', { text, id: row.id }))
     .then(function () {

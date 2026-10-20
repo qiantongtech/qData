@@ -30,13 +30,13 @@ export default {
   },
   attTheme: {
     title: 'テーマ — <u>データ資産</u>のグルーピング次元の一つで、データ資産のテーマ別タグ付けとグループ管理に使用します。',
-    content: `テーマ体系はプラットフォーム初期にデータガバナンスチームが統一的に計画し、適度な粒度と明確なセマンティクスを維持し、頻繁な調整による管理混乱を避けることを推奨します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/basic-management/topic-management.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `テーマ体系はプラットフォーム初期にデータガバナンスチームが統一的に計画し、適度な粒度と明確なセマンティクスを維持し、頻繁な調整による管理混乱を避けることを推奨します。`,
     type: 'remind',
     version: '1.0'
   },
   attClient: {
     title: 'アプリケーション — サードパーティシステムとの連携用',
-    content: `アプリケーションを作成し専用キーを生成することで、プラットフォームAPIへの安全なアクセスと権限制御を実現します。ここでアプリケーション情報を管理し、呼び出しクレデンシャルを取得できます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/basic-management/application-management.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `アプリケーションを作成し専用キーを生成することで、プラットフォームAPIへの安全なアクセスと権限制御を実現します。ここでアプリケーション情報を管理し、呼び出しクレデンシャルを取得できます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-services/application-management.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -48,19 +48,19 @@ export default {
   },
   attApiCat: {
     title: 'データAPIサービスカタログとは？',
-    content: `データAPIサービスカタログは<u>データサービス</u>モジュールにおけるAPIサービスの論理分類とディレクトリ管理ビューで、インターフェース資産の構造化された整理、便利な検索、統一された表示を実現します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/basic-management/category-management/api-category.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `データAPIサービスカタログは<u>データサービス</u>モジュールにおけるAPIサービスの論理分類とディレクトリ管理ビューで、インターフェース資産の構造化された整理、便利な検索、統一された表示を実現します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-services/service-categories.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpModel: {
     title: '論理モデル — 可視化設計と標準化されたデータモデリング',
-    content: `ビジネス層で標準化されたデータテーブル構造の構築をサポートし、データベースからのインポートまたは手動設計が可能で、<u>標準データ要素</u>を関連付けてフィールドレベルの統一規範を実現します。ワンクリックで物理テーブルにマテリアライズできます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-standards/logical-model.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `ビジネス層で標準化されたデータテーブル構造の構築をサポートし、データベースからのインポートまたは手動設計が可能で、<u>標準データ要素</u>を関連付けてフィールドレベルの統一規範を実現します。ワンクリックで物理テーブルにマテリアライズできます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-modeling/logical-model/create-model.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpDataElem: {
     title: '標準データ要素 — フィールドレベルのデータ定義と規範の統一',
-    content: `フィールドの名称、タイプ、長さ、フォーマットなどの標準属性を定義し、コードテーブルとクレンジングルールのバインドをサポートします。モデリング、<u>データクレンジング</u>、<u>品質監査</u>に統一された根拠を提供します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-standards/standard-data-element.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `フィールドの名称、タイプ、長さ、フォーマットなどの標準属性を定義し、コードテーブルとクレンジングルールのバインドをサポートします。モデリング、<u>データクレンジング</u>、<u>品質監査</u>に統一された根拠を提供します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-modeling/standard-data-element.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -96,19 +96,19 @@ export default {
   },
   dppEtlTask: {
     title: 'データ統合タスク — 多ソースデータ同期と変換の統合チャネル',
-    content: `グラフィカルにETLプロセスを設定し、リレーショナルデータベース、ビッグデータプラットフォーム、Kafka、HDFSなどの多ソースデータの入出力をサポートします。豊富な変換コンポーネントを提供し、オフラインバッチ処理とFlinkリアルタイムストリーム処理をサポートします。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/task-management/integration-tasks.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `グラフィカルにETLプロセスを設定し、リレーショナルデータベース、ビッグデータプラットフォーム、Kafka、HDFSなどの多ソースデータの入出力をサポートします。豊富な変換コンポーネントを提供し、オフラインバッチ処理とFlinkリアルタイムストリーム処理をサポートします。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/integration-tasks.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpptaskerddv: {
     title: 'データ開発タスク — リアルタイムとオフラインデータ処理の統合オーケストレーション',
-    content: `Flinkベースのリアルタイムストリーム処理とSpark SQLのオフラインバッチ処理をサポートし、SQL開発、デバッグ、スケジュール実行機能を提供します。データ同期、計算加工、データレイク/ウェアハウスロードなどのシナリオをカバーします。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/task-management/development-tasks.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `Flinkベースのリアルタイムストリーム処理とSpark SQLのオフラインバッチ処理をサポートし、SQL開発、デバッグ、スケジュール実行機能を提供します。データ同期、計算加工、データレイク/ウェアハウスロードなどのシナリオをカバーします。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/development-tasks.html" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },
   dppEtlTaskInstance: {
     title: '運用管理 — スケジュールタスクの実行モニタリングと障害対応',
-    content: `ジョブとデータ開発タスクの実行インスタンスを集中的に管理し、実行ログ表示、タスク依存関係、実行状態をサポートします。インスタンス再実行とログダウンロード機能を提供します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/operations-management.html" target="_blank">ヘルプドキュメント</a>`,
+    content: `ジョブとデータ開発タスクの実行インスタンスを集中的に管理し、実行ログ表示、タスク依存関係、実行状態をサポートします。インスタンス再実行とログダウンロード機能を提供します。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-development/operations-management/" target="_blank">ヘルプドキュメント</a>`,
     type: 'remind',
     version: '1.0'
   },

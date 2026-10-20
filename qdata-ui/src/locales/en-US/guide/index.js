@@ -30,13 +30,13 @@ export default {
   },
   attTheme: {
     title: 'Themes — One of the <u>data asset</u> grouping dimensions, used for thematic tagging and group management of data assets.',
-    content: `It is recommended that the theme system be planned uniformly by the data governance team in the early stage of the platform, maintaining moderate granularity and clear semantics to avoid management confusion from frequent adjustments. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/basic-management/topic-management.html" target="_blank">View documentation</a>`,
+    content: `It is recommended that the theme system be planned uniformly by the data governance team in the early stage of the platform, maintaining moderate granularity and clear semantics to avoid management confusion from frequent adjustments.`,
     type: 'remind',
     version: '1.0'
   },
   attClient: {
     title: 'Applications — For integrating third-party systems',
-    content: `Create applications and generate dedicated keys to enable secure API access and permission control. You can manage application information and obtain call credentials here, ensuring secure and controlled service integration. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/basic-management/application-management.html" target="_blank">View documentation</a>`,
+    content: `Create applications and generate dedicated keys to enable secure API access and permission control. You can manage application information and obtain call credentials here, ensuring secure and controlled service integration. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-services/application-management.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -48,19 +48,19 @@ export default {
   },
   attApiCat: {
     title: 'What is the Data API Service Catalog?',
-    content: `The Data API Service Catalog is the logical classification and directory management view of API services in the <u>data service</u> module, enabling structured organization, convenient retrieval, and unified presentation of interface assets. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/basic-management/category-management/api-category.html" target="_blank">View documentation</a>`,
+    content: `The Data API Service Catalog is the logical classification and directory management view of API services in the <u>data service</u> module, enabling structured organization, convenient retrieval, and unified presentation of interface assets. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-services/service-categories.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpModel: {
     title: 'Logical Model — Visual design and standardized data modeling',
-    content: `Supports building standardized data table structures at the business layer, importing from databases or manually designing models, and associating <u>standard data elements</u> for field-level unified standards. Supports one-click materialization to physical tables, bridging model design and data implementation. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-standards/logical-model.html" target="_blank">View documentation</a>`,
+    content: `Supports building standardized data table structures at the business layer, importing from databases or manually designing models, and associating <u>standard data elements</u> for field-level unified standards. Supports one-click materialization to physical tables, bridging model design and data implementation. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-modeling/logical-model/create-model.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpDataElem: {
     title: 'Standard Data Element — Unified field-level data definitions and standards',
-    content: `Defines standard attributes such as field name, type, length, and format. Supports binding code tables and clean rules, providing a unified basis for modeling, <u>data cleaning</u> and <u>quality auditing</u>, improving data consistency and governance automation. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-standards/standard-data-element.html" target="_blank">View documentation</a>`,
+    content: `Defines standard attributes such as field name, type, length, and format. Supports binding code tables and clean rules, providing a unified basis for modeling, <u>data cleaning</u> and <u>quality auditing</u>, improving data consistency and governance automation. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-modeling/standard-data-element.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -96,19 +96,19 @@ export default {
   },
   dppEtlTask: {
     title: 'Data Integration Task — Unified channel for multi-source data synchronization and transformation',
-    content: `Configure ETL processes graphically, supporting relational databases, big data platforms, Kafka, HDFS, and other multi-source data input and output. Provides rich transformation components, supporting offline batch processing and Flink real-time stream processing. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/task-management/integration-tasks.html" target="_blank">View documentation</a>`,
+    content: `Configure ETL processes graphically, supporting relational databases, big data platforms, Kafka, HDFS, and other multi-source data input and output. Provides rich transformation components, supporting offline batch processing and Flink real-time stream processing. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/integration-tasks.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpptaskerddv: {
     title: 'Data Development Task — Unified orchestration for real-time and offline data processing',
-    content: `Supports Flink-based real-time stream processing and Spark SQL offline batch processing, providing SQL development, debugging, and scheduled execution capabilities. Covers data synchronization, computational processing, and data lake/warehouse loading scenarios. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/task-management/development-tasks.html" target="_blank">View documentation</a>`,
+    content: `Supports Flink-based real-time stream processing and Spark SQL offline batch processing, providing SQL development, debugging, and scheduled execution capabilities. Covers data synchronization, computational processing, and data lake/warehouse loading scenarios. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/development-tasks.html" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },
   dppEtlTaskInstance: {
     title: 'Operations Management — Execution monitoring and fault handling for scheduled tasks',
-    content: `Centrally manages running instances of jobs and data development tasks, supporting execution log viewing, task dependency relationships, and run status. Provides instance re-run and log download features. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/operations-management.html" target="_blank">View documentation</a>`,
+    content: `Centrally manages running instances of jobs and data development tasks, supporting execution log viewing, task dependency relationships, and run status. Provides instance re-run and log download features. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-development/operations-management/" target="_blank">View documentation</a>`,
     type: 'remind',
     version: '1.0'
   },

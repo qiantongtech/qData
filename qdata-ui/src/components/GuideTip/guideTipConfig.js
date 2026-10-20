@@ -80,7 +80,7 @@ export const guideTipConfig = {
     // Home page
     'index': {
         title: '重要提醒：本系统为演示站点，<u>每日凌晨 02:30 清除所有用户数据</u>，以保障系统整洁与稳定运行。',
-        content: `如需体验完整功能，请下载开源代码自行部署。如需 <u>开源版品牌授权</u> 或 <u>咨询商业版</u>，请点击查看详情： 👉  <a href="${DOCS_BASE_URL}/business.html" target="_blank">了解授权详情</a>`,
+        content: `如需体验完整功能，请下载开源代码自行部署。如需 <u>开源版品牌授权</u> 或 <u>咨询商业版</u>，请点击查看详情： 👉  <a href="${DOCS_BASE_URL}/business/policy.html" target="_blank">了解授权详情</a>`,
         extensionLabel: '公告',
         extensionContent: '<span class="guide-tip-announcement-brand">DataX来袭</span>，qData开源版 <span class="guide-tip-announcement-dict-tag">v1.6.0</span> 轻量发布！本次版本全新集成 DataX 数据同步能力，进一步<span class="guide-tip-announcement-keyword">精简部署架构与运行依赖</span>，<span class="guide-tip-announcement-keyword">降低资源占用和运维成本</span>，让数据接入、同步与任务管理更加简单、高效。',
         type: 'danger', version: '1.0'
@@ -114,9 +114,7 @@ export const guideTipConfig = {
     // Topic management
     'att/attTheme.list': {
         title: '主题 —— 是 <u>数据资产</u> 分组维度之一，用于后续对数据资产进行主题化标注和分组管理。',
-        content: `建议主题体系在平台初期由数据治理团队统一规划，保持主题颗粒度适中、语义明确，避免频繁调整带来管理混乱。
-        <a href="${DOCS_BASE_URL}/docs/user/basic-management/topic-management.html" target="_blank">查看帮助文档</a>
-    `,
+        content: '建议主题体系在平台初期由数据治理团队统一规划，保持主题颗粒度适中、语义明确，避免频繁调整带来管理混乱。',
         type: 'remind', version: '1.0'
     },
     // Application management
@@ -236,7 +234,7 @@ export const guideTipConfig = {
     'dpp/etltaskinstance/dppEtlTaskInstance.list': {
         title: '运维管理 — 调度任务的执行监控与故障处理',
         content: `集中管理作业和数据开发任务的运行实例，支持查看执行日志、任务依赖关系与运行状态。提供实例重跑、日志下载等功能，助力运维人员高效监控调度链路，快速定位并处理执行异常。
-        <a href="${DOCS_BASE_URL}/docs/user/data-development/operations-management.html" target="_blank">查看帮助文档</a>
+        <a href="${DOCS_BASE_URL}/docs/user/data-development/operations-management/" target="_blank">查看帮助文档</a>
     `,
         type: 'remind', version: '1.0'
     },

@@ -11,7 +11,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 WORKDIR $APP_HOME
 
 # Copy product
-COPY ./target/*.jar ./qdata-service-ai.jar
+COPY ./*.jar ./qdata-service-ai.jar
 
 EXPOSE 8087
 

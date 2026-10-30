@@ -20,6 +20,15 @@ import { i18n } from '@/plugins/vueI18n';
 
 export const treeData = [
   {
+    id: 12,
+    label: "Doris",
+    value: "Doris",
+    type: "Doris",
+    falg: true,
+    children: [],
+    icon: new URL('@/assets/images/common/dpp/icon-doris-one.svg', import.meta.url).href,
+  },
+  {
     id: 2,
     label: i18n.global.t('dpp.developTask.dm8'),
     value: "DM",

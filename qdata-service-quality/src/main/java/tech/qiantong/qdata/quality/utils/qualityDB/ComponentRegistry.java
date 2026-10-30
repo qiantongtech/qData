@@ -31,6 +31,7 @@ public class ComponentRegistry {
 
     public ComponentRegistry() {
         this.componentItemMap.put(DbType.MYSQL.getDb(), new MySqlQuality());
+        this.componentItemMap.put(DbType.DORIS.getDb(), new DorisQuality());
         this.componentItemMap.put(DbType.ORACLE_12C.getDb(), new Oracle12cQuality());
         this.componentItemMap.put(DbType.ORACLE.getDb(), new OracleQuality());
         this.componentItemMap.put(DbType.SQL_SERVER.getDb(), new SQLServerQuality());

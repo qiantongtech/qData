@@ -157,6 +157,8 @@ const getDatasourceIcon = (type) => {
       return new URL("@/assets/images/common/dpp/ds-dm.png", import.meta.url).href;
     case "Oracle":
       return new URL("@/assets/images/common/dpp/img-oracle-one.png", import.meta.url).href;
+    case "Doris":
+      return new URL("@/assets/images/common/dpp/icon-doris-one.svg", import.meta.url).href;
     case "MYSQL":
       return new URL("@/assets/images/common/dpp/ds-mysql.png", import.meta.url).href;
     case "Kingbase":

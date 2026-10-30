@@ -362,12 +362,18 @@ public class DataDevelopmentJdbcTaskRunner {
                         dbQueryProperty.trainToJdbcUrl(),
                         dbQueryProperty.getUsername(),
                         dbQueryProperty.getPassword())) {
-                    connection.setAutoCommit(false);
+                    boolean transactional = !StringUtils.equals(DbType.DORIS.getDb(), dbQueryProperty.getDbType());
+                    connection.setAutoCommit(!transactional);
+                    if (!transactional) {
+                        appendDataDevelopmentLog(taskLog, "Doris executes in auto-commit mode; completed statements cannot be rolled back. Retries may repeat completed writes.");
+                    }
                     try {
                         // pre, main, and post SQL share one connection and transaction and are committed only after all stages succeed.
                         JdbcExecuteResult result = executeJdbcSql(connection, sql.trim(), dbQueryProperty.getDbType(), sqlType,
                                 sqlSegmentDelimiter, params, taskLog);
-                        connection.commit();
+                        if (transactional) {
+                            connection.commit();
+                        }
 
                         // Log recovery information only after a successful retry; do not duplicate it for an initial success.
                         if (attempt > 1) {
@@ -376,8 +382,16 @@ public class DataDevelopmentJdbcTaskRunner {
                         return result;
                     } catch (Exception e) {
                         // Roll back all uncommitted SQL on the current connection when any stage fails.
-                        connection.rollback();
-                        appendDataDevelopmentLog(taskLog, "SQL execution failed, transaction rolled back: "
+                        if (transactional) {
+                            try {
+                                connection.rollback();
+                            } catch (SQLException rollbackError) {
+                                e.addSuppressed(rollbackError);
+                            }
+                        }
+                        appendDataDevelopmentLog(taskLog, (transactional
+                                ? "SQL execution failed, rollback attempted: "
+                                : "Doris SQL execution failed; completed statements remain committed: ")
                                 + JSONUtils.formatJson(JSONUtils.toJson(e.getMessage())));
                         throw e;
                     }
@@ -561,7 +575,7 @@ public class DataDevelopmentJdbcTaskRunner {
                     "Node data source configuration is missing.");
         }
         return new DbQueryProperty(
-                datasource.getString("datasourceType"),
+                normalizeDbType(datasource.getString("datasourceType")),
                 datasource.getString("ip"),
                 datasource.getLong("port"),
                 datasource.get("datasourceConfig").toString()
@@ -578,6 +592,9 @@ public class DataDevelopmentJdbcTaskRunner {
         if (StringUtils.isEmpty(dbType)) {
             throw new ServiceException("dpp.error.data.development.database.type.missing",
                     "Database type is required.");
+        }
+        if (StringUtils.equalsIgnoreCase(dbType, "doris")) {
+            return DbType.DORIS.getDb();
         }
         // MySQL components usually send mysql, while the project DbType uses MySql.
         if (StringUtils.equalsIgnoreCase(dbType, "mysql")) {
@@ -625,7 +642,8 @@ public class DataDevelopmentJdbcTaskRunner {
      * @return JDBC driver class name
      */
     private String getDriverClassName(String dbType) {
-        if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)) {
+        if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)
+                || StringUtils.equals(DbType.DORIS.getDb(), dbType)) {
             return "com.mysql.cj.jdbc.Driver";
         }
         if (StringUtils.equals(DbType.ORACLE.getDb(), dbType) || StringUtils.equals(DbType.ORACLE_12C.getDb(), dbType)) {
@@ -907,7 +925,8 @@ public class DataDevelopmentJdbcTaskRunner {
                     .collect(Collectors.toList());
         }
         // When no custom delimiter is configured, select the Druid splitter for the actual database dialect.
-        if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)) {
+        if (StringUtils.equals(DbType.MYSQL.getDb(), dbType)
+                || StringUtils.equals(DbType.DORIS.getDb(), dbType)) {
             String cleanSQL = SQLParserUtils.removeComment(sql, com.alibaba.druid.DbType.mysql);
             return SQLParserUtils.split(cleanSQL, com.alibaba.druid.DbType.mysql);
         }

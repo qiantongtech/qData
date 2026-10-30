@@ -1,0 +1,5 @@
+# 排除 SQL 文件的语言统计
+*.sql -linguist-detectable
+
+# 排除 sql 目录下的所有文件
+sql/** -linguist-detectable

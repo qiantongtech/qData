@@ -205,7 +205,7 @@
                 :label="item.datasourceName"
                 :value="item.id"
                 :disabled="
-                !['DM8', 'MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive'].includes(
+                !['DM8', 'MySql', 'Oracle11', 'Oracle', 'PostgreSQL', 'Hive', 'Doris'].includes(
                   item.datasourceType
                 )
               "

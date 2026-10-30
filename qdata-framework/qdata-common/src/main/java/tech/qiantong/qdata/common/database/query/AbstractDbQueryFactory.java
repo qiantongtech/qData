@@ -268,22 +268,19 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
             return query;
         }
         if (DbType.DORIS.getDb().equals(dbQueryProperty.getDbType())) {
-            String pkColumnNames = dbDialect.getPkColumnNames(dbQueryProperty);
-            List<String> pkList = new ArrayList<>();
-
-            jdbcTemplate.query(pkColumnNames, rs -> {
-                String createTableSql = rs.getString(2); // Column 2 is the complete DDL
-                Pattern pattern = Pattern.compile("(UNIQUE|PRIMARY) KEY\\s*\\(([^)]+)\\)", Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(createTableSql);
-                if (matcher.find()) {
-                    String keys = matcher.group(2);
-                    Arrays.stream(keys.split(","))
-                            .map(col -> col.replace("`", "").trim())
-                            .forEach(pkList::add);
-                }
-            });
+            // SHOW CREATE TABLE requires a table, and keys must be scoped to that table.
+            Map<String, Set<String>> keysByTable = new HashMap<>();
             for (DbColumn column : query) {
-                column.setColKey(pkList.contains(column.getColName()));
+                String tableName = column.getTableName();
+                Set<String> keys = keysByTable.get(tableName);
+                if (keys == null) {
+                    keys = getTableColumns(dbQueryProperty, tableName).stream()
+                            .filter(c -> Boolean.TRUE.equals(c.getColKey()))
+                            .map(DbColumn::getColName)
+                            .collect(Collectors.toSet());
+                    keysByTable.put(tableName, keys);
+                }
+                column.setColKey(keys.contains(column.getColName()));
             }
         }
         return query;

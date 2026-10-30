@@ -129,7 +129,8 @@ public class DorisDialect extends AbstractDbDialect {
 
     @Override
     public String getPkColumnNames(DbQueryProperty dbQueryProperty, String tableName) {
-        return "SHOW CREATE TABLE " + dbQueryProperty.getDbName() + "." + tableName;
+        return "SHOW CREATE TABLE `" + dbQueryProperty.getDbName().replace("`", "``")
+                + "`.`" + tableName.replace("`", "``") + "`";
     }
     @Override
     public String getPkColumnNames(DbQueryProperty dbQueryProperty) {

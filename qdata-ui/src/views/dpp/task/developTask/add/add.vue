@@ -515,16 +515,18 @@ const tempLoading = ref(false);
 const getList = async () => {
   tempLoading.value = true;
   try {
-    let type = treeData.filter((item) => item.value == form.value.typaCode)[0]
-      .id;
-    let params = {
-      ...queryParams.value,
-      type: type,
-    };
-    dppEtlSqlTemp(params).then((response) => {
-      templateList.value = response.data.rows;
-      total.value = response.data.total;
-    });
+    const datasourceType = form.value.typaCode;
+    const type = treeData.find((item) => item.value === datasourceType)?.id;
+    if (type == null) {
+      templateList.value = [];
+      total.value = 0;
+      return;
+    }
+    const response = await dppEtlSqlTemp({ ...queryParams.value, type });
+    // Ignore a response for a type the user has already switched away from.
+    if (form.value.typaCode !== datasourceType) return;
+    templateList.value = response.data.rows;
+    total.value = response.data.total;
   } finally {
     tempLoading.value = false;
   }
@@ -552,6 +554,10 @@ let createTypeList = ref([]);
 
 /** Query data development task list */
 function getDaDatasource(flag) {
+  if (templateAct.value.typaCode !== form.value.typaCode) {
+    templateAct.value = { id: "", sqlData: { content: "" }, queryParams: queryParams.value, typaCode: form.value.typaCode };
+    queryParams.value.pageNum = 1;
+  }
   templateAct.value.typaCode = form.value.typaCode;
   // Refresh template list
   getList();
@@ -674,6 +680,7 @@ const saveData = async () => {
       enforceQuartzJDBC();
       if (!form.value.code) {
         const response = await getNodeUniqueKey({
+          scheduler: form.value.scheduler,
           projectCode: userStore.projectCode || "133545087166112",
           projectId: userStore.projectId,
         });

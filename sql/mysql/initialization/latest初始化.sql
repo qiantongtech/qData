@@ -90496,6 +90496,55 @@ OPTIONS (
   driver "com.mysql.cj.jdbc.Driver"
 );','spark sql','1','0',null,null,'2025-07-21 10:43:14.914442',null,null,'2025-07-21 10:43:14.914450',null);
 
+
+-- Doris SQL templates (TYPE = 12)
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'check.connection.doris', '12', '-- 检查当前连接与数据库
+SELECT DATABASE() AS current_database, VERSION() AS database_version;
+SHOW TABLES;', '检查当前数据库、版本及可见表，不写入数据。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'check.connection.doris' AND `del_flag` = '0'
+);
+
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'create.table.doris', '12', '-- 执行前确认表名、分桶数和副本数适合目标集群
+CREATE TABLE IF NOT EXISTS doris_example_detail (
+    id BIGINT NOT NULL COMMENT ''业务编号'',
+    event_time DATETIME NOT NULL COMMENT ''事件时间'',
+    category VARCHAR(64) NULL COMMENT ''分类'',
+    amount DECIMAL(18, 2) NULL COMMENT ''金额''
+) ENGINE=OLAP
+DUPLICATE KEY(id, event_time)
+COMMENT ''Doris 研发示例明细表''
+DISTRIBUTED BY HASH(id) BUCKETS 4
+PROPERTIES ("replication_num" = "1");', '创建 Duplicate Key 明细表；执行前修改表名及副本数。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'create.table.doris' AND `del_flag` = '0'
+);
+
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'select.daily.summary.doris', '12', '-- 将表名及字段替换为实际数据；本模板只读取数据
+SELECT DATE(event_time) AS stat_date,
+       category,
+       COUNT(*) AS record_count,
+       SUM(amount) AS total_amount
+FROM doris_example_detail
+GROUP BY DATE(event_time), category
+ORDER BY stat_date DESC, category
+LIMIT 100;', '读取示例明细表并按日期和分类汇总，先创建示例表或替换为已有表。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'select.daily.summary.doris' AND `del_flag` = '0'
+);
+
 REPLACE INTO `dpp_etl_task`(`id`,`cat_id`,`cat_code`,`type`,`name`,`code`,`version`,`project_id`,`project_code`,`person_charge`,`contact_number`,`locations`,`description`,`timeout`,`extraction_count`,`write_count`,`execution_type`,`status`,`ds_id`,`quartz_id`,`scheduler`,`actuator`,`valid_flag`,`del_flag`,`create_by`,`creator_id`,`create_time`,`update_by`,`updater_id`,`update_time`,`remark`,`etl_node_code`,`draft_json`) VALUES(1,5,'A03A02','1','转化_水位预警等级校验','152416145463616',10,1,'152317790975712','2','15365128327','[{"taskCode":"152438957987136","x":280,"y":70},{"taskCode":"152438966134080","x":280,"y":320}]','【达梦 → 应用层】据水位阈值划分红/黄/蓝三级预警',0,null,null,'PARALLEL','1',61,null,'DOLPHINSCHEDULER','SPARK','1','0','吴同',2,'2025-09-19 17:34:47.119000','吴同',2,'2025-09-30 15:26:36.283000',null,null,'{"name":"转化_水位预警等级校验","catId":5,"catCode":"A03A02","executionType":"PARALLEL","crontab":"0 0 0 1 * ?","releaseState":"0","description":"【达梦 → Doris】据水位阈值划分红/黄/蓝三级预警","contactNumber":"15365128327","personCharge":2,"taskPriority":"","workerGroup":"default","failRetryTimes":"","failRetryInterval":"","delayTime":"","taskType":"SPARK","jobManagerMemory":"1G","taskManagerMemory":"2G","slot":1,"taskManager":2,"parallelism":1,"driverCores":1,"driverMemory":"512m","numExecutors":1,"executorMemory":"512m","executorCores":1,"yarnQueue":""}');
 
 REPLACE INTO `dpp_etl_task`(`id`,`cat_id`,`cat_code`,`type`,`name`,`code`,`version`,`project_id`,`project_code`,`person_charge`,`contact_number`,`locations`,`description`,`timeout`,`extraction_count`,`write_count`,`execution_type`,`status`,`ds_id`,`quartz_id`,`scheduler`,`actuator`,`valid_flag`,`del_flag`,`create_by`,`creator_id`,`create_time`,`update_by`,`updater_id`,`update_time`,`remark`,`etl_node_code`,`draft_json`) VALUES(2,5,'A03A02','1','转化_水位列转行','152641133215040',8,1,'152317790975712','2','15365128327','[{"taskCode":"152641417179456","x":370,"y":90},{"taskCode":"152641997202752","x":370,"y":260},{"taskCode":"152641423539520","x":370,"y":400}]','【达梦 →  明细层】将多字段水位统计表排序输出',0,null,null,'PARALLEL','1',67,null,'DOLPHINSCHEDULER','SPARK','1','0','吴同',2,'2025-09-22 09:03:39.553000','吴同',2,'2025-09-30 15:39:27.055000',null,null,'{"catId":5,"name":"转化_水位列转行","catCode":"A03A02","executionType":"PARALLEL","crontab":"0 0 0 1 * ?","releaseState":"0","description":"","contactNumber":"15365128327","personCharge":2,"taskPriority":"","workerGroup":"default","failRetryTimes":"","failRetryInterval":"","delayTime":"","taskType":"SPARK","jobManagerMemory":"1G","taskManagerMemory":"2G","slot":1,"taskManager":2,"parallelism":1,"driverCores":1,"driverMemory":"512m","numExecutors":1,"executorMemory":"512m","executorCores":1,"yarnQueue":""}');

@@ -313,6 +313,36 @@
             </plugin>
 
 
+            <!-- 3. 将第三方依赖拷贝到 target/spark-lib 目录（排除 tech.qiantong） -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies-spark</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 输出目录设置为 target/spark-lib -->
+                            <outputDirectory>${project.build.directory}/spark-lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <!-- 排除内部模块、Flink 生态（Spark 运行时不需要） -->
+                            <excludeGroupIds>tech.qiantong,com.ververica,org.apache.spark</excludeGroupIds>
+                            <!-- 精确排除 Spark 镜像已提供或会与其 Hadoop 3.3.4 冲突的运行时依赖 -->
+                            <excludeArtifactIds>flink-doris-connector-1.19,hadoop-client-api,hadoop-client-runtime</excludeArtifactIds>
+                            <excludeScope>provided</excludeScope>
+                            <!-- runtime 类路径包含 compile+runtime，不含 provided 和 system -->
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Open jar plug-in -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -325,6 +355,13 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                                            <!-- 限制只处理 tech.qiantong 相关的依赖 -->
+                            <artifactSet>
+                                <includes>
+                                    <include>tech.qiantong:*:*</include> <!-- 只包括 tech.qiantong 开头的所有依赖 -->
+                                </includes>
+                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>

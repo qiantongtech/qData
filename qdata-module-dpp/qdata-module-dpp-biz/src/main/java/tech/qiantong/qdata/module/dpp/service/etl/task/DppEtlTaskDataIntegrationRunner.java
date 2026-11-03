@@ -37,6 +37,7 @@ import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.common.utils.uuid.IdUtils;
 import tech.qiantong.qdata.datax.DataXExecutor;
 import tech.qiantong.qdata.datax.DataXJsonBuilder;
+import tech.qiantong.qdata.datax.DateIncrementFilter;
 import tech.qiantong.qdata.datax.DataXResult;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlNodeRespVO;
 import tech.qiantong.qdata.module.dpp.controller.admin.etl.vo.DppEtlTaskNodeRelPageReqVO;
@@ -348,26 +349,32 @@ public class DppEtlTaskDataIntegrationRunner {
                 }
             });
         }
-        return new DateIncrementCursorContext(dateFormat, redisKeys);
+        Map<String, String> cached = new LinkedHashMap<>();
+        for (Map.Entry<String, String> entry : redisKeys.entrySet()) {
+            String value = redisService.get(entry.getValue());
+            if (StringUtils.isNotEmpty(value)) cached.put(entry.getKey(), value);
+        }
+        Map<String, String> upperBounds = DateIncrementFilter.apply(readerParameters, cached, new Date());
+        return new DateIncrementCursorContext(dateFormat, redisKeys, upperBounds);
     }
 
     /**
-     * Persists only markers emitted by the final successful DataX attempt.
+     * Persists the submitted window bounds only after the final DataX attempt succeeds.
      */
     private void persistDateIncrementCursors(DataXResult result, DateIncrementCursorContext context, StringBuilder taskLog) {
         // A missing or empty context means this job has no type-2 time cursor to persist.
         if (context == null || context.redisKeys.isEmpty()) {
             return;
         }
-        Map<String, String> cursors = parseDateIncrementCursors(result.getOutput());
+        Map<String, String> cursors = context.upperBounds;
         Map<String, String> valuesByRedisKey = new LinkedHashMap<>();
         Map<String, Long> epochsByRedisKey = new LinkedHashMap<>();
         Map<String, Long> legacyEpochsByRedisKey = new LinkedHashMap<>();
         for (Map.Entry<String, String> entry : context.redisKeys.entrySet()) {
             String value = cursors.get(entry.getKey());
-            // Successful DataX output must contain every configured cursor marker.
+            // Every time-range field must have a bound captured before execution.
             if (value == null) {
-                throw new ServiceException("DataX did not return the time cursor for column: " + entry.getKey());
+                throw new ServiceException("Missing submitted time-window bound for column: " + entry.getKey());
             }
             long epochMillis = parseDateCursor(value, context.dateFormat).getTime();
             valuesByRedisKey.put(entry.getValue(), value);
@@ -425,9 +432,13 @@ public class DppEtlTaskDataIntegrationRunner {
         /** Maps normalized database column names to their corresponding Redis cursor keys. */
         private final Map<String, String> redisKeys;
 
-        private DateIncrementCursorContext(String dateFormat, Map<String, String> redisKeys) {
+        private final Map<String, String> upperBounds;
+
+        private DateIncrementCursorContext(String dateFormat, Map<String, String> redisKeys,
+                                           Map<String, String> upperBounds) {
             this.dateFormat = dateFormat;
             this.redisKeys = redisKeys;
+            this.upperBounds = upperBounds;
         }
     }
 

@@ -848,7 +848,10 @@ const saveData = async () => {
       ...item,
       inputField: item.columnName,
     }));
-    taskParams.removeFields = removeFields.value;
+    taskParams.removeFields = removeFields.value.map((item) => ({
+      ...item,
+      inputField: item.columnName,
+    }));
     taskParams.mainArgs = taskParams.mainArgs || {};
 
     // Construct outputFields = inputFields + enhanced value of tableFields

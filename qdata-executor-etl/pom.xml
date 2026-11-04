@@ -313,6 +313,36 @@
             </plugin>
 
 
+            <!-- Copy third-party dependencies to target/spark-lib, excluding internal modules. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies-spark</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Output shared dependencies to target/spark-lib. -->
+                            <outputDirectory>${project.build.directory}/spark-lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <!-- Exclude internal modules, Flink dependencies, and Spark-provided artifacts. -->
+                            <excludeGroupIds>tech.qiantong,com.ververica,org.apache.spark</excludeGroupIds>
+                            <!-- Exclude the Flink connector and Hadoop client artifacts provided by or conflicting with the Spark image. -->
+                            <excludeArtifactIds>flink-doris-connector-1.19,hadoop-client-api,hadoop-client-runtime</excludeArtifactIds>
+                            <excludeScope>provided</excludeScope>
+                            <!-- The runtime scope includes compile and runtime dependencies, excluding provided and system dependencies. -->
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Open jar plug-in -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -325,6 +355,13 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <!-- Bundle only tech.qiantong internal dependencies. -->
+                            <artifactSet>
+                                <includes>
+                                    <include>tech.qiantong:*:*</include> <!-- Include all tech.qiantong artifacts. -->
+                                </includes>
+                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>

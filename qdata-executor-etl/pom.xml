@@ -313,7 +313,7 @@
             </plugin>
 
 
-            <!-- 3. 将第三方依赖拷贝到 target/spark-lib 目录（排除 tech.qiantong） -->
+            <!-- Copy third-party dependencies to target/spark-lib, excluding internal modules. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -326,17 +326,17 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <!-- 输出目录设置为 target/spark-lib -->
+                            <!-- Output shared dependencies to target/spark-lib. -->
                             <outputDirectory>${project.build.directory}/spark-lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <!-- 排除内部模块、Flink 生态（Spark 运行时不需要） -->
+                            <!-- Exclude internal modules, Flink dependencies, and Spark-provided artifacts. -->
                             <excludeGroupIds>tech.qiantong,com.ververica,org.apache.spark</excludeGroupIds>
-                            <!-- 精确排除 Spark 镜像已提供或会与其 Hadoop 3.3.4 冲突的运行时依赖 -->
+                            <!-- Exclude the Flink connector and Hadoop client artifacts provided by or conflicting with the Spark image. -->
                             <excludeArtifactIds>flink-doris-connector-1.19,hadoop-client-api,hadoop-client-runtime</excludeArtifactIds>
                             <excludeScope>provided</excludeScope>
-                            <!-- runtime 类路径包含 compile+runtime，不含 provided 和 system -->
+                            <!-- The runtime scope includes compile and runtime dependencies, excluding provided and system dependencies. -->
                             <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
@@ -356,10 +356,10 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
-                                            <!-- 限制只处理 tech.qiantong 相关的依赖 -->
+                            <!-- Bundle only tech.qiantong internal dependencies. -->
                             <artifactSet>
                                 <includes>
-                                    <include>tech.qiantong:*:*</include> <!-- 只包括 tech.qiantong 开头的所有依赖 -->
+                                    <include>tech.qiantong:*:*</include> <!-- Include all tech.qiantong artifacts. -->
                                 </includes>
                             </artifactSet>
                             <filters>

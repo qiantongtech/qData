@@ -92,6 +92,9 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "敏感等级id长度不能超过256个字符")
     private String sensitiveLevelId;
 
+    @Schema(description = "是否明确清空敏感等级绑定")
+    private Boolean clearSensitiveLevel;
+
     @Schema(description = "关联数据元", example = "")
     @Size(max = 256, message = "关联数据元长度不能超过256个字符")
     private String relDataElmeFlag;

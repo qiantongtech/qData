@@ -691,6 +691,7 @@ export default {
     relatedDataElem: '关联数据元',
     selectDataElem: '请选择数据元',
     sensitiveLevel: '敏感等级',
+    selectSensitiveLevel: '请选择敏感等级',
     fieldDescription: '字段描述',
     bindTerm: '绑定术语',
     addTerm: '新增术语',

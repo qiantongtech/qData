@@ -668,6 +668,7 @@ export default {
     relatedDataElem: '関連データ要素',
     selectDataElem: 'データ要素を選択してください',
     sensitiveLevel: '機密レベル',
+    selectSensitiveLevel: '機密レベルを選択してください',
     fieldDescription: 'フィールド説明',
     bindTerm: '用語バインド',
     addTerm: '用語新規追加',

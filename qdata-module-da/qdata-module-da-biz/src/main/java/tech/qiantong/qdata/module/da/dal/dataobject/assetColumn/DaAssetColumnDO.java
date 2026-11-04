@@ -114,6 +114,10 @@ public class DaAssetColumnDO extends BaseEntity {
      */
     private Long sensitiveLevelId;
 
+    /** Explicit unlink request; not a database column. */
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private Boolean clearSensitiveLevel;
+
     /**
      * Associated Data Element
      */

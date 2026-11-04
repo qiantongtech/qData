@@ -188,19 +188,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="td('dpp.column.dataCategory', 'Data Category')" prop="dataCategoryId" :label-position="labelPosition">
+          <el-form-item :label="td('dpp.column.sensitiveLevel', 'Sensitivity Level')" prop="sensitiveLevelId" :label-position="labelPosition">
             <el-select
-              v-model="form.dataCategoryId"
+              v-model="form.sensitiveLevelId"
               filterable
-              disabled
               clearable
-              :placeholder="td('dpp.column.selectCategory', 'Please select category')"
-              @change="(val) => (form.dataCategoryId = val ?? null)"
+              :placeholder="td('dpp.column.selectSensitiveLevel', 'Please select sensitivity level')"
+              @change="(val) => (form.sensitiveLevelId = val ?? null)"
             >
               <el-option
-                v-for="item in categoryList"
+                v-for="item in sensitiveLevelList"
                 :key="item.id"
-                :label="item.name"
+                :label="item.sensitiveLevel"
                 :value="item.id"
                 :disabled="!item.validFlag"
               >
@@ -618,7 +617,6 @@ import {
 } from "@/api/da/asset/assetColumn.js";
 import { listDaSensitiveLevel } from "@/api/da/security/sensitiveLevel/sensitiveLevel";
 import { listDpDataElem } from "@/api/dp/dataElem/dataElem";
-import { listDataCategoryAll } from "@/api/dg/safety/dataCategory/dataCategory.js";
 import { listAttTag, addAttTag } from "@/api/da/term/tag.js";
 import { listAttTagCat } from "@/api/da/term/tagCat.js";
 import { addTermColumnRel } from "@/api/da/term/termColumnRel.js";
@@ -637,7 +635,7 @@ const { column_type, dp_model_column_pk_flag, dp_model_column_nullable_flag } =
 const { dp_model_status } = proxy.useDict("dp_model_status");
 const tableRef = ref(null);
 const daAssetColumnList = ref([]);
-const categoryList = ref([]);
+const sensitiveLevelList = ref([]);
 const codeTableList = ref([]); //code table
 const elementList = ref([]); //data element
 const defaultSort = ref({ prop: "createTime", order: "descending" });
@@ -734,12 +732,10 @@ function getList() {
 
 /** Get a list of sensitivity levels */
 function getDaSensitiveLevelList() {
-  listDataCategoryAll().then((response) => {
-    categoryList.value = response.data;
-    //Convert id to String type
-    categoryList.value.forEach((item) => {
-      item.id = item.id.toString();
-    });
+  return listDaSensitiveLevel({ pageNum: 1, pageSize: -1 }).then((response) => {
+    sensitiveLevelList.value = (response.data.rows || []).map((item) => ({
+      ...item, id: String(item.id),
+    }));
   });
 }
 
@@ -812,6 +808,8 @@ function handleUpdate(row) {
   const _id = row.id || ids.value;
   getDaAssetColumn(_id).then((response) => {
     form.value = response.data;
+    form.value.sensitiveLevelId = response.data.sensitiveLevelId == null
+      ? null : String(response.data.sensitiveLevelId);
     open.value = true;
     title.value = td('dpp.column.editDataAsset');
   });
@@ -835,7 +833,12 @@ function submitForm() {
       if (form.value.id != null) {
         delete form.value.updateTime;
 
-        updateDaAssetColumn(form.value)
+        const payload = {
+          ...form.value,
+          sensitiveLevelId: form.value.sensitiveLevelId || null,
+          clearSensitiveLevel: !form.value.sensitiveLevelId,
+        };
+        updateDaAssetColumn(payload)
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;
@@ -1091,8 +1094,8 @@ const tableStore = reactive({
     },
 
     {
-      label: td('dpp.column.dataCategory', 'Data Category'),
-      prop: "dataCategoryName",
+      label: td('dpp.column.sensitiveLevel', 'Sensitivity Level'),
+      prop: "sensitiveLevelName",
       width: 100,
     },
     {

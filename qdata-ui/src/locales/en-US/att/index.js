@@ -371,7 +371,8 @@ export default {
       typeRequired: 'System type is required',
       confirmStatus: 'Are you sure to "{status}" "{name}" source system?',
       statusSuccess: '{status}" successful',
-      deleteConfirm: '{deletable} records can be deleted and {undeletable} cannot be deleted. Delete the eligible records?'
+      deleteConfirm: '{deletable} records can be deleted and {undeletable} cannot be deleted. Delete the eligible records?',
+      noRecordsDeleted: 'No records were deleted. All selected source systems are enabled. Disable them before deleting.'
     },
     textareaLimit: '500 characters'
   }

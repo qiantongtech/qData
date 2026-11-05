@@ -401,7 +401,8 @@ export default {
       typeRequired: '系统类型不能为空',
       confirmStatus: '确认要"{status}<{name}"来源系统吗？',
       statusSuccess: '{status}"成功',
-      deleteConfirm: '可删除{deletable}个，不可删除{undeletable}个，是否删除可删部分'
+      deleteConfirm: '可删除{deletable}个，不可删除{undeletable}个，是否删除可删部分',
+      noRecordsDeleted: '未删除任何数据，所选来源系统均已启用，请先停用后再删除。'
     },
     textareaLimit: '500个字符'
   }

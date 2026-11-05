@@ -148,3 +148,31 @@ services:
       start_period: 1200s # Allow failures during the first 20 minutes
     networks:
       - qdatanet
+  kkfileview:
+    image: ${QDATA_HUB}/kkfileview:latest
+    profiles: ["all", "light","base"]
+    restart: always
+    ports:
+      - "${QDATA_EXPOSE_KKFILEVIEW_PORT:-8012}:8012"
+    environment:
+      - TZ=Asia/Shanghai
+      - KK_FILE_PREVIEW_HOST=0.0.0.0
+      - KK_FILE_PREVIEW_PORT=8012
+      - SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=100MB
+      - SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=100MB
+      - FILE_UPLOAD_PATH=/opt/kkfileview/files/
+      - OFFICE_PDF_WATERMARK_TEXT=
+      - OFFICE_PICTURE_WATERMARK_TEXT=
+      - ALLOW_EMPTY_FILENAME=true
+      - TRUST_HOST=false
+      - SERVER_SERVLET_CONTEXT_PATH=/
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8012/index >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - qdatanet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

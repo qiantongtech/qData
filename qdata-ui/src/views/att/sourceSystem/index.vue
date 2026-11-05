@@ -615,8 +615,11 @@ function handleDelete(row) {
     )
     .then(function () {
       // Show the selection counts even when every selected row is enabled.
-      // Never submit an empty ID list or report a deletion that did not happen.
-      if (deletableIds.length === 0) return;
+      // Skip empty deletion requests and show completion feedback.
+      if (deletableIds.length === 0) {
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+        return;
+      }
       return delSourceSystem(deletableIds).then(() => {
         tableRef.value.getList();
         proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));

@@ -371,8 +371,7 @@ export default {
       typeRequired: 'システムタイプは必須です',
       confirmStatus: '「{name}」ソースシステムを「{status}」にしてもよろしいですか？',
       statusSuccess: '{status}」成功',
-      deleteConfirm: '削除可能：{deletable}件、削除不可：{undeletable}件。削除可能なデータを削除しますか？',
-      noRecordsDeleted: 'データは削除されませんでした。選択したソースシステムはすべて有効です。無効にしてから削除してください。'
+      deleteConfirm: '削除可能：{deletable}件、削除不可：{undeletable}件。削除可能なデータを削除しますか？'
     },
     textareaLimit: '500文字'
   }

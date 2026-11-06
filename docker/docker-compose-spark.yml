@@ -56,6 +56,8 @@ services:
       - SPARK_SSL_ENABLED=no
 #    ports:
 #      - '8081:8081'
+    volumes:
+      - ./dolphinscheduler/soft/spark-lib:/opt/soft/spark-lib:ro
     depends_on:
       spark:
         condition: service_healthy

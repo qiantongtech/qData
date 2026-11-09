@@ -76,6 +76,12 @@ export default {
     type: 'remind',
     version: '1.0'
   },
+  attTag: {
+    title: '资产标签 — 按业务特征标记数据资产',
+    content: `为数据资产添加标签，便于按业务特征查找和管理资产。可在此维护标签名称、近义词、同义词及启用状态。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">查看帮助文档</a>`,
+    type: 'remind',
+    version: '1.0'
+  },
   executeSqlQuery: {
     title: '数据查询 — 自助式多源数据探索与分析',
     content: `提供可视化SQL查询界面，支持对关系型数据库和大数据平台的便捷访问。集成目录导航、语法补全与结果导出功能，帮助用户快速获取数据，满足分析验证、问题排查等场景需求，提升数据使用效率。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-query.html" target="_blank">查看帮助文档</a>`,

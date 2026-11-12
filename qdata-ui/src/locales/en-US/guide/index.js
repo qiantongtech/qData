@@ -76,6 +76,12 @@ export default {
     type: 'remind',
     version: '1.0'
   },
+  attTag: {
+    title: 'Asset Tags — Organize Data Assets by Business Characteristics',
+    content: `Tag data assets to make them easier to find and manage. Maintain tag names, related terms, synonyms, and enabled status here. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">View documentation</a>`,
+    type: 'remind',
+    version: '1.0'
+  },
   executeSqlQuery: {
     title: 'Data Query — Self-service multi-source data exploration and analysis',
     content: `Provides a visual SQL query interface with convenient access to relational databases and big data platforms. Integrates directory navigation, syntax completion, and result export to help users quickly obtain data for analysis, verification, and troubleshooting scenarios. <a href="${QDATA_COMMUNITY_URL}/en/docs/user/data-assets/data-query.html" target="_blank">View documentation</a>`,

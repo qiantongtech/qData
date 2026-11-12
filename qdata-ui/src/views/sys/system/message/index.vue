@@ -91,6 +91,16 @@
                     key="title"
                     prop="title"
                 />
+                <el-table-column
+                    :label="td('sys.system.message.msgContent')"
+                    align="center"
+                    key="content"
+                    prop="content"
+                >
+                    <template #default="{ row }">
+                        <div class="message-content">{{ row.content }}</div>
+                    </template>
+                </el-table-column>
                 <el-table-column :label="td('sys.system.message.msgType')" align="center" key="category">
                     <template #default="scope">
                         <dict-tag
@@ -106,12 +116,6 @@
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    :label="td('sys.system.message.msgContent')"
-                    align="center"
-                    key="content"
-                    prop="content"
-                />
 
                 <el-table-column
                     :label="td('common.texts.createdTime')"
@@ -243,7 +247,7 @@ const queryParams = ref({
     dateRange: [],
     pageNum: 1,
     pageSize: 10,
-    receiverId: userStore.userId,
+    receiverId: userStore.id,
 });
 const total = ref(0);
 
@@ -281,7 +285,7 @@ const endTime = ref(null)
 const getList = () => {
     const reqData = {
         category: queryParams.value.category,
-        receiverId: userStore.userId,
+        receiverId: userStore.id,
         pageNum: queryParams.value.pageNum,
         pageSize: queryParams.value.pageSize,
     }
@@ -289,7 +293,7 @@ const getList = () => {
         reqData.startTime= queryParams.value.dateRange[0],
         reqData.endTime= queryParams.value.dateRange[1]
     }
-    listMessage(reqData).then((response) => {
+    return listMessage(reqData).then((response) => {
         msgList.value = response.data.rows;
         total.value = response.data.total;
     });
@@ -302,9 +306,8 @@ function readAllMsg() {
         .then(() => {
             return readAll();
         })
-        .then((res) => {
-            console.log("------Mark as read----",res)
-            getList();
+        .then(() => getList())
+        .then(() => {
             ElMessage.success(td('common.message.msgOpSuccess'));
         })
         .catch(() => {});
@@ -333,6 +336,17 @@ function deleteMsg(id) {
 </script>
 
 <style scoped lang="scss">
+.message-content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 22px;
+    max-height: 44px;
+}
 .msg-dialog {
     .el-dialog__body {
         height: 300px !important;

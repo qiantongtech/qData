@@ -131,11 +131,12 @@
               </div>
               <div class="border-item-body" style="padding: 0; display: flex;">
                 <div class="all-entrance">
-                  <div class="entrance-item" v-for="item in entranceList" :key="item.name" v-hasPermi="item.perm"
+                  <div class="entrance-item" v-for="item in entranceList" :key="item.path"
                     @click="routeTo(item.path, item.query)">
                     <div class="image">
                       <div class="icon-background" :class="item.color">
-                        <img :src="item.icon" class="module-item-t-r" />
+                        <svg-icon v-if="item.svgIcon" :icon-class="item.svgIcon" class="shortcut-svg" aria-hidden="true" />
+                        <img v-else :src="item.icon" class="module-item-t-r" alt="" />
                       </div>
                     </div>
                     <div class="name">{{ item.name }}</div>
@@ -235,6 +236,8 @@
 
 <script setup name="Index">
 import useUserStore from "@/store/system/user";
+import usePermissionStore from "@/store/system/permission";
+import { checkPermi } from "@/utils/permission";
 import { listNotice } from "@/api/system/system/notice.js";
 import useAppStore from "@/store/system/app";
 import * as echarts from "echarts";
@@ -449,7 +452,8 @@ const module1 = ref([
     img: getAssetsFile("img-five.png"),
   },
 ]);
-const entranceList = [
+const permissionStore = usePermissionStore();
+const entranceList = computed(() => [
   {
     name: td('sys.dashboard.dataConnection'),
     path: "/da/datasource",
@@ -491,7 +495,21 @@ const entranceList = [
     color: "color-pale-blue",
     icon: getAssetsFile("img-api.png"),
   },
-];
+  {
+    name: td("router.dynamic.ai"),
+    path: "/ai",
+    color: "color-primary",
+    svgIcon: "icon-smart-data-query",
+  },
+].filter((item) => {
+  if (item.perm) return checkPermi(item.perm);
+  return permissionStore.topbarRouters.some((menu) => {
+    if (menu.hidden) return false;
+    if (menu.path === item.path) return true;
+    const child = menu.path === "/" ? menu.children?.[0] : undefined;
+    return child?.hidden !== true && (child?.path === item.path || child?.path === item.path.slice(1));
+  });
+}));
 
 //News jump
 function goxinwen(row) {
@@ -1236,6 +1254,13 @@ onMounted(() => {
             font-size: 24px;
             color: #fff;
             line-height: 40px;
+          }
+
+          .shortcut-svg.svg-icon {
+            width: 24px;
+            height: 24px;
+            margin: 8px;
+            color: #fff;
           }
 
           // Background color: main color

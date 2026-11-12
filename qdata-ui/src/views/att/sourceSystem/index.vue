@@ -601,9 +601,7 @@ function handleDelete(row) {
     .filter((item) => item.validFlag === false)
     .map((item) => item.id);
 
-  // Do not issue DELETE /att/sourceSystem/ when there are no deletable rows;
-  // that URL does not match the backend's /{ids} mapping.
-  if (deletableIds.length === 0) {
+  if (targetRows.length === 0) {
     proxy.$modal.msgWarning(td('common.message.selectRecord'));
     return;
   }
@@ -616,11 +614,16 @@ function handleDelete(row) {
       })
     )
     .then(function () {
-      return delSourceSystem(deletableIds);
-    })
-    .then(() => {
-      tableRef.value.getList();
-      proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+      // Show the selection counts even when every selected row is enabled.
+      // Skip empty deletion requests and show completion feedback.
+      if (deletableIds.length === 0) {
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+        return;
+      }
+      return delSourceSystem(deletableIds).then(() => {
+        tableRef.value.getList();
+        proxy.$modal.msgSuccess(td('common.message.deleteSuccess'));
+      });
     })
     .catch(() => {
       // User cancels deletion operation

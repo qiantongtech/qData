@@ -1438,15 +1438,15 @@
   }
 
   .el-tabs__item.is-active {
-    color: #248eff;
+    color: var(--el-color-primary);
   }
 
   .el-tabs__item:hover {
-    color: #248eff;
+    color: var(--el-color-primary);
   }
 
   .el-tabs__active-bar {
-    background-color: #2094ff;
+    background-color: var(--el-color-primary);
   }
 
   //Complex detail style----------End

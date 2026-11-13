@@ -122,6 +122,12 @@
               v-hasPermi="['att:qualityCat:remove']" :disabled="scope.row.validFlag">{{ td('common.button.delete') }}</el-button>
           </template>
         </el-table-column>
+        <template #empty>
+          <div class="emptyBg">
+            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
+            <p>{{ td('common.noData') }}</p>
+          </div>
+        </template>
       </el-table>
       <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
         @pagination="getList" />

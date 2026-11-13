@@ -116,6 +116,12 @@
                      v-hasPermi="['monitor:operlog:query']">{{ td('sys.monitor.operlog.detail') }}</el-button>
                </template>
             </el-table-column>
+            <template #empty>
+               <div class="emptyBg">
+                  <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
+                  <p>{{ td('common.noData') }}</p>
+               </div>
+            </template>
          </el-table>
 
          <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"

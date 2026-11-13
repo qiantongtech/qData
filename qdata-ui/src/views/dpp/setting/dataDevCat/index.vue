@@ -239,6 +239,12 @@
             >
           </template>
         </el-table-column>
+        <template #empty>
+          <div class="emptyBg">
+            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
+            <p>{{ td('common.noData') }}</p>
+          </div>
+        </template>
       </el-table>
 
       <pagination

@@ -62,6 +62,7 @@ const tipIdToI18nKey = {
   'att/attAuditRule.list': 'attAuditRule',
   'att/attCleanRule.list': 'attCleanRule',
   'att/attProject.list': 'attProject',
+  'att/attTag.list': 'attTag',
   'att/attTheme.list': 'attTheme',
   'att/client.list': 'attClient',
   'cat/attQualityCat.list': 'attQualityCat',

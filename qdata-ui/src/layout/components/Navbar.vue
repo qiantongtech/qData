@@ -711,7 +711,7 @@ getMessageNum(); // Mainly get news for the first time
 const wsUri =
   import.meta.env.VITE_APP_WEBSOCKET_API +
   "/websocket/message/" +
-  userStore.userId;
+  userStore.id;
 // Establish socket connection
 const ws = new WebSocket(wsUri);
 
@@ -732,38 +732,10 @@ const initWebSocket = () => {
     noticeList.value = response.rows;
   });
 
-  //Query unread message notifications
-  listMessage({
-    receiverId: userStore.userId,
-    hasRead: 0,
-    pageNum: 1,
-    pageSize: 1000,
-  }).then((response) => {
-    response.data.rows?.forEach((item) => {
-      item.time = item.updateTime;
-      item.entityType = item.category;
-      // item.title = item.title
-    });
-    messages.value = [...response.data.rows, ...messages.value];
-    msgCount.value = messages.value ? messages.value.length : 0;
-    console.log("------messages.value----", messages.value);
-  });
-  ws.onmessage = (event) => {
-    // Server push data
-    // console.log('====Server push data==========>',event.data)
-    const messageData = JSON.parse(event.data);
-    console.log("===Monitored messageData=========>", messageData);
-    if (messageData) {
-      messageData.time =
-        messageData.updateTime != undefined && messageData.updateTime != null
-          ? formatTimestamp(messageData.updateTime)
-          : formatTimestamp(messageData.createTime);
-      // messages.value.push(messageData)
-      messages.value = [messageData, ...messages.value];
-    }
-    console.log("===Stored messages=========>", messages.value);
-    // Message count update
-    msgCount.value = messages.value ? messages.value.length : 0;
+  refreshUnreadMessages();
+  ws.onmessage = () => {
+    // The server sends unread-count updates; requery the persisted message state.
+    refreshUnreadMessages();
   };
 };
 const listProject = () => {
@@ -911,7 +883,7 @@ function logout() {
       userStore.logOut().then(() => {
         if (authType === "sso") {
           // Exit the login status of the Unified Certification Center
-          loginOut(userStore.userId).then(() => {
+          loginOut(userStore.id).then(() => {
             location.href = "/index";
           });
         } else {
@@ -946,12 +918,18 @@ function messageDetail() {
   }
 }
 
-function clearNotification() {
-  readAll().then(() => {
-    messages.value = [];
-    msgCount.value = 0;
-    ElMessage.success(t("sys.report.markAllReadDone"));
-  });
+async function refreshUnreadMessages() {
+  const list = await listMessage({ receiverId: userStore.id, hasRead: 0, pageNum: 1, pageSize: 1000 });
+  messages.value = (list.data.rows || []).map((item) => ({
+    ...item, time: item.updateTime || item.createTime, entityType: item.category,
+  }));
+  msgCount.value = Number(list.data.total || 0);
+}
+
+async function clearNotification() {
+  await readAll();
+  await refreshUnreadMessages();
+  ElMessage.success(t("sys.report.markAllReadDone"));
 }
 </script>
 

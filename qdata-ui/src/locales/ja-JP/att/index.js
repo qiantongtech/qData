@@ -371,7 +371,7 @@ export default {
       typeRequired: 'システムタイプは必須です',
       confirmStatus: '「{name}」ソースシステムを「{status}」にしてもよろしいですか？',
       statusSuccess: '{status}」成功',
-      deleteConfirm: '{deletable}件削除可能、{undeletable}件削除不可。削除可能なものを削除しますか？'
+      deleteConfirm: '削除可能：{deletable}件、削除不可：{undeletable}件。削除可能なデータを削除しますか？'
     },
     textareaLimit: '500文字'
   }

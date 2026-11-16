@@ -371,7 +371,7 @@ export default {
       typeRequired: 'System type is required',
       confirmStatus: 'Are you sure to "{status}" "{name}" source system?',
       statusSuccess: '{status}" successful',
-      deleteConfirm: '{deletable} can be deleted, {undeletable} cannot be deleted. Delete the deletable ones?'
+      deleteConfirm: '{deletable} records can be deleted and {undeletable} cannot be deleted. Delete the eligible records?'
     },
     textareaLimit: '500 characters'
   }

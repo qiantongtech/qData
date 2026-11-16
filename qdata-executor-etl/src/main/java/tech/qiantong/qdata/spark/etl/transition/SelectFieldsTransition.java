@@ -165,14 +165,21 @@ public class SelectFieldsTransition implements Transition {
         result = dataset.selectExpr(otherCols.toArray(new String[0]));
         for (int i = 0; i < selectedColumns.size(); i++) {
             Column c = selectedColumns.get(i);
-            String outName = ((org.apache.spark.sql.catalyst.expressions.Alias) c.expr()).name();
+            String outName = tableFields.getJSONObject(i).getString("outputField");
             result = result.withColumn(outName, c);
         }
 
         // 3. Delete fields
         if (removeFields != null && !removeFields.isEmpty()) {
             for (int i = 0; i < removeFields.size(); i++) {
-                String fieldName = removeFields.getJSONObject(i).getString("inputField");
+                JSONObject removedField = removeFields.getJSONObject(i);
+                String fieldName = removedField.getString("inputField");
+                if (fieldName == null || fieldName.trim().isEmpty()) {
+                    fieldName = removedField.getString("columnName");
+                }
+                if (fieldName == null || fieldName.trim().isEmpty()) {
+                    throw new IllegalArgumentException("A removed field must specify columnName or inputField");
+                }
                 if (fieldName != null && result.columns() != null && Arrays.asList(result.columns()).contains(fieldName)) {
                     result = result.drop(fieldName);
                 }

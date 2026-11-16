@@ -76,6 +76,12 @@ export default {
     type: 'remind',
     version: '1.0'
   },
+  attTag: {
+    title: '資産タグ — 業務上の特性でデータ資産を分類',
+    content: `データ資産にタグを付けると、業務上の特性に応じて検索・管理できます。タグ名、類義語、同義語、有効状態を設定できます。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">ヘルプドキュメントを見る</a>`,
+    type: 'remind',
+    version: '1.0'
+  },
   executeSqlQuery: {
     title: 'データクエリ — セルフサービス型多ソースデータ探索と分析',
     content: `可視化SQLクエリインターフェースを提供し、リレーショナルデータベースとビッグデータプラットフォームへの便利なアクセスをサポートします。ディレクトリナビゲーション、構文補完、結果エクスポート機能を統合しています。 <a href="${QDATA_COMMUNITY_URL}/ja/docs/user/data-assets/data-query.html" target="_blank">ヘルプドキュメント</a>`,

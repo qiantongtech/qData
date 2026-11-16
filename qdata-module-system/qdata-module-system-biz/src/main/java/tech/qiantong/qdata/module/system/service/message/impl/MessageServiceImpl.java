@@ -164,7 +164,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
      */
     @Override
     public Long getNum(MessagePageReqVO message) {
-        message.setDelFlag(1);
+        message.setDelFlag(0);
         QueryWrapper<MessageDO> queryWrapper = new QueryWrapper<>(MessageConvert.INSTANCE.convertToDO(message));
         Long count = this.count(queryWrapper);
         WebSocketMessageServer.sendMessage(message.getReceiverId().toString(), count.toString()); // message update
@@ -196,6 +196,7 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
     public Boolean readAll(Long receiverId, Integer category, Integer module) {
         LambdaUpdateWrapper<MessageDO> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(MessageDO::getReceiverId, receiverId);
+        updateWrapper.eq(MessageDO::getHasRead, MessageHasReadEnums.WD.code);
         if (category != null) {
             updateWrapper.eq(MessageDO::getCategory, category);
         }
@@ -204,9 +205,16 @@ public class MessageServiceImpl  extends ServiceImpl<MessageMapper, MessageDO> i
         }
         updateWrapper.set(MessageDO::getHasRead, MessageHasReadEnums.YD.code);
         this.update(updateWrapper);
-        // update message
-        this.getReceiverWDNum(getLoginUser().getUserId());
-        return true;
+        // Zero affected rows is valid when there were no unread messages.
+        // Verify the persisted state rather than unconditionally reporting success.
+        LambdaUpdateWrapper<MessageDO> remaining = new LambdaUpdateWrapper<>();
+        remaining.eq(MessageDO::getReceiverId, receiverId)
+                .eq(MessageDO::getHasRead, MessageHasReadEnums.WD.code);
+        if (category != null) remaining.eq(MessageDO::getCategory, category);
+        if (module != null) remaining.eq(MessageDO::getModule, module);
+        boolean complete = this.count(remaining) == 0;
+        this.getReceiverWDNum(receiverId);
+        return complete;
     }
 
     /**

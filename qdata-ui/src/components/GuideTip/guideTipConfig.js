@@ -111,6 +111,11 @@ export const guideTipConfig = {
     `,
         type: 'remind', version: '1.0'
     },
+    'att/attTag.list': {
+        title: '资产标签 — 按业务特征标记数据资产',
+        content: '为数据资产添加标签，便于按业务特征查找和管理资产。可在此维护标签名称、近义词、同义词及启用状态。 <a href="https://community.qdata.tech/docs/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">查看帮助文档</a>',
+        type: 'remind', version: '1.0'
+    },
     // Topic management
     'att/attTheme.list': {
         title: '主题 —— 是 <u>数据资产</u> 分组维度之一，用于后续对数据资产进行主题化标注和分组管理。',

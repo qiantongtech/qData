@@ -52,6 +52,8 @@ public final class DataXJsonBuilder {
      * Builds the DataX reader node configuration for the source table, columns, and data source connection.
      */
     private static Map<String, Object> buildReader(Map<String, Object> readerNodeJsonMap, Map<String, Object> writerNodeJsonMap) {
+        readerNodeJsonMap = new HashMap<>(readerNodeJsonMap);
+        DateIncrementFilter.apply(readerNodeJsonMap, Collections.emptyMap(), new Date());
         Map<String, Object> readerDatasource = parseDatasource(readerNodeJsonMap, "readerDatasource");
         Map<String, Object> reader = new HashMap<>();
         reader.put("name", "rdbmsreader");

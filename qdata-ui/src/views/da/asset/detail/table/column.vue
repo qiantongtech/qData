@@ -835,8 +835,7 @@ function submitForm() {
 
         const payload = {
           ...form.value,
-          sensitiveLevelId: form.value.sensitiveLevelId || null,
-          clearSensitiveLevel: !form.value.sensitiveLevelId,
+          sensitiveLevelId: form.value.sensitiveLevelId ?? "",
         };
         updateDaAssetColumn(payload)
           .then((response) => {

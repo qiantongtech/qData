@@ -88,12 +88,9 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "代码id长度不能超过256个字符")
     private String dataElemCodeId;
 
-    @Schema(description = "敏感等级id", example = "")
+    @Schema(description = "敏感等级ID。更新时传空字符串解除绑定，未传或为 null 时保留原绑定", example = "")
     @Size(max = 256, message = "敏感等级id长度不能超过256个字符")
     private String sensitiveLevelId;
-
-    @Schema(description = "是否明确清空敏感等级绑定")
-    private Boolean clearSensitiveLevel;
 
     @Schema(description = "关联数据元", example = "")
     @Size(max = 256, message = "关联数据元长度不能超过256个字符")

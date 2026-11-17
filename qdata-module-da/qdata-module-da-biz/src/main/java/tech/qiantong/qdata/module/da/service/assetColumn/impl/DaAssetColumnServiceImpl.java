@@ -153,14 +153,11 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
 //        }
         // Not a code table, set the code table relation ID to null
         DaAssetColumnDO updateObj = BeanUtils.toBean(updateReqVO, DaAssetColumnDO.class);
-        if (Boolean.TRUE.equals(updateReqVO.getClearSensitiveLevel())) {
-            updateObj.setSensitiveLevelId(null);
-        }
         if (StringUtils.isEmpty(updateObj.getDataElemCodeFlag()) || "0".equals(updateObj.getDataElemCodeFlag())) {
             updateObj.setDataElemCodeId(null);
         }
         // Update data asset column
-        return daAssetColumnMapper.updateDaAssetColumn(updateObj);
+        return daAssetColumnMapper.updateDaAssetColumn(updateObj, updateReqVO.getSensitiveLevelId() != null);
     }
 
     @Override

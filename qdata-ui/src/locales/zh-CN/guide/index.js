@@ -1,5 +1,5 @@
 // GuideTip 组件翻译
-const QDATA_COMMUNITY_URL = 'https://community.qdata.tech';
+const QDATA_COMMUNITY_URL = 'https://docs.qdata.tech';
 
 export default {
   index: {
@@ -12,19 +12,19 @@ export default {
   },
   attAuditRule: {
     title: '稽查规则 —— 是保障数据质量的核心手段，基于 <u>标准数据元</u> 的定义（如字段类型、值域等）制定具体的检查逻辑，用于评估数据的质量表现。',
-    content: `这些规则配置后，可被绑定到 <u>数据质量任务</u> 中，通过定时调度执行，自动扫描并识别数据异常，形成质量报告，支撑数据问题的发现与治理闭环。 <a href="${QDATA_COMMUNITY_URL}/docs/user/basic-management/rule-management/audit-rules.html" target="_blank">查看帮助文档</a>`,
+    content: `这些规则配置后，可被绑定到 <u>数据质量任务</u> 中，通过定时调度执行，自动扫描并识别数据异常，形成质量报告，支撑数据问题的发现与治理闭环。 <a href="${QDATA_COMMUNITY_URL}/qData/user/basic-management/rule-management/audit-rules.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attCleanRule: {
     title: '清洗规则 —— 用于定义数据加工过程中的标准化处理逻辑，确保数据在集成过程中实现格式统一、值域规范、逻辑合理。',
-    content: `您可基于 <u>标准数据元</u> 的定义创建清洗规则，并在 <u>数据集成任务</u> 中调用，对源端数据进行自动化清洗，保障进入中台的数据质量。 <a href="${QDATA_COMMUNITY_URL}/docs/user/basic-management/rule-management/cleaning-rules.html" target="_blank">查看帮助文档</a>`,
+    content: `您可基于 <u>标准数据元</u> 的定义创建清洗规则，并在 <u>数据集成任务</u> 中调用，对源端数据进行自动化清洗，保障进入中台的数据质量。 <a href="${QDATA_COMMUNITY_URL}/qData/user/basic-management/rule-management/cleaning-rules.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attProject: {
     title: '项目 —— 是 <u>数据研发</u> 的工作空间',
-    content: `用于按业务线或团队隔离管理数据连接、数据资产、任务和作业等。您只能访问所属项目的内容，请根据权限在对应项目中开展数据研发工作。 <a href="${QDATA_COMMUNITY_URL}/docs/user/basic-management/project-management.html" target="_blank">查看帮助文档</a>`,
+    content: `用于按业务线或团队隔离管理数据连接、数据资产、任务和作业等。您只能访问所属项目的内容，请根据权限在对应项目中开展数据研发工作。 <a href="${QDATA_COMMUNITY_URL}/qData/user/basic-management/project-management.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -36,109 +36,109 @@ export default {
   },
   attClient: {
     title: '应用 —— 用于对接第三方系统',
-    content: `通过创建应用并生成专属密钥，实现对平台API的安全访问与权限控制。您可在此管理应用信息并获取调用凭证，确保服务间安全、可控地集成。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-services/application-management.html" target="_blank">查看帮助文档</a>`,
+    content: `通过创建应用并生成专属密钥，实现对平台API的安全访问与权限控制。您可在此管理应用信息并获取调用凭证，确保服务间安全、可控地集成。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-services/application-management.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attQualityCat: {
     title: '数据质量类目是什么？',
-    content: `数据质量类目用于对 <u>数据质量任务</u> 进行分类管理，帮助您快速定位和组织任务。 <a href="${QDATA_COMMUNITY_URL}/docs/user/basic-management/category-management/data-quality-category.html" target="_blank">查看帮助文档</a>`,
+    content: `数据质量类目用于对 <u>数据质量任务</u> 进行分类管理，帮助您快速定位和组织任务。 <a href="${QDATA_COMMUNITY_URL}/qData/user/basic-management/category-management/data-quality-category.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attApiCat: {
     title: '数据API服务目录是什么？',
-    content: `数据API服务目录是 <u>数据服务</u> 模块中 API 服务的逻辑分类与目录化管理视图，实现接口资产的结构化组织、便捷检索和统一呈现。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-services/service-categories.html" target="_blank">查看帮助文档</a>`,
+    content: `数据API服务目录是 <u>数据服务</u> 模块中 API 服务的逻辑分类与目录化管理视图，实现接口资产的结构化组织、便捷检索和统一呈现。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-services/service-categories.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpModel: {
     title: '逻辑模型 — 可视化设计与规范化的数据建模',
-    content: `支持在业务层构建标准化的数据表结构，可从数据库导入或手动设计模型，并关联 <u>标准数据元</u> 实现字段级统一规范。支持一键物化为物理表，打通模型设计与数据落地的全流程。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-modeling/logical-model/create-model.html" target="_blank">查看帮助文档</a>`,
+    content: `支持在业务层构建标准化的数据表结构，可从数据库导入或手动设计模型，并关联 <u>标准数据元</u> 实现字段级统一规范。支持一键物化为物理表，打通模型设计与数据落地的全流程。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-modeling/logical-model/create-model.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpDataElem: {
     title: '标准数据元 — 统一字段级数据定义与规范',
-    content: `定义字段的名称、类型、长度、格式等标准属性，支持绑定代码表与清洗规则，为建模、<u>数据清洗</u> 和 <u>质量稽查</u> 提供统一依据，提升数据一致性与治理自动化水平。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-modeling/standard-data-element.html" target="_blank">查看帮助文档</a>`,
+    content: `定义字段的名称、类型、长度、格式等标准属性，支持绑定代码表与清洗规则，为建模、<u>数据清洗</u> 和 <u>质量稽查</u> 提供统一依据，提升数据一致性与治理自动化水平。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-modeling/standard-data-element.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   daDatasource: {
     title: '数据连接 — 统一管理多源异构数据接入',
-    content: `用于配置和管理平台所需的数据源连接，支持关系型数据库、大数据平台、消息队列、文件服务及对象存储等多种类型。作为<u>数据采集</u>、<u>元数据同步</u>和<u>任务执行</u>的基础，保障<u>资产地图</u>等模块的数据可发现与可访问。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-connections.html" target="_blank">查看帮助文档</a>`,
+    content: `用于配置和管理平台所需的数据源连接，支持关系型数据库、大数据平台、消息队列、文件服务及对象存储等多种类型。作为<u>数据采集</u>、<u>元数据同步</u>和<u>任务执行</u>的基础，保障<u>资产地图</u>等模块的数据可发现与可访问。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/data-connections.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   daAsset: {
     title: '资产地图 — 全域数据资产的统一管理与全景洞察',
-    content: `集中管理结构化数据表和非结构化文件等各类数据资产，提供资产概览、血缘关系、质量与清洗信息的全景视图。支持自动发现、手动接入与全生命周期治理，实现数据资产的可视、可管、可控，支撑数据高效发现与协同使用。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/asset-map.html" target="_blank">查看帮助文档</a>`,
+    content: `集中管理结构化数据表和非结构化文件等各类数据资产，提供资产概览、血缘关系、质量与清洗信息的全景视图。支持自动发现、手动接入与全生命周期治理，实现数据资产的可视、可管、可控，支撑数据高效发现与协同使用。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/asset-map.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attTag: {
     title: '资产标签 — 按业务特征标记数据资产',
-    content: `为数据资产添加标签，便于按业务特征查找和管理资产。可在此维护标签名称、近义词、同义词及启用状态。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">查看帮助文档</a>`,
+    content: `为数据资产添加标签，便于按业务特征查找和管理资产。可在此维护标签名称、近义词、同义词及启用状态。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/asset-tags.html" target="_blank" rel="noopener noreferrer">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   executeSqlQuery: {
     title: '数据查询 — 自助式多源数据探索与分析',
-    content: `提供可视化SQL查询界面，支持对关系型数据库和大数据平台的便捷访问。集成目录导航、语法补全与结果导出功能，帮助用户快速获取数据，满足分析验证、问题排查等场景需求，提升数据使用效率。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-query.html" target="_blank">查看帮助文档</a>`,
+    content: `提供可视化SQL查询界面，支持对关系型数据库和大数据平台的便捷访问。集成目录导航、语法补全与结果导出功能，帮助用户快速获取数据，满足分析验证、问题排查等场景需求，提升数据使用效率。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/data-query.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dataQualityTasks: {
     title: '数据质量任务 — 多维度数据质量监控与评估',
-    content: `通过配置质量评测任务，对指定数据表执行完整性、准确性等多维度规则检查，生成质量报告并追踪问题数据。支持灵活调度与历史回溯，帮助用户及时发现数据异常，支撑数据治理闭环管理。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-quality/quality-tasks.html" target="_blank">查看帮助文档</a>`,
+    content: `通过配置质量评测任务，对指定数据表执行完整性、准确性等多维度规则检查，生成质量报告并追踪问题数据。支持灵活调度与历史回溯，帮助用户及时发现数据异常，支撑数据治理闭环管理。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/data-quality/quality-tasks.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   daSensitiveLevel: {
     title: '敏感等级 — 数据分级与安全管控的基础',
-    content: `定义数据敏感级别，为字段和资产提供分类依据，并与脱敏规则自动关联。在数据预览、查询和输出等场景中，基于等级实施动态脱敏，保障敏感信息的安全与合规使用。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-assets/data-security/sensitivity-level.html" target="_blank">查看帮助文档</a>`,
+    content: `定义数据敏感级别，为字段和资产提供分类依据，并与脱敏规则自动关联。在数据预览、查询和输出等场景中，基于等级实施动态脱敏，保障敏感信息的安全与合规使用。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-assets/data-security/sensitivity-level.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dppEtlTask: {
     title: '数据集成任务 — 多源数据同步与转换的统一通道',
-    content: `通过图形化方式配置ETL流程，支持关系型数据库、大数据平台、Kafka、HDFS等多源数据的接入与写出。提供丰富的转换组件，支持离线批处理与Flink实时流处理，实现数据清洗、转换与入湖入仓的一体化调度。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/integration-tasks.html" target="_blank">查看帮助文档</a>`,
+    content: `通过图形化方式配置ETL流程，支持关系型数据库、大数据平台、Kafka、HDFS等多源数据的接入与写出。提供丰富的转换组件，支持离线批处理与Flink实时流处理，实现数据清洗、转换与入湖入仓的一体化调度。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/integration-tasks.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dpptaskerddv: {
     title: '数据开发任务 — 实时与离线数据处理的统一编排',
-    content: `支持基于Flink的实时流处理和Spark SQL的离线批处理，提供SQL开发、调试与调度执行能力。覆盖数据同步、计算加工与入湖入仓等场景，实现对多源数据的灵活处理与高效编排。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/development-tasks.html" target="_blank">查看帮助文档</a>`,
+    content: `支持基于Flink的实时流处理和Spark SQL的离线批处理，提供SQL开发、调试与调度执行能力。覆盖数据同步、计算加工与入湖入仓等场景，实现对多源数据的灵活处理与高效编排。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/development-tasks.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dppEtlTaskInstance: {
     title: '运维管理 — 调度任务的执行监控与故障处理',
-    content: `集中管理作业和数据开发任务的运行实例，支持查看执行日志、任务依赖关系与运行状态。提供实例重跑、日志下载等功能，助力运维人员高效监控调度链路，快速定位并处理执行异常。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/operations-management/" target="_blank">查看帮助文档</a>`,
+    content: `集中管理作业和数据开发任务的运行实例，支持查看执行日志、任务依赖关系与运行状态。提供实例重跑、日志下载等功能，助力运维人员高效监控调度链路，快速定位并处理执行异常。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/operations-management/" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   attTaskCat: {
     title: '任务类目 — 数据研发任务的分类管理体系',
-    content: `通过树形类目结构对数据集成等研发任务进行分类管理，支持多级目录配置与任务绑定。便于按业务或部门进行任务归类、快速筛选与统一维护，提升任务管理的条理性和协作效率。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/project-basic/integration-task-category.html" target="_blank">查看帮助文档</a>`,
+    content: `通过树形类目结构对数据集成等研发任务进行分类管理，支持多级目录配置与任务绑定。便于按业务或部门进行任务归类、快速筛选与统一维护，提升任务管理的条理性和协作效率。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/project-basic/integration-task-category.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   AttDataDevCat: {
     title: '数据开发目录 — 数据开发任务的树状分类管理',
-    content: `通过多层级目录结构对实时和离线数据开发任务进行分类组织，支持灵活创建与绑定类目。便于按业务场景或项目维度管理任务，实现快速查找与高效维护。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/project-basic/development-task-category.html" target="_blank">查看帮助文档</a>`,
+    content: `通过多层级目录结构对实时和离线数据开发任务进行分类组织，支持灵活创建与绑定类目。便于按业务场景或项目维度管理任务，实现快速查找与高效维护。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/project-basic/development-task-category.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   AttProjectUserRel: {
     title: '成员与角色管理 — 项目协作的权限基础',
-    content: `通过成员管理和角色管理模块，实现项目内人员的添加、角色分配与细粒度权限控制。支持按职责定义角色并绑定权限，确保团队在安全隔离的环境下高效协作。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-development/project-basic/member-role/" target="_blank">查看帮助文档</a>`,
+    content: `通过成员管理和角色管理模块，实现项目内人员的添加、角色分配与细粒度权限控制。支持按职责定义角色并绑定权限，确保团队在安全隔离的环境下高效协作。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-development/project-basic/member-role/" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   dsApi: {
     title: 'API管理 — 数据服务的统一发布与共享',
-    content: `支持通过向导式配置或SQL模式快速创建数据API，提供服务转发、权限控制与地理空间服务支持。便于安全、高效地开放和共享平台数据，满足内外部系统集成与应用调用需求。 <a href="${QDATA_COMMUNITY_URL}/docs/user/data-services/api-management.html" target="_blank">查看帮助文档</a>`,
+    content: `支持通过向导式配置或SQL模式快速创建数据API，提供服务转发、权限控制与地理空间服务支持。便于安全、高效地开放和共享平台数据，满足内外部系统集成与应用调用需求。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-services/api-management.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
@@ -156,13 +156,13 @@ export default {
   },
   structured: {
     title: '采集任务 — 自动发现，统一纳管',
-    content: `通过配置采集任务，从指定的数据源中获取库、表、字段等元数据，并按照平台规范进行解析、转换与入库。确保元数据的完整性、时效性与一致性，实现对全域数据资产的动态感知与集中纳管。 <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/collect-tasks.html" target="_blank">查看帮助文档</a>`,
+    content: `通过配置采集任务，从指定的数据源中获取库、表、字段等元数据，并按照平台规范进行解析、转换与入库。确保元数据的完整性、时效性与一致性，实现对全域数据资产的动态感知与集中纳管。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-governance/metadata-management/collect-tasks.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   },
   unreleasedTable: {
     title: '最新元数据 — 库级资产的核心单元维护载体',
-    content: `管理表的结构信息、业务描述，可维护表的归属业务域、发布状态，也可更新采集而来的表级元数据。 <a href="https://community.qdata.tech/docs/user/data-governance/metadata-management/latest-metadata.html" target="_blank">查看帮助文档</a>`,
+    content: `管理表的结构信息、业务描述，可维护表的归属业务域、发布状态，也可更新采集而来的表级元数据。 <a href="${QDATA_COMMUNITY_URL}/qData/user/data-governance/metadata-management/latest-metadata.html" target="_blank">查看帮助文档</a>`,
     type: 'remind',
     version: '1.0'
   }

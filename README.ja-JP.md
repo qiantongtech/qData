@@ -4,7 +4,7 @@
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
  <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Vue">
  <img src="https://img.shields.io/badge/license-Apache--2.0-green" alt="License"/>
- <img src="https://img.shields.io/badge/qData-v1.6.7-blue.svg"/>
+ <img src="https://img.shields.io/badge/qData-v1.6.8-blue.svg"/>
 
  <img src="https://gitee.com/qiantongtech/qData/badge/star.svg" alt="Gitee Stars"/>
  <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars" alt="GitHub Stars"/>
@@ -19,17 +19,17 @@
 ## 🌈 プラットフォーム概要
 **qData データ中台**は、企業のデータガバナンスとデータ開発向けのオープンソースデータ中台です。**ETLデータ連携、データ開発、データモデリング、メタデータ管理、データ品質、データ資産、APIデータサービス、AIデータ問答**などの中核機能を備え、MySQL、DM8、Oracle、SQL Server、Kingbase8、Dorisなどの一般的なデータベースへの接続をサポートしています。qDataは、データ接続、クレンジング・変換、資産カタログ化、品質チェック、API公開、Text2SQL分析を企業が迅速に実施できるよう支援します。企業のデータ中台、データガバナンスプラットフォーム、ETLプラットフォーム、データサービスプラットフォームを構築するためのオープンソース基盤として活用でき、開発者による二次開発や機能拡張にも適しています。
 
-✨✨✨**オンラインドキュメント**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a>
+✨✨✨**オンラインドキュメント**✨✨✨ <a href="https://docs.qdata.tech" target="_blank">https://docs.qdata.tech</a>
 
 ✨✨✨**オープンソース版デモ**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a>、ユーザー名：qData、パスワード：qData123
 
-✨✨✨**プロフェッショナル版デモ**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>。デモアカウントの取得は[カスタマーサービスにお問い合わせ](https://community.qdata.tech/business/policy.html)ください。
+✨✨✨**プロフェッショナル版デモ**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>。デモアカウントの取得は[カスタマーサービスにお問い合わせ](https://docs.qdata.tech/business/policy.html)ください。
 
 > qDataがお役に立ちましたら、**Star ⭐️**をいただけますと幸いです。それが私たちが継続的に改善する最大の原動力となります！ 🚀
 
 ## ✅ 機能一覧
 
-> 👉 qDataデータ中台はモジュール設計を採用しています。現在のオープンソース版は、データ連携、データ開発、データモデリング、メタデータ、データ品質、データ資産、データサービス、AIデータ問答などの中核機能に注力しています。詳細は、[qData機能一覧](https://community.qdata.tech/business/pro/features.html)をご覧ください。
+> 👉 qDataデータ中台はモジュール設計を採用しています。現在のオープンソース版は、データ連携、データ開発、データモデリング、メタデータ、データ品質、データ資産、データサービス、AIデータ問答などの中核機能に注力しています。詳細は、[qData機能一覧](https://docs.qdata.tech/business/pro/features.html)をご覧ください。
 
 | モジュール | 説明 |
 | --- | --- |
@@ -105,7 +105,7 @@ qDataはフロントエンド・バックエンド分離アーキテクチャを
 
 qDataは**プロフェッショナル版**と**オープンソース版**の2つの形態を提供し、さまざまな規模やシナリオのニーズに対応します。両者にはそれぞれ特長があり、相互に補完し合います。オープンソース版は低コストでの導入を支援し、プロフェッショナル版はより高度な機能と手厚いサポートを提供します。どちらを選択しても、qDataは企業のデータ価値の創出とデジタル化の推進を支える信頼できるパートナーとなります。
 
-> 👉 **オープンソース版のブランド利用許諾**または**プロフェッショナル版に関するご相談**は、[💼 ライセンスの詳細](https://community.qdata.tech/business/policy.html)をご覧ください。
+> 👉 **オープンソース版のブランド利用許諾**または**プロフェッショナル版に関するご相談**は、[💼 ライセンスの詳細](https://docs.qdata.tech/business/policy.html)をご覧ください。
 
 ## 🚀 クイックスタート
 初めてqDataを利用する場合は、次の順序でお試しいただくことをおすすめします。
@@ -120,11 +120,11 @@ qDataは**プロフェッショナル版**と**オープンソース版**の2つ
 
 ### 2. デプロイ方法の選択
 
-- [ローカルデプロイ](https://community.qdata.tech/docs/deploy/docker-compose-deployment.html)：Docker Composeを使用して、ローカル環境で一式を起動します。
-- [ソースコードから起動](https://community.qdata.tech/docs/deploy/build-from-source.html)：二次開発が必要な場合に、ソースコードからフロントエンドとバックエンドのサービスを起動します。
-- [セルフマネージドデプロイ](https://community.qdata.tech/docs/deploy/manual-deployment/)：各サービスを手動でインストール、設定、管理します。本番環境、大規模デプロイ、個別設定に適しています。
+- [ローカルデプロイ](https://docs.qdata.tech/docs/deploy/docker-compose-deployment.html)：Docker Composeを使用して、ローカル環境で一式を起動します。
+- [ソースコードから起動](https://docs.qdata.tech/docs/deploy/build-from-source.html)：二次開発が必要な場合に、ソースコードからフロントエンドとバックエンドのサービスを起動します。
+- [セルフマネージドデプロイ](https://docs.qdata.tech/docs/deploy/manual-deployment/)：各サービスを手動でインストール、設定、管理します。本番環境、大規模デプロイ、個別設定に適しています。
 
-> 👉 完全なガイド：https://community.qdata.tech/docs/deploy/deploy-open-source.html
+> 👉 完全なガイド：https://docs.qdata.tech/docs/deploy/deploy-open-source.html
 
 ## 🏗️ デプロイ環境
 
@@ -167,7 +167,7 @@ qDataをデプロイする前に、以下の環境とツールが正しくイン
 ## 👥 QQコミュニティ
 qData公式QQコミュニティに参加して、最新情報、技術サポート、利用交流を入手してください。
 
-> 👉 <a href="https://community.qdata.tech/discuss.html">QQコミュニティに参加</a>
+> 👉 <a href="https://docs.qdata.tech/discuss.html">QQコミュニティに参加</a>
 
 <!-- [![QQグループ参加](https://img.shields.io/badge/QQ Group-814145903（満員）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
 [![QQグループ参加](https://img.shields.io/badge/QQ Group-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)

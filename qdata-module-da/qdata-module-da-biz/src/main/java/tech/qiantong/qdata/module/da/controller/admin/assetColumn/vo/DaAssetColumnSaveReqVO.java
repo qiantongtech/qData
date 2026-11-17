@@ -12,7 +12,7 @@
  * another product requires separate commercial authorization from
  * Jiangsu Qiantong Technology Co., Ltd.
  *
- * Business License: https://community.qdata.tech/business/policy.html
+ * Business License: https://docs.qdata.tech/business/policy.html
  * See the LICENSE file in the project root for full license information.
  */
 
@@ -88,7 +88,7 @@ public class DaAssetColumnSaveReqVO extends BaseEntity {
     @Size(max = 256, message = "代码id长度不能超过256个字符")
     private String dataElemCodeId;
 
-    @Schema(description = "敏感等级id", example = "")
+    @Schema(description = "敏感等级ID。编辑资产字段时，值为 null 表示解除绑定", example = "")
     @Size(max = 256, message = "敏感等级id长度不能超过256个字符")
     private String sensitiveLevelId;
 

@@ -12,7 +12,7 @@
  * another product requires separate commercial authorization from
  * Jiangsu Qiantong Technology Co., Ltd.
  *
- * Business License: https://community.qdata.tech/business/policy.html
+ * Business License: https://docs.qdata.tech/business/policy.html
  * See the LICENSE file in the project root for full license information.
  */
 
@@ -156,7 +156,6 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
         if (StringUtils.isEmpty(updateObj.getDataElemCodeFlag()) || "0".equals(updateObj.getDataElemCodeFlag())) {
             updateObj.setDataElemCodeId(null);
         }
-        // Update data asset column
         return daAssetColumnMapper.updateDaAssetColumn(updateObj);
     }
 

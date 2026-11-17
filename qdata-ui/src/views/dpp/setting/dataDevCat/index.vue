@@ -12,7 +12,7 @@
   another product requires separate commercial authorization from
   Jiangsu Qiantong Technology Co., Ltd.
 
-  Business License: https://community.qdata.tech/business/policy.html
+  Business License: https://docs.qdata.tech/business/policy.html
   See the LICENSE file in the project root for full license information.
 -->
 
@@ -239,6 +239,12 @@
             >
           </template>
         </el-table-column>
+        <template #empty>
+          <div class="emptyBg">
+            <img src="@/assets/images/system/no_data/empty-nodata.png" alt="" />
+            <p>{{ td('common.noData') }}</p>
+          </div>
+        </template>
       </el-table>
 
       <pagination

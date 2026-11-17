@@ -13,7 +13,7 @@
   another product requires separate commercial authorization from
   Jiangsu Qiantong Technology Co., Ltd.
 
-  Business License: https://community.qdata.tech/business/policy.html
+  Business License: https://docs.qdata.tech/business/policy.html
   See the LICENSE file in the project root for full license information.
 -->
 
@@ -157,7 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
             <if test="dataElemCodeFlag != null">DATA_ELEM_CODE_FLAG = #{dataElemCodeFlag},</if>
             DATA_ELEM_CODE_ID = #{dataElemCodeId},
-            <if test="sensitiveLevelId != null">SENSITIVE_LEVEL_ID = #{sensitiveLevelId},</if>
+            SENSITIVE_LEVEL_ID = #{sensitiveLevelId},
             <if test="relDataElmeFlag != null">REL_DATA_ELME_FLAG = #{relDataElmeFlag},</if>
             <if test="relCleanFlag != null">REL_CLEAN_FLAG = #{relCleanFlag},</if>
             <if test="relAuditFlag != null">REL_AUDIT_FLAG = #{relAuditFlag},</if>

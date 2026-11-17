@@ -669,6 +669,7 @@ export default {
     relatedDataElem: 'Related Data Element',
     selectDataElem: 'Please select data element',
     sensitiveLevel: 'Sensitivity Level',
+    selectSensitiveLevel: 'Please select sensitivity level',
     fieldDescription: 'Field Description',
     bindTerm: 'Bind Term',
     addTerm: 'Add Term',

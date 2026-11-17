@@ -4,7 +4,7 @@
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
  <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Vue">
  <img src="https://img.shields.io/badge/license-Apache--2.0-green" alt="License"/>
- <img src="https://img.shields.io/badge/qData-v1.6.7-blue.svg"/>
+ <img src="https://img.shields.io/badge/qData-v1.6.8-blue.svg"/>
 
  <img src="https://gitee.com/qiantongtech/qData/badge/star.svg" alt="Gitee Stars"/>
  <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars" alt="GitHub Stars"/>
@@ -19,17 +19,17 @@
 ## 🌈 Platform Overview
 **qData Data Middle Platform** is an open-source data middle platform designed for enterprise data governance and data development scenarios. Built around core capabilities such as **ETL data integration, data development, data modeling, metadata management, data quality, data assets, API data services, and AI-powered data Q&A**, it supports common databases including MySQL, DM8, Oracle, SQL Server, Kingbase8, and Doris. qData helps enterprises quickly complete data access, cleansing and transformation, asset cataloging, quality checks, API publishing, and Text2SQL analysis. It can serve as an open-source foundation for building enterprise data middle platforms, data governance platforms, ETL platforms, and data service platforms, and is also suitable for secondary development and feature extensions.
 
-✨✨✨**Online Documentation**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a>
+✨✨✨**Online Documentation**✨✨✨ <a href="https://docs.qdata.tech" target="_blank">https://docs.qdata.tech</a>
 
 ✨✨✨**Open-Source Edition Demo**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a>, username: qData, password: qData123
 
-✨✨✨**Professional Edition Demo**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>. Please [contact customer service](https://community.qdata.tech/business/policy.html) to obtain a demo account.
+✨✨✨**Professional Edition Demo**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>. Please [contact customer service](https://docs.qdata.tech/business/policy.html) to obtain a demo account.
 
 > If qData is helpful to you, please give us a **Star ⭐️**. It is the greatest motivation for us to keep improving! 🚀
 
 ## ✅ Feature List
 
-> 👉 qData Data Middle Platform uses a modular design. The current open-source edition focuses on core capabilities including data integration, data development, data modeling, metadata, data quality, data assets, data services, and AI-powered data Q&A. For more details, see the [qData Feature Overview](https://community.qdata.tech/business/pro/features.html).
+> 👉 qData Data Middle Platform uses a modular design. The current open-source edition focuses on core capabilities including data integration, data development, data modeling, metadata, data quality, data assets, data services, and AI-powered data Q&A. For more details, see the [qData Feature Overview](https://docs.qdata.tech/business/pro/features.html).
 
 | Module | Description |
 | --- | --- |
@@ -105,7 +105,7 @@ qData adopts a frontend-backend separated architecture. The backend is based on 
 
 qData provides two editions: **Professional Edition** and **Open-Source Edition**, meeting user needs across different scales and scenarios. Each has its own focus while complementing the other: the Open-Source Edition helps users get started at low cost, while the Professional Edition provides greater depth and support. Whichever edition you choose, qData aims to be a reliable partner that helps enterprises unlock data value and accelerate digital transformation.
 
-> 👉 For **Open-Source Edition brand authorization** or **Professional Edition consultation**, see [💼 Licensing Details](https://community.qdata.tech/business/policy.html).
+> 👉 For **Open-Source Edition brand authorization** or **Professional Edition consultation**, see [💼 Licensing Details](https://docs.qdata.tech/business/policy.html).
 
 ## 🚀 Quick Start
 If this is your first time using qData, we recommend exploring it in the following order:
@@ -120,11 +120,11 @@ If this is your first time using qData, we recommend exploring it in the followi
 
 ### 2. Choose a Deployment Method
 
-- [Local deployment](https://community.qdata.tech/docs/deploy/docker-compose-deployment.html): Start the complete environment locally with Docker Compose.
-- [Run from source](https://community.qdata.tech/docs/deploy/build-from-source.html): Start the frontend and backend services from source when you need to customize or extend qData.
-- [Self-managed deployment](https://community.qdata.tech/docs/deploy/manual-deployment/): Manually install, configure, and manage each service; suitable for production environments, large-scale deployments, and custom configurations.
+- [Local deployment](https://docs.qdata.tech/docs/deploy/docker-compose-deployment.html): Start the complete environment locally with Docker Compose.
+- [Run from source](https://docs.qdata.tech/docs/deploy/build-from-source.html): Start the frontend and backend services from source when you need to customize or extend qData.
+- [Self-managed deployment](https://docs.qdata.tech/docs/deploy/manual-deployment/): Manually install, configure, and manage each service; suitable for production environments, large-scale deployments, and custom configurations.
 
-> 👉 Complete guide: https://community.qdata.tech/docs/deploy/deploy-open-source.html
+> 👉 Complete guide: https://docs.qdata.tech/docs/deploy/deploy-open-source.html
 
 ## 🏗️ Deployment Requirements
 
@@ -167,7 +167,7 @@ Before deploying qData, make sure the following environments and tools are corre
 ## 👥 QQ Community
 Welcome to join the official qData QQ community to get the latest updates, technical support, and usage discussions.
 
-> 👉 <a href="https://community.qdata.tech/discuss.html">Join the QQ Community</a>
+> 👉 <a href="https://docs.qdata.tech/discuss.html">Join the QQ Community</a>
 
 <!-- [![Join QQ Group](https://img.shields.io/badge/QQ Group-814145903（Full）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
 [![Join QQ Group](https://img.shields.io/badge/QQ Group-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)

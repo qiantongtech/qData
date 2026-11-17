@@ -176,35 +176,35 @@ qData公式QQコミュニティに参加して、最新情報、技術サポー�
 ## 🖼️ システム画面
 <table>
     <tr>
-        <td><img src="images/ja-JP/system/1-ログイン.png" alt="ログイン画面" width="400"/></td>
-        <td><img src="images/ja-JP/system/2-ホーム.png" alt="ホーム画面" width="400"/></td>
+        <td><img src="images/ja-JP/system/1-login.png" alt="ログイン画面" width="400"/></td>
+        <td><img src="images/ja-JP/system/2-home.png" alt="ホーム画面" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/22-データ連携.png" alt="データ連携" width="400"/></td>
-        <td><img src="images/ja-JP/system/23-データ連携タスク追加.png" alt="データ連携タスク追加" width="400"/></td>
+        <td><img src="images/ja-JP/system/22-data-integration.png" alt="データ連携" width="400"/></td>
+        <td><img src="images/ja-JP/system/23-add-data-integration-task.png" alt="データ連携タスク追加" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/12-データ開発.png" alt="データ開発" width="400"/></td>
-        <td><img src="images/ja-JP/system/24-データ開発タスク追加.png" alt="データ開発タスク追加" width="400"/></td>
+        <td><img src="images/ja-JP/system/12-data-development.png" alt="データ開発" width="400"/></td>
+        <td><img src="images/ja-JP/system/24-add-data-development-task.png" alt="データ開発タスク追加" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/20-データ収集.png" alt="データ収集" width="400"/></td>
-        <td><img src="images/ja-JP/system/21-収集タスク追加.png" alt="収集タスク追加" width="400"/></td>
+        <td><img src="images/ja-JP/system/20-data-collection.png" alt="データ収集" width="400"/></td>
+        <td><img src="images/ja-JP/system/21-add-collection-task.png" alt="収集タスク追加" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/10-資産管理.png" alt="資産管理" width="400"/></td>
-        <td><img src="images/ja-JP/system/11-データ詳細.png" alt="データ詳細" width="400"/></td>
+        <td><img src="images/ja-JP/system/10-asset-management.png" alt="資産管理" width="400"/></td>
+        <td><img src="images/ja-JP/system/11-asset-details.png" alt="データ詳細" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/8-品質タスク設定.png" alt="品質タスク設定" width="400"/></td>
-        <td><img src="images/ja-JP/system/9-品質実行分析.png" alt="品質実行分析" width="400"/></td>
+        <td><img src="images/ja-JP/system/8-configure-quality-task.png" alt="品質タスク設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/9-quality-execution-analysis.png" alt="品質実行分析" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/3-API管理.png" alt="API管理" width="400"/></td>
-        <td><img src="images/ja-JP/system/13-API設定.png" alt="API設定" width="400"/></td>
+        <td><img src="images/ja-JP/system/3-api-management.png" alt="API管理" width="400"/></td>
+        <td><img src="images/ja-JP/system/13-configure-api.png" alt="API設定" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/ja-JP/system/14-AIデータ問答.png" alt="AIデータ問答" width="400"/></td>
-        <td><img src="images/ja-JP/system/5-AIデータ対話.png" alt="AIデータ対話" width="400"/></td>
+        <td><img src="images/ja-JP/system/14-ai-data-qa.png" alt="AIデータ問答" width="400"/></td>
+        <td><img src="images/ja-JP/system/5-ai-data-qa-conversation.png" alt="AIデータ対話" width="400"/></td>
     </tr>
 </table>

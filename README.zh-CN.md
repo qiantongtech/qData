@@ -176,35 +176,35 @@ qData 提供 **专业版** 与 **开源版** 两种形态，满足不同规模�
 ## 🖼️ 系统配图
 <table>
     <tr>
-        <td><img src="images/zh-CN/system/1登录页.jpg" alt="登录页" width="400"/></td>
-        <td><img src="images/zh-CN/system/2首页.jpg" alt="首页" width="400"/></td>
+        <td><img src="images/zh-CN/system/1-login.jpg" alt="登录页" width="400"/></td>
+        <td><img src="images/zh-CN/system/2-home.jpg" alt="首页" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/22数据集成.png" alt="数据集成" width="400"/></td>
-        <td><img src="images/zh-CN/system/23数据集成新增.png" alt="数据集成新增.png" width="400"/></td>
+        <td><img src="images/zh-CN/system/22-data-integration.png" alt="数据集成" width="400"/></td>
+        <td><img src="images/zh-CN/system/23-add-data-integration-task.png" alt="数据集成新增.png" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/12数据开发.jpg" alt="数据开发" width="400"/></td>
-        <td><img src="images/zh-CN/system/24数据开发新增.png" alt="数据开发新增.png" width="400"/></td>
+        <td><img src="images/zh-CN/system/12-data-development.jpg" alt="数据开发" width="400"/></td>
+        <td><img src="images/zh-CN/system/24-add-data-development-task.png" alt="数据开发新增.png" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/20数据采集.png" alt="数据采集" width="400"/></td>
-        <td><img src="images/zh-CN/system/21采集任务新增.png" alt="采集任务新增" width="400"/></td>
+        <td><img src="images/zh-CN/system/20-data-collection.png" alt="数据采集" width="400"/></td>
+        <td><img src="images/zh-CN/system/21-add-collection-task.png" alt="采集任务新增" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/10资产管理.jpg" alt="资产管理" width="400"/></td>
-        <td><img src="images/zh-CN/system/11资产详情.jpg" alt="资产详情" width="400"/></td>
+        <td><img src="images/zh-CN/system/10-asset-management.jpg" alt="资产管理" width="400"/></td>
+        <td><img src="images/zh-CN/system/11-asset-details.jpg" alt="资产详情" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/8配置质量任务.jpg" alt="配置质量任务" width="400"/></td>
-        <td><img src="images/zh-CN/system/9质量执行分析.jpg" alt="质量执行分析" width="400"/></td>
+        <td><img src="images/zh-CN/system/8-configure-quality-task.jpg" alt="配置质量任务" width="400"/></td>
+        <td><img src="images/zh-CN/system/9-quality-execution-analysis.jpg" alt="质量执行分析" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/3api管理.jpg" alt="api管理" width="400"/></td>
-        <td><img src="images/zh-CN/system/13配置api.jpg" alt="配置api" width="400"/></td>
+        <td><img src="images/zh-CN/system/3-api-management.jpg" alt="api管理" width="400"/></td>
+        <td><img src="images/zh-CN/system/13-configure-api.jpg" alt="配置api" width="400"/></td>
     </tr>
     <tr>
-        <td><img src="images/zh-CN/system/14智能问数.jpg" alt="智能问数" width="400"/></td>
-        <td><img src="images/zh-CN/system/5智能问数-对话.jpg" alt="智能问数-对话" width="400"/></td>
+        <td><img src="images/zh-CN/system/14-ai-data-qa.jpg" alt="智能问数" width="400"/></td>
+        <td><img src="images/zh-CN/system/5-ai-data-qa-conversation.jpg" alt="智能问数-对话" width="400"/></td>
     </tr>
 </table>

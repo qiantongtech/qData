@@ -21,7 +21,6 @@ package tech.qiantong.qdata.module.da.dal.mapper.assetColumn;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import org.apache.ibatis.annotations.Param;
 import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.utils.StringUtils;
 import tech.qiantong.qdata.module.da.controller.admin.assetColumn.vo.DaAssetColumnPageReqVO;
@@ -55,8 +54,7 @@ public interface DaAssetColumnMapper extends BaseMapperX<DaAssetColumnDO> {
         return selectJoinPage(reqVO, DaAssetColumnDO.class, lambdaQueryWrapper);
     }
 
-    int updateDaAssetColumn(@Param("column") DaAssetColumnDO column,
-                            @Param("updateSensitiveLevel") boolean updateSensitiveLevel);
+    int updateDaAssetColumn(DaAssetColumnDO daAssetColumnDO);
 
     void deleteAssetColumnByAssetId(Long assetId);
 

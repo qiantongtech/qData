@@ -194,7 +194,7 @@
               filterable
               clearable
               :placeholder="td('dpp.column.selectSensitiveLevel', 'Please select sensitivity level')"
-              @change="(val) => (form.sensitiveLevelId = val ?? null)"
+              :value-on-clear="null"
             >
               <el-option
                 v-for="item in sensitiveLevelList"
@@ -832,12 +832,7 @@ function submitForm() {
     if (valid) {
       if (form.value.id != null) {
         delete form.value.updateTime;
-
-        const payload = {
-          ...form.value,
-          sensitiveLevelId: form.value.sensitiveLevelId ?? "",
-        };
-        updateDaAssetColumn(payload)
+        updateDaAssetColumn(form.value)
           .then((response) => {
             proxy.$modal.msgSuccess(td('common.message.editSuccess'));
             open.value = false;

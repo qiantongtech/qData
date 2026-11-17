@@ -156,8 +156,7 @@ public class DaAssetColumnServiceImpl extends ServiceImpl<DaAssetColumnMapper, D
         if (StringUtils.isEmpty(updateObj.getDataElemCodeFlag()) || "0".equals(updateObj.getDataElemCodeFlag())) {
             updateObj.setDataElemCodeId(null);
         }
-        // Update data asset column
-        return daAssetColumnMapper.updateDaAssetColumn(updateObj, updateReqVO.getSensitiveLevelId() != null);
+        return daAssetColumnMapper.updateDaAssetColumn(updateObj);
     }
 
     @Override

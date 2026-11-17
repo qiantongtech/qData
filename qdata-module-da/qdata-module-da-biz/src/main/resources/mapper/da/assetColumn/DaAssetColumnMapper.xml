@@ -143,36 +143,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateDaAssetColumn">
+    <update id="updateDaAssetColumn" parameterType="DaAssetColumnDO">
         update DA_ASSET_COLUMN
         <trim prefix="SET" suffixOverrides=",">
-            <if test="column.assetId != null">ASSET_ID = #{column.assetId},</if>
-            <if test="column.columnName != null">COLUMN_NAME = #{column.columnName},</if>
-            <if test="column.columnComment != null">COLUMN_COMMENT = #{column.columnComment},</if>
-            <if test="column.columnType != null">COLUMN_TYPE = #{column.columnType},</if>
-            <if test="column.columnLength != null">COLUMN_LENGTH = #{column.columnLength},</if>
-            <if test="column.columnScale != null">COLUMN_SCALE = #{column.columnScale},</if>
-            <if test="column.nullableFlag != null">NULLABLE_FLAG = #{column.nullableFlag},</if>
-            <if test="column.pkFlag != null">PK_FLAG = #{column.pkFlag},</if>
-            <if test="column.defaultValue != null">DEFAULT_VALUE = #{column.defaultValue},</if>
-            <if test="column.dataElemCodeFlag != null">DATA_ELEM_CODE_FLAG = #{column.dataElemCodeFlag},</if>
-            DATA_ELEM_CODE_ID = #{column.dataElemCodeId},
-            <if test="updateSensitiveLevel">SENSITIVE_LEVEL_ID = #{column.sensitiveLevelId,jdbcType=BIGINT},</if>
-            <if test="column.relDataElmeFlag != null">REL_DATA_ELME_FLAG = #{column.relDataElmeFlag},</if>
-            <if test="column.relCleanFlag != null">REL_CLEAN_FLAG = #{column.relCleanFlag},</if>
-            <if test="column.relAuditFlag != null">REL_AUDIT_FLAG = #{column.relAuditFlag},</if>
-            <if test="column.description != null">DESCRIPTION = #{column.description},</if>
-            <if test="column.validFlag != null">VALID_FLAG = #{column.validFlag},</if>
-            <if test="column.delFlag != null">DEL_FLAG = #{column.delFlag},</if>
-            <if test="column.createBy != null">CREATE_BY = #{column.createBy},</if>
-            <if test="column.creatorId != null">CREATOR_ID = #{column.creatorId},</if>
-            <if test="column.createTime != null">CREATE_TIME = #{column.createTime},</if>
-            <if test="column.updateBy != null">UPDATE_BY = #{column.updateBy},</if>
-            <if test="column.updaterId != null">UPDATER_ID = #{column.updaterId},</if>
-            <if test="column.updateTime != null">UPDATE_TIME = #{column.updateTime},</if>
-            <if test="column.remark != null">REMARK = #{column.remark},</if>
+            <if test="assetId != null">ASSET_ID = #{assetId},</if>
+            <if test="columnName != null">COLUMN_NAME = #{columnName},</if>
+            <if test="columnComment != null">COLUMN_COMMENT = #{columnComment},</if>
+            <if test="columnType != null">COLUMN_TYPE = #{columnType},</if>
+            <if test="columnLength != null">COLUMN_LENGTH = #{columnLength},</if>
+            <if test="columnScale != null">COLUMN_SCALE = #{columnScale},</if>
+            <if test="nullableFlag != null">NULLABLE_FLAG = #{nullableFlag},</if>
+            <if test="pkFlag != null">PK_FLAG = #{pkFlag},</if>
+            <if test="defaultValue != null">DEFAULT_VALUE = #{defaultValue},</if>
+            <if test="dataElemCodeFlag != null">DATA_ELEM_CODE_FLAG = #{dataElemCodeFlag},</if>
+            DATA_ELEM_CODE_ID = #{dataElemCodeId},
+            SENSITIVE_LEVEL_ID = #{sensitiveLevelId},
+            <if test="relDataElmeFlag != null">REL_DATA_ELME_FLAG = #{relDataElmeFlag},</if>
+            <if test="relCleanFlag != null">REL_CLEAN_FLAG = #{relCleanFlag},</if>
+            <if test="relAuditFlag != null">REL_AUDIT_FLAG = #{relAuditFlag},</if>
+            <if test="description != null">DESCRIPTION = #{description},</if>
+            <if test="validFlag != null">VALID_FLAG = #{validFlag},</if>
+            <if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="creatorId != null">CREATOR_ID = #{creatorId},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updaterId != null">UPDATER_ID = #{updaterId},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
         </trim>
-        where ID = #{column.id}
+        where ID = #{id}
     </update>
 
     <delete id="deleteDaAssetColumnById" parameterType="Long">

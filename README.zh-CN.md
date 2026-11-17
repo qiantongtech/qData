@@ -19,17 +19,17 @@
 ## 🌈 平台简介
 **qData 数据中台**是一套面向企业数据治理与数据研发场景的开源数据中台，围绕 **ETL 数据集成、数据开发、数据建模、元数据管理、数据质量、数据资产、API 数据服务与 AI 智能问数**等核心能力，支持 MySQL、DM8、Oracle、SQL Server、Kingbase8、Doris 等常用数据库接入，帮助企业快速完成数据接入、清洗转换、资产编目、质量检查、接口开放和 Text2SQL 分析，可作为企业建设数据中台、数据治理平台、ETL 平台和数据服务平台的开源基础底座，也适合开发者进行二次开发与功能扩展。
 
-✨✨✨**在线文档**✨✨✨ <a href="https://community.qdata.tech" target="_blank">https://community.qdata.tech</a>
+✨✨✨**在线文档**✨✨✨ <a href="https://docs.qdata.tech" target="_blank">https://docs.qdata.tech</a>
 
 ✨✨✨**开源版演示地址**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a> ，账号：qData 密码：qData123
 
-✨✨✨**专业版演示地址**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a> ，演示账号请 [联系客服获取](https://community.qdata.tech/business/policy.html)
+✨✨✨**专业版演示地址**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a> ，演示账号请 [联系客服获取](https://docs.qdata.tech/business/policy.html)
 
 > 如果 qData 对您有帮助，请点个 **Star ⭐️**，这是我们持续更新的最大动力！ 🚀
 
 ## ✅ 功能清单
 
-> 👉 qData 数据中台采用模块化设计，当前开源版聚焦数据集成、数据开发、数据建模、元数据、数据质量、数据资产、数据服务和智能问数等核心能力。更多功能可参考：[qData 功能清单总览](https://community.qdata.tech/business/pro/features.html)
+> 👉 qData 数据中台采用模块化设计，当前开源版聚焦数据集成、数据开发、数据建模、元数据、数据质量、数据资产、数据服务和智能问数等核心能力。更多功能可参考：[qData 功能清单总览](https://docs.qdata.tech/business/pro/features.html)
 
 | 模块 | 描述 |
 | --- | --- |
@@ -105,7 +105,7 @@ qData 平台采用前后端分离架构，后端基于 Spring Boot，前端基�
 
 qData 提供 **专业版** 与 **开源版** 两种形态，满足不同规模与场景下的用户需求。两者既各具特色，又形成互补：开源版更像启蒙老师，帮助低成本起步；专业版更像专家顾问，提供深度与保障。无论选择哪种版本，qData 都将成为可靠的伙伴，帮助企业释放数据价值，加速数字化进程。
 
-> 👉 如需 **开源版品牌授权** 或 **咨询专业版**，请点击按钮查看详情：[💼 了解授权详情](https://community.qdata.tech/business/policy.html)
+> 👉 如需 **开源版品牌授权** 或 **咨询专业版**，请点击按钮查看详情：[💼 了解授权详情](https://docs.qdata.tech/business/policy.html)
 
 ## 🚀 快速开始
 第一次接触 qData，推荐按下面的顺序体验：
@@ -120,11 +120,11 @@ qData 提供 **专业版** 与 **开源版** 两种形态，满足不同规模�
 
 ### 2. 选择部署方式
 
-- [本地部署](https://community.qdata.tech/docs/deploy/docker-compose-deployment.html) ：通过 Docker Compose 在本机启动完整环境。
-- [源码启动](https://community.qdata.tech/docs/deploy/build-from-source.html) ：需要二次开发时，再从源码启动前后端服务。
-- [自主部署](https://community.qdata.tech/docs/deploy/manual-deployment/) ：手工安装、配置并管理各项服务，适合生产环境、大规模部署和个性化配置。
+- [本地部署](https://docs.qdata.tech/docs/deploy/docker-compose-deployment.html) ：通过 Docker Compose 在本机启动完整环境。
+- [源码启动](https://docs.qdata.tech/docs/deploy/build-from-source.html) ：需要二次开发时，再从源码启动前后端服务。
+- [自主部署](https://docs.qdata.tech/docs/deploy/manual-deployment/) ：手工安装、配置并管理各项服务，适合生产环境、大规模部署和个性化配置。
 
-> 👉 完整指南：https://community.qdata.tech/docs/deploy/deploy-open-source.html
+> 👉 完整指南：https://docs.qdata.tech/docs/deploy/deploy-open-source.html
 
 ## 🏗️ 部署环境
 
@@ -167,7 +167,7 @@ qData 提供 **专业版** 与 **开源版** 两种形态，满足不同规模�
 ## 👥 QQ交流群
 欢迎加入 qData 官方 QQ 交流群，获取最新动态、技术支持与使用交流。
 
-> 👉 <a href="https://community.qdata.tech/discuss.html">点击加入 QQ 交流群</a>
+> 👉 <a href="https://docs.qdata.tech/discuss.html">点击加入 QQ 交流群</a>
 
 <!-- [![加入QQ群](https://img.shields.io/badge/QQ群-814145903（已满）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
 [![加入QQ群](https://img.shields.io/badge/QQ群-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)

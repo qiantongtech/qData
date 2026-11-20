@@ -168,7 +168,7 @@ services:
       - TRUST_HOST=false
       - SERVER_SERVLET_CONTEXT_PATH=/
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8012/index >/dev/null 2>&1 || exit 1"]
+      test: ["CMD", "wget", "--no-proxy", "--tries=1", "-nv", "-O", "/dev/null", "http://127.0.0.1:8012/index"]
       interval: 30s
       timeout: 10s
       retries: 5

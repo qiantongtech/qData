@@ -517,7 +517,22 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
     public PageResult<Map<String, Object>> queryByPage(String sql, long offset, long size) {
         int total = count(sql);
         String pageSql = dbDialect.buildPaginationSql(sql, offset, size);
-        List<Map<String, Object>> records = jdbcTemplate.query(pageSql, new MyRowMapper());
+        Map<String, DbColumn> origins = new LinkedHashMap<>();
+        List<Map<String, Object>> records = jdbcTemplate.query(pageSql, new MyRowMapper() {
+            @Override
+            public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                if (rowNum == 0) {
+                    ResultSetMetaData meta = rs.getMetaData();
+                    for (int i = 1; i <= meta.getColumnCount(); i++) {
+                        // Match putIfAbsent in MyRowMapper when result labels are duplicated.
+                        String label = meta.getColumnLabel(i).toUpperCase(Locale.ROOT);
+                        origins.putIfAbsent(label, DbColumn.builder()
+                                .tableName(meta.getTableName(i)).colName(meta.getColumnName(i)).build());
+                    }
+                }
+                return super.mapRow(rs, rowNum);
+            }
+        });
         if (records.size() > 0) {
             records.forEach(record -> {
                 if (record.containsKey("__row_number__")) {
@@ -525,7 +540,7 @@ public abstract class AbstractDbQueryFactory implements DbQuery {
                 }
             });
         }
-        return new PageResult<>(total, records);
+        return new PageResult<Map<String, Object>>(total, records).setColumnOrigins(origins);
     }
 
     @Override

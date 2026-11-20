@@ -977,8 +977,8 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
                 }
 
 
-                // Only desensitize strings; return other types as-is
-                if (!(val instanceof CharSequence)) {
+                // Numeric fields also need masking when a sensitivity level is bound.
+                if (!(val instanceof CharSequence) && !(val instanceof Number)) {
                     masked.put(key, val);
                     continue;
                 }
@@ -991,8 +991,9 @@ public class DaAssetServiceImpl extends ServiceImpl<DaAssetMapper, DaAssetDO> im
 
                 // Start/end positions: start/end is 1-based; null means full coverage
                 int len = s.length();
-                int start = lvl.getStartCharLoc() == null ? 1 : lvl.getStartCharLoc().intValue();
-                int end = lvl.getEndCharLoc() == null ? len : lvl.getEndCharLoc().intValue();
+                boolean maskAll = "1".equals(lvl.getSensitiveRule());
+                int start = maskAll || lvl.getStartCharLoc() == null ? 1 : lvl.getStartCharLoc().intValue();
+                int end = maskAll || lvl.getEndCharLoc() == null ? len : lvl.getEndCharLoc().intValue();
 
                 // Normalize boundaries and ensure start<=end
                 start = Math.max(1, start);

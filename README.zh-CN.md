@@ -82,6 +82,38 @@ qData 是一款面向企业数据团队与个人开发者的开源数据中台�
 
 环境要求、安装步骤、组件配置与常见问题，统一查阅[部署指南](https://docs.qdata.tech/qData/deploy/deploy-open-source.html)。
 
+## 产品功能架构
+
+![qData 数据中台开源版产品功能架构图](images/zh-CN/product-architecture.png)
+
+## 系统配图
+<table>
+    <tr>
+        <td><img src="images/zh-CN/system/1-login.jpg" alt="登录页" width="400"/></td>
+        <td><img src="images/zh-CN/system/2-home.jpg" alt="首页" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/zh-CN/system/22-data-integration.png" alt="数据集成" width="400"/></td>
+        <td><img src="images/zh-CN/system/23-add-data-integration-task.png" alt="数据集成新增.png" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/zh-CN/system/12-data-development.jpg" alt="数据开发" width="400"/></td>
+        <td><img src="images/zh-CN/system/24-add-data-development-task.png" alt="数据开发新增.png" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/zh-CN/system/20-data-collection.png" alt="数据采集" width="400"/></td>
+        <td><img src="images/zh-CN/system/21-add-collection-task.png" alt="采集任务新增" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/zh-CN/system/10-asset-management.jpg" alt="资产管理" width="400"/></td>
+        <td><img src="images/zh-CN/system/9-quality-execution-analysis.jpg" alt="质量执行分析" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="images/zh-CN/system/13-configure-api.jpg" alt="配置api" width="400"/></td>
+        <td><img src="images/zh-CN/system/5-ai-data-qa-conversation.jpg" alt="智能问数-对话" width="400"/></td>
+    </tr>
+</table>
+
 ## 能力概览
 
 | 能力 | 可以完成什么 |
@@ -149,31 +181,3 @@ qData 按 **Apache License 2.0 及项目附加条件**提供，支持商业使�
 我们相信，数据平台应当让技术更易用，让数据更可信，让应用更容易落地。qData 以开源汇聚开发者的创造力，以 AI 降低数据工作的门槛，以完整、开放、可靠的产品承接真实业务，让个人的想法能够成为应用，让企业的数据能够持续创造价值。
 
 我们希望与社区共同建设一个可以长期使用、持续扩展的数据基础平台，让更多人自主掌握数据，让更多创新从数据中发生。
-
-## 系统配图
-<table>
-    <tr>
-        <td><img src="images/zh-CN/system/1-login.jpg" alt="登录页" width="400"/></td>
-        <td><img src="images/zh-CN/system/2-home.jpg" alt="首页" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/zh-CN/system/22-data-integration.png" alt="数据集成" width="400"/></td>
-        <td><img src="images/zh-CN/system/23-add-data-integration-task.png" alt="数据集成新增.png" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/zh-CN/system/12-data-development.jpg" alt="数据开发" width="400"/></td>
-        <td><img src="images/zh-CN/system/24-add-data-development-task.png" alt="数据开发新增.png" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/zh-CN/system/20-data-collection.png" alt="数据采集" width="400"/></td>
-        <td><img src="images/zh-CN/system/21-add-collection-task.png" alt="采集任务新增" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/zh-CN/system/10-asset-management.jpg" alt="资产管理" width="400"/></td>
-        <td><img src="images/zh-CN/system/9-quality-execution-analysis.jpg" alt="质量执行分析" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/zh-CN/system/13-configure-api.jpg" alt="配置api" width="400"/></td>
-        <td><img src="images/zh-CN/system/5-ai-data-qa-conversation.jpg" alt="智能问数-对话" width="400"/></td>
-    </tr>
-</table>

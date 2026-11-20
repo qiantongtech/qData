@@ -1,13 +1,13 @@
-![banner.png](images/ja-JP/banner.png)
+![qData オープンソースデータプラットフォーム](images/ja-JP/banner.png)
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-1.8+-brightgreen.svg" alt="JDK">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.15-blue.svg" alt="Spring Boot">
  <img src="https://img.shields.io/badge/Vue-3.4.31-blue.svg" alt="Vue">
- <img src="https://img.shields.io/badge/license-Apache--2.0-green" alt="License"/>
+ <img src="https://img.shields.io/badge/license-Apache--2.0-green"/>
  <img src="https://img.shields.io/badge/qData-v1.6.8-blue.svg"/>
 
- <img src="https://gitee.com/qiantongtech/qData/badge/star.svg" alt="Gitee Stars"/>
- <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars" alt="GitHub Stars"/>
+ <img src="https://gitee.com/qiantongtech/qData/badge/star.svg"/>
+ <img src="https://img.shields.io/github/stars/qiantongtech/qData?label=Github%20Stars"/>
  <img src="https://atomgit.com/qiantongtech/qData/star/badge.svg"/>
 </p>
 
@@ -15,196 +15,164 @@
   <a href="README.zh-CN.md">📖简体中文</a> | <a href="README.md">📖English</a> | 📖日本語
 </p>
 
+## プラットフォーム概要
 
-## 🌈 プラットフォーム概要
-**qData データ中台**は、企業のデータガバナンスとデータ開発向けのオープンソースデータ中台です。**ETLデータ連携、データ開発、データモデリング、メタデータ管理、データ品質、データ資産、APIデータサービス、AIデータ問答**などの中核機能を備え、MySQL、DM8、Oracle、SQL Server、Kingbase8、Dorisなどの一般的なデータベースへの接続をサポートしています。qDataは、データ接続、クレンジング・変換、資産カタログ化、品質チェック、API公開、Text2SQL分析を企業が迅速に実施できるよう支援します。企業のデータ中台、データガバナンスプラットフォーム、ETLプラットフォーム、データサービスプラットフォームを構築するためのオープンソース基盤として活用でき、開発者による二次開発や機能拡張にも適しています。
+**軽量で使いやすく、必要な機能を一通り備えた AI ネイティブなデータ基盤です。個人でも手軽に始められ、企業の本番環境にも導入できます。**
 
-✨✨✨**オンラインドキュメント**✨✨✨ <a href="https://docs.qdata.tech" target="_blank">https://docs.qdata.tech</a>
+qData は、企業のデータチームや個人開発者向けのオープンソースのデータ基盤です。**データ連携、データパイプライン開発、データモデリング、データガバナンス、データカタログ、API 公開、AI による分析**を一つの環境で行えます。データの取り込みから加工、整理、管理、共有までを支援します。
 
-✨✨✨**オープンソース版デモ**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a>、ユーザー名：qData、パスワード：qData123
+個人での開発や技術検証から、企業のデータプロジェクト、日々の開発、本番運用まで利用できます。個人のデータ処理や、企業での業務へのデータ活用を支援します。
 
-✨✨✨**プロフェッショナル版デモ**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a>。デモアカウントの取得は[カスタマーサービスにお問い合わせ](https://docs.qdata.tech/business/policy.html)ください。
+✨✨✨**ドキュメント**✨✨✨ <a href="https://docs.qdata.tech/ja/qData/" target="_blank">https://docs.qdata.tech/ja/qData/</a>
 
-> qDataがお役に立ちましたら、**Star ⭐️**をいただけますと幸いです。それが私たちが継続的に改善する最大の原動力となります！ 🚀
+✨✨✨**オープンソース版デモ**✨✨✨ <a href="https://demo.qdata.tech" target="_blank">https://demo.qdata.tech</a>（ユーザー名 `qData`、パスワード `qData123`）
 
-## ✅ 機能一覧
+✨✨✨**プロフェッショナル版デモ**✨✨✨ <a href="https://pro-demo.qdata.tech" target="_blank">https://pro-demo.qdata.tech</a> · [デモ用アカウントのお申し込み](https://docs.qdata.tech/ja/business/policy.html)
 
-> 👉 qDataデータ中台はモジュール設計を採用しています。現在のオープンソース版は、データ連携、データ開発、データモデリング、メタデータ、データ品質、データ資産、データサービス、AIデータ問答などの中核機能に注力しています。詳細は、[qData機能一覧](https://docs.qdata.tech/business/pro/features.html)をご覧ください。
+> qData が役に立ったら、リポジトリに **スター ⭐️** を付けていただけると、継続開発の励みになります。🚀
 
-| モジュール | 説明 |
+qData は Apache License 2.0 に qData 固有の追加条件を加えて提供されます。詳しくは [LICENSE](LICENSE) と[商用利用の案内](#license-and-services)をご覧ください。
+
+
+## 主な特長
+
+### 1 台から始め、必要に応じて拡張
+
+**1 台で動作するセルフホストの標準構成と、処理規模に応じた拡張構成**を選べます。標準構成では、qData 1 インスタンス、SeaTunnel Zeta 1 ノード、DolphinScheduler Standalone、MySQL、Redis を使い、1 台でデータ処理ジョブを実行できます。
+
+### データ同期から本番運用までの ETL パイプライン開発
+
+**データ同期、スクリプト開発、ワークフロー管理、スケジューリング、運用**を一つの環境で行えます。テーブル単位またはデータベース全体をバッチ転送・リアルタイム同期でき、**RDS SQL、Doris SQL、シェルスクリプト**で処理を記述できます。テンプレートの再利用、依存関係の設定、実行監視、失敗時の再実行により、ジョブを効率よく開発し、安定して運用できます。
+
+### 業務領域の整理からモデル公開までのデータウェアハウス設計
+
+業務領域とデータウェアハウス（DWH）のレイヤーを整理し、論理データモデルと業務指標を定義して公開できます。モデル、指標、データ標準をまとめて管理することで、データ構造と業務上の定義をそろえ、モデルを再利用しやすくします。
+
+### データ活用の全工程を支える AI ネイティブ機能
+
+自然言語での対話、AI による生成や分析を通じて、**パイプライン開発、ジョブ設定、運用、データ分析**を支援します。データについて自然言語で質問すると、**SQL（Text-to-SQL）、グラフ、分析結果の要約**が生成され、データを調べて理解するのに役立ちます。
+
+### データの取り込みから業務利用まで
+
+データ処理、ガバナンス、データカタログ、API による共有を一つの環境で扱えます。プロジェクトごとの作業領域、メンバーのロール、システム管理機能を備えており、チームでデータの取り込みから加工、管理、利用まで進められます。
+
+### 機能と構成を用途に合わせて拡張
+
+モジュール構成を採用し、データソース用のコネクター、業務モジュール、クレンジングや品質チェックのルールを拡張できます。SQL、シェルスクリプト、タスクテンプレートで処理を再利用し、処理量に合わせて実行環境とスケジューラーを拡張できます。
+
+### 複数インスタンスとクラスタ構成による高可用性
+
+本番で高い可用性が必要な場合は、qData を複数インスタンスで稼働させ、SeaTunnel Zeta と DolphinScheduler をクラスタ構成にできます。ジョブの監視、実行ログ、再実行、同期の復旧機能を使って、障害を調査し、対応できます。
+
+## クイックスタート
+
+### オンラインデモを試す
+
+[qData オープンソース版のデモ](https://demo.qdata.tech)を開くと、インストールせずに製品を試せます。
+
+**ユーザー名 `qData`　パスワード `qData123`**
+
+まずパイプライン開発とデータモデリングを試し、その後でデータカタログ、データ API、自然言語による問い合わせを確認すると、データの準備から利用までの流れが分かります。
+
+### インストール方法を選ぶ
+
+- **[Docker Compose で起動](https://docs.qdata.tech/ja/qData/deploy/docker-compose-deployment.html)** — ローカル環境を設定して起動し、すぐに試したり導入したりできます。
+- **[ソースコードから起動](https://docs.qdata.tech/ja/qData/deploy/build-from-source.html)** — フロントエンドとバックエンドの開発環境を起動し、改修や機能拡張を行えます。
+- **[手動でインストール](https://docs.qdata.tech/ja/qData/deploy/manual-deployment/)** — 既存のインフラや独自の構成に合わせて、各サービスを個別に導入・管理できます。
+
+動作要件、インストール手順、各コンポーネントの設定、よくある質問は[導入ガイド](https://docs.qdata.tech/ja/qData/deploy/deploy-open-source.html)をご覧ください。
+
+## 製品の機能構成
+
+![qData オープンソース版の機能構成図](images/ja-JP/product-architecture.png)
+
+## 画面イメージ
+
+![ログイン画面](images/ja-JP/system/1-login.png)
+
+![ホーム画面](images/ja-JP/system/2-home.png)
+
+![データ連携](images/ja-JP/system/22-data-integration.png)
+
+![データ連携タスクの作成](images/ja-JP/system/23-add-data-integration-task.png)
+
+![パイプライン開発](images/ja-JP/system/12-data-development.png)
+
+![パイプラインタスクの作成](images/ja-JP/system/24-add-data-development-task.png)
+
+![メタデータ収集](images/ja-JP/system/20-data-collection.png)
+
+![メタデータ収集タスクの作成](images/ja-JP/system/21-add-collection-task.png)
+
+![データカタログ](images/ja-JP/system/10-asset-management.png)
+
+![品質チェックの実行結果](images/ja-JP/system/9-quality-execution-analysis.png)
+
+![データ API の設定](images/ja-JP/system/13-configure-api.png)
+
+![AI によるデータ分析の会話画面](images/ja-JP/system/5-ai-data-qa-conversation.png)
+
+## 機能概要
+
+| 機能 | できること |
 | --- | --- |
-| **データ連携（ETL）** | データ取り込み、クレンジング、変換、出力のワークフローを視覚的に設定できます。新規タスクではDataXまたはSparkを実行エンジンとして選択でき、軽量なデータ同期、関連データの取得、データインポート、大規模なオフライン処理、複雑な計算に適しています。 |
-| **データ開発** | SQLスクリプト方式でのデータ処理タスク開発をサポート。新規タスク作成時にQuartzまたはDolphinSchedulerスケジューラを選択でき、データ加工、統計分析、定期スケジューリング、タスクオーケストレーションに適用。 |
-| **データモデリング** | データ標準、データウェアハウスのレイヤー、データドメイン、サブジェクト領域の設計、論理モデル、標準データ要素などをサポートし、企業の基礎的なデータモデル体系の構築を支援します。 |
-| **メタデータ管理** | メタデータ閲覧、フィールド構造閲覧、バージョン管理、メタデータ比較、収集タスク管理をサポート。新規収集タスク作成時にQuartzまたはDolphinSchedulerスケジューラを選択でき、収集実行戦略を柔軟に設定可能。 |
-| **データ品質** | 検査ルールに基づくデータ品質チェックと処理をサポートし、完全性、一意性、有効性などの問題を検出可能。 |
-| **データ資産** | データ資産カタログ、資産タグ、資産詳細、資産検索などの機能をサポートし、ユーザーがデータ資源を統合管理・検索できるよう支援。 |
-| **データ照会** | データソースに対するオンラインSQLクエリをサポートし、一時照会、データ検証、結果エクスポートに活用可能。 |
-| **データサービス** | データテーブルやSQLクエリ結果をAPIサービスとしてカプセル化し、オンラインテスト、呼び出しログ、アプリケーション管理機能を提供。 |
-| **AIデータ問答** | 自然言語データ質問、Text2SQL、インテリジェントチャート、結果詳細閲覧をサポートし、ビジネスユーザーのデータ利用の敷居を下げる。 |
-| **基本管理** | データソース、プロジェクトスペース、カテゴリ、検査ルール、クレンジングルールなどの基本設定をサポートし、データ開発とデータガバナンスを支える。 |
-| **システム管理** | ユーザー、ロール、メニュー、部門、役職、辞書、パラメータ、お知らせ、ログなどの基本的なシステム管理機能をサポート。 |
+| **データ連携と同期** | 転送元と転送先の接続情報を設定し、テーブル単位またはデータベース全体をバッチ転送・リアルタイム同期できます。 |
+| **SQL・シェルによるデータ加工** | リレーショナルデータベース向けの SQL（RDS SQL）、Doris SQL、シェルスクリプトでクレンジング・変換・結合・集計や外部プログラムの呼び出しを行えます。テンプレート、実行時パラメータ、結果のプレビュー、ログを利用できます。 |
+| **ワークフローとジョブスケジューリング** | 同期・加工・品質チェックの実行順序と依存関係を設定できます。定期実行や cron の設定、実行予定の確認、ジョブの公開、スケジュールの開始・停止、実行インスタンスの管理を行えます。 |
+| **ジョブ監視と復旧** | タスク、ステータス、実行時刻で履歴を絞り込み、読み書きの件数、転送速度、滞留量、データベース全体を同期する際のテーブル別指標を確認できます。バッチの再実行、リアルタイム同期の一時停止・再開、ログによる障害調査も可能です。 |
+| **DWH モデリングとデータ標準** | 業務領域や DWH のレイヤーを設計し、論理データモデルと業務指標を定義して公開できます。データ項目の定義やコード表を組織内で共通化できます。 |
+| **メタデータ管理** | 収集ジョブを設定し、データベース、テーブル、カラムのスキーマ情報を管理します。収集結果とメタデータはデータの把握、カタログ管理、変更の追跡に使えます。 |
+| **データ品質チェック** | 対象データと検証ルールを指定し、品質チェックを実行します。検証結果やルールに違反したレコードを確認でき、業務に合わせてルールを拡張できます。 |
+| **データカタログと SQL エディター** | データセットを登録、分類、タグ付けして検索できます。スキーマと詳細の確認、SQL クエリでの確認、ページごとのプレビュー、結果のエクスポートに対応します。 |
+| **データの API 公開** | **単一テーブル用のウィザードまたは SQL スクリプト**でエンドポイントを定義できます。リクエスト・レスポンスの設定、オンラインテスト、レート制限、ログの確認、利用アプリの管理にも対応します。 |
+| **自然言語での問い合わせ（Text-to-SQL）** | 対象データを指定し、複数のテーブルにまたがる質問ができます。生成された SQL、結果の明細、グラフ、要約を確認し、会話を再利用したりグラフを出力したりできます。 |
+| **プロジェクトと権限管理** | データソース、タスク、メンバー、ロールをプロジェクト単位で管理できます。ユーザー、部署、メニュー、辞書、ログも管理できます。 |
 
-## 🚧 今後の開発計画
+上記はオープンソース版の主な機能です。機能の詳細、対応するデータソース、エディションごとの提供範囲は[機能比較表](https://docs.qdata.tech/ja/qData/pro/features.html)をご覧ください。
 
-今後は、**メタデータ比較、ビジネス階層、データ資産の再構築**を進め、データガバナンスと資産管理の利便性をさらに向上させる予定です。同時に、**データ連携、データ品質、データサービス、AI機能**を継続的に強化し、データソースとETLコンポーネントの拡充、品質ルール、APIサービス、Text2SQL分析体験の最適化にも取り組みます。
+## 小規模構成から本番運用まで
 
-> 💡 ご提案や機能のご要望がありましたら、[Issueを提出](https://gitee.com/qiantongtech/qData/issues)して、qDataデータ中台の改善にご協力ください。
+個人での開発、技術検証、日常的なデータ処理は小規模な構成から始められます。企業での利用では、処理量や可用性の要件に合わせ、複数インスタンスやクラスタ構成に拡張できます。
 
-## 🛠️ 技術スタック
-qDataはフロントエンド・バックエンド分離アーキテクチャを採用しています。バックエンドはSpring Boot、フロントエンドはVue 3に基づき、主流のミドルウェアとデータツールを統合しています。
+| コンポーネント | 小規模向けの標準構成 | 本番環境での拡張構成 |
+| --- | --- | --- |
+| **qData** | 1 インスタンス | 複数インスタンスで高可用性に対応 |
+| **SeaTunnel Zeta** | シングルノードで同期ジョブを実行 | 分散クラスタで処理能力を拡張 |
+| **DolphinScheduler** | Standalone 構成でジョブをスケジューリング | クラスタ構成でスケジューリングと実行能力を拡張 |
+| **MySQL** | アプリケーションのデータを保存 | 本番の要件に合わせて冗長化 |
+| **Redis** | キャッシュ | 本番の要件に合わせて冗長化 |
+| **ZooKeeper** | 個別の導入は不要 | クラスタ構成に応じて導入 |
 
-<table>
-  <tr>
-    <th>カテゴリ</th><th>技術</th><th>説明</th>
-  </tr>
-  <tr>
-    <td rowspan="6">バックエンド技術スタック</td><td>Spring Boot</td><td>高速開発機能を提供</td>
-  </tr>
-  <tr>
-    <td>Spring Security</td><td>ユーザー認証と権限管理を実装</td>
-  </tr>
-  <tr>
-    <td>MySQL、PostgreSQL、DM8、KingbaseES</td><td>永続ストレージと設定管理</td>
-  </tr>
-  <tr>
-    <td>MyBatis-Plus</td><td>データベース操作を簡素化</td>
-  </tr>
-  <tr>
-    <td>Redis</td><td>キャッシュ、分散ロックなどをサポート</td>
-  </tr>
-  <tr>
-    <td>RabbitMQ</td><td>非同期通信とデカップリング処理を実現</td>
-  </tr>
+用途に応じて Flink や Spark などの処理エンジンを連携できます。対象タスクの種類や提供範囲は[機能比較表](https://docs.qdata.tech/ja/qData/pro/features.html)をご覧ください。
 
-  <tr>
-    <td rowspan="3">フロントエンド技術スタック</td><td>Vue 3</td><td>モダンなリアクティブフレームワーク</td>
-  </tr>
-  <tr>
-    <td>Element UI</td><td>一般的なUIコンポーネントサポート</td>
-  </tr>
-  <tr>
-    <td>Vite</td><td>高速開発とビルドツール</td>
-  </tr>
+標準構成は、導入や保守の手間とリソース消費を抑えます。拡張構成では、より多くの処理と高い可用性に対応できます。利用規模や運用段階に合わせて構成を選べます。
 
-  <tr>
-    <td rowspan="4">サードパーティ依存</td><td>DolphinScheduler</td><td>可視的なタスクオーケストレーション、依存関係管理、スケジューリング機能を提供し、データ開発タスクと収集タスクのスケジューリングに利用可能</td>
-  </tr>
-  <tr>
-    <td>Quartz</td><td>軽量なタスクスケジューリング機能を提供し、データ開発タスクとメタデータ収集タスクのスケジューリングに利用可能。単一ノードデプロイと簡単な定期タスクに適している</td>
-  </tr>
-  <tr>
-    <td>DataX</td><td>軽量なデータ同期実行エンジン。単一ノードで動作し、デプロイが簡単で、関連データ取得とデータインポートに適している</td>
-  </tr>
-  <tr>
-    <td>Spark</td><td>分散コンピューティング実行エンジン。大規模オフライン処理と複雑な計算タスクに適している</td>
-  </tr>
-</table>
+## 開発と拡張
 
-## 🚨 商用ライセンス
+qData はフロントエンドとバックエンドを分離したモジュール構成を採用しています。コードを把握しやすく、業務システムとの連携や機能拡張が行えます。
 
-qDataは**プロフェッショナル版**と**オープンソース版**の2つの形態を提供し、さまざまな規模やシナリオのニーズに対応します。両者にはそれぞれ特長があり、相互に補完し合います。オープンソース版は低コストでの導入を支援し、プロフェッショナル版はより高度な機能と手厚いサポートを提供します。どちらを選択しても、qDataは企業のデータ価値の創出とデジタル化の推進を支える信頼できるパートナーとなります。
+| レイヤー | 主な技術 |
+| --- | --- |
+| バックエンド | Spring Boot、Spring Security、MyBatis-Plus |
+| フロントエンド | Vue 3、Element Plus、Vite |
+| 標準の同期・スケジューリング | SeaTunnel Zeta、DolphinScheduler |
+| アプリケーションの DB・キャッシュ | MySQL または DM8（Dameng 8）、Redis |
+| 追加できる処理エンジン | Flink、Spark など、必要に応じて連携 |
 
-> 👉 **オープンソース版のブランド利用許諾**または**プロフェッショナル版に関するご相談**は、[💼 ライセンスの詳細](https://docs.qdata.tech/business/policy.html)をご覧ください。
+はじめに、業務用スクリプトの追加、タスクテンプレートの再利用、クレンジングや品質チェックのルールの拡張などを行えます。業務モジュールやデータソース用コネクターのカスタマイズも可能です。開発環境の準備と起動手順は[ソースコードからの起動ガイド](https://docs.qdata.tech/ja/qData/deploy/build-from-source.html)をご覧ください。
 
-## 🚀 クイックスタート
-初めてqDataを利用する場合は、次の順序でお試しいただくことをおすすめします。
+<a id="license-and-services"></a>
 
-1. **オンライン体験**：インストールせずにデモ環境へログインし、主な機能を確認します。
-2. **ローカルデプロイ**：Docker Composeを使用して、ローカル環境で一式を起動します。
-3. **ソースコードから起動**：二次開発が必要な場合は、ソースコードからフロントエンドとバックエンドのサービスを起動します。
+## ライセンスと商用サービス
 
-### 1. オンライン体験
+qData は **Apache License 2.0 に qData 固有の追加条件を加えて**提供され、商用利用が可能です。[LICENSE](LICENSE) に従い、所定のロゴ、著作権表示、ライセンス表示、クレジット表記を保持してください。
 
-- [コミュニティ版オープンソースデモ環境](#-プラットフォーム概要)へログインし、インストールせずに主な機能を確認できます。
+所定のロゴや表示の削除・変更、ホワイトラベル化、OEM 提供、リブランディングを行う場合は、別途商用ライセンスを取得してください。ブランドのカスタマイズ、プロフェッショナル版、技術サービスについては[商用利用の案内](https://docs.qdata.tech/ja/business/policy.html)をご覧ください。
 
-### 2. デプロイ方法の選択
+## ミッションとビジョン
 
-- [ローカルデプロイ](https://docs.qdata.tech/docs/deploy/docker-compose-deployment.html)：Docker Composeを使用して、ローカル環境で一式を起動します。
-- [ソースコードから起動](https://docs.qdata.tech/docs/deploy/build-from-source.html)：二次開発が必要な場合に、ソースコードからフロントエンドとバックエンドのサービスを起動します。
-- [セルフマネージドデプロイ](https://docs.qdata.tech/docs/deploy/manual-deployment/)：各サービスを手動でインストール、設定、管理します。本番環境、大規模デプロイ、個別設定に適しています。
+**開発者や企業が、データ活用に必要な機能を無理のない費用で使えるようにすること。**
 
-> 👉 完全なガイド：https://docs.qdata.tech/docs/deploy/deploy-open-source.html
+テクノロジーを扱いやすくし、データへの信頼を高め、アプリケーションを実際の業務で使えるようにすることが大切だと考えています。qData は、オープンソースで開発者の知見を集め、AI でデータ処理の負担を減らし、個人のアイデアを形にしたり、企業が日々の業務にデータを活用したりできる環境を提供します。
 
-## 🏗️ デプロイ環境
-
-qDataをデプロイする前に、以下の環境とツールが正しくインストールされていることを確認してください。
-
-<table>
-  <tr>
-    <th>環境</th><th>項目</th><th>推奨バージョン</th><th>説明</th>
-  </tr>
-  <tr>
-    <td rowspan="6">バックエンド</td><td>JDK</td><td>1.8以上</td><td>OpenJDK 8または11を推奨</td>
-  </tr>
-  <tr>
-    <td>Maven</td><td>3.6+</td><td>プロジェクトのビルドと依存関係管理</td>
-  </tr>
-  <tr>
-    <td>DM8</td><td>8.0</td><td>リレーショナルデータベース（MySQLへ切り替え可能）</td>
-  </tr>
-  <tr>
-    <td>Redis</td><td>5.0+</td><td>キャッシュとメッセージ機能をサポート</td>
-  </tr>
-  <tr>
-    <td>RabbitMQ</td><td>オプション</td><td>タスクスケジューリングや非同期通信などに使用</td>
-  </tr>
-  <tr>
-    <td>オペレーティングシステム</td><td>Windows / Linux / Mac</td><td>一般的な環境で動作可能</td>
-  </tr>
-
-  <tr>
-    <td rowspan="3">フロントエンド</td><td>Node.js</td><td>16+</td><td>ビルドツールの依存環境</td>
-  </tr>
-  <tr>
-    <td>npm</td><td>10+</td><td>パッケージマネージャー</td>
-  </tr>
-  <tr>
-    <td>Vite</td><td>最新版</td><td>スキャフォールディングツール</td>
-  </tr>
-</table>
-
-## 👥 QQコミュニティ
-qData公式QQコミュニティに参加して、最新情報、技術サポート、利用交流を入手してください。
-
-> 👉 <a href="https://docs.qdata.tech/discuss.html">QQコミュニティに参加</a>
-
-<!-- [![QQグループ参加](https://img.shields.io/badge/QQ Group-814145903（満員）-blue.svg)](https://qm.qq.com/q/Qz5NJut20y)
-[![QQグループ参加](https://img.shields.io/badge/QQ Group-236734346-blue.svg)](https://qm.qq.com/q/Bpml33lTWK)
-[![QQグループ参加](https://img.shields.io/badge/QQ Group-675093323-blue.svg)](https://qm.qq.com/q/VIq5vtICo6) -->
-
-## 🖼️ システム画面
-<table>
-    <tr>
-        <td><img src="images/ja-JP/system/1-login.png" alt="ログイン画面" width="400"/></td>
-        <td><img src="images/ja-JP/system/2-home.png" alt="ホーム画面" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/22-data-integration.png" alt="データ連携" width="400"/></td>
-        <td><img src="images/ja-JP/system/23-add-data-integration-task.png" alt="データ連携タスク追加" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/12-data-development.png" alt="データ開発" width="400"/></td>
-        <td><img src="images/ja-JP/system/24-add-data-development-task.png" alt="データ開発タスク追加" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/20-data-collection.png" alt="データ収集" width="400"/></td>
-        <td><img src="images/ja-JP/system/21-add-collection-task.png" alt="収集タスク追加" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/10-asset-management.png" alt="資産管理" width="400"/></td>
-        <td><img src="images/ja-JP/system/11-asset-details.png" alt="データ詳細" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/8-configure-quality-task.png" alt="品質タスク設定" width="400"/></td>
-        <td><img src="images/ja-JP/system/9-quality-execution-analysis.png" alt="品質実行分析" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/3-api-management.png" alt="API管理" width="400"/></td>
-        <td><img src="images/ja-JP/system/13-configure-api.png" alt="API設定" width="400"/></td>
-    </tr>
-    <tr>
-        <td><img src="images/ja-JP/system/14-ai-data-qa.png" alt="AIデータ問答" width="400"/></td>
-        <td><img src="images/ja-JP/system/5-ai-data-qa-conversation.png" alt="AIデータ対話" width="400"/></td>
-    </tr>
-</table>
+コミュニティとともに、長く使い続けられ、必要に応じて拡張できるデータ基盤を育てます。より多くの人が自分でデータを扱い、それを新しい取り組みにつなげられるようにすることが目標です。

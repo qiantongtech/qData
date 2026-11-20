@@ -269,13 +269,14 @@ public class DaAssetController extends BaseController {
         }
 
         SysUser sysUser = SecurityUtils.getLoginUser().getUser();
-       // List<Map<String, Object>> dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"));
         //1. Data asset 2. Data query
         List<Map<String, Object>> dataMaskingList = daAssetService.dataMaskings(Long.valueOf(jsonObject.getStr("id")), (List<Map<String, Object>>) columnData.get("tableData"),sysUser.getUserId(),"1");
 
         if (dataMaskingList == null) {
             return error("Please check whether asset fields and data table fields are consistent");
         }
+        // Apply the field-bound sensitivity level after category-based masking.
+        dataMaskingList = daAssetService.dataMasking(Long.valueOf(jsonObject.getStr("id")), dataMaskingList);
         columnData.put("tableData", dataMaskingList);
         return success(columnData);
     }

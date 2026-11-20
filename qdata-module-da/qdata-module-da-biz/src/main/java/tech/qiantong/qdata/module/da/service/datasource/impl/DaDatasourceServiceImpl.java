@@ -89,7 +89,7 @@ import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.redis.service.IRedisService;
-
+import tech.qiantong.qdata.module.da.service.datasource.QuerySensitivityMasker;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -112,6 +112,9 @@ import java.util.stream.Collectors;
 public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaDatasourceDO> implements IDaDatasourceService, IDaDatasourceApiService {
     @Resource
     private DaDatasourceMapper daDatasourceMapper;
+
+    @Resource
+    private QuerySensitivityMasker querySensitivityMasker;
 
     @Autowired
     private DataSourceFactory dataSourceFactory;
@@ -882,6 +885,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         // In the paging array: paging[0] is offset, paging[1] is pageSize
         tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> mapPageResult = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
         dbQuery.close();
+        querySensitivityMasker.mask(daDatasource.getId(), mapPageResult);
         return mapPageResult;
     }
 
@@ -893,6 +897,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
         int[] paging = getPagingParameters(daDatasource);
         tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
         dbQuery.close();
+        querySensitivityMasker.mask(daDatasource.getId(), result);
         List<Map<String, Object>> dataList = result.getData();
         // Remove the ROW_ID field from each record
         dataList.forEach(map -> map.remove("ROW_ID"));

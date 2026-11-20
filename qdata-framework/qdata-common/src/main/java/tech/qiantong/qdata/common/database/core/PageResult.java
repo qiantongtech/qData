@@ -18,11 +18,14 @@
 
 package tech.qiantong.qdata.common.database.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
 
 @Data
 @Accessors(chain = true)
@@ -34,6 +37,10 @@ public class PageResult<T> implements Serializable {
     private Integer pageSize;
     private Integer total;
     private List<T> data;
+
+    /** JDBC origins keyed by result label, used only for server-side masking. */
+    @JsonIgnore
+    private Map<String, DbColumn> columnOrigins;
 
     public PageResult(Integer total, List<T> data) {
         this.total = total;

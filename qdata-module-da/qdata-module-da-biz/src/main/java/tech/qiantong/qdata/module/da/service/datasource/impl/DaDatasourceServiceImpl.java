@@ -81,7 +81,9 @@ import tech.qiantong.qdata.module.da.dal.dataobject.discovery.DaDiscoveryTableDO
 import tech.qiantong.qdata.module.da.dal.mapper.datasource.DaDatasourceMapper;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceProjectRelService;
 import tech.qiantong.qdata.module.da.service.datasource.IDaDatasourceService;
+import tech.qiantong.qdata.module.da.service.datasource.QuerySensitivityMasker;
 import tech.qiantong.qdata.module.da.service.discovery.*;
+import tech.qiantong.qdata.module.da.utils.SqlQueryErrorMessages;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnReqDTO;
 import tech.qiantong.qdata.module.dp.api.model.dto.DpModelColumnRespDTO;
 import tech.qiantong.qdata.module.dp.api.service.model.IDpModelApiService;
@@ -89,7 +91,7 @@ import tech.qiantong.qdata.module.dpp.api.service.etl.DppEtlTaskService;
 import tech.qiantong.qdata.module.system.service.ISysMessageService;
 import tech.qiantong.qdata.mybatis.core.query.LambdaQueryWrapperX;
 import tech.qiantong.qdata.redis.service.IRedisService;
-import tech.qiantong.qdata.module.da.service.datasource.QuerySensitivityMasker;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -880,29 +882,59 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     @Override
     public tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> executeSqlQuery(DaDatasourcePageReqVO daDatasource) {
         String sqlText = decryptSqlText(daDatasource.getSqlText());
-        DbQuery dbQuery = getDbQuery(daDatasource);
-        int[] paging = getPagingParameters(daDatasource);
-        // In the paging array: paging[0] is offset, paging[1] is pageSize
-        tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> mapPageResult = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
-        dbQuery.close();
-        querySensitivityMasker.mask(daDatasource.getId(), mapPageResult);
-        return mapPageResult;
+        tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result =
+                querySqlWithProtection(daDatasource, sqlText);
+        querySensitivityMasker.mask(daDatasource.getId(), result);
+        return result;
     }
 
     @SneakyThrows
     @Override
     public void exportSqlQueryResult(HttpServletResponse response, DaDatasourcePageReqVO daDatasource) {
         String sqlText = decryptSqlText(daDatasource.getSqlText());
-        DbQuery dbQuery = getDbQuery(daDatasource);
         int[] paging = getPagingParameters(daDatasource);
-        tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result = dbQuery.queryByPage(sqlText, paging[0], paging[1]);
-        dbQuery.close();
+        tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result =
+                querySqlWithProtection(daDatasource, sqlText);
         querySensitivityMasker.mask(daDatasource.getId(), result);
         List<Map<String, Object>> dataList = result.getData();
         // Remove the ROW_ID field from each record
         dataList.forEach(map -> map.remove("ROW_ID"));
             String schemeName = "Export-Page-" + paging[2] + "-Data-" + IdUtil.simpleUUID();
         exportByList(response, dataList, schemeName);
+    }
+
+    /** One boundary for query/export failures, including acquisition and connection cleanup. */
+    private tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> querySqlWithProtection(
+            DaDatasourcePageReqVO request, String sqlText) {
+        DbQuery dbQuery = null;
+        DaDatasourceDO datasource = null;
+        try {
+            datasource = this.getDaDatasourceById(request.getId());
+            dbQuery = getDbQuery(datasource);
+            int[] paging = getPagingParameters(request);
+            tech.qiantong.qdata.common.database.core.PageResult<Map<String, Object>> result =
+                    dbQuery.queryByPage(sqlText, paging[0], paging[1]);
+            if (result == null) {
+                throw new IllegalStateException("Database query returned no result object");
+            }
+            return result;
+        } catch (Exception failure) {
+            log.error("SQL query failed for datasource {}", request.getId(), failure);
+            ServiceException safeFailure = new ServiceException(
+                    SqlQueryErrorMessages.resolve(
+                            failure, datasource == null ? null : datasource.getDatasourceType()));
+            safeFailure.initCause(failure);
+            throw safeFailure;
+        } finally {
+            if (dbQuery != null) {
+                try {
+                    dbQuery.close();
+                } catch (Exception closeFailure) {
+                    // Closing must not mask the original error or discard a successful result.
+                    log.warn("Failed to close SQL query datasource {}", request.getId(), closeFailure);
+                }
+            }
+        }
     }
 
     @Override
@@ -992,8 +1024,7 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
     /**
      * Get a DbQuery object based on the datasource ID in the request
      */
-    private DbQuery getDbQuery(DaDatasourcePageReqVO daDatasource) {
-        DaDatasourceDO datasource = this.getDaDatasourceById(daDatasource.getId());
+    private DbQuery getDbQuery(DaDatasourceDO datasource) {
         if (datasource == null) {
             throw new DataQueryException("db.error.datasource.detail.fail", "Failed to query datasource details");
         }
@@ -1003,11 +1034,9 @@ public class DaDatasourceServiceImpl extends ServiceImpl<DaDatasourceMapper, DaD
                 datasource.getPort(),
                 datasource.getDatasourceConfig()
         );
-        DbQuery dbQuery = dataSourceFactory.createDbQuery(property);
-        if (!dbQuery.valid()) {
-            throw new DataQueryException("db.error.connection.fail", "Database connection failed");
-        }
-        return dbQuery;
+        // The actual query acquires/validates the JDBC connection. A separate valid()
+        // call would erase the driver's exception cause and leak the query on failure.
+        return dataSourceFactory.createDbQuery(property);
     }
 
     /**

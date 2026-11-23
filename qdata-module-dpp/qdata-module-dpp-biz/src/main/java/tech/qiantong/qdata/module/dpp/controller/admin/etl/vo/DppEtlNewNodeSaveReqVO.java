@@ -157,6 +157,8 @@ public class DppEtlNewNodeSaveReqVO extends BaseEntity {
         this.locations = src.getLocations();
         this.timeout = src.getTimeout();
         this.executionType = src.getExecutionType();
+        this.scheduler = src.getScheduler();
+        this.actuator = src.getActuator();
         this.crontab = src.getCrontab();
         this.draftJson = src.getDraftJson();
 

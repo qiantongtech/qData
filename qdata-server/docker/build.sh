@@ -15,7 +15,7 @@ cd /mnt/c/Users/Ming/Desktop/qData/qdata-server-ce # Change the path to your own
 docker buildx build \
   --platform linux/amd64 \
   --no-cache \
-  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.8 \
+  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.9 \
   --file=docker/Dockerfile \
   --load \
   /mnt/c/Users/Ming/Desktop/qData/qdata-server-ce # Change the context path to your own path
@@ -24,7 +24,7 @@ docker buildx build \
 docker buildx build \
   --platform linux/arm64 \
   --no-cache \
-  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.8 \
+  -t crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.9 \
   --file=docker/Dockerfile \
   --load \
   /mnt/c/Users/Ming/Desktop/qData/qdata-server-ce # Change the context path to your own path

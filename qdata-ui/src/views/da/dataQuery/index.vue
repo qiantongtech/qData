@@ -238,6 +238,9 @@ async function handleQuery() {
     } else {
       ElMessage.warning(res.msg || td('da.dataQuery.queryFailed'));
     }
+  } catch (error) {
+    // The shared request interceptor displays the server's safe query failure message.
+    dialogVisible.value = false;
   } finally {
     loadings.value = false;
   }

@@ -114,21 +114,17 @@ See the [deployment guide](https://docs.qdata.tech/en/qData/deploy/deploy-open-s
 
 ## Capabilities overview
 
-| Capability | What you can do |
+| Core capability | Highlights |
 | --- | --- |
-| **Data integration and sync** | Configure source and destination connections. Sync individual tables or entire databases in batch or in real time. |
-| **SQL transformations and shell tasks** | Clean, transform, join, and aggregate data or call external programs. Use SQL for relational databases (RDS SQL), Doris SQL, or shell scripts. Reuse templates, pass runtime parameters, and inspect previews and logs. |
-| **Workflow orchestration and scheduling** | Define dependencies between sync, transformation, and quality jobs. Configure recurring or cron schedules, preview upcoming runs, publish jobs, and manage schedule activation and job runs. |
-| **Job monitoring and recovery** | Filter runs by task, status, or time. Check records read and written, throughput, backlog, and per-table metrics for full-database syncs. Rerun batch jobs, pause or resume real-time sync, and troubleshoot with execution logs. |
-| **Data warehouse modeling and standards** | Organize warehouse layers and business domains. Define logical models, business metrics, and shared standards for fields and reference codes, then publish the models. |
-| **Metadata management** | Configure jobs to collect database, table, and column metadata. Manage schema information and review collection results for dataset discovery, cataloging, and change tracking. |
-| **Data quality checks** | Define validation rules, run checks on selected datasets, and review results and failed records. Extend rules to cover domain-specific requirements. |
-| **Data catalog and SQL query editor** | Classify, tag, and search datasets, inspect schemas and dataset details, run ad hoc SQL queries, page through previews, and export results. |
-| **Data APIs** | Create endpoints with **a single-table wizard or a SQL script**. Set request and response parameters, test endpoints, set rate limits, review request logs, and manage client applications. |
-| **Natural-language queries (text-to-SQL)** | Ask questions about selected datasets, including questions across multiple tables. Inspect generated SQL, result rows, charts, and summaries. Reuse conversations and export charts. |
-| **Project workspaces and roles** | Manage connections, tasks, and member roles per project. Administer users, departments, menus, dictionaries, and system logs. |
+| **30+ types of data sources** | Connect to widely used databases, databases developed in China, data warehouses, message queues, and file storage to move data across disparate systems. |
+| **Comprehensive data integration** | Run batch sync, real-time change data capture (CDC), and full-database sync, with support for full and incremental loads and migrations across databases. |
+| **One-stop data development** | Combine ETL, SQL development, DAG workflows, cron scheduling, and job operations in one platform, from development through production. |
+| **Enterprise data warehouse modeling** | Build a warehouse with five layers (ODS, DIM, DWD, DWS, and ADS). Use logical models, a shared metrics framework, and data standards to keep the warehouse consistent. |
+| **End-to-end data governance** | Bring together metadata management, data standards, quality checks, and data lineage to govern data from discovery through quality control. |
+| **Data assets and service publishing** | Catalog data assets, find them with intelligent search, query them with SQL, and publish them as API services. |
+| **AI agents for data development and analysis** | AI agents and assistants help with data development and let you ask questions about data in natural language, generate SQL, analyze charts, and uncover insights. |
 
-This table covers the main capabilities of the Open-Source Edition. See the [feature comparison](https://docs.qdata.tech/en/qData/pro/features.html) for details, supported data sources, and availability by edition.
+See the [feature comparison](https://docs.qdata.tech/en/qData/pro/features.html) for details, supported data sources, and availability by edition.
 
 ## Lightweight by default, scalable for production
 

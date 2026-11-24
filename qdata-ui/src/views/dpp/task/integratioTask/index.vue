@@ -1126,6 +1126,9 @@ const handleClone = (row) => {
       });
     })
     .then(() => {
+      proxy.$modal.msgSuccess(
+        td("dpp.integratioTask.cloneSuccess", "Task cloned successfully.")
+      );
       handleQuery();
     })
     .catch(() => {});

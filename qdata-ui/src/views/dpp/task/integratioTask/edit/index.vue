@@ -619,6 +619,9 @@ const handleFormSubmit = async (nodeData = {}) => {
 
 // Run instance save
 const handletaskConfig = (form) => {
+  if (form.catCode !== nodeData.value.taskConfig?.catCode) {
+    hasUnsavedChanges.value = true;
+  }
   delete form.draftJson;
   console.log("🚀 ~ handletaskConfig ~ form:", form);
   nodeData.value.taskConfig = {

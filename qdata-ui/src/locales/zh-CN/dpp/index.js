@@ -1075,6 +1075,7 @@ export default {
     noExecutionLog: '暂无最近执行日志',
     projectRequired: '所属项目不能为空',
     confirmClone: '确定要克隆任务【{name}】吗？',
+    cloneSuccess: '任务克隆成功。',
     unsupportedEngineSwitch: '暂不支持切换！',
     upDs: '请启动DolphinScheduler调度器！',
     viewDeployDocs: "查看部署文档",

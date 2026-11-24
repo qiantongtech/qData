@@ -1037,6 +1037,7 @@ export default {
     executeFailed: '実行に失敗しました。管理者に連絡してください',
     projectRequired: '所属プロジェクトは必須です',
     confirmClone: 'タスク【{name}】をクローンしてもよろしいですか？',
+    cloneSuccess: 'タスクのクローンが完了しました。',
     unsupportedEngineSwitch: '現時点では切り替えはサポートされていません！',
     upDs: 'DolphinSchedulerのスケジューラを起動してください！',
     viewDeployDocs: "查デプロイドキュメントを確認する看部署文档",

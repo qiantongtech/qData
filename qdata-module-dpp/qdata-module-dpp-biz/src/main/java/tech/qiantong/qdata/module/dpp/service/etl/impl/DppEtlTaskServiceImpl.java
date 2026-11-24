@@ -224,10 +224,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         // Related validation
 
         // Update data integration task
-        DppEtlTaskDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskDO.class);
         if (StringUtils.isNotEmpty(updateReqVO.getCatCode()) && StringUtils.isNotEmpty(updateReqVO.getType())) {
             updateReqVO.setCatId(attCatService.getCatIdByTableNameAndCatCode(TaskCatEnum.findEnumByType(updateReqVO.getType()).toString(), updateReqVO.getCatCode()));
         }
+        DppEtlTaskDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskDO.class);
         return dppEtlTaskMapper.updateById(updateObj);
     }
 
@@ -921,6 +921,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlTaskSaveReqVO.setName(dppEtlNewNodeSaveReqVO.getName());
         dppEtlTaskSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
         dppEtlTaskSaveReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription());
+        dppEtlTaskSaveReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
 
 
         // Process node data

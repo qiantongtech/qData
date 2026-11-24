@@ -30,7 +30,7 @@ docker buildx build \
   /mnt/c/Users/Ming/Desktop/qData/qdata-server-ce # Change the context path to your own path
 
 # Check if ARM64 is supported
-docker inspect crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.8 --format '{{.Architecture}}'
+docker inspect crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.9 --format '{{.Architecture}}'
 
 # Delete the previously built builder (optional but recommended, keep it clean)
 docker buildx rm qdata-builder
@@ -39,4 +39,4 @@ docker buildx rm qdata-builder
 docker run -d \
   --name qdata-server-ce \
   -p 8080:8080 \
-  crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.8
+  crpi-kf13onfj0v8f6jax.cn-shanghai.personal.cr.aliyuncs.com/qiantongkeji/qdata-server-ce:1.6.9

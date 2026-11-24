@@ -129,7 +129,7 @@ public class SecurityConfig
                 .authorizeHttpRequests((requests) -> {
                     permitAllUrl.getUrls().forEach(url -> requests.antMatchers(url).permitAll());
                     // For login login registration register verification code captchaImage allows anonymous access
-                    requests.antMatchers("/login","/updater/**","/register","/**", "/captchaImage", "/flyflow/**","/services/**","/jmreport/**", "/rp/**", "/drag/**", "/jimubi/**").permitAll()
+                    requests.antMatchers("/login","/updater/**","/register", "/captchaImage", "/flyflow/**","/services/**","/jmreport/**", "/rp/**", "/drag/**", "/jimubi/**").permitAll()
                             // Static resources, accessible anonymously
                             .antMatchers(HttpMethod.GET, "/",
                                     "/*.html",

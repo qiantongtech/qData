@@ -19,6 +19,14 @@
 package tech.qiantong.qdata.common.database.dialect;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.statement.select.SelectBody;
+import net.sf.jsqlparser.statement.select.SetOperationList;
+import net.sf.jsqlparser.statement.select.Top;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import tech.qiantong.qdata.common.database.constants.DbQueryProperty;
@@ -494,6 +502,44 @@ public class SQLServer2008Dialect extends AbstractDbDialect {
         return "SELECT " + fields + " FROM " + dbQueryProperty.getDbName() + "." + dbQueryProperty.getSid() + "." + tableName;
     }
 
+
+    @Override
+    public String count(String sql) {
+        try {
+            net.sf.jsqlparser.statement.Statement statement = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
+            if (statement instanceof Select) {
+                Select select = (Select) statement;
+                SelectBody body = select.getSelectBody();
+                if (body instanceof PlainSelect) {
+                    PlainSelect query = (PlainSelect) body;
+                    if (query.getOrderByElements() != null && query.getTop() == null
+                            && query.getOffset() == null && query.getFetch() == null
+                            && query.getForXmlPath() == null) {
+                        // Preserve JDBC parameter positions when ORDER BY contains a placeholder.
+                        if (query.getOrderByElements().stream().anyMatch(order -> order.toString().contains("?"))) {
+                            Top top = new Top();
+                            top.setExpression(new LongValue(100));
+                            top.setPercentage(true);
+                            query.setTop(top);
+                        } else {
+                            query.setOrderByElements(null);
+                        }
+                        return super.count(select.toString());
+                    }
+                } else if (body instanceof SetOperationList) {
+                    SetOperationList query = (SetOperationList) body;
+                    if (query.getOrderByElements() != null && query.getOffset() == null && query.getFetch() == null
+                            && query.getOrderByElements().stream().noneMatch(order -> order.toString().contains("?"))) {
+                        query.setOrderByElements(null);
+                        return super.count(select.toString());
+                    }
+                }
+            }
+        } catch (JSQLParserException ignored) {
+            // Preserve the existing path for SQL outside the parser's supported syntax.
+        }
+        return super.count(sql);
+    }
 
     private static String getOrderByPart(String sql) {
         String loweredString = sql.toLowerCase();

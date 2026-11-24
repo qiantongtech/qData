@@ -339,7 +339,7 @@ function handleJobLog(data) {
 function handleStatusChange(row, e) {
   const text = row?.status == "1" ? td('da.qualityTask.offline') : td('da.qualityTask.online');
   proxy.$modal
-    .confirm(td('da.qualityTask.confirmStatusChange', { text, name: row.taskName }))
+    .confirm(td('da.qualityTask.confirmStatusChange', '', { text, name: row.taskName }))
     .then(function () {
       loading.value = true;
       updateDppQualityTaskStatus({

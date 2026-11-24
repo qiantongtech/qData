@@ -1040,6 +1040,7 @@ export default {
     executeFailed: 'Execution failed, please contact administrator',
     projectRequired: 'Project is required',
     confirmClone: 'Are you sure to clone task "{name}"?',
+    cloneSuccess: 'Task cloned successfully.',
     unsupportedEngineSwitch: 'Currently, switching is not supported！',
     upDs: 'Please start the DolphinScheduler scheduler！',
     viewDeployDocs: "Review the deployment document",

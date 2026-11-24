@@ -1128,6 +1128,7 @@ watch(
         console.log("🚀 ~ props.data.taskConfig:", props.data.taskConfig);
         let draftJson = JSON.parse(data.draftJson);
         form.value = { ...dataXDefaultConfig, ...data, ...draftJson };
+        form.value.catCode = data.catCode;
         // Preserve DS and Spark as defaults for legacy tasks without scheduler or actuator values.
         form.value.scheduler = form.value.scheduler || "DOLPHINSCHEDULER";
         form.value.taskType = form.value.actuator == "DATAX" ? "DATAX" : form.value.taskType || "SPARK";

@@ -27,6 +27,22 @@ import useUserStore from '@/store/system/user'
 import { i18n } from '@/plugins/vueI18n'
 import { getStoredLang } from '@/store/system/locale'
 
+// Translate only the agreed query-error keys; leave other API messages unchanged.
+const queryErrorKeys = new Set([
+  'da.dataQuery.errors.objectMissing',
+  'da.dataQuery.errors.accessDenied',
+  'da.dataQuery.errors.syntaxError',
+  'da.dataQuery.errors.timeout',
+  'da.dataQuery.errors.executionError'
+])
+
+function translateQueryError(message) {
+  if (!queryErrorKeys.has(message)) return message
+  return i18n.global.te(message)
+    ? i18n.global.t(message)
+    : i18n.global.t('da.dataQuery.queryFailed')
+}
+
 let downloadLoadingInstance;
 // Whether to show re-login
 export let isRelogin = { show: false };
@@ -119,7 +135,7 @@ service.interceptors.response.use(res => {
   // If the status code is not set, the default success status is
   const code = res.data.code || 200;
   // Get error message
-  const msg = errorCode[code] || res.data.msg || errorCode['default']
+  const msg = errorCode[code] || translateQueryError(res.data.msg) || errorCode['default']
   // Binary data is returned directly
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
@@ -196,7 +212,7 @@ export function download(url, params, filename, config) {
     } else {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
-      const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
+      const errMsg = errorCode[rspObj.code] || translateQueryError(rspObj.msg) || errorCode['default']
       ElMessage.warning(errMsg);
     }
     downloadLoadingInstance.close();
@@ -222,7 +238,7 @@ export function download2(url, params, filename, config) {
     } else {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
-      const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default'];
+      const errMsg = errorCode[rspObj.code] || translateQueryError(rspObj.msg) || errorCode['default'];
       ElMessage.warning(errMsg);  // Show error message
     }
     downloadLoadingInstance.close();  // Turn off loading animation

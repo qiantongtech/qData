@@ -48,10 +48,7 @@ import tech.qiantong.qdata.common.core.page.PageResult;
 import tech.qiantong.qdata.common.enums.TaskCatEnum;
 import tech.qiantong.qdata.common.enums.TaskComponentTypeEnum;
 import tech.qiantong.qdata.common.exception.ServiceException;
-import tech.qiantong.qdata.common.utils.JSONUtils;
-import tech.qiantong.qdata.common.utils.DateUtils;
-import tech.qiantong.qdata.common.utils.MessageUtils;
-import tech.qiantong.qdata.common.utils.StringUtils;
+import tech.qiantong.qdata.common.utils.*;
 import tech.qiantong.qdata.common.utils.object.BeanUtils;
 import tech.qiantong.qdata.common.utils.uuid.IdUtils;
 import tech.qiantong.qdata.module.att.api.cat.IAttCatService;
@@ -227,10 +224,10 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         // Related validation
 
         // Update data integration task
-        DppEtlTaskDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskDO.class);
         if (StringUtils.isNotEmpty(updateReqVO.getCatCode()) && StringUtils.isNotEmpty(updateReqVO.getType())) {
             updateReqVO.setCatId(attCatService.getCatIdByTableNameAndCatCode(TaskCatEnum.findEnumByType(updateReqVO.getType()).toString(), updateReqVO.getCatCode()));
         }
+        DppEtlTaskDO updateObj = BeanUtils.toBean(updateReqVO, DppEtlTaskDO.class);
         return dppEtlTaskMapper.updateById(updateObj);
     }
 
@@ -599,6 +596,18 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         if (ScheduleConstants.QUARTZ.equals(dppEtlNewNodeSaveReqVO.getScheduler())) {
             return createLocalDataXEtlTask(dppEtlNewNodeSaveReqVO);
         }
+        return createSparkEtlTask(dppEtlNewNodeSaveReqVO, false);
+    }
+
+    /**
+     * Creates a DolphinScheduler workflow using the qData task and node codes, then saves
+     * those records and the workflow binding locally. Shared by task setup and cloning.
+     *
+     * @param dppEtlNewNodeSaveReqVO task configuration, with an ID when completing an existing draft
+     * @param cloned whether to preserve the copied draft and initialize qData's task history at version 1
+     * @return the saved qData task
+     */
+    private DppEtlTaskSaveReqVO createSparkEtlTask(DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO, boolean cloned) {
         // Compatible with creating task first, then enriching details later
         String saveReqVOId = dppEtlNewNodeSaveReqVO.getId();
         boolean isUpdate = StringUtils.isNotEmpty(saveReqVOId);
@@ -635,23 +644,35 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         String taskRelation = TaskConverter.buildEtlTaskRelationJson(null, nodeCode);
 
         // Location info
-        String locations = TaskConverter.buildEtlTaskLocationsJson(dppEtlNewNodeSaveReqVO.getLocations(), nodeCode);
+        List<Map<String, Object>> canvasLocations = dppEtlNewNodeSaveReqVO.getLocations();
+        String locations = TaskConverter.buildEtlTaskLocationsJson(
+                CollectionUtils.isEmpty(canvasLocations)
+                        ? Collections.singletonList(Collections.emptyMap()) : canvasLocations, nodeCode);
 
         dsTaskSaveReqDTO.setTaskDefinitionJson(taskDefinition);
         dsTaskSaveReqDTO.setTaskRelationJson(taskRelation);
         dsTaskSaveReqDTO.setLocations(locations);
         DsTaskSaveRespDTO task = dsEtlTaskService.createTask(dsTaskSaveReqDTO, dppEtlNewNodeSaveReqVO.getProjectCode());
 
-        if (!task.getSuccess()) {
+        if (task == null || !Boolean.TRUE.equals(task.getSuccess())) {
             throw new ServiceException("dpp.error.task.create.fail", "Failed to create task: {0}",
-                    task.getMsg().toString()); // Throw exception for task definition creation error
+                    task == null ? "No response from DolphinScheduler" : String.valueOf(task.getMsg()));
         }
         ProcessDefinition data = task.getData();
+        if (data == null || CollectionUtils.isEmpty(data.getTaskDefinitionList())
+                || CollectionUtils.isEmpty(data.getTaskRelationList())) {
+            throw new ServiceException("DolphinScheduler did not return a complete workflow definition");
+        }
 
         // Convert task save request object
         DppEtlTaskSaveReqVO taskSaveReqVO = TaskConverter.convertToDppEtlTaskSaveReqVO(dppEtlNewNodeSaveReqVO, data);
         taskSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
         taskSaveReqVO.setCode(taskCode);
+        if (cloned) {
+            taskSaveReqVO.setDraftJson(dppEtlNewNodeSaveReqVO.getDraftJson());
+            taskSaveReqVO.setQuartzId(0L);
+            taskSaveReqVO.setVersion(1);
+        }
 
         Long dppEtlTask;
 
@@ -679,7 +700,12 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
             iDppEtlSchedulerService.createDppEtlScheduler(schedulerSaveReqVO);
         }
 
-        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = cloned
+                ? TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, taskSaveReqVO)
+                : TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+        if (cloned) {
+            dppEtlTaskLogSaveReqVO.setDsId(data.getId());
+        }
         dppEtlTaskLogSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
         dppEtlTaskLogSaveReqVO.setCode(taskCode);
         Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
@@ -895,6 +921,7 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlTaskSaveReqVO.setName(dppEtlNewNodeSaveReqVO.getName());
         dppEtlTaskSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
         dppEtlTaskSaveReqVO.setDescription(dppEtlNewNodeSaveReqVO.getDescription());
+        dppEtlTaskSaveReqVO.setCatCode(dppEtlNewNodeSaveReqVO.getCatCode());
 
 
         // Process node data
@@ -2362,221 +2389,137 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         return result == null ? new DppEtlSchedulerDO() : result;
     }
 
-    @Override
-    public DppEtlTaskSaveReqVO copyCreateEtl(DppEtlNewNodeSaveReqVO nodeSaveReqVO) {
-        DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO = this.getuUpdateQueryInfo(JSONUtils.convertToLong(nodeSaveReqVO.getId()));
-
-        // Check if it is an offline task; if so, get the task code from extended info for API call
-        if (StringUtils.equals("1", dppEtlTaskUpdateQueryRespVO.getType())) {
-            // Get extended info
-            DppEtlTaskExtDO taskExt = dppEtlTaskExtService.getByTaskId(Long.parseLong(nodeSaveReqVO.getId()));
-            if (taskExt == null) {
-                throw new ServiceException("dpp.error.data.empty", "No data available");
-            }
-            dppEtlTaskUpdateQueryRespVO.setCode(taskExt.getEtlTaskCode());
-        }
-
-        DsTaskSaveRespDTO task = dsEtlTaskService.batchCopy(dppEtlTaskUpdateQueryRespVO.getCode()
-                , dppEtlTaskUpdateQueryRespVO.getProjectCode());
-
-        if (!task.getSuccess()) {
-            throw new ServiceException("dpp.error.task.copy.fail", "Failed to copy task: {0}",
-                    task.getMsg().toString()); // Throw exception for task definition creation error
-        }
-        ProcessDefinition data = task.getData();
-
-        // Task type; 1: Offline task 2: Real-time task 3: Data development task 4: Job task
-        String type = dppEtlTaskUpdateQueryRespVO.getType();
-        if (StringUtils.equals("1", type)) {
-            return copyCreateEtlTask(dppEtlTaskUpdateQueryRespVO, data);
-        } else if (StringUtils.equals("2", type)) {
-            return copyCreateEtlTaskFrontPostpositionRealTime(dppEtlTaskUpdateQueryRespVO, data);
-        } else if (StringUtils.equals("3", type)) {
-            return copyCreateProcessDefinition(dppEtlTaskUpdateQueryRespVO, data);
-        } else if (StringUtils.equals("4", type)) {
-            return copyCreateProcessDefinition(dppEtlTaskUpdateQueryRespVO, data);
-        }
-        return null;
-    }
-
-
-    private DppEtlTaskSaveReqVO copyCreateProcessDefinition(DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO, ProcessDefinition data) {
-        return null;
-    }
-
-    private DppEtlTaskSaveReqVO copyCreateEtlTaskFrontPostpositionRealTime(DppEtlTaskUpdateQueryRespVO dppEtlTaskUpdateQueryRespVO, ProcessDefinition data) {
-        return null;
-    }
-
     /**
-     * copy
+     * Creates a separate copy of a saved data integration task using its scheduler's save flow.
+     * A cloned Quartz task is left paused.
      *
-     * @param src
-     * @return
+     * @param request request containing the source task ID
+     * @return the newly saved task
      */
-    public DppEtlTaskSaveReqVO copyCreateEtlTask(DppEtlTaskUpdateQueryRespVO src, ProcessDefinition data) {
-        DppEtlNewNodeSaveReqVO dppEtlNewNodeSaveReqVO = new DppEtlNewNodeSaveReqVO(src);
-        String taskCode = data.getCode();
-        String name = data.getName();
-        List<Map<String, Object>> locations = dppEtlNewNodeSaveReqVO.getLocations();
-        Map<Long, Long> definitionCopyVO = new HashMap<>();
-
-        // Convert task save request object
-        DppEtlTaskSaveReqVO taskSaveReqVO = TaskConverter.convertToDppEtlTaskSaveReqVO(dppEtlNewNodeSaveReqVO, data);
-        taskSaveReqVO.setCode(taskCode);
-        taskSaveReqVO.setDraftJson(src.getDraftJson());
-
-        for (Map<String, Object> location : locations) {
-            Long codeold = MapUtils.getLong(location, "taskCode");
-            // Generate node code
-            DsNodeGenCodeRespDTO dsNodeGenCodeRespDTO = dsEtlNodeService.genCode(dppEtlNewNodeSaveReqVO.getProjectCode());
-            String codeNew = String.valueOf(dsNodeGenCodeRespDTO.getData().get(0));
-
-            definitionCopyVO.put(codeold, JSONUtils.convertToLong(codeNew));
-            location.put("taskCode", codeNew);
+    @Override
+    public DppEtlTaskSaveReqVO copyCreateEtl(DppEtlNewNodeSaveReqVO request) {
+        Long sourceId = JSONUtils.convertToLong(request.getId());
+        DppEtlTaskDO source = dppEtlTaskMapper.selectById(sourceId);
+        if (source == null) {
+            throw new ServiceException("Source task does not exist");
+        }
+        if (!"1".equals(source.getType())) {
+            throw new ServiceException("Cloning is currently supported only for data integration tasks");
         }
 
-        // Wrap node code
-        remapTaskCodes(dppEtlNewNodeSaveReqVO, definitionCopyVO);
-
-        taskSaveReqVO.setLocations(JSONUtils.toJson(locations));
-        Long dppEtlTask = this.createDppEtlTask(taskSaveReqVO);
-        taskSaveReqVO.setId(dppEtlTask);
-
-        // Build task info
-        Map<String, Object> taskInfo = new HashMap<>();
-        taskInfo.put("projectCode", dppEtlNewNodeSaveReqVO.getProjectCode());
-        taskInfo.put("taskCode", taskCode);
-        taskInfo.put("taskVersion", 1);
-        taskInfo.put("name", name);
-
-        // Build scheduler object
-        DppEtlSchedulerSaveReqVO schedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(
-                dppEtlTask, taskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO
-        );
-        iDppEtlSchedulerService.createDppEtlScheduler(schedulerSaveReqVO);
-
-        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
-        dppEtlTaskLogSaveReqVO.setLocations(JSONUtils.toJson(locations));
-        dppEtlTaskLogSaveReqVO.setCode(taskCode);
-        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
-        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
-
-        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(dppEtlNewNodeSaveReqVO, 1);
-
-        // Create ETL task extended data
-        dppEtlTaskExtService.createDppEtlTaskExt(DppEtlTaskExtSaveReqVO.builder()
-                .taskId(dppEtlTask)
-                .etlTaskCode(data.getCode())
-                .etlTaskVersion(data.getVersion())
-                .etlNodeId(data.getTaskDefinitionList().get(0).getId())
-                .etlNodeName(data.getTaskDefinitionList().get(0).getName())
-                .etlNodeCode(data.getTaskDefinitionList().get(0).getCode())
-                .etlNodeVersion(data.getTaskDefinitionList().get(0).getVersion())
-                .etlRelationId(data.getTaskRelationList().get(0).getId())
-                .build());
-
-        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
-
-        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(dppEtlNodeSaveReqVOList);
-        iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
-
-        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(dppEtlNodeBatch, dppEtlNewNodeSaveReqVO, taskSaveReqVO);
-        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
-
-        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(dppEtlTaskNodeRelSaveReqVOS);
-        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
-
-        return taskSaveReqVO; // Return creation result
-    }
-
-
-    public static void remapTaskCodes(DppEtlNewNodeSaveReqVO vo, Map<Long, Long> definitionCopyVO) {
-        if (vo == null || definitionCopyVO == null || definitionCopyVO.isEmpty()) {
-            return;
+        boolean quartz = ScheduleConstants.QUARTZ.equals(source.getScheduler());
+        DppEtlNewNodeSaveReqVO copy = buildEtlCloneRequest(source);
+        if (!quartz) {
+            copy.setScheduler(ScheduleConstants.DOLPHINSCHEDULER);
+            return createSparkEtlTask(copy, true);
         }
 
-        // 1) Parse taskDefinitionList
-        String taskDefJson = vo.getTaskDefinitionList();
-        if (taskDefJson != null && !taskDefJson.isEmpty()) {
-            List<DppEtlNodeSaveReqVO> nodeList =
-                    JSON.parseArray(taskDefJson, DppEtlNodeSaveReqVO.class);
-
-            if (nodeList != null && !nodeList.isEmpty()) {
-                for (DppEtlNodeSaveReqVO node : nodeList) {
-                    node.setId(null);
-                    // code may be a string, need to convert to Long for mapping
-                    Long oldCode = JSONUtils.convertToLong(node.getCode());
-                    if (oldCode != null) {
-                        Long newCode = definitionCopyVO.get(oldCode);
-                        if (newCode != null) {
-                            node.setCode(String.valueOf(newCode));
-                        }
-                    }
-                }
-                vo.setTaskDefinitionList(JSON.toJSONString(nodeList));
-            }
+        // The local DataX save flow needs a new draft ID and Quartz binding.
+        createEtlTaskFront(copy);
+        DppEtlTaskSaveReqVO saved = createLocalDataXEtlTask(copy);
+        if (saved.getQuartzId() != null && saved.getQuartzId() > 0) {
+            dppTaskQuartzService.offline(saved.getQuartzId());
         }
-
-        // 2) Parse taskRelationJson
-        String relJson = vo.getTaskRelationJson();
-        if (relJson != null && !relJson.isEmpty()) {
-            List<DppEtlTaskNodeRelRespVO> dppEtlTaskNodeRelRespVOList =
-                    JSON.parseArray(relJson, DppEtlTaskNodeRelRespVO.class);
-
-            List<ProcessTaskRelation> relList = new ArrayList<>();
-            if (dppEtlTaskNodeRelRespVOList != null && !dppEtlTaskNodeRelRespVOList.isEmpty()) {
-                for (DppEtlTaskNodeRelRespVO srcRel : dppEtlTaskNodeRelRespVOList) {
-                    // Call mapping sub-method
-                    ProcessTaskRelation rel = toProcessTaskRelation(srcRel, definitionCopyVO);
-                    relList.add(rel);
-                }
-                vo.setTaskRelationJson(JSON.toJSONString(relList));
-            }
-        }
+        return saved;
     }
 
     /**
-     * Convert DppEtlTaskNodeRelRespVO to ProcessTaskRelation, and remap pre/post code by definitionCopyVO
+     * Builds a new save request from persisted task settings and applies the clone's name,
+     * audit fields, and offline draft state.
+     *
+     * @param source the persisted source task
+     * @return a save request with its own node codes and no source task ID
      */
-    private static ProcessTaskRelation toProcessTaskRelation(DppEtlTaskNodeRelRespVO src,
-                                                             Map<Long, Long> definitionCopyVO) {
-        ProcessTaskRelation rel = new ProcessTaskRelation();
-
-        // Only map these four fields as required
-        // preTaskCode
-        String preCodeStr = src.getPreNodeCode();
-        Long preOld = JSONUtils.convertToLong(preCodeStr);
-        if (preOld != null && definitionCopyVO != null) {
-            Long preNew = definitionCopyVO.get(preOld);
-            if (preNew != null) {
-                preCodeStr = String.valueOf(preNew);
-            }
+    private DppEtlNewNodeSaveReqVO buildEtlCloneRequest(DppEtlTaskDO source) {
+        List<DppEtlTaskNodeRelRespVO> sourceRelations =
+                getTaskNodeRelList(BeanUtils.toBean(source, DppEtlTaskRespVO.class));
+        // Read saved configuration directly, without overlaying the source task's Redis cursors.
+        List<DppEtlNodeRespVO> sourceNodes = removeDuplicateById(
+                getNodeRespListByTaskNodeRelList(sourceRelations), source.getType());
+        if (CollectionUtils.isEmpty(sourceNodes)) {
+            throw new ServiceException("The source task has no saved nodes to clone");
         }
-        rel.setPreTaskCode(preCodeStr);
 
-        // preTaskVersion
-        rel.setPreTaskVersion(safeToInt(src.getPreNodeVersion()));
+        DppEtlTaskUpdateQueryRespVO config = new DppEtlTaskUpdateQueryRespVO(source);
+        config.setTaskDefinitionList(sourceNodes);
+        config.setCrontab(getDppEtlScheduler(source.getCode(), source.getId()).getCronExpression());
+        DppEtlNewNodeSaveReqVO copy = new DppEtlNewNodeSaveReqVO(config);
 
-        // postTaskCode
-        String postCodeStr = src.getPostNodeCode();
-        Long postOld = JSONUtils.convertToLong(postCodeStr);
-        if (postOld != null && definitionCopyVO != null) {
-            Long postNew = definitionCopyVO.get(postOld);
-            if (postNew != null) {
-                postCodeStr = String.valueOf(postNew);
-            }
+        Date now = new Date();
+        String suffix = "_copy_" + DateUtil.format(now, "yyyyMMddHHmmssSSS");
+        String name = source.getName();
+        copy.setName(name.substring(0, Math.min(name.length(), 128 - suffix.length())) + suffix);
+        copy.setCreatorId(SecurityUtils.getUserId());
+        copy.setCreateBy(SecurityUtils.getUsername());
+        copy.setCreateTime(now);
+        copy.setUpdatorId(copy.getCreatorId());
+        copy.setUpdateBy(copy.getCreateBy());
+        copy.setUpdateTime(now);
+
+        if (StringUtils.isNotEmpty(copy.getDraftJson())) {
+            JSONObject draft = JSON.parseObject(copy.getDraftJson());
+            draft.put("name", copy.getName());
+            draft.put("releaseState", "0");
+            draft.put("schedulerState", "0");
+            draft.put("status", "0");
+            draft.remove("id");
+            draft.remove("code");
+            draft.remove("quartzId");
+            draft.remove("dsId");
+            copy.setDraftJson(draft.toJSONString());
         }
-        rel.setPostTaskCode(postCodeStr);
-
-        // postTaskVersion
-        rel.setPostTaskVersion(safeToInt(src.getPostNodeVersion()));
-
-        return rel;
+        remapCloneGraph(copy, sourceRelations);
+        return copy;
     }
 
-    private static int safeToInt(Long v) {
-        return v == null ? 1 : (int) Math.min(Math.max(v, 1L), Integer.MAX_VALUE);
-    }
+    /**
+     * Assigns fresh version-1 node codes and applies the same mapping to dependency edges
+     * and canvas coordinates. The synthetic start node keeps code and version 0.
+     *
+     * @param copy the clone request to update in place
+     * @param sourceRelations the source task's saved dependency edges
+     */
+    private void remapCloneGraph(DppEtlNewNodeSaveReqVO copy, List<DppEtlTaskNodeRelRespVO> sourceRelations) {
+        List<DppEtlNodeSaveReqVO> nodes = JSON.parseArray(copy.getTaskDefinitionList(), DppEtlNodeSaveReqVO.class);
+        Map<String, String> codes = new HashMap<>();
+        boolean quartz = ScheduleConstants.QUARTZ.equals(copy.getScheduler());
+        for (DppEtlNodeSaveReqVO node : nodes) {
+            String oldCode = node.getCode();
+            if (StringUtils.isEmpty(oldCode) || codes.containsKey(oldCode)) {
+                throw new ServiceException("The source task contains missing or duplicate node codes");
+            }
+            String newCode = quartz ? String.valueOf(IdUtils.generateArtificialId()) : getDsTaskGenCode(copy, false);
+            codes.put(oldCode, newCode);
+            node.setCode(newCode);
+            node.setId(null);
+            node.setDsId(null);
+            node.setVersion(1);
+        }
+        copy.setTaskDefinitionList(JSON.toJSONString(nodes));
 
+        List<ProcessTaskRelation> relations = new ArrayList<>();
+        for (DppEtlTaskNodeRelRespVO source : sourceRelations) {
+            String sourcePreCode = source.getPreNodeCode();
+            boolean root = "0".equals(sourcePreCode);
+            String preCode = root ? "0" : codes.get(sourcePreCode);
+            String postCode = codes.get(source.getPostNodeCode());
+            if (preCode == null || postCode == null) {
+                throw new ServiceException("A source task relation references a missing node");
+            }
+            ProcessTaskRelation relation = new ProcessTaskRelation();
+            relation.setPreTaskCode(preCode);
+            relation.setPreTaskVersion(root ? 0 : 1);
+            relation.setPostTaskCode(postCode);
+            relation.setPostTaskVersion(1);
+            relations.add(relation);
+        }
+        copy.setTaskRelationJson(JSON.toJSONString(relations));
+
+        if (copy.getLocations() != null) {
+            copy.getLocations().removeIf(location -> !codes.containsKey(MapUtils.getString(location, "taskCode")));
+            for (Map<String, Object> location : copy.getLocations()) {
+                location.put("taskCode", codes.get(MapUtils.getString(location, "taskCode")));
+            }
+        }
+    }
 }

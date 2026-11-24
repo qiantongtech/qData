@@ -120,7 +120,9 @@ async function handleQuery() {
     callData.value.columnList = columnList;
     callData.value.dataTotal = data.total || 0;
   } catch (error) {
-    throw error; // Throwing error to caller
+    // Avoid leaving the previous page/export data visible after a failed request.
+    // The shared request interceptor already displays the server error.
+    clearData();
   } finally {
     loading.value = false;
   }

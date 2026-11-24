@@ -351,6 +351,13 @@ export default {
     sqlRequired: 'Please enter SQL statement!',
     datasourceRequired: 'Please select data source!',
     queryFailed: 'Query failed',
+    errors: {
+      objectMissing: "Query failed: The specified table or view does not exist. Check the table and schema names.",
+      accessDenied: "Query failed: The current account does not have permission to access this object. Contact your administrator to request access.",
+      syntaxError: "Query failed: The SQL statement contains a syntax error. Check the SQL syntax.",
+      timeout: "Query failed: The database connection timed out. Check the data source status or narrow the query scope and try again.",
+      executionError: "Query failed: An error occurred while executing the SQL statement. Check the SQL or contact your administrator to review the logs.",
+    },
     serialNumber: 'No.',
     exportButton: 'Export',
     close: 'Close',

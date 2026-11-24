@@ -90496,6 +90496,55 @@ OPTIONS (
   driver "com.mysql.cj.jdbc.Driver"
 );','spark sql','1','0',null,null,'2025-07-21 10:43:14.914442',null,null,'2025-07-21 10:43:14.914450',null);
 
+
+-- Doris SQL templates (TYPE = 12)
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'check.connection.doris', '12', '-- 检查当前连接与数据库
+SELECT DATABASE() AS current_database, VERSION() AS database_version;
+SHOW TABLES;', '检查当前数据库、版本及可见表，不写入数据。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'check.connection.doris' AND `del_flag` = '0'
+);
+
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'create.table.doris', '12', '-- 执行前确认表名、分桶数和副本数适合目标集群
+CREATE TABLE IF NOT EXISTS doris_example_detail (
+    id BIGINT NOT NULL COMMENT ''业务编号'',
+    event_time DATETIME NOT NULL COMMENT ''事件时间'',
+    category VARCHAR(64) NULL COMMENT ''分类'',
+    amount DECIMAL(18, 2) NULL COMMENT ''金额''
+) ENGINE=OLAP
+DUPLICATE KEY(id, event_time)
+COMMENT ''Doris 研发示例明细表''
+DISTRIBUTED BY HASH(id) BUCKETS 4
+PROPERTIES ("replication_num" = "1");', '创建 Duplicate Key 明细表；执行前修改表名及副本数。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'create.table.doris' AND `del_flag` = '0'
+);
+
+INSERT INTO `dpp_etl_sql_temp`
+(`name`, `type`, `content`, `description`, `valid_flag`, `del_flag`, `create_by`, `create_time`)
+SELECT 'select.daily.summary.doris', '12', '-- 将表名及字段替换为实际数据；本模板只读取数据
+SELECT DATE(event_time) AS stat_date,
+       category,
+       COUNT(*) AS record_count,
+       SUM(amount) AS total_amount
+FROM doris_example_detail
+GROUP BY DATE(event_time), category
+ORDER BY stat_date DESC, category
+LIMIT 100;', '读取示例明细表并按日期和分类汇总，先创建示例表或替换为已有表。', '1', '0', 'Doris support', CURRENT_TIMESTAMP
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `dpp_etl_sql_temp`
+    WHERE `type` = '12' AND `name` = 'select.daily.summary.doris' AND `del_flag` = '0'
+);
+
 REPLACE INTO `dpp_etl_task`(`id`,`cat_id`,`cat_code`,`type`,`name`,`code`,`version`,`project_id`,`project_code`,`person_charge`,`contact_number`,`locations`,`description`,`timeout`,`extraction_count`,`write_count`,`execution_type`,`status`,`ds_id`,`quartz_id`,`scheduler`,`actuator`,`valid_flag`,`del_flag`,`create_by`,`creator_id`,`create_time`,`update_by`,`updater_id`,`update_time`,`remark`,`etl_node_code`,`draft_json`) VALUES(1,5,'A03A02','1','转化_水位预警等级校验','152416145463616',10,1,'152317790975712','2','15365128327','[{"taskCode":"152438957987136","x":280,"y":70},{"taskCode":"152438966134080","x":280,"y":320}]','【达梦 → 应用层】据水位阈值划分红/黄/蓝三级预警',0,null,null,'PARALLEL','1',61,null,'DOLPHINSCHEDULER','SPARK','1','0','吴同',2,'2025-09-19 17:34:47.119000','吴同',2,'2025-09-30 15:26:36.283000',null,null,'{"name":"转化_水位预警等级校验","catId":5,"catCode":"A03A02","executionType":"PARALLEL","crontab":"0 0 0 1 * ?","releaseState":"0","description":"【达梦 → Doris】据水位阈值划分红/黄/蓝三级预警","contactNumber":"15365128327","personCharge":2,"taskPriority":"","workerGroup":"default","failRetryTimes":"","failRetryInterval":"","delayTime":"","taskType":"SPARK","jobManagerMemory":"1G","taskManagerMemory":"2G","slot":1,"taskManager":2,"parallelism":1,"driverCores":1,"driverMemory":"512m","numExecutors":1,"executorMemory":"512m","executorCores":1,"yarnQueue":""}');
 
 REPLACE INTO `dpp_etl_task`(`id`,`cat_id`,`cat_code`,`type`,`name`,`code`,`version`,`project_id`,`project_code`,`person_charge`,`contact_number`,`locations`,`description`,`timeout`,`extraction_count`,`write_count`,`execution_type`,`status`,`ds_id`,`quartz_id`,`scheduler`,`actuator`,`valid_flag`,`del_flag`,`create_by`,`creator_id`,`create_time`,`update_by`,`updater_id`,`update_time`,`remark`,`etl_node_code`,`draft_json`) VALUES(2,5,'A03A02','1','转化_水位列转行','152641133215040',8,1,'152317790975712','2','15365128327','[{"taskCode":"152641417179456","x":370,"y":90},{"taskCode":"152641997202752","x":370,"y":260},{"taskCode":"152641423539520","x":370,"y":400}]','【达梦 →  明细层】将多字段水位统计表排序输出',0,null,null,'PARALLEL','1',67,null,'DOLPHINSCHEDULER','SPARK','1','0','吴同',2,'2025-09-22 09:03:39.553000','吴同',2,'2025-09-30 15:39:27.055000',null,null,'{"catId":5,"name":"转化_水位列转行","catCode":"A03A02","executionType":"PARALLEL","crontab":"0 0 0 1 * ?","releaseState":"0","description":"","contactNumber":"15365128327","personCharge":2,"taskPriority":"","workerGroup":"default","failRetryTimes":"","failRetryInterval":"","delayTime":"","taskType":"SPARK","jobManagerMemory":"1G","taskManagerMemory":"2G","slot":1,"taskManager":2,"parallelism":1,"driverCores":1,"driverMemory":"512m","numExecutors":1,"executorMemory":"512m","executorCores":1,"yarnQueue":""}');
@@ -230661,6 +230710,13 @@ REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,
 REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2685,'应用API服务关联修改',2457,8,'',null,null,1,0,null,'F','0','0','att:clientApiRel:edit','#','admin','2025-09-30 16:22:48.000000','admin','2025-09-30 16:23:39.000000','');
 
 REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2686,'应用API服务关联删除',2457,10,'',null,null,1,0,null,'F','0','0','att:clientApiRel:remove','#','admin','2025-09-30 16:23:16.000000','',null,'');
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2687,'标准分类管理',2352,2,'documentCat','att/cat/documentCat/index',null,1,0,null,'C','0','0','att:documentCat:list','#','admin','2025-12-11 15:25:56.000000',null,null,null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2693,'标准信息分类管理查询',2687,1,'#',null,null,1,0,null,'F','0','0','att:documentCat:query','#','吴同','2025-08-21 14:45:24.000000','wutong','2025-09-24 17:39:18.000000',null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2692,'标准信息分类管理新增',2687,2,'#',null,null,1,0,null,'F','0','0','att:documentCat:add','#','吴同','2025-08-21 14:45:24.000000','wutong','2025-09-24 17:39:26.000000',null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2691,'标准信息分类管理修改',2687,3,'#',null,null,1,0,null,'F','0','0','att:documentCat:edit','#','吴同','2025-08-21 14:45:24.000000','wutong','2025-09-24 17:39:33.000000',null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2690,'标准信息分类管理删除',2687,4,'#',null,null,1,0,null,'F','0','0','att:documentCat:remove','#','吴同','2025-08-21 14:45:24.000000','wutong','2025-09-24 17:39:40.000000',null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2689,'标准信息分类管理导出',2687,5,'#',null,null,1,0,null,'F','0','0','att:documentCat:export','#','吴同','2025-08-21 14:45:24.000000','wutong','2025-09-24 17:39:49.000000',null);
+REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2688,'标准信息分类管理导入',2687,6,'#',null,null,1,0,null,'F','0','0','att:documentCat:import','#','吴同','2025-08-21 14:45:25.000000','wutong','2025-09-24 17:39:56.000000',null);
 
 REPLACE INTO `system_menu`(`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`) VALUES(2731,'发布模型',2730,2,'materializedModel','dp/materializedModel/index',null,1,0,null,'C','0','0','dp:releaseModel:list','#','admin','2026-03-27 16:56:42.000000','admin','2026-03-27 16:57:10.000000',null);
 
@@ -230827,6 +230883,14 @@ REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_co
 REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(5,'qData 商业版v1.1.9 新版本上线，功能全面优化','2',null,'0','吴同','2025-09-23 00:47:20.000000','wutong','2025-09-23 14:27:18.000000',null,0,0,null,null,'<p>版本类型：功能更新 + 问题修复</p><h2>🆕 新功能</h2><h3>1、稽查规则管理</h3><ul><li>按国标重建分类：完整性、唯一性、有效性、一致性、时效性</li><li>清除预置规则，按【稽查规则2.0】标准录入元数据</li><li>质量任务支持自动绑定稽查规则，可二次修改</li></ul><h3>2、清洗规则管理</h3><ul><li>新增两级分类体系，与【清洗规则2.0】对齐</li><li>完成全部清洗规则录入，支持数据元类型绑定</li></ul><h3>3、数据血缘（库表级）</h3><ul><li>自动解析 ETL 及 SQL 任务（Spark/Hive/Flink）的数据流动关系</li><li>支持列级血缘与多语句解析，资产详情页展示上下游链路</li><li>新增图谱化依赖视图，支持拖拽、缩放查看</li></ul><h3>4、资产清洗能力</h3><ul><li>资产详情页新增“数据清洗”Tab，展示最新清洗报告</li><li>支持一键创建清洗任务（自动带入标准规则），可修改调度周期</li></ul><h2>🐛 问题修复</h2><p><strong>1、部署架构</strong>：解决 DS 与 JAR 包必须部署在一起的问题，支持分布式部署</p><p><strong>2、日志系统</strong>：统一多节点日志采集与展示逻辑</p><p><strong>3、系统性能</strong>：修复应用授权缓存导致的响应慢问题</p><p><strong>4、数据标准</strong>：修复规则绑定异常、分类保存失败等问题</p><p><strong>5、数据资产</strong>：修复资产加载慢、质量报告缺失等问题</p><p><strong>6、数据研发</strong>：修复任务复制异常、SQL 解析中断等问题</p><p><strong>7、数据服务</strong>：修复 API 调用超时、参数映射错乱等问题</p>');
 
 REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(6,'DataX来袭，qData开源版步入极致轻量化时代','1',null,'0','admin','2026-07-23 14:09:48.000000','',null,null,0,0,null,null,'<h2><strong><img src="/prod-api//profile/2026/07/23/6a61b02ae4b097c91939377f.png">🧭 版本概述</strong></h2><p>qData v1.6.0 版本代号为“极致轻量化时代”。本版本主要新增 <strong>DataX 轻量执行引擎</strong>和<strong>内置轻量调度器</strong>，进一步完善开源版的数据集成任务执行与调度能力，同时对部分交互保护和日志内容进行了调整。</p><h2><strong>🛠 主要更新内容</strong></h2><h3><strong>1️⃣ 执行引擎</strong></h3><p>● 新增 <strong>DataX 轻量执行引擎</strong>，支持使用 DataX 执行数据集成任务。</p><p>● 为数据集成任务新增轻量化执行方式，降低任务运行对相关组件的依赖。</p><h3><strong>2️⃣ 任务调度</strong></h3><p>● 新增 <strong>内置轻量调度器</strong>，支持在 qData 系统内完成数据集成任务调度。</p><p>● 支持结合内置轻量调度器与 DataX 执行引擎完成任务调度和执行。</p><h3><strong>3️⃣ 系统细节优化</strong></h3><p>● 对系统按钮增加防重复点击处理，避免重复提交、重复执行和重复保存。</p><p>● 补充数据集成基础防误操作处理。</p><p>● 将部分常规日志内容调整为英文。</p><h2><strong>📌 版本总结</strong></h2><p>qData v1.6.0 完善了开源版的轻量执行与内置调度能力，并对数据集成操作细节和日志展示进行了调整。</p>');
+
+REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(7,'qData 开源版 v1.6.5 发布：Doris 数据源适配增强，新增演示数据清理脚本','2',null,'0','admin','2026-10-30 18:23:21.000000','',null,'qdata-open-source-release-v1.6.5',0,0,null,null,'<h2><strong>版本概述</strong></h2><p>本次更新扩展了 Apache Doris 数据源的使用范围，并新增演示数据清理 SQL 脚本。</p><h2><strong>主要更新内容</strong></h2><h3><strong>1. Doris 数据源适配增强</strong></h3><p>● 在数据连接、数据查询和数据集成的基础上，元数据管理与数据开发新增 Doris 支持。用户可以统一管理 Doris 表及字段，并在平台内开展 SQL 开发。</p><h3><strong>2. 新增演示数据清理脚本</strong></h3><p>● 体验完成后，可以通过新增的 SQL 脚本集中清理演示数据，减少逐表处理的工作量。</p><h2><strong>版本总结</strong></h2><p>v1.6.5 将 Doris 的支持扩展到元数据管理和数据开发，并提供了集中清理演示数据的 SQL 脚本。</p>');
+
+REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(8,'qData 开源版 v1.6.6 发布：ETL 模块轻量化，优化定时任务磁盘占用','2',null,'0','admin','2026-11-06 14:16:48.000000','',null,'qdata-open-source-release-v1.6.6',0,0,null,null,'<h2><strong>版本概述</strong></h2><p>本次更新优化了 ETL 执行包和定时任务的磁盘占用。</p><h2><strong>主要更新内容</strong></h2><h3><strong>1. 精简 ETL 执行包</strong></h3><p>● 将工具组件与 qdata-executor-etl 执行模块拆分，减小单个执行 JAR 包的体积。</p><h3><strong>2. 优化定时任务执行包管理</strong></h3><p>● 针对数据集成定时任务运行时 ETL JAR 包持续累积的问题，优化执行包管理，减少高频调度带来的磁盘占用。</p><h2><strong>版本总结</strong></h2><p>v1.6.6 精简了 ETL 执行包，并改善了高频定时任务带来的磁盘占用。</p>');
+
+REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(9,'qData 开源版 v1.6.7 发布：修复消息通知与数据集成问题','2',null,'0','admin','2026-11-12 14:02:04.000000','',null,'qdata-open-source-release-v1.6.7',0,0,null,null,'<h2><strong>版本概述</strong></h2><p>本次更新修复了消息通知和数据集成问题，并优化了首页快捷入口与资产标签页面引导。</p><h2><strong>主要更新内容</strong></h2><h3><strong>1. 消息通知</strong></h3><p>● 修复铃铛和「我的消息」中的「全部设为已读」操作，刷新后仍能看到正确的已读状态。「我的消息」按当前登录用户展示，消息内容放在第二列，最多显示两行，超出以省略号展示。</p><h3><strong>2. DataX 时间范围增量读取</strong></h3><p>● 修复时间过滤条件未正确带入读取 SQL 的问题。时间条件可与自定义 WHERE 条件同时生效，时间游标在任务成功后推进。</p><h3><strong>3. ETL 字段移除</strong></h3><p>● 修复「字段选择、修改」组件的字段移除处理。配置移除的字段不再传给下游，保留字段沿用原名时可正常处理。</p><h3><strong>4. 首页与资产标签</strong></h3><p>● 首页「快捷功能入口」新增「智能问数」。资产标签页面恢复引导提示，补充多语言文案和帮助文档入口。</p><h2><strong>版本总结</strong></h2><p>v1.6.7 修复了消息已读状态、DataX 时间范围增量读取和 ETL 字段移除问题，并改进了首页入口与资产标签引导。</p>');
+
+REPLACE INTO `system_notice`(`notice_id`,`notice_title`,`notice_type`,`notice_content`,`status`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`top_flag`,`alert_flag`,`alert_start_time`,`alert_end_time`,`notice_content_text`) VALUES(10,'qData 开源版 v1.6.8 发布：新增资产字段敏感等级绑定','2',null,'0','admin','2026-11-18 10:34:37.000000','',null,'qdata-open-source-release-v1.6.8',0,0,null,null,'<h2><strong>版本概述</strong></h2><p>本版本新增<strong>资产字段敏感等级绑定</strong>，支持按字段查看、修改和清除绑定。同时统一多个页面的<strong>表格空状态插图</strong>，并调整<strong>页签主题色</strong>。</p><h2><strong>主要更新内容</strong></h2><h3><strong>1. 数据资产管理</strong></h3><p>● 将资产字段编辑界面中的「数据分类」选择项替换为「敏感等级」，支持<strong>绑定、查看、修改和清除</strong>字段的敏感等级。</p><p>● 更新资产字段时，若请求<strong>未传入敏感等级</strong>，系统保留原有绑定。需要解除绑定时，可执行<strong>清除</strong>操作。</p><p>● 补充敏感等级绑定、修改和清除操作的<strong>多语言提示与实现说明</strong>。</p><h3><strong>2. 界面优化</strong></h3><p>● 统一<strong>消息通知、分类、项目角色和日志</strong>页面的表格空状态插图。</p><p>● 将页签在<strong>选中和悬停</strong>时的文字颜色调整为当前主题色，选中指示线同步采用主题色。</p><h2><strong>版本总结</strong></h2><p>本次迭代将敏感等级细化到资产字段，维护字段的其他属性时无需重复提交已有等级。多个页面的空状态和页签反馈也更加一致。</p>');
 
 REPLACE INTO `system_oper_log`(`oper_id`,`title`,`business_type`,`method`,`request_method`,`operator_type`,`oper_name`,`dept_name`,`oper_url`,`oper_ip`,`oper_location`,`oper_param`,`json_result`,`status`,`error_msg`,`oper_time`,`cost_time`) VALUES(922,'操作日志',9,'tech.qiantong.qdata.module.system.controller.admin.monitor.SysOperlogController.clean()','DELETE',1,'qData','研发部门','/monitor/operlog/clean','172.28.0.1','内网IP','{}','{"msg":"操作成功","code":200}',0,null,'2025-09-30 16:35:10.000000',65);
 
@@ -235750,7 +235814,7 @@ REPLACE INTO `system_role_menu`(`role_id`,`menu_id`,`project_id`) VALUES(2,2396,
 
 REPLACE INTO `system_user`(`user_id`,`dept_id`,`user_name`,`nick_name`,`user_type`,`email`,`phonenumber`,`sex`,`avatar`,`password`,`status`,`del_flag`,`login_ip`,`login_date`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`auth_id`) VALUES(1,null,'admin','超级管理员','00','support@qiantong.tech','15888888888','1','/profile/avatar/2025/09/18/68cb6865e4b0b6ef59810506.png','$2a$10$LOgcmTijb/krLwReokOD5.24moLGwspqbfBzXMKykmJse/ETUHQwS','0','0','172.28.0.1','2026-05-13 17:51:17.000000',null,'2025-09-18 09:55:44.000000','','2026-05-13 17:51:17.000000','管理员',null);
 
-REPLACE INTO `system_user`(`user_id`,`dept_id`,`user_name`,`nick_name`,`user_type`,`email`,`phonenumber`,`sex`,`avatar`,`password`,`status`,`del_flag`,`login_ip`,`login_date`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`auth_id`) VALUES(2,857,'qData','吴同','00','','15365128327','0','/profile/avatar/2025/09/26/68d62ea8e4b02460a489adef.png','$2a$10$yzCKAV8QlDNMCdYe6fElbOIpwRA8vyQ7hdFuw4bzD4bq749gruVzO','0','0','139.196.71.17','2026-05-20 15:40:11.000000','admin','2025-09-18 14:33:40.000000','qData','2026-05-20 15:40:10.000000',null,null);
+REPLACE INTO `system_user`(`user_id`,`dept_id`,`user_name`,`nick_name`,`user_type`,`email`,`phonenumber`,`sex`,`avatar`,`password`,`status`,`del_flag`,`login_ip`,`login_date`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`auth_id`) VALUES(2,857,'qData','吴同','00','','15365128327','0','/profile/avatar/2025/09/26/68d62ea8e4b02460a489adef.png','$2a$10$Fw.YqjBObxnWxlX3zwEKXezuNJop/d69OFrtYOV666yjZ/6QON8oa','0','0','139.196.71.17','2026-05-20 15:40:11.000000','admin','2025-09-18 14:33:40.000000','qData','2026-05-20 15:40:10.000000',null,null);
 
 REPLACE INTO `system_user`(`user_id`,`dept_id`,`user_name`,`nick_name`,`user_type`,`email`,`phonenumber`,`sex`,`avatar`,`password`,`status`,`del_flag`,`login_ip`,`login_date`,`create_by`,`create_time`,`update_by`,`update_time`,`remark`,`auth_id`) VALUES(3,858,'qiutonghui','邱同辉','00','','17720259142','0','','$2a$10$0LxoCTkdoDNrW1kikuxmzeO0l7os8lOi.bVapKdHgMsSouDgJaLOm','0','0','',null,'wutong','2025-09-18 14:39:27.000000','',null,null,null);
 

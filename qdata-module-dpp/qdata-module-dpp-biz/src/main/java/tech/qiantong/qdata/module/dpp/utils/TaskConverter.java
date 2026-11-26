@@ -109,6 +109,10 @@ public class TaskConverter {
     private static final int DEFAULT_TASK_delayTime = 0; // delayTime: delayed execution time
     private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval: failure retry interval
 
+    // DPP_ETL_SCHEDULER.CRON_EXPRESSION is NOT NULL without a database default,
+    // so a blank crontab must fall back to this inert (offline) monthly schedule
+    private static final String DEFAULT_CRONTAB = "0 0 0 1 * ?"; // First day of each month at midnight
+
 
 
     public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";// Task instance log key
@@ -817,7 +821,9 @@ public class TaskConverter {
         reqVO.setEndTime(date);
         reqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
 
-        reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
+        // CRON_EXPRESSION has no database default; blank crontab would fail the insert
+        reqVO.setCronExpression(StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getCrontab())
+                ? DEFAULT_CRONTAB : dppEtlNewNodeSaveReqVO.getCrontab());
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
         // Populate dsId, assuming dsId is the same as ID

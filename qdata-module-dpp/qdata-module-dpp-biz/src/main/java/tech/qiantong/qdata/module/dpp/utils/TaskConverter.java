@@ -822,8 +822,7 @@ public class TaskConverter {
         reqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
 
         // CRON_EXPRESSION has no database default; blank crontab would fail the insert
-        reqVO.setCronExpression(StringUtils.isBlank(dppEtlNewNodeSaveReqVO.getCrontab())
-                ? DEFAULT_CRONTAB : dppEtlNewNodeSaveReqVO.getCrontab());
+        reqVO.setCronExpression(resolveCrontab(dppEtlNewNodeSaveReqVO.getCrontab()));
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
         // Populate dsId, assuming dsId is the same as ID
@@ -832,6 +831,18 @@ public class TaskConverter {
         // Remark can be filled based on requirements
 
         return reqVO;
+    }
+
+    /**
+     * Resolve a crontab for scheduler persistence. DPP_ETL_SCHEDULER.CRON_EXPRESSION is
+     * NOT NULL with no database default, so callers that build scheduler rows from a
+     * request VO must never pass a blank crontab through.
+     *
+     * @param crontab crontab from the request, may be blank (e.g. draft/Excel-upload creation)
+     * @return the given crontab, or the inert monthly default used by seeded tasks
+     */
+    public static String resolveCrontab(String crontab) {
+        return StringUtils.isBlank(crontab) ? DEFAULT_CRONTAB : crontab;
     }
 
     // Method to parse the time portion from the schedule field

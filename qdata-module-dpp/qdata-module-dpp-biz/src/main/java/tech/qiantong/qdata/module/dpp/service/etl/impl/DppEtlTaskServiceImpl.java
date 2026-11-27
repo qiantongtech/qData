@@ -675,65 +675,82 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         }
 
         Long dppEtlTask;
+        try {
+            if (isUpdate) {
+                taskSaveReqVO.setId(JSONUtils.convertToLong(dppEtlNewNodeSaveReqVO.getId()));
+                this.updateDppEtlTask(taskSaveReqVO);
+                dppEtlTask = taskSaveReqVO.getId();
+            } else {
+                dppEtlTask = this.createDppEtlTask(taskSaveReqVO);
+                taskSaveReqVO.setId(dppEtlTask);
+            }
 
-        if (isUpdate) {
-            taskSaveReqVO.setId(JSONUtils.convertToLong(dppEtlNewNodeSaveReqVO.getId()));
-            this.updateDppEtlTask(taskSaveReqVO);
-            dppEtlTask = taskSaveReqVO.getId();
-        } else {
-            dppEtlTask = this.createDppEtlTask(taskSaveReqVO);
-            taskSaveReqVO.setId(dppEtlTask);
+            // Build scheduler object
+            DppEtlSchedulerSaveReqVO schedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(
+                    dppEtlTask, taskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO
+            );
+
+            if (isUpdate) {
+                DppEtlSchedulerDO schedulerDO = getDppEtlScheduler(taskSaveReqVO.getCode(), taskSaveReqVO.getId());
+                schedulerSaveReqVO.setTaskCode(taskSaveReqVO.getCode());
+                schedulerSaveReqVO.setTaskId(taskSaveReqVO.getId());
+                schedulerSaveReqVO.setId(schedulerDO.getId());
+                iDppEtlSchedulerService.updateDppEtlScheduler(schedulerSaveReqVO);
+            } else {
+                iDppEtlSchedulerService.createDppEtlScheduler(schedulerSaveReqVO);
+            }
+
+            DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = cloned
+                    ? TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, taskSaveReqVO)
+                    : TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+            if (cloned) {
+                dppEtlTaskLogSaveReqVO.setDsId(data.getId());
+            }
+            dppEtlTaskLogSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
+            dppEtlTaskLogSaveReqVO.setCode(taskCode);
+            Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+            dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+
+            // Create ETL task extended data
+            dppEtlTaskExtService.createDppEtlTaskExt(DppEtlTaskExtSaveReqVO.builder()
+                    .taskId(dppEtlTask)
+                    .etlTaskCode(data.getCode())
+                    .etlTaskVersion(data.getVersion())
+                    .etlNodeId(data.getTaskDefinitionList().get(0).getId())
+                    .etlNodeName(nodeName)
+                    .etlNodeCode(nodeCode)
+                    .etlNodeVersion(data.getTaskDefinitionList().get(0).getVersion())
+                    .etlRelationId(data.getTaskRelationList().get(0).getId())
+                    .build());
+
+            List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(dppEtlNewNodeSaveReqVO, dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
+            List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+            List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(dppEtlNodeSaveReqVOList);
+            iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
+
+            List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(dppEtlNodeBatch, dppEtlNewNodeSaveReqVO, taskSaveReqVO);
+            iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+            List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(dppEtlTaskNodeRelSaveReqVOS);
+            iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
+        } catch (Exception e) {
+            // The workflow has already been created in DolphinScheduler while the local
+            // transaction is not; remove it so a retry does not fail with
+            // "process definition name already exists".
+            // Invariant: createTask always hits the DS *create* endpoint (even when
+            // completing a draft, isUpdate reuses the qData task code but DS mints a new
+            // definition code), so data.getCode() is never a pre-existing definition.
+            // If createTask is ever changed to update-in-place, revisit this cleanup.
+            try {
+                dsEtlTaskService.deleteTask(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode()),
+                        String.valueOf(data.getCode()));
+            } catch (Exception cleanupEx) {
+                log.error("Failed to delete DolphinScheduler process definition {} after local save failure",
+                        data.getCode(), cleanupEx);
+            }
+            throw e;
         }
-
-        // Build scheduler object
-        DppEtlSchedulerSaveReqVO schedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(
-                dppEtlTask, taskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO
-        );
-
-        if (isUpdate) {
-            DppEtlSchedulerDO schedulerDO = getDppEtlScheduler(taskSaveReqVO.getCode(), taskSaveReqVO.getId());
-            schedulerSaveReqVO.setTaskCode(taskSaveReqVO.getCode());
-            schedulerSaveReqVO.setTaskId(taskSaveReqVO.getId());
-            schedulerSaveReqVO.setId(schedulerDO.getId());
-            iDppEtlSchedulerService.updateDppEtlScheduler(schedulerSaveReqVO);
-        } else {
-            iDppEtlSchedulerService.createDppEtlScheduler(schedulerSaveReqVO);
-        }
-
-        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = cloned
-                ? TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, taskSaveReqVO)
-                : TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
-        if (cloned) {
-            dppEtlTaskLogSaveReqVO.setDsId(data.getId());
-        }
-        dppEtlTaskLogSaveReqVO.setLocations(JSON.toJSONString(dppEtlNewNodeSaveReqVO.getLocations()));
-        dppEtlTaskLogSaveReqVO.setCode(taskCode);
-        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
-        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
-
-        // Create ETL task extended data
-        dppEtlTaskExtService.createDppEtlTaskExt(DppEtlTaskExtSaveReqVO.builder()
-                .taskId(dppEtlTask)
-                .etlTaskCode(data.getCode())
-                .etlTaskVersion(data.getVersion())
-                .etlNodeId(data.getTaskDefinitionList().get(0).getId())
-                .etlNodeName(nodeName)
-                .etlNodeCode(nodeCode)
-                .etlNodeVersion(data.getTaskDefinitionList().get(0).getVersion())
-                .etlRelationId(data.getTaskRelationList().get(0).getId())
-                .build());
-
-        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(dppEtlNewNodeSaveReqVO, dppEtlNewNodeSaveReqVO.getTaskDefinitionList());
-        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
-
-        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(dppEtlNodeSaveReqVOList);
-        iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
-
-        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(dppEtlNodeBatch, dppEtlNewNodeSaveReqVO, taskSaveReqVO);
-        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
-
-        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(dppEtlTaskNodeRelSaveReqVOS);
-        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
 
         return taskSaveReqVO; // Return creation result
     }
@@ -1361,42 +1378,59 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         // Save
         DppEtlTaskSaveReqVO dppEtlTaskSaveReqVO = TaskConverter.convertToDppEtlTaskSaveReqVO(dppEtlNewNodeSaveReqVO, data);
         Long dppEtlTask;
-        if (isUpdate) {
-            dppEtlTask = JSONUtils.convertToLong(saveReqVOId);
+        try {
+            if (isUpdate) {
+                dppEtlTask = JSONUtils.convertToLong(saveReqVOId);
+                dppEtlTaskSaveReqVO.setId(dppEtlTask);
+                this.updateDppEtlTask(dppEtlTaskSaveReqVO);
+            } else {
+                dppEtlTask = this.createDppEtlTask(dppEtlTaskSaveReqVO);
+            }
             dppEtlTaskSaveReqVO.setId(dppEtlTask);
-            this.updateDppEtlTask(dppEtlTaskSaveReqVO);
-        } else {
-            dppEtlTask = this.createDppEtlTask(dppEtlTaskSaveReqVO);
+
+            DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(dppEtlTask, dppEtlTaskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO);
+            if (isUpdate) {
+                DppEtlSchedulerDO dppEtlSchedulerById = getDppEtlScheduler(dppEtlTaskSaveReqVO.getCode(), dppEtlTaskSaveReqVO.getId());
+                dppEtlSchedulerSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode());
+                dppEtlSchedulerSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId());
+                dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
+                iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+            } else {
+                iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
+            }
+
+            DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
+            Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
+            dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
+
+            List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(data, dppEtlNewNodeSaveReqVO);
+            List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
+
+            List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(data, dppEtlNewNodeSaveReqVO);
+
+            List<DppEtlNodeLogDO> dppEtlNodeLogBatch = iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
+
+            List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, data.getCode(), data.getVersion());
+            iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
+
+            List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, data.getCode(), data.getVersion());
+            iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
+        } catch (Exception e) {
+            // Same rollback-compensation as createSparkEtlTask: the workflow was already
+            // created in DolphinScheduler while the local transaction is not. Remove it
+            // so a retry does not fail with "process definition name already exists".
+            // Invariant: createTask always hits the DS *create* endpoint and returns the
+            // freshly created definition, so data.getCode() is never a pre-existing one.
+            // If createTask is ever changed to update-in-place, revisit this cleanup.
+            try {
+                dsEtlTaskService.deleteTask(String.valueOf(dppEtlNewNodeSaveReqVO.getProjectCode()),
+                        String.valueOf(data.getCode()));
+            } catch (Exception cleanupEx) {
+                log.error("Failed to delete DolphinScheduler process definition {} after local save failure",
+                        data.getCode(), cleanupEx);
+            }
+            throw e;
         }
-        dppEtlTaskSaveReqVO.setId(dppEtlTask);
-
-        DppEtlSchedulerSaveReqVO dppEtlSchedulerSaveReqVO = TaskConverter.convertToDppEtlSchedulerSaveReqVO(dppEtlTask, dppEtlTaskSaveReqVO.getCode(), dppEtlNewNodeSaveReqVO);
-        if (isUpdate) {
-            DppEtlSchedulerDO dppEtlSchedulerById = getDppEtlScheduler(dppEtlTaskSaveReqVO.getCode(), dppEtlTaskSaveReqVO.getId());
-            dppEtlSchedulerSaveReqVO.setTaskCode(dppEtlTaskSaveReqVO.getCode());
-            dppEtlSchedulerSaveReqVO.setTaskId(dppEtlTaskSaveReqVO.getId());
-            dppEtlSchedulerSaveReqVO.setId(dppEtlSchedulerById.getId());
-            iDppEtlSchedulerService.updateDppEtlScheduler(dppEtlSchedulerSaveReqVO);
-        } else {
-            iDppEtlSchedulerService.createDppEtlScheduler(dppEtlSchedulerSaveReqVO);
-        }
-
-        DppEtlTaskLogSaveReqVO dppEtlTaskLogSaveReqVO = TaskConverter.fromDppEtlTaskLogSaveReqVO(dppEtlNewNodeSaveReqVO, data);
-        Long dppEtlTaskLog = iDppEtlTaskLogService.createDppEtlTaskLog(dppEtlTaskLogSaveReqVO);
-        dppEtlTaskLogSaveReqVO.setId(dppEtlTaskLog);
-
-        List<DppEtlNodeSaveReqVO> dppEtlNodeSaveReqVOList = TaskConverter.convertToDppEtlNodeSaveReqVOList(data, dppEtlNewNodeSaveReqVO);
-        List<DppEtlNodeDO> dppEtlNodeBatch = iDppEtlNodeService.createDppEtlNodeBatch(dppEtlNodeSaveReqVOList);
-
-        List<DppEtlNodeLogSaveReqVO> dppEtlNodeLogSaveReqVOS = TaskConverter.convertToDppEtlNodeLogSaveReqVOList(data, dppEtlNewNodeSaveReqVO);
-
-        List<DppEtlNodeLogDO> dppEtlNodeLogBatch = iDppEtlNodeLogService.createDppEtlNodeLogBatch(dppEtlNodeLogSaveReqVOS);
-
-        List<DppEtlTaskNodeRelSaveReqVO> dppEtlTaskNodeRelSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeBatch, dppEtlTaskSaveReqVO, data.getCode(), data.getVersion());
-        iDppEtlTaskNodeRelService.createDppEtlTaskNodeRelBatch(dppEtlTaskNodeRelSaveReqVOS);
-
-        List<DppEtlTaskNodeRelLogSaveReqVO> dppEtlTaskNodeRelLogSaveReqVOS = TaskConverter.convertToDppEtlTaskNodeRelLogSaveReqVOList(data.getTaskRelationList(), dppEtlNewNodeSaveReqVO, dppEtlNodeLogBatch, dppEtlTaskLogSaveReqVO, data.getCode(), data.getVersion());
-        iDppEtlTaskNodeRelLogService.createDppEtlTaskNodeRelLogBatch(dppEtlTaskNodeRelLogSaveReqVOS);
 
         return dppEtlTaskSaveReqVO; // Return creation result
     }
@@ -2315,7 +2349,9 @@ public class DppEtlTaskServiceImpl extends ServiceImpl<DppEtlTaskMapper, DppEtlT
         dppEtlSchedulerSaveReqVO.setStartTime(new Date());
         dppEtlSchedulerSaveReqVO.setEndTime(date);
         dppEtlSchedulerSaveReqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
-        dppEtlSchedulerSaveReqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
+        // Draft creation (UI "new task" / Excel upload) regularly arrives with a blank
+        // crontab; CRON_EXPRESSION is NOT NULL so default it like the other flows
+        dppEtlSchedulerSaveReqVO.setCronExpression(TaskConverter.resolveCrontab(dppEtlNewNodeSaveReqVO.getCrontab()));
         dppEtlSchedulerSaveReqVO.setFailureStrategy("1");
         dppEtlSchedulerSaveReqVO.setStatus("0");
         dppEtlSchedulerSaveReqVO.setDsId((long) -1);

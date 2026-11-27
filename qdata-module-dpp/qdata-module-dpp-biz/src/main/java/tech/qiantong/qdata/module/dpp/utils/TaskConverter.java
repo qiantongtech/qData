@@ -109,6 +109,10 @@ public class TaskConverter {
     private static final int DEFAULT_TASK_delayTime = 0; // delayTime: delayed execution time
     private static final int DEFAULT_TASK_failRetryInterval = 1; // failRetryInterval: failure retry interval
 
+    // DPP_ETL_SCHEDULER.CRON_EXPRESSION is NOT NULL without a database default,
+    // so a blank crontab must fall back to this inert (offline) monthly schedule
+    private static final String DEFAULT_CRONTAB = "0 0 0 1 * ?"; // First day of each month at midnight
+
 
 
     public static final String TASK_INSTANCE_LOG_KEY = "log:taskInstanceLog:";// Task instance log key
@@ -817,7 +821,8 @@ public class TaskConverter {
         reqVO.setEndTime(date);
         reqVO.setTimezoneId("Asia/Shanghai"); // Default timezone
 
-        reqVO.setCronExpression(dppEtlNewNodeSaveReqVO.getCrontab());
+        // CRON_EXPRESSION has no database default; blank crontab would fail the insert
+        reqVO.setCronExpression(resolveCrontab(dppEtlNewNodeSaveReqVO.getCrontab()));
         reqVO.setFailureStrategy("1");
         reqVO.setStatus("0");
         // Populate dsId, assuming dsId is the same as ID
@@ -826,6 +831,18 @@ public class TaskConverter {
         // Remark can be filled based on requirements
 
         return reqVO;
+    }
+
+    /**
+     * Resolve a crontab for scheduler persistence. DPP_ETL_SCHEDULER.CRON_EXPRESSION is
+     * NOT NULL with no database default, so callers that build scheduler rows from a
+     * request VO must never pass a blank crontab through.
+     *
+     * @param crontab crontab from the request, may be blank (e.g. draft/Excel-upload creation)
+     * @return the given crontab, or the inert monthly default used by seeded tasks
+     */
+    public static String resolveCrontab(String crontab) {
+        return StringUtils.isBlank(crontab) ? DEFAULT_CRONTAB : crontab;
     }
 
     // Method to parse the time portion from the schedule field

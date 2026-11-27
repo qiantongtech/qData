@@ -1,3 +1,19 @@
+-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
 SET IDENTITY_INSERT "QDATA"."DM_DATA_DOMAIN" ON;
 INSERT INTO "QDATA"."DM_DATA_DOMAIN"("ID","NAME","ENG_NAME","OWNER_USER_ID","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(1,'水文监测数据域','HYD',2,'水位、流量、流速、含沙量等实时水文要素监测数据','1','0','吴同',2,TO_DATE('2026-03-27 10:09:54.001000000','SYYYY-MM-DD HH24:MI:SS.FF9'),'吴同',2,TO_DATE('2026-03-27 10:09:33.655000000','SYYYY-MM-DD HH24:MI:SS.FF9'),null);
 INSERT INTO "QDATA"."DM_DATA_DOMAIN"("ID","NAME","ENG_NAME","OWNER_USER_ID","DESCRIPTION","VALID_FLAG","DEL_FLAG","CREATE_BY","CREATOR_ID","CREATE_TIME","UPDATE_BY","UPDATER_ID","UPDATE_TIME","REMARK") VALUES(2,'气象降雨数据域','MET',2,'降雨量、蒸发量、气温、湿度等气象观测数据','1','0','吴同',2,TO_DATE('2026-03-27 10:09:54.002000000','SYYYY-MM-DD HH24:MI:SS.FF9'),'吴同',2,TO_DATE('2026-03-27 10:09:54.489000000','SYYYY-MM-DD HH24:MI:SS.FF9'),null);

@@ -1,3 +1,19 @@
+-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
 -- 菜单数据新增
 INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2750,'业务分类',2694,2,'businessCategory','dm/businessCategory/index',null,1,0,null,'C','0','0','dm:businesscategory:list','ywfc','admin','2026-03-30 16:46:41','admin','2026-04-15 15:06:14',null);
 INSERT INTO `system_menu` (`menu_id`,`menu_name`,`parent_id`,`order_num`,`path`,`component`,`query`,`is_frame`,`is_cache`,`route_name`,`menu_type`,`visible`,`status`,`perms`,`icon`,`create_by`,`create_time`,`update_by`,`update_time`,`remark` ) VALUES (2751,'业务分类查询',2750,1,'#',null,null,1,0,null,'F','0','0','dm:businesscategory:query','#','admin','2026-04-08 11:51:41',null,null,null);

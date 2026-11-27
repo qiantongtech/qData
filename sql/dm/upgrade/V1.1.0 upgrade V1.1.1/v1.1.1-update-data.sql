@@ -1,3 +1,19 @@
+-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
 SET IDENTITY_INSERT "QDATA"."SYSTEM_DICT_DATA" ON;
 INSERT INTO "QDATA"."SYSTEM_DICT_DATA"("DICT_CODE","DICT_SORT","DICT_LABEL","DICT_VALUE","DICT_TYPE","CSS_CLASS","LIST_CLASS","IS_DEFAULT","STATUS","CREATE_BY","CREATE_TIME","UPDATE_BY","UPDATE_TIME","REMARK") VALUES(413,5,'SQL Server 2008','SQL_Server2008','datasource_type',null,'info','N','0','admin',TO_DATE('2025-11-21 19:40:47.000000000','SYYYY-MM-DD HH24:MI:SS.FF9'),'admin',TO_DATE('2025-11-21 19:41:13.000000000','SYYYY-MM-DD HH24:MI:SS.FF9'),null);
 SET IDENTITY_INSERT "QDATA"."SYSTEM_JOB" OFF;

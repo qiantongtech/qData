@@ -1,3 +1,19 @@
+-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
 -- 插入数据域表 dm_data_domain
 INSERT INTO `qdata`.`dm_data_domain`
 (`id`,`name`,`eng_name`,`owner_user_id`,`description`,`valid_flag`,`del_flag`,`create_by`,`creator_id`,`create_time`,`update_by`,`updater_id`,`update_time`,`remark`)

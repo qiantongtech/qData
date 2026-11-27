@@ -1,4 +1,20 @@
-﻿-- 补充要求：敏感等级 DA_SENSITIVE_LEVEL 整表保留。
+﻿-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
+-- 补充要求：敏感等级 DA_SENSITIVE_LEVEL 整表保留。
 -- 最新范围：保留数仓分层层级及标准类目；清空分层规范、项目及成员关系、标准数据元类目。
 -- 2026-10-29：扩大类目及业务配置清理；用户与权限、内置规则保留。
 -- DA_ASSET_AUDIT_RULE 为质量结果记录表，继续清理；规则定义 ATT_AUDIT_RULE、ATT_CLEAN_RULE 保留。

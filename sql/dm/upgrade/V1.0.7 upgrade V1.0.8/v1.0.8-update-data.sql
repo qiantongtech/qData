@@ -1,3 +1,19 @@
+-- Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
+--
+-- This file is part of qData Data Middle Platform (Open Source Edition).
+--
+-- qData is licensed under Apache License 2.0 with additional qData terms.
+-- You may use qData for commercial purposes, but you may not remove, hide,
+-- modify, or replace the qData logo, copyright notices, license notices,
+-- or attribution information without a separate commercial license.
+--
+-- White-label use, OEM distribution, rebranding, or presenting qData as
+-- another product requires separate commercial authorization from
+-- Jiangsu Qiantong Technology Co., Ltd.
+--
+-- Business License: https://docs.qdata.tech/business/policy.html
+-- See the LICENSE file in the project root for full license information.
+
 SET IDENTITY_INSERT "QDATA"."SYSTEM_MENU" ON;
 INSERT INTO "QDATA"."SYSTEM_MENU"
 (MENU_ID, MENU_NAME, PARENT_ID, ORDER_NUM, "PATH", COMPONENT, QUERY, IS_FRAME, IS_CACHE, ROUTE_NAME, MENU_TYPE, VISIBLE, STATUS, PERMS, ICON, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, REMARK)

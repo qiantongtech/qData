@@ -3,7 +3,7 @@
   "version": "1.6.9",
   "description": "qData Open-Source Data Platform",
   "author": "Bingfeng",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

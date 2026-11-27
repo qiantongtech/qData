@@ -139,7 +139,7 @@ services:
     volumes:
       - ./neo4j/data:/data
       - ./neo4j/logs:/logs
-      - ./neo4j/conf:/var/lib/neo4j/conf
+      - ./neo4j/conf:/conf:ro
     healthcheck:
       test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "InC3tmU4bijT4vkl", "RETURN 1;" ]
       interval: 20s      # Check every 20 seconds
